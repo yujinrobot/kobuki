@@ -1,0 +1,10 @@
+<!--
+  Used for visualising the korus robot in action.  
+  
+  Note the robot description should already be published, but if not (i.e. maybe just running
+  the base) it reloads it here for convenience.
+  
+ -->
+<launch>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kobukibot)/resources/rviz/kinect_laser_map.vcg" />
+</launch>

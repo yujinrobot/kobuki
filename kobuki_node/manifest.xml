@@ -1,0 +1,54 @@
+<package>
+  <description brief="iclebo_ros_node">
+  <p>
+     iclebo_ros_node
+  </p>
+  </description>
+  <author>Younghun Ju</author>
+  <license>Yujin</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://yujin.dnsdojo.com:3000/wiki/ycs/</url>
+
+  <!-- Ros-Common -->
+  <depend package="nodelet"/>
+  <depend package="roslib"/>
+  <depend package="rospy"/>
+
+  <!-- Ycs -->
+  <depend package="device_nodelet"/>
+  <depend package="ftdi"/>
+  <depend package="device_comms"/>
+  <depend package="iclebo_comms"/>
+  <depend package="standard_comms"/>
+  <depend package="packet_handler"/>  <!-- ycs_devices/comms/packet_handler -->
+  <depend package="diff_drive_base"/>
+  <!-- Ecl -->
+  <depend package="ecl_time"/>
+  <depend package="ecl_devices"/>
+  <!--depend package="ecl_errors"/-->
+  <depend package="ecl_exceptions"/>
+  <depend package="ecl_formatters"/>
+  <depend package="ecl_geometry"/>
+  <depend package="ecl_sigslots"/>
+  <depend package="ecl_streams"/>
+  <depend package="ecl_threads"/>
+  <depend package="ecl_converters"/>
+  <export>
+    <cpp cflags="-I${prefix}/include" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib"/>
+    <nodelet plugin="${prefix}/src/nodelets/iclebo_ros_node.xml"/>
+  </export>
+
+
+<!--
+  Typical options for a ycs-ros cpp style package providing headers/libs in the example below
+  <export>
+    <cpp cflags="-I${prefix}/include/share -I${prefix}/msg/cpp -I${prefix}/srv/cpp" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lgoo"/>
+  </export>
+  
+  Really common dependencies for a typical c++ ycs-ros control node:
+  <depend package="roscpp"/>        // c++ ros nodes
+  
+  Including a system package as a dependency
+  <rosdep name="boost"/>
+-->
+</package>

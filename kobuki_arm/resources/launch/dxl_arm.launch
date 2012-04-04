@@ -1,0 +1,33 @@
+<!-- -*- mode: XML -*- -->
+
+<launch>
+    <node name="dynamixel_manager" pkg="dynamixel_controllers" type="controller_manager.py" required="true" output="screen">
+        <rosparam>
+            namespace: dxl_manager
+            serial_ports:
+                dxl_arm_port:
+                    port_name: /dev/ttyUSB0
+                    baud_rate: 1000000
+                    min_motor_id: 1
+                    max_motor_id: 5
+                    update_rate: 20
+        </rosparam>
+    </node>
+
+    <!-- Load controller configuration to parameter server -->
+    <rosparam file="$(find dynamixel_tutorials)/yaml/dynamixel_arm_joint_controller.yaml" command="load"/>
+    
+    <!-- start specified joint controllers -->
+    <node name="dynamixel_controller_spawner" pkg="dynamixel_controllers" type="controller_spawner.py"
+          args="--manager=dxl_manager
+                --port=dxl_arm_port
+                --type=simple
+                gripper_controller
+                wrist_controller
+                elbow_controller
+                shoulder_controller
+                base_controller">
+          output="screen"/>
+    </node>
+</launch>
+<!-- -*- mode: XML -*- -->

@@ -1,0 +1,13 @@
+<launch>
+ 
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <remap from="cmd_vel" to="robot_core/cmd_vel"/>
+    <rosparam file="$(find kobukibot)/resources/yaml/navigation/gmapping_kobuki_hokuyo/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find kobukibot)/resources/yaml/navigation/gmapping_kobuki_hokuyo/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find kobukibot)/resources/yaml/navigation/gmapping_kobuki_hokuyo/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find kobukibot)/resources/yaml/navigation/gmapping_kobuki_hokuyo/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find kobukibot)/resources/yaml/navigation/gmapping_kobuki_hokuyo/base_local_planner_params.yaml" command="load" />
+  </node>
+
+
+</launch>

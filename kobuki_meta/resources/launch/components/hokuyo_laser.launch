@@ -1,0 +1,18 @@
+<launch>
+
+  <!-- Hokuyo Laser -->
+  <node name="hokuyo" pkg="hokuyo_node" type="hokuyo_node" respawn="false" output="screen">
+    <!-- Starts up faster, but timestamps will be inaccurate. -->
+    <param name="calibrate_time" type="bool" value="true"/>
+
+    <!-- Set the port to connect to here -->
+    <param name="port" type="string" value="/dev/ttyACM0"/>
+    <param name="intensity" type="bool" value="false"/>
+	<param name="frame_id" type="string" value="/laser_link"/>
+	<remap from="scan" to="hokuyo_node/scan"/>
+
+    <param name="min_ang" type="double" value="-2.0944"/>
+    <param name="max_ang" type="double" value="2.0944"/>
+  </node>
+
+</launch>

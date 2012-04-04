@@ -1,0 +1,4 @@
+<launch>
+  <node name="platform" pkg="remote_mutex" type="mutex" args="platform" respawn="no" output="screen"/>
+  
+</launch>

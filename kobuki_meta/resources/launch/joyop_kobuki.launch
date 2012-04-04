@@ -1,0 +1,10 @@
+<!--
+  This is a robot specific configuration for the kobuki runtime.
+ -->
+<launch>
+  <arg name="simulation" value="false"/>
+  <include file="$(find kobukibot)/resources/launch/components/robot_core.launch">
+    <arg name="simulation" value="$(arg simulation)"/>
+  </include>
+  <include file="$(find kobukibot)/resources/launch/joyop.launch"/>
+</launch>

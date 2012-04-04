@@ -1,0 +1,9 @@
+namespace: dxl_manager
+serial_ports:
+    pan_tilt_port:
+        port_name: /dev/tty_dynamixel
+        baud_rate: 57600
+        min_motor_id: 0
+        max_motor_id: 10
+        update_rate: 20
+

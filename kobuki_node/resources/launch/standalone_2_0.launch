@@ -1,0 +1,8 @@
+<launch>
+    <node pkg="nodelet" type="nodelet" name="iclebo_ros_node" args="standalone iclebo_ros_node/iCleboNodelet" output="screen">
+        <!-- 
+        <remap from="cruizcore/mobile_base_gyro" to="/mobile_base_gyro"/>
+        -->
+        <rosparam file="$(find iclebo_ros_node)/resources/yaml/buster_2_0.yaml" command="load"/>
+    </node>
+</launch>

@@ -1,0 +1,23 @@
+<package>
+  <description brief="kobukibot_arm">
+
+     kobukibot_arm
+
+  </description>
+  <author>Daniel Stonier</author>
+  <license>Yujin</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://yujin.dnsdojo.com:3000/wiki/ycs/</url>
+
+  <depend package="rospy"/>
+  <depend package="roslib"/>
+
+  <depend package="std_msgs"/>
+  <depend package="control_msgs"/>
+  <depend package="dynamixel_msgs"/>
+
+  <depend package="dynamixel_controllers"/>
+
+  <rosdep name="wxpython"/>
+
+</package>

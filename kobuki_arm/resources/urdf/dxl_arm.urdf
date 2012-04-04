@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<robot>
+  <joint name="gripper" type="revolute">
+    <limit effort="10" lower="-0.35" upper="0.5" velocity="0.013"/>
+  </joint>
+  <joint name="wrist" type="revolute">
+    <limit effort="10" lower="-1.7" upper="1.7" velocity="0.013"/>
+  </joint>
+  <joint name="elbow" type="revolute">
+    <limit effort="10" lower="-2.5" upper="2.5" velocity="0.013"/>
+  </joint>
+  <joint name="shoulder" type="revolute">
+    <limit effort="10" lower="-2.5" upper="2.5" velocity="0.013"/>
+  </joint>
+  <joint name="base" type="revolute">
+    <limit effort="10" lower="-2.5" upper="2.5" velocity="0.013"/>
+  </joint>
+</robot>

@@ -1,0 +1,6 @@
+<launch>
+	<node pkg="iclebo_ros_node" type="currents_interpreter.py" name="currents_interpreter" output="screen">
+		<remap from="in"  to="/iclebo_ros_node/current_data"/>
+		<remap from="out" to="currents_interpreted"/>
+	</node>
+</launch>

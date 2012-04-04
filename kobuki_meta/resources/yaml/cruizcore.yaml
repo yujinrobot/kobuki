@@ -1,0 +1,14 @@
+# This can be used instead of putting all the parameters in an xml launch file.
+# Use the following xml specification to call it.
+#
+# <rosparam file="$(find cruizcore)/resources/yaml/buster.yaml" command="load"/>
+
+# Important Bits!
+# - device_name : must be either serial or ftdi.
+# - device_id : either port for serial device, or serial string id for ftdi device.
+
+#device_name: ftdi
+#device_id: cruizcore
+
+device_name: serial
+device_id: /dev/tty_cruizcore

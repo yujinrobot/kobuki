@@ -1,0 +1,10 @@
+<launch>
+  <include file="$(find kobukibot)/resources/launch/robot_description.launch" />
+  <param name="use_sim_time" value="true" />
+
+   <!--- Run gmapping -->
+  <include file="$(find kobukibot)/resources/launch/navigation/gmapping_kobukibot.launch" />
+
+  <!--- Run Move Base and Robot Pose EKF -->
+  <include file="$(find kobukibot)/resources/launch/navigation/move_base_kobukibot.launch" />
+</launch>

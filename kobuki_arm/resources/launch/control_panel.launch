@@ -1,0 +1,13 @@
+<launch>
+  <!-- Parameters -->
+  <param name="bond_disable_heartbeat_timeout" value="true"/> 
+  <param name="use_gui" value="true"/>
+  <param name="rate" type="double" value="20" />
+  <param name="robot_description" textfile="$(find kobukibot_arm)/resources/urdf/dxl_arm.urdf"/>
+  <!--param name="robot_description" command="$(find xacro)/xacro.py '$(find robosem_meta)/resources/urdf/robosem.xacro'" /-->
+
+  <!-- Nodes -->
+  <node name="joint_command_publisher_redefine" pkg="kobukibot_arm" type="joint_command_publisher" output="screen" ></node>
+  <!--node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find robosem_meta)/resources/rviz/view_model.vcg" /-->
+</launch>

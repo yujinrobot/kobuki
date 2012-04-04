@@ -1,0 +1,13 @@
+# This can be used instead of putting all the parameters in an xml launch file.
+# Use the following xml specification to call it.
+#
+# <rosparam file="$(find korus)/resources/yaml/mobile_base/buster.yaml" command="load"/>
+#
+
+odom_frame_id: odom_combined
+base_frame_id: base_footprint
+bias: 0.298
+wheel_radius: 0.042
+wheel_left_name: wheel_left 
+wheel_right_name: wheel_right
+

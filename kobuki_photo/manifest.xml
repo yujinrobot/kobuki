@@ -1,0 +1,32 @@
+<package>
+  <description brief="kobukibot_photo">
+
+     kobukibot_photo
+
+  </description>
+  <author>Lee</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/kobukibot_photo</url>
+
+  <depend package="roscpp"/>
+  <depend package="roslib"/>
+  <depend package="image_transport"/>
+  
+  <depend package="std_msgs"/>
+  <depend package="nav_msgs"/>
+  <depend package="sensor_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="control_msgs"/>
+	
+  <depend package="opencv2"/>
+  <depend package="cv_bridge"/>
+  <depend package="remote_mutex"/>
+  <depend package="dynamixel_controllers"/>
+  
+  <depend package="ecl_geometry"/>
+  
+
+</package>
+
+

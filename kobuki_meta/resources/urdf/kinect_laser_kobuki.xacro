@@ -1,0 +1,266 @@
+<?xml version="1.0" ?>
+
+<!--  
+  == USAGE ==
+  
+  - loaded into the kinematics node (move_arm.launch).
+  - loaded into model viewer (view_model.launch).
+  - loaded into robot viewer (view_robot.launch).
+  
+  == TODO ==
+  
+   - redo with real parameters later!
+   - finish arm visuals
+   
+  == UPDATE ==
+  
+  If changing anything here, be sure to:
+  
+  - yaml/robot/*.yaml (joint name strings)
+  - yaml/robot/joints.yaml (joint limits)
+  - yaml/mobile_base/diff_drive_base.yaml (wheel name strings, bias, wheel_radius)
+  - yaml/mechanisms/gripper,head,stereo_came_tilt.controller (joint name strings)
+  - goo/*.yaml (actuator_name strings)
+-->
+<robot
+  xmlns:xacro="http://www.ros.org/wiki/xacro"
+  name="kobuki"
+  >
+
+  <!-- ************************** Xacro ************************** -->
+
+  <xacro:property name="bias" value="0.298" />
+  <xacro:property name="wheel_radius" value="0.042" />
+  <xacro:property name="pi" value="3.1415926535897931" />
+
+  <xacro:property name="material_white">
+    <material name="white">
+      <color rgba="1 1 1 1"/>
+    </material>
+  </xacro:property>
+  <xacro:property name="material_orange">
+    <material name="orange">
+      <color rgba="1.0 0.7 0.0 1"/>
+    </material>
+  </xacro:property>
+  <xacro:property name="material_grey_blue">
+    <material name="grey_blue">
+      <color rgba="0.4 0.4 1.0 1"/>
+    </material>
+  </xacro:property>
+  <xacro:property name="material_blue">
+    <material name="blue">
+      <color rgba="0.0 0.0 1.0 1"/>
+    </material>
+  </xacro:property>
+  <xacro:property name="material_green">
+    <material name="green">
+      <color rgba="0 .8 0 1"/>
+    </material>
+  </xacro:property>
+  <xacro:property name="material_black">
+    <material name="black">
+      <color rgba="0.1 0.1 0.1 1"/>
+    </material>
+  </xacro:property>
+  <xacro:property name="material_red">
+    <material name="red">
+      <color rgba="1 0 0 1"/>
+    </material>
+  </xacro:property>
+
+  <xacro:macro name="wheel" params="name length radius off_x off_y off_z type *colors">
+    <link name="${name}">
+      <visual>
+        <geometry>
+          <cylinder length="${length}" radius="${radius}"/>
+     	  </geometry>
+        <origin rpy="0 ${pi/2} 0" xyz="0 0 0"/>
+
+		<xacro:insert_block name="colors" />
+        <!--material name="black">
+          <color rgba="0.1 0.1 0.1 1"/>
+        </material-->
+
+      </visual>
+    </link>
+    <joint name="${name}" type="${type}">
+      <parent link="base_link"/>
+      <child link="${name}"/>
+      <origin rpy="0 0 ${pi/2}" xyz="${off_x} ${off_y} ${off_z}"/>
+    </joint>
+  </xacro:macro>
+
+
+  
+  <!-- ************************** Base *************************** -->
+	<!-- needed for navigation stack -->
+	<link name="base_footprint">
+		<inertial>
+			<mass value="0.0001" />
+		    <origin xyz="0 0 0" />
+		    <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+		             iyy="0.0001" iyz="0.0" 
+		             izz="0.0001" />
+		</inertial>
+
+		<visual>
+		    <origin xyz="0 0 0" rpy="0 0 0" />
+		    <geometry>
+		        <box size="0.001 0.001 0.001" />
+		    </geometry>
+		    <xacro:insert_block name="material_green" />
+		</visual>
+
+		<collision>
+		    <origin xyz="0 0 0.017" rpy="0 0 0" />
+		    <geometry>
+		      <box size="0.001 0.001 0.001" />
+		    </geometry>
+		</collision>
+	</link>
+
+	<joint name="base_footprint_joint" type="fixed">
+		<!-- NB: While you would think this would make it go up, it is oddly reversed.
+		     This moves the joint to 0,0,0 where we want it for rviz, etc. -->
+		<origin xyz="0 0 0" rpy="0 0 0" />        
+		<parent link="base_footprint"/>
+		<child link="base_link" />
+	</joint>
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.1" radius="0.175"/>
+   	  </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.06"/>
+      <xacro:insert_block name="material_white" />
+    </visual>
+  </link>
+
+  <xacro:wheel name="wheel_left"  length="0.03" radius="${wheel_radius}" off_x="0"    off_y="${bias/2}"  off_z="${wheel_radius}" type="fixed">	<xacro:insert_block name="material_black"/>  </xacro:wheel>
+  <xacro:wheel name="wheel_right" length="0.03" radius="${wheel_radius}" off_x="0"    off_y="-${bias/2}" off_z="${wheel_radius}" type="fixed">	<xacro:insert_block name="material_black"/>  </xacro:wheel>  
+  <xacro:wheel name="wheel_front" length="0.02" radius="0.02"            off_x="0.15" off_y="0"          off_z="${0.02}"         type="fixed">	<xacro:insert_block name="material_red"  />  </xacro:wheel>
+
+  <!-- *********************** Laser Scanner ************************ -->
+
+  <joint name="laser" type="fixed">
+    <parent link="base_link"/>
+    <child link="laser_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0.3"/>
+  </joint>
+  <link name="laser_link">
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.07" />
+   	  </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>  -->
+      <xacro:insert_block name="material_orange" />
+    </visual>
+  </link>
+
+  <!-- *********************** Kinect ************************ -->
+  <!-- where r u from? hmm from turtlebot_dot_xacro.. o.k. --> 
+  <property name="M_PI" value="3.1415926535897931"/>
+  <property name="SCALE" value="0.0254"/>
+  <property name="M_SCALE" value="0.001"/>
+
+   <joint name="base_kinect_joint" type="fixed">
+      <origin xyz="0 0 0.28" rpy="0 0 0" />
+      <parent link="base_link" />
+      <child link="kinect_link" />
+    </joint>
+
+    <link name="kinect_link">
+      <inertial>
+        <mass value="12" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                 iyy="1.0" iyz="0.0"
+                 izz="1.0" />
+      </inertial>
+
+      <visual>
+        <origin xyz=" 0 0 0 " rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://kobukibot/resources/meshes/68-04546_Kinect_Sensor.3ds" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}"/>
+        </geometry>
+      </visual>
+
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://kobukibot/resources/meshes/68-04546_Kinect_Sensor.3ds"/>
+          </geometry>
+      </collision>
+
+    </link>
+
+    <joint name="kinect_depth_joint" type="fixed">
+      <origin xyz="0.04 -0.02 0" rpy="0 0 0" />
+      <!--origin xyz="0 0.018 0" rpy="0 0 0" /-->
+      <parent link="kinect_link" />
+      <child link="kinect_depth_frame" />
+    </joint>
+    
+    <link name="kinect_depth_frame">
+      <inertial>
+        <mass value="0.0001" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                 iyy="0.0001" iyz="0.0"
+                 izz="0.0001" />
+      </inertial>
+    </link>
+    
+    <joint name="kinect_depth_optical_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
+      <parent link="kinect_depth_frame" />
+      <child link="kinect_depth_optical_frame" />
+    </joint>
+    
+    <link name="kinect_depth_optical_frame">
+      <inertial>
+        <mass value="0.0001" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                 iyy="0.0001" iyz="0.0"
+                 izz="0.0001" />
+      </inertial>
+    </link>
+    
+    
+    <joint name="kinect_rgb_joint" type="fixed">
+      <origin xyz="0 -0.005 0" rpy="0 0 0" />
+      <parent link="kinect_link" />
+      <child link="kinect_rgb_frame" />
+    </joint>
+    
+    <link name="kinect_rgb_frame">
+      <inertial>
+        <mass value="0.0001" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                 iyy="0.0001" iyz="0.0"
+                 izz="0.0001" />
+      </inertial>
+    </link>
+    
+
+    <joint name="kinect_rgb_optical_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
+      <parent link="kinect_rgb_frame" />
+      <child link="kinect_rgb_optical_frame" />
+    </joint>
+    
+    <link name="kinect_rgb_optical_frame">
+      <inertial>
+        <mass value="0.0001" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                 iyy="0.0001" iyz="0.0"
+                 izz="0.0001" />
+      </inertial>
+    </link>
+
+</robot>

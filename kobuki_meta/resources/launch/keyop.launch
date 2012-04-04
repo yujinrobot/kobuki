@@ -1,0 +1,12 @@
+<launch>
+    <node pkg="keyop_core" type="keyop" name="keyop" output="screen">
+        <remap from="keyop/enable" to="/robot_core/enable"/>
+        <remap from="keyop/disable" to="/robot_core/disable"/>
+        <remap from="keyop/cmd_vel" to="/robot_core/cmd_vel"/>
+        <remap from="keyop/reset_odometry" to="/robot_core/mobile_base/reset_odometry"/>
+ 		<param name="linear_vel_step"  value="0.05"  type="double"/>
+ 		<param name="linear_vel_max"   value="0.5"  type="double"/>
+    	<param name="angular_vel_step" value="0.33" type="double"/>
+    	<param name="angular_vel_max"  value="3.3" type="double"/>
+    </node>
+</launch>

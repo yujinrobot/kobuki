@@ -1,0 +1,1 @@
+include $(shell rospack find ycs_build)/mk/ycsinstall.mk

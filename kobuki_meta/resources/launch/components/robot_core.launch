@@ -1,0 +1,52 @@
+<!--
+  The core nodelets all together.
+  
+  - motor subsystem
+  - mobile base
+  - controllers
+  - action servers
+  
+  This can be used for both simulation and the robot by making sure the robot arg is set
+  to either 'simulation' or 'kobuki'
+-->
+<launch>
+
+  <arg name="simulation"/>
+
+  <group ns="robot_core">
+
+    <!-- Base Setup -->
+    <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" output="screen"/>
+    <include file="$(find kobukibot)/resources/launch/components/base.launch">
+      <!--arg name="simulation" value="$(arg simulation)"/-->
+    </include>
+
+    <!-- Sensor Coonfigurations -->
+    <include file="$(find kobukibot)/resources/launch/components/kinect.launch">
+    <!--include file="$(find kobukibot)/resources/launch/components/kinect_laser.launch"-->
+    <!--include file="$(find kobukibot)/resources/launch/components/hokuyo_laser.launch"-->
+      <!--arg name="simulation" value="$(arg simulation)"/-->
+    </include>
+  
+    <!-- Dynamixel Tilt Joint Controller -->
+    <include file="$(find kobukibot)/resources/launch/components/dynamixel.launch"/>
+
+  </group>
+
+  <!-- The odometry estimator -->
+  <!-- same role of diff_drive_gyro_base -->
+  <!--
+   <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf">
+    <param name="freq" value="10.0"/>
+    <param name="sensor_timeout" value="1.0"/>
+    <param name="publish_tf" value="true"/>
+    <param name="odom_used" value="true"/>
+    <param name="imu_used" value="false"/>
+    <param name="vo_used" value="false"/>
+  </node>
+  -->
+
+  <!-- Robot Model -->
+  <include file="$(find kobukibot)/resources/launch/components/robot_model.launch"/>
+
+</launch>

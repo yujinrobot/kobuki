@@ -1,0 +1,11 @@
+<stack>
+  <description brief="kobuki">Software for Yujin's turtlebot</description>
+  <author>Maintained by Daniel Stonier</author>
+  <license>BSD</license>  
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/kobuki</url>
+  <depend stack="ros" />
+  <depend stack="ecl_core" />
+  <depend stack="ycs_comms" />
+  <!-- need to properly flesh this out -->
+</stack>
