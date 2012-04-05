@@ -6,6 +6,68 @@
 #include <kobuki_comms/Header.h>
 #include <kobuki_comms/Inertia.h>
 
+<<<<<<< HEAD
+namespace kobuki
+{
+
+class InertiaData : public packet_handler::payloadBase
+{
+public:
+  // container
+  kobuki_comms::Inertia data;
+
+  InertiaData()
+  {
+    data.acc.resize(3);
+  }
+
+  // methods
+  bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
+  {
+    if (!(byteStream.size() > 0))
+    {
+      ROS_WARN_STREAM("kobuki_node: kobuki_inertia: serialise failed. empty byte stream.");
+      return false;
+    }
+
+    buildBytes(data.header_id, byteStream);
+    buildBytes(data.angle, byteStream);
+    buildBytes(data.angle_rate, byteStream);
+    buildBytes(data.acc[0], byteStream);
+    buildBytes(data.acc[1], byteStream);
+    buildBytes(data.acc[2], byteStream);
+    return true;
+  }
+
+  bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
+  {
+    if (!(byteStream.size() > 0))
+    {
+      ROS_WARN_STREAM("kobuki_node: kobuki_inertia: deserialise failed. empty byte stream.");
+      return false;
+    }
+
+    buildVariable(data.header_id, byteStream);
+    buildVariable(data.angle, byteStream);
+    buildVariable(data.angle_rate, byteStream);
+    buildVariable(data.acc[0], byteStream);
+    buildVariable(data.acc[1], byteStream);
+    buildVariable(data.acc[2], byteStream);
+
+    //showMe();
+    return constrain();
+  }
+
+  bool constrain()
+  {
+    return true;
+  }
+
+  void showMe()
+  {
+    //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, acc[2], acc[1], acc[0] );
+  }
+=======
 namespace kobuki {
 
 class InertiaData : public packet_handler::payloadBase
@@ -63,6 +125,7 @@ public:
 	{
 		//printf("--[%02x || %03d | %03d | %03d]\n", data.bump, acc[2], acc[1], acc[0] );
 	}
+>>>>>>> branch 'master' of git@github.com:yujinrobot/kobuki.git
 };
 
 } // namespace kobuki

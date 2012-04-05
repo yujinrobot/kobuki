@@ -6,6 +6,66 @@
 #include <kobuki_comms/Header.h>
 #include <kobuki_comms/StGyro.h>
 
+<<<<<<< HEAD
+namespace kobuki
+{
+
+class StGyroData : public packet_handler::payloadBase
+{
+public:
+  // container
+  kobuki_comms::StGyro data;
+
+  // methods
+  bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
+  {
+    if (!(byteStream.size() > 0))
+    {
+      ROS_WARN_STREAM("kobuki_node: kobuki_st_gyro: serialise failed. empty byte stream.");
+      return false;
+    }
+
+    buildBytes(data.header_id, byteStream);
+    buildBytes(data.frame_id, byteStream);
+    buildBytes(data.followed_data_length, byteStream);
+    for (unsigned int i = 0; i < data.followed_data_length; ++i)
+    {
+      buildBytes(data.st_gyro_data[i], byteStream);
+    }
+    return true;
+  }
+
+  bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
+  {
+    if (!(byteStream.size() > 0))
+    {
+      ROS_WARN_STREAM("kobuki_node: kobuki_st_gyro: deserialise failed. empty byte stream.");
+      return false;
+    }
+
+    buildVariable(data.header_id, byteStream);
+    buildVariable(data.frame_id, byteStream);
+    buildVariable(data.followed_data_length, byteStream);
+    data.st_gyro_data.resize(data.followed_data_length);
+    for (unsigned int i = 0; i < data.followed_data_length; ++i)
+    {
+      buildVariable(data.st_gyro_data[i], byteStream);
+    }
+
+    //showMe();
+    return constrain();
+  }
+
+  bool constrain()
+  {
+    return true;
+  }
+
+  void showMe()
+  {
+    //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, st_gyro_data[2], st_gyro_data[1], st_gyro_data[0] );
+  }
+=======
 namespace kobuki {
 
 class StGyroData : public packet_handler::payloadBase
@@ -59,6 +119,7 @@ public:
 	{
 		//printf("--[%02x || %03d | %03d | %03d]\n", data.bump, st_gyro_data[2], st_gyro_data[1], st_gyro_data[0] );
 	}
+>>>>>>> branch 'master' of git@github.com:yujinrobot/kobuki.git
 };
 
 } // namespace kobuki
