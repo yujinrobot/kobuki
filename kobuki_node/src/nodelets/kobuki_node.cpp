@@ -64,7 +64,7 @@ KobukiNodelet::KobukiNodelet() :
  */
 KobukiNodelet::~KobukiNodelet() {
     this->shutdown_requested = true;
-    ROS_INFO_STREAM("Device : waiting for kobuki thread to finish [" << name << "].");
+    ROS_INFO_STREAM("Kobuki : waiting for kobuki thread to finish [" << name << "].");
     kobuki.close();
     //kobuki.join(); 
 }
@@ -117,19 +117,19 @@ bool KobukiNodelet::init(ros::NodeHandle& nh) {
 	//gyro_data->header.frame_id = ""; // unused - add a parameter should we need it later.
 	parameters.sigslots_namespace = name; // name is automatically picked up by device_nodelet parent.
 	if ( !nh.getParam("device_id", parameters.device_id) ) {
-		ROS_ERROR_STREAM("Device : no device id configuration on the parameter server [" << name << "].");
+		ROS_ERROR_STREAM("Kobuki : no device id configuration on the parameter server [" << name << "].");
 		return false;
 	}
 	if ( !nh.getParam("device_name", parameters.device_name) ) {
-		ROS_ERROR_STREAM("Device : no device name given on the parameter server ('serial'||'ftdi')[" << name << "].");
+		ROS_ERROR_STREAM("Kobuki : no device name given on the parameter server ('serial'||'ftdi')[" << name << "].");
 		return false;
 	}
 	if ( !nh.getParam("device_port", parameters.device_port) ) {
-		ROS_ERROR_STREAM("Device : no device name given on the parameter server ('serial'||'ftdi')[" << name << "].");
+		ROS_ERROR_STREAM("Kobuki : no device name given on the parameter server ('serial'||'ftdi')[" << name << "].");
 		return false;
 	}
 	if ( !nh.getParam("protocol_version", parameters.protocol_version) ) {
-		ROS_ERROR_STREAM("Device : no protocol version given on the parameter server ('1.0'||'2.0')[" << name << "].");
+		ROS_ERROR_STREAM("Kobuki : no protocol version given on the parameter server ('1.0'||'2.0')[" << name << "].");
 		std::cout << "protocol_version: " << parameters.protocol_version << std::endl;
 		return false;
 	}
@@ -138,13 +138,13 @@ bool KobukiNodelet::init(ros::NodeHandle& nh) {
 	** Validation
 	**********************/
 	if ( !parameters.validate() ) {
-		ROS_ERROR_STREAM("Device : parameter configuration failed [" << name << "].");
-		ROS_ERROR_STREAM("Device : " << parameters.error_msg << "[" << name << "]");
+		ROS_ERROR_STREAM("Kobuki : parameter configuration failed [" << name << "].");
+		ROS_ERROR_STREAM("Kobuki : " << parameters.error_msg << "[" << name << "]");
 		return false;
 	} else {
-		ROS_INFO_STREAM("Device : parameters configured [" << parameters.device_name << "][" << parameters.device_id << "][" << name << "]");
-		ROS_INFO_STREAM("Device : parameter.device_port [" << parameters.device_port << "]");
-		ROS_INFO_STREAM("Device : parameter.protocol_version [" << parameters.protocol_version << "]");
+		ROS_INFO_STREAM("Kobuki : parameters configured [" << parameters.device_name << "][" << parameters.device_id << "][" << name << "]");
+		ROS_INFO_STREAM("Kobuki : parameter.device_port [" << parameters.device_port << "]");
+		ROS_INFO_STREAM("Kobuki : parameter.protocol_version [" << parameters.protocol_version << "]");
 	}
 
 	/*********************
@@ -155,11 +155,11 @@ bool KobukiNodelet::init(ros::NodeHandle& nh) {
 	} catch ( const StandardException &e ) {
 		switch( e.flag() ) {
 			case(ecl::OpenError) : {
-				ROS_ERROR_STREAM("Device : could not open connection [" << parameters.device_name << "][" << parameters.device_id << "][" << name << "].");
+				ROS_ERROR_STREAM("Kobuki : could not open connection [" << parameters.device_name << "][" << parameters.device_id << "][" << name << "].");
 				break;
 			}
 			default : {
-				ROS_ERROR_STREAM("Device : initialisation failed [" << name << "].");
+				ROS_ERROR_STREAM("Kobuki : initialisation failed [" << name << "].");
 				break;
 			}
 		}
@@ -259,7 +259,7 @@ void KobukiNodelet::publishWheelState() {
 			kobuki.pubtime("  right_wheel:pub");
 		}
 	}
-	//ROS_INFO_STREAM("Device : thread terminating [" << name << "]");
+	//ROS_INFO_STREAM("Kobuki : thread terminating [" << name << "]");
 }
 
 

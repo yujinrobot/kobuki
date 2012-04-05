@@ -29,4 +29,7 @@
   <!-- visualization -->
   <depend package="rviz"/>
 
+  <!-- System Utilities -->
+  <rosdep name="unison"/>
+
 </package>

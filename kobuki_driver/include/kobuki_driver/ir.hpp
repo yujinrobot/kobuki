@@ -6,7 +6,6 @@
 #include <kobuki_comms/Header.h>
 #include <kobuki_comms/IR.h>
 
-<<<<<<< HEAD
 namespace kobuki
 {
 
@@ -63,61 +62,6 @@ public:
   {
     //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, obstacle[2], obstacle[1], obstacle[0] );
   }
-=======
-namespace kobuki {
-
-class IRData : public packet_handler::payloadBase
-{
-public:
-	// container
-	kobuki_comms::IR data;
-	
-	IRData() 
-	{
-		data.obstacle.resize(3);
-	}
-	
-	// methods
-	bool serialise( ecl::PushAndPop<unsigned char> & byteStream )
-	{
-		if(!(byteStream.size()>0)) { 
-			ROS_WARN_STREAM("kobuki_node: kobuki_ir: serialise failed. empty byte stream."); 
-			return false; 
-		}
-
-		buildBytes( data.header_id, 		byteStream );
-		buildBytes( data.obstacle[0], byteStream );
-		buildBytes( data.obstacle[1], byteStream );
-		buildBytes( data.obstacle[2], byteStream );
-		return true;
-	}
-
-	bool deserialise( ecl::PushAndPop<unsigned char> & byteStream )
-	{
-		if(!(byteStream.size()>0)) { 
-			ROS_WARN_STREAM("kobuki_node: kobuki_ir: deserialise failed. empty byte stream."); 
-			return false; 
-		}
-
-		buildVariable( data.header_id, 		byteStream );
-		buildVariable( data.obstacle[0], byteStream );
-		buildVariable( data.obstacle[1], byteStream );
-		buildVariable( data.obstacle[2], byteStream );
-
-		//showMe();
-		return constrain();
-	}
-
-	bool constrain()
-	{
-		return true;
-	}
-
-	void showMe()
-	{
-		//printf("--[%02x || %03d | %03d | %03d]\n", data.bump, obstacle[2], obstacle[1], obstacle[0] );
-	}
->>>>>>> branch 'master' of git@github.com:yujinrobot/kobuki.git
 };
 
 } // namespace kobuki
