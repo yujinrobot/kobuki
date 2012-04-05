@@ -1,0 +1,20 @@
+/**
+\mainpage
+\htmlinclude manifest.html
+
+\section Launchers
+
+Goal is to replicate the minimal.launch, kinect.launch, turtlebot.launch(?) in turtlebot_brinup. Eventually we should be almost exactly the same.
+
+\seciton Minimal
+
+- Obviously, kobuki_node replaces turtlebot node here.
+- Namespaced in kobuki
+ 
+\section Kinect
+
+- Got rid of the kinect breaker - do we really need?
+- Namespaced in kobuki
+
+
+*/

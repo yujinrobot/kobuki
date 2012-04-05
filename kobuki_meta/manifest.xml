@@ -27,9 +27,11 @@
   <!-- System Utilities -->
   <rosdep name="unison"/>
 
-  <!-- Integrate Later
-  <depend package="openni_launch"/>
+  <!-- 3d Sensing -->
+  <depend package="openni_camera"/>
   <depend package="pointcloud_to_laserscan"/>
+
+  <!-- Integrate Later
   <depends package="navigation"/>
   <depends package="gmapping"/>
  -->

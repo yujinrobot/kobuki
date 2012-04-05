@@ -271,7 +271,6 @@ void KobukiNodelet::publishWheelState()
     joint_states.header.stamp = ros::Time::now();
     joint_state_publisher.publish(joint_states);
   }
-  //ROS_INFO_STREAM("Kobuki : thread terminating [" << name << "]");
 }
 
 /*****************************************************************************
