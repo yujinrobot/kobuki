@@ -2,3 +2,4 @@ bin/
 build/
 lib/
 srv_gen/
+.project
