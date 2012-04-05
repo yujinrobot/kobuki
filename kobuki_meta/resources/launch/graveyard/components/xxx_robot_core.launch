@@ -17,19 +17,19 @@
 
     <!-- Base Setup -->
     <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" output="screen"/>
-    <include file="$(find kobukibot)/resources/launch/components/base.launch">
+    <include file="$(find kobuki_meta)/resources/launch/components/base.launch">
       <!--arg name="simulation" value="$(arg simulation)"/-->
     </include>
 
     <!-- Sensor Coonfigurations -->
-    <include file="$(find kobukibot)/resources/launch/components/kinect.launch">
-    <!--include file="$(find kobukibot)/resources/launch/components/kinect_laser.launch"-->
-    <!--include file="$(find kobukibot)/resources/launch/components/hokuyo_laser.launch"-->
+    <include file="$(find kobuki_meta)/resources/launch/components/kinect.launch">
+    <!--include file="$(find kobuki_meta)/resources/launch/components/kinect_laser.launch"-->
+    <!--include file="$(find kobuki_meta)/resources/launch/components/hokuyo_laser.launch"-->
       <!--arg name="simulation" value="$(arg simulation)"/-->
     </include>
   
     <!-- Dynamixel Tilt Joint Controller -->
-    <include file="$(find kobukibot)/resources/launch/components/dynamixel.launch"/>
+    <include file="$(find kobuki_meta)/resources/launch/components/dynamixel.launch"/>
 
   </group>
 
@@ -47,6 +47,6 @@
   -->
 
   <!-- Robot Model -->
-  <include file="$(find kobukibot)/resources/launch/components/robot_model.launch"/>
+  <include file="$(find kobuki_meta)/resources/launch/components/robot_model.launch"/>
 
 </launch>

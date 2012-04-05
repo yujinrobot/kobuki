@@ -6,5 +6,5 @@
   
  -->
 <launch>
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kobukibot)/resources/rviz/kinect_laser_map.vcg" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kobuki_meta)/resources/rviz/kinect_laser_map.vcg" />
 </launch>

@@ -3,8 +3,8 @@
  -->
 <launch>
   <arg name="simulation" value="false"/>
-  <include file="$(find kobukibot)/resources/launch/components/robot_core.launch">
+  <include file="$(find kobuki_meta)/resources/launch/components/robot_core.launch">
     <arg name="simulation" value="$(arg simulation)"/>
   </include>
-  <include file="$(find kobukibot)/resources/launch/joyop.launch"/>
+  <include file="$(find kobuki_meta)/resources/launch/joyop.launch"/>
 </launch>

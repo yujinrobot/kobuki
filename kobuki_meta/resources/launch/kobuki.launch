@@ -3,7 +3,11 @@
  -->
 <launch>
   <arg name="simulation" value="false"/>
-  <include file="$(find kobukibot)/resources/launch/components/robot_core.launch">
-    <arg name="simulation" value="$(arg simulation)"/>
-  </include>
+  <param name="/use_sim_time" value="$(arg simulation)"/>
+
+  <group ns="kobukibot">
+    <include file="$(find kobuki_meta)/resources/launch/components/base.launch">
+      <arg name="simulation" value="$(arg simulation)"/>
+    </include>
+  </group>
 </launch>

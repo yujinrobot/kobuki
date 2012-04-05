@@ -1,0 +1,16 @@
+<launch>
+
+  <arg name="map_file" default="$(find kobuki_meta)/resources/map/fifth_element_hokuyo.yaml"/>
+
+  <!-- Run the map server -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+  <!--- Run AMCL -->
+  <include file="$(find kobuki_meta)/resources/launch/navigation/amcl_kobukibot_hokuyo.launch" />
+
+
+  <!--- Run Move Base and Robot Pose EKF -->
+  <include file="$(find kobuki_meta)/resources/launch/navigation/move_base_kobukibot_hokuyo.launch" />
+
+
+</launch>

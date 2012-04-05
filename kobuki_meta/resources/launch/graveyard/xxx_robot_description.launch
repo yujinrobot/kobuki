@@ -1,0 +1,6 @@
+<launch>
+<!--group ns="kobuki"-->
+<group ns="robot_model">
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find kobuki_meta)/resources/urdf/kinect_laser_kobuki.xacro'" />
+</group>
+</launch>
