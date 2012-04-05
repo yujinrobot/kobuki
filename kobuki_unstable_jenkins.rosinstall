@@ -12,7 +12,7 @@
 
 # Yujin stacks
 - svn:
-    uri: https://embedded-control-library.googlecode.com/svn/trunk
+    uri: https://embedded-control-library.googlecode.com/svn/branches/electric
     local-name: ecl
 - svn:
     uri: http://svn.yujin.com/ycs/trunk
