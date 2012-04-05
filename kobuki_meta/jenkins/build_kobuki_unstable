@@ -1,3 +1,4 @@
+#!/bin/bash
 # installs and builds kobuki's software bundle
 
 sudo apt-get install -y ros-electric-turtlebot-robot ros-electric-dynamixel-motor
@@ -12,7 +13,4 @@ source ${WORKSPACE}/kobuki_workspace/setup.bash
 export ROS_PARALLEL_JOBS="-l5"
 export ROS_HOME=${WORKSPACE}
 rosmake kobuki_meta
-rosmake --target=test kobuki_meto
-
-
-
+rosmake --target=test kobuki_meta
