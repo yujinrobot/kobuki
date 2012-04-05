@@ -20,6 +20,6 @@
 
 # Kobuki stack
 - git:
-    uri: git@github.com:yujinrobot/kobuki.git
+    uri: git://github.com/yujinrobot/kobuki.git
     version: master
     local-name: kobuki
