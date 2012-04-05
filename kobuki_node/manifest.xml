@@ -14,18 +14,19 @@
   <depend package="roslib"/>
   <depend package="rospy"/>
 
+  <!--  Kobuki -->
+  <depend package="kobuki_comms"/>
+  
   <!-- Ycs -->
   <depend package="device_nodelet"/>
   <depend package="ftdi"/>
   <depend package="device_comms"/>
-  <depend package="kobuki_comms"/>
   <depend package="standard_comms"/>
-  <depend package="packet_handler"/>  <!-- ycs_devices/comms/packet_handler -->
   <depend package="diff_drive_base"/>
+  
   <!-- Ecl -->
   <depend package="ecl_time"/>
   <depend package="ecl_devices"/>
-  <!--depend package="ecl_errors"/-->
   <depend package="ecl_exceptions"/>
   <depend package="ecl_formatters"/>
   <depend package="ecl_geometry"/>
@@ -34,7 +35,7 @@
   <depend package="ecl_threads"/>
   <depend package="ecl_converters"/>
   <export>
-    <cpp cflags="-I${prefix}/include" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib"/>
+    <cpp cflags="-I${prefix}/include" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lkobuki"/>
     <nodelet plugin="${prefix}/src/nodelets/kobuki_nodelet.xml"/>
   </export>
 </package>

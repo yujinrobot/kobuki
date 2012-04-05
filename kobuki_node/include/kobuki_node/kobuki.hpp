@@ -25,8 +25,7 @@
 #include <ecl/time.hpp>
 
 #include <ecl/exceptions/standard_exception.hpp>
-#include <packet_handler/packet_finder.hpp>
-//#include <kobuki_mainboard/kobuki_mainboard.hpp>
+#include "packet_finder.hpp"
 #include "parameters.hpp"
 
 // [ version 1 ]

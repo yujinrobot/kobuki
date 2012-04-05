@@ -2,7 +2,7 @@
 #define KOBUKI_INERTIA_DATA_HPP__
 
 #include <ecl/containers.hpp>
-#include <packet_handler/payload_base.hpp>
+#include "payload_base.hpp"
 #include <kobuki_comms/Header.h>
 #include <kobuki_comms/Inertia.h>
 
