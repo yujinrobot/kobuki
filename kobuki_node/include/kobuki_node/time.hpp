@@ -6,9 +6,9 @@
 #include <iclebo_comms/iCleboHeader.h>
 #include <iclebo_comms/iCleboTime.h>
 
-namespace iclebo {
+namespace kobuki {
 
-class iCleboTimeData : public packet_handler::payloadBase
+class TimeData : public packet_handler::payloadBase
 {
 public:
 	// container
@@ -56,7 +56,7 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
 #endif /* KOBUKI_TIME_DATA_HPP__ */
 

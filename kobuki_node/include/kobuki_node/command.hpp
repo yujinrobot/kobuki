@@ -6,15 +6,15 @@
 #include <iclebo_comms/iCleboHeader.h>
 #include <iclebo_comms/iCleboCommand.h>
 
-namespace iclebo {
+namespace kobuki {
 
-class iCleboCommandData : public packet_handler::payloadBase
+class CommandData : public packet_handler::payloadBase
 {
 public:
 	// container
 	iclebo_comms::iCleboCommand data;
 	
-	iCleboCommandData() 
+	CommandData() 
 	{
 		//data.acc.resize(3);
 	}
@@ -116,7 +116,7 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
 #endif /* KOBUKI_COMMAND_DATA_HPP__ */
 

@@ -32,7 +32,7 @@
 ** Namespaces
 *****************************************************************************/
 
-namespace iclebo {
+namespace kobuki {
 
 /*****************************************************************************
 ** Interface
@@ -49,13 +49,13 @@ namespace iclebo {
  * control loop functionality can be achieved via calling the processInputs()
  * and processOutputs() methods.
  */
-class iCleboNodelet : public device_interface::DeviceNodelet {
+class KobukiNodelet : public device_interface::DeviceNodelet {
 public:
     /*********************
     ** C&D
     **********************/
-    iCleboNodelet();
-    ~iCleboNodelet();
+    KobukiNodelet();
+    ~KobukiNodelet();
 
 private:
 	/******************************************
@@ -67,7 +67,7 @@ private:
 
     	// Don't need to override the device nodelet enable/disable topic callbacks
 
-	iClebo iclebo;
+	Kobuki iclebo;
 	
 	//iCleboMainboardDriver iclebo_receiver();
 	//iCleboMainboardData data;

@@ -6,9 +6,9 @@
 #include <iclebo_comms/iCleboHeader.h>
 #include <iclebo_comms/iCleboStGyro.h>
 
-namespace iclebo {
+namespace kobuki {
 
-class iCleboStGyroData : public packet_handler::payloadBase
+class StGyroData : public packet_handler::payloadBase
 {
 public:
 	// container
@@ -61,7 +61,7 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
 #endif /* KOBUKI_ST_GYRO_DATA_HPP__ */
 

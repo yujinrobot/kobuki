@@ -6,15 +6,15 @@
 #include <iclebo_comms/iCleboHeader.h>
 #include <iclebo_comms/iCleboCurrent.h>
 
-namespace iclebo {
+namespace kobuki {
 
-class iCleboCurrentData : public packet_handler::payloadBase
+class CurrentData : public packet_handler::payloadBase
 {
 public:
 	// container
 	iclebo_comms::iCleboCurrent data;
 	
-	iCleboCurrentData() 
+	CurrentData() 
 	{
 		data.current.resize(2);
 	}
@@ -67,6 +67,6 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
 #endif /* KOBUKI_CURRENT_DATA_HPP__ */

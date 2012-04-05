@@ -5,10 +5,10 @@
 #include <iclebo_comms/iClebo.h>
 #include <packet_handler/payload_base.hpp>
 
-namespace iclebo {
+namespace kobuki {
 
 //1//
-class iCleboData : public packet_handler::payloadBase
+class Data : public packet_handler::payloadBase
 {
 public:
 	// group
@@ -101,7 +101,7 @@ public:
 };
 
 //2//
-class iCleboData2 : public packet_handler::payloadBase
+class Data2 : public packet_handler::payloadBase
 {
 public:
 	// group
@@ -182,6 +182,6 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
 #endif /* KOBUKI_DATA_HPP__ */

@@ -6,15 +6,15 @@
 #include <iclebo_comms/iCleboHeader.h>
 #include <iclebo_comms/iCleboInertia.h>
 
-namespace iclebo {
+namespace kobuki {
 
-class iCleboInertiaData : public packet_handler::payloadBase
+class InertiaData : public packet_handler::payloadBase
 {
 public:
 	// container
 	iclebo_comms::iCleboInertia data;
 	
-	iCleboInertiaData() 
+	InertiaData() 
 	{
 		data.acc.resize(3);
 	}
@@ -65,7 +65,7 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
 #endif /* KOBUKI_INERTIA_DATA_HPP__ */
 

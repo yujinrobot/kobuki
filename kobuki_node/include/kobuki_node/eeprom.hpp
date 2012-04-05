@@ -6,15 +6,15 @@
 #include <iclebo_comms/iCleboHeader.h>
 #include <iclebo_comms/iCleboEEPROM.h>
 
-namespace iclebo {
+namespace kobuki {
 
-class iCleboEEPROMData : public packet_handler::payloadBase
+class EEPROMData : public packet_handler::payloadBase
 {
 public:
 	// container
 	iclebo_comms::iCleboEEPROM data;
 	
-	iCleboEEPROMData() 
+	EEPROMData() 
 	{
 		data.tmp_eeprom.resize(16);
 	}
@@ -65,7 +65,7 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
 #endif /* KOBUKI_EEPROM_DATA_HPP__ */
 

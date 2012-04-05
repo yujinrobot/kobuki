@@ -24,7 +24,7 @@
 ** Namespaces
 *****************************************************************************/
 
-namespace iclebo {
+namespace kobuki {
 
 /*****************************************************************************
 ** Interface
@@ -68,6 +68,6 @@ public:
 };
 
 
-} // namespace iclebo
+} // namespace kobuki
 
 #endif /* YCS_ROBOT_ICLEBO_PARAMETERS_HPP_ */

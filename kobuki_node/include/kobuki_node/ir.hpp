@@ -6,15 +6,15 @@
 #include <iclebo_comms/iCleboHeader.h>
 #include <iclebo_comms/iCleboIR.h>
 
-namespace iclebo {
+namespace kobuki {
 
-class iCleboIRData : public packet_handler::payloadBase
+class IRData : public packet_handler::payloadBase
 {
 public:
 	// container
 	iclebo_comms::iCleboIR data;
 	
-	iCleboIRData() 
+	IRData() 
 	{
 		data.obstacle.resize(3);
 	}
@@ -61,6 +61,6 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
 #endif /* KOBUKI_IR_DATA_HPP__ */

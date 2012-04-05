@@ -6,9 +6,9 @@
 #include <iclebo_comms/iCleboHeader.h>
 #include <iclebo_comms/iCleboMagnet.h>
 
-namespace iclebo {
+namespace kobuki {
 
-class iCleboMagnetData : public packet_handler::payloadBase
+class MagnetData : public packet_handler::payloadBase
 {
 public:
 	// container
@@ -52,7 +52,7 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
 #endif /* KOBUKI_MAGNET_DATA_HPP__ */
 

@@ -6,9 +6,9 @@
 #include <iclebo_comms/iCleboHeader.h>
 #include <iclebo_comms/iCleboFW.h>
 
-namespace iclebo {
+namespace kobuki {
 
-class iCleboFWData : public packet_handler::payloadBase
+class FWData : public packet_handler::payloadBase
 {
 public:
 	// container
@@ -52,7 +52,7 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
 #endif /* KOBUKI_FW_DATA_HPP__ */
 

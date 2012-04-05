@@ -5,9 +5,9 @@
 #include <iclebo_comms/iClebo.h>
 #include <packet_handler/payload_base.hpp>
 
-namespace iclebo {
+namespace kobuki {
 
-class iCleboDefaultData : public packet_handler::payloadBase
+class DefaultData : public packet_handler::payloadBase
 {
 public:
 	iclebo_comms::iClebo data;
@@ -77,6 +77,6 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
 #endif /* KOBUKI_DEFAULT_DATA_HPP__ */

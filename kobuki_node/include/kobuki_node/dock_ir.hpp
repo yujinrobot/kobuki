@@ -6,15 +6,15 @@
 #include <iclebo_comms/iCleboHeader.h>
 #include <iclebo_comms/iCleboDockIR.h>
 
-namespace iclebo {
+namespace kobuki {
 
-class iCleboDockIRData : public packet_handler::payloadBase
+class DockIRData : public packet_handler::payloadBase
 {
 public:
 	// container
 	iclebo_comms::iCleboDockIR data;
 	
-	iCleboDockIRData() 
+	DockIRData() 
 	{
 		data.docking.resize(3);
 	}
@@ -61,6 +61,6 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
 #endif /* KOBUKI_IR_DATA_HPP__ */

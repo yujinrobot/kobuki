@@ -53,7 +53,7 @@
 ** Namespaces
 *****************************************************************************/
 
-namespace iclebo {
+namespace kobuki {
 
 /*****************************************************************************
 ** Using
@@ -68,7 +68,7 @@ union union_sint16 {
 	unsigned char byte[2];
 };
 
-class iCleboPacketFinder : public packet_handler::packetFinder
+class PacketFinder : public packet_handler::packetFinder
 {
 public:
 	bool checkSum()
@@ -109,11 +109,11 @@ public:
  * - 'ns'/serial_timeout : simple emit to notify if an expected packet timed out.
  * - 'ns'/invalid_packet : emits a bytearray whenever a mangled packet is received.
  **/
-class iClebo : public Threadable {
+class Kobuki : public Threadable {
 public:
-	iClebo() : is_connected(false), is_running(false), is_enabled(false), tick_to_mm(0.0845813406577f), tick_to_rad(0.00201384144460884f){}
+        Kobuki() : is_connected(false), is_running(false), is_enabled(false), tick_to_mm(0.0845813406577f), tick_to_rad(0.00201384144460884f){}
 	//iClebo(Parameters &parameters) throw(ecl::StandardException);
-	~iClebo(){ serial.close(); is_connected=false; is_running=false; is_enabled=false; }
+	~Kobuki(){ serial.close(); is_connected=false; is_running=false; is_enabled=false; }
 
 	/*********************
 	** Configuration
@@ -180,28 +180,28 @@ private:
 	const double tick_to_mm, tick_to_rad;
 
 	Serial serial;
-	iCleboData data;
-	iCleboData2 data2;
+	Data data;
+	Data2 data2;
 
 	// [ vserion 2 ]
-	iCleboDefaultData iclebo_default;
-	iCleboIRData iclebo_ir;
-	iCleboDockIRData iclebo_dock_ir;
-	iCleboInertiaData iclebo_inertia;
-	iCleboCliffData iclebo_cliff;
-	iCleboCurrentData iclebo_current;
-	iCleboMagnetData iclebo_magnet;
-	iCleboTimeData iclebo_time;
-	iCleboHWData iclebo_hw;
-	iCleboFWData iclebo_fw;
-	iCleboStGyroData iclebo_st_gyro;
-	iCleboEEPROMData iclebo_eeprom;
-	iCleboGpInputData iclebo_gp_input;
+	DefaultData iclebo_default;
+	IRData iclebo_ir;
+	DockIRData iclebo_dock_ir;
+	InertiaData iclebo_inertia;
+	CliffData iclebo_cliff;
+	CurrentData iclebo_current;
+	MagnetData iclebo_magnet;
+	TimeData iclebo_time;
+	HWData iclebo_hw;
+	FWData iclebo_fw;
+	StGyroData iclebo_st_gyro;
+	EEPROMData iclebo_eeprom;
+	GpInputData iclebo_gp_input;
 
-	iCleboCommandData iclebo_command;
+	CommandData iclebo_command;
 
-	iCleboPacketFinder packet_finder;
-	iCleboPacketFinder::BufferType data_buffer;
+	PacketFinder packet_finder;
+	PacketFinder::BufferType data_buffer;
 	ecl::PushAndPop<unsigned char> command_buffer;
 
 	ecl::Signal<> sig_wheel_state, sig_sensor_data;

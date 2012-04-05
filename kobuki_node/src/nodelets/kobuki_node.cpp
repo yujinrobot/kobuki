@@ -18,7 +18,7 @@
 ** Namespaces
 *****************************************************************************/
 
-namespace iclebo {
+namespace kobuki {
 
 /*****************************************************************************
 ** Using
@@ -27,31 +27,31 @@ namespace iclebo {
 using ecl::StandardException;
 
 /*****************************************************************************
-** Implementation [iCleboNodelet]
+** Implementation [KobukiNodelet]
 *****************************************************************************/
 /**
  * @brief Default constructor.
  *
  * Make sure you call the init() method to fully define this node.
  */
-iCleboNodelet::iCleboNodelet() :
+KobukiNodelet::KobukiNodelet() :
     //gyro_data(new device_comms::Gyro),
-    slot_wheel_state (&iCleboNodelet::publishWheelState ,*this),
-    slot_sensor_data(&iCleboNodelet::publishSensorData,*this),
-	slot_default (&iCleboNodelet::publishDefaultData,*this),
-	slot_ir      (&iCleboNodelet::publishIRData,*this),
-	slot_dock_ir (&iCleboNodelet::publishDockIRData,*this),
-	slot_inertia (&iCleboNodelet::publishInertiaData,*this),
-	slot_cliff   (&iCleboNodelet::publishCliffData,*this),
-	slot_current (&iCleboNodelet::publishCurrentData,*this),
-	slot_magnet  (&iCleboNodelet::publishMagnetData,*this),
-	slot_hw      (&iCleboNodelet::publishHWData,*this),
-	slot_fw      (&iCleboNodelet::publishFWData,*this),
-	slot_time    (&iCleboNodelet::publishTimeData,*this),
-	slot_st_gyro (&iCleboNodelet::publishStGyroData,*this),
-	slot_eeprom  (&iCleboNodelet::publishEEPROMData,*this),
-	slot_gp_input(&iCleboNodelet::publishGpInputData,*this)/*,
-		slot_reserved0(&iCleboNodelet::publishGpInputData,*this),*/
+    slot_wheel_state (&KobukiNodelet::publishWheelState ,*this),
+    slot_sensor_data(&KobukiNodelet::publishSensorData,*this),
+	slot_default (&KobukiNodelet::publishDefaultData,*this),
+	slot_ir      (&KobukiNodelet::publishIRData,*this),
+	slot_dock_ir (&KobukiNodelet::publishDockIRData,*this),
+	slot_inertia (&KobukiNodelet::publishInertiaData,*this),
+	slot_cliff   (&KobukiNodelet::publishCliffData,*this),
+	slot_current (&KobukiNodelet::publishCurrentData,*this),
+	slot_magnet  (&KobukiNodelet::publishMagnetData,*this),
+	slot_hw      (&KobukiNodelet::publishHWData,*this),
+	slot_fw      (&KobukiNodelet::publishFWData,*this),
+	slot_time    (&KobukiNodelet::publishTimeData,*this),
+	slot_st_gyro (&KobukiNodelet::publishStGyroData,*this),
+	slot_eeprom  (&KobukiNodelet::publishEEPROMData,*this),
+	slot_gp_input(&KobukiNodelet::publishGpInputData,*this)/*,
+		slot_reserved0(&KobukiNodelet::publishGpInputData,*this),*/
 /*
     slot_invalid_packet(&CruizCoreNodelet::publishInvalidPacket,*this)*/ 
 	//one slot for joint state of both wheels, two publisher for diff_drive_base
@@ -62,7 +62,7 @@ iCleboNodelet::iCleboNodelet() :
  *
  * Ensures we stay alive long enough for the thread to cleanly terminate.
  */
-iCleboNodelet::~iCleboNodelet() {
+KobukiNodelet::~KobukiNodelet() {
     this->shutdown_requested = true;
     ROS_INFO_STREAM("Device : waiting for iclebo thread to finish [" << name << "].");
     iclebo.close();
@@ -81,7 +81,7 @@ iCleboNodelet::~iCleboNodelet() {
  *
  * @param nh : private nodehandle to use for initialisation.
  */
-bool iCleboNodelet::init(ros::NodeHandle& nh) {
+bool KobukiNodelet::init(ros::NodeHandle& nh) {
 
 	/*********************
 	** Communications
@@ -179,7 +179,7 @@ bool iCleboNodelet::init(ros::NodeHandle& nh) {
  *
  * @param nh : the nodehandle derived from the parent nodelet.
  */
-void iCleboNodelet::advertiseTopics(ros::NodeHandle& nh) {
+void KobukiNodelet::advertiseTopics(ros::NodeHandle& nh) {
 	left_wheel_state_publisher  = nh.advertise<device_comms::JointState>("joint_state/left_wheel" , 100);
 	right_wheel_state_publisher = nh.advertise<device_comms::JointState>("joint_state/right_wheel", 100);
 	sensor_data_publisher 		= nh.advertise<iclebo_comms::iClebo>("sensor_data", 100);
@@ -210,14 +210,14 @@ void iCleboNodelet::advertiseTopics(ros::NodeHandle& nh) {
  *
  * @param nh : the nodehandle derived from the parent nodelet.
  */
-void iCleboNodelet::subscribeTopics(ros::NodeHandle& nh) {
+void KobukiNodelet::subscribeTopics(ros::NodeHandle& nh) {
 	std::string	left_wheel_name  = "left_wheel";
 	std::string	right_wheel_name = "right_wheel";
 
-	left_wheel_command_subscriber  = nh.subscribe(std::string("joint_command/")+left_wheel_name,10,&iCleboNodelet::subscribeJointCommandLeft, this);
-	right_wheel_command_subscriber = nh.subscribe(std::string("joint_command/")+right_wheel_name,10,&iCleboNodelet::subscribeJointCommandRight, this);
-	velocity_command_subscriber	   = nh.subscribe(std::string("cmd_vel"),10,&iCleboNodelet::subscribeVelocityCommand, this);
-	iclebo_command_subscriber	   = nh.subscribe(std::string("iclebo_command"),10,&iCleboNodelet::subscribeiCleboCommand, this);
+	left_wheel_command_subscriber  = nh.subscribe(std::string("joint_command/")+left_wheel_name,10,&KobukiNodelet::subscribeJointCommandLeft, this);
+	right_wheel_command_subscriber = nh.subscribe(std::string("joint_command/")+right_wheel_name,10,&KobukiNodelet::subscribeJointCommandRight, this);
+	velocity_command_subscriber	   = nh.subscribe(std::string("cmd_vel"),10,&KobukiNodelet::subscribeVelocityCommand, this);
+	iclebo_command_subscriber	   = nh.subscribe(std::string("iclebo_command"),10,&KobukiNodelet::subscribeiCleboCommand, this);
 }
 
 
@@ -236,7 +236,7 @@ void iCleboNodelet::subscribeTopics(ros::NodeHandle& nh) {
  * The type of commands sent to each motor (board) is identified by the feedback command held
  * in each motor.
  */
-void iCleboNodelet::publishWheelState() {
+void KobukiNodelet::publishWheelState() {
 
 	//waitForInitialisation();
 	if ( ros::ok() && !shutdown_requested ) {
@@ -274,7 +274,7 @@ void iCleboNodelet::publishWheelState() {
  *
  * @param bytes : the raw byte array that is being recieved.
  */
-void iCleboNodelet::publishSensorData() {
+void KobukiNodelet::publishSensorData() {
 
 	if ( ros::ok() ) {
 		if ( sensor_data_publisher.getNumSubscribers() > 0 ) {
@@ -287,19 +287,19 @@ void iCleboNodelet::publishSensorData() {
 	}
 }
 
-void iCleboNodelet::subscribeJointCommandLeft(const device_comms::JointCommand cmd) 
+void KobukiNodelet::subscribeJointCommandLeft(const device_comms::JointCommand cmd)
 {
 	//cmd.value;
 	return;
 }
 
-void iCleboNodelet::subscribeJointCommandRight(const device_comms::JointCommand cmd) 
+void KobukiNodelet::subscribeJointCommandRight(const device_comms::JointCommand cmd)
 {
 	//cmd.value;
 	return;
 }
 
-void iCleboNodelet::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr &msg) 
+void KobukiNodelet::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr &msg)
 {
     if( iclebo.isEnabled() ) {
 		// For now assuming this is in the robot frame, but probably this
@@ -314,7 +314,7 @@ void iCleboNodelet::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr 
 	return;
 }
 
-void iCleboNodelet::subscribeiCleboCommand(const iclebo_comms::iCleboCommandConstPtr &msg) 
+void KobukiNodelet::subscribeiCleboCommand(const iclebo_comms::iCleboCommandConstPtr &msg)
 {
     //if( iclebo.isEnabled() ) {
 		iclebo.sendCommand( msg );
@@ -371,7 +371,7 @@ void CruizCoreNodelet::publishInvalidPacket( const Packet::BufferStencil &bytes 
 }
 #endif
 
-void iCleboNodelet::publishDefaultData()
+void KobukiNodelet::publishDefaultData()
 {
 	if ( ros::ok() ) {
 		if ( default_data_publisher.getNumSubscribers() > 0 ) {
@@ -384,7 +384,7 @@ void iCleboNodelet::publishDefaultData()
 	}
 }
 
-void iCleboNodelet::publishIRData()
+void KobukiNodelet::publishIRData()
 {
 	if ( ros::ok() ) {
 		if ( ir_data_publisher.getNumSubscribers() > 0 ) {
@@ -397,7 +397,7 @@ void iCleboNodelet::publishIRData()
 	}
 }
 
-void iCleboNodelet::publishDockIRData()
+void KobukiNodelet::publishDockIRData()
 {
 	if ( ros::ok() ) {
 		if ( default_data_publisher.getNumSubscribers() > 0 ) {
@@ -410,7 +410,7 @@ void iCleboNodelet::publishDockIRData()
 	}
 }
 
-void iCleboNodelet::publishInertiaData()
+void KobukiNodelet::publishInertiaData()
 {
 	if ( ros::ok() ) {
 		if ( inertia_data_publisher.getNumSubscribers() > 0 ) {
@@ -423,7 +423,7 @@ void iCleboNodelet::publishInertiaData()
 	}
 }
 
-void iCleboNodelet::publishCliffData()
+void KobukiNodelet::publishCliffData()
 {
 	if ( ros::ok() ) {
 		if ( cliff_data_publisher.getNumSubscribers() > 0 ) {
@@ -436,7 +436,7 @@ void iCleboNodelet::publishCliffData()
 	}
 }
 
-void iCleboNodelet::publishCurrentData()
+void KobukiNodelet::publishCurrentData()
 {
 	if ( ros::ok() ) {
 		if ( current_data_publisher.getNumSubscribers() > 0 ) {
@@ -449,7 +449,7 @@ void iCleboNodelet::publishCurrentData()
 	}
 }
 
-void iCleboNodelet::publishMagnetData()
+void KobukiNodelet::publishMagnetData()
 {
 	if ( ros::ok() ) {
 		if ( magnet_data_publisher.getNumSubscribers() > 0 ) {
@@ -462,7 +462,7 @@ void iCleboNodelet::publishMagnetData()
 	}
 }
 
-void iCleboNodelet::publishHWData()
+void KobukiNodelet::publishHWData()
 {
 	if ( ros::ok() ) {
 		if ( hw_data_publisher.getNumSubscribers() > 0 ) {
@@ -475,7 +475,7 @@ void iCleboNodelet::publishHWData()
 	}
 }
 
-void iCleboNodelet::publishFWData()
+void KobukiNodelet::publishFWData()
 {
 	if ( ros::ok() ) {
 		if ( fw_data_publisher.getNumSubscribers() > 0 ) {
@@ -488,7 +488,7 @@ void iCleboNodelet::publishFWData()
 	}
 }
 
-void iCleboNodelet::publishTimeData()
+void KobukiNodelet::publishTimeData()
 {
 	if ( ros::ok() ) {
 		if ( time_data_publisher.getNumSubscribers() > 0 ) {
@@ -501,7 +501,7 @@ void iCleboNodelet::publishTimeData()
 	}
 }
 
-void iCleboNodelet::publishStGyroData()
+void KobukiNodelet::publishStGyroData()
 {
 	if ( ros::ok() ) {
 		if ( st_gyro_data_publisher.getNumSubscribers() > 0 ) {
@@ -514,7 +514,7 @@ void iCleboNodelet::publishStGyroData()
 	}
 }
 
-void iCleboNodelet::publishEEPROMData()
+void KobukiNodelet::publishEEPROMData()
 {
 	if ( ros::ok() ) {
 		if ( eeprom_data_publisher.getNumSubscribers() > 0 ) {
@@ -527,7 +527,7 @@ void iCleboNodelet::publishEEPROMData()
 	}
 }
 
-void iCleboNodelet::publishGpInputData()
+void KobukiNodelet::publishGpInputData()
 {
 	if ( ros::ok() ) {
 		if ( gp_input_data_publisher.getNumSubscribers() > 0 ) {
@@ -542,11 +542,11 @@ void iCleboNodelet::publishGpInputData()
 
 
 /*		slot_reserved0, Rei*/
-} // namespace cruizcore
+} // namespace k
 
 /*****************************************************************************
 ** Nodelet Plugin Registration
 *****************************************************************************/
 
-PLUGINLIB_DECLARE_CLASS(kobuki_node, iCleboNodelet, iclebo::iCleboNodelet, nodelet::Nodelet);
+PLUGINLIB_DECLARE_CLASS(kobuki_node, KobukiNodelet, kobuki::KobukiNodelet, nodelet::Nodelet);
 

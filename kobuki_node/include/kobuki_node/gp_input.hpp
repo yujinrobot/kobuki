@@ -6,15 +6,15 @@
 #include <iclebo_comms/iCleboHeader.h>
 #include <iclebo_comms/iCleboGpInput.h>
 
-namespace iclebo {
+namespace kobuki {
 
-class iCleboGpInputData : public packet_handler::payloadBase
+class GpInputData : public packet_handler::payloadBase
 {
 public:
 	// container
 	iclebo_comms::iCleboGpInput data;
 	
-	iCleboGpInputData() 
+	GpInputData() 
 	{
 		data.gp_adc.resize(7);
 	}
@@ -65,7 +65,7 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
 #endif /* KOBUKI_GP_INPUT_DATA_HPP__ */
 
