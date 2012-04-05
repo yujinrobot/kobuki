@@ -1,6 +1,6 @@
 # Before rosinstalling, make sure you installed:
 # * Standard turtlebot setup:
-#   - sudo apt-get install ros-electric-turtlebot-robot
+#   - sudo apt-get install ros-electric-turtlebot-robot ros-electric-dynamixel-motor ros-electric-laser-drivers
 # * For using the arm:
 #   - sudo apt-get install ros-electric-turtlebot-arm 
 # * Yujin stacks:
