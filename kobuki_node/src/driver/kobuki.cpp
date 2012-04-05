@@ -33,7 +33,7 @@ using ecl::Converter;
 using ecl::TimeStamp;
 
 /*****************************************************************************
-** Implementation [iClebo]
+** Implementation [Kobuki]
 *****************************************************************************/
 
 void Kobuki::init(Parameters &parameters) throw(ecl::StandardException) {
@@ -41,7 +41,7 @@ void Kobuki::init(Parameters &parameters) throw(ecl::StandardException) {
 	pubtime("init");
 
 	if ( !parameters.validate() ) {
-		throw ecl::StandardException(LOC,ecl::ConfigurationError,"iClebo's parameter settings did not validate.");
+		throw ecl::StandardException(LOC,ecl::ConfigurationError,"Kobuki's parameter settings did not validate.");
 	}
 	device_id = parameters.device_id;
 	//gyro_data.header.frame_id = "mobile_base_gyro";
@@ -122,7 +122,7 @@ void Kobuki::init(Parameters &parameters) throw(ecl::StandardException) {
 void Kobuki::close()
 { 
 	stop();
-	ROS_WARN_STREAM("Device: iClebo ROS Node: Terminated.");
+	ROS_WARN_STREAM("Device: Kobuki ROS Node: Terminated.");
 	return;
 }
 
@@ -231,19 +231,19 @@ void Kobuki::runnable()
 				//std::cout << "remains: " << data_buffer.size() << " | ";
 				switch( data_buffer[0] ) 
 				{
-				case kobuki_comms::Header::header_default:	sig_index.insert( data_buffer[0] ); iclebo_default.deserialise( data_buffer ); break;
-				case kobuki_comms::Header::header_ir:			sig_index.insert( data_buffer[0] ); iclebo_ir.deserialise( data_buffer ); break;
-				case kobuki_comms::Header::header_dock_ir:	sig_index.insert( data_buffer[0] ); iclebo_dock_ir.deserialise( data_buffer ); break;
-				case kobuki_comms::Header::header_inertia:	sig_index.insert( data_buffer[0] ); iclebo_inertia.deserialise( data_buffer ); break;
-				case kobuki_comms::Header::header_cliff:		sig_index.insert( data_buffer[0] ); iclebo_cliff.deserialise( data_buffer ); break;
-				case kobuki_comms::Header::header_current:	sig_index.insert( data_buffer[0] ); iclebo_current.deserialise( data_buffer ); break;
-				case kobuki_comms::Header::header_magnet:		sig_index.insert( data_buffer[0] ); iclebo_magnet.deserialise( data_buffer ); break;
-				case kobuki_comms::Header::header_time:		sig_index.insert( data_buffer[0] ); iclebo_time.deserialise( data_buffer ); break;
-				case kobuki_comms::Header::header_hw:			sig_index.insert( data_buffer[0] ); iclebo_hw.deserialise( data_buffer ); break;
-				case kobuki_comms::Header::header_fw:			sig_index.insert( data_buffer[0] ); iclebo_fw.deserialise( data_buffer ); break;
-				case kobuki_comms::Header::header_st_gyro:	sig_index.insert( data_buffer[0] ); iclebo_st_gyro.deserialise( data_buffer ); break;
-				case kobuki_comms::Header::header_eeprom:		sig_index.insert( data_buffer[0] ); iclebo_eeprom.deserialise( data_buffer ); break;
-				case kobuki_comms::Header::header_gp_input:	sig_index.insert( data_buffer[0] ); iclebo_gp_input.deserialise( data_buffer ); break;
+				case kobuki_comms::Header::header_default:	sig_index.insert( data_buffer[0] ); kobuki_default.deserialise( data_buffer ); break;
+				case kobuki_comms::Header::header_ir:			sig_index.insert( data_buffer[0] ); kobuki_ir.deserialise( data_buffer ); break;
+				case kobuki_comms::Header::header_dock_ir:	sig_index.insert( data_buffer[0] ); kobuki_dock_ir.deserialise( data_buffer ); break;
+				case kobuki_comms::Header::header_inertia:	sig_index.insert( data_buffer[0] ); kobuki_inertia.deserialise( data_buffer ); break;
+				case kobuki_comms::Header::header_cliff:		sig_index.insert( data_buffer[0] ); kobuki_cliff.deserialise( data_buffer ); break;
+				case kobuki_comms::Header::header_current:	sig_index.insert( data_buffer[0] ); kobuki_current.deserialise( data_buffer ); break;
+				case kobuki_comms::Header::header_magnet:		sig_index.insert( data_buffer[0] ); kobuki_magnet.deserialise( data_buffer ); break;
+				case kobuki_comms::Header::header_time:		sig_index.insert( data_buffer[0] ); kobuki_time.deserialise( data_buffer ); break;
+				case kobuki_comms::Header::header_hw:			sig_index.insert( data_buffer[0] ); kobuki_hw.deserialise( data_buffer ); break;
+				case kobuki_comms::Header::header_fw:			sig_index.insert( data_buffer[0] ); kobuki_fw.deserialise( data_buffer ); break;
+				case kobuki_comms::Header::header_st_gyro:	sig_index.insert( data_buffer[0] ); kobuki_st_gyro.deserialise( data_buffer ); break;
+				case kobuki_comms::Header::header_eeprom:		sig_index.insert( data_buffer[0] ); kobuki_eeprom.deserialise( data_buffer ); break;
+				case kobuki_comms::Header::header_gp_input:	sig_index.insert( data_buffer[0] ); kobuki_gp_input.deserialise( data_buffer ); break;
 				default: std::cout << "unexpected case reached. flushing current buffer." << std::endl; data_buffer.clear(); break;
 				}
 				//std::cout << "remains: " << data_buffer.size() << " | ";
@@ -329,7 +329,7 @@ void Kobuki::getData2( kobuki_comms::SensorData &sensor_data )
 	if( protocol_version == "1.0" )
 		sensor_data=data2.data;
 	if( protocol_version == "2.0" )
-		sensor_data=iclebo_default.data;
+		sensor_data=kobuki_default.data;
 }
 
 void Kobuki::getDefaultData( kobuki_comms::SensorData &sensor_data )
@@ -337,91 +337,91 @@ void Kobuki::getDefaultData( kobuki_comms::SensorData &sensor_data )
 	if( protocol_version == "1.0" )
 		sensor_data=data2.data;
 	if( protocol_version == "2.0" )
-		sensor_data=iclebo_default.data;
+		sensor_data=kobuki_default.data;
 }
 
 void Kobuki::getIRData( kobuki_comms::IR &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
-		data=iclebo_ir.data;
+		data=kobuki_ir.data;
 }
 
 void Kobuki::getDockIRData( kobuki_comms::DockIR &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
-		data=iclebo_dock_ir.data;
+		data=kobuki_dock_ir.data;
 }
 
 void Kobuki::getInertiaData( kobuki_comms::Inertia &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
-		data=iclebo_inertia.data;
+		data=kobuki_inertia.data;
 }
 
 void Kobuki::getCliffData( kobuki_comms::Cliff &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
-		data=iclebo_cliff.data;
+		data=kobuki_cliff.data;
 }
 
 void Kobuki::getCurrentData( kobuki_comms::Current &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
-		data=iclebo_current.data;
+		data=kobuki_current.data;
 }
 
 void Kobuki::getMagnetData( kobuki_comms::Magnet &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
-		data=iclebo_magnet.data;
+		data=kobuki_magnet.data;
 }
 
 void Kobuki::getHWData( kobuki_comms::HW &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
-		data=iclebo_hw.data;
+		data=kobuki_hw.data;
 }
 
 void Kobuki::getFWData( kobuki_comms::FW &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
-		data=iclebo_fw.data;
+		data=kobuki_fw.data;
 }
 
 void Kobuki::getTimeData( kobuki_comms::Time &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
-		data=iclebo_time.data;
+		data=kobuki_time.data;
 }
 
 void Kobuki::getStGyroData( kobuki_comms::StGyro &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
-		data=iclebo_st_gyro.data;
+		data=kobuki_st_gyro.data;
 }
 
 void Kobuki::getEEPROMData( kobuki_comms::EEPROM &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
-		data=iclebo_eeprom.data;
+		data=kobuki_eeprom.data;
 }
 
 void Kobuki::getGpInputData( kobuki_comms::GpInput &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
-		data=iclebo_gp_input.data;
+		data=kobuki_gp_input.data;
 }
 
 void Kobuki::getJointState( device_comms::JointState &joint_state )
@@ -440,8 +440,8 @@ void Kobuki::getJointState( device_comms::JointState &joint_state )
 			curr_timestamp = data2.data.time_stamp;
 		}
 		if( protocol_version == "2.0" ) {
-			curr_tick_left = iclebo_default.data.left_encoder;
-			curr_timestamp = iclebo_default.data.time_stamp;
+			curr_tick_left = kobuki_default.data.left_encoder;
+			curr_timestamp = kobuki_default.data.time_stamp;
 		}
 		if( !init_l ) { last_tick_left = curr_tick_left; init_l = true; }
 		diff_ticks = (double)(short)((curr_tick_left - last_tick_left)&0xffff);
@@ -459,8 +459,8 @@ void Kobuki::getJointState( device_comms::JointState &joint_state )
 		}
 		if( protocol_version == "2.0" ) 
 		{
-			curr_tick_right=iclebo_default.data.right_encoder;
-			curr_timestamp = iclebo_default.data.time_stamp;
+			curr_tick_right=kobuki_default.data.right_encoder;
+			curr_timestamp = kobuki_default.data.time_stamp;
 		}
 
 		if( !init_r ) { last_tick_right=curr_tick_right; init_r=true; }
@@ -536,7 +536,7 @@ void Kobuki::sendCommand()
 
 void Kobuki::sendCommand( const kobuki_comms::CommandConstPtr &data )
 {
-	iclebo_command.data = *data;
+	kobuki_command.data = *data;
 
 	command_buffer.clear();
 	command_buffer.resize(64);
@@ -544,7 +544,7 @@ void Kobuki::sendCommand( const kobuki_comms::CommandConstPtr &data )
 	command_buffer.push_back( 0x55 );
 	command_buffer.push_back( 0 );	// size of payload only, not stx, not etx, not length
 	
-	if( !iclebo_command.serialise( command_buffer ) ) {
+	if( !kobuki_command.serialise( command_buffer ) ) {
 		ROS_ERROR_STREAM( "command serialise failed." );
 	}
 	
@@ -562,9 +562,9 @@ void Kobuki::sendCommand( const kobuki_comms::CommandConstPtr &data )
 	
 	std::cout << std::endl;
 
-	if( iclebo_command.data.command == kobuki_comms::Command::commandBaseControl ) {
-		radius = iclebo_command.data.radius;
-		speed = iclebo_command.data.speed;
+	if( kobuki_command.data.command == kobuki_comms::Command::commandBaseControl ) {
+		radius = kobuki_command.data.radius;
+		speed = kobuki_command.data.speed;
 	}
 }
 

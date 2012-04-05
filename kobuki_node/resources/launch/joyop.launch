@@ -2,7 +2,7 @@
 
   <!--- Teleop Joystick -->
   <node pkg="joyop_core" type="joyop" name="joyopk">
-    <remap from="cmd_vel" to="/iclebo_ros_node/control_command"/>
+    <remap from="cmd_vel" to="/kobuki_ros_node/control_command"/>
   </node>
 
 

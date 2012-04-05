@@ -26,7 +26,7 @@
 
 #include <ecl/exceptions/standard_exception.hpp>
 #include <packet_handler/packet_finder.hpp>
-//#include <iclebo_mainboard/iclebo_mainboard.hpp>
+//#include <kobuki_mainboard/kobuki_mainboard.hpp>
 #include "parameters.hpp"
 
 // [ version 1 ]
@@ -112,7 +112,7 @@ public:
 class Kobuki : public Threadable {
 public:
         Kobuki() : is_connected(false), is_running(false), is_enabled(false), tick_to_mm(0.0845813406577f), tick_to_rad(0.00201384144460884f){}
-	//iClebo(Parameters &parameters) throw(ecl::StandardException);
+	//Kobuki(Parameters &parameters) throw(ecl::StandardException);
 	~Kobuki(){ serial.close(); is_connected=false; is_running=false; is_enabled=false; }
 
 	/*********************
@@ -150,7 +150,7 @@ public:
 	void pubtime(const char *);
 
 private:
-	//iCleboMainboardDriver iclebo_receiver;
+	//KobukiMainboardDriver kobuki_receiver;
 	StopWatch stopwatch;
 
 	unsigned short last_timestamp;
@@ -184,21 +184,21 @@ private:
 	Data2 data2;
 
 	// [ vserion 2 ]
-	DefaultData iclebo_default;
-	IRData iclebo_ir;
-	DockIRData iclebo_dock_ir;
-	InertiaData iclebo_inertia;
-	CliffData iclebo_cliff;
-	CurrentData iclebo_current;
-	MagnetData iclebo_magnet;
-	TimeData iclebo_time;
-	HWData iclebo_hw;
-	FWData iclebo_fw;
-	StGyroData iclebo_st_gyro;
-	EEPROMData iclebo_eeprom;
-	GpInputData iclebo_gp_input;
+	DefaultData kobuki_default;
+	IRData kobuki_ir;
+	DockIRData kobuki_dock_ir;
+	InertiaData kobuki_inertia;
+	CliffData kobuki_cliff;
+	CurrentData kobuki_current;
+	MagnetData kobuki_magnet;
+	TimeData kobuki_time;
+	HWData kobuki_hw;
+	FWData kobuki_fw;
+	StGyroData kobuki_st_gyro;
+	EEPROMData kobuki_eeprom;
+	GpInputData kobuki_gp_input;
 
-	CommandData iclebo_command;
+	CommandData kobuki_command;
 
 	PacketFinder packet_finder;
 	PacketFinder::BufferType data_buffer;

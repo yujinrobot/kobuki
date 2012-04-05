@@ -67,12 +67,12 @@ private:
 
     	// Don't need to override the device nodelet enable/disable topic callbacks
 
-	Kobuki iclebo;
+	Kobuki kobuki;
 	
-	//iCleboMainboardDriver iclebo_receiver();
-	//iCleboMainboardData data;
+	//KobukiMainboardDriver kobuki_receiver();
+	//KobukiMainboardData data;
 	//example
-	//iclebo.getData(data);
+	//kobuki.getData(data);
         //left_wheels=data.encoder[0];
 
 	/*********************
@@ -83,7 +83,7 @@ private:
 	ros::Publisher sensor_data_publisher;
 	ros::Subscriber left_wheel_command_subscriber, right_wheel_command_subscriber;
 	ros::Subscriber velocity_command_subscriber;
-	ros::Subscriber iclebo_command_subscriber;
+	ros::Subscriber kobuki_command_subscriber;
 
 	ecl::Slot<> slot_wheel_state, slot_sensor_data;
 	ecl::Signal< const device_comms::JointCommand > sig_joint_command;
@@ -141,18 +141,18 @@ private:
 	void subscribeJointCommandLeft(const device_comms::JointCommand);
 	void subscribeJointCommandRight(const device_comms::JointCommand);
 	void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr&);
-	void subscribeiCleboCommand(const kobuki_comms::CommandConstPtr&);
+	void subscribeKobukiCommand(const kobuki_comms::CommandConstPtr&);
 
 	void enable() 
 	{ 
-		iclebo.run();
-		iclebo.reset();
-		ROS_INFO_STREAM( "iclebo enabled." ); 
+		kobuki.run();
+		kobuki.reset();
+		ROS_INFO_STREAM( "kobuki enabled." ); 
 	};
 
 	void disable(){ 
-		iclebo.stop();
-		ROS_INFO_STREAM( "iclebo disable." ); 
+		kobuki.stop();
+		ROS_INFO_STREAM( "kobuki disable." ); 
 	};
 };
 

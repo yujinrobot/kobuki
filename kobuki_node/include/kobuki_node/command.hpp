@@ -23,7 +23,7 @@ public:
 	bool serialise( ecl::PushAndPop<unsigned char> & byteStream )
 	{
 		if(!(byteStream.size()>0)) { 
-			ROS_WARN_STREAM("kobuki_node: iclebo_command: serialise failed. empty byte stream."); 
+			ROS_WARN_STREAM("kobuki_node: kobuki_command: serialise failed. empty byte stream."); 
 			return false; 
 		}
 
@@ -96,7 +96,7 @@ public:
 	bool deserialise( ecl::PushAndPop<unsigned char> & byteStream )
 	{
 		if(!(byteStream.size()>0)) { 
-			ROS_WARN_STREAM("kobuki_node: iclebo_command: deserialise failed. empty byte stream."); 
+			ROS_WARN_STREAM("kobuki_node: kobuki_command: deserialise failed. empty byte stream."); 
 			return false; 
 		}
 		return true;

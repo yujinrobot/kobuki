@@ -70,4 +70,4 @@ public:
 
 } // namespace kobuki
 
-#endif /* YCS_ROBOT_ICLEBO_PARAMETERS_HPP_ */
+#endif /* YCS_ROBOT_KOBUKI_PARAMETERS_HPP_ */

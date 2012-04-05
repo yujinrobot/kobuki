@@ -7,7 +7,7 @@
     <arg name="simulation" value="$(arg simulation)"/>
   </include>
 
-  <node name="remote_mutex" pkg="remote_mutex" type="mutex" args="iclebo" respawn="true" output="screen"/>
+  <node name="remote_mutex" pkg="remote_mutex" type="mutex" args="kobuki" respawn="true" output="screen"/>
   <node name="pano_capture" pkg="pano_ros" type="capture_server.py" respawn="true" output="screen"/>
   <node name="pano_capture_client" pkg="kobukibot_panorama" type="panorama" respawn="true" output="screen"/>
 </launch>

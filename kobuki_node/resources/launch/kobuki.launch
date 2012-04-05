@@ -2,16 +2,16 @@
 
   <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager" output="screen"/>
 
-  <node pkg="nodelet" type="nodelet" name="iclebo_ros_node" args="load iclebo_ros_node/iCleboNodelet nodelet_manager" output="screen">
+  <node pkg="nodelet" type="nodelet" name="kobuki_ros_node" args="load kobuki_ros_node/KobukiNodelet nodelet_manager" output="screen">
     <!--remap from="cruizcore/mobile_base_gyro" to="/mobile_base_gyro"/-->
-    <rosparam file="$(find iclebo_ros_node)/resources/yaml/buster_2_0.yaml" command="load"/>
-    <remap from="iclebo_ros_node/joint_state/left_wheel"  to="joint_state/wheel_left"/>
-    <remap from="iclebo_ros_node/joint_state/right_wheel" to="joint_state/wheel_right"/>
-    <!--remap from="iclebo_ros_node/control_command" to="cmd_vel"/-->
+    <rosparam file="$(find kobuki_ros_node)/resources/yaml/buster_2_0.yaml" command="load"/>
+    <remap from="kobuki_ros_node/joint_state/left_wheel"  to="joint_state/wheel_left"/>
+    <remap from="kobuki_ros_node/joint_state/right_wheel" to="joint_state/wheel_right"/>
+    <!--remap from="kobuki_ros_node/control_command" to="cmd_vel"/-->
   </node>
 
   <node pkg="nodelet" type="nodelet" name="mobile_base" args="load diff_drive_base/DiffDriveBase nodelet_manager" output="screen">
-    <rosparam file="$(find iclebo_ros_node)/resources/yaml/diff_drive_base.yaml" command="load" />
+    <rosparam file="$(find kobuki_ros_node)/resources/yaml/diff_drive_base.yaml" command="load" />
     <remap from="mobile_base/joint_command/wheel_left" to="joint_command/wheel_left"/>
     <remap from="mobile_base/joint_state/wheel_left" to="joint_state/wheel_left"/>
     <remap from="mobile_base/joint_command/wheel_right" to="joint_command/wheel_right"/>

@@ -18,7 +18,7 @@ public:
 	bool serialise( ecl::PushAndPop<unsigned char> & byteStream )
 	{
 		if(!(byteStream.size()>0)) { 
-			ROS_WARN_STREAM("kobuki_node: iclebo_st_gyro: serialise failed. empty byte stream."); 
+			ROS_WARN_STREAM("kobuki_node: kobuki_st_gyro: serialise failed. empty byte stream."); 
 			return false; 
 		}
 
@@ -34,7 +34,7 @@ public:
 	bool deserialise( ecl::PushAndPop<unsigned char> & byteStream )
 	{
 		if(!(byteStream.size()>0)) { 
-			ROS_WARN_STREAM("kobuki_node: iclebo_st_gyro: deserialise failed. empty byte stream."); 
+			ROS_WARN_STREAM("kobuki_node: kobuki_st_gyro: deserialise failed. empty byte stream."); 
 			return false; 
 		}
 

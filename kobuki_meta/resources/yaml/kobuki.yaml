@@ -11,6 +11,6 @@
 #device_id: cruizcore
 
 device_name: serial
-device_id:   iclebo
+device_id:   kobuki
 #device_port: /dev/ttyUSB0
-device_port: /dev/tty_iclebo
+device_port: /dev/tty_kobuki

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-import roslib; roslib.load_manifest('iclebo_ros_node')
+import roslib; roslib.load_manifest('kobuki_ros_node')
 import rospy
 
-from kobuki_comms.msg import iClebo
+from kobuki_comms.msg import SensorData
 from standard_comms.msg import Float32ArrayStamped
 from std_msgs.msg import Float64
 from std_msgs.msg import UInt8
@@ -40,7 +40,7 @@ def callback(data):
 def relay():
 	rospy.init_node('kobukibot_arm_control')
 	rospy.Subscriber('button_data_in', UInt8, callback)  # For Test
-	#rospy.Subscriber('button_data_in', iClebo, callback) # Actual Topic
+	#rospy.Subscriber('button_data_in', SensorData, callback) # Actual Topic
 	rospy.spin()
 
 if __name__ == '__main__':

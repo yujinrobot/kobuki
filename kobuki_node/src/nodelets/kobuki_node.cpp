@@ -64,9 +64,9 @@ KobukiNodelet::KobukiNodelet() :
  */
 KobukiNodelet::~KobukiNodelet() {
     this->shutdown_requested = true;
-    ROS_INFO_STREAM("Device : waiting for iclebo thread to finish [" << name << "].");
-    iclebo.close();
-    //iclebo.join(); 
+    ROS_INFO_STREAM("Device : waiting for kobuki thread to finish [" << name << "].");
+    kobuki.close();
+    //kobuki.join(); 
 }
 
 /*****************************************************************************
@@ -151,7 +151,7 @@ bool KobukiNodelet::init(ros::NodeHandle& nh) {
 	** Driver Init
 	**********************/
 	try {
-		iclebo.init(parameters);
+		kobuki.init(parameters);
 	} catch ( const StandardException &e ) {
 		switch( e.flag() ) {
 			case(ecl::OpenError) : {
@@ -217,7 +217,7 @@ void KobukiNodelet::subscribeTopics(ros::NodeHandle& nh) {
 	left_wheel_command_subscriber  = nh.subscribe(std::string("joint_command/")+left_wheel_name,10,&KobukiNodelet::subscribeJointCommandLeft, this);
 	right_wheel_command_subscriber = nh.subscribe(std::string("joint_command/")+right_wheel_name,10,&KobukiNodelet::subscribeJointCommandRight, this);
 	velocity_command_subscriber	   = nh.subscribe(std::string("cmd_vel"),10,&KobukiNodelet::subscribeVelocityCommand, this);
-	iclebo_command_subscriber	   = nh.subscribe(std::string("iclebo_command"),10,&KobukiNodelet::subscribeiCleboCommand, this);
+	kobuki_command_subscriber	   = nh.subscribe(std::string("kobuki_command"),10,&KobukiNodelet::subscribeKobukiCommand, this);
 }
 
 
@@ -241,22 +241,22 @@ void KobukiNodelet::publishWheelState() {
 	//waitForInitialisation();
 	if ( ros::ok() && !shutdown_requested ) {
 		if (left_wheel_state_publisher.getNumSubscribers() > 0 ) {
-			iclebo.pubtime("  left_wheel:ent");
+			kobuki.pubtime("  left_wheel:ent");
 			device_comms::JointState joint_state;
 			joint_state.name="left_wheel";
 			joint_state.stamp = ros::Time::now();
-			iclebo.getJointState(joint_state);
+			kobuki.getJointState(joint_state);
 			left_wheel_state_publisher.publish(joint_state);
-			iclebo.pubtime("  left_wheel:pub");
+			kobuki.pubtime("  left_wheel:pub");
 		}
 		if (right_wheel_state_publisher.getNumSubscribers() > 0 ) {
-			iclebo.pubtime("  right_wheel:ent");
+			kobuki.pubtime("  right_wheel:ent");
 			device_comms::JointState joint_state;
 			joint_state.name="right_wheel";
 			joint_state.stamp = ros::Time::now();
-			iclebo.getJointState(joint_state);
+			kobuki.getJointState(joint_state);
 			right_wheel_state_publisher.publish(joint_state);
-			iclebo.pubtime("  right_wheel:pub");
+			kobuki.pubtime("  right_wheel:pub");
 		}
 	}
 	//ROS_INFO_STREAM("Device : thread terminating [" << name << "]");
@@ -279,7 +279,7 @@ void KobukiNodelet::publishSensorData() {
 	if ( ros::ok() ) {
 		if ( sensor_data_publisher.getNumSubscribers() > 0 ) {
 			kobuki_comms::SensorData data;
-			iclebo.getData2(data);
+			kobuki.getData2(data);
 			data.header.stamp = ros::Time::now();
 			sensor_data_publisher.publish(data);
 			//std::cout << "publishSensorData()" << std::endl;
@@ -301,23 +301,23 @@ void KobukiNodelet::subscribeJointCommandRight(const device_comms::JointCommand 
 
 void KobukiNodelet::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr &msg)
 {
-    if( iclebo.isEnabled() ) {
+    if( kobuki.isEnabled() ) {
 		// For now assuming this is in the robot frame, but probably this
 		// should be global frame and require a transform
 		//double vx = msg->linear.x;	// in (m/s)
 		//double wz = msg->angular.z;	// in (rad/s)
 		ROS_DEBUG_STREAM("subscribeVelocityCommand: [" << msg->linear.x << "],[" << msg->angular.z << "]");
-		iclebo.setCommand(msg->linear.x, msg->angular.z);
+		kobuki.setCommand(msg->linear.x, msg->angular.z);
     } else {
         ROS_WARN("Robot is not enabled.");
     }
 	return;
 }
 
-void KobukiNodelet::subscribeiCleboCommand(const kobuki_comms::CommandConstPtr &msg)
+void KobukiNodelet::subscribeKobukiCommand(const kobuki_comms::CommandConstPtr &msg)
 {
-    //if( iclebo.isEnabled() ) {
-		iclebo.sendCommand( msg );
+    //if( kobuki.isEnabled() ) {
+		kobuki.sendCommand( msg );
 	//} else {
 	//	ROS_WARN("Robot is not enabled.");
 	//}
@@ -376,7 +376,7 @@ void KobukiNodelet::publishDefaultData()
 	if ( ros::ok() ) {
 		if ( default_data_publisher.getNumSubscribers() > 0 ) {
 			kobuki_comms::SensorData data;
-			iclebo.getDefaultData(data);
+			kobuki.getDefaultData(data);
 			data.header.stamp = ros::Time::now();
 			default_data_publisher.publish(data);
 			//std::cout << __func__ << std::endl;
@@ -389,7 +389,7 @@ void KobukiNodelet::publishIRData()
 	if ( ros::ok() ) {
 		if ( ir_data_publisher.getNumSubscribers() > 0 ) {
 			kobuki_comms::IR data;
-			iclebo.getIRData(data);
+			kobuki.getIRData(data);
 			data.header.stamp = ros::Time::now();
 			ir_data_publisher.publish(data);
 			//std::cout << __func__ << std::endl;
@@ -402,7 +402,7 @@ void KobukiNodelet::publishDockIRData()
 	if ( ros::ok() ) {
 		if ( default_data_publisher.getNumSubscribers() > 0 ) {
 			kobuki_comms::SensorData data;
-			iclebo.getDefaultData(data);
+			kobuki.getDefaultData(data);
 			data.header.stamp = ros::Time::now();
 			default_data_publisher.publish(data);
 			//std::cout << __func__ << std::endl;
@@ -415,7 +415,7 @@ void KobukiNodelet::publishInertiaData()
 	if ( ros::ok() ) {
 		if ( inertia_data_publisher.getNumSubscribers() > 0 ) {
 			kobuki_comms::Inertia data;
-			iclebo.getInertiaData(data);
+			kobuki.getInertiaData(data);
 			data.header.stamp = ros::Time::now();
 			inertia_data_publisher.publish(data);
 			//std::cout << __func__ << std::endl;
@@ -428,7 +428,7 @@ void KobukiNodelet::publishCliffData()
 	if ( ros::ok() ) {
 		if ( cliff_data_publisher.getNumSubscribers() > 0 ) {
 			kobuki_comms::Cliff data;
-			iclebo.getCliffData(data);
+			kobuki.getCliffData(data);
 			data.header.stamp = ros::Time::now();
 			cliff_data_publisher.publish(data);
 			//std::cout << __func__ << std::endl;
@@ -441,7 +441,7 @@ void KobukiNodelet::publishCurrentData()
 	if ( ros::ok() ) {
 		if ( current_data_publisher.getNumSubscribers() > 0 ) {
 			kobuki_comms::Current data;
-			iclebo.getCurrentData(data);
+			kobuki.getCurrentData(data);
 			data.header.stamp = ros::Time::now();
 			current_data_publisher.publish(data);
 			//std::cout << __func__ << std::endl;
@@ -454,7 +454,7 @@ void KobukiNodelet::publishMagnetData()
 	if ( ros::ok() ) {
 		if ( magnet_data_publisher.getNumSubscribers() > 0 ) {
 			kobuki_comms::Magnet data;
-			iclebo.getMagnetData(data);
+			kobuki.getMagnetData(data);
 			data.header.stamp = ros::Time::now();
 			magnet_data_publisher.publish(data);
 			//std::cout << __func__ << std::endl;
@@ -467,7 +467,7 @@ void KobukiNodelet::publishHWData()
 	if ( ros::ok() ) {
 		if ( hw_data_publisher.getNumSubscribers() > 0 ) {
 			kobuki_comms::HW data;
-			iclebo.getHWData(data);
+			kobuki.getHWData(data);
 			data.header.stamp = ros::Time::now();
 			hw_data_publisher.publish(data);
 			//std::cout << __func__ << std::endl;
@@ -480,7 +480,7 @@ void KobukiNodelet::publishFWData()
 	if ( ros::ok() ) {
 		if ( fw_data_publisher.getNumSubscribers() > 0 ) {
 			kobuki_comms::FW data;
-			iclebo.getFWData(data);
+			kobuki.getFWData(data);
 			data.header.stamp = ros::Time::now();
 			fw_data_publisher.publish(data);
 			//std::cout << __func__ << std::endl;
@@ -493,7 +493,7 @@ void KobukiNodelet::publishTimeData()
 	if ( ros::ok() ) {
 		if ( time_data_publisher.getNumSubscribers() > 0 ) {
 			kobuki_comms::Time data;
-			iclebo.getTimeData(data);
+			kobuki.getTimeData(data);
 			data.header.stamp = ros::Time::now();
 			time_data_publisher.publish(data);
 			//std::cout << __func__ << std::endl;
@@ -506,7 +506,7 @@ void KobukiNodelet::publishStGyroData()
 	if ( ros::ok() ) {
 		if ( st_gyro_data_publisher.getNumSubscribers() > 0 ) {
 			kobuki_comms::StGyro data;
-			iclebo.getStGyroData(data);
+			kobuki.getStGyroData(data);
 			data.header.stamp = ros::Time::now();
 			st_gyro_data_publisher.publish(data);
 			//std::cout << __func__ << std::endl;
@@ -519,7 +519,7 @@ void KobukiNodelet::publishEEPROMData()
 	if ( ros::ok() ) {
 		if ( eeprom_data_publisher.getNumSubscribers() > 0 ) {
 			kobuki_comms::EEPROM data;
-			iclebo.getEEPROMData(data);
+			kobuki.getEEPROMData(data);
 			data.header.stamp = ros::Time::now();
 			eeprom_data_publisher.publish(data);
 			//std::cout << __func__ << std::endl;
@@ -532,7 +532,7 @@ void KobukiNodelet::publishGpInputData()
 	if ( ros::ok() ) {
 		if ( gp_input_data_publisher.getNumSubscribers() > 0 ) {
 			kobuki_comms::GpInput data;
-			iclebo.getGpInputData(data);
+			kobuki.getGpInputData(data);
 			data.header.stamp = ros::Time::now();
 			gp_input_data_publisher.publish(data);
 			//std::cout << __func__ << std::endl;
