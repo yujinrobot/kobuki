@@ -18,26 +18,25 @@
 //#include <ecl/time/stopwatch.hpp>
 //#include <iomanip>
 //#include <fstream>
-#include "iclebo_ros_node/iclebo.hpp"
+#include "../../include/kobuki_node/kobuki.hpp"
 
 /*****************************************************************************
 ** Namespaces
 *****************************************************************************/
 
-namespace iclebo {
+namespace kobuki {
 
 /*****************************************************************************
 ** Using
 *****************************************************************************/
 using ecl::Converter;
-using ecl::StopWatch;
 using ecl::TimeStamp;
 
 /*****************************************************************************
 ** Implementation [iClebo]
 *****************************************************************************/
 
-void iClebo::init(Parameters &parameters) throw(ecl::StandardException) {
+void Kobuki::init(Parameters &parameters) throw(ecl::StandardException) {
 
 	pubtime("init");
 
@@ -120,7 +119,7 @@ void iClebo::init(Parameters &parameters) throw(ecl::StandardException) {
 	start();
 }
 
-void iClebo::close() 
+void Kobuki::close()
 { 
 	stop();
 	ROS_WARN_STREAM("Device: iClebo ROS Node: Terminated.");
@@ -139,7 +138,7 @@ void iClebo::close()
  * Because it resets the cruizcore kalman filter, you must make sure the gyro
  * is not moving when you do so - i.e. stop the robot!
  */
-void iClebo::reset() {
+void Kobuki::reset() {
 	//packet_handler.sendResetBlackMagic();
 	//start();
 }
@@ -158,7 +157,7 @@ void iClebo::reset() {
  * @return bool : success or failure of the scan.
  */
 
-void iClebo::runnable()
+void Kobuki::runnable()
 {
     unsigned char buf[256];
     bool get_packet;
@@ -172,8 +171,8 @@ void iClebo::runnable()
 	// get the byte(s) from the serial port
 	int n( serial.read( buf, packet_finder.numberOfDataToRead() ) );
 	
-	ROS_DEBUG_STREAM("iclebo_ros_node : serial_read(" << n << ")");
-	if( n==0 ) ROS_ERROR_STREAM("iclebo_ros_node : no serial data in.");
+	ROS_DEBUG_STREAM("kobuki_node : serial_read(" << n << ")");
+	if( n==0 ) ROS_ERROR_STREAM("kobuki_node : no serial data in.");
 
         // let packet_finder finds packet
 	if( dummy_mode )
@@ -186,7 +185,7 @@ void iClebo::runnable()
 	if( packet_finder.update( buf, n ) )
 	{
 		if( serial.remaining() > 28 ) {
-			ROS_WARN_STREAM("iclebo_ros_node : serial buffer remaining is [" << serial.remaining() <<"]" );
+			ROS_WARN_STREAM("kobuki_node : serial buffer remaining is [" << serial.remaining() <<"]" );
 			serial.clear();  //is it safe?
 		}
 		pubtime("packet_find");
@@ -256,7 +255,7 @@ void iClebo::runnable()
 			//continue;
 		}
 		//std::cout << "sig_index_size: " << sig_index.size() << std::endl;
-		//ROS_DEBUG_STREAM("iclebo_ros_node:left_encoder [" << data2.data.left_encoder << "], remaining[" << serial.remaining() << "]" );
+		//ROS_DEBUG_STREAM("kobuki_node:left_encoder [" << data2.data.left_encoder << "], remaining[" << serial.remaining() << "]" );
 
 		//if( verbose ) data.showMe();
 		//data.showMe();
@@ -305,7 +304,7 @@ void iClebo::runnable()
 }
 
 
-void iClebo::getData( iclebo_comms::iClebo &sensor_data )
+void Kobuki::getData( iclebo_comms::iClebo &sensor_data )
 {
 	sensor_data.header0 = data.header0;
 	sensor_data.time_stamp = data.time_stamp;
@@ -325,7 +324,7 @@ void iClebo::getData( iclebo_comms::iClebo &sensor_data )
 	sensor_data.over_current = data.over_current;
 }
 
-void iClebo::getData2( iclebo_comms::iClebo &sensor_data )
+void Kobuki::getData2( iclebo_comms::iClebo &sensor_data )
 {
 	if( protocol_version == "1.0" )
 		sensor_data=data2.data;
@@ -333,7 +332,7 @@ void iClebo::getData2( iclebo_comms::iClebo &sensor_data )
 		sensor_data=iclebo_default.data;
 }
 
-void iClebo::getDefaultData( iclebo_comms::iClebo &sensor_data )
+void Kobuki::getDefaultData( iclebo_comms::iClebo &sensor_data )
 {
 	if( protocol_version == "1.0" )
 		sensor_data=data2.data;
@@ -341,91 +340,91 @@ void iClebo::getDefaultData( iclebo_comms::iClebo &sensor_data )
 		sensor_data=iclebo_default.data;
 }
 
-void iClebo::getIRData( iclebo_comms::iCleboIR &data )
+void Kobuki::getIRData( iclebo_comms::iCleboIR &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
 		data=iclebo_ir.data;
 }
 
-void iClebo::getDockIRData( iclebo_comms::iCleboDockIR &data )
+void Kobuki::getDockIRData( iclebo_comms::iCleboDockIR &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
 		data=iclebo_dock_ir.data;
 }
 
-void iClebo::getInertiaData( iclebo_comms::iCleboInertia &data )
+void Kobuki::getInertiaData( iclebo_comms::iCleboInertia &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
 		data=iclebo_inertia.data;
 }
 
-void iClebo::getCliffData( iclebo_comms::iCleboCliff &data )
+void Kobuki::getCliffData( iclebo_comms::iCleboCliff &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
 		data=iclebo_cliff.data;
 }
 
-void iClebo::getCurrentData( iclebo_comms::iCleboCurrent &data )
+void Kobuki::getCurrentData( iclebo_comms::iCleboCurrent &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
 		data=iclebo_current.data;
 }
 
-void iClebo::getMagnetData( iclebo_comms::iCleboMagnet &data )
+void Kobuki::getMagnetData( iclebo_comms::iCleboMagnet &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
 		data=iclebo_magnet.data;
 }
 
-void iClebo::getHWData( iclebo_comms::iCleboHW &data )
+void Kobuki::getHWData( iclebo_comms::iCleboHW &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
 		data=iclebo_hw.data;
 }
 
-void iClebo::getFWData( iclebo_comms::iCleboFW &data )
+void Kobuki::getFWData( iclebo_comms::iCleboFW &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
 		data=iclebo_fw.data;
 }
 
-void iClebo::getTimeData( iclebo_comms::iCleboTime &data )
+void Kobuki::getTimeData( iclebo_comms::iCleboTime &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
 		data=iclebo_time.data;
 }
 
-void iClebo::getStGyroData( iclebo_comms::iCleboStGyro &data )
+void Kobuki::getStGyroData( iclebo_comms::iCleboStGyro &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
 		data=iclebo_st_gyro.data;
 }
 
-void iClebo::getEEPROMData( iclebo_comms::iCleboEEPROM &data )
+void Kobuki::getEEPROMData( iclebo_comms::iCleboEEPROM &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
 		data=iclebo_eeprom.data;
 }
 
-void iClebo::getGpInputData( iclebo_comms::iCleboGpInput &data )
+void Kobuki::getGpInputData( iclebo_comms::iCleboGpInput &data )
 {
 	if( protocol_version == "1.0" )	return;
 	if( protocol_version == "2.0" )
 		data=iclebo_gp_input.data;
 }
 
-void iClebo::getJointState( device_comms::JointState &joint_state )
+void Kobuki::getJointState( device_comms::JointState &joint_state )
 {
 	static bool init_l=false;
 	static bool init_r=false;
@@ -499,7 +498,7 @@ void iClebo::getJointState( device_comms::JointState &joint_state )
 	//double [], store last data and integrate here. 
 }
 
-void iClebo::setCommand(double vx, double wz)
+void Kobuki::setCommand(double vx, double wz)
 {
 	if( wz == 0.0f ) 					radius =  0;
 	else if( vx == 0.0f && wz > 0.0f ) 	radius =  1;
@@ -509,7 +508,7 @@ void iClebo::setCommand(double vx, double wz)
 	speed=(short)(1000.0f*std::max(vx+bias*wz/2.0f,vx-bias*wz/2.0f));
 }
 
-void iClebo::sendCommand()
+void Kobuki::sendCommand()
 {
 	//std::cout << "speed = " << speed << ", radius = " << radius << std::endl;
 	unsigned char cmd[] = {0xaa, 0x55, 5, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00 };
@@ -535,7 +534,7 @@ void iClebo::sendCommand()
 	pubtime("send_cmd");
 }
 
-void iClebo::sendCommand( const iclebo_comms::iCleboCommandConstPtr &data )
+void Kobuki::sendCommand( const iclebo_comms::iCleboCommandConstPtr &data )
 {
 	iclebo_command.data = *data;
 
@@ -569,14 +568,14 @@ void iClebo::sendCommand( const iclebo_comms::iCleboCommandConstPtr &data )
 	}
 }
 
-bool iClebo::run() 
+bool Kobuki::run()
 { 
 //	is_running = true;
     is_enabled = true;
 	return true;
 }
 
-bool iClebo::stop() 
+bool Kobuki::stop()
 { 
 	setCommand(0.0f, 0.0f);
 	sendCommand();
@@ -585,7 +584,7 @@ bool iClebo::stop()
 	return true;
 }
 
-void iClebo::pubtime(const char *str)
+void Kobuki::pubtime(const char *str)
 {
 	return;
 	//if( str != "every_tick" ) return ;
@@ -602,4 +601,4 @@ void iClebo::pubtime(const char *str)
 }
 
 
-} // namespace iclebo
+} // namespace kobuki

@@ -1,7 +1,7 @@
 <package>
-  <description brief="iclebo_ros_node">
+  <description brief="kobuki node for turtlebot">
   <p>
-     iclebo_ros_node
+     Currently a mix of kobuki driver code, tools and node wrapper.
   </p>
   </description>
   <author>Younghun Ju</author>
@@ -35,20 +35,6 @@
   <depend package="ecl_converters"/>
   <export>
     <cpp cflags="-I${prefix}/include" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib"/>
-    <nodelet plugin="${prefix}/src/nodelets/iclebo_ros_node.xml"/>
+    <nodelet plugin="${prefix}/src/nodelets/kobuki_nodelet.xml"/>
   </export>
-
-
-<!--
-  Typical options for a ycs-ros cpp style package providing headers/libs in the example below
-  <export>
-    <cpp cflags="-I${prefix}/include/share -I${prefix}/msg/cpp -I${prefix}/srv/cpp" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lgoo"/>
-  </export>
-  
-  Really common dependencies for a typical c++ ycs-ros control node:
-  <depend package="roscpp"/>        // c++ ros nodes
-  
-  Including a system package as a dependency
-  <rosdep name="boost"/>
--->
 </package>

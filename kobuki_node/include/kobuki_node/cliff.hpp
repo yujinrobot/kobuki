@@ -1,20 +1,20 @@
-#ifndef __ICLEBO_CLIFF_DATA_HPP__
-#define __ICLEBO_CLIFF_DATA_HPP__
+#ifndef KOBUKI_CLIFF_DATA_HPP__
+#define KOBUKI_CLIFF_DATA_HPP__
 
 #include <ecl/containers.hpp>
 #include <packet_handler/payload_base.hpp>
 #include <iclebo_comms/iCleboHeader.h>
 #include <iclebo_comms/iCleboCliff.h>
 
-namespace iclebo {
+namespace kobuki {
 
-class iCleboCliffData : public packet_handler::payloadBase
+class CliffData : public packet_handler::payloadBase
 {
 public:
 	// container
 	iclebo_comms::iCleboCliff data;
 	
-	iCleboCliffData() 
+	CliffData()
 	{
 		data.bottom.resize(3);
 	}
@@ -23,7 +23,7 @@ public:
 	bool serialise( ecl::PushAndPop<unsigned char> & byteStream )
 	{
 		if(!(byteStream.size()>0)) { 
-			ROS_WARN_STREAM("iclebo_ros_node: iclebo_cliff: serialise failed. empty byte stream."); 
+			ROS_WARN_STREAM("kobuki_node: iclebo_cliff: serialise failed. empty byte stream."); 
 			return false; 
 		}
 
@@ -37,7 +37,7 @@ public:
 	bool deserialise( ecl::PushAndPop<unsigned char> & byteStream )
 	{
 		if(!(byteStream.size()>0)) { 
-			ROS_WARN_STREAM("iclebo_ros_node: iclebo_cliff: deserialise failed. empty byte stream."); 
+			ROS_WARN_STREAM("kobuki_node: iclebo_cliff: deserialise failed. empty byte stream."); 
 			return false; 
 		}
 
@@ -61,6 +61,6 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
-#endif /* __ICLEBO_IR_DATA_HPP__ */
+#endif /* KOBUKI_IR_DATA_HPP__ */

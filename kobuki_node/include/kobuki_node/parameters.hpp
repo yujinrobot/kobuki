@@ -9,8 +9,8 @@
 ** Ifdefs
 *****************************************************************************/
 
-#ifndef YCS_ROBOTS_ICLEBO_PARAMETERS_HPP_
-#define YCS_ROBOTS_ICLEBO_PARAMETERS_HPP_
+#ifndef KOBUKI_PARAMETERS_HPP_
+#define KOBUKI_PARAMETERS_HPP_
 
 /*****************************************************************************
 ** Includes
@@ -24,7 +24,7 @@
 ** Namespaces
 *****************************************************************************/
 
-namespace iclebo {
+namespace kobuki {
 
 /*****************************************************************************
 ** Interface
@@ -68,6 +68,6 @@ public:
 };
 
 
-} // namespace iclebo
+} // namespace kobuki
 
 #endif /* YCS_ROBOT_ICLEBO_PARAMETERS_HPP_ */

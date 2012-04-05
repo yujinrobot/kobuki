@@ -9,8 +9,8 @@
 ** Ifdefs
 *****************************************************************************/
 
-#ifndef YCS_ROBOTS_ICLEBO_NODELET_HPP_
-#define YCS_ROBOTS_ICLEBO_NODELET_HPP_
+#ifndef KOBUKI_NODELET_HPP_
+#define KOBUKI_NODELET_HPP_
 
 /*****************************************************************************
 ** Includes
@@ -19,7 +19,6 @@
 #include <ros/ros.h>
 #include <iostream>
 #include <device_nodelet/device_nodelet.hpp>
-//#include <device_comms/Gyro.h>
 #include <geometry_msgs/Twist.h>
 #include <device_comms/JointCommand.h>
 #include <device_comms/JointState.h>
@@ -27,16 +26,13 @@
 #include <ecl/sigslots.hpp>
 #include <ecl/threads/thread.hpp>
 #include <standard_comms/StringString.h>
-//#include <iclebo_mainboard/iclebo_mainboard.hpp>
-//#include <iclebo_mainboard/iclebo_mainboard_data.hpp>
-#include "iclebo.hpp"
-//#include "cruizcore.hpp"
+#include "kobuki.hpp"
 
 /*****************************************************************************
 ** Namespaces
 *****************************************************************************/
 
-namespace iclebo {
+namespace kobuki {
 
 /*****************************************************************************
 ** Interface
@@ -53,13 +49,13 @@ namespace iclebo {
  * control loop functionality can be achieved via calling the processInputs()
  * and processOutputs() methods.
  */
-class iCleboNodelet : public device_interface::DeviceNodelet {
+class KobukiNodelet : public device_interface::DeviceNodelet {
 public:
     /*********************
     ** C&D
     **********************/
-    iCleboNodelet();
-    ~iCleboNodelet();
+    KobukiNodelet();
+    ~KobukiNodelet();
 
 private:
 	/******************************************
@@ -71,7 +67,7 @@ private:
 
     	// Don't need to override the device nodelet enable/disable topic callbacks
 
-	iClebo iclebo;
+	Kobuki iclebo;
 	
 	//iCleboMainboardDriver iclebo_receiver();
 	//iCleboMainboardData data;

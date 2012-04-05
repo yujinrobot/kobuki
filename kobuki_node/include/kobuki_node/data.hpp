@@ -1,14 +1,14 @@
-#ifndef __ICLEBO_DATA_HPP__
-#define __ICLEBO_DATA_HPP__
+#ifndef KOBUKI_DATA_HPP__
+#define KOBUKI_DATA_HPP__
 
 #include <ecl/containers.hpp>
 #include <iclebo_comms/iClebo.h>
 #include <packet_handler/payload_base.hpp>
 
-namespace iclebo {
+namespace kobuki {
 
 //1//
-class iCleboData : public packet_handler::payloadBase
+class Data : public packet_handler::payloadBase
 {
 public:
 	// group
@@ -34,7 +34,7 @@ public:
 
 	bool serialise( ecl::PushAndPop<unsigned char> & byteStream )
 	{
-		if(!(byteStream.size()>0)) { ROS_WARN_STREAM("iclebo_ros_node: iclebo_data: serialise failed. empty byte stream."); return false; }
+		if(!(byteStream.size()>0)) { ROS_WARN_STREAM("kobuki_node: iclebo_data: serialise failed. empty byte stream."); return false; }
 		buildBytes( header0, 	byteStream );
 		buildBytes( time_stamp, 	byteStream );
 		buildBytes( bump, 		byteStream );
@@ -62,7 +62,7 @@ public:
 	}
 	bool deserialise( ecl::PushAndPop<unsigned char> & byteStream )
 	{
-		if(!(byteStream.size()>0)) { ROS_WARN_STREAM("iclebo_ros_node: iclebo_data: deserialise failed. empty byte stream."); return false; }
+		if(!(byteStream.size()>0)) { ROS_WARN_STREAM("kobuki_node: iclebo_data: deserialise failed. empty byte stream."); return false; }
 		buildVariable( header0, 	byteStream );
 		buildVariable( time_stamp, 	byteStream );
 		buildVariable( bump, 		byteStream );
@@ -101,7 +101,7 @@ public:
 };
 
 //2//
-class iCleboData2 : public packet_handler::payloadBase
+class Data2 : public packet_handler::payloadBase
 {
 public:
 	// group
@@ -114,7 +114,7 @@ public:
 
 	bool serialise( ecl::PushAndPop<unsigned char> & byteStream )
 	{
-		if(!(byteStream.size()>0)) { ROS_WARN_STREAM("iclebo_ros_node: iclebo_data2: serialise failed. empty byte stream."); return false; }
+		if(!(byteStream.size()>0)) { ROS_WARN_STREAM("kobuki_node: iclebo_data2: serialise failed. empty byte stream."); return false; }
 		buildBytes( data.header0, 		byteStream );
 		buildBytes( data.time_stamp, 	byteStream );
 		buildBytes( data.bump, 			byteStream );
@@ -142,7 +142,7 @@ public:
 	}
 	bool deserialise( ecl::PushAndPop<unsigned char> & byteStream )
 	{
-		if(!(byteStream.size()>0)) { ROS_WARN_STREAM("iclebo_ros_node: iclebo_data2: deserialise failed. empty byte stream."); return false; }
+		if(!(byteStream.size()>0)) { ROS_WARN_STREAM("kobuki_node: iclebo_data2: deserialise failed. empty byte stream."); return false; }
 		buildVariable( data.header0, 		byteStream );
 		buildVariable( data.time_stamp,		byteStream );
 		buildVariable( data.bump, 			byteStream );
@@ -182,6 +182,6 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
-#endif /* __ICLEBO_DATA_HPP__ */
+#endif /* KOBUKI_DATA_HPP__ */

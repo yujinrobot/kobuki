@@ -1,14 +1,14 @@
-#ifndef __ICLEBO_ST_GYRO_DATA_HPP__
-#define __ICLEBO_ST_GYRO_DATA_HPP__
+#ifndef KOBUKI_ST_GYRO_DATA_HPP__
+#define KOBUKI_ST_GYRO_DATA_HPP__
 
 #include <ecl/containers.hpp>
 #include <packet_handler/payload_base.hpp>
 #include <iclebo_comms/iCleboHeader.h>
 #include <iclebo_comms/iCleboStGyro.h>
 
-namespace iclebo {
+namespace kobuki {
 
-class iCleboStGyroData : public packet_handler::payloadBase
+class StGyroData : public packet_handler::payloadBase
 {
 public:
 	// container
@@ -18,7 +18,7 @@ public:
 	bool serialise( ecl::PushAndPop<unsigned char> & byteStream )
 	{
 		if(!(byteStream.size()>0)) { 
-			ROS_WARN_STREAM("iclebo_ros_node: iclebo_st_gyro: serialise failed. empty byte stream."); 
+			ROS_WARN_STREAM("kobuki_node: iclebo_st_gyro: serialise failed. empty byte stream."); 
 			return false; 
 		}
 
@@ -34,7 +34,7 @@ public:
 	bool deserialise( ecl::PushAndPop<unsigned char> & byteStream )
 	{
 		if(!(byteStream.size()>0)) { 
-			ROS_WARN_STREAM("iclebo_ros_node: iclebo_st_gyro: deserialise failed. empty byte stream."); 
+			ROS_WARN_STREAM("kobuki_node: iclebo_st_gyro: deserialise failed. empty byte stream."); 
 			return false; 
 		}
 
@@ -61,7 +61,7 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
-#endif /* __ICLEBO_ST_GYRO_DATA_HPP__ */
+#endif /* KOBUKI_ST_GYRO_DATA_HPP__ */
 

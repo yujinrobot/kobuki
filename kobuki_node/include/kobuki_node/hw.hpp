@@ -1,45 +1,41 @@
-#ifndef __ICLEBO_TIME_DATA_HPP__
-#define __ICLEBO_TIME_DATA_HPP__
+#ifndef KOBUKI_HW_DATA_HPP__
+#define KOBUKI_HW_DATA_HPP__
 
 #include <ecl/containers.hpp>
 #include <packet_handler/payload_base.hpp>
 #include <iclebo_comms/iCleboHeader.h>
-#include <iclebo_comms/iCleboTime.h>
+#include <iclebo_comms/iCleboHW.h>
 
-namespace iclebo {
+namespace kobuki {
 
-class iCleboTimeData : public packet_handler::payloadBase
+class HWData : public packet_handler::payloadBase
 {
 public:
 	// container
-	iclebo_comms::iCleboTime data;
+	iclebo_comms::iCleboHW data;
 	
 	// methods
 	bool serialise( ecl::PushAndPop<unsigned char> & byteStream )
 	{
 		if(!(byteStream.size()>0)) { 
-			ROS_WARN_STREAM("iclebo_ros_node: iclebo_time: serialise failed. empty byte stream."); 
+			ROS_WARN_STREAM("kobuki_node: iclebo_hw: serialise failed. empty byte stream."); 
 			return false; 
 		}
 
 		buildBytes( data.header_id,		byteStream );
-		buildBytes( data.hh,			byteStream );
-		buildBytes( data.mm,			byteStream );
-		buildBytes( data.ss,			byteStream );
+		buildBytes( data.mainboard_version,			byteStream );
 		return true;
 	}
 
 	bool deserialise( ecl::PushAndPop<unsigned char> & byteStream )
 	{
 		if(!(byteStream.size()>0)) { 
-			ROS_WARN_STREAM("iclebo_ros_node: iclebo_time: deserialise failed. empty byte stream."); 
+			ROS_WARN_STREAM("kobuki_node: iclebo_hw: deserialise failed. empty byte stream."); 
 			return false; 
 		}
 
 		buildVariable( data.header_id, 	byteStream );
-		buildVariable( data.hh, 		byteStream );
-		buildVariable( data.mm, 		byteStream );
-		buildVariable( data.ss, 		byteStream );
+		buildVariable( data.mainboard_version, 		byteStream );
 
 		//showMe();
 		return constrain();
@@ -56,7 +52,7 @@ public:
 	}
 };
 
-} // namespace iclebo
+} // namespace kobuki
 
-#endif /* __ICLEBO_TIME_DATA_HPP__ */
+#endif /* KOBUKI_HW_DATA_HPP__ */
 
