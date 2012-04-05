@@ -18,7 +18,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include <iclebo_comms/iClebo.h>
+#include <kobuki_comms/SensorData.h>
 #include <device_comms/JointState.h>
 #include <ecl/threads.hpp>
 #include <ecl/devices.hpp>
@@ -32,7 +32,7 @@
 // [ version 1 ]
 #include "data.hpp"
 // [ version 2 ]
-#include <iclebo_comms/iCleboHeader.h>
+#include <kobuki_comms/Header.h>
 #include "default.hpp"
 #include "ir.hpp"
 #include "dock_ir.hpp"
@@ -127,26 +127,26 @@ public:
 	bool run();
 	bool stop();
 	void close();
-	void getData(iclebo_comms::iClebo&);
-	void getData2(iclebo_comms::iClebo&);
-	void getDefaultData(iclebo_comms::iClebo&);
-	void getIRData(iclebo_comms::iCleboIR&);
-	void getDockIRData(iclebo_comms::iCleboDockIR&);
-	void getInertiaData(iclebo_comms::iCleboInertia&);
-	void getCliffData(iclebo_comms::iCleboCliff&);
-	void getCurrentData(iclebo_comms::iCleboCurrent&);
-	void getMagnetData(iclebo_comms::iCleboMagnet&);
-	void getHWData(iclebo_comms::iCleboHW&);
-	void getFWData(iclebo_comms::iCleboFW&);
-	void getTimeData(iclebo_comms::iCleboTime&);
-	void getStGyroData(iclebo_comms::iCleboStGyro&);
-	void getEEPROMData(iclebo_comms::iCleboEEPROM&);
-	void getGpInputData(iclebo_comms::iCleboGpInput&);
+	void getData(kobuki_comms::SensorData&);
+	void getData2(kobuki_comms::SensorData&);
+	void getDefaultData(kobuki_comms::SensorData&);
+	void getIRData(kobuki_comms::IR&);
+	void getDockIRData(kobuki_comms::DockIR&);
+	void getInertiaData(kobuki_comms::Inertia&);
+	void getCliffData(kobuki_comms::Cliff&);
+	void getCurrentData(kobuki_comms::Current&);
+	void getMagnetData(kobuki_comms::Magnet&);
+	void getHWData(kobuki_comms::HW&);
+	void getFWData(kobuki_comms::FW&);
+	void getTimeData(kobuki_comms::Time&);
+	void getStGyroData(kobuki_comms::StGyro&);
+	void getEEPROMData(kobuki_comms::EEPROM&);
+	void getGpInputData(kobuki_comms::GpInput&);
 
 	void getJointState(device_comms::JointState&);
 	void setCommand(double, double);
 	void sendCommand();
-	void sendCommand( const iclebo_comms::iCleboCommandConstPtr &data );
+	void sendCommand( const kobuki_comms::CommandConstPtr &data );
 	void pubtime(const char *);
 
 private:

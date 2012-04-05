@@ -2,7 +2,7 @@
 #define KOBUKI_DEFAULT_DATA_HPP__
 
 #include <ecl/containers.hpp>
-#include <iclebo_comms/iClebo.h>
+#include <kobuki_comms/SensorData.h>
 #include <packet_handler/payload_base.hpp>
 
 namespace kobuki {
@@ -10,7 +10,7 @@ namespace kobuki {
 class DefaultData : public packet_handler::payloadBase
 {
 public:
-	iclebo_comms::iClebo data;
+	kobuki_comms::SensorData data;
 
 	bool serialise( ecl::PushAndPop<unsigned char> & byteStream )
 	{

@@ -2,7 +2,7 @@
 #define KOBUKI_DATA_HPP__
 
 #include <ecl/containers.hpp>
-#include <iclebo_comms/iClebo.h>
+#include <kobuki_comms/SensorData.h>
 #include <packet_handler/payload_base.hpp>
 
 namespace kobuki {
@@ -105,7 +105,7 @@ class Data2 : public packet_handler::payloadBase
 {
 public:
 	// group
-	iclebo_comms::iClebo data;
+	kobuki_comms::SensorData data;
 
 	// group 1
 	unsigned char header1;

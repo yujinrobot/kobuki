@@ -3,8 +3,8 @@
 
 #include <ecl/containers.hpp>
 #include <packet_handler/payload_base.hpp>
-#include <iclebo_comms/iCleboHeader.h>
-#include <iclebo_comms/iCleboMagnet.h>
+#include <kobuki_comms/Header.h>
+#include <kobuki_comms/Magnet.h>
 
 namespace kobuki {
 
@@ -12,7 +12,7 @@ class MagnetData : public packet_handler::payloadBase
 {
 public:
 	// container
-	iclebo_comms::iCleboMagnet data;
+	kobuki_comms::Magnet data;
 	
 	// methods
 	bool serialise( ecl::PushAndPop<unsigned char> & byteStream )

@@ -1,4 +1,4 @@
-# iClebo Header IDs
+# Kobuki Header IDs
 #
 uint8 commandBaseControl    = 1
 uint8 commandCleaningMotor  = 2

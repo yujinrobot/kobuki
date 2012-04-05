@@ -3,8 +3,8 @@
 
 #include <ecl/containers.hpp>
 #include <packet_handler/payload_base.hpp>
-#include <iclebo_comms/iCleboHeader.h>
-#include <iclebo_comms/iCleboDockIR.h>
+#include <kobuki_comms/Header.h>
+#include <kobuki_comms/DockIR.h>
 
 namespace kobuki {
 
@@ -12,7 +12,7 @@ class DockIRData : public packet_handler::payloadBase
 {
 public:
 	// container
-	iclebo_comms::iCleboDockIR data;
+	kobuki_comms::DockIR data;
 	
 	DockIRData() 
 	{

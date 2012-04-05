@@ -3,8 +3,8 @@
 
 #include <ecl/containers.hpp>
 #include <packet_handler/payload_base.hpp>
-#include <iclebo_comms/iCleboHeader.h>
-#include <iclebo_comms/iCleboHW.h>
+#include <kobuki_comms/Header.h>
+#include <kobuki_comms/HW.h>
 
 namespace kobuki {
 
@@ -12,7 +12,7 @@ class HWData : public packet_handler::payloadBase
 {
 public:
 	// container
-	iclebo_comms::iCleboHW data;
+	kobuki_comms::HW data;
 	
 	// methods
 	bool serialise( ecl::PushAndPop<unsigned char> & byteStream )

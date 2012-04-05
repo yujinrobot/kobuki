@@ -182,22 +182,22 @@ bool KobukiNodelet::init(ros::NodeHandle& nh) {
 void KobukiNodelet::advertiseTopics(ros::NodeHandle& nh) {
 	left_wheel_state_publisher  = nh.advertise<device_comms::JointState>("joint_state/left_wheel" , 100);
 	right_wheel_state_publisher = nh.advertise<device_comms::JointState>("joint_state/right_wheel", 100);
-	sensor_data_publisher 		= nh.advertise<iclebo_comms::iClebo>("sensor_data", 100);
+	sensor_data_publisher 		= nh.advertise<kobuki_comms::SensorData>("sensor_data", 100);
 
-	default_data_publisher		= nh.advertise<iclebo_comms::iClebo>("default_data", 100);	
-	ir_data_publisher			= nh.advertise<iclebo_comms::iCleboIR>("ir_data", 100);
-	dock_ir_data_publisher		= nh.advertise<iclebo_comms::iCleboDockIR>("dock_ir_data", 100);
-	inertia_data_publisher		= nh.advertise<iclebo_comms::iCleboInertia>("inertia_data", 100);
-	cliff_data_publisher		= nh.advertise<iclebo_comms::iCleboCliff>("cliff_data", 100);
-	current_data_publisher		= nh.advertise<iclebo_comms::iCleboCurrent>("current_data", 100);
-	magnet_data_publisher	 	= nh.advertise<iclebo_comms::iCleboMagnet>("merge_data", 100);
-	hw_data_publisher			= nh.advertise<iclebo_comms::iCleboHW>("hw_data", 100);
-	fw_data_publisher			= nh.advertise<iclebo_comms::iCleboFW>("fw_data", 100);
-	time_data_publisher		  	= nh.advertise<iclebo_comms::iCleboTime>("time_data", 100);
-	st_gyro_data_publisher		= nh.advertise<iclebo_comms::iCleboStGyro>("st_gyro_data", 100);
-	eeprom_data_publisher		= nh.advertise<iclebo_comms::iCleboEEPROM>("eeprom_data", 100);
-	gp_input_data_publisher		= nh.advertise<iclebo_comms::iCleboGpInput>("gp_input_data", 100);
-	//reserved0_data_publish	= nh.advertise<iclebo_comms::iClebo>("default_data", 100);er 
+	default_data_publisher		= nh.advertise<kobuki_comms::SensorData>("default_data", 100);	
+	ir_data_publisher			= nh.advertise<kobuki_comms::IR>("ir_data", 100);
+	dock_ir_data_publisher		= nh.advertise<kobuki_comms::DockIR>("dock_ir_data", 100);
+	inertia_data_publisher		= nh.advertise<kobuki_comms::Inertia>("inertia_data", 100);
+	cliff_data_publisher		= nh.advertise<kobuki_comms::Cliff>("cliff_data", 100);
+	current_data_publisher		= nh.advertise<kobuki_comms::Current>("current_data", 100);
+	magnet_data_publisher	 	= nh.advertise<kobuki_comms::Magnet>("merge_data", 100);
+	hw_data_publisher			= nh.advertise<kobuki_comms::HW>("hw_data", 100);
+	fw_data_publisher			= nh.advertise<kobuki_comms::FW>("fw_data", 100);
+	time_data_publisher		  	= nh.advertise<kobuki_comms::Time>("time_data", 100);
+	st_gyro_data_publisher		= nh.advertise<kobuki_comms::StGyro>("st_gyro_data", 100);
+	eeprom_data_publisher		= nh.advertise<kobuki_comms::EEPROM>("eeprom_data", 100);
+	gp_input_data_publisher		= nh.advertise<kobuki_comms::GpInput>("gp_input_data", 100);
+	//reserved0_data_publish	= nh.advertise<kobuki_comms::SensorData>("default_data", 100);er 
 
 	//invalid_packet_publisher = nh.advertise<std_msgs::String>("invalid_packets", 100);
 	//gyro_data_publisher = nh.advertise<device_comms::Gyro>("gyro_data", 100);
@@ -278,7 +278,7 @@ void KobukiNodelet::publishSensorData() {
 
 	if ( ros::ok() ) {
 		if ( sensor_data_publisher.getNumSubscribers() > 0 ) {
-			iclebo_comms::iClebo data;
+			kobuki_comms::SensorData data;
 			iclebo.getData2(data);
 			data.header.stamp = ros::Time::now();
 			sensor_data_publisher.publish(data);
@@ -314,7 +314,7 @@ void KobukiNodelet::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr 
 	return;
 }
 
-void KobukiNodelet::subscribeiCleboCommand(const iclebo_comms::iCleboCommandConstPtr &msg)
+void KobukiNodelet::subscribeiCleboCommand(const kobuki_comms::CommandConstPtr &msg)
 {
     //if( iclebo.isEnabled() ) {
 		iclebo.sendCommand( msg );
@@ -375,7 +375,7 @@ void KobukiNodelet::publishDefaultData()
 {
 	if ( ros::ok() ) {
 		if ( default_data_publisher.getNumSubscribers() > 0 ) {
-			iclebo_comms::iClebo data;
+			kobuki_comms::SensorData data;
 			iclebo.getDefaultData(data);
 			data.header.stamp = ros::Time::now();
 			default_data_publisher.publish(data);
@@ -388,7 +388,7 @@ void KobukiNodelet::publishIRData()
 {
 	if ( ros::ok() ) {
 		if ( ir_data_publisher.getNumSubscribers() > 0 ) {
-			iclebo_comms::iCleboIR data;
+			kobuki_comms::IR data;
 			iclebo.getIRData(data);
 			data.header.stamp = ros::Time::now();
 			ir_data_publisher.publish(data);
@@ -401,7 +401,7 @@ void KobukiNodelet::publishDockIRData()
 {
 	if ( ros::ok() ) {
 		if ( default_data_publisher.getNumSubscribers() > 0 ) {
-			iclebo_comms::iClebo data;
+			kobuki_comms::SensorData data;
 			iclebo.getDefaultData(data);
 			data.header.stamp = ros::Time::now();
 			default_data_publisher.publish(data);
@@ -414,7 +414,7 @@ void KobukiNodelet::publishInertiaData()
 {
 	if ( ros::ok() ) {
 		if ( inertia_data_publisher.getNumSubscribers() > 0 ) {
-			iclebo_comms::iCleboInertia data;
+			kobuki_comms::Inertia data;
 			iclebo.getInertiaData(data);
 			data.header.stamp = ros::Time::now();
 			inertia_data_publisher.publish(data);
@@ -427,7 +427,7 @@ void KobukiNodelet::publishCliffData()
 {
 	if ( ros::ok() ) {
 		if ( cliff_data_publisher.getNumSubscribers() > 0 ) {
-			iclebo_comms::iCleboCliff data;
+			kobuki_comms::Cliff data;
 			iclebo.getCliffData(data);
 			data.header.stamp = ros::Time::now();
 			cliff_data_publisher.publish(data);
@@ -440,7 +440,7 @@ void KobukiNodelet::publishCurrentData()
 {
 	if ( ros::ok() ) {
 		if ( current_data_publisher.getNumSubscribers() > 0 ) {
-			iclebo_comms::iCleboCurrent data;
+			kobuki_comms::Current data;
 			iclebo.getCurrentData(data);
 			data.header.stamp = ros::Time::now();
 			current_data_publisher.publish(data);
@@ -453,7 +453,7 @@ void KobukiNodelet::publishMagnetData()
 {
 	if ( ros::ok() ) {
 		if ( magnet_data_publisher.getNumSubscribers() > 0 ) {
-			iclebo_comms::iCleboMagnet data;
+			kobuki_comms::Magnet data;
 			iclebo.getMagnetData(data);
 			data.header.stamp = ros::Time::now();
 			magnet_data_publisher.publish(data);
@@ -466,7 +466,7 @@ void KobukiNodelet::publishHWData()
 {
 	if ( ros::ok() ) {
 		if ( hw_data_publisher.getNumSubscribers() > 0 ) {
-			iclebo_comms::iCleboHW data;
+			kobuki_comms::HW data;
 			iclebo.getHWData(data);
 			data.header.stamp = ros::Time::now();
 			hw_data_publisher.publish(data);
@@ -479,7 +479,7 @@ void KobukiNodelet::publishFWData()
 {
 	if ( ros::ok() ) {
 		if ( fw_data_publisher.getNumSubscribers() > 0 ) {
-			iclebo_comms::iCleboFW data;
+			kobuki_comms::FW data;
 			iclebo.getFWData(data);
 			data.header.stamp = ros::Time::now();
 			fw_data_publisher.publish(data);
@@ -492,7 +492,7 @@ void KobukiNodelet::publishTimeData()
 {
 	if ( ros::ok() ) {
 		if ( time_data_publisher.getNumSubscribers() > 0 ) {
-			iclebo_comms::iCleboTime data;
+			kobuki_comms::Time data;
 			iclebo.getTimeData(data);
 			data.header.stamp = ros::Time::now();
 			time_data_publisher.publish(data);
@@ -505,7 +505,7 @@ void KobukiNodelet::publishStGyroData()
 {
 	if ( ros::ok() ) {
 		if ( st_gyro_data_publisher.getNumSubscribers() > 0 ) {
-			iclebo_comms::iCleboStGyro data;
+			kobuki_comms::StGyro data;
 			iclebo.getStGyroData(data);
 			data.header.stamp = ros::Time::now();
 			st_gyro_data_publisher.publish(data);
@@ -518,7 +518,7 @@ void KobukiNodelet::publishEEPROMData()
 {
 	if ( ros::ok() ) {
 		if ( eeprom_data_publisher.getNumSubscribers() > 0 ) {
-			iclebo_comms::iCleboEEPROM data;
+			kobuki_comms::EEPROM data;
 			iclebo.getEEPROMData(data);
 			data.header.stamp = ros::Time::now();
 			eeprom_data_publisher.publish(data);
@@ -531,7 +531,7 @@ void KobukiNodelet::publishGpInputData()
 {
 	if ( ros::ok() ) {
 		if ( gp_input_data_publisher.getNumSubscribers() > 0 ) {
-			iclebo_comms::iCleboGpInput data;
+			kobuki_comms::GpInput data;
 			iclebo.getGpInputData(data);
 			data.header.stamp = ros::Time::now();
 			gp_input_data_publisher.publish(data);

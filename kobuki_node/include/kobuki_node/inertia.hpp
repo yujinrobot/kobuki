@@ -3,8 +3,8 @@
 
 #include <ecl/containers.hpp>
 #include <packet_handler/payload_base.hpp>
-#include <iclebo_comms/iCleboHeader.h>
-#include <iclebo_comms/iCleboInertia.h>
+#include <kobuki_comms/Header.h>
+#include <kobuki_comms/Inertia.h>
 
 namespace kobuki {
 
@@ -12,7 +12,7 @@ class InertiaData : public packet_handler::payloadBase
 {
 public:
 	// container
-	iclebo_comms::iCleboInertia data;
+	kobuki_comms::Inertia data;
 	
 	InertiaData() 
 	{

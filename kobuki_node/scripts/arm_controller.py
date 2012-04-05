@@ -2,7 +2,7 @@
 import roslib; roslib.load_manifest('iclebo_ros_node')
 import rospy
 
-from iclebo_comms.msg import iClebo
+from kobuki_comms.msg import iClebo
 from standard_comms.msg import Float32ArrayStamped
 from std_msgs.msg import Float64
 from std_msgs.msg import UInt8

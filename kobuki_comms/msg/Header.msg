@@ -1,4 +1,4 @@
-# iClebo Header IDs
+# Kobuki Header IDs
 #
 
 uint8 header_default  = 1

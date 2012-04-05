@@ -22,7 +22,7 @@
 #include <geometry_msgs/Twist.h>
 #include <device_comms/JointCommand.h>
 #include <device_comms/JointState.h>
-#include <iclebo_comms/iClebo.h>
+#include <kobuki_comms/SensorData.h>
 #include <ecl/sigslots.hpp>
 #include <ecl/threads/thread.hpp>
 #include <standard_comms/StringString.h>
@@ -141,7 +141,7 @@ private:
 	void subscribeJointCommandLeft(const device_comms::JointCommand);
 	void subscribeJointCommandRight(const device_comms::JointCommand);
 	void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr&);
-	void subscribeiCleboCommand(const iclebo_comms::iCleboCommandConstPtr&);
+	void subscribeiCleboCommand(const kobuki_comms::CommandConstPtr&);
 
 	void enable() 
 	{ 

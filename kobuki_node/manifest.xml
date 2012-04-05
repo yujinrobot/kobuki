@@ -18,7 +18,7 @@
   <depend package="device_nodelet"/>
   <depend package="ftdi"/>
   <depend package="device_comms"/>
-  <depend package="iclebo_comms"/>
+  <depend package="kobuki_comms"/>
   <depend package="standard_comms"/>
   <depend package="packet_handler"/>  <!-- ycs_devices/comms/packet_handler -->
   <depend package="diff_drive_base"/>

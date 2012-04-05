@@ -3,8 +3,8 @@
 
 #include <ecl/containers.hpp>
 #include <packet_handler/payload_base.hpp>
-#include <iclebo_comms/iCleboHeader.h>
-#include <iclebo_comms/iCleboCurrent.h>
+#include <kobuki_comms/Header.h>
+#include <kobuki_comms/Current.h>
 
 namespace kobuki {
 
@@ -12,7 +12,7 @@ class CurrentData : public packet_handler::payloadBase
 {
 public:
 	// container
-	iclebo_comms::iCleboCurrent data;
+	kobuki_comms::Current data;
 	
 	CurrentData() 
 	{
