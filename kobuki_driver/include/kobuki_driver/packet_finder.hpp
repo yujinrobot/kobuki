@@ -22,7 +22,6 @@
  *****************************************************************************/
 
 #include <ecl/containers.hpp>
-#include <iostream>
 
 /*****************************************************************************
  ** Namespaces
@@ -140,7 +139,7 @@ public:
     buffer = BufferType(size_stx + size_length_field + size_max_payload + size_checksum_field + size_etx);
     state = waitingForStx;
 
-    std::cout << "install checksum operator " << std::endl;
+    // std::cout << "install checksum operator " << std::endl;
 
     //todo; exception
     // Problem1: size_length_field = 1, vairable_size_payload = false
