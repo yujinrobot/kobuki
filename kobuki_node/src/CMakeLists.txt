@@ -10,7 +10,6 @@
 # Files
 ##############################################################################
 
-#file(GLOB SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 add_subdirectory(driver)
 add_subdirectory(nodelets)
 add_subdirectory(test)

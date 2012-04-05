@@ -9,8 +9,8 @@
 ** Ifdefs
 *****************************************************************************/
 
-#ifndef YCS_ROBOTS_ICLEBO_HPP_
-#define YCS_ROBOTS_ICLEBO_HPP_
+#ifndef KOBUKI_HPP_
+#define KOBUKI_HPP_
 
 /*****************************************************************************
 ** Includes
@@ -30,24 +30,23 @@
 #include "parameters.hpp"
 
 // [ version 1 ]
-#include "iclebo_data.hpp"
+#include "data.hpp"
 // [ version 2 ]
 #include <iclebo_comms/iCleboHeader.h>
-#include "iclebo_default.hpp"
-#include "iclebo_ir.hpp"
-#include "iclebo_dock_ir.hpp"
-#include "iclebo_inertia.hpp"
-#include "iclebo_cliff.hpp"
-#include "iclebo_current.hpp"
-#include "iclebo_magnet.hpp"
-#include "iclebo_time.hpp"
-#include "iclebo_hw.hpp"
-#include "iclebo_fw.hpp"
-#include "iclebo_st_gyro.hpp"
-#include "iclebo_eeprom.hpp"
-#include "iclebo_gp_input.hpp"
-
-#include "iclebo_command.hpp"
+#include "default.hpp"
+#include "ir.hpp"
+#include "dock_ir.hpp"
+#include "inertia.hpp"
+#include "cliff.hpp"
+#include "current.hpp"
+#include "magnet.hpp"
+#include "time.hpp"
+#include "hw.hpp"
+#include "fw.hpp"
+#include "st_gyro.hpp"
+#include "eeprom.hpp"
+#include "gp_input.hpp"
+#include "command.hpp"
 
 
 /*****************************************************************************
@@ -227,4 +226,4 @@ private:
 } // namespace cruizcore
 
 
-#endif /* YCS_ROBOTS_ICLEBO_HPP_ */
+#endif /* KOBUKI_HPP_ */

@@ -8,4 +8,4 @@ file(GLOB SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 # LIBRARIES
 ##############################################################################
 
-rosbuild_add_library(iclebo ${SOURCES})
+rosbuild_add_library(kobuki ${SOURCES})

@@ -18,7 +18,7 @@
 //#include <ecl/time/stopwatch.hpp>
 //#include <iomanip>
 //#include <fstream>
-#include "iclebo_ros_node/iclebo.hpp"
+#include "../../include/kobuki_node/kobuki.hpp"
 
 /*****************************************************************************
 ** Namespaces
@@ -30,7 +30,6 @@ namespace iclebo {
 ** Using
 *****************************************************************************/
 using ecl::Converter;
-using ecl::StopWatch;
 using ecl::TimeStamp;
 
 /*****************************************************************************
@@ -172,8 +171,8 @@ void iClebo::runnable()
 	// get the byte(s) from the serial port
 	int n( serial.read( buf, packet_finder.numberOfDataToRead() ) );
 	
-	ROS_DEBUG_STREAM("iclebo_ros_node : serial_read(" << n << ")");
-	if( n==0 ) ROS_ERROR_STREAM("iclebo_ros_node : no serial data in.");
+	ROS_DEBUG_STREAM("kobuki_node : serial_read(" << n << ")");
+	if( n==0 ) ROS_ERROR_STREAM("kobuki_node : no serial data in.");
 
         // let packet_finder finds packet
 	if( dummy_mode )
@@ -186,7 +185,7 @@ void iClebo::runnable()
 	if( packet_finder.update( buf, n ) )
 	{
 		if( serial.remaining() > 28 ) {
-			ROS_WARN_STREAM("iclebo_ros_node : serial buffer remaining is [" << serial.remaining() <<"]" );
+			ROS_WARN_STREAM("kobuki_node : serial buffer remaining is [" << serial.remaining() <<"]" );
 			serial.clear();  //is it safe?
 		}
 		pubtime("packet_find");
@@ -256,7 +255,7 @@ void iClebo::runnable()
 			//continue;
 		}
 		//std::cout << "sig_index_size: " << sig_index.size() << std::endl;
-		//ROS_DEBUG_STREAM("iclebo_ros_node:left_encoder [" << data2.data.left_encoder << "], remaining[" << serial.remaining() << "]" );
+		//ROS_DEBUG_STREAM("kobuki_node:left_encoder [" << data2.data.left_encoder << "], remaining[" << serial.remaining() << "]" );
 
 		//if( verbose ) data.showMe();
 		//data.showMe();

@@ -1,5 +1,5 @@
 <library path="lib/libiclebo_nodelets">
-  <class name="iclebo_ros_node/iCleboNodelet" type="iclebo::iCleboNodelet" base_class_type="nodelet::Nodelet">
+  <class name="kobuki_node/iCleboNodelet" type="iclebo::iCleboNodelet" base_class_type="nodelet::Nodelet">
   <description>
     This is a nodelet of ycs type DeviceNodelet.
   </description>

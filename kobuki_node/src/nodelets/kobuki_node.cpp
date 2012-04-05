@@ -12,7 +12,7 @@
 
 #include <pluginlib/class_list_macros.h>
 #include <ecl/streams/string_stream.hpp>
-#include "iclebo_ros_node/iclebo_ros_node.hpp"
+#include "kobuki_node/kobuki_node.hpp"
 
 /*****************************************************************************
 ** Namespaces
@@ -548,5 +548,5 @@ void iCleboNodelet::publishGpInputData()
 ** Nodelet Plugin Registration
 *****************************************************************************/
 
-PLUGINLIB_DECLARE_CLASS(iclebo_ros_node, iCleboNodelet, iclebo::iCleboNodelet, nodelet::Nodelet);
+PLUGINLIB_DECLARE_CLASS(kobuki_node, iCleboNodelet, iclebo::iCleboNodelet, nodelet::Nodelet);
 

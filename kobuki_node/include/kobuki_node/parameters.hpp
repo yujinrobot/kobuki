@@ -9,8 +9,8 @@
 ** Ifdefs
 *****************************************************************************/
 
-#ifndef YCS_ROBOTS_ICLEBO_PARAMETERS_HPP_
-#define YCS_ROBOTS_ICLEBO_PARAMETERS_HPP_
+#ifndef KOBUKI_PARAMETERS_HPP_
+#define KOBUKI_PARAMETERS_HPP_
 
 /*****************************************************************************
 ** Includes
