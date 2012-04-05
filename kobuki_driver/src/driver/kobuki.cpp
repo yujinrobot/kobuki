@@ -43,7 +43,6 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   {
     throw ecl::StandardException(LOC, ecl::ConfigurationError, "Kobuki's parameter settings did not validate.");
   }
-  device_id = parameters.device_id;
   //gyro_data.header.frame_id = "mobile_base_gyro";
   protocol_version = parameters.protocol_version;
 
@@ -88,22 +87,6 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   /******************************************
    ** Configuration & Connection Test
    *******************************************/
-#if 0
-  PacketHandler::DeviceType device_type;
-  if ( parameters.device_name == "serial" )
-  {
-    device_type = PacketHandler::Serial;
-  }
-  else
-  {
-    device_type = PacketHandler::Ftdi;
-  }
-  if ( !packet_handler.init(parameters.device_id, parameters.sigslots_namespace, device_type) )
-  {
-    throw ecl::StandardException(LOC,ecl::OpenError);
-  }
-  reset();
-#endif
 
   last_tick_left = 0;
   last_tick_right = 0;
@@ -126,24 +109,6 @@ void Kobuki::close()
   stop();
   ROS_WARN_STREAM("Device: Kobuki ROS Node: Terminated.");
   return;
-}
-
-/**
- * @brief We got some black magic from the cruizcore guys!
- *
- * This is the secret string you can send for gyro angle reset, there are some
- * pros, cons and addendums though. What it does:
- *
- * - Resets angle and angle rates.
- * - Resets the cruizcore (internal) kalman filter.
- *
- * Because it resets the cruizcore kalman filter, you must make sure the gyro
- * is not moving when you do so - i.e. stop the robot!
- */
-void Kobuki::reset()
-{
-  //packet_handler.sendResetBlackMagic();
-  //start();
 }
 
 /**

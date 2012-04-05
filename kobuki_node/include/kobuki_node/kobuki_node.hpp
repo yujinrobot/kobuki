@@ -144,7 +144,6 @@ private:
 	void enable() 
 	{ 
 		kobuki.run();
-		kobuki.reset();
 		ROS_INFO_STREAM( "kobuki enabled." ); 
 	};
 

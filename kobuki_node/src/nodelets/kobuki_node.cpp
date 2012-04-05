@@ -112,19 +112,9 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
   Parameters parameters;
   //gyro_data->header.frame_id = ""; // unused - add a parameter should we need it later.
   parameters.sigslots_namespace = name; // name is automatically picked up by device_nodelet parent.
-  if (!nh.getParam("device_id", parameters.device_id))
-  {
-    ROS_ERROR_STREAM("Kobuki : no device id configuration on the parameter server [" << name << "].");
-    return false;
-  }
-  if (!nh.getParam("device_name", parameters.device_name))
-  {
-    ROS_ERROR_STREAM("Kobuki : no device name given on the parameter server ('serial'||'ftdi')[" << name << "].");
-    return false;
-  }
   if (!nh.getParam("device_port", parameters.device_port))
   {
-    ROS_ERROR_STREAM("Kobuki : no device name given on the parameter server ('serial'||'ftdi')[" << name << "].");
+    ROS_ERROR_STREAM("Kobuki : no device port given on the parameter server (e.g. /dev/ttyUSB0)[" << name << "].");
     return false;
   }
   if (!nh.getParam("protocol_version", parameters.protocol_version))
@@ -145,9 +135,6 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
   }
   else
   {
-    ROS_INFO_STREAM(
-        "Kobuki : parameters configured [" << parameters.device_name << "][" << parameters.device_id << "][" << name
-            << "]");
     ROS_INFO_STREAM("Kobuki : parameter.device_port [" << parameters.device_port << "]");
     ROS_INFO_STREAM("Kobuki : parameter.protocol_version [" << parameters.protocol_version << "]");
   }
@@ -165,16 +152,12 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
     {
       case (ecl::OpenError):
       {
-        ROS_ERROR_STREAM("Kobuki : could not open connection [" << parameters.device_name << "][" << parameters.device_id << "][" << name << "].");
+        ROS_ERROR_STREAM("Kobuki : could not open connection [" << parameters.device_port << "][" << name << "].");
         break;
       }
       case (ecl::NotFoundError):
       {
-        if ( parameters.device_name == "serial" ) {
-          ROS_ERROR_STREAM("Kobuki : could not find the device [" << parameters.device_port << "][" << name << "].");
-        } else {
-          ROS_ERROR_STREAM("Kobuki : could not find the device [" << parameters.device_id << "][" << name << "].");
-        }
+        ROS_ERROR_STREAM("Kobuki : could not find the device [" << parameters.device_port << "][" << name << "].");
         break;
       }
       default:

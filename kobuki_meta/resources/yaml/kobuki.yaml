@@ -1,8 +1,5 @@
 # 
 
 protocol_version: '2.0'
-
-device_name: serial
-device_id:   kobuki
-#device_port: /dev/ttyUSB0
-device_port: /dev/tty_kobuki
+device_port: /dev/ttyUSB0
+#device_port: /dev/tty_kobuki

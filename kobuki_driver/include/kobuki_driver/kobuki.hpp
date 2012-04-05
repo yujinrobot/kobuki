@@ -139,7 +139,6 @@ public:
   {
     return is_enabled;
   }
-  void reset();
   //const device_comms::ns::Gyro& data() const { return gyro_data; }
   bool run();
   bool stop();
@@ -183,7 +182,6 @@ private:
   short speed;
   double bias; //wheelbase, wheel_to_wheel, in [m]
 
-  std::string device_id;
   std::string device_type;
   std::string protocol_version;
   bool is_connected; // True if there's a serial/usb connection open.
