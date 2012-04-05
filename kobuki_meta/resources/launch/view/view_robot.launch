@@ -1,0 +1,10 @@
+<!--
+  Used for visualising the kobuki in action.  
+  
+  Note the robot description should already be published and kobuki node should be publishing
+  joint states.
+  
+ -->
+<launch>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kobuki_meta)/resources/rviz/kobuki.vcg" />
+</launch>

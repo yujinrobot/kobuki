@@ -96,11 +96,7 @@ protected:
   bool verbose;
 
 public:
-  PacketFinderBase();
-  PacketFinderBase(const unsigned char putOneByteStx, const unsigned char putOneByteEtx, unsigned int sizeLengthField,
-               unsigned int sizeMaxPayload, unsigned int sizeChecksumField, bool variableSizePayload);
-  PacketFinderBase(const BufferType & putStx, const BufferType & putEtx, unsigned int sizeLengthField,
-               unsigned int sizeMaxPayload, unsigned int sizeChecksumField, bool variableSizePayload);
+  PacketFinderBase(); /**< Default constructor. Use with configure(). **/
 
   virtual ~PacketFinderBase() {};
 

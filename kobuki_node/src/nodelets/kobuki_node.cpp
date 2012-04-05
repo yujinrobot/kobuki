@@ -36,21 +36,24 @@ using ecl::StandardException;
  * Make sure you call the init() method to fully define this node.
  */
 KobukiNodelet::KobukiNodelet() :
-    //gyro_data(new device_comms::Gyro),
-    slot_wheel_state(&KobukiNodelet::publishWheelState, *this), slot_sensor_data(&KobukiNodelet::publishSensorData,
-                                                                                 *this), slot_default(
-        &KobukiNodelet::publishDefaultData, *this), slot_ir(&KobukiNodelet::publishIRData, *this), slot_dock_ir(
-        &KobukiNodelet::publishDockIRData, *this), slot_inertia(&KobukiNodelet::publishInertiaData, *this), slot_cliff(
-        &KobukiNodelet::publishCliffData, *this), slot_current(&KobukiNodelet::publishCurrentData, *this), slot_magnet(
-        &KobukiNodelet::publishMagnetData, *this), slot_hw(&KobukiNodelet::publishHWData, *this), slot_fw(
-        &KobukiNodelet::publishFWData, *this), slot_time(&KobukiNodelet::publishTimeData, *this), slot_st_gyro(
-        &KobukiNodelet::publishStGyroData, *this), slot_eeprom(&KobukiNodelet::publishEEPROMData, *this), slot_gp_input(
-        &KobukiNodelet::publishGpInputData, *this)/*,
- slot_reserved0(&KobukiNodelet::publishGpInputData,*this),*/
-/*
- slot_invalid_packet(&CruizCoreNodelet::publishInvalidPacket,*this)*/
-//one slot for joint state of both wheels, two publisher for diff_drive_base
+    wheel_left_name("wheel_left"),
+    wheel_right_name("wheel_right"),
+    slot_wheel_state(&KobukiNodelet::publishWheelState, *this), slot_sensor_data(&KobukiNodelet::publishSensorData,*this),
+    slot_default(&KobukiNodelet::publishDefaultData, *this), slot_ir(&KobukiNodelet::publishIRData, *this),
+    slot_dock_ir(&KobukiNodelet::publishDockIRData, *this), slot_inertia(&KobukiNodelet::publishInertiaData, *this),
+    slot_cliff(&KobukiNodelet::publishCliffData, *this), slot_current(&KobukiNodelet::publishCurrentData, *this),
+    slot_magnet(&KobukiNodelet::publishMagnetData, *this), slot_hw(&KobukiNodelet::publishHWData, *this),
+    slot_fw(&KobukiNodelet::publishFWData, *this), slot_time(&KobukiNodelet::publishTimeData, *this),
+    slot_st_gyro(&KobukiNodelet::publishStGyroData, *this), slot_eeprom(&KobukiNodelet::publishEEPROMData, *this),
+    slot_gp_input(&KobukiNodelet::publishGpInputData, *this)
 {
+  joint_states.name.push_back("left_wheel_joint");
+  joint_states.name.push_back("right_wheel_joint");
+  joint_states.name.push_back("front_wheel_joint"); // front_castor_joint in create tbot
+  joint_states.name.push_back("rear_wheel_joint");  // back_castor_joint in create tbot
+  joint_states.position.resize(4,0.0);
+  joint_states.velocity.resize(4,0.0);
+  joint_states.effort.resize(4,0.0);
 }
 /**
  :* @brief Destructs, but only after the thread has cleanly terminated.
@@ -104,7 +107,6 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
   slot_st_gyro.connect(name + std::string("/st_gyro"));
   slot_eeprom.connect(name + std::string("/eeprom"));
   slot_gp_input.connect(name + std::string("/gp_input"));
-  //slot_reserved0;
 
   /*********************
    ** Parameters
@@ -173,20 +175,22 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
 }
 
 /**
- * @brief Sets up the cruizcore nodelet publications.
- *
- * These are put relative (on top) of the current handle's namespace,
- * e.g. cruizcore -> cruizcore/raw_data_sent
- *
- * Note, for a mobile base model to pick up gyro information, the topic name
- * *must* be 'mobile_base_gyro'.
- *
- * @param nh : the nodehandle derived from the parent nodelet.
+ * Two groups of publishers, one required by turtlebot, the other for
+ * kobuki esoterics.
  */
 void KobukiNodelet::advertiseTopics(ros::NodeHandle& nh)
 {
-  wheel_left_state_publisher = nh.advertise < device_comms::JointState > ("joint_state/wheel_left", 100);
-  wheel_right_state_publisher = nh.advertise < device_comms::JointState > ("joint_state/wheel_right", 100);
+  /*********************
+  ** Turtlebot Required
+  **********************/
+  joint_state_publisher = nh.advertise <sensor_msgs::JointState>("joint_states",100);
+
+  /*********************
+  ** Kobuki Esoterics
+  **********************/
+
+  wheel_left_state_publisher = nh.advertise < device_comms::JointState > (std::string("joint_state/") + wheel_left_name, 100);
+  wheel_right_state_publisher = nh.advertise < device_comms::JointState > (std::string("joint_state/") + wheel_right_name, 100);
   sensor_data_publisher = nh.advertise < kobuki_comms::SensorData > ("sensor_data", 100);
 
   default_data_publisher = nh.advertise < kobuki_comms::SensorData > ("default_data", 100);
@@ -202,24 +206,14 @@ void KobukiNodelet::advertiseTopics(ros::NodeHandle& nh)
   st_gyro_data_publisher = nh.advertise < kobuki_comms::StGyro > ("st_gyro_data", 100);
   eeprom_data_publisher = nh.advertise < kobuki_comms::EEPROM > ("eeprom_data", 100);
   gp_input_data_publisher = nh.advertise < kobuki_comms::GpInput > ("gp_input_data", 100);
-  //reserved0_data_publish	= nh.advertise<kobuki_comms::SensorData>("default_data", 100);er
-
-  //invalid_packet_publisher = nh.advertise<std_msgs::String>("invalid_packets", 100);
-  //gyro_data_publisher = nh.advertise<device_comms::Gyro>("gyro_data", 100);
 }
 
 /**
- * @brief Subscribes to topics relevant for cruizcore.
- *
- * These are found relative (on top) of the current handle's namespace,
- *
- * @param nh : the nodehandle derived from the parent nodelet.
+ * Two groups of subscribers, one required by turtlebot, the other for
+ * kobuki esoterics.
  */
 void KobukiNodelet::subscribeTopics(ros::NodeHandle& nh)
 {
-  std::string wheel_left_name = "wheel_left";
-  std::string wheel_right_name = "wheel_right";
-
   wheel_left_command_subscriber = nh.subscribe(std::string("joint_command/") + wheel_left_name, 10,
                                                &KobukiNodelet::subscribeJointCommandLeft, this);
   wheel_right_command_subscriber = nh.subscribe(std::string("joint_command/") + wheel_right_name, 10,
@@ -251,26 +245,31 @@ void KobukiNodelet::publishWheelState()
   //waitForInitialisation();
   if (ros::ok() && !shutdown_requested)
   {
-    if (wheel_left_state_publisher.getNumSubscribers() > 0)
-    {
-      kobuki.pubtime("  wheel_left:ent");
-      device_comms::JointState joint_state;
-      joint_state.name = "wheel_left";
-      joint_state.stamp = ros::Time::now();
-      kobuki.getJointState(joint_state);
-      wheel_left_state_publisher.publish(joint_state);
-      kobuki.pubtime("  wheel_left:pub");
-    }
-    if (wheel_right_state_publisher.getNumSubscribers() > 0)
-    {
-      kobuki.pubtime("  wheel_right:ent");
-      device_comms::JointState joint_state;
-      joint_state.name = "wheel_right";
-      joint_state.stamp = ros::Time::now();
-      kobuki.getJointState(joint_state);
-      wheel_right_state_publisher.publish(joint_state);
-      kobuki.pubtime("  wheel_right:pub");
-    }
+//    if (wheel_left_state_publisher.getNumSubscribers() > 0)
+//    {
+//      kobuki.pubtime("  wheel_left:ent");
+//      device_comms::JointState joint_state;
+//      joint_state.name = "wheel_left";
+//      joint_state.stamp = ros::Time::now();
+//      kobuki.getJointState(joint_state);
+//      wheel_left_state_publisher.publish(joint_state);
+//      kobuki.pubtime("  wheel_left:pub");
+//    }
+//    if (wheel_right_state_publisher.getNumSubscribers() > 0)
+//    {
+//      kobuki.pubtime("  wheel_right:ent");
+//      device_comms::JointState joint_state;
+//      joint_state.name = "wheel_right";
+//      joint_state.stamp = ros::Time::now();
+//      kobuki.getJointState(joint_state);
+//      wheel_right_state_publisher.publish(joint_state);
+//      kobuki.pubtime("  wheel_right:pub");
+//    }
+
+    kobuki.updateOdometry(joint_states.position[0],joint_states.velocity[0],
+                          joint_states.position[1],joint_states.velocity[1]);
+    joint_states.header.stamp = ros::Time::now();
+    joint_state_publisher.publish(joint_states);
   }
   //ROS_INFO_STREAM("Kobuki : thread terminating [" << name << "]");
 }

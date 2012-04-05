@@ -1,0 +1,62 @@
+Background\ ColorR=0
+Background\ ColorG=0
+Background\ ColorB=0
+Fixed\ Frame=/base_link
+Target\ Frame=/base_link
+Axes.Enabled=1
+Axes.Length=0.1
+Axes.Radius=0.01
+Axes.Reference\ Frame=<Fixed Frame>
+Grid.Alpha=0.5
+Grid.Cell\ Size=0.1
+Grid.ColorR=0.5
+Grid.ColorG=0.5
+Grid.ColorB=0.5
+Grid.Enabled=1
+Grid.Line\ Style=0
+Grid.Line\ Width=0.03
+Grid.Normal\ Cell\ Count=0
+Grid.OffsetX=0
+Grid.OffsetY=0
+Grid.OffsetZ=0
+Grid.Plane=0
+Grid.Plane\ Cell\ Count=100
+Grid.Reference\ Frame=<Fixed Frame>
+TF.All\ Enabled=0
+TF.Enabled=1
+TF.Frame\ Timeout=15
+TF.Marker\ Scale=0.5
+TF.Show\ Arrows=1
+TF.Show\ Axes=1
+TF.Show\ Names=1
+TF.Update\ Interval=0.05
+Tool\ 2D\ Nav\ GoalTopic=goal
+Tool\ 2D\ Pose\ EstimateTopic=initialpose
+Camera\ Type=rviz::OrbitViewController
+Camera\ Config=0.890591 3.35855 1.47649 0 0 0
+Property\ Grid\ State=selection=TF.Enabled.TF.Marker Scale;expanded=.Global Options,TF.Enabled,TF./base_footprint/base_footprint,TF./base_link/base_link,TF./front_wheel_joint/front_wheel_joint,TF./kinect_depth_frame/kinect_depth_frame,TF./kinect_depth_optical_frame/kinect_depth_optical_frame,TF./kinect_link/kinect_link,TF./kinect_rgb_frame/kinect_rgb_frame,TF./kinect_rgb_optical_frame/kinect_rgb_optical_frame,TF./laser_link/laser_link,TF./left_wheel_joint/left_wheel_joint,TF./rear_wheel_joint/rear_wheel_joint,TF./right_wheel_joint/right_wheel_joint,TF.Enabled.TF.Tree,TF./base_footprintTree/base_footprint,TF./base_linkTree/base_link,TF./front_wheel_jointTree/front_wheel_joint,TF./kinect_linkTree/kinect_link,TF./kinect_rgb_frameTree/kinect_rgb_frame,TF./kinect_rgb_optical_frameTree/kinect_rgb_optical_frame,TF./kinect_depth_frameTree/kinect_depth_frame,TF./kinect_depth_optical_frameTree/kinect_depth_optical_frame,TF./laser_linkTree/laser_link,TF./left_wheel_jointTree/left_wheel_joint,TF./rear_wheel_jointTree/rear_wheel_joint,TF./right_wheel_jointTree/right_wheel_joint;scrollpos=0,0;splitterpos=150,285;ispageselected=1
+[Display0]
+Name=Grid
+Package=rviz
+ClassName=rviz::GridDisplay
+[Display1]
+Name=Axes
+Package=rviz
+ClassName=rviz::AxesDisplay
+[Display2]
+Name=TF
+Package=rviz
+ClassName=rviz::TFDisplay
+[TF.]
+base_footprintEnabled=0
+base_linkEnabled=0
+front_wheel_jointEnabled=1
+kinect_depth_frameEnabled=0
+kinect_depth_optical_frameEnabled=0
+kinect_linkEnabled=0
+kinect_rgb_frameEnabled=0
+kinect_rgb_optical_frameEnabled=0
+laser_linkEnabled=0
+left_wheel_jointEnabled=1
+rear_wheel_jointEnabled=1
+right_wheel_jointEnabled=1

@@ -12,7 +12,7 @@
 ** Includes
 *****************************************************************************/
 
-#include <iostream>
+#include <ros/ros.h>
 #include "../../include/kobuki_driver/packet_finder.hpp"
 
 /*****************************************************************************
@@ -30,27 +30,6 @@ PacketFinderBase::PacketFinderBase() :
 {
 }
 
-PacketFinderBase::PacketFinderBase(const unsigned char putOneByteStx, const unsigned char putOneByteEtx, unsigned int sizeLengthField,
-             unsigned int sizeMaxPayload, unsigned int sizeChecksumField, bool variableSizePayload) :
-    size_stx(1), size_etx(1), size_length_field(sizeLengthField), variable_size_payload(variableSizePayload), size_max_payload(
-        sizeMaxPayload), size_payload(variable_size_payload ? 0 : sizeMaxPayload), size_checksum_field(
-        sizeChecksumField), STX(size_stx, putOneByteStx), ETX(size_etx, putOneByteEtx), buffer(
-        size_stx, size_stx + size_length_field + size_max_payload + size_checksum_field + size_etx), state(
-        waitingForStx), verbose(false)
-{
-  clear();
-}
-
-PacketFinderBase::PacketFinderBase(const BufferType & putStx, const BufferType & putEtx, unsigned int sizeLengthField,
-             unsigned int sizeMaxPayload, unsigned int sizeChecksumField, bool variableSizePayload) :
-    size_stx(putStx.size()), size_etx(putEtx.size()), size_length_field(sizeLengthField), variable_size_payload(
-        variableSizePayload), size_max_payload(sizeMaxPayload), size_payload(
-        variable_size_payload ? 0 : sizeMaxPayload), size_checksum_field(sizeChecksumField), STX(putStx), ETX(putEtx), buffer(
-        size_stx, size_stx + size_length_field + size_max_payload + size_checksum_field + size_etx), state(
-        waitingForStx), verbose(false)
-{
-  clear();
-}
 
 /*****************************************************************************
 ** Public
@@ -92,14 +71,7 @@ void PacketFinderBase::enableVerbose()
 
 bool PacketFinderBase::update(const unsigned char * incoming, unsigned int numberOfIncoming)
 {
-  std::cout << "State: " << state << std::endl;
-  bool result = updatePacket(incoming, numberOfIncoming);
-  if ( result ) {
-    std::cout << "Update result: true" << std::endl;
-  } else {
-    std::cout << "Update result: false" << std::endl;
-  }
-  return result;
+  return updatePacket(incoming, numberOfIncoming);
 }
 
 bool PacketFinderBase::checkSum()
@@ -150,6 +122,7 @@ void PacketFinderBase::getBuffer(BufferType & bufferRef)
 
 bool PacketFinderBase::updatePacket(const unsigned char * incoming, unsigned int numberOfIncoming)
 {
+//  std::cout << "updatePacket [" << numberOfIncoming << "][" << state << "]" << std::endl;
   if (!(numberOfIncoming > 0))
     return false;
 
@@ -204,6 +177,7 @@ bool PacketFinderBase::updatePacket(const unsigned char * incoming, unsigned int
       {
         state = clearBuffer;
       }
+
       break;
 
     default:
@@ -213,7 +187,7 @@ bool PacketFinderBase::updatePacket(const unsigned char * incoming, unsigned int
   if ( found_packet ) {
     bool result = checkSum();
     if ( !result ) {
-      std::cout << "Update packet: checksum bad" << std::endl;
+      std::cout << "  checksum bad" << std::endl;
     }
     return result;
   } else {
@@ -334,7 +308,18 @@ bool PacketFinderBase::waitForPayloadAndEtx(const unsigned char * incoming, unsi
   {
     buffer.push_back(incoming[i]);
   }
-
+  /*********************
+  ** Error Handling
+  **********************/
+  if ( size_payload > size_max_payload ) {
+    state = clearBuffer;
+    ROS_WARN_STREAM("Packet Handler : abnormally sized payload retrieved, clearing [" << size_max_payload << "][" << size_payload << "]");
+//    for (unsigned int i = 0; i < numberOfIncoming; ++i ) {
+//      std::cout << std::hex << static_cast<int>(*(incoming+i)) << " ";
+//    }
+//    std::cout << std::dec << std::endl;
+    return false;
+  }
   // check when we need to wait for etx
   if (buffer.size() < size_stx + size_length_field + size_payload + size_checksum_field + size_etx)
   {
@@ -342,8 +327,13 @@ bool PacketFinderBase::waitForPayloadAndEtx(const unsigned char * incoming, unsi
   }
   else
   {
-    if (verbose)
+    if (verbose) {
       std::cout << "Start check etx " << std::endl;
+      for (unsigned int i = 0; i < numberOfIncoming; ++i ) {
+        std::cout << std::hex << static_cast<int>(*(incoming+i)) << " ";
+      }
+      std::cout << std::dec << std::endl;
+    }
     foundPacket = true;
 
     for (unsigned int i = (size_stx + size_length_field + size_payload + size_checksum_field);

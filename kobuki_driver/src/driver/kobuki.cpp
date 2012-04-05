@@ -60,16 +60,11 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   {
     throw ecl::StandardException(LOC, ecl::ConfigurationError, "Kobuki's parameter settings did not validate.");
   }
-  //gyro_data.header.frame_id = "mobile_base_gyro";
   protocol_version = parameters.protocol_version;
 
-  //std::cout << "1 " << std::flush;
   serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
   //serial.block(4000);
   serial.clear();
-  //std::cout << "2 " << std::flush;
-
-//	is_connected=true;
 
   std::string sigslots_namespace = parameters.sigslots_namespace;
   sig_wheel_state.connect(sigslots_namespace + std::string("/joint_state"));
@@ -89,7 +84,6 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_st_gyro.connect(sigslots_namespace + std::string("/st_gyro"));
   sig_eeprom.connect(sigslots_namespace + std::string("/eeprom"));
   sig_gp_input.connect(sigslots_namespace + std::string("/gp_input"));
-  //sig_reserved0;
 
   is_running = true;
   is_connected = true;
@@ -276,8 +270,6 @@ void Kobuki::runnable()
               data_buffer.clear();
               break;
           }
-          //std::cout << "remains: " << data_buffer.size() << " | ";
-          //std::cout << std::endl;
         }
       }
       else
@@ -500,71 +492,126 @@ void Kobuki::getGpInputData(kobuki_comms::GpInput &data)
     data = kobuki_gp_input.data;
 }
 
-void Kobuki::getJointState(device_comms::JointState &joint_state)
-{
+/**
+ * Temporary hack. Move this into an internal update() function inside odometry.hpp.
+ *
+ * We then emit whatever struct we want to get from this.
+ **/
+void Kobuki::updateOdometry(double &wheel_left_position, double &wheel_left_velocity,
+                            double &wheel_right_position, double &wheel_right_velocity) {
   static bool init_l = false;
   static bool init_r = false;
-  double diff_ticks = 0.0f;
+  double left_diff_ticks = 0.0f;
+  double right_diff_ticks = 0.0f;
   unsigned short curr_tick_left = 0;
   unsigned short curr_tick_right = 0;
   unsigned short curr_timestamp = 0;
-
-  if (joint_state.name == "wheel_left")
+  curr_timestamp = kobuki_default.data.time_stamp;
+  curr_tick_left = kobuki_default.data.left_encoder;
+  if (!init_l)
   {
-    if (protocol_version == "1.0")
-    {
-      curr_tick_left = data2.data.left_encoder;
-      curr_timestamp = data2.data.time_stamp;
-    }
-    if (protocol_version == "2.0")
-    {
-      curr_tick_left = kobuki_default.data.left_encoder;
-      curr_timestamp = kobuki_default.data.time_stamp;
-    }
-    if (!init_l)
-    {
-      last_tick_left = curr_tick_left;
-      init_l = true;
-    }
-    diff_ticks = (double)(short)((curr_tick_left - last_tick_left) & 0xffff);
     last_tick_left = curr_tick_left;
-    last_rad_left += tick_to_rad * diff_ticks;
-    last_mm_left += tick_to_mm / 1000.0f * diff_ticks;
-    joint_state.position = last_rad_left;
-    joint_state.velocity = last_mm_left;
+    init_l = true;
   }
-  else // wheel_right
-  {
-    if (protocol_version == "1.0")
-    {
-      curr_tick_right = data2.data.right_encoder;
-      curr_timestamp = data2.data.time_stamp;
-    }
-    if (protocol_version == "2.0")
-    {
-      curr_tick_right = kobuki_default.data.right_encoder;
-      curr_timestamp = kobuki_default.data.time_stamp;
-    }
+  left_diff_ticks = (double)(short)((curr_tick_left - last_tick_left) & 0xffff);
+  last_tick_left = curr_tick_left;
+  last_rad_left += tick_to_rad * left_diff_ticks;
+  last_mm_left += tick_to_mm / 1000.0f * left_diff_ticks;
 
-    if (!init_r)
-    {
-      last_tick_right = curr_tick_right;
-      init_r = true;
-    }
-    diff_ticks = (double)(short)((curr_tick_right - last_tick_right) & 0xffff);
+  curr_tick_right = kobuki_default.data.right_encoder;
+  if (!init_r)
+  {
     last_tick_right = curr_tick_right;
-    last_rad_right += tick_to_rad * diff_ticks;
-    last_mm_right += tick_to_mm / 1000.0f * diff_ticks;
-    joint_state.position = last_rad_right;
-    joint_state.velocity = last_mm_right;
+    init_r = true;
   }
+  right_diff_ticks = (double)(short)((curr_tick_right - last_tick_right) & 0xffff);
+  last_tick_right = curr_tick_right;
+  last_rad_right += tick_to_rad * right_diff_ticks;
+  last_mm_right += tick_to_mm / 1000.0f * right_diff_ticks;
 
   if (curr_timestamp != last_timestamp)
   {
     last_diff_time = ((double)(short)((curr_timestamp - last_timestamp) & 0xffff)) / 1000.0f;
     last_timestamp = curr_timestamp;
+    last_velocity_left = (tick_to_rad * left_diff_ticks) / last_diff_time;
+    last_velocity_right = (tick_to_rad * right_diff_ticks) / last_diff_time;
+    wheel_left_velocity = last_velocity_left;
+    wheel_right_velocity = last_velocity_right;
+  } else {
+    wheel_left_velocity = 0.0;
+    wheel_right_velocity = 0.0;
   }
-  joint_state.velocity = (tick_to_rad * diff_ticks) / last_diff_time;
+  wheel_left_position = last_rad_left;
+  wheel_right_position = last_rad_right;
+
+}
+void Kobuki::getJointState(device_comms::JointState &joint_state)
+{
+//  static bool init_l = false;
+//  static bool init_r = false;
+//  double diff_ticks = 0.0f;
+//  unsigned short curr_tick_left = 0;
+//  unsigned short curr_tick_right = 0;
+//  unsigned short curr_timestamp = 0;
+//
+  if (joint_state.name == "wheel_left")
+  {
+//    if (protocol_version == "1.0")
+//    {
+//      curr_tick_left = data2.data.left_encoder;
+//      curr_timestamp = data2.data.time_stamp;
+//    }
+//    if (protocol_version == "2.0")
+//    {
+//      curr_tick_left = kobuki_default.data.left_encoder;
+//      curr_timestamp = kobuki_default.data.time_stamp;
+//    }
+//    if (!init_l)
+//    {
+//      last_tick_left = curr_tick_left;
+//      init_l = true;
+//    }
+//    diff_ticks = (double)(short)((curr_tick_left - last_tick_left) & 0xffff);
+//    last_tick_left = curr_tick_left;
+//    last_rad_left += tick_to_rad * diff_ticks;
+//    last_mm_left += tick_to_mm / 1000.0f * diff_ticks;
+    joint_state.position = last_rad_left;
+    joint_state.velocity = last_velocity_left;
+//    joint_state.velocity = last_mm_left;
+  }
+  else // wheel_right
+  {
+//    if (protocol_version == "1.0")
+//    {
+//      curr_tick_right = data2.data.right_encoder;
+//      curr_timestamp = data2.data.time_stamp;
+//    }
+//    if (protocol_version == "2.0")
+//    {
+//      curr_tick_right = kobuki_default.data.right_encoder;
+//      curr_timestamp = kobuki_default.data.time_stamp;
+//    }
+//
+//    if (!init_r)
+//    {
+//      last_tick_right = curr_tick_right;
+//      init_r = true;
+//    }
+//    diff_ticks = (double)(short)((curr_tick_right - last_tick_right) & 0xffff);
+//    last_tick_right = curr_tick_right;
+//    last_rad_right += tick_to_rad * diff_ticks;
+//    last_mm_right += tick_to_mm / 1000.0f * diff_ticks;
+    joint_state.position = last_rad_right;
+    joint_state.velocity = last_velocity_right;
+//    joint_state.velocity = last_mm_right;
+  }
+//
+//  if (curr_timestamp != last_timestamp)
+//  {
+//    last_diff_time = ((double)(short)((curr_timestamp - last_timestamp) & 0xffff)) / 1000.0f;
+//    last_timestamp = curr_timestamp;
+//  }
+//  joint_state.velocity = (tick_to_rad * diff_ticks) / last_diff_time;
 
   joint_state.enabled = is_connected && is_running && is_enabled;
 

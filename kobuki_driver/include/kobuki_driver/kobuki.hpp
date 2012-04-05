@@ -102,11 +102,12 @@ class Kobuki : public Threadable
 {
 public:
   Kobuki() :
-      is_connected(false), is_running(false), is_enabled(false), tick_to_mm(0.0845813406577f), tick_to_rad(
-          0.00201384144460884f)
+    last_velocity_left(0.0),
+    last_velocity_right(0.0),
+    is_connected(false), is_running(false), is_enabled(false),
+    tick_to_mm(0.0845813406577f), tick_to_rad(0.00201384144460884f)
   {
   }
-  //Kobuki(Parameters &parameters) throw(ecl::StandardException);
   ~Kobuki()
   {
     serial.close();
@@ -148,6 +149,8 @@ public:
   void getEEPROMData(kobuki_comms::EEPROM&);
   void getGpInputData(kobuki_comms::GpInput&);
 
+  void updateOdometry(double &wheel_left_position, double &wheel_left_velocity,
+                      double &wheel_right_position, double &wheel_right_velocity);
   void getJointState(device_comms::JointState&);
   void setCommand(double, double);
   void sendCommand();

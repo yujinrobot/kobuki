@@ -13,9 +13,10 @@
 		<rosparam file="$(find kobuki_meta)/resources/yaml/kobuki.yaml" command="load"/>
 		<remap from="robot_core/joint_state/wheel_left"  to="joint_state/wheel_left"/>
 		<remap from="robot_core/joint_state/wheel_right" to="joint_state/wheel_right"/>
-		<remap from="robot_core/control_command" to="cmd_vel"/>
+		<remap from="robot_core/cmd_vel" to="cmd_vel"/>
 		<remap from="robot_core/enable" to="enable"/>
 		<remap from="robot_core/disable" to="disable"/>
+        <remap from="robot_core/joint_states" to="joint_states"/>
     </node>
     <!-- Should check for simulation here -->
     <node pkg="nodelet" type="nodelet" name="mobile_base" args="load diff_drive_base/DiffDriveBase mobile_base_manager" output="screen">

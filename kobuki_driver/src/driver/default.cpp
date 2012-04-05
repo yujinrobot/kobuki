@@ -76,12 +76,6 @@ bool DefaultData::deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   //buildVariable( data.caster,               byteStream );
   //buildVariable( data.over_current, byteStream );
 
-  std::cout << "Header0" << static_cast<int>(data.header0) << std::endl;
-  std::cout << "Timestamp" << static_cast<int>(data.time_stamp) << std::endl;
-  std::cout << "Bump" << static_cast<int>(data.bump) << std::endl;
-  std::cout << "left_encoder" << static_cast<int>(data.left_encoder) << std::endl;
-  std::cout << "right_encoder" << static_cast<int>(data.right_encoder) << std::endl;
-
   //showMe();
   return constrain();
 }
@@ -93,6 +87,9 @@ bool DefaultData::constrain()
 
 void DefaultData::showMe()
 {
+//  std::cout << "Timestamp: " << static_cast<int>(data.time_stamp) << std::endl;
+//  std::cout << "  left_encoder: " << static_cast<int>(data.left_encoder) << std::endl;
+//  std::cout << "  right_encoder: " << static_cast<int>(data.right_encoder) << std::endl;
   //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, obstacle[2], obstacle[1], obstacle[0] );
 }
 

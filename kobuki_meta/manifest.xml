@@ -9,22 +9,17 @@
   <review status="unreviewed" notes=""/>
   <url>http://www.ros.org/wiki/kobuki/kobuki_meta</url>
 
+  <!-- Kobuki -->
   <depend package="kobuki_node"/>
+  <depend package="kobuki_description"/>
+  
+  <!--  Ycs - These need to disappear -->
   <depend package="diff_drive_base"/>
   <depend package="diff_drive_gyro_base"/>
-
   <depend package="keyop_core"/>
-  <depend package="joyop_core"/>
+  
+  <!--  Ros -->
   <depend package="robot_state_publisher"/>
-  <depend package="joint_state_publisher"/>
-
-  <!-- kinect -->
-  <depend package="openni_launch"/>
-  <depend package="pointcloud_to_laserscan"/>
-
-  <!-- navigation -->
-  <depends package="navigation"/>
-  <depends package="gmapping"/>
 
   <!-- visualization -->
   <depend package="rviz"/>
@@ -32,4 +27,11 @@
   <!-- System Utilities -->
   <rosdep name="unison"/>
 
+  <!-- Integrate Later
+  <depend package="openni_launch"/>
+  <depend package="pointcloud_to_laserscan"/>
+  <depends package="navigation"/>
+  <depends package="gmapping"/>
+ -->
+ 
 </package>

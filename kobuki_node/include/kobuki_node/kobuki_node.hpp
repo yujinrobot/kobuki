@@ -25,6 +25,7 @@
 #include <ecl/sigslots.hpp>
 #include <standard_comms/StringString.h>
 #include <kobuki_driver/kobuki.hpp>
+#include <sensor_msgs/JointState.h>
 
 /*****************************************************************************
 ** Namespaces
@@ -63,16 +64,10 @@ private:
 	void advertiseTopics(ros::NodeHandle& nh);
 	void subscribeTopics(ros::NodeHandle& nh);
 
-    	// Don't need to override the device nodelet enable/disable topic callbacks
-
 	Kobuki kobuki;
+	const std::string wheel_left_name;
+	const std::string wheel_right_name;
 	
-	//KobukiMainboardDriver kobuki_receiver();
-	//KobukiMainboardData data;
-	//example
-	//kobuki.getData(data);
-        //wheel_lefts=data.encoder[0];
-
 	/*********************
 	** Ros Comms
 	**********************/
@@ -85,7 +80,8 @@ private:
 
 	ecl::Slot<> slot_wheel_state, slot_sensor_data;
 	ecl::Signal< const device_comms::JointCommand > sig_joint_command;
-	// [ 2 ]
+
+	sensor_msgs::JointState joint_states;
 	ros::Publisher
 		default_data_publisher, 
 		ir_data_publisher,       
@@ -99,8 +95,8 @@ private:
 		time_data_publisher,     
 		st_gyro_data_publisher,  
 		eeprom_data_publisher,   
-		gp_input_data_publisher;
-//		reserved0_data_publisher ;
+		gp_input_data_publisher,
+	        joint_state_publisher;
 
 	ecl::Slot<> 
 		slot_default ,
@@ -116,7 +112,6 @@ private:
 		slot_st_gyro ,
 		slot_eeprom  ,
 		slot_gp_input;
-//		slot_reserved0;
 
 	/*********************
 	** SigSlots

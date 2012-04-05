@@ -13,6 +13,7 @@
   <depend package="roscpp"/>
   <depend package="nodelet"/>
   <depend package="geometry_msgs"/>
+  <depend package="sensor_msgs"/>
 
   <!--  Kobuki -->
   <depend package="kobuki_comms"/>
