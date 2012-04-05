@@ -33,12 +33,6 @@
   <!-- visualization -->
   <depend package="rviz"/>
 
-  <!-- applications -->
-<!--  <depend package="kobuki_panorama"/> -->
-<!--  <depend package="kobuki_photo"/> -->
-  <depend package="kobuki_controller"/>
-  <depend package="remote_mutex"/>
-
 <!--
   Typical options for a ycs-ros cpp style package providing headers/libs in the example below
   <export>
