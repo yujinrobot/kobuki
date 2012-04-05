@@ -69,21 +69,10 @@ union union_sint16
   unsigned char byte[2];
 };
 
-class PacketFinder : public packet_handler::packetFinder
+class PacketFinder : public PacketFinderBase
 {
 public:
-  bool checkSum()
-  {
-    unsigned int packet_size(buffer.size());
-    unsigned char cs(0);
-    for (unsigned int i = 2; i < packet_size; i++)
-    {
-      cs ^= buffer[i];
-    }
-
-    return cs ? false : true;
-  }
-
+  bool checkSum();
 };
 
 /*****************************************************************************

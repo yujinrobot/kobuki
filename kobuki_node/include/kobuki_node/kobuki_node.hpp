@@ -71,15 +71,15 @@ private:
 	//KobukiMainboardData data;
 	//example
 	//kobuki.getData(data);
-        //left_wheels=data.encoder[0];
+        //wheel_lefts=data.encoder[0];
 
 	/*********************
 	** Ros Comms
 	**********************/
-	ros::Publisher left_wheel_state_publisher;
-	ros::Publisher right_wheel_state_publisher;
+	ros::Publisher wheel_left_state_publisher;
+	ros::Publisher wheel_right_state_publisher;
 	ros::Publisher sensor_data_publisher;
-	ros::Subscriber left_wheel_command_subscriber, right_wheel_command_subscriber;
+	ros::Subscriber wheel_left_command_subscriber, wheel_right_command_subscriber;
 	ros::Subscriber velocity_command_subscriber;
 	ros::Subscriber kobuki_command_subscriber;
 

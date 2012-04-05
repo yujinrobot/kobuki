@@ -185,8 +185,8 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
  */
 void KobukiNodelet::advertiseTopics(ros::NodeHandle& nh)
 {
-  left_wheel_state_publisher = nh.advertise < device_comms::JointState > ("joint_state/left_wheel", 100);
-  right_wheel_state_publisher = nh.advertise < device_comms::JointState > ("joint_state/right_wheel", 100);
+  wheel_left_state_publisher = nh.advertise < device_comms::JointState > ("joint_state/wheel_left", 100);
+  wheel_right_state_publisher = nh.advertise < device_comms::JointState > ("joint_state/wheel_right", 100);
   sensor_data_publisher = nh.advertise < kobuki_comms::SensorData > ("sensor_data", 100);
 
   default_data_publisher = nh.advertise < kobuki_comms::SensorData > ("default_data", 100);
@@ -217,12 +217,12 @@ void KobukiNodelet::advertiseTopics(ros::NodeHandle& nh)
  */
 void KobukiNodelet::subscribeTopics(ros::NodeHandle& nh)
 {
-  std::string left_wheel_name = "left_wheel";
-  std::string right_wheel_name = "right_wheel";
+  std::string wheel_left_name = "wheel_left";
+  std::string wheel_right_name = "wheel_right";
 
-  left_wheel_command_subscriber = nh.subscribe(std::string("joint_command/") + left_wheel_name, 10,
+  wheel_left_command_subscriber = nh.subscribe(std::string("joint_command/") + wheel_left_name, 10,
                                                &KobukiNodelet::subscribeJointCommandLeft, this);
-  right_wheel_command_subscriber = nh.subscribe(std::string("joint_command/") + right_wheel_name, 10,
+  wheel_right_command_subscriber = nh.subscribe(std::string("joint_command/") + wheel_right_name, 10,
                                                 &KobukiNodelet::subscribeJointCommandRight, this);
   velocity_command_subscriber = nh.subscribe(std::string("cmd_vel"), 10, &KobukiNodelet::subscribeVelocityCommand,
                                              this);
@@ -251,25 +251,25 @@ void KobukiNodelet::publishWheelState()
   //waitForInitialisation();
   if (ros::ok() && !shutdown_requested)
   {
-    if (left_wheel_state_publisher.getNumSubscribers() > 0)
+    if (wheel_left_state_publisher.getNumSubscribers() > 0)
     {
-      kobuki.pubtime("  left_wheel:ent");
+      kobuki.pubtime("  wheel_left:ent");
       device_comms::JointState joint_state;
-      joint_state.name = "left_wheel";
+      joint_state.name = "wheel_left";
       joint_state.stamp = ros::Time::now();
       kobuki.getJointState(joint_state);
-      left_wheel_state_publisher.publish(joint_state);
-      kobuki.pubtime("  left_wheel:pub");
+      wheel_left_state_publisher.publish(joint_state);
+      kobuki.pubtime("  wheel_left:pub");
     }
-    if (right_wheel_state_publisher.getNumSubscribers() > 0)
+    if (wheel_right_state_publisher.getNumSubscribers() > 0)
     {
-      kobuki.pubtime("  right_wheel:ent");
+      kobuki.pubtime("  wheel_right:ent");
       device_comms::JointState joint_state;
-      joint_state.name = "right_wheel";
+      joint_state.name = "wheel_right";
       joint_state.stamp = ros::Time::now();
       kobuki.getJointState(joint_state);
-      right_wheel_state_publisher.publish(joint_state);
-      kobuki.pubtime("  right_wheel:pub");
+      wheel_right_state_publisher.publish(joint_state);
+      kobuki.pubtime("  wheel_right:pub");
     }
   }
   //ROS_INFO_STREAM("Kobuki : thread terminating [" << name << "]");

@@ -31,6 +31,23 @@ using ecl::Converter;
 using ecl::TimeStamp;
 
 /*****************************************************************************
+** Implementation [PacketFinder]
+*****************************************************************************/
+
+bool PacketFinder::checkSum()
+{
+  unsigned int packet_size(buffer.size());
+  unsigned char cs(0);
+  for (unsigned int i = 2; i < packet_size; i++)
+  {
+    cs ^= buffer[i];
+  }
+
+  return cs ? false : true;
+}
+
+
+/*****************************************************************************
  ** Implementation [Kobuki]
  *****************************************************************************/
 
@@ -198,8 +215,8 @@ void Kobuki::runnable()
         sig_index.clear();
         while (data_buffer.size() > 1/*size of etx*/)
         {
-          //std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
-          //std::cout << "remains: " << data_buffer.size() << " | ";
+          // std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
+          // std::cout << "remains: " << data_buffer.size() << " | ";
           switch (data_buffer[0])
           {
             case kobuki_comms::Header::header_default:
@@ -492,7 +509,7 @@ void Kobuki::getJointState(device_comms::JointState &joint_state)
   unsigned short curr_tick_right = 0;
   unsigned short curr_timestamp = 0;
 
-  if (joint_state.name == "left_wheel")
+  if (joint_state.name == "wheel_left")
   {
     if (protocol_version == "1.0")
     {
@@ -516,7 +533,7 @@ void Kobuki::getJointState(device_comms::JointState &joint_state)
     joint_state.position = last_rad_left;
     joint_state.velocity = last_mm_left;
   }
-  else
+  else // wheel_right
   {
     if (protocol_version == "1.0")
     {

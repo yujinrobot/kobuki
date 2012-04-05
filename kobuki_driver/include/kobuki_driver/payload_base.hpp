@@ -117,7 +117,7 @@ protected:
 };
 
 template<>
-  void payloadBase::buildVariable<float>(float & V, ecl::PushAndPop<unsigned char> & buffer)
+inline   void payloadBase::buildVariable<float>(float & V, ecl::PushAndPop<unsigned char> & buffer)
   {
     if (buffer.size() < 4)
       return;
@@ -134,7 +134,7 @@ template<>
   }
 
 template<>
-  void payloadBase::buildBytes<float>(float & V, ecl::PushAndPop<unsigned char> & buffer)
+inline void payloadBase::buildBytes<float>(float & V, ecl::PushAndPop<unsigned char> & buffer)
   {
     if (buffer.size() < 4)
       return;

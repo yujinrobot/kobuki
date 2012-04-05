@@ -9,8 +9,6 @@ uint8  wheel_drop
 uint8  cliff
 uint16 left_encoder
 uint16 right_encoder
-#uint8  left_pwm
-#uint8  right_pwm
 int8  left_pwm
 int8  right_pwm
 uint8  dustbin

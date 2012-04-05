@@ -42,6 +42,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="include/kobuki_driver"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src/driver"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
