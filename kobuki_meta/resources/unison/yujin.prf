@@ -2,20 +2,20 @@
 # Roots
 ######################################################
 
-root = /opt/kobukibot
-root = ssh://yujin@192.168.10.165//opt/kobukibot
+root = /opt/yujin
+root = ssh://turtlebot@turtlebot.yujin.com//opt/yujin
 
 ######################################################
 # Paths
 ######################################################
 
-# We copy across the whole root now.
+# copy across everything
 
 ######################################################
 # Ignores
 ######################################################
 
-ignore = Path setup.sh
+#ignore = Path kobuki/setup.sh
 ignore = Name *.pyc
 ignore = Name .svn
 ignore = Name .hg
