@@ -3,8 +3,7 @@
 
 sudo apt-get install -y ros-electric-turtlebot-robot ros-electric-dynamixel-motor
 rm -rf ${WORKSPACE}/kobuki_workspace
-rm -rf ${WORKSPACE}/yujin/unstable/stacks
-rosinstall ${WORKSPACE}/kobuki_workspace https://raw.github.com/yujinrobot/kobuki/master/kobuki_unstable.rosinstall
+rosinstall ${WORKSPACE}/kobuki_workspace https://raw.github.com/yujinrobot/kobuki/master/kobuki_unstable_jenkins.rosinstall
 source ${WORKSPACE}/kobuki_workspace/setup.bash
 cd ${WORKSPACE}/yujin/unstable/stacks/ycs/ycs_tools/ycs_bin/scripts; ./ycssetup
 source ${WORKSPACE}/kobuki_workspace/setup.bash
