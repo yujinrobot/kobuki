@@ -5,7 +5,7 @@
   <arg name="simulation" value="false"/>
   <param name="/use_sim_time" value="$(arg simulation)"/>
 
-  <group ns="kobukibot">
+  <group ns="kobuki">
     <include file="$(find kobuki_meta)/resources/launch/components/base.launch">
       <arg name="simulation" value="$(arg simulation)"/>
     </include>

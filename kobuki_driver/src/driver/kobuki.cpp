@@ -134,9 +134,11 @@ void Kobuki::runnable()
   while (is_running)
   {
     pubtime("every_tick");
-    //std::cout << "." << std::flush;
     get_packet = false;
-    // get the byte(s) from the serial port
+
+    /*********************
+    ** Read Incoming
+    **********************/
     int n(serial.read(buf, packet_finder.numberOfDataToRead()));
 
     ROS_DEBUG_STREAM("kobuki_node : serial_read(" << n << ")");
@@ -155,7 +157,7 @@ void Kobuki::runnable()
     {
       if (serial.remaining() > 28)
       {
-        ROS_WARN_STREAM("kobuki_node : serial buffer remaining is [" << serial.remaining() << "]");
+        ROS_WARN_STREAM("kobuki_node : serial buffer filling up, clearing [" << serial.remaining() << " bytes]");
         serial.clear(); //is it safe?
       }
       pubtime("packet_find");

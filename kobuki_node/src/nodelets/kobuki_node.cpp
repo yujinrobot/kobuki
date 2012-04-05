@@ -135,8 +135,8 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
   }
   else
   {
-    ROS_INFO_STREAM("Kobuki : parameter.device_port [" << parameters.device_port << "]");
-    ROS_INFO_STREAM("Kobuki : parameter.protocol_version [" << parameters.protocol_version << "]");
+    ROS_INFO_STREAM("Kobuki : configured for connection on device_port " << parameters.device_port << " [" << name << "].");
+    ROS_INFO_STREAM("Kobuki : configured for firmware protocol_version " << parameters.protocol_version << " [" << name << "].");
   }
 
   /*********************

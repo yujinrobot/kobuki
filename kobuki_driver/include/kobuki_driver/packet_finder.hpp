@@ -73,7 +73,11 @@ public:
 protected:
   enum packetFinderState
   {
-    clearBuffer = 0, waitingForStx, waitingForPayloadSize, waitingForPayloadToEtx, waitingForEtx,
+    clearBuffer = 0,
+    waitingForStx,
+    waitingForPayloadSize,
+    waitingForPayloadToEtx,
+    waitingForEtx,
   };
 
   unsigned int size_stx;
@@ -119,10 +123,7 @@ public:
     clear();
   }
 
-  ~packetFinder()
-  {
-  }
-  ;
+  virtual ~packetFinder() {};
 
   void configure(const BufferType & putStx, const BufferType & putEtx, unsigned int sizeLengthField,
                  unsigned int sizeMaxPayload, unsigned int sizeChecksumField, bool variableSizePayload)
@@ -160,7 +161,8 @@ public:
 
   virtual bool update(const unsigned char * incoming, unsigned int numberOfIncoming)
   {
-    return updatePacket(incoming, numberOfIncoming);
+    bool result = updatePacket(incoming, numberOfIncoming);
+    return result;
   }
 
   virtual bool checkSum()
@@ -212,12 +214,13 @@ protected:
       return false;
 
     bool found_packet(false);
+
+    if ( state == clearBuffer ) {
+      buffer.clear();
+      state = waitingForStx;
+    }
     switch (state)
     {
-      case clearBuffer:
-        buffer.clear();
-        state = waitingForStx;
-
       case waitingForStx:
         if (WaitForStx(incoming[0]))
         {
@@ -241,7 +244,6 @@ protected:
           }
         }
         break;
-
       case waitingForEtx:
         if (waitForEtx(incoming[0], found_packet))
         {

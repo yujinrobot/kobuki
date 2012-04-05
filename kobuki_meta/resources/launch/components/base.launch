@@ -9,13 +9,13 @@
     
     <node pkg="nodelet" type="nodelet" name="mobile_base_manager" args="manager" output="screen"/>
 
-    <node pkg="nodelet" type="nodelet" name="kobuki_base" args="load kobuki_node/KobukiNodelet mobile_base_manager" output="screen">
+    <node pkg="nodelet" type="nodelet" name="robot_core" args="load kobuki_node/KobukiNodelet mobile_base_manager" output="screen">
 		<rosparam file="$(find kobuki_meta)/resources/yaml/kobuki.yaml" command="load"/>
-		<remap from="kobuki_base/joint_state/left_wheel"  to="joint_state/wheel_left"/>
-		<remap from="kobuki_base/joint_state/right_wheel" to="joint_state/wheel_right"/>
-		<remap from="kobuki_base/control_command" to="cmd_vel"/>
-		<remap from="kobuki_base/enable" to="enable"/>
-		<remap from="kobuki_base/disable" to="disable"/>
+		<remap from="robot_core/joint_state/wheel_left"  to="joint_state/wheel_left"/>
+		<remap from="robot_core/joint_state/wheel_right" to="joint_state/wheel_right"/>
+		<remap from="robot_core/control_command" to="cmd_vel"/>
+		<remap from="robot_core/enable" to="enable"/>
+		<remap from="robot_core/disable" to="disable"/>
     </node>
     <!-- Should check for simulation here -->
     <node pkg="nodelet" type="nodelet" name="mobile_base" args="load diff_drive_base/DiffDriveBase mobile_base_manager" output="screen">
@@ -24,8 +24,8 @@
 		<remap from="mobile_base/joint_state/wheel_left" to="joint_state/wheel_left"/>
 		<remap from="mobile_base/joint_command/wheel_right" to="joint_command/wheel_right"/>
 		<remap from="mobile_base/joint_state/wheel_right" to="joint_state/wheel_right"/>
-		<!--remap from="mobile_base/cmd_vel" to="cmd_vel"/-->
-		<remap from="mobile_base/odom" to="odom_combined"/>
+		<remap from="mobile_base/cmd_vel" to="cmd_vel"/>
+		<remap from="mobile_base/odom" to="odom"/>
 		<remap from="mobile_base/enable" to="enable"/>
 		<remap from="mobile_base/disable" to="disable"/>
     </node>
