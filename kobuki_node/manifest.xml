@@ -7,7 +7,7 @@
   <author>Younghun Ju</author>
   <license>Yujin</license>
   <review status="unreviewed" notes=""/>
-  <url>http://yujin.dnsdojo.com:3000/wiki/ycs/</url>
+  <url>http://www.ros.org/wiki/kobuki/kobuki_arm/</url>
 
   <!-- Ros-Common -->
   <depend package="nodelet"/>

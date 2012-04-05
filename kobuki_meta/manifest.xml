@@ -1,16 +1,16 @@
 <package>
-  <description brief="Meta packages for the KobukiBot">
+  <description brief="Meta package for the Kobuki Bot">
 
-     kobukibot
-
+    The meta package for the kobuki stack
+     
   </description>
   <author>Younghun Ju</author>
   <license>Yujin</license>
   <review status="unreviewed" notes=""/>
-  <url>http://yujin.dnsdojo.com:3000/wiki/ycs/</url>
+  <url>http://www.ros.org/wiki/kobuki/kobuki_meta</url>
 
   <depend package="cruizcore"/>
-  <depend package="iclebo_ros_node"/>
+  <depend package="kobuki_node"/>
   <depend package="diff_drive_base"/>
   <depend package="diff_drive_gyro_base"/>
 
@@ -34,9 +34,9 @@
   <depend package="rviz"/>
 
   <!-- applications -->
-  <depend package="kobukibot_panorama"/>
-  <depend package="kobukibot_photo"/>
-  <depend package="kobukibot_controller"/>
+<!--  <depend package="kobuki_panorama"/> -->
+<!--  <depend package="kobuki_photo"/> -->
+  <depend package="kobuki_controller"/>
   <depend package="remote_mutex"/>
 
 <!--
