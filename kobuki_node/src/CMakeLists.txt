@@ -10,6 +10,5 @@
 # Files
 ##############################################################################
 
-add_subdirectory(driver)
 add_subdirectory(nodelets)
 add_subdirectory(test)

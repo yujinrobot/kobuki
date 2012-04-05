@@ -17,16 +17,14 @@
 *****************************************************************************/
 
 #include <ros/ros.h>
-#include <iostream>
 #include <device_nodelet/device_nodelet.hpp>
 #include <geometry_msgs/Twist.h>
 #include <device_comms/JointCommand.h>
 #include <device_comms/JointState.h>
 #include <kobuki_comms/SensorData.h>
 #include <ecl/sigslots.hpp>
-#include <ecl/threads/thread.hpp>
 #include <standard_comms/StringString.h>
-#include "kobuki.hpp"
+#include <kobuki_driver/kobuki.hpp>
 
 /*****************************************************************************
 ** Namespaces
