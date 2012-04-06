@@ -63,7 +63,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   protocol_version = parameters.protocol_version;
 
   serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
-  //serial.block(4000);
+  serial.block(4000); // blocks by default, but just to be clear!
   serial.clear();
 
   std::string sigslots_namespace = parameters.sigslots_namespace;
@@ -141,6 +141,7 @@ void Kobuki::runnable()
   unsigned char buf[256];
   bool get_packet;
   bool dummy_mode = false;
+  stopwatch.restart();
 
   while (is_running)
   {
@@ -164,13 +165,24 @@ void Kobuki::runnable()
       get_packet = true;
     }
 
+//    if( n )
+//    {
+//      static unsigned char last_char(buf[0]);
+//      for( int i(0); i<n; i++ )
+//      {
+//        printf("%02x ", buf[i] );
+//        if( last_char = 0xaa && buf[i] == 0x55 ) printf("\n");
+//        last_char = buf[i];
+//      }
+//    }
+
     if (packet_finder.update(buf, n))
     {
-      if (serial.remaining() > 28)
-      {
-        ROS_WARN_STREAM("kobuki_node : serial buffer filling up, clearing [" << serial.remaining() << " bytes]");
-        serial.clear(); //is it safe?
-      }
+//      if (serial.remaining() > 28)
+//      {
+//        //ROS_WARN_STREAM("kobuki_node : serial buffer filling up, clearing [" << serial.remaining() << " bytes]");
+//        //serial.clear(); //is it safe?
+//      }
       pubtime("packet_find");
 
       // when packet_finder finds proper packet, we will get the buffer
@@ -356,7 +368,13 @@ void Kobuki::runnable()
     // Other threads may have time to do their job.
     // But i still do not know Blcoking mode (without manual usleep) is better way or not.
     // This way is just safe and evaluated for long-time.
-    usleep(1250); // at least less then sending period.
+//    std::cout << "Timestamp|State: " << stopwatch.split() << " [" << packet_finder.state << "]" << std::endl;
+
+    if ( !serial.remaining() ) {
+      usleep(1250); // at least less then sending period.
+    }
+
+    while( !serial.remaining() ) usleep(1000);
   }
 }
 

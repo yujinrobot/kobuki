@@ -70,7 +70,6 @@ class PacketFinderBase
 public:
   typedef ecl::PushAndPop<unsigned char> BufferType;
 
-protected:
   enum packetFinderState
   {
     clearBuffer = 0,
@@ -79,6 +78,8 @@ protected:
     waitingForPayloadToEtx,
     waitingForEtx,
   };
+  enum packetFinderState state;
+protected:
 
   unsigned int size_stx;
   unsigned int size_etx;
@@ -91,7 +92,6 @@ protected:
   BufferType STX;
   BufferType ETX;
   BufferType buffer;
-  enum packetFinderState state;
 
   bool verbose;
 
