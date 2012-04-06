@@ -245,26 +245,26 @@ void KobukiNodelet::publishWheelState()
   //waitForInitialisation();
   if (ros::ok() && !shutdown_requested)
   {
-//    if (wheel_left_state_publisher.getNumSubscribers() > 0)
-//    {
+    if (wheel_left_state_publisher.getNumSubscribers() > 0)
+    {
 //      kobuki.pubtime("  wheel_left:ent");
-//      device_comms::JointState joint_state;
-//      joint_state.name = "wheel_left";
-//      joint_state.stamp = ros::Time::now();
-//      kobuki.getJointState(joint_state);
-//      wheel_left_state_publisher.publish(joint_state);
+      device_comms::JointState joint_state;
+      joint_state.name = "wheel_left";
+      joint_state.stamp = ros::Time::now();
+      kobuki.getJointState(joint_state);
+      wheel_left_state_publisher.publish(joint_state);
 //      kobuki.pubtime("  wheel_left:pub");
-//    }
-//    if (wheel_right_state_publisher.getNumSubscribers() > 0)
-//    {
+    }
+    if (wheel_right_state_publisher.getNumSubscribers() > 0)
+    {
 //      kobuki.pubtime("  wheel_right:ent");
-//      device_comms::JointState joint_state;
-//      joint_state.name = "wheel_right";
-//      joint_state.stamp = ros::Time::now();
-//      kobuki.getJointState(joint_state);
-//      wheel_right_state_publisher.publish(joint_state);
+      device_comms::JointState joint_state;
+      joint_state.name = "wheel_right";
+      joint_state.stamp = ros::Time::now();
+      kobuki.getJointState(joint_state);
+      wheel_right_state_publisher.publish(joint_state);
 //      kobuki.pubtime("  wheel_right:pub");
-//    }
+    }
 
     kobuki.updateOdometry(joint_states.position[0],joint_states.velocity[0],
                           joint_states.position[1],joint_states.velocity[1]);
