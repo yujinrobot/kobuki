@@ -184,14 +184,14 @@
       <visual>
         <origin xyz=" 0 0 0 " rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://kobukibot/resources/meshes/68-04546_Kinect_Sensor.3ds" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}"/>
+          <mesh filename="package://kobuki_description/meshes/68-04546_Kinect_Sensor.3ds" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}"/>
         </geometry>
       </visual>
 
       <collision>
         <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://kobukibot/resources/meshes/68-04546_Kinect_Sensor.3ds"/>
+          <mesh filename="package://kobuki_description/meshes/68-04546_Kinect_Sensor.3ds"/>
           </geometry>
       </collision>
 
