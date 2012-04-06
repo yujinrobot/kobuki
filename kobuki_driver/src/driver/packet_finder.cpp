@@ -308,13 +308,13 @@ bool PacketFinderBase::waitForPayloadAndEtx(const unsigned char * incoming, unsi
   ** Error Handling
   **********************/
   if ( size_payload > size_max_payload ) {
-//    state = clearBuffer;
+    state = clearBuffer;
     ROS_WARN_STREAM("Packet Handler : abnormally sized payload retrieved, clearing [" << size_max_payload << "][" << size_payload << "]");
-//    for (unsigned int i = 0; i < numberOfIncoming; ++i ) {
-//      std::cout << std::hex << static_cast<int>(*(incoming+i)) << " ";
-//    }
-//    std::cout << std::dec << std::endl;
-//    return false;
+    for (unsigned int i = 0; i < numberOfIncoming; ++i ) {
+      std::cout << std::hex << static_cast<int>(*(incoming+i)) << " ";
+    }
+    std::cout << std::dec << std::endl;
+    return false;
   }
   // check when we need to wait for etx
   if (buffer.size() < size_stx + size_length_field + size_payload + size_checksum_field + size_etx)
