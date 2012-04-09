@@ -186,9 +186,9 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
   odom.pose.covariance[7] = 0.1;
   odom.pose.covariance[35] = 0.2;
 
-  odom.pose.covariance[14] = DBL_MAX; // set a very large covariance on unused
-  odom.pose.covariance[21] = DBL_MAX; // dimensions (z, pitch and roll); this
-  odom.pose.covariance[28] = DBL_MAX; // is a requirement of robot_pose_ekf
+  odom.pose.covariance[14] = 10;//DBL_MAX; // set a very large covariance on unused
+  odom.pose.covariance[21] = 10;//DBL_MAX; // dimensions (z, pitch and roll); this
+  odom.pose.covariance[28] = 10;//DBL_MAX; // is a requirement of robot_pose_ekf
 
   pose.setIdentity();
 
@@ -551,9 +551,9 @@ void KobukiNodelet::publishInertiaData()
       kobuki.getInertiaData(data);
 
       sensor_msgs::Imu msg;
-      msg.header.frame_id = odom_frame;
+      msg.header.frame_id;// = odom_frame;
       msg.header.seq = data.header.seq;
-      msg.header.stamp = data.header.stamp;//ros::Time::now();
+      msg.header.stamp = ros::Time::now();
 
       // angle comes as hundredths of degree, convert to radians
       float yaw = (data.angle/18000.0)*M_PI;
@@ -562,10 +562,11 @@ void KobukiNodelet::publishInertiaData()
       // set a very large covariance on unused dimensions (pitch and roll);
       // set yaw covariance as very low, to make it dominate over the odometry heading
       // TODO 1: fill once, as its always the same;  TODO 2: cannot get better estimation?
-      for (unsigned i = 0; i < msg.orientation_covariance.size(); ++i)
-        msg.orientation_covariance[i] = DBL_MAX;
+//      for (unsigned i = 0; i < msg.orientation_covariance.size(); ++i)
+        msg.orientation_covariance[8] = 0.01;//DBL_MAX;
+        msg.orientation_covariance[4] = 0.01;//DBL_MAX;
 
-      msg.orientation_covariance[8] = 0.01;
+      msg.orientation_covariance[0] = 0.01;
 
       // ignore velocity and acceleration by now
 
