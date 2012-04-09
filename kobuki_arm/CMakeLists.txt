@@ -11,7 +11,8 @@ set(CMAKE_VERBOSE_MAKEFILE true)
 # YCS-ROS
 ##############################################################################
 
-include($ENV{YCS_ROOT}/ycs_tools/ycs_build/ycsbuild.cmake)
+#include($ENV{YCS_ROOT}/ycs_tools/ycs_build/ycsbuild.cmake)
+include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 
 ##############################################################################
 # Build
@@ -34,7 +35,8 @@ include($ENV{YCS_ROOT}/ycs_tools/ycs_build/ycsbuild.cmake)
 # Init - the order of the preceding commands is important!
 ##############################################################################
 
-ycsbuild_init()
+#ycsbuild_init()
+rosbuild_init()
 
 ##############################################################################
 # Messages/Services

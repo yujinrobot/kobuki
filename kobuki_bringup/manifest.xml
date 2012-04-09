@@ -14,9 +14,9 @@
   <depend package="kobuki_description"/>
   
   <!--  Ycs - These need to disappear -->
-  <depend package="diff_drive_base"/>
-  <depend package="diff_drive_gyro_base"/>
-  <depend package="keyop_core"/>
+<!--   <depend package="diff_drive_base"/> deprecated -->
+<!--   <depend package="diff_drive_gyro_base"/> deprecated -->
+  <depend package="keyop_core"/> <!-- launch file dependency; either this or turtlebot teleop -->
   
   <!--  Ros -->
   <depend package="robot_state_publisher"/>
