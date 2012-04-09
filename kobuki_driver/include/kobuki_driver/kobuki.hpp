@@ -29,8 +29,6 @@
 #include "packet_finder.hpp"
 #include "parameters.hpp"
 
-// [ version 1 ]
-#include "data.hpp"
 // [ version 2 ]
 #include <kobuki_comms/Header.h>
 #include "default.hpp"
@@ -133,7 +131,6 @@ public:
   bool run();
   bool stop();
   void close();
-  void getData(kobuki_comms::SensorData&);
   void getSensorData(kobuki_comms::SensorData&);
   void getIRData(kobuki_comms::IR&);
   void getDockIRData(kobuki_comms::DockIR&);
@@ -157,7 +154,6 @@ public:
   void pubtime(const char *);
 
 private:
-  //KobukiMainboardDriver kobuki_receiver;
   StopWatch stopwatch;
 
   unsigned short last_timestamp;
@@ -186,7 +182,6 @@ private:
   const double tick_to_mm, tick_to_rad;
 
   Serial serial;
-  Data data;
 
   // [ vserion 2 ]
   DefaultData kobuki_default;

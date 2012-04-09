@@ -368,26 +368,6 @@ void Kobuki::runnable()
   }
 }
 
-void Kobuki::getData(kobuki_comms::SensorData &sensor_data)
-{
-  sensor_data.header0 = data.header0;
-  sensor_data.time_stamp = data.time_stamp;
-  sensor_data.bump = data.bump;
-  sensor_data.wheel_drop = data.wheel_drop;
-  sensor_data.cliff = data.cliff;
-  sensor_data.left_encoder = data.encoder[0];
-  sensor_data.right_encoder = data.encoder[1];
-  sensor_data.left_pwm = data.pwm[0];
-  sensor_data.right_pwm = data.pwm[1];
-  sensor_data.dustbin = data.dustbin;
-  sensor_data.remote = data.remote;
-  sensor_data.button = data.button;
-  sensor_data.charger = data.charger;
-  sensor_data.battery = data.battery;
-  sensor_data.caster = data.caster;
-  sensor_data.over_current = data.over_current;
-}
-
 void Kobuki::getSensorData(kobuki_comms::SensorData &sensor_data)
 {
   if (protocol_version == "2.0") {
