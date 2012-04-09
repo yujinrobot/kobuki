@@ -125,6 +125,8 @@ int main(int argc, char **argv)
   std::cout << "    Out Iso     : " << eeprom.out_is_isochronous << std::endl;
   std::cout << "    Suspend     : " << eeprom.suspend_pull_downs << std::endl;
   std::cout << "    Max Power   : " << eeprom.max_power << std::endl;
+  std::cout << "    BM Type Chip: " << eeprom.BM_type_chip << std::endl;
+
   // have to decode this one manually from the function above since it is not
   // actually stored in the eeprom binary
   eeprom.size = size;
@@ -147,7 +149,8 @@ int main(int argc, char **argv)
     return EXIT_FAILURE;
   }
   std::cout << "  Writing binary to flash." << std::endl;
-  int result = ftdi_write_eeprom(&ftdi, eeprom_binary);
+  //int result = ftdi_write_eeprom(&ftdi, eeprom_binary);
+  int result = -1;
   if (result < 0)
   {
     std::cerr << "Could not rewrite the eeprom." << std::endl;
