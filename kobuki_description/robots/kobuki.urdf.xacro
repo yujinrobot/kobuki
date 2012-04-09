@@ -1,38 +1,11 @@
 <?xml version="1.0" ?>
-
-<!--  
-  == USAGE ==
-  
-  - loaded into the kinematics node (move_arm.launch).
-  - loaded into model viewer (view_model.launch).
-  - loaded into robot viewer (view_robot.launch).
-  
-  == TODO ==
-  
-   - redo with real parameters later!
-   - finish arm visuals
-   
-  == UPDATE ==
-  
-  If changing anything here, be sure to:
-  
-  - yaml/robot/*.yaml (joint name strings)
-  - yaml/robot/joints.yaml (joint limits)
-  - yaml/mobile_base/diff_drive_base.yaml (wheel name strings, bias, wheel_radius)
-  - yaml/mechanisms/gripper,head,stereo_came_tilt.controller (joint name strings)
-  - goo/*.yaml (actuator_name strings)
--->
-<robot
-  xmlns:xacro="http://www.ros.org/wiki/xacro"
-  name="kobuki"
-  >
-
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="kobuki">
   <!-- ************************** Xacro ************************** -->
 
   <xacro:property name="bias" value="0.298" />
   <xacro:property name="wheel_radius" value="0.042" />
   <xacro:property name="pi" value="3.1415926535897931" />
-
+<!-- 	ML: Do we need all these colours?		 -->
   <xacro:property name="material_white">
     <material name="white">
       <color rgba="1 1 1 1"/>
