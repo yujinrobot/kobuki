@@ -105,6 +105,11 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
   slot_eeprom.connect(name + std::string("/eeprom"));
   slot_gp_input.connect(name + std::string("/gp_input"));
 
+  slot_debug.connect(name + std::string("/ros_debug"));
+  slot_info.connect(name + std::string("/ros_info"));
+  slot_warn.connect(name + std::string("/ros_warn"));
+  slot_error.connect(name + std::string("/ros_error"));
+
   /*********************
    ** Parameters
    **********************/
@@ -168,6 +173,10 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
     }
     return false;
   }
+
+//  ecl::SigSlotsManager<>::printStatistics();
+//  ecl::SigSlotsManager<const std::string&>::printStatistics();
+
   return true;
 }
 
@@ -429,6 +438,7 @@ void KobukiNodelet::publishInertiaData()
       kobuki.getInertiaData(data);
       data.header.stamp = ros::Time::now();
       inertia_data_publisher.publish(data);
+std::cout << data.angle<<"   " << std::endl;
       //std::cout << __func__ << std::endl;
     }
   }

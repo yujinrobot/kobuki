@@ -94,7 +94,6 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   stx.push_back(0x55);
   packet_finder.configure(stx, etx, 1, 64, 1, true);
 
-  //std::cout << "is enable?" << std::endl;
   /******************************************
    ** Configuration & Connection Test
    *******************************************/
