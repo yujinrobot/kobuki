@@ -43,7 +43,7 @@ namespace kobuki
 class Parameters
 {
 public:
-  Parameters() : simulation(true) {}
+  Parameters() : simulation(false) {}
 
   std::string device_port;
   std::string protocol_version;
