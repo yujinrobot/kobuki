@@ -1,0 +1,14 @@
+<package>
+  <description brief="kobuki_udev">
+
+     kobuki_udev
+
+  </description>
+  <author>Daniel Stonier</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/kobuki_udev</url>
+
+</package>
+
+

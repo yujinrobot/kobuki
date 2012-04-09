@@ -1,0 +1,33 @@
+<package>
+  <description brief="c++ driver library for kobuki">
+    <p>
+      Pure c++ driver library for kobuki. This is for those who do not wish to use 
+      ros on their systems.
+    </p>
+  </description>
+  <author>Daniel Stonier</author>
+  <license>BSD</license>
+  <review status="experimental" notes=""/>
+  <url>http://ros.org/wiki/kobuki_driver</url>
+  
+  <!--  Embedded control libraries -->
+  <depend package="ecl_converters"/>
+  <depend package="ecl_devices"/>
+  <depend package="ecl_geometry"/>
+  <depend package="ecl_sigslots"/>
+  <depend package="ecl_time"/>
+  
+  <!-- **** These have to disappear **** -->
+  <!-- Ros -->
+  <depend package="roscpp"/>
+  <!-- Ycs -->
+  <depend package="device_comms"/>
+  <!-- Kobuki -->
+  <depend package="kobuki_comms"/>
+  
+  <export>
+    <cpp cflags="-I${prefix}/include" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lkobuki"/>
+  </export>
+</package>
+
+

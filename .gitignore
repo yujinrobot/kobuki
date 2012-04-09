@@ -1,4 +1,3 @@
-bin/
 build/
+bin/
 lib/
-srv_gen/

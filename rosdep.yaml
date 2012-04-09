@@ -1,0 +1,4 @@
+unison:
+  ubuntu: unison unison-gtk
+  gentoo: net-misc/unison
+

@@ -17,16 +17,15 @@
 *****************************************************************************/
 
 #include <ros/ros.h>
-#include <iostream>
 #include <device_nodelet/device_nodelet.hpp>
 #include <geometry_msgs/Twist.h>
 #include <device_comms/JointCommand.h>
 #include <device_comms/JointState.h>
-#include <iclebo_comms/iClebo.h>
+#include <kobuki_comms/SensorData.h>
 #include <ecl/sigslots.hpp>
-#include <ecl/threads/thread.hpp>
 #include <standard_comms/StringString.h>
-#include "kobuki.hpp"
+#include <kobuki_driver/kobuki.hpp>
+#include <sensor_msgs/JointState.h>
 
 /*****************************************************************************
 ** Namespaces
@@ -65,31 +64,25 @@ private:
 	void advertiseTopics(ros::NodeHandle& nh);
 	void subscribeTopics(ros::NodeHandle& nh);
 
-    	// Don't need to override the device nodelet enable/disable topic callbacks
-
-	Kobuki iclebo;
+	Kobuki kobuki;
+	const std::string wheel_left_name;
+	const std::string wheel_right_name;
 	
-	//iCleboMainboardDriver iclebo_receiver();
-	//iCleboMainboardData data;
-	//example
-	//iclebo.getData(data);
-        //left_wheels=data.encoder[0];
-
 	/*********************
 	** Ros Comms
 	**********************/
-	ros::Publisher left_wheel_state_publisher;
-	ros::Publisher right_wheel_state_publisher;
+	ros::Publisher wheel_left_state_publisher;
+	ros::Publisher wheel_right_state_publisher;
 	ros::Publisher sensor_data_publisher;
-	ros::Subscriber left_wheel_command_subscriber, right_wheel_command_subscriber;
+	ros::Subscriber wheel_left_command_subscriber, wheel_right_command_subscriber;
 	ros::Subscriber velocity_command_subscriber;
-	ros::Subscriber iclebo_command_subscriber;
+	ros::Subscriber kobuki_command_subscriber;
 
 	ecl::Slot<> slot_wheel_state, slot_sensor_data;
 	ecl::Signal< const device_comms::JointCommand > sig_joint_command;
-	// [ 2 ]
+
+	sensor_msgs::JointState joint_states;
 	ros::Publisher
-		default_data_publisher, 
 		ir_data_publisher,       
 		dock_ir_data_publisher,  
 		inertia_data_publisher,  
@@ -101,11 +94,10 @@ private:
 		time_data_publisher,     
 		st_gyro_data_publisher,  
 		eeprom_data_publisher,   
-		gp_input_data_publisher;
-//		reserved0_data_publisher ;
+		gp_input_data_publisher,
+	        joint_state_publisher;
 
 	ecl::Slot<> 
-		slot_default ,
 		slot_ir      ,
 		slot_dock_ir ,
 		slot_inertia ,
@@ -118,14 +110,14 @@ private:
 		slot_st_gyro ,
 		slot_eeprom  ,
 		slot_gp_input;
-//		slot_reserved0;
+
+	ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
 
 	/*********************
 	** SigSlots
 	**********************/
 	void publishWheelState();
 	void publishSensorData();
-	void publishDefaultData();
 	void publishIRData();
 	void publishDockIRData();
 	void publishInertiaData();
@@ -141,18 +133,25 @@ private:
 	void subscribeJointCommandLeft(const device_comms::JointCommand);
 	void subscribeJointCommandRight(const device_comms::JointCommand);
 	void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr&);
-	void subscribeiCleboCommand(const iclebo_comms::iCleboCommandConstPtr&);
+	void subscribeKobukiCommand(const kobuki_comms::CommandConstPtr&);
+
+	/*********************
+        ** Ros Logging
+        **********************/
+	void rosDebug(const std::string &msg) { ROS_DEBUG_STREAM(msg);	}
+        void rosInfo(const std::string &msg) { ROS_INFO_STREAM(msg); }
+        void rosWarn(const std::string &msg) { ROS_WARN_STREAM(msg); }
+        void rosError(const std::string &msg) { ROS_ERROR_STREAM(msg); }
 
 	void enable() 
 	{ 
-		iclebo.run();
-		iclebo.reset();
-		ROS_INFO_STREAM( "iclebo enabled." ); 
+		kobuki.run();
+		ROS_INFO_STREAM( "kobuki enabled." ); 
 	};
 
 	void disable(){ 
-		iclebo.stop();
-		ROS_INFO_STREAM( "iclebo disable." ); 
+		kobuki.stop();
+		ROS_INFO_STREAM( "kobuki disable." ); 
 	};
 };
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-import roslib; roslib.load_manifest('iclebo_ros_node')
+import roslib; roslib.load_manifest('kobuki_ros_node')
 import rospy
 
-from iclebo_comms.msg import iCleboCurrent
+from kobuki_comms.msg import Current
 from standard_comms.msg import Float32ArrayStamped
 
 def callback(data):
@@ -20,7 +20,7 @@ def callback(data):
 
 def relay():
 	rospy.init_node('currents_interpreter')
-	rospy.Subscriber('in', iCleboCurrent, callback)
+	rospy.Subscriber('in', Current, callback)
 	rospy.spin()
 
 if __name__ == '__main__':

@@ -9,32 +9,26 @@
   <review status="unreviewed" notes=""/>
   <url>http://www.ros.org/wiki/kobuki/kobuki_arm/</url>
 
-  <!-- Ros-Common -->
+  <!-- Ros -->
+  <depend package="roscpp"/>
   <depend package="nodelet"/>
-  <depend package="roslib"/>
-  <depend package="rospy"/>
+  <depend package="geometry_msgs"/>
+  <depend package="sensor_msgs"/>
 
+  <!--  Kobuki -->
+  <depend package="kobuki_comms"/>
+  <depend package="kobuki_driver"/>
+  
   <!-- Ycs -->
   <depend package="device_nodelet"/>
-  <depend package="ftdi"/>
   <depend package="device_comms"/>
-  <depend package="iclebo_comms"/>
   <depend package="standard_comms"/>
-  <depend package="packet_handler"/>  <!-- ycs_devices/comms/packet_handler -->
-  <depend package="diff_drive_base"/>
+  
   <!-- Ecl -->
-  <depend package="ecl_time"/>
-  <depend package="ecl_devices"/>
-  <!--depend package="ecl_errors"/-->
   <depend package="ecl_exceptions"/>
-  <depend package="ecl_formatters"/>
-  <depend package="ecl_geometry"/>
   <depend package="ecl_sigslots"/>
   <depend package="ecl_streams"/>
-  <depend package="ecl_threads"/>
-  <depend package="ecl_converters"/>
   <export>
-    <cpp cflags="-I${prefix}/include" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib"/>
     <nodelet plugin="${prefix}/src/nodelets/kobuki_nodelet.xml"/>
   </export>
 </package>

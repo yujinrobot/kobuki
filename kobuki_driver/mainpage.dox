@@ -1,0 +1,9 @@
+/**
+\mainpage
+\htmlinclude manifest.html
+
+@section Overview
+
+This is a pure c++ library api for the kobuki mobile robot base.
+
+*/

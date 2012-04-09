@@ -1,7 +1,7 @@
 <package>
-  <description brief="Meta package for the Kobuki Bot">
+  <description brief="Meta package for kobukibot">
 
-    The meta package for the kobuki stack
+    The meta package for the kobuki stack.
      
   </description>
   <author>Younghun Ju</author>
@@ -9,40 +9,31 @@
   <review status="unreviewed" notes=""/>
   <url>http://www.ros.org/wiki/kobuki/kobuki_meta</url>
 
-  <depend package="cruizcore"/>
+  <!-- Kobuki -->
   <depend package="kobuki_node"/>
+  <depend package="kobuki_description"/>
+  
+  <!--  Ycs - These need to disappear -->
   <depend package="diff_drive_base"/>
   <depend package="diff_drive_gyro_base"/>
-
   <depend package="keyop_core"/>
-  <depend package="joyop_core"/>
+  
+  <!--  Ros -->
   <depend package="robot_state_publisher"/>
-  <depend package="joint_state_publisher"/>
-
-  <!-- kinect -->
-  <depend package="openni_launch"/>
-  <depend package="pointcloud_to_laserscan"/>
-
-  <!-- hokuyo -->
-  <depend package="hokuyo_node"/>
-
-  <!-- navigation -->
-  <depends package="navigation"/>
-  <depends package="gmapping"/>
 
   <!-- visualization -->
   <depend package="rviz"/>
 
-<!--
-  Typical options for a ycs-ros cpp style package providing headers/libs in the example below
-  <export>
-    <cpp cflags="-I${prefix}/include/share -I${prefix}/msg/cpp -I${prefix}/srv/cpp" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lgoo"/>
-  </export>
-  
-  Really common dependencies for a typical c++ ycs-ros control node:
-  <depend package="roscpp"/>        // c++ ros nodes
-  
-  Including a system package as a dependency
-  <rosdep name="boost"/>
--->
+  <!-- System Utilities -->
+  <rosdep name="unison"/>
+
+  <!-- 3d Sensing -->
+  <depend package="openni_camera"/>
+  <depend package="pointcloud_to_laserscan"/>
+
+  <!-- Integrate Later
+  <depends package="navigation"/>
+  <depends package="gmapping"/>
+ -->
+ 
 </package>
