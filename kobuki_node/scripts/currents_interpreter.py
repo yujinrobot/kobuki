@@ -3,7 +3,7 @@ import roslib; roslib.load_manifest('kobuki_ros_node')
 import rospy
 
 from kobuki_comms.msg import Current
-from standard_comms.msg import Float32ArrayStamped
+from standard_comms.msg import Float32ArrayStamped #standard_comms are deprecated!
 
 def callback(data):
 	pub = rospy.Publisher('out', Float32ArrayStamped)
@@ -12,7 +12,7 @@ def callback(data):
 	#for i in range(len(data.current)):
 	#	print "data " + repr(i) + ":" + repr(ord(data.current[i]))
 
-	msg = Float32ArrayStamped()
+	msg = Float32MultiArray()
 	msg.header = data.header
 	msg.data.append(25 * float(ord(data.current[0])))
 	msg.data.append(25 * float(ord(data.current[1])))

@@ -1,13 +1,13 @@
 <package>
-  <description brief="kobuki node for turtlebot">
+  <description brief="ROS node for Kobuki">
   <p>
-     Currently a mix of kobuki driver code, tools and node wrapper.
+     ROS wrapper for Kobuki driver
   </p>
   </description>
   <author>Younghun Ju</author>
   <license>Yujin</license>
   <review status="unreviewed" notes=""/>
-  <url>http://www.ros.org/wiki/kobuki/kobuki_arm/</url>
+  <url>http://www.ros.org/wiki/kobuki/kobuki_node/</url>
   
   <!-- Ros -->
   <depend package="roscpp"/>
@@ -24,7 +24,7 @@
   <!-- Ycs -->
   <depend package="device_nodelet"/>
   <depend package="device_comms"/>
-  <depend package="standard_comms"/>
+<!--   <depend package="standard_comms"/> -->
   
   <!-- Ecl -->
   <depend package="ecl_exceptions"/>
