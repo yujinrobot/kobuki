@@ -30,7 +30,6 @@
 #include <device_comms/JointState.h>
 #include <kobuki_comms/SensorData.h>
 #include <ecl/sigslots.hpp>
-//#include <standard_comms/StringString.h> still needed?
 #include <kobuki_driver/kobuki.hpp>
 
 /*****************************************************************************
