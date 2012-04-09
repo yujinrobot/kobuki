@@ -7,7 +7,7 @@ wheel_left_name: wheel_left
 wheel_right_name: wheel_right
 
 # Causes node to publish TF for odom to base_link, use only when no gyro exists (bool, default: False)
-publish_tf: true
+publish_tf: false
 
 # Name of the odometry TF frame (string, default: odom)
 odom_frame: odom
