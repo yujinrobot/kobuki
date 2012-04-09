@@ -10,9 +10,15 @@
  ** Includes
  *****************************************************************************/
 
+#include <float.h>
+
+#include <tf/tf.h>
+#include <sensor_msgs/Imu.h>
+
 #include <pluginlib/class_list_macros.h>
 #include <ecl/streams/string_stream.hpp>
 #include "kobuki_node/kobuki_node.hpp"
+
 
 /*****************************************************************************
  ** Namespaces
@@ -202,6 +208,7 @@ void KobukiNodelet::advertiseTopics(ros::NodeHandle& nh)
   ir_data_publisher = nh.advertise < kobuki_comms::IR > ("ir_data", 100);
   dock_ir_data_publisher = nh.advertise < kobuki_comms::DockIR > ("dock_ir_data", 100);
   inertia_data_publisher = nh.advertise < kobuki_comms::Inertia > ("inertia_data", 100);
+  imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("imu_data", 100);
   cliff_data_publisher = nh.advertise < kobuki_comms::Cliff > ("cliff_data", 100);
   current_data_publisher = nh.advertise < kobuki_comms::Current > ("current_data", 100);
   magnet_data_publisher = nh.advertise < kobuki_comms::Magnet > ("merge_data", 100);
@@ -246,7 +253,6 @@ void KobukiNodelet::subscribeTopics(ros::NodeHandle& nh)
  */
 void KobukiNodelet::publishWheelState()
 {
-
   //waitForInitialisation();
   if (ros::ok() && !shutdown_requested)
   {
@@ -432,15 +438,45 @@ void KobukiNodelet::publishInertiaData()
 {
   if (ros::ok())
   {
+    // TODO This is useless by now... publish anyway
     if (inertia_data_publisher.getNumSubscribers() > 0)
     {
       kobuki_comms::Inertia data;
       kobuki.getInertiaData(data);
       data.header.stamp = ros::Time::now();
       inertia_data_publisher.publish(data);
-std::cout << data.angle<<"   " << std::endl;
       //std::cout << __func__ << std::endl;
     }
+
+    // Convert internal kobuki_comms::Inertia data into a ros sensor_msgs::Imu message
+    if (imu_data_publisher.getNumSubscribers() > 0)
+    {
+      kobuki_comms::Inertia data;
+      kobuki.getInertiaData(data);
+
+      sensor_msgs::Imu msg;
+      msg.header.frame_id = "odom";
+      msg.header.seq = data.header.seq;
+      msg.header.stamp = data.header.stamp;//ros::Time::now();
+
+      // angle comes as hundredths of degree, convert to radians
+      float yaw = (data.angle/18000.0)*M_PI;
+      msg.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0, 0.0, yaw);
+
+      // set a very large covariance on unused dimensions (pitch and roll);
+      // set yaw covariance as very low, to make it dominate over the odometry heading
+      // TODO 1: fill once, as its always the same;  TODO 2: cannot get better estimation?
+      for (unsigned i = 0; i < msg.orientation_covariance.size(); ++i)
+        msg.orientation_covariance[i] = DBL_MAX;
+
+      msg.orientation_covariance[8] = 0.01;
+
+      // ignore velocity and acceleration by now
+
+      imu_data_publisher.publish(msg);
+    }
+
+
   }
 }
 
