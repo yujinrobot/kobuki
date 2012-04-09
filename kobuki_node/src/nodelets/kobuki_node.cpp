@@ -10,9 +10,14 @@
  ** Includes
  *****************************************************************************/
 
+#include <float.h>
+
+#include <tf/tf.h>
+
 #include <pluginlib/class_list_macros.h>
 #include <ecl/streams/string_stream.hpp>
 #include "kobuki_node/kobuki_node.hpp"
+
 
 /*****************************************************************************
  ** Namespaces
@@ -32,13 +37,22 @@ namespace kobuki
 KobukiNodelet::KobukiNodelet() :
     wheel_left_name("wheel_left"),
     wheel_right_name("wheel_right"),
-    slot_wheel_state(&KobukiNodelet::publishWheelState, *this), slot_sensor_data(&KobukiNodelet::publishSensorData,*this),
+    odom_frame("odom"),
+    base_frame("base_footprint"),
+    publish_tf(false),
+    slot_wheel_state(&KobukiNodelet::publishWheelState, *this),
+    slot_sensor_data(&KobukiNodelet::publishSensorData,*this),
     slot_ir(&KobukiNodelet::publishIRData, *this),
-    slot_dock_ir(&KobukiNodelet::publishDockIRData, *this), slot_inertia(&KobukiNodelet::publishInertiaData, *this),
-    slot_cliff(&KobukiNodelet::publishCliffData, *this), slot_current(&KobukiNodelet::publishCurrentData, *this),
-    slot_magnet(&KobukiNodelet::publishMagnetData, *this), slot_hw(&KobukiNodelet::publishHWData, *this),
-    slot_fw(&KobukiNodelet::publishFWData, *this), slot_time(&KobukiNodelet::publishTimeData, *this),
-    slot_st_gyro(&KobukiNodelet::publishStGyroData, *this), slot_eeprom(&KobukiNodelet::publishEEPROMData, *this),
+    slot_dock_ir(&KobukiNodelet::publishDockIRData, *this),
+    slot_inertia(&KobukiNodelet::publishInertiaData, *this),
+    slot_cliff(&KobukiNodelet::publishCliffData, *this),
+    slot_current(&KobukiNodelet::publishCurrentData, *this),
+    slot_magnet(&KobukiNodelet::publishMagnetData, *this),
+    slot_hw(&KobukiNodelet::publishHWData, *this),
+    slot_fw(&KobukiNodelet::publishFWData, *this),
+    slot_time(&KobukiNodelet::publishTimeData, *this),
+    slot_st_gyro(&KobukiNodelet::publishStGyroData, *this),
+    slot_eeprom(&KobukiNodelet::publishEEPROMData, *this),
     slot_gp_input(&KobukiNodelet::publishGpInputData, *this),
     slot_debug(&KobukiNodelet::rosDebug, *this),
     slot_info(&KobukiNodelet::rosInfo, *this),
@@ -114,7 +128,7 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
    ** Parameters
    **********************/
   Parameters parameters;
-  //gyro_data->header.frame_id = ""; // unused - add a parameter should we need it later.
+
   parameters.sigslots_namespace = name; // name is automatically picked up by device_nodelet parent.
   if (!nh.getParam("device_port", parameters.device_port))
   {
@@ -124,7 +138,6 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
   if (!nh.getParam("protocol_version", parameters.protocol_version))
   {
     ROS_ERROR_STREAM("Kobuki : no protocol version given on the parameter server ('2.0')[" << name << "].");
-    std::cout << "protocol_version: " << parameters.protocol_version << std::endl;
     return false;
   }
 
@@ -142,6 +155,45 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
     ROS_INFO_STREAM("Kobuki : configured for connection on device_port " << parameters.device_port << " [" << name << "].");
     ROS_INFO_STREAM("Kobuki : configured for firmware protocol_version " << parameters.protocol_version << " [" << name << "].");
   }
+
+  /*********************
+   ** Frames
+   **********************/
+  if (!nh.getParam("odom_frame", odom_frame)) {
+    NODELET_WARN_STREAM("Kobuki : no param server setting for odom_frame, using default [" << odom_frame << "][" << name << "].");
+  } else {
+    NODELET_INFO_STREAM("Kobuki : using odom_frame [" << odom_frame << "][" << name << "].");
+  }
+
+  if (!nh.getParam("base_frame", base_frame))
+    NODELET_WARN_STREAM("Kobuki : no param server setting for base_frame, using default [" << base_frame << "][" << name << "].");
+  else
+    NODELET_INFO_STREAM("Kobuki : using base_frame [" << base_frame << "][" << name << "].");
+
+  if (!nh.getParam("publish_tf", publish_tf))
+    NODELET_WARN_STREAM("Kobuki : no param server setting for publish_tf, using default [" << publish_tf << "][" << name << "].");
+  else
+    NODELET_INFO_STREAM("Kobuki : using publish_tf [" << publish_tf << "][" << name << "].");
+
+  odom_trans.header.frame_id = odom_frame;
+  odom_trans.child_frame_id = base_frame;
+  odom.header.frame_id = odom_frame;
+  odom.child_frame_id = base_frame;
+
+  // Pose covariance (required by robot_pose_ekf) TODO: publish realistic values
+  odom.pose.covariance[0] = 0.1;
+  odom.pose.covariance[7] = 0.1;
+  odom.pose.covariance[35] = 0.2;
+
+  odom.pose.covariance[14] = 10;//DBL_MAX; // set a very large covariance on unused
+  odom.pose.covariance[21] = 10;//DBL_MAX; // dimensions (z, pitch and roll); this
+  odom.pose.covariance[28] = 10;//DBL_MAX; // is a requirement of robot_pose_ekf
+
+  pose.setIdentity();
+
+  /*********************
+   ** Published msgs
+   **********************/
 
   /*********************
    ** Driver Init
@@ -190,6 +242,7 @@ void KobukiNodelet::advertiseTopics(ros::NodeHandle& nh)
   ** Turtlebot Required
   **********************/
   joint_state_publisher = nh.advertise <sensor_msgs::JointState>("joint_states",100);
+  odom_publisher = nh.advertise<nav_msgs::Odometry>("odom", 50); // topic name and queue size
 
   /*********************
   ** Kobuki Esoterics
@@ -202,13 +255,14 @@ void KobukiNodelet::advertiseTopics(ros::NodeHandle& nh)
   ir_data_publisher = nh.advertise < kobuki_comms::IR > ("ir_data", 100);
   dock_ir_data_publisher = nh.advertise < kobuki_comms::DockIR > ("dock_ir_data", 100);
   inertia_data_publisher = nh.advertise < kobuki_comms::Inertia > ("inertia_data", 100);
+  imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("imu_data", 100);
   cliff_data_publisher = nh.advertise < kobuki_comms::Cliff > ("cliff_data", 100);
   current_data_publisher = nh.advertise < kobuki_comms::Current > ("current_data", 100);
   magnet_data_publisher = nh.advertise < kobuki_comms::Magnet > ("merge_data", 100);
   hw_data_publisher = nh.advertise < kobuki_comms::HW > ("hw_data", 100);
   fw_data_publisher = nh.advertise < kobuki_comms::FW > ("fw_data", 100);
   time_data_publisher = nh.advertise < kobuki_comms::Time > ("time_data", 100);
-  st_gyro_data_publisher = nh.advertise < kobuki_comms::StGyro > ("st_gyro_data", 100);
+  st_gyro_data_publisher = nh.advertise < kobuki_comms::StGyro > ("st_gyro_data", 100);  // TODO delete?
   eeprom_data_publisher = nh.advertise < kobuki_comms::EEPROM > ("eeprom_data", 100);
   gp_input_data_publisher = nh.advertise < kobuki_comms::GpInput > ("gp_input_data", 100);
 }
@@ -244,37 +298,84 @@ void KobukiNodelet::subscribeTopics(ros::NodeHandle& nh)
  * The type of commands sent to each motor (board) is identified by the feedback command held
  * in each motor.
  */
+
+
+void KobukiNodelet::publishTransform(const geometry_msgs::Quaternion &odom_quat)
+{
+  if (publish_tf == false)
+    return;
+
+  odom_trans.header.stamp = ros::Time::now();
+  odom_trans.transform.translation.x = pose.x();
+  odom_trans.transform.translation.y = pose.y();
+  odom_trans.transform.translation.z = 0.0;
+  odom_trans.transform.rotation = odom_quat;
+  odom_broadcaster.sendTransform(odom_trans);
+}
+
+void KobukiNodelet::publishOdom(const geometry_msgs::Quaternion &odom_quat,
+                                const ecl::linear_algebra::Vector3d &pose_update_rates)
+{
+  odom.header.stamp = ros::Time::now();
+
+  // Position
+  odom.pose.pose.position.x = pose.x();
+  odom.pose.pose.position.y = pose.y();
+  odom.pose.pose.position.z = 0.0;
+  odom.pose.pose.orientation = odom_quat;
+
+  // Velocity
+  odom.twist.twist.linear.x = pose_update_rates[0];
+  odom.twist.twist.linear.y = pose_update_rates[1];
+  odom.twist.twist.angular.z = pose_update_rates[2];
+
+  odom_publisher.publish(odom);
+}
+
 void KobukiNodelet::publishWheelState()
 {
-
   //waitForInitialisation();
   if (ros::ok() && !shutdown_requested)
   {
-    if (wheel_left_state_publisher.getNumSubscribers() > 0)
-    {
+//    if (wheel_left_state_publisher.getNumSubscribers() > 0)
+  //  {
 //      kobuki.pubtime("  wheel_left:ent");
-      device_comms::JointState joint_state;
-      joint_state.name = "wheel_left";
-      joint_state.stamp = ros::Time::now();
-      kobuki.getJointState(joint_state);
-      wheel_left_state_publisher.publish(joint_state);
+      device_comms::JointState joint_state_l;
+      joint_state_l.name = "wheel_left";
+      joint_state_l.stamp = ros::Time::now();
+      kobuki.getJointState(joint_state_l);
+      wheel_left_state_publisher.publish(joint_state_l);
 //      kobuki.pubtime("  wheel_left:pub");
-    }
+/*    }
     if (wheel_right_state_publisher.getNumSubscribers() > 0)
-    {
+    {*/
 //      kobuki.pubtime("  wheel_right:ent");
-      device_comms::JointState joint_state;
-      joint_state.name = "wheel_right";
-      joint_state.stamp = ros::Time::now();
-      kobuki.getJointState(joint_state);
-      wheel_right_state_publisher.publish(joint_state);
+      device_comms::JointState joint_state_r;
+      joint_state_r.name = "wheel_right";
+      joint_state_r.stamp = ros::Time::now();
+      kobuki.getJointState(joint_state_r);
+      wheel_right_state_publisher.publish(joint_state_r);
 //      kobuki.pubtime("  wheel_right:pub");
-    }
+//    }
 
-    kobuki.updateOdometry(joint_states.position[0],joint_states.velocity[0],
-                          joint_states.position[1],joint_states.velocity[1]);
+    // TODO really horrible; refactor
+    ecl::Pose2D<double> pose_update;
+    ecl::linear_algebra::Vector3d pose_update_rates;
+
+    kobuki.updateOdometry(joint_state_l.position, joint_state_l.velocity,
+                          joint_state_r.position, joint_state_r.velocity,
+                          pose_update, pose_update_rates);
+
     joint_states.header.stamp = ros::Time::now();
     joint_state_publisher.publish(joint_states);
+
+    pose *= pose_update;
+
+    //since all ros tf odometry is 6DOF we'll need a quaternion created from yaw
+    geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(pose.heading());
+
+    publishTransform(odom_quat);
+    publishOdom(odom_quat, pose_update_rates);
   }
 }
 
@@ -432,15 +533,46 @@ void KobukiNodelet::publishInertiaData()
 {
   if (ros::ok())
   {
+    // TODO This is useless by now... publish anyway
     if (inertia_data_publisher.getNumSubscribers() > 0)
     {
       kobuki_comms::Inertia data;
       kobuki.getInertiaData(data);
       data.header.stamp = ros::Time::now();
       inertia_data_publisher.publish(data);
-std::cout << data.angle<<"   " << std::endl;
       //std::cout << __func__ << std::endl;
     }
+
+    // Convert internal kobuki_comms::Inertia data into a ros sensor_msgs::Imu message
+    if (imu_data_publisher.getNumSubscribers() > 0)
+    {
+      kobuki_comms::Inertia data;
+      kobuki.getInertiaData(data);
+
+      sensor_msgs::Imu msg;
+      msg.header.frame_id;// = odom_frame;
+      msg.header.seq = data.header.seq;
+      msg.header.stamp = ros::Time::now();
+
+      // angle comes as hundredths of degree, convert to radians
+      float yaw = (data.angle/18000.0)*M_PI;
+      msg.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0, 0.0, yaw);
+
+      // set a very large covariance on unused dimensions (pitch and roll);
+      // set yaw covariance as very low, to make it dominate over the odometry heading
+      // TODO 1: fill once, as its always the same;  TODO 2: cannot get better estimation?
+//      for (unsigned i = 0; i < msg.orientation_covariance.size(); ++i)
+        msg.orientation_covariance[8] = 0.01;//DBL_MAX;
+        msg.orientation_covariance[4] = 0.01;//DBL_MAX;
+
+      msg.orientation_covariance[0] = 0.01;
+
+      // ignore velocity and acceleration by now
+
+      imu_data_publisher.publish(msg);
+    }
+
+
   }
 }
 

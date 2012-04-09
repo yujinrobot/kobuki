@@ -24,6 +24,7 @@
 #include <ecl/threads.hpp>
 #include <ecl/devices.hpp>
 #include <ecl/time.hpp>
+#include <ecl/mobile_robot.hpp>
 
 #include <ecl/exceptions/standard_exception.hpp>
 #include "packet_finder.hpp"
@@ -131,7 +132,9 @@ public:
   void getGpInputData(kobuki_comms::GpInput&);
 
   void updateOdometry(double &wheel_left_position, double &wheel_left_velocity,
-                      double &wheel_right_position, double &wheel_right_velocity);
+                      double &wheel_right_position, double &wheel_right_velocity,
+                      ecl::Pose2D<double> &pose_update,
+                      ecl::linear_algebra::Vector3d &pose_update_rates);
   void getJointState(device_comms::JointState&);
   void setCommand(double, double);
   void sendCommand();
@@ -153,6 +156,7 @@ private:
   short radius;
   short speed;
   double bias; //wheelbase, wheel_to_wheel, in [m]
+  double wheel_radius;
 
   std::string device_type;
   std::string protocol_version;
@@ -193,6 +197,10 @@ private:
   ecl::Signal<const std::string&> sig_debug, sig_info, sig_warn, sig_error;
 
   std::set<unsigned char> sig_index;
+
+  boost::shared_ptr<ecl::DifferentialDrive::Kinematics> kinematics;
+
+  bool simulation;
 };
 
 } // namespace cruizcore

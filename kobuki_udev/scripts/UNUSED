@@ -1,0 +1,2 @@
+
+We pre-program the kobuki ftdi chip with a serial id, so no need for these cumbersome scripts.

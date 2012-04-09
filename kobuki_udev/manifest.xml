@@ -8,7 +8,9 @@
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/kobuki_udev</url>
-
+  <depend package="ecl_command_line"/>
+  <rosdep name="ftdi"/>
+  <rosdep name="ftdi-eeprom"/>
 </package>
 
 

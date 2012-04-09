@@ -8,12 +8,14 @@
   <license>Yujin</license>
   <review status="unreviewed" notes=""/>
   <url>http://www.ros.org/wiki/kobuki/kobuki_arm/</url>
-
+  
   <!-- Ros -->
   <depend package="roscpp"/>
   <depend package="nodelet"/>
   <depend package="geometry_msgs"/>
   <depend package="sensor_msgs"/>
+  <depend package="nav_msgs"/>
+  <depend package="tf"/>
 
   <!--  Kobuki -->
   <depend package="kobuki_comms"/>

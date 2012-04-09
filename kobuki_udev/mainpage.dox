@@ -2,25 +2,14 @@
 \mainpage
 \htmlinclude manifest.html
 
-\b kobuki_udev is ... 
+@section Eeprom
 
-<!-- 
-Provide an overview of your package.
--->
+We will program this into the chip at the factory. The utility programs in src help us do that
+but currently don't work for R232RL type chips. The example ftdi program works though, so there
+should be a good hint as to how to proceed there.
 
+@section Udev
 
-\section codeapi Code API
-
-<!--
-Provide links to specific auto-generated API documentation within your
-package that is of particular interest to a reader. Doxygen will
-document pretty much every part of your code, so do your best here to
-point the reader to the actual API.
-
-If your codebase is fairly large or has different sets of APIs, you
-should use the doxygen 'group' tag to keep these APIs together. For
-example, the roscpp documentation has 'libros' group.
--->
-
+We simply copy across a udev rule to kickstart /dev/kobuki.
 
 */

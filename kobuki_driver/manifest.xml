@@ -11,6 +11,7 @@
   <url>http://ros.org/wiki/kobuki_driver</url>
   
   <!--  Embedded control libraries -->
+  <depend package="ecl_mobile_robot"/>
   <depend package="ecl_converters"/>
   <depend package="ecl_devices"/>
   <depend package="ecl_geometry"/>
