@@ -111,6 +111,8 @@ private:
 		slot_eeprom  ,
 		slot_gp_input;
 
+	ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
+
 	/*********************
 	** SigSlots
 	**********************/
@@ -132,6 +134,14 @@ private:
 	void subscribeJointCommandRight(const device_comms::JointCommand);
 	void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr&);
 	void subscribeKobukiCommand(const kobuki_comms::CommandConstPtr&);
+
+	/*********************
+        ** Ros Logging
+        **********************/
+	void rosDebug(const std::string &msg) { ROS_DEBUG_STREAM(msg);	}
+        void rosInfo(const std::string &msg) { ROS_INFO_STREAM(msg); }
+        void rosWarn(const std::string &msg) { ROS_WARN_STREAM(msg); }
+        void rosError(const std::string &msg) { ROS_ERROR_STREAM(msg); }
 
 	void enable() 
 	{ 

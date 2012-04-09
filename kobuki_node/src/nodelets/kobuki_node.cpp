@@ -39,7 +39,11 @@ KobukiNodelet::KobukiNodelet() :
     slot_magnet(&KobukiNodelet::publishMagnetData, *this), slot_hw(&KobukiNodelet::publishHWData, *this),
     slot_fw(&KobukiNodelet::publishFWData, *this), slot_time(&KobukiNodelet::publishTimeData, *this),
     slot_st_gyro(&KobukiNodelet::publishStGyroData, *this), slot_eeprom(&KobukiNodelet::publishEEPROMData, *this),
-    slot_gp_input(&KobukiNodelet::publishGpInputData, *this)
+    slot_gp_input(&KobukiNodelet::publishGpInputData, *this),
+    slot_debug(&KobukiNodelet::rosDebug, *this),
+    slot_info(&KobukiNodelet::rosInfo, *this),
+    slot_warn(&KobukiNodelet::rosWarn, *this),
+    slot_error(&KobukiNodelet::rosError, *this)
 {
   joint_states.name.push_back("left_wheel_joint");
   joint_states.name.push_back("right_wheel_joint");

@@ -78,6 +78,11 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_eeprom.connect(sigslots_namespace + std::string("/eeprom"));
   sig_gp_input.connect(sigslots_namespace + std::string("/gp_input"));
 
+  sig_debug.connect(sigslots_namespace + std::string("/ros_debug"));
+  sig_info.connect(sigslots_namespace + std::string("/ros_info"));
+  sig_warn.connect(sigslots_namespace + std::string("/ros_warn"));
+  sig_error.connect(sigslots_namespace + std::string("/ros_error"));
+
   is_running = true;
   is_connected = true;
 
