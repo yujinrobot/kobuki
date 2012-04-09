@@ -3,6 +3,8 @@
  *
  * @brief Implementation for the cruizcore device driver.
  *
+ * Dude
+ *
  * @date 20/08/2010
  **/
 
