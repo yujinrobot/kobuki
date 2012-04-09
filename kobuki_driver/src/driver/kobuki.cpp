@@ -108,6 +108,9 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   radius = 0;
   speed = 0;
   bias = 0.298; //wheelbase, wheel_to_wheel, in [m]
+  wheel_radius = 0.042;
+
+  kinematics.reset(new ecl::DifferentialDrive::Kinematics(bias, wheel_radius));
 
   start();
 }
@@ -448,7 +451,9 @@ void Kobuki::getGpInputData(kobuki_comms::GpInput &data)
  * We then emit whatever struct we want to get from this.
  **/
 void Kobuki::updateOdometry(double &wheel_left_position, double &wheel_left_velocity,
-                            double &wheel_right_position, double &wheel_right_velocity) {
+                            double &wheel_right_position, double &wheel_right_velocity,
+                            ecl::Pose2D<double> &pose_update,
+                            ecl::linear_algebra::Vector3d &pose_update_rates) {
   static bool init_l = false;
   static bool init_r = false;
   double left_diff_ticks = 0.0f;
@@ -479,6 +484,9 @@ void Kobuki::updateOdometry(double &wheel_left_position, double &wheel_left_velo
   last_rad_right += tick_to_rad * right_diff_ticks;
   last_mm_right += tick_to_mm / 1000.0f * right_diff_ticks;
 
+  // TODO this line and the last statements are really ugly; refactor, put in another place
+  pose_update = kinematics->forward(tick_to_rad * left_diff_ticks, tick_to_rad * right_diff_ticks);
+
   if (curr_timestamp != last_timestamp)
   {
     last_diff_time = ((double)(short)((curr_timestamp - last_timestamp) & 0xffff)) / 1000.0f;
@@ -494,7 +502,11 @@ void Kobuki::updateOdometry(double &wheel_left_position, double &wheel_left_velo
   wheel_left_position = last_rad_left;
   wheel_right_position = last_rad_right;
 
+  pose_update_rates << pose_update.x()/last_diff_time,
+                       pose_update.y()/last_diff_time,
+                       pose_update.heading()/last_diff_time;
 }
+
 void Kobuki::getJointState(device_comms::JointState &joint_state)
 {
 //  static bool init_l = false;

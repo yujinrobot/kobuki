@@ -16,16 +16,22 @@
  ** Includes
  *****************************************************************************/
 
+#include <boost/shared_ptr.hpp>
+
 #include <ros/ros.h>
-#include <device_nodelet/device_nodelet.hpp>
+#include <sensor_msgs/JointState.h>
+#include <sensor_msgs/Imu.h>
 #include <geometry_msgs/Twist.h>
+#include <nav_msgs/Odometry.h>
+#include <tf/transform_broadcaster.h>
+
+#include <device_nodelet/device_nodelet.hpp>
 #include <device_comms/JointCommand.h>
 #include <device_comms/JointState.h>
 #include <kobuki_comms/SensorData.h>
 #include <ecl/sigslots.hpp>
 #include <standard_comms/StringString.h>
 #include <kobuki_driver/kobuki.hpp>
-#include <sensor_msgs/JointState.h>
 
 /*****************************************************************************
  ** Namespaces
@@ -58,6 +64,8 @@ public:
   KobukiNodelet();
   ~KobukiNodelet();
 
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
 private:
   /******************************************
    ** Device Nodelet Setup
@@ -66,13 +74,30 @@ private:
   void advertiseTopics(ros::NodeHandle& nh);
   void subscribeTopics(ros::NodeHandle& nh);
 
+  void publishTransform(const geometry_msgs::Quaternion &odom_quat);
+  void publishOdom(const geometry_msgs::Quaternion &odom_quat, const ecl::linear_algebra::Vector3d &pose_update_rates);
+
   Kobuki kobuki;
   const std::string wheel_left_name;
   const std::string wheel_right_name;
 
+  std::string odom_frame;
+  std::string base_frame;
+  bool        publish_tf;
+
+  /*********************
+  ** Variables
+  **********************/
+  // Continuously published messages
+  geometry_msgs::TransformStamped odom_trans;
+  nav_msgs::Odometry odom;
+  ecl::Pose2D<double> pose;
+
   /*********************
    ** Ros Comms
    **********************/
+  tf::TransformBroadcaster odom_broadcaster;
+  ros::Publisher odom_publisher;
   ros::Publisher wheel_left_state_publisher;
   ros::Publisher wheel_right_state_publisher;
   ros::Publisher sensor_data_publisher;
