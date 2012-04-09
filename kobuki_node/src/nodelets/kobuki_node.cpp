@@ -114,7 +114,7 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
   }
   if (!nh.getParam("protocol_version", parameters.protocol_version))
   {
-    ROS_ERROR_STREAM("Kobuki : no protocol version given on the parameter server ('1.0'||'2.0')[" << name << "].");
+    ROS_ERROR_STREAM("Kobuki : no protocol version given on the parameter server ('2.0')[" << name << "].");
     std::cout << "protocol_version: " << parameters.protocol_version << std::endl;
     return false;
   }

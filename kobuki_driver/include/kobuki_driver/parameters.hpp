@@ -54,7 +54,7 @@ public:
    */
   bool validate()
   {
-    if ((protocol_version != "1.0") && (protocol_version != "2.0"))
+    if (protocol_version != "2.0")
     {
       error_msg = std::string("protocol_version must be either '1.0' or '2.0' (") + protocol_version + std::string(")");
       return false;
