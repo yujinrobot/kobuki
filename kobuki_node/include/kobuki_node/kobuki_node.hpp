@@ -83,7 +83,6 @@ private:
 
 	sensor_msgs::JointState joint_states;
 	ros::Publisher
-		default_data_publisher, 
 		ir_data_publisher,       
 		dock_ir_data_publisher,  
 		inertia_data_publisher,  

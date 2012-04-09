@@ -213,11 +213,7 @@ void Kobuki::runnable()
       data_buffer.pop_front();
       data_buffer.pop_front();
 
-      if (protocol_version == "1.0")
-      {
-        data2.deserialise(data_buffer);
-      }
-      else if (protocol_version == "2.0")
+      if (protocol_version == "2.0")
       {
         sig_index.clear();
         while (data_buffer.size() > 1/*size of etx*/)
@@ -296,11 +292,6 @@ void Kobuki::runnable()
 
       //if( verbose ) data.showMe();
       //data.showMe();
-      if (protocol_version == "1.0")
-      {
-        sig_sensor_data.emit();
-        sig_wheel_state.emit();
-      }
       if (protocol_version == "2.0")
       {
         std::set<unsigned char>::iterator it;
@@ -397,114 +388,81 @@ void Kobuki::getData(kobuki_comms::SensorData &sensor_data)
   sensor_data.over_current = data.over_current;
 }
 
-void Kobuki::getData2(kobuki_comms::SensorData &sensor_data)
+void Kobuki::getSensorData(kobuki_comms::SensorData &sensor_data)
 {
-  if (protocol_version == "1.0")
-    sensor_data = data2.data;
-  if (protocol_version == "2.0")
+  if (protocol_version == "2.0") {
     sensor_data = kobuki_default.data;
-}
-
-void Kobuki::getDefaultData(kobuki_comms::SensorData &sensor_data)
-{
-  if (protocol_version == "1.0")
-    sensor_data = data2.data;
-  if (protocol_version == "2.0")
-    sensor_data = kobuki_default.data;
+  }
 }
 
 void Kobuki::getIRData(kobuki_comms::IR &data)
 {
-  if (protocol_version == "1.0")
-    return;
   if (protocol_version == "2.0")
     data = kobuki_ir.data;
 }
 
 void Kobuki::getDockIRData(kobuki_comms::DockIR &data)
 {
-  if (protocol_version == "1.0")
-    return;
   if (protocol_version == "2.0")
     data = kobuki_dock_ir.data;
 }
 
 void Kobuki::getInertiaData(kobuki_comms::Inertia &data)
 {
-  if (protocol_version == "1.0")
-    return;
   if (protocol_version == "2.0")
     data = kobuki_inertia.data;
 }
 
 void Kobuki::getCliffData(kobuki_comms::Cliff &data)
 {
-  if (protocol_version == "1.0")
-    return;
   if (protocol_version == "2.0")
     data = kobuki_cliff.data;
 }
 
 void Kobuki::getCurrentData(kobuki_comms::Current &data)
 {
-  if (protocol_version == "1.0")
-    return;
   if (protocol_version == "2.0")
     data = kobuki_current.data;
 }
 
 void Kobuki::getMagnetData(kobuki_comms::Magnet &data)
 {
-  if (protocol_version == "1.0")
-    return;
   if (protocol_version == "2.0")
     data = kobuki_magnet.data;
 }
 
 void Kobuki::getHWData(kobuki_comms::HW &data)
 {
-  if (protocol_version == "1.0")
-    return;
   if (protocol_version == "2.0")
     data = kobuki_hw.data;
 }
 
 void Kobuki::getFWData(kobuki_comms::FW &data)
 {
-  if (protocol_version == "1.0")
-    return;
   if (protocol_version == "2.0")
     data = kobuki_fw.data;
 }
 
 void Kobuki::getTimeData(kobuki_comms::Time &data)
 {
-  if (protocol_version == "1.0")
-    return;
   if (protocol_version == "2.0")
     data = kobuki_time.data;
 }
 
 void Kobuki::getStGyroData(kobuki_comms::StGyro &data)
 {
-  if (protocol_version == "1.0")
-    return;
   if (protocol_version == "2.0")
     data = kobuki_st_gyro.data;
 }
 
 void Kobuki::getEEPROMData(kobuki_comms::EEPROM &data)
 {
-  if (protocol_version == "1.0")
-    return;
   if (protocol_version == "2.0")
     data = kobuki_eeprom.data;
 }
 
 void Kobuki::getGpInputData(kobuki_comms::GpInput &data)
 {
-  if (protocol_version == "1.0")
-    return;
   if (protocol_version == "2.0")
     data = kobuki_gp_input.data;
 }
@@ -573,11 +531,6 @@ void Kobuki::getJointState(device_comms::JointState &joint_state)
 //
   if (joint_state.name == "wheel_left")
   {
-//    if (protocol_version == "1.0")
-//    {
-//      curr_tick_left = data2.data.left_encoder;
-//      curr_timestamp = data2.data.time_stamp;
-//    }
 //    if (protocol_version == "2.0")
 //    {
 //      curr_tick_left = kobuki_default.data.left_encoder;
@@ -598,11 +551,6 @@ void Kobuki::getJointState(device_comms::JointState &joint_state)
   }
   else // wheel_right
   {
-//    if (protocol_version == "1.0")
-//    {
-//      curr_tick_right = data2.data.right_encoder;
-//      curr_timestamp = data2.data.time_stamp;
-//    }
 //    if (protocol_version == "2.0")
 //    {
 //      curr_tick_right = kobuki_default.data.right_encoder;

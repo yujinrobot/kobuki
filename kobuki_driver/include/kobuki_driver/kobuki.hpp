@@ -134,8 +134,7 @@ public:
   bool stop();
   void close();
   void getData(kobuki_comms::SensorData&);
-  void getData2(kobuki_comms::SensorData&);
-  void getDefaultData(kobuki_comms::SensorData&);
+  void getSensorData(kobuki_comms::SensorData&);
   void getIRData(kobuki_comms::IR&);
   void getDockIRData(kobuki_comms::DockIR&);
   void getInertiaData(kobuki_comms::Inertia&);
@@ -188,7 +187,6 @@ private:
 
   Serial serial;
   Data data;
-  Data2 data2;
 
   // [ vserion 2 ]
   DefaultData kobuki_default;

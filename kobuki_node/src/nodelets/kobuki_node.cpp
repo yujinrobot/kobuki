@@ -193,7 +193,6 @@ void KobukiNodelet::advertiseTopics(ros::NodeHandle& nh)
   wheel_right_state_publisher = nh.advertise < device_comms::JointState > (std::string("joint_state/") + wheel_right_name, 100);
   sensor_data_publisher = nh.advertise < kobuki_comms::SensorData > ("sensor_data", 100);
 
-  default_data_publisher = nh.advertise < kobuki_comms::SensorData > ("default_data", 100);
   ir_data_publisher = nh.advertise < kobuki_comms::IR > ("ir_data", 100);
   dock_ir_data_publisher = nh.advertise < kobuki_comms::DockIR > ("dock_ir_data", 100);
   inertia_data_publisher = nh.advertise < kobuki_comms::Inertia > ("inertia_data", 100);
@@ -292,7 +291,7 @@ void KobukiNodelet::publishSensorData()
     if (sensor_data_publisher.getNumSubscribers() > 0)
     {
       kobuki_comms::SensorData data;
-      kobuki.getData2(data);
+      kobuki.getSensorData(data);
       data.header.stamp = ros::Time::now();
       sensor_data_publisher.publish(data);
       //std::cout << "publishSensorData()" << std::endl;
@@ -393,21 +392,6 @@ void CruizCoreNodelet::publishInvalidPacket( const Packet::BufferStencil &bytes 
 }
 #endif
 
-void KobukiNodelet::publishDefaultData()
-{
-  if (ros::ok())
-  {
-    if (default_data_publisher.getNumSubscribers() > 0)
-    {
-      kobuki_comms::SensorData data;
-      kobuki.getDefaultData(data);
-      data.header.stamp = ros::Time::now();
-      default_data_publisher.publish(data);
-      //std::cout << __func__ << std::endl;
-    }
-  }
-}
-
 void KobukiNodelet::publishIRData()
 {
   if (ros::ok())
@@ -427,12 +411,12 @@ void KobukiNodelet::publishDockIRData()
 {
   if (ros::ok())
   {
-    if (default_data_publisher.getNumSubscribers() > 0)
+    if (sensor_data_publisher.getNumSubscribers() > 0)
     {
       kobuki_comms::SensorData data;
-      kobuki.getDefaultData(data);
+      kobuki.getSensorData(data);
       data.header.stamp = ros::Time::now();
-      default_data_publisher.publish(data);
+      sensor_data_publisher.publish(data);
       //std::cout << __func__ << std::endl;
     }
   }
