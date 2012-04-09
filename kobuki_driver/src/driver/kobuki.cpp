@@ -148,30 +148,27 @@ void Kobuki::runnable()
       /*********************
       ** Read Incoming
       **********************/
-      int n(serial.read(buf, packet_finder.numberOfDataToRead()));
-
-      ROS_DEBUG_STREAM("kobuki_node : serial_read(" << n << ")");
-      if (n == 0)
+      int n = serial.read(buf, packet_finder.numberOfDataToRead());
+      if (n == 0) {
         ROS_ERROR_STREAM("kobuki_node : no serial data in.");
-
-  //    if( n )
-  //    {
-  //      static unsigned char last_char(buf[0]);
-  //      for( int i(0); i<n; i++ )
-  //      {
-  //        printf("%02x ", buf[i] );
-  //        if( last_char = 0xaa && buf[i] == 0x55 ) printf("\n");
-  //        last_char = buf[i];
-  //      }
-  //    }
+        continue;
+      } else {
+        ROS_DEBUG_STREAM("kobuki_node : serial_read(" << n << ")");
+        /*********************
+        ** Debugging
+        **********************/
+        static unsigned char last_char(buf[0]);
+        for( int i(0); i<n; i++ )
+        {
+          printf("%02x ", buf[i] );
+          if( last_char == 0xaa && buf[i] == 0x55 ) printf("\n");
+          last_char = buf[i];
+        }
+      }
 
       if (packet_finder.update(buf, n))
       {
-  //      if (serial.remaining() > 28)
-  //      {
-  //        //ROS_WARN_STREAM("kobuki_node : serial buffer filling up, clearing [" << serial.remaining() << " bytes]");
-  //        //serial.clear(); //is it safe?
-  //      }
+        std::cout << "Packet finder found the update" << std::endl;
         pubtime("packet_find");
 
         // when packet_finder finds proper packet, we will get the buffer
@@ -206,7 +203,7 @@ void Kobuki::runnable()
           sig_index.clear();
           while (data_buffer.size() > 1/*size of etx*/)
           {
-            // std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
+             std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
             // std::cout << "remains: " << data_buffer.size() << " | ";
             switch (data_buffer[0])
             {
@@ -335,18 +332,11 @@ void Kobuki::runnable()
       }
     }
 
-    // send the command packet to mainboard;
-    if (get_packet)
-      sendCommand();
+    if (get_packet) { sendCommand(); } // send the command packet to mainboard;
 
-    // Other threads may have time to do their job.
-    // But i still do not know Blcoking mode (without manual sleep) is better way or not.
-    // This way is just safe and evaluated for long-time.
-//    std::cout << "Timestamp|State: " << stopwatch.split() << " [" << packet_finder.state << "]" << std::endl;
-
-    if ( !serial.remaining() ) {
-      ecl::MilliSleep(1)();
-    }
+//    if ( !serial.remaining() ) {
+//      ecl::MilliSleep(1)();
+//    }
   }
 }
 

@@ -122,7 +122,8 @@ void PacketFinderBase::getBuffer(BufferType & bufferRef)
 
 bool PacketFinderBase::updatePacket(const unsigned char * incoming, unsigned int numberOfIncoming)
 {
-//  std::cout << "updatePacket [" << numberOfIncoming << "][" << state << "]" << std::endl;
+  // clearBuffer = 0, waitingForStx, waitingForPayloadSize, waitingForPayloadToEtx, waitingForEtx,
+  std::cout << "updatePacket [" << numberOfIncoming << "][" << state << "]" << std::endl;
   if (!(numberOfIncoming > 0))
     return false;
 
@@ -139,7 +140,7 @@ bool PacketFinderBase::updatePacket(const unsigned char * incoming, unsigned int
       {
         if (size_length_field)
         {
-          state = waitingForPayloadSize;
+          state = waitingForPayloadSize; // kobukibot
         }
         else
         {
@@ -167,6 +168,7 @@ bool PacketFinderBase::updatePacket(const unsigned char * incoming, unsigned int
     case waitingForPayloadSize:
       if (waitForPayloadSize(incoming, numberOfIncoming))
       {
+        std::cout << "  Payload Size: " << size_payload << std::endl;
         state = waitingForPayloadToEtx;
       }
 
@@ -215,8 +217,11 @@ bool PacketFinderBase::WaitForStx(const unsigned char datum)
 bool PacketFinderBase::waitForPayloadSize(const unsigned char * incoming, unsigned int numberOfIncoming)
 {
   // push data
-  for (unsigned int i = 0; i < numberOfIncoming; i++)
+  unsigned char first_byte;
+  for (unsigned int i = 0; i < numberOfIncoming; i++) {
+    first_byte = incoming[i];
     buffer.push_back(incoming[i]);
+  }
 
   if (verbose)
   {
@@ -234,7 +239,7 @@ bool PacketFinderBase::waitForPayloadSize(const unsigned char * incoming, unsign
   {
     switch (size_length_field)
     {
-      case 1:
+      case 1: // kobuki
         size_payload = buffer[size_stx];
         break;
       case 2:
@@ -255,7 +260,7 @@ bool PacketFinderBase::waitForPayloadSize(const unsigned char * incoming, unsign
 
     if (verbose)
     {
-      printf("[payloadSize: %d]", size_payload);
+      printf("[payloadSize: %d]\n", size_payload);
     }
 
     return true;
