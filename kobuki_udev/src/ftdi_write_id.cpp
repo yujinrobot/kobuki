@@ -103,12 +103,16 @@ int main(int argc, char **argv)
   int size = ftdi_read_eeprom_getsize(&ftdi, eeprom_binary, 512);
   if (size < 0)
   {
-    std::cerr << "Could not read the eeprom from the requested device." << std::endl;
+    std::cerr << "Error: Could not read the eeprom from the requested device." << std::endl;
     return EXIT_FAILURE;
   }
   std::cout << "  Read binary [" << size << " bytes]." << std::endl;
   std::cout << "  Decoding into eeprom structure." << std::endl;
-  ftdi_eeprom_decode(&eeprom, eeprom_binary, ftdi.eeprom_size); // put the binary into an eeprom structure
+  // put the binary into an eeprom structure
+  if ( ftdi_eeprom_decode(&eeprom, eeprom_binary, size) != 0 ) {
+    std::cerr << "Error: Could not write raw binary eeprom into the eeprom structure." << std::endl;
+    return EXIT_FAILURE;
+  }
   std::cout << "    Manufacturer: " << eeprom.manufacturer << std::endl;
   std::cout << "    Product     : " << eeprom.product << std::endl;
   std::cout << "    Vendor Id   : " << eeprom.vendor_id << std::endl;
@@ -116,6 +120,7 @@ int main(int argc, char **argv)
   std::cout << "    Serial Id   : " << eeprom.serial << std::endl;
   std::cout << "    Self Powered: " << eeprom.self_powered << std::endl;
   std::cout << "    Remote Wake : " << eeprom.remote_wakeup << std::endl;
+  std::cout << "    Use Serial  : " << eeprom.use_serial << std::endl;
   std::cout << "    In Iso      : " << eeprom.in_is_isochronous << std::endl;
   std::cout << "    Out Iso     : " << eeprom.out_is_isochronous << std::endl;
   std::cout << "    Suspend     : " << eeprom.suspend_pull_downs << std::endl;

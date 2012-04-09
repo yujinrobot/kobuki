@@ -199,6 +199,8 @@ private:
   std::set<unsigned char> sig_index;
 
   boost::shared_ptr<ecl::DifferentialDrive::Kinematics> kinematics;
+
+  bool simulation;
 };
 
 } // namespace cruizcore

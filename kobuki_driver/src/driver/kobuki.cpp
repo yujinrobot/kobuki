@@ -34,7 +34,6 @@ bool PacketFinder::checkSum()
   {
     cs ^= buffer[i];
   }
-
   return cs ? false : true;
 }
 
@@ -53,10 +52,19 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
     throw ecl::StandardException(LOC, ecl::ConfigurationError, "Kobuki's parameter settings did not validate.");
   }
   protocol_version = parameters.protocol_version;
+  simulation = parameters.simulation;
 
-  serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
-  serial.block(4000); // blocks by default, but just to be clear!
-  serial.clear();
+  if ( !simulation ) {
+    serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
+    serial.block(4000); // blocks by default, but just to be clear!
+    serial.clear();
+    ecl::PushAndPop<unsigned char> stx(2, 0);
+    ecl::PushAndPop<unsigned char> etx(1);
+    stx.push_back(0xaa);
+    stx.push_back(0x55);
+    packet_finder.configure(stx, etx, 1, 64, 1, true);
+    is_connected = true;
+  }
 
   std::string sigslots_namespace = parameters.sigslots_namespace;
   sig_wheel_state.connect(sigslots_namespace + std::string("/joint_state"));
@@ -81,14 +89,6 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_warn.connect(sigslots_namespace + std::string("/ros_warn"));
   sig_error.connect(sigslots_namespace + std::string("/ros_error"));
 
-  is_running = true;
-  is_connected = true;
-
-  ecl::PushAndPop<unsigned char> stx(2, 0);
-  ecl::PushAndPop<unsigned char> etx(1);
-  stx.push_back(0xaa);
-  stx.push_back(0x55);
-  packet_finder.configure(stx, etx, 1, 64, 1, true);
 
   /******************************************
    ** Configuration & Connection Test
@@ -110,35 +110,30 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
 
   kinematics.reset(new ecl::DifferentialDrive::Kinematics(bias, wheel_radius));
 
+  is_running = true;
   start();
 }
 
 void Kobuki::close()
 {
   stop();
-  ROS_WARN_STREAM("Device: Kobuki ROS Node: Terminated.");
+  sig_debug.emit("Device: kobuki driver terminated.");
   return;
 }
 
 /**
  * @brief Performs a scan looking for incoming data packets.
  *
- * Use this as the worker function in a loop in a thread (from outside this library).
- * You can retrieve timeout, invalid packet and raw data information from signals
- * associated with this class (see the class definition).
+ * Sits on the device waiting for incoming and then parses it, and signals
+ * that an update has occured.
  *
- * Refer to CruizCoreNodelet for an example use case.
- *
- * @sa CruizCoreNodelet
- *
- * @return bool : success or failure of the scan.
+ * Or, if in simulation, just loopsback the motor devices.
  */
 
 void Kobuki::runnable()
 {
   unsigned char buf[256];
   bool get_packet;
-  bool dummy_mode = false;
   stopwatch.restart();
 
   while (is_running)
@@ -146,207 +141,198 @@ void Kobuki::runnable()
     pubtime("every_tick");
     get_packet = false;
 
-    /*********************
-    ** Read Incoming
-    **********************/
-    int n(serial.read(buf, packet_finder.numberOfDataToRead()));
+    if ( simulation ) {
+      // loopback motors here.
+    } else {
 
-    ROS_DEBUG_STREAM("kobuki_node : serial_read(" << n << ")");
-    if (n == 0)
-      ROS_ERROR_STREAM("kobuki_node : no serial data in.");
+      /*********************
+      ** Read Incoming
+      **********************/
+      int n(serial.read(buf, packet_finder.numberOfDataToRead()));
 
-    // let packet_finder finds packet
-    if (dummy_mode)
-    {
-      sig_sensor_data.emit();
-      sig_wheel_state.emit();
-      get_packet = true;
-    }
+      ROS_DEBUG_STREAM("kobuki_node : serial_read(" << n << ")");
+      if (n == 0)
+        ROS_ERROR_STREAM("kobuki_node : no serial data in.");
 
-//    if( n )
-//    {
-//      static unsigned char last_char(buf[0]);
-//      for( int i(0); i<n; i++ )
-//      {
-//        printf("%02x ", buf[i] );
-//        if( last_char = 0xaa && buf[i] == 0x55 ) printf("\n");
-//        last_char = buf[i];
-//      }
-//    }
+  //    if( n )
+  //    {
+  //      static unsigned char last_char(buf[0]);
+  //      for( int i(0); i<n; i++ )
+  //      {
+  //        printf("%02x ", buf[i] );
+  //        if( last_char = 0xaa && buf[i] == 0x55 ) printf("\n");
+  //        last_char = buf[i];
+  //      }
+  //    }
 
-    if (packet_finder.update(buf, n))
-    {
-//      if (serial.remaining() > 28)
-//      {
-//        //ROS_WARN_STREAM("kobuki_node : serial buffer filling up, clearing [" << serial.remaining() << " bytes]");
-//        //serial.clear(); //is it safe?
-//      }
-      pubtime("packet_find");
-
-      // when packet_finder finds proper packet, we will get the buffer
-      packet_finder.getBuffer(data_buffer);
-
-      /*
-       static int count=0;
-       std::cout << "packet_found: " ;
-       std::cout << count++  << " | ";
-       std::cout << data_buffer.size() << " | ";
-       std::cout << std::endl;
-       */
-
-#if 0
-      if( verbose )
+      if (packet_finder.update(buf, n))
       {
-        printf("Packet: ");
-        for( unsigned int i=0; i<data_buffer.size(); i++ )
-        {
-          printf("%02x ", data_buffer[i] );
-          if( i != 0 && ((i%5)==0) ) printf(" ");
-        }
-      }
-#endif
-      // deserialise; first three bytes are not data.
-      data_buffer.pop_front();
-      data_buffer.pop_front();
-      data_buffer.pop_front();
+  //      if (serial.remaining() > 28)
+  //      {
+  //        //ROS_WARN_STREAM("kobuki_node : serial buffer filling up, clearing [" << serial.remaining() << " bytes]");
+  //        //serial.clear(); //is it safe?
+  //      }
+        pubtime("packet_find");
 
-      if (protocol_version == "2.0")
-      {
-        sig_index.clear();
-        while (data_buffer.size() > 1/*size of etx*/)
+        // when packet_finder finds proper packet, we will get the buffer
+        packet_finder.getBuffer(data_buffer);
+
+        /*
+         static int count=0;
+         std::cout << "packet_found: " ;
+         std::cout << count++  << " | ";
+         std::cout << data_buffer.size() << " | ";
+         std::cout << std::endl;
+         */
+
+  #if 0
+        if( verbose )
         {
-          // std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
-          // std::cout << "remains: " << data_buffer.size() << " | ";
-          switch (data_buffer[0])
+          printf("Packet: ");
+          for( unsigned int i=0; i<data_buffer.size(); i++ )
           {
-            case kobuki_comms::Header::header_default:
-              sig_index.insert(data_buffer[0]);
-              kobuki_default.deserialise(data_buffer);
-              break;
-            case kobuki_comms::Header::header_ir:
-              sig_index.insert(data_buffer[0]);
-              kobuki_ir.deserialise(data_buffer);
-              break;
-            case kobuki_comms::Header::header_dock_ir:
-              sig_index.insert(data_buffer[0]);
-              kobuki_dock_ir.deserialise(data_buffer);
-              break;
-            case kobuki_comms::Header::header_inertia:
-              sig_index.insert(data_buffer[0]);
-              kobuki_inertia.deserialise(data_buffer);
-              break;
-            case kobuki_comms::Header::header_cliff:
-              sig_index.insert(data_buffer[0]);
-              kobuki_cliff.deserialise(data_buffer);
-              break;
-            case kobuki_comms::Header::header_current:
-              sig_index.insert(data_buffer[0]);
-              kobuki_current.deserialise(data_buffer);
-              break;
-            case kobuki_comms::Header::header_magnet:
-              sig_index.insert(data_buffer[0]);
-              kobuki_magnet.deserialise(data_buffer);
-              break;
-            case kobuki_comms::Header::header_time:
-              sig_index.insert(data_buffer[0]);
-              kobuki_time.deserialise(data_buffer);
-              break;
-            case kobuki_comms::Header::header_hw:
-              sig_index.insert(data_buffer[0]);
-              kobuki_hw.deserialise(data_buffer);
-              break;
-            case kobuki_comms::Header::header_fw:
-              sig_index.insert(data_buffer[0]);
-              kobuki_fw.deserialise(data_buffer);
-              break;
-            case kobuki_comms::Header::header_st_gyro:
-              sig_index.insert(data_buffer[0]);
-              kobuki_st_gyro.deserialise(data_buffer);
-              break;
-            case kobuki_comms::Header::header_eeprom:
-              sig_index.insert(data_buffer[0]);
-              kobuki_eeprom.deserialise(data_buffer);
-              break;
-            case kobuki_comms::Header::header_gp_input:
-              sig_index.insert(data_buffer[0]);
-              kobuki_gp_input.deserialise(data_buffer);
-              break;
-            default:
-              std::cout << "unexpected case reached. flushing current buffer." << std::endl;
-              data_buffer.clear();
-              break;
+            printf("%02x ", data_buffer[i] );
+            if( i != 0 && ((i%5)==0) ) printf(" ");
           }
         }
-      }
-      else
-      {
-        std::cout << "protocol version is not specified properly." << std::endl;
-        return;
-        //continue;
-      }
-      //std::cout << "sig_index_size: " << sig_index.size() << std::endl;
-      //ROS_DEBUG_STREAM("kobuki_node:left_encoder [" << data2.data.left_encoder << "], remaining[" << serial.remaining() << "]" );
+  #endif
+        // deserialise; first three bytes are not data.
+        data_buffer.pop_front();
+        data_buffer.pop_front();
+        data_buffer.pop_front();
 
-      //if( verbose ) data.showMe();
-      //data.showMe();
-      if (protocol_version == "2.0")
-      {
-        std::set<unsigned char>::iterator it;
-        for (it = sig_index.begin(); it != sig_index.end(); ++it)
+        if (protocol_version == "2.0")
         {
-          switch ((*it))
+          sig_index.clear();
+          while (data_buffer.size() > 1/*size of etx*/)
           {
-            case kobuki_comms::Header::header_default: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-              sig_sensor_data.emit();
-              sig_wheel_state.emit();
-              break;
-            case kobuki_comms::Header::header_ir: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-              sig_ir.emit();
-              break;
-            case kobuki_comms::Header::header_dock_ir: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-              sig_dock_ir.emit();
-              break;
-            case kobuki_comms::Header::header_inertia: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-              sig_inertia.emit();
-              break;
-            case kobuki_comms::Header::header_cliff: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-              sig_cliff.emit();
-              break;
-            case kobuki_comms::Header::header_current: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-              sig_current.emit();
-              break;
-            case kobuki_comms::Header::header_magnet: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-              sig_magnet.emit();
-              break;
-            case kobuki_comms::Header::header_time: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-              sig_time.emit();
-              break;
-            case kobuki_comms::Header::header_hw: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-              sig_hw.emit();
-              break;
-            case kobuki_comms::Header::header_fw: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-              sig_fw.emit();
-              break;
-            case kobuki_comms::Header::header_st_gyro: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-              sig_st_gyro.emit();
-              break;
-            case kobuki_comms::Header::header_eeprom: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-              sig_eeprom.emit();
-              break;
-            case kobuki_comms::Header::header_gp_input: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-              sig_gp_input.emit();
-              break;
-            default:
-              std::cout << "unexpected case reached. flushing current buffer." << std::endl;
-              data_buffer.clear();
-              break;
+            // std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
+            // std::cout << "remains: " << data_buffer.size() << " | ";
+            switch (data_buffer[0])
+            {
+              case kobuki_comms::Header::header_default:
+                sig_index.insert(data_buffer[0]);
+                kobuki_default.deserialise(data_buffer);
+                break;
+              case kobuki_comms::Header::header_ir:
+                sig_index.insert(data_buffer[0]);
+                kobuki_ir.deserialise(data_buffer);
+                break;
+              case kobuki_comms::Header::header_dock_ir:
+                sig_index.insert(data_buffer[0]);
+                kobuki_dock_ir.deserialise(data_buffer);
+                break;
+              case kobuki_comms::Header::header_inertia:
+                sig_index.insert(data_buffer[0]);
+                kobuki_inertia.deserialise(data_buffer);
+                break;
+              case kobuki_comms::Header::header_cliff:
+                sig_index.insert(data_buffer[0]);
+                kobuki_cliff.deserialise(data_buffer);
+                break;
+              case kobuki_comms::Header::header_current:
+                sig_index.insert(data_buffer[0]);
+                kobuki_current.deserialise(data_buffer);
+                break;
+              case kobuki_comms::Header::header_magnet:
+                sig_index.insert(data_buffer[0]);
+                kobuki_magnet.deserialise(data_buffer);
+                break;
+              case kobuki_comms::Header::header_time:
+                sig_index.insert(data_buffer[0]);
+                kobuki_time.deserialise(data_buffer);
+                break;
+              case kobuki_comms::Header::header_hw:
+                sig_index.insert(data_buffer[0]);
+                kobuki_hw.deserialise(data_buffer);
+                break;
+              case kobuki_comms::Header::header_fw:
+                sig_index.insert(data_buffer[0]);
+                kobuki_fw.deserialise(data_buffer);
+                break;
+              case kobuki_comms::Header::header_st_gyro:
+                sig_index.insert(data_buffer[0]);
+                kobuki_st_gyro.deserialise(data_buffer);
+                break;
+              case kobuki_comms::Header::header_eeprom:
+                sig_index.insert(data_buffer[0]);
+                kobuki_eeprom.deserialise(data_buffer);
+                break;
+              case kobuki_comms::Header::header_gp_input:
+                sig_index.insert(data_buffer[0]);
+                kobuki_gp_input.deserialise(data_buffer);
+                break;
+              default:
+                std::cout << "unexpected case reached. flushing current buffer." << std::endl;
+                data_buffer.clear();
+                break;
+            }
           }
         }
+        //std::cout << "sig_index_size: " << sig_index.size() << std::endl;
+        //ROS_DEBUG_STREAM("kobuki_node:left_encoder [" << data2.data.left_encoder << "], remaining[" << serial.remaining() << "]" );
 
+        //if( verbose ) data.showMe();
+        //data.showMe();
+        if (protocol_version == "2.0")
+        {
+          std::set<unsigned char>::iterator it;
+          for (it = sig_index.begin(); it != sig_index.end(); ++it)
+          {
+            switch ((*it))
+            {
+              case kobuki_comms::Header::header_default: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+                sig_sensor_data.emit();
+                sig_wheel_state.emit();
+                break;
+              case kobuki_comms::Header::header_ir: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+                sig_ir.emit();
+                break;
+              case kobuki_comms::Header::header_dock_ir: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+                sig_dock_ir.emit();
+                break;
+              case kobuki_comms::Header::header_inertia: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+                sig_inertia.emit();
+                break;
+              case kobuki_comms::Header::header_cliff: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+                sig_cliff.emit();
+                break;
+              case kobuki_comms::Header::header_current: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+                sig_current.emit();
+                break;
+              case kobuki_comms::Header::header_magnet: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+                sig_magnet.emit();
+                break;
+              case kobuki_comms::Header::header_time: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+                sig_time.emit();
+                break;
+              case kobuki_comms::Header::header_hw: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+                sig_hw.emit();
+                break;
+              case kobuki_comms::Header::header_fw: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+                sig_fw.emit();
+                break;
+              case kobuki_comms::Header::header_st_gyro: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+                sig_st_gyro.emit();
+                break;
+              case kobuki_comms::Header::header_eeprom: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+                sig_eeprom.emit();
+                break;
+              case kobuki_comms::Header::header_gp_input: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+                sig_gp_input.emit();
+                break;
+              default:
+                std::cout << "unexpected case reached. flushing current buffer." << std::endl;
+                data_buffer.clear();
+                break;
+            }
+          }
+
+        }
+
+        get_packet = true;
+        pubtime("packet_emit");
       }
-
-      get_packet = true;
-      pubtime("packet_emit");
     }
 
     // send the command packet to mainboard;

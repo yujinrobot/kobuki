@@ -35,16 +35,20 @@ namespace kobuki
  *
  * The following parameters must be configured.
  *
- * - device_id : for serial, a port (e.g. "/dev/ttyUSB0").
- * - sigslots_namespace : unique name for the sigslots communications.
- *
+ * - device_port : for serial device, a port (e.g. "/dev/ttyUSB0").
+ * - sigslots_namespace : this should match the kobuki_node namespace.
+ * - protocol version : firmware version number (e.g. "2.0")
+ * - simulation : whether to put the motors on loopback or not.
  */
 class Parameters
 {
 public:
+  Parameters() : simulation(true) {}
+
   std::string device_port;
   std::string protocol_version;
   std::string sigslots_namespace;
+  bool simulation;
 
   /**
    * @brief This is a very rough validator for input configurations.
