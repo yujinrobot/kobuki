@@ -1,9 +1,7 @@
 /**
- * @file /cruizcore/src/driver/cruizcore.cpp
+ * @file /kobuki/src/driver/kobuki.cpp
  *
- * @brief Implementation for the cruizcore device driver.
- *
- * @date 20/08/2010
+ * @brief Implementation for the kobuki device driver.
  **/
 
 /*****************************************************************************
