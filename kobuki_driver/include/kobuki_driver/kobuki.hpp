@@ -54,18 +54,18 @@ namespace kobuki
 {
 
 /*****************************************************************************
- ** Using
+ ** Definitions
  *****************************************************************************/
-using ecl::Threadable;
-using ecl::Serial;
-using ecl::StopWatch;
-using ecl::TimeStamp;
 
 union union_sint16
 {
   short word;
   unsigned char byte[2];
 };
+
+/*****************************************************************************
+** Parent Interface
+*****************************************************************************/
 
 class PacketFinder : public PacketFinderBase
 {
@@ -74,29 +74,14 @@ public:
 };
 
 /*****************************************************************************
- ** Interface [CruizCore]
+ ** Interface [Kobuki]
  *****************************************************************************/
 /**
- * @brief  The device driver for a cruizcore gyro.
+ * @brief  The core kobuki driver class.
  *
- * The actual device driver for the cruizcore gyro. This driver simply provides
- * an api from which a program can be written to interact with the device.
- * It does not actually provide the control loop per se.
- *
- * <b>Signals</b>
- *
- * This class accepts a string via the parameter interface which is used as the
- * base namespace for all sigslots that can be connected. These sigslots
- * enable runtime handling and/or debugging of various features.
- * The string id's associated with these connections
- * are listed below where 'ns' is the namespace as mentioned.
- *
- * - 'ns'/raw_data_received : emits a bytearray when a goo packet is received.
- * - 'ns'/raw_data_sent : emits a bytearray when sending a goo command packet.
- * - 'ns'/serial_timeout : simple emit to notify if an expected packet timed out.
- * - 'ns'/invalid_packet : emits a bytearray whenever a mangled packet is received.
+ * This connects to the outside world via sigslots and get accessors.
  **/
-class Kobuki : public Threadable
+class Kobuki : public ecl::Threadable
 {
 public:
   Kobuki() :
@@ -154,7 +139,7 @@ public:
   void pubtime(const char *);
 
 private:
-  StopWatch stopwatch;
+  ecl::StopWatch stopwatch;
 
   unsigned short last_timestamp;
   double last_velocity_left, last_velocity_right;
@@ -172,8 +157,6 @@ private:
   std::string device_type;
   std::string protocol_version;
   bool is_connected; // True if there's a serial/usb connection open.
-  //PacketHandler packet_handler;
-  //Packet::Buffer buffer;
   //device_comms::ns::Gyro gyro_data;
   bool is_running;
   bool is_enabled;
@@ -181,9 +164,8 @@ private:
   unsigned int count;
   const double tick_to_mm, tick_to_rad;
 
-  Serial serial;
+  ecl::Serial serial;
 
-  // [ vserion 2 ]
   DefaultData kobuki_default;
   IRData kobuki_ir;
   DockIRData kobuki_dock_ir;

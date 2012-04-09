@@ -22,12 +22,6 @@ namespace kobuki
 {
 
 /*****************************************************************************
- ** Using
- *****************************************************************************/
-
-using ecl::StandardException;
-
-/*****************************************************************************
  ** Implementation [KobukiNodelet]
  *****************************************************************************/
 /**
@@ -147,7 +141,7 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
   {
     kobuki.init(parameters);
   }
-  catch (const StandardException &e)
+  catch (const ecl::StandardException &e)
   {
     switch (e.flag())
     {

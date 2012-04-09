@@ -7,7 +7,6 @@
  **/
 
 /*****************************************************************************
-<<<<<<< HEAD
  ** Includes
  *****************************************************************************/
 
@@ -24,12 +23,6 @@
 
 namespace kobuki
 {
-
-/*****************************************************************************
- ** Using
- *****************************************************************************/
-using ecl::Converter;
-using ecl::TimeStamp;
 
 /*****************************************************************************
 ** Implementation [PacketFinder]
@@ -674,7 +667,7 @@ void Kobuki::pubtime(const char *str)
 {
   return;
   //if( str != "every_tick" ) return ;
-  TimeStamp time = stopwatch.split();
+  ecl::TimeStamp time = stopwatch.split();
 
   //ROS_INFO_STREAM( "ecl_time:stopwatch:" << str << ":[" << time.sec() + time.usec()/0.000001 << "s]");
 
