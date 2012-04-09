@@ -11,7 +11,7 @@
  ** Includes
  *****************************************************************************/
 
-#include <ctime>
+#include <ecl/time/sleep.hpp>
 #include <ecl/converters.hpp>
 #include <ecl/sigslots.hpp>
 #include <ecl/geometry/angle.hpp>
@@ -372,8 +372,7 @@ void Kobuki::runnable()
 //    std::cout << "Timestamp|State: " << stopwatch.split() << " [" << packet_finder.state << "]" << std::endl;
 
     if ( !serial.remaining() ) {
-      timespec millisec; millisec.tv_sec = 0; millisec.tv_nsec = 1000000;
-      nanosleep(&millisec, NULL); // at least less then sending period.
+      ecl::MilliSleep(1)();
     }
   }
 }
