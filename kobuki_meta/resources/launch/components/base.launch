@@ -15,6 +15,7 @@
 		<remap from="robot_core/joint_state/wheel_left"  to="joint_state/wheel_left"/>
 		<remap from="robot_core/joint_state/wheel_right" to="joint_state/wheel_right"/>
         <remap from="robot_core/odom" to="odom"/>
+        <remap from="robot_core/imu_data" to="imu_data"/>
 		<remap from="robot_core/cmd_vel" to="cmd_vel"/>
 		<remap from="robot_core/enable" to="enable"/>
 		<remap from="robot_core/disable" to="disable"/>
