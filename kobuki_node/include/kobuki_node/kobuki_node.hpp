@@ -1,21 +1,23 @@
 /**
- * @file /cruizcore/include/cruizcore/cruizcore_nodelet.hpp
+ * @file /kobuki_node/include/kobuki_node/kobuki_node.hpp
  *
- * @brief Interface for the ros nodelet wrapper around cruizcore.
+ * @brief Wraps the kobuki driver in a ROS node
  *
- * @date 20/08/2010
+ * @date 10/04/2012
  **/
+
 /*****************************************************************************
  ** Ifdefs
  *****************************************************************************/
 
-#ifndef KOBUKI_NODELET_HPP_
-#define KOBUKI_NODELET_HPP_
+#ifndef KOBUKI_NODE_HPP_
+#define KOBUKI_NODE_HPP_
 
 /*****************************************************************************
  ** Includes
  *****************************************************************************/
 
+#include <string>
 #include <boost/shared_ptr.hpp>
 
 #include <ros/ros.h>
@@ -24,8 +26,6 @@
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_broadcaster.h>
-
-#include <device_nodelet/device_nodelet.hpp>
 #include <device_comms/JointCommand.h>
 #include <device_comms/JointState.h>
 #include <kobuki_comms/SensorData.h>
@@ -39,38 +39,21 @@
 
 namespace kobuki
 {
-
-/*****************************************************************************
- ** Interface
- *****************************************************************************/
-/**
- * @brief Pseudo-node for the cruizcore.
- *
- * Configures ros communication types but does not implement the spin loop.
- * This is typically used as part of a library by another process, so the
- * spin loop is adapted elsewhere.
- *
- * This does, however implement all of the cruizcore functionality via the
- * composited cruizcore object. In addition,
- * control loop functionality can be achieved via calling the processInputs()
- * and processOutputs() methods.
- */
-class KobukiNodelet : public device_interface::DeviceNodelet
+class KobukiNode
 {
 public:
   /*********************
    ** C&D
    **********************/
-  KobukiNodelet();
-  ~KobukiNodelet();
+  KobukiNode(std::string& node_name);
+  ~KobukiNode();
+
+  bool init(ros::NodeHandle& nh);
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
 private:
-  /******************************************
-   ** Device Nodelet Setup
-   *******************************************/
-  bool init(ros::NodeHandle& nh);
+
   void advertiseTopics(ros::NodeHandle& nh);
   void subscribeTopics(ros::NodeHandle& nh);
 
@@ -78,47 +61,40 @@ private:
   void publishOdom(const geometry_msgs::Quaternion &odom_quat, const ecl::linear_algebra::Vector3d &pose_update_rates);
 
   Kobuki kobuki;
-  const std::string wheel_left_name;
-  const std::string wheel_right_name;
-
-  std::string odom_frame;
-  std::string base_frame;
-  bool        publish_tf;
 
   /*********************
-  ** Variables
-  **********************/
+   ** Variables
+   **********************/
+  std::string name; // name of the ROS node
+
   // Continuously published messages
   geometry_msgs::TransformStamped odom_trans;
   nav_msgs::Odometry odom;
   ecl::Pose2D<double> pose;
 
+  const std::string wheel_left_name;
+  const std::string wheel_right_name;
+
+  std::string odom_frame;
+  std::string base_frame;
+  bool publish_tf;
+
   /*********************
    ** Ros Comms
    **********************/
-  tf::TransformBroadcaster odom_broadcaster;
-  ros::Publisher odom_publisher;
-  ros::Publisher wheel_left_state_publisher;
-  ros::Publisher wheel_right_state_publisher;
-  ros::Publisher sensor_data_publisher;
-  ros::Subscriber wheel_left_command_subscriber;
-  ros::Subscriber wheel_right_command_subscriber;
-  ros::Subscriber velocity_command_subscriber;
-  ros::Subscriber kobuki_command_subscriber;
-
-  ecl::Slot<> slot_wheel_state, slot_sensor_data;
-  ecl::Signal<const device_comms::JointCommand> sig_joint_command;
-
-  sensor_msgs::JointState joint_states;
   ros::Publisher ir_data_publisher, dock_ir_data_publisher, inertia_data_publisher, imu_data_publisher,
                  cliff_data_publisher, current_data_publisher, magnet_data_publisher, hw_data_publisher,
                  fw_data_publisher, time_data_publisher, st_gyro_data_publisher, eeprom_data_publisher,
-                 gp_input_data_publisher, joint_state_publisher;
-
-  ecl::Slot<> slot_ir, slot_dock_ir, slot_inertia, slot_cliff, slot_current, slot_magnet, slot_hw, slot_fw, slot_time,
+                 gp_input_data_publisher, joint_state_publisher, odom_publisher, wheel_left_state_publisher,
+                 wheel_right_state_publisher, sensor_data_publisher;
+  ros::Subscriber wheel_left_command_subscriber, wheel_right_command_subscriber, velocity_command_subscriber,
+                  kobuki_command_subscriber;
+  ecl::Slot<> slot_wheel_state, slot_sensor_data, slot_ir, slot_dock_ir, slot_inertia, slot_cliff, slot_current, slot_magnet, slot_hw, slot_fw, slot_time,
               slot_st_gyro, slot_eeprom, slot_gp_input;
-
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
+  ecl::Signal<const device_comms::JointCommand> sig_joint_command;
+  tf::TransformBroadcaster odom_broadcaster;
+  sensor_msgs::JointState joint_states;
 
   /*********************
    ** SigSlots
@@ -177,6 +153,6 @@ private:
   ;
 };
 
-} // namespace cruizcore
+} // namespace kobuki
 
-#endif /* YCS_DEVICES_CRUIZECORE_NODELET_HPP_ */
+#endif /* KOBUKI_NODE_HPP_ */
