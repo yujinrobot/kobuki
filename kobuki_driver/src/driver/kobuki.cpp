@@ -11,6 +11,7 @@
  ** Includes
  *****************************************************************************/
 
+#include <ctime>
 #include <ecl/converters.hpp>
 #include <ecl/sigslots.hpp>
 #include <ecl/geometry/angle.hpp>
@@ -366,15 +367,14 @@ void Kobuki::runnable()
       sendCommand();
 
     // Other threads may have time to do their job.
-    // But i still do not know Blcoking mode (without manual usleep) is better way or not.
+    // But i still do not know Blcoking mode (without manual sleep) is better way or not.
     // This way is just safe and evaluated for long-time.
 //    std::cout << "Timestamp|State: " << stopwatch.split() << " [" << packet_finder.state << "]" << std::endl;
 
     if ( !serial.remaining() ) {
-      usleep(1250); // at least less then sending period.
+      timespec millisec; millisec.tv_sec = 0; millisec.tv_nsec = 1000000;
+      nanosleep(&millisec, NULL); // at least less then sending period.
     }
-
-    while( !serial.remaining() ) usleep(1000);
   }
 }
 
