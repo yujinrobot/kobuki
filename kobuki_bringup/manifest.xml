@@ -7,7 +7,7 @@
   <author>Younghun Ju</author>
   <license>Yujin</license>
   <review status="unreviewed" notes=""/>
-  <url>http://www.ros.org/wiki/kobuki/kobuki_meta</url>
+  <url>http://www.ros.org/wiki/kobuki/kobuki_bringup</url>
 
   <!-- Kobuki -->
   <depend package="kobuki_node"/>

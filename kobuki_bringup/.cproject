@@ -54,7 +54,7 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="kobuki_meta.null.757266588" name="kobuki_meta"/>
+		<project id="kobuki_bringup.null.757266588" name="kobuki_bringup"/>
 	</storageModule>
 	<storageModule moduleId="refreshScope"/>
 	<storageModule moduleId="scannerConfiguration">

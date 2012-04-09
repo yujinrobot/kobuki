@@ -9,5 +9,5 @@ cd ${WORKSPACE}/kobuki_workspace/ycs/ycs_tools/ycs_bin/scripts; ./ycssetup
 source ${WORKSPACE}/kobuki_workspace/setup.bash
 export ROS_PARALLEL_JOBS="-l5"
 export ROS_HOME=${WORKSPACE}
-rosmake kobuki_meta
-rosmake --target=test kobuki_meta
+rosmake kobuki_bringup
+rosmake --target=test kobuki_bringup
