@@ -205,7 +205,7 @@ private:
   ecl::PushAndPop<unsigned char> command_buffer;
 
   ecl::Signal<> sig_wheel_state, sig_sensor_data;
-  ecl::Signal<> sig_default, sig_ir, sig_dock_ir, sig_inertia, sig_cliff, sig_current, sig_magnet, sig_hw, sig_fw,
+  ecl::Signal<> sig_ir, sig_dock_ir, sig_inertia, sig_cliff, sig_current, sig_magnet, sig_hw, sig_fw,
                 sig_time, sig_st_gyro, sig_eeprom, sig_gp_input;
 //		sig_reserved0;
   std::set<unsigned char> sig_index;

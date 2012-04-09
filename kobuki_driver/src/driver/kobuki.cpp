@@ -72,7 +72,6 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_sensor_data.connect(sigslots_namespace + std::string("/sensor_data"));
   //sig_serial_timeout.connect(sigslots_namespace+std::string("/serial_timeout"));
 
-  sig_default.connect(sigslots_namespace + std::string("/default"));
   sig_ir.connect(sigslots_namespace + std::string("/ir"));
   sig_dock_ir.connect(sigslots_namespace + std::string("/dock_ir"));
   sig_inertia.connect(sigslots_namespace + std::string("/inertia"));
@@ -300,7 +299,6 @@ void Kobuki::runnable()
           switch ((*it))
           {
             case kobuki_comms::Header::header_default: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-              sig_default.emit();
               sig_sensor_data.emit();
               sig_wheel_state.emit();
               break;

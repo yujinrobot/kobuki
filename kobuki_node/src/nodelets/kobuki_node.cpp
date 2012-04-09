@@ -39,7 +39,7 @@ KobukiNodelet::KobukiNodelet() :
     wheel_left_name("wheel_left"),
     wheel_right_name("wheel_right"),
     slot_wheel_state(&KobukiNodelet::publishWheelState, *this), slot_sensor_data(&KobukiNodelet::publishSensorData,*this),
-    slot_default(&KobukiNodelet::publishDefaultData, *this), slot_ir(&KobukiNodelet::publishIRData, *this),
+    slot_ir(&KobukiNodelet::publishIRData, *this),
     slot_dock_ir(&KobukiNodelet::publishDockIRData, *this), slot_inertia(&KobukiNodelet::publishInertiaData, *this),
     slot_cliff(&KobukiNodelet::publishCliffData, *this), slot_current(&KobukiNodelet::publishCurrentData, *this),
     slot_magnet(&KobukiNodelet::publishMagnetData, *this), slot_hw(&KobukiNodelet::publishHWData, *this),
@@ -94,7 +94,6 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
    **********************/
   slot_wheel_state.connect(name + std::string("/joint_state"));
   slot_sensor_data.connect(name + std::string("/sensor_data"));
-  slot_default.connect(name + std::string("/default"));
   slot_ir.connect(name + std::string("/ir"));
   slot_dock_ir.connect(name + std::string("/dock_ir"));
   slot_inertia.connect(name + std::string("/inertia"));

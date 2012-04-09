@@ -98,7 +98,6 @@ private:
 	        joint_state_publisher;
 
 	ecl::Slot<> 
-		slot_default ,
 		slot_ir      ,
 		slot_dock_ir ,
 		slot_inertia ,
@@ -117,7 +116,6 @@ private:
 	**********************/
 	void publishWheelState();
 	void publishSensorData();
-	void publishDefaultData();
 	void publishIRData();
 	void publishDockIRData();
 	void publishInertiaData();
