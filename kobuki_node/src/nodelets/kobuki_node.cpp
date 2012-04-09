@@ -37,6 +37,9 @@ namespace kobuki
 KobukiNodelet::KobukiNodelet() :
     wheel_left_name("wheel_left"),
     wheel_right_name("wheel_right"),
+    odom_frame("odom"),
+    base_frame("base_footprint"),
+    publish_tf(false),
     slot_wheel_state(&KobukiNodelet::publishWheelState, *this),
     slot_sensor_data(&KobukiNodelet::publishSensorData,*this),
     slot_ir(&KobukiNodelet::publishIRData, *this),
@@ -54,10 +57,7 @@ KobukiNodelet::KobukiNodelet() :
     slot_debug(&KobukiNodelet::rosDebug, *this),
     slot_info(&KobukiNodelet::rosInfo, *this),
     slot_warn(&KobukiNodelet::rosWarn, *this),
-    slot_error(&KobukiNodelet::rosError, *this),
-    odom_frame("odom"),
-    base_frame("base_footprint"),
-    publish_tf(false)
+    slot_error(&KobukiNodelet::rosError, *this)
 {
   joint_states.name.push_back("left_wheel_joint");
   joint_states.name.push_back("right_wheel_joint");
@@ -138,7 +138,6 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
   if (!nh.getParam("protocol_version", parameters.protocol_version))
   {
     ROS_ERROR_STREAM("Kobuki : no protocol version given on the parameter server ('2.0')[" << name << "].");
-    std::cout << "protocol_version: " << parameters.protocol_version << std::endl;
     return false;
   }
 
@@ -160,21 +159,21 @@ bool KobukiNodelet::init(ros::NodeHandle& nh)
   /*********************
    ** Frames
    **********************/
-
-  if (!nh.getParam("odom_frame", odom_frame))
-    NODELET_WARN_STREAM("DiffDriveBase : no param server setting for odom_frame, using default [" << odom_frame << "][" << name << "].");
-  else
-    NODELET_INFO_STREAM("DiffDriveBase : using odom_frame [" << odom_frame << "][" << name << "].");
+  if (!nh.getParam("odom_frame", odom_frame)) {
+    NODELET_WARN_STREAM("Kobuki : no param server setting for odom_frame, using default [" << odom_frame << "][" << name << "].");
+  } else {
+    NODELET_INFO_STREAM("Kobuki : using odom_frame [" << odom_frame << "][" << name << "].");
+  }
 
   if (!nh.getParam("base_frame", base_frame))
-    NODELET_WARN_STREAM("DiffDriveBase : no param server setting for base_frame, using default [" << base_frame << "][" << name << "].");
+    NODELET_WARN_STREAM("Kobuki : no param server setting for base_frame, using default [" << base_frame << "][" << name << "].");
   else
-    NODELET_INFO_STREAM("DiffDriveBase : using base_frame [" << base_frame << "][" << name << "].");
+    NODELET_INFO_STREAM("Kobuki : using base_frame [" << base_frame << "][" << name << "].");
 
   if (!nh.getParam("publish_tf", publish_tf))
-    NODELET_WARN_STREAM("DiffDriveBase : no param server setting for publish_tf, using default [" << publish_tf << "][" << name << "].");
+    NODELET_WARN_STREAM("Kobuki : no param server setting for publish_tf, using default [" << publish_tf << "][" << name << "].");
   else
-    NODELET_INFO_STREAM("DiffDriveBase : using publish_tf [" << publish_tf << "][" << name << "].");
+    NODELET_INFO_STREAM("Kobuki : using publish_tf [" << publish_tf << "][" << name << "].");
 
   odom_trans.header.frame_id = odom_frame;
   odom_trans.child_frame_id = base_frame;
