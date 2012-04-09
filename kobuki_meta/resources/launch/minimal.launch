@@ -6,7 +6,7 @@
   <param name="/use_sim_time" value="$(arg simulation)"/>
 
   <!-- DJS : This xacro needs to be confirmed as turtlebot compatible, see turtlebot_description)/robots/turtlebot.urdf.xacro -->
-  <arg name="urdf_file" default="$(find xacro)/xacro.py '$(find kobuki_description)/robots/kobuki.urdf.xacro'" />
+  <arg name="urdf_file" default="$(find xacro)/xacro.py '$(find kobuki_description)/robots/kobuki_kinect.urdf.xacro'" />
   <param name="robot_description" command="$(arg urdf_file)" />
   
   <!-- DJS : who is using these two parameters? -->

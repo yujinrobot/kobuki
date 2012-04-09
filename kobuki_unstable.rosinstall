@@ -4,7 +4,7 @@
 # * For using the arm:
 #   - sudo apt-get install ros-electric-turtlebot-arm 
 # * Yujin stacks:
-#   - rosinstall /opt/yujin/unstable/stacks http://embedded-control-library.googlecode.com/svn/trunk/ecl_stable.rosinstall
+#   - rosinstall /opt/yujin/unstable/stacks http://embedded-control-library.googlecode.com/svn/trunk/ecl_unstable.rosinstall
 #   - rosinstall /opt/yujin/unstable/stacks http://svn.yujin.com/ycs/trunk/ycs_unstable.rosinstall
 
 # Official ROS Stacks

@@ -23,7 +23,8 @@
 
   <!-- visualization -->
   <depend package="rviz"/>
-
+  <depend package="joint_state_publisher"/>
+  
   <!-- System Utilities -->
   <rosdep name="unison"/>
 
