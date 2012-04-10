@@ -128,9 +128,7 @@ public:
   void getEEPROMData(kobuki_comms::EEPROM&);
   void getGpInputData(kobuki_comms::GpInput&);
 
-  void updateOdometry(double &wheel_left_position, double &wheel_left_velocity,
-                      double &wheel_right_position, double &wheel_right_velocity,
-                      ecl::Pose2D<double> &pose_update,
+  void updateOdometry(ecl::Pose2D<double> &pose_update,
                       ecl::linear_algebra::Vector3d &pose_update_rates);
   void getJointState(device_comms::JointState&);
   void setCommand(double, double);

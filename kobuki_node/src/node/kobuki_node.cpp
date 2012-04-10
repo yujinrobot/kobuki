@@ -246,8 +246,6 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   ** Kobuki Esoterics
   **********************/
 
-  wheel_left_state_publisher = nh.advertise < device_comms::JointState > (std::string("joint_state/") + wheel_left_name, 100);
-  wheel_right_state_publisher = nh.advertise < device_comms::JointState > (std::string("joint_state/") + wheel_right_name, 100);
   sensor_data_publisher = nh.advertise < kobuki_comms::SensorData > ("sensor_data", 100);
 
   ir_data_publisher = nh.advertise < kobuki_comms::IR > ("ir_data", 100);

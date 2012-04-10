@@ -23,37 +23,14 @@ namespace kobuki
 
 void KobukiNode::publishWheelState()
 {
-  //waitForInitialisation();
   if (ros::ok())
   {
-//    if (wheel_left_state_publisher.getNumSubscribers() > 0)
-  //  {
-//      kobuki.pubtime("  wheel_left:ent");
-      device_comms::JointState joint_state_l;
-      joint_state_l.name = "wheel_left";
-      joint_state_l.stamp = ros::Time::now();
-      kobuki.getJointState(joint_state_l);
-      wheel_left_state_publisher.publish(joint_state_l);
-//      kobuki.pubtime("  wheel_left:pub");
-/*    }
-    if (wheel_right_state_publisher.getNumSubscribers() > 0)
-    {*/
-//      kobuki.pubtime("  wheel_right:ent");
-      device_comms::JointState joint_state_r;
-      joint_state_r.name = "wheel_right";
-      joint_state_r.stamp = ros::Time::now();
-      kobuki.getJointState(joint_state_r);
-      wheel_right_state_publisher.publish(joint_state_r);
-//      kobuki.pubtime("  wheel_right:pub");
-//    }
 
     // TODO really horrible; refactor
     ecl::Pose2D<double> pose_update;
     ecl::linear_algebra::Vector3d pose_update_rates;
 
-    kobuki.updateOdometry(joint_state_l.position, joint_state_l.velocity,
-                          joint_state_r.position, joint_state_r.velocity,
-                          pose_update, pose_update_rates);
+    kobuki.updateOdometry(pose_update, pose_update_rates);
 
     joint_states.header.stamp = ros::Time::now();
     joint_state_publisher.publish(joint_states);

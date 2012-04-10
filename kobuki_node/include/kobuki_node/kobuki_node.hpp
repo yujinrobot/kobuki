@@ -85,8 +85,8 @@ private:
   ros::Publisher ir_data_publisher, dock_ir_data_publisher, inertia_data_publisher, imu_data_publisher,
                  cliff_data_publisher, current_data_publisher, magnet_data_publisher, hw_data_publisher,
                  fw_data_publisher, time_data_publisher, st_gyro_data_publisher, eeprom_data_publisher,
-                 gp_input_data_publisher, joint_state_publisher, odom_publisher, wheel_left_state_publisher,
-                 wheel_right_state_publisher, sensor_data_publisher;
+                 gp_input_data_publisher, joint_state_publisher, odom_publisher,
+                 sensor_data_publisher;
   ros::Subscriber wheel_left_command_subscriber, wheel_right_command_subscriber, velocity_command_subscriber,
                   kobuki_command_subscriber, enable_subscriber, disable_subscriber;
 

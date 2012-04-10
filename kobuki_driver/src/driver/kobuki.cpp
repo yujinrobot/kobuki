@@ -426,15 +426,9 @@ void Kobuki::getGpInputData(kobuki_comms::GpInput &data)
  *
  * We then emit whatever struct we want to get from this.
  **/
-void Kobuki::updateOdometry(double &wheel_left_position, double &wheel_left_velocity,
-                            double &wheel_right_position, double &wheel_right_velocity,
-                            ecl::Pose2D<double> &pose_update,
+void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update,
                             ecl::linear_algebra::Vector3d &pose_update_rates) {
   if ( simulation ) {
-    wheel_left_position = kobuki_sim.left_wheel_angle;
-    wheel_right_position = kobuki_sim.left_wheel_angle;
-    wheel_left_velocity = kobuki_sim.left_wheel_angle_rate;
-    wheel_right_velocity = kobuki_sim.left_wheel_angle_rate;
     pose_update = kinematics->forward(kobuki_sim.left_wheel_angle_update, kobuki_sim.right_wheel_angle_update);
 
   } else {
@@ -477,14 +471,9 @@ void Kobuki::updateOdometry(double &wheel_left_position, double &wheel_left_velo
       last_timestamp = curr_timestamp;
       last_velocity_left = (tick_to_rad * left_diff_ticks) / last_diff_time;
       last_velocity_right = (tick_to_rad * right_diff_ticks) / last_diff_time;
-      wheel_left_velocity = last_velocity_left;
-      wheel_right_velocity = last_velocity_right;
     } else {
-      wheel_left_velocity = 0.0;
-      wheel_right_velocity = 0.0;
+      // we need to set the last_velocity_xxx to zero?
     }
-    wheel_left_position = last_rad_left;
-    wheel_right_position = last_rad_right;
 
     pose_update_rates << pose_update.x()/last_diff_time,
                          pose_update.y()/last_diff_time,
