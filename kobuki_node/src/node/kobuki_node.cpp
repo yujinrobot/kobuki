@@ -269,10 +269,6 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
  */
 void KobukiNode::subscribeTopics(ros::NodeHandle& nh)
 {
-  wheel_left_command_subscriber = nh.subscribe(std::string("joint_command/") + wheel_left_name, 10,
-                                               &KobukiNode::subscribeJointCommandLeft, this);
-  wheel_right_command_subscriber = nh.subscribe(std::string("joint_command/") + wheel_right_name, 10,
-                                                &KobukiNode::subscribeJointCommandRight, this);
   velocity_command_subscriber = nh.subscribe(std::string("cmd_vel"), 10, &KobukiNode::subscribeVelocityCommand, this);
   kobuki_command_subscriber = nh.subscribe(std::string("kobuki_command"), 10, &KobukiNode::subscribeKobukiCommand, this);
 

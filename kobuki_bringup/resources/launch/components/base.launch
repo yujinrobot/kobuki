@@ -9,8 +9,6 @@
     <node pkg="kobuki_node" type="kobuki_node" name="driver" output="screen">
 	    <rosparam file="$(find kobuki_bringup)/resources/yaml/kobuki.yaml" command="load"/>
 	    <param name="simulation" value="$(arg simulation)"/>
-	    <remap from="driver/joint_state/wheel_left"  to="joint_state/wheel_left"/>
-	    <remap from="driver/joint_state/wheel_right" to="joint_state/wheel_right"/>
 	    <remap from="driver/odom" to="odom"/>
 	    <remap from="driver/imu_data" to="imu_data"/>
 	    <remap from="driver/cmd_vel" to="cmd_vel"/>

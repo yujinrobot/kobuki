@@ -306,18 +306,6 @@ void KobukiNode::publishGpInputData()
   }
 }
 
-void KobukiNode::subscribeJointCommandLeft(const device_comms::JointCommand cmd)
-{
-  //cmd.value;
-  return;
-}
-
-void KobukiNode::subscribeJointCommandRight(const device_comms::JointCommand cmd)
-{
-  //cmd.value;
-  return;
-}
-
 void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg)
 {
   if (kobuki.isEnabled())
@@ -328,10 +316,6 @@ void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg
     //double wz = msg->angular.z;       // in (rad/s)
     ROS_DEBUG_STREAM("subscribeVelocityCommand: [" << msg->linear.x << "],[" << msg->angular.z << "]");
     kobuki.setCommand(msg->linear.x, msg->angular.z);
-  }
-  else
-  {
-    ROS_WARN("Robot is not enabled.");
   }
   return;
 }

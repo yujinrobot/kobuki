@@ -17,7 +17,6 @@
 #include <string>
 #include <algorithm>
 #include <kobuki_comms/SensorData.h>
-#include <device_comms/JointState.h>
 #include <ecl/threads.hpp>
 #include <ecl/devices.hpp>
 #include <ecl/time.hpp>
@@ -110,7 +109,6 @@ public:
   {
     return is_enabled;
   }
-  //const device_comms::ns::Gyro& data() const { return gyro_data; }
   bool run();
   bool stop();
   void close();
@@ -132,7 +130,6 @@ public:
                             double &wheel_right_angle, double &wheel_right_angle_rate);
   void updateOdometry(ecl::Pose2D<double> &pose_update,
                       ecl::linear_algebra::Vector3d &pose_update_rates);
-  void getJointState(device_comms::JointState&);
   void setCommand(double, double);
   void sendCommand();
   void sendCommand(const kobuki_comms::CommandConstPtr &data);

@@ -27,8 +27,6 @@
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_broadcaster.h>
-#include <device_comms/JointCommand.h>
-#include <device_comms/JointState.h>
 #include <kobuki_comms/SensorData.h>
 #include <ecl/sigslots.hpp>
 #include <kobuki_driver/kobuki.hpp>
@@ -87,13 +85,11 @@ private:
                  fw_data_publisher, time_data_publisher, st_gyro_data_publisher, eeprom_data_publisher,
                  gp_input_data_publisher, joint_state_publisher, odom_publisher,
                  sensor_data_publisher;
-  ros::Subscriber wheel_left_command_subscriber, wheel_right_command_subscriber, velocity_command_subscriber,
-                  kobuki_command_subscriber, enable_subscriber, disable_subscriber;
+  ros::Subscriber velocity_command_subscriber, kobuki_command_subscriber, enable_subscriber, disable_subscriber;
 
   ecl::Slot<> slot_wheel_state, slot_sensor_data, slot_ir, slot_dock_ir, slot_inertia, slot_cliff, slot_current, slot_magnet, slot_hw, slot_fw, slot_time,
               slot_st_gyro, slot_eeprom, slot_gp_input;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
-  ecl::Signal<const device_comms::JointCommand> sig_joint_command;
   tf::TransformBroadcaster odom_broadcaster;
   sensor_msgs::JointState joint_states;
 
@@ -114,8 +110,6 @@ private:
   void publishStGyroData();
   void publishEEPROMData();
   void publishGpInputData();
-  void subscribeJointCommandLeft(const device_comms::JointCommand);
-  void subscribeJointCommandRight(const device_comms::JointCommand);
   void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
   void subscribeKobukiCommand(const kobuki_comms::CommandConstPtr);
 

@@ -21,8 +21,6 @@
   <!-- **** These have to disappear **** -->
   <!-- Ros -->
   <depend package="roscpp"/>
-  <!-- Ycs -->
-  <depend package="device_comms"/>
   <!-- Kobuki -->
   <depend package="kobuki_comms"/>
   
