@@ -91,6 +91,8 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   advertiseTopics(nh);
   subscribeTopics(nh);
 
+  reset_odometry_server = nh.advertiseService("reset_odometry", &KobukiNode::serveResetOdometry, this);
+
   /*********************
    ** Sigslots
    **********************/
@@ -307,6 +309,32 @@ void KobukiNode::publishOdom(const geometry_msgs::Quaternion &odom_quat,
   odom.twist.twist.angular.z = pose_update_rates[2];
 
   odom_publisher.publish(odom);
+}
+
+
+/*****************************************************************************
+ ** Service Callbacks
+ *****************************************************************************/
+/**
+ * @brief Reset the odometry variables.
+ *
+ * @param request : the stream type to send back.
+ * @param response : the outgoing data stream (empty).
+ * @return bool : always succeeds (true).
+ */
+bool KobukiNode::serveResetOdometry(std_srvs::Empty::Request &request,
+                                    std_srvs::Empty::Response &response)
+{
+  ROS_INFO_STREAM("Mobile base : resetting the odometry [" << name << "].");
+  pose.setIdentity();
+  joint_states.position[0] = 0.0; // wheel_left
+  joint_states.velocity[0] = 0.0;
+  joint_states.position[1] = 0.0; // wheel_right
+  joint_states.velocity[1] = 0.0;
+
+  kobuki.resetOdometry();
+
+  return true;
 }
 
 } // namespace kobuki

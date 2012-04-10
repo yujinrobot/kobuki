@@ -126,6 +126,7 @@ public:
   void getEEPROMData(kobuki_comms::EEPROM&);
   void getGpInputData(kobuki_comms::GpInput&);
 
+  void resetOdometry();
   void getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
                             double &wheel_right_angle, double &wheel_right_angle_rate);
   void updateOdometry(ecl::Pose2D<double> &pose_update,
@@ -150,6 +151,7 @@ private:
   short speed;
   double bias; //wheelbase, wheel_to_wheel, in [m]
   double wheel_radius;
+  double imu_heading_offset;
 
   std::string device_type;
   std::string protocol_version;
