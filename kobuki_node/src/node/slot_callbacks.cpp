@@ -134,41 +134,22 @@ void KobukiNode::publishInertiaData()
 {
   if (ros::ok())
   {
-    // TODO This is useless by now... publish anyway
-    if (inertia_data_publisher.getNumSubscribers() > 0)
-    {
-      kobuki_comms::Inertia data;
-      kobuki.getInertiaData(data);
-      data.header.stamp = ros::Time::now();
-      inertia_data_publisher.publish(data);
-      //std::cout << __func__ << std::endl;
-    }
-
-    // Convert internal kobuki_comms::Inertia data into a ros sensor_msgs::Imu message
     if (imu_data_publisher.getNumSubscribers() > 0)
     {
-      kobuki_comms::Inertia data;
-      kobuki.getInertiaData(data);
-
-////      if (! isnan(data.angle)) {
       sensor_msgs::Imu msg;
       msg.header.frame_id = "gyro_link";
-      msg.header.seq = data.header.seq;
       msg.header.stamp = ros::Time::now();
 
-      // gyro angle comes as hundredths of degree, convert to radians
-      double yaw = (data.angle/18000.0)*M_PI;
-      msg.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0, 0.0, yaw);
+      msg.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0, 0.0, kobuki.getHeading());
 
       // set a very large covariance on unused dimensions (pitch and roll);
       // set yaw covariance as very low, to make it dominate over the odometry heading
-      // TODO 1: fill once, as its always the same;  TODO 2: cannot get better estimation?
+      // 1: fill once, as its always the same;  2: cannot get better estimation?
       msg.orientation_covariance[0] = DBL_MAX;
       msg.orientation_covariance[4] = DBL_MAX;
       msg.orientation_covariance[8] = 0.005;
 
-      // ignore velocity and acceleration by now
-
+      // ignore velocity and acceleration for now - kobuki driver can give us rates though.
       imu_data_publisher.publish(msg);
     }
   }

@@ -19,6 +19,7 @@
 *****************************************************************************/
 
 #include <ecl/time/timestamp.hpp>
+#include <ecl/geometry/angle.hpp>
 
 /*****************************************************************************
 ** Namespaces
@@ -71,11 +72,20 @@ public:
     right_wheel_angle_update = right_wheel_angle_rate * diff;
     left_wheel_angle += left_wheel_angle_update;
     right_wheel_angle += right_wheel_angle_update;
-
     heading += angular_velocity * diff;
-
     last_timestamp = stamp;
-//    std::cout << "[" << last_timestamp << "][" << left_wheel_angle << "," << right_wheel_angle << "][" << left_wheel_angle_rate << "," << right_wheel_angle_rate << "]" << std::endl;
+
+    // debugUpdate();
+  }
+
+  void debugUpdate() const {
+    std::cout << "Update:" << std::endl;
+    std::cout << "  timestamp: " << last_timestamp << std::endl;
+    std::cout << "  velocity: " << velocity << std::endl;
+    std::cout << "  angular rate: " << angular_velocity << std::endl;
+    std::cout << "  wheel_angle: [" << left_wheel_angle << "," << right_wheel_angle << "]" << std::endl;
+    std::cout << "  wheel_angle_rate: [" << left_wheel_angle_rate << "," << right_wheel_angle_rate << "]" << std::endl;
+    std::cout << "  heading: " << heading << std::endl;
   }
 
   void sleep() {
@@ -84,7 +94,7 @@ public:
 
   double bias;
   double m_to_rad;
-  double heading;
+  ecl::Angle<double> heading;
   double velocity, angular_velocity;
   double left_wheel_angle, right_wheel_angle;
   double left_wheel_angle_update, right_wheel_angle_update;

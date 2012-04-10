@@ -7,7 +7,7 @@
         <remap from="keyop/enable" to="enable"/>
         <remap from="keyop/disable" to="disable"/>
         <remap from="keyop/cmd_vel" to="cmd_vel"/>
-        <remap from="keyop/reset_odometry" to="/reset_odometry"/>
+        <remap from="keyop/reset_odometry" to="reset_odometry"/>
  		<param name="linear_vel_step"  value="0.03"  type="double"/>
  		<param name="linear_vel_max"   value="0.5"  type="double"/>
     	<param name="angular_vel_step" value="0.25" type="double"/>

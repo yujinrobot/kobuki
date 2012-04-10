@@ -1,5 +1,5 @@
 /**
- * @file /include/kobuki_node/packet_finder.hhpp
+ * @file /include/kobuki_driver/packet_finder.hhpp
  *
  * Originally from the yujin control system suite (where it also has some
  * unit tests).
@@ -30,31 +30,13 @@ namespace packet_handler
 {
 
 /*****************************************************************************
- ** Using
- *****************************************************************************/
-
-/*****************************************************************************
  ** Interface
  *****************************************************************************/
 /**
  * @brief
  * Provides simple packet finder which may be consist of stx, etx, payload, ...
  *
- * @note
- *
- * <b>Usage</b>:
- *
- *
- * @code
- *
- *
- * @code
- *
- *
- * @endcode
- *
  */
-
 class payloadBase
 {
 public:
@@ -68,22 +50,15 @@ public:
   /*
    * construct and destruct
    */
-  payloadBase() :
-      yes(false)
-  {
-  }
-  ;
-  ~payloadBase()
-  {
-  }
-  ;
+  payloadBase() : yes(false) {};
+  virtual ~payloadBase() {};
 
   /*
    * serialisation
    */
   virtual bool serialise(ecl::PushAndPop<unsigned char> & byteStream)=0;
   virtual bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)=0;
-  virtual bool constrain()=0;
+  virtual bool constrain() { return true; }
 
   // utilities
   // todo; let's put more useful converters here. Or we may use generic converters

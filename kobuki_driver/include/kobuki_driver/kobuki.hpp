@@ -112,10 +112,13 @@ public:
   bool run();
   bool stop();
   void close();
+
+  ecl::Angle<double> getHeading() const;
+
   void getSensorData(kobuki_comms::SensorData&);
   void getIRData(kobuki_comms::IR&);
   void getDockIRData(kobuki_comms::DockIR&);
-  void getInertiaData(kobuki_comms::Inertia&);
+//  void getInertiaData(kobuki_comms::Inertia&);
   void getCliffData(kobuki_comms::Cliff&);
   void getCurrentData(kobuki_comms::Current&);
   void getMagnetData(kobuki_comms::Magnet&);
@@ -167,7 +170,7 @@ private:
   DefaultData kobuki_default;
   IRData kobuki_ir;
   DockIRData kobuki_dock_ir;
-  InertiaData kobuki_inertia;
+  Inertia kobuki_inertia;
   CliffData kobuki_cliff;
   CurrentData kobuki_current;
   MagnetData kobuki_magnet;

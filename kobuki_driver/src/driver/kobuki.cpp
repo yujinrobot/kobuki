@@ -8,6 +8,8 @@
  ** Includes
  *****************************************************************************/
 
+#include <ecl/math.hpp>
+#include <ecl/geometry/angle.hpp>
 #include <ecl/time/sleep.hpp>
 #include <ecl/converters.hpp>
 #include <ecl/sigslots.hpp>
@@ -358,19 +360,29 @@ void Kobuki::getDockIRData(kobuki_comms::DockIR &data)
     data = kobuki_dock_ir.data;
 }
 
-void Kobuki::getInertiaData(kobuki_comms::Inertia &data)
-{
-  if (protocol_version == "2.0")
-    data = kobuki_inertia.data;
-
+ecl::Angle<double> Kobuki::getHeading() const {
+  ecl::Angle<double> heading;
   if ( simulation ) {
-    // gyro angle are hundredths of degree, convert from radians
-    data.angle = (int)round((kobuki_sim.heading/M_PI)*18000);
+    return kobuki_sim.heading;
   }
-  else {
-    data.angle -= imu_heading_offset;
+  if (protocol_version == "2.0") {
+    // raw data angles are in hundredths of a degree, convert to radians.
+    heading = static_cast<double>(kobuki_inertia.data.angle) * 100.0 * ecl::pi /180.0;
   }
 }
+//void Kobuki::getInertiaData(kobuki_comms::Inertia &data)
+//{
+//  if (protocol_version == "2.0") {
+//    data = kobuki_inertia.data;
+//  }
+//
+//  if ( simulation ) {
+//    // gyro angle are hundredths of degree, convert from radians
+//    data.angle = (int)round((kobuki_sim.heading/M_PI)*180*100);
+//  } else {
+//    data.angle -= imu_heading_offset;
+//  }
+//}
 
 void Kobuki::getCliffData(kobuki_comms::Cliff &data)
 {

@@ -88,7 +88,7 @@ private:
    **********************/
   ros::ServiceServer reset_odometry_server;
 
-  ros::Publisher ir_data_publisher, dock_ir_data_publisher, inertia_data_publisher, imu_data_publisher,
+  ros::Publisher ir_data_publisher, dock_ir_data_publisher, imu_data_publisher,
                  cliff_data_publisher, current_data_publisher, magnet_data_publisher, hw_data_publisher,
                  fw_data_publisher, time_data_publisher, st_gyro_data_publisher, eeprom_data_publisher,
                  gp_input_data_publisher, joint_state_publisher, odom_publisher,

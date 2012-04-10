@@ -1,26 +1,39 @@
+/*****************************************************************************
+** Preprocessor
+*****************************************************************************/
+
 #ifndef KOBUKI_INERTIA_DATA_HPP__
 #define KOBUKI_INERTIA_DATA_HPP__
 
-#include <ecl/containers.hpp>
+/*****************************************************************************
+** Includes
+*****************************************************************************/
+
 #include "payload_base.hpp"
-#include <kobuki_comms/Header.h>
-#include <kobuki_comms/Inertia.h>
+
+/*****************************************************************************
+** Namespaces
+*****************************************************************************/
 
 namespace kobuki
 {
 
-class InertiaData : public packet_handler::payloadBase
+/*****************************************************************************
+** Interface
+*****************************************************************************/
+
+class Inertia : public packet_handler::payloadBase
 {
 public:
-  // container
-  kobuki_comms::Inertia data;
+  struct Data {
+    unsigned char header_id;
+    unsigned short angle;
+    unsigned short angle_rate;
+    unsigned char acc[3];
+  } data;
 
-  InertiaData()
-  {
-    data.acc.resize(3);
-  }
+  virtual ~Inertia() {};
 
-  // methods
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
     if (!(byteStream.size() > 0))
@@ -53,18 +66,7 @@ public:
     buildVariable(data.acc[1], byteStream);
     buildVariable(data.acc[2], byteStream);
 
-    //showMe();
-    return constrain();
-  }
-
-  bool constrain()
-  {
     return true;
-  }
-
-  void showMe()
-  {
-    //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, acc[2], acc[1], acc[0] );
   }
 };
 
