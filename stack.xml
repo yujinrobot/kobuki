@@ -6,6 +6,6 @@
   <url>http://ros.org/wiki/kobuki</url>
   <depend stack="ros" />
   <depend stack="ecl_core" />
-  <depend stack="ycs_comms" />
+  <depend stack="turtlebot_apps"/>
   <!-- need to properly flesh this out -->
 </stack>

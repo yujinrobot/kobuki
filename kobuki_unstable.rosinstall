@@ -5,7 +5,6 @@
 #   - sudo apt-get install ros-electric-turtlebot-arm 
 # * Yujin stacks:
 #   - rosinstall /opt/yujin/unstable/stacks http://embedded-control-library.googlecode.com/svn/trunk/ecl_unstable.rosinstall
-#   - rosinstall /opt/yujin/unstable/stacks http://svn.yujin.com/ycs/trunk/ycs_unstable.rosinstall
 
 # Official ROS Stacks
 - other:
@@ -16,8 +15,6 @@
 # Yujin stacks
 - other:
     local-name: /opt/yujin/unstable/stacks/ecl
-- other:
-    local-name: /opt/yujin/unstable/stacks/ycs
 
 # Kobuki stack
 - git:

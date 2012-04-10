@@ -7,7 +7,7 @@
   <author>Daniel Stonier</author>
   <license>BSD</license>
   <review status="experimental" notes=""/>
-  <url>http://yujin.dnsdojo.com:3000/wiki/ycs/</url>
+  <url>http://www.ros.org/wiki/kobuki/kobuki_comms/</url>
   <export>
     <cpp cflags="-I${prefix}/msg_gen/cpp/include -I${prefix}/srv_gen/cpp/include"/>
   </export>

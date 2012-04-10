@@ -26,7 +26,4 @@
   <depend package="ecl_exceptions"/>
   <depend package="ecl_sigslots"/>
   <depend package="ecl_streams"/>
-  <export>
-    <nodelet plugin="${prefix}/src/nodelets/kobuki_nodelet.xml"/>
-  </export>
 </package>

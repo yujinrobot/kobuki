@@ -1,4 +1,4 @@
-include $(shell rospack find ycs_build)/mk/ycsinstall.mk
+include $(shell rospack find mk)/cmake.mk
 
 unison:
 	@if [ -f ~/.unison/kobuki.prf ]; then \

@@ -14,9 +14,6 @@
 - svn:
     uri: https://embedded-control-library.googlecode.com/svn/trunk
     local-name: ecl
-- svn:
-    uri: http://svn.yujin.com/ycs/trunk
-    local-name: ycs
 
 # Kobuki stack
 - git:

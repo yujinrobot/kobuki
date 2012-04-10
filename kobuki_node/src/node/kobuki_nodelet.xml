@@ -1,7 +1,0 @@
-<library path="lib/libkobuki_nodelets">
-  <class name="kobuki_node/KobukiNodelet" type="kobuki::KobukiNodelet" base_class_type="nodelet::Nodelet">
-  <description>
-    This is a nodelet of ycs type DeviceNodelet.
-  </description>
-  </class>
-</library>
