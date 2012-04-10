@@ -146,9 +146,14 @@ void Kobuki::runnable()
     get_packet = false;
 
     if ( simulation ) {
+      // this only does wheel updates, you want to
+      // 1) calculate the heading variable in update(), store it
+      // 2) add an if( simulation ) { ... to getInertiaData (c.f. updateOdometry)
+      // 3) do sig_inertia.emit()
       kobuki_sim.update();
       kobuki_sim.sleep();
       sig_wheel_state.emit();
+      sig_inertia.emit();
     } else {
       /*********************
       ** Read Incoming
@@ -354,6 +359,12 @@ void Kobuki::getInertiaData(kobuki_comms::Inertia &data)
 {
   if (protocol_version == "2.0")
     data = kobuki_inertia.data;
+
+  if ( simulation )
+    data.angle = kobuki_sim.heading;
+  else
+    // gyro angle comes as hundredths of degree, convert to radians
+    data.angle = (data.angle/18000.0)*M_PI;
 }
 
 void Kobuki::getCliffData(kobuki_comms::Cliff &data)
