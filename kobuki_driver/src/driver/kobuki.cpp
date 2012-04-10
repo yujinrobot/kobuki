@@ -429,6 +429,7 @@ void Kobuki::resetOdometry() {
   last_rad_right = 0.0;
   last_velocity_left = 0.0;
   last_velocity_right = 0.0;
+
   imu_heading_offset = (kobuki_inertia.data.angle/18000.0)*M_PI;
 }
 
