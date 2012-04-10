@@ -31,6 +31,8 @@ void KobukiNode::publishWheelState()
     ecl::linear_algebra::Vector3d pose_update_rates;
 
     kobuki.updateOdometry(pose_update, pose_update_rates);
+    kobuki.getWheelJointStates(joint_states.position[0],joint_states.velocity[0],   // left wheel
+                               joint_states.position[1],joint_states.velocity[1] ); // right wheel
 
     joint_states.header.stamp = ros::Time::now();
     joint_state_publisher.publish(joint_states);

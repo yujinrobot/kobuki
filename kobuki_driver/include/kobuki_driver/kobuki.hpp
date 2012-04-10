@@ -128,6 +128,8 @@ public:
   void getEEPROMData(kobuki_comms::EEPROM&);
   void getGpInputData(kobuki_comms::GpInput&);
 
+  void getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
+                            double &wheel_right_angle, double &wheel_right_angle_rate);
   void updateOdometry(ecl::Pose2D<double> &pose_update,
                       ecl::linear_algebra::Vector3d &pose_update_rates);
   void getJointState(device_comms::JointState&);
@@ -155,7 +157,6 @@ private:
   std::string device_type;
   std::string protocol_version;
   bool is_connected; // True if there's a serial/usb connection open.
-  //device_comms::ns::Gyro gyro_data;
   bool is_running;
   bool is_enabled;
 
@@ -192,9 +193,7 @@ private:
   ecl::Signal<const std::string&> sig_debug, sig_info, sig_warn, sig_error;
 
   std::set<unsigned char> sig_index;
-
   boost::shared_ptr<ecl::DifferentialDrive::Kinematics> kinematics;
-
   bool simulation;
 };
 

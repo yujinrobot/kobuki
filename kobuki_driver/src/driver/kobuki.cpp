@@ -420,17 +420,27 @@ void Kobuki::getGpInputData(kobuki_comms::GpInput &data)
   if (protocol_version == "2.0")
     data = kobuki_gp_input.data;
 }
+void Kobuki::getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
+                          double &wheel_right_angle, double &wheel_right_angle_rate) {
 
-/**
- * Temporary hack. Move this into an internal update() function inside odometry.hpp.
- *
- * We then emit whatever struct we want to get from this.
- **/
+  if ( simulation ) {
+    wheel_left_angle = kobuki_sim.left_wheel_angle;
+    wheel_right_angle = kobuki_sim.right_wheel_angle;
+    wheel_left_angle_rate = kobuki_sim.left_wheel_angle_rate;
+    wheel_right_angle_rate = kobuki_sim.right_wheel_angle_rate;
+  } else {
+    wheel_left_angle = last_rad_left;
+    wheel_right_angle = last_rad_right;
+    wheel_left_angle_rate = last_velocity_left;
+    wheel_right_angle_rate = last_velocity_right;
+  }
+}
+
 void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update,
                             ecl::linear_algebra::Vector3d &pose_update_rates) {
   if ( simulation ) {
     pose_update = kinematics->forward(kobuki_sim.left_wheel_angle_update, kobuki_sim.right_wheel_angle_update);
-
+    // should add pose_update_rates here as well.
   } else {
     static bool init_l = false;
     static bool init_r = false;
