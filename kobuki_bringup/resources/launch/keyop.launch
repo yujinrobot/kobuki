@@ -3,7 +3,7 @@
     <node pkg="keyop_core" type="keyop" name="keyop" output="screen">
         <remap from="keyop/enable" to="enable"/>
         <remap from="keyop/disable" to="disable"/>
-        <remap from="keyop/cmd_vel" to="cmd_vel"/>
+        <remap from="keyop/cmd_vel" to="cmd_vel___"/>
  		<param name="linear_vel_step"  value="0.03"  type="double"/>
  		<param name="linear_vel_max"   value="0.5"  type="double"/>
     	<param name="angular_vel_step" value="0.25" type="double"/>
