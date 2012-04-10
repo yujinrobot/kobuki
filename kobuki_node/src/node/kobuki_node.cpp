@@ -53,7 +53,6 @@ KobukiNode::KobukiNode(std::string& node_name) :
     slot_hw(&KobukiNode::publishHWData, *this),
     slot_fw(&KobukiNode::publishFWData, *this),
     slot_time(&KobukiNode::publishTimeData, *this),
-    slot_st_gyro(&KobukiNode::publishStGyroData, *this),
     slot_eeprom(&KobukiNode::publishEEPROMData, *this),
     slot_gp_input(&KobukiNode::publishGpInputData, *this),
     slot_debug(&KobukiNode::rosDebug, *this),
@@ -107,7 +106,6 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   slot_hw.connect(name + std::string("/hw"));
   slot_fw.connect(name + std::string("/fw"));
   slot_time.connect(name + std::string("/time"));
-  slot_st_gyro.connect(name + std::string("/st_gyro"));
   slot_eeprom.connect(name + std::string("/eeprom"));
   slot_gp_input.connect(name + std::string("/gp_input"));
 
@@ -284,7 +282,6 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   hw_data_publisher = nh.advertise < kobuki_comms::HW > ("hw_data", 100);
   fw_data_publisher = nh.advertise < kobuki_comms::FW > ("fw_data", 100);
   time_data_publisher = nh.advertise < kobuki_comms::Time > ("time_data", 100);
-  st_gyro_data_publisher = nh.advertise < kobuki_comms::StGyro > ("st_gyro_data", 100);  // TODO delete?
   eeprom_data_publisher = nh.advertise < kobuki_comms::EEPROM > ("eeprom_data", 100);
   gp_input_data_publisher = nh.advertise < kobuki_comms::GpInput > ("gp_input_data", 100);
 }

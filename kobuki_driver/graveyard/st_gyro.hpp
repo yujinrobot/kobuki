@@ -12,8 +12,14 @@ namespace kobuki
 class StGyroData : public packet_handler::payloadBase
 {
 public:
-  // container
+
   kobuki_comms::StGyro data;
+  // the msg format
+//  uint8 header_id
+//  uint8 frame_id
+//  uint8 followed_data_length
+//  uint16[] st_gyro_data
+
 
   // methods
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)

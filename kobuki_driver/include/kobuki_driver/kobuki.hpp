@@ -37,7 +37,6 @@
 #include "time.hpp"
 #include "hw.hpp"
 #include "fw.hpp"
-#include "st_gyro.hpp"
 #include "eeprom.hpp"
 #include "gp_input.hpp"
 #include "command.hpp"
@@ -125,7 +124,6 @@ public:
   void getHWData(kobuki_comms::HW&);
   void getFWData(kobuki_comms::FW&);
   void getTimeData(kobuki_comms::Time&);
-  void getStGyroData(kobuki_comms::StGyro&);
   void getEEPROMData(kobuki_comms::EEPROM&);
   void getGpInputData(kobuki_comms::GpInput&);
 
@@ -177,7 +175,6 @@ private:
   TimeData kobuki_time;
   HWData kobuki_hw;
   FWData kobuki_fw;
-  StGyroData kobuki_st_gyro;
   EEPROMData kobuki_eeprom;
   GpInputData kobuki_gp_input;
   SimulationData kobuki_sim;

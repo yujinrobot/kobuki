@@ -243,21 +243,6 @@ void KobukiNode::publishTimeData()
   }
 }
 
-void KobukiNode::publishStGyroData()
-{
-  if (ros::ok())
-  {
-    if (st_gyro_data_publisher.getNumSubscribers() > 0)
-    {
-      kobuki_comms::StGyro data;
-      kobuki.getStGyroData(data);
-      data.header.stamp = ros::Time::now();
-      st_gyro_data_publisher.publish(data);
-      //std::cout << __func__ << std::endl;
-    }
-  }
-}
-
 void KobukiNode::publishEEPROMData()
 {
   if (ros::ok())

@@ -247,10 +247,9 @@ void Kobuki::runnable()
                 sig_index.insert(data_buffer[0]);
                 kobuki_fw.deserialise(data_buffer);
                 break;
-              case kobuki_comms::Header::header_st_gyro:
-                sig_index.insert(data_buffer[0]);
-                kobuki_st_gyro.deserialise(data_buffer);
-                break;
+              // case kobuki_comms::Header::header_st_gyro:  // UNUSED
+                //   sig_index.insert(data_buffer[0]);
+                // break;
               case kobuki_comms::Header::header_eeprom:
                 sig_index.insert(data_buffer[0]);
                 kobuki_eeprom.deserialise(data_buffer);
@@ -405,12 +404,6 @@ void Kobuki::getTimeData(kobuki_comms::Time &data)
 {
   if (protocol_version == "2.0")
     data = kobuki_time.data;
-}
-
-void Kobuki::getStGyroData(kobuki_comms::StGyro &data)
-{
-  if (protocol_version == "2.0")
-    data = kobuki_st_gyro.data;
 }
 
 void Kobuki::getEEPROMData(kobuki_comms::EEPROM &data)
