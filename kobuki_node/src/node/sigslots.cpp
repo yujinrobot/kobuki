@@ -172,22 +172,18 @@ void KobukiNode::publishInertiaData()
       kobuki.getInertiaData(data);
 
       sensor_msgs::Imu msg;
-      msg.header.frame_id = base_frame;//odom_frame;
+      msg.header.frame_id = "gyro_link";
       msg.header.seq = data.header.seq;
       msg.header.stamp = ros::Time::now();
 
-      // angle comes as hundredths of degree, convert to radians
-      float yaw = (data.angle/18000.0)*M_PI;
-      msg.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0, 0.0, yaw);
+      msg.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0, 0.0, data.angle);
 
       // set a very large covariance on unused dimensions (pitch and roll);
       // set yaw covariance as very low, to make it dominate over the odometry heading
       // TODO 1: fill once, as its always the same;  TODO 2: cannot get better estimation?
-//      for (unsigned i = 0; i < msg.orientation_covariance.size(); ++i)
-        msg.orientation_covariance[8] = 0.01;//DBL_MAX;
-        msg.orientation_covariance[4] = 0.01;//DBL_MAX;
-
-      msg.orientation_covariance[0] = 0.01;
+      msg.orientation_covariance[0] = DBL_MAX;
+      msg.orientation_covariance[4] = DBL_MAX;
+      msg.orientation_covariance[8] = 0.005;
 
       // ignore velocity and acceleration by now
 
