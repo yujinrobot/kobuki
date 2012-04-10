@@ -110,7 +110,6 @@ public:
   void getBuffer(BufferType & bufferRef);
 
 protected:
-  bool updatePacket(const unsigned char * incoming, unsigned int numberOfIncoming);
   bool WaitForStx(const unsigned char datum);
   bool waitForPayloadSize(const unsigned char * incoming, unsigned int numberOfIncoming);
   bool waitForEtx(const unsigned char incoming, bool & foundPacket);

@@ -159,32 +159,20 @@ void Kobuki::runnable()
         continue;
       } else {
         ROS_DEBUG_STREAM("kobuki_node : serial_read(" << n << ")");
-        /*********************
-        ** Debugging
-        **********************/
-        static unsigned char last_char(buf[0]);
-        for( int i(0); i<n; i++ )
-        {
-          printf("%02x ", buf[i] );
-          if( last_char == 0xaa && buf[i] == 0x55 ) printf("\n");
-          last_char = buf[i];
-        }
+        // might be useful to send this to a topic if there is subscribers
+//        static unsigned char last_char(buf[0]);
+//        for( int i(0); i<n; i++ )
+//        {
+//          printf("%02x ", buf[i] );
+//          if( last_char == 0xaa && buf[i] == 0x55 ) printf("\n");
+//          last_char = buf[i];
+//        }
       }
 
       if (packet_finder.update(buf, n))
       {
-        std::cout << "Packet finder found the update" << std::endl;
-
         // when packet_finder finds proper packet, we will get the buffer
         packet_finder.getBuffer(data_buffer);
-
-        /*
-         static int count=0;
-         std::cout << "packet_found: " ;
-         std::cout << count++  << " | ";
-         std::cout << data_buffer.size() << " | ";
-         std::cout << std::endl;
-         */
 
   #if 0
         if( verbose )
@@ -207,7 +195,7 @@ void Kobuki::runnable()
           sig_index.clear();
           while (data_buffer.size() > 1/*size of etx*/)
           {
-             std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
+            // std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
             // std::cout << "remains: " << data_buffer.size() << " | ";
             switch (data_buffer[0])
             {

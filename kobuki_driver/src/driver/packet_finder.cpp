@@ -69,11 +69,6 @@ void PacketFinderBase::enableVerbose()
   verbose = true;
 }
 
-bool PacketFinderBase::update(const unsigned char * incoming, unsigned int numberOfIncoming)
-{
-  return updatePacket(incoming, numberOfIncoming);
-}
-
 bool PacketFinderBase::checkSum()
 {
   return true;
@@ -116,14 +111,11 @@ void PacketFinderBase::getBuffer(BufferType & bufferRef)
   bufferRef = buffer;
 }
 
-/*****************************************************************************
-** Protected
-*****************************************************************************/
 
-bool PacketFinderBase::updatePacket(const unsigned char * incoming, unsigned int numberOfIncoming)
+bool PacketFinderBase::update(const unsigned char * incoming, unsigned int numberOfIncoming)
 {
   // clearBuffer = 0, waitingForStx, waitingForPayloadSize, waitingForPayloadToEtx, waitingForEtx,
-  std::cout << "updatePacket [" << numberOfIncoming << "][" << state << "]" << std::endl;
+  // std::cout << "update [" << numberOfIncoming << "][" << state << "]" << std::endl;
   if (!(numberOfIncoming > 0))
     return false;
 
@@ -168,7 +160,6 @@ bool PacketFinderBase::updatePacket(const unsigned char * incoming, unsigned int
     case waitingForPayloadSize:
       if (waitForPayloadSize(incoming, numberOfIncoming))
       {
-        std::cout << "  Payload Size: " << size_payload << std::endl;
         state = waitingForPayloadToEtx;
       }
 
@@ -192,6 +183,9 @@ bool PacketFinderBase::updatePacket(const unsigned char * incoming, unsigned int
     return false;
   }
 }
+/*****************************************************************************
+** Protected
+*****************************************************************************/
 
 bool PacketFinderBase::WaitForStx(const unsigned char datum)
 {
