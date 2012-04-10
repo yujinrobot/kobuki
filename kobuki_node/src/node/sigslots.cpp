@@ -172,7 +172,7 @@ void KobukiNode::publishInertiaData()
       kobuki.getInertiaData(data);
 
       sensor_msgs::Imu msg;
-//      msg.header.frame_id = odom_frame;
+      msg.header.frame_id = base_frame;//odom_frame;
       msg.header.seq = data.header.seq;
       msg.header.stamp = ros::Time::now();
 
@@ -343,7 +343,7 @@ void KobukiNode::subscribeJointCommandRight(const device_comms::JointCommand cmd
   return;
 }
 
-void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr &msg)
+void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg)
 {
   if (kobuki.isEnabled())
   {
@@ -361,7 +361,7 @@ void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr &ms
   return;
 }
 
-void KobukiNode::subscribeKobukiCommand(const kobuki_comms::CommandConstPtr &msg)
+void KobukiNode::subscribeKobukiCommand(const kobuki_comms::CommandConstPtr msg)
 {
   //if( kobuki.isEnabled() ) {
   kobuki.sendCommand(msg);

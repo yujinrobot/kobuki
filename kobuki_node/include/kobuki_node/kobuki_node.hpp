@@ -21,6 +21,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include <ros/ros.h>
+#include <std_msgs/String.h>
 #include <sensor_msgs/JointState.h>
 #include <sensor_msgs/Imu.h>
 #include <geometry_msgs/Twist.h>
@@ -87,7 +88,8 @@ private:
                  gp_input_data_publisher, joint_state_publisher, odom_publisher, wheel_left_state_publisher,
                  wheel_right_state_publisher, sensor_data_publisher;
   ros::Subscriber wheel_left_command_subscriber, wheel_right_command_subscriber, velocity_command_subscriber,
-                  kobuki_command_subscriber;
+                  kobuki_command_subscriber, enable_subscriber, disable_subscriber;
+
   ecl::Slot<> slot_wheel_state, slot_sensor_data, slot_ir, slot_dock_ir, slot_inertia, slot_cliff, slot_current, slot_magnet, slot_hw, slot_fw, slot_time,
               slot_st_gyro, slot_eeprom, slot_gp_input;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
@@ -114,8 +116,8 @@ private:
   void publishGpInputData();
   void subscribeJointCommandLeft(const device_comms::JointCommand);
   void subscribeJointCommandRight(const device_comms::JointCommand);
-  void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr&);
-  void subscribeKobukiCommand(const kobuki_comms::CommandConstPtr&);
+  void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
+  void subscribeKobukiCommand(const kobuki_comms::CommandConstPtr);
 
   /*********************
    ** Ros Logging
@@ -137,14 +139,14 @@ private:
     ROS_ERROR_STREAM(msg);
   }
 
-  void enable()
+  void enable(const std_msgs::StringConstPtr msg)
   {
     kobuki.run();
     ROS_INFO_STREAM("kobuki enabled.");
   }
   ;
 
-  void disable()
+  void disable(const std_msgs::StringConstPtr msg)
   {
     kobuki.stop();
     ROS_INFO_STREAM("kobuki disable.");

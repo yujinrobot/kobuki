@@ -277,6 +277,10 @@ void KobukiNode::subscribeTopics(ros::NodeHandle& nh)
                                              this);
   kobuki_command_subscriber = nh.subscribe(std::string("kobuki_command"), 10, &KobukiNode::subscribeKobukiCommand,
                                            this);
+
+  // A group enable/disable channel to listen to (these should get remapped to /enable in most cases).
+  enable_subscriber = nh.subscribe("enable", 10, &KobukiNode::enable, this); // 10 is queue size
+  disable_subscriber = nh.subscribe("disable", 10, &KobukiNode::disable, this);
 }
 
 void KobukiNode::publishTransform(const geometry_msgs::Quaternion &odom_quat)
