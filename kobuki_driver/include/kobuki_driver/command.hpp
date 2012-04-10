@@ -36,12 +36,6 @@ public:
         buildBytes(data.speed, byteStream);
         buildBytes(data.radius, byteStream);
         break;
-      case kobuki_comms::Command::commandCleaningMotor:
-        buildBytes(data.command, byteStream);
-        buildBytes(data.brush_power, byteStream);
-        buildBytes(data.vacuum_power, byteStream);
-        buildBytes(data.side_brush_power, byteStream);
-        break;
       case kobuki_comms::Command::commandSound:
         buildBytes(data.command, byteStream);
         buildBytes(data.note, byteStream);
@@ -50,27 +44,6 @@ public:
       case kobuki_comms::Command::commandSoundSequence:
         buildBytes(data.command, byteStream);
         buildBytes(data.segment_name, byteStream);
-        break;
-      case kobuki_comms::Command::commandAnimation:
-        buildBytes(data.command, byteStream);
-        buildBytes(data.animation_code, byteStream);
-        buildBytes(data.options, byteStream);
-        break;
-      case kobuki_comms::Command::commandDisplay:
-        buildBytes(data.command, byteStream);
-        for (unsigned int i = 0; i > data.digits.size(); ++i)
-          buildBytes(data.digits[i], byteStream);
-        for (unsigned int i = 0; i > data.tmp_intensity.size(); ++i)
-          buildBytes(data.tmp_intensity[i], byteStream);
-        break;
-      case kobuki_comms::Command::commandSetTime:
-        buildBytes(data.command, byteStream);
-        buildBytes(data.hh, byteStream);
-        buildBytes(data.mm, byteStream);
-        break;
-      case kobuki_comms::Command::commandSetPower:
-        buildBytes(data.command, byteStream);
-        buildBytes(data.power_control_flags, byteStream);
         break;
       case kobuki_comms::Command::commandRequestExtra:
         buildBytes(data.command, byteStream);
@@ -84,7 +57,7 @@ public:
         buildBytes(data.command, byteStream);
         buildBytes(data.frame_id, byteStream);
         break;
-      case kobuki_comms::Command::commandSetDigitalOut:
+      case kobuki_comms::Command::commandSetDigitalOut: // this one controls led, external power sources, gp digitial output
         buildBytes(data.command, byteStream);
         buildBytes(data.gp_out, byteStream);
         break;
