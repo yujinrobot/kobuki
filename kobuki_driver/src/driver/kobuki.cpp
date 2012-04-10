@@ -369,13 +369,14 @@ void Kobuki::getDockIRData(kobuki_comms::DockIR &data)
 
 void Kobuki::getInertiaData(kobuki_comms::Inertia &data)
 {
-  if ( simulation ) {
-    // angle must be in hundredths of degree, convert from radians
-    kobuki_inertia.data.angle = (kobuki_sim.heading/M_PI)*18000;
-  }
-
   if (protocol_version == "2.0")
     data = kobuki_inertia.data;
+
+  if ( simulation )
+    data.angle = kobuki_sim.heading;
+  else
+    // gyro angle comes as hundredths of degree, convert to radians
+    data.angle = (data.angle/18000.0)*M_PI;
 }
 
 void Kobuki::getCliffData(kobuki_comms::Cliff &data)
