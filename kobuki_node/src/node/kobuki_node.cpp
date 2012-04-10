@@ -122,11 +122,6 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   Parameters parameters;
 
   nh.param("simulation", parameters.simulation, false);
-  if ( parameters.simulation ) {
-    ROS_INFO("Kobuki : driver going into loopback (simulation) mode.");
-  } else {
-    ROS_INFO("Kobuki : driver running in normal (non-simulation) mode.");
-  }
   parameters.sigslots_namespace = name; // name is automatically picked up by device_nodelet parent.
   if (!nh.getParam("device_port", parameters.device_port))
   {
@@ -150,8 +145,13 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   }
   else
   {
-    ROS_INFO_STREAM("Kobuki : configured for connection on device_port " << parameters.device_port << " [" << name << "].");
-    ROS_INFO_STREAM("Kobuki : configured for firmware protocol_version " << parameters.protocol_version << " [" << name << "].");
+    if ( parameters.simulation ) {
+      ROS_INFO("Kobuki : driver going into loopback (simulation) mode.");
+    } else {
+      ROS_INFO_STREAM("Kobuki : configured for connection on device_port " << parameters.device_port << " [" << name << "].");
+      ROS_INFO_STREAM("Kobuki : configured for firmware protocol_version " << parameters.protocol_version << " [" << name << "].");
+      ROS_INFO_STREAM("Kobuki : driver running in normal (non-simulation) mode" << " [" << name << "].");
+    }
   }
 
   /*********************
@@ -248,8 +248,6 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   ** Kobuki Esoterics
   **********************/
 
-  wheel_left_state_publisher = nh.advertise < device_comms::JointState > (std::string("joint_state/") + wheel_left_name, 100);
-  wheel_right_state_publisher = nh.advertise < device_comms::JointState > (std::string("joint_state/") + wheel_right_name, 100);
   sensor_data_publisher = nh.advertise < kobuki_comms::SensorData > ("sensor_data", 100);
 
   ir_data_publisher = nh.advertise < kobuki_comms::IR > ("ir_data", 100);
@@ -273,14 +271,8 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
  */
 void KobukiNode::subscribeTopics(ros::NodeHandle& nh)
 {
-  wheel_left_command_subscriber = nh.subscribe(std::string("joint_command/") + wheel_left_name, 10,
-                                               &KobukiNode::subscribeJointCommandLeft, this);
-  wheel_right_command_subscriber = nh.subscribe(std::string("joint_command/") + wheel_right_name, 10,
-                                                &KobukiNode::subscribeJointCommandRight, this);
-  velocity_command_subscriber = nh.subscribe(std::string("cmd_vel"), 10, &KobukiNode::subscribeVelocityCommand,
-                                             this);
-  kobuki_command_subscriber = nh.subscribe(std::string("kobuki_command"), 10, &KobukiNode::subscribeKobukiCommand,
-                                           this);
+  velocity_command_subscriber = nh.subscribe(std::string("cmd_vel"), 10, &KobukiNode::subscribeVelocityCommand, this);
+  kobuki_command_subscriber = nh.subscribe(std::string("kobuki_command"), 10, &KobukiNode::subscribeKobukiCommand, this);
 
   // A group enable/disable channel to listen to (these should get remapped to /enable in most cases).
   enable_subscriber = nh.subscribe("enable", 10, &KobukiNode::enable, this); // 10 is queue size

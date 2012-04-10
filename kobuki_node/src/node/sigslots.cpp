@@ -23,37 +23,16 @@ namespace kobuki
 
 void KobukiNode::publishWheelState()
 {
-  //waitForInitialisation();
   if (ros::ok())
   {
-//    if (wheel_left_state_publisher.getNumSubscribers() > 0)
-  //  {
-//      kobuki.pubtime("  wheel_left:ent");
-      device_comms::JointState joint_state_l;
-      joint_state_l.name = "wheel_left";
-      joint_state_l.stamp = ros::Time::now();
-      kobuki.getJointState(joint_state_l);
-      wheel_left_state_publisher.publish(joint_state_l);
-//      kobuki.pubtime("  wheel_left:pub");
-/*    }
-    if (wheel_right_state_publisher.getNumSubscribers() > 0)
-    {*/
-//      kobuki.pubtime("  wheel_right:ent");
-      device_comms::JointState joint_state_r;
-      joint_state_r.name = "wheel_right";
-      joint_state_r.stamp = ros::Time::now();
-      kobuki.getJointState(joint_state_r);
-      wheel_right_state_publisher.publish(joint_state_r);
-//      kobuki.pubtime("  wheel_right:pub");
-//    }
 
     // TODO really horrible; refactor
     ecl::Pose2D<double> pose_update;
     ecl::linear_algebra::Vector3d pose_update_rates;
 
-    kobuki.updateOdometry(joint_state_l.position, joint_state_l.velocity,
-                          joint_state_r.position, joint_state_r.velocity,
-                          pose_update, pose_update_rates);
+    kobuki.updateOdometry(pose_update, pose_update_rates);
+    kobuki.getWheelJointStates(joint_states.position[0],joint_states.velocity[0],   // left wheel
+                               joint_states.position[1],joint_states.velocity[1] ); // right wheel
 
     joint_states.header.stamp = ros::Time::now();
     joint_state_publisher.publish(joint_states);
@@ -327,18 +306,6 @@ void KobukiNode::publishGpInputData()
   }
 }
 
-void KobukiNode::subscribeJointCommandLeft(const device_comms::JointCommand cmd)
-{
-  //cmd.value;
-  return;
-}
-
-void KobukiNode::subscribeJointCommandRight(const device_comms::JointCommand cmd)
-{
-  //cmd.value;
-  return;
-}
-
 void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg)
 {
   if (kobuki.isEnabled())
@@ -349,10 +316,6 @@ void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg
     //double wz = msg->angular.z;       // in (rad/s)
     ROS_DEBUG_STREAM("subscribeVelocityCommand: [" << msg->linear.x << "],[" << msg->angular.z << "]");
     kobuki.setCommand(msg->linear.x, msg->angular.z);
-  }
-  else
-  {
-    ROS_WARN("Robot is not enabled.");
   }
   return;
 }

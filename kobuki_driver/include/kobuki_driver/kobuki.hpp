@@ -17,7 +17,6 @@
 #include <string>
 #include <algorithm>
 #include <kobuki_comms/SensorData.h>
-#include <device_comms/JointState.h>
 #include <ecl/threads.hpp>
 #include <ecl/devices.hpp>
 #include <ecl/time.hpp>
@@ -110,7 +109,6 @@ public:
   {
     return is_enabled;
   }
-  //const device_comms::ns::Gyro& data() const { return gyro_data; }
   bool run();
   bool stop();
   void close();
@@ -129,11 +127,10 @@ public:
   void getGpInputData(kobuki_comms::GpInput&);
 
   void resetOdometry();
-  void updateOdometry(double &wheel_left_position, double &wheel_left_velocity,
-                      double &wheel_right_position, double &wheel_right_velocity,
-                      ecl::Pose2D<double> &pose_update,
+  void getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
+                            double &wheel_right_angle, double &wheel_right_angle_rate);
+  void updateOdometry(ecl::Pose2D<double> &pose_update,
                       ecl::linear_algebra::Vector3d &pose_update_rates);
-  void getJointState(device_comms::JointState&);
   void setCommand(double, double);
   void sendCommand();
   void sendCommand(const kobuki_comms::CommandConstPtr &data);
@@ -159,7 +156,6 @@ private:
   std::string device_type;
   std::string protocol_version;
   bool is_connected; // True if there's a serial/usb connection open.
-  //device_comms::ns::Gyro gyro_data;
   bool is_running;
   bool is_enabled;
 
@@ -196,9 +192,7 @@ private:
   ecl::Signal<const std::string&> sig_debug, sig_info, sig_warn, sig_error;
 
   std::set<unsigned char> sig_index;
-
   boost::shared_ptr<ecl::DifferentialDrive::Kinematics> kinematics;
-
   bool simulation;
 };
 

@@ -165,32 +165,20 @@ void Kobuki::runnable()
         continue;
       } else {
         ROS_DEBUG_STREAM("kobuki_node : serial_read(" << n << ")");
-        /*********************
-        ** Debugging
-        **********************/
-        static unsigned char last_char(buf[0]);
-        for( int i(0); i<n; i++ )
-        {
-          printf("%02x ", buf[i] );
-          if( last_char == 0xaa && buf[i] == 0x55 ) printf("\n");
-          last_char = buf[i];
-        }
+        // might be useful to send this to a topic if there is subscribers
+//        static unsigned char last_char(buf[0]);
+//        for( int i(0); i<n; i++ )
+//        {
+//          printf("%02x ", buf[i] );
+//          if( last_char == 0xaa && buf[i] == 0x55 ) printf("\n");
+//          last_char = buf[i];
+//        }
       }
 
       if (packet_finder.update(buf, n))
       {
-        std::cout << "Packet finder found the update" << std::endl;
-
         // when packet_finder finds proper packet, we will get the buffer
         packet_finder.getBuffer(data_buffer);
-
-        /*
-         static int count=0;
-         std::cout << "packet_found: " ;
-         std::cout << count++  << " | ";
-         std::cout << data_buffer.size() << " | ";
-         std::cout << std::endl;
-         */
 
   #if 0
         if( verbose )
@@ -213,7 +201,7 @@ void Kobuki::runnable()
           sig_index.clear();
           while (data_buffer.size() > 1/*size of etx*/)
           {
-             std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
+            // std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
             // std::cout << "remains: " << data_buffer.size() << " | ";
             switch (data_buffer[0])
             {
@@ -433,7 +421,6 @@ void Kobuki::getGpInputData(kobuki_comms::GpInput &data)
   if (protocol_version == "2.0")
     data = kobuki_gp_input.data;
 }
-
 void Kobuki::resetOdometry() {
   if ( simulation )
     kobuki_sim.reset();
@@ -443,22 +430,26 @@ void Kobuki::resetOdometry() {
   imu_heading_offset = (kobuki_inertia.data.angle/18000.0)*M_PI;
 }
 
-/**
- * Temporary hack. Move this into an internal update() function inside odometry.hpp.
- *
- * We then emit whatever struct we want to get from this.
- **/
-void Kobuki::updateOdometry(double &wheel_left_position, double &wheel_left_velocity,
-                            double &wheel_right_position, double &wheel_right_velocity,
-                            ecl::Pose2D<double> &pose_update,
+void Kobuki::getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
+                          double &wheel_right_angle, double &wheel_right_angle_rate) {
+
+  if ( simulation ) {
+    wheel_left_angle = kobuki_sim.left_wheel_angle;
+    wheel_right_angle = kobuki_sim.right_wheel_angle;
+    wheel_left_angle_rate = kobuki_sim.left_wheel_angle_rate;
+    wheel_right_angle_rate = kobuki_sim.right_wheel_angle_rate;
+  } else {
+    wheel_left_angle = last_rad_left;
+    wheel_right_angle = last_rad_right;
+    wheel_left_angle_rate = last_velocity_left;
+    wheel_right_angle_rate = last_velocity_right;
+  }
+}
+void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update,
                             ecl::linear_algebra::Vector3d &pose_update_rates) {
   if ( simulation ) {
-    wheel_left_position = kobuki_sim.left_wheel_angle;
-    wheel_right_position = kobuki_sim.left_wheel_angle;
-    wheel_left_velocity = kobuki_sim.left_wheel_angle_rate;
-    wheel_right_velocity = kobuki_sim.left_wheel_angle_rate;
     pose_update = kinematics->forward(kobuki_sim.left_wheel_angle_update, kobuki_sim.right_wheel_angle_update);
-
+    // should add pose_update_rates here as well.
   } else {
     static bool init_l = false;
     static bool init_r = false;
@@ -499,97 +490,14 @@ void Kobuki::updateOdometry(double &wheel_left_position, double &wheel_left_velo
       last_timestamp = curr_timestamp;
       last_velocity_left = (tick_to_rad * left_diff_ticks) / last_diff_time;
       last_velocity_right = (tick_to_rad * right_diff_ticks) / last_diff_time;
-      wheel_left_velocity = last_velocity_left;
-      wheel_right_velocity = last_velocity_right;
     } else {
-      wheel_left_velocity = 0.0;
-      wheel_right_velocity = 0.0;
+      // we need to set the last_velocity_xxx to zero?
     }
-    wheel_left_position = last_rad_left;
-    wheel_right_position = last_rad_right;
 
     pose_update_rates << pose_update.x()/last_diff_time,
                          pose_update.y()/last_diff_time,
                          pose_update.heading()/last_diff_time;
   }
-}
-
-void Kobuki::getJointState(device_comms::JointState &joint_state)
-{
-//  static bool init_l = false;
-//  static bool init_r = false;
-//  double diff_ticks = 0.0f;
-//  unsigned short curr_tick_left = 0;
-//  unsigned short curr_tick_right = 0;
-//  unsigned short curr_timestamp = 0;
-//
-  if (joint_state.name == "wheel_left")
-  {
-//    if (protocol_version == "2.0")
-//    {
-//      curr_tick_left = kobuki_default.data.left_encoder;
-//      curr_timestamp = kobuki_default.data.time_stamp;
-//    }
-//    if (!init_l)
-//    {
-//      last_tick_left = curr_tick_left;
-//      init_l = true;
-//    }
-//    diff_ticks = (double)(short)((curr_tick_left - last_tick_left) & 0xffff);
-//    last_tick_left = curr_tick_left;
-//    last_rad_left += tick_to_rad * diff_ticks;
-//    last_mm_left += tick_to_mm / 1000.0f * diff_ticks;
-    joint_state.position = last_rad_left;
-    joint_state.velocity = last_velocity_left;
-//    joint_state.velocity = last_mm_left;
-  }
-  else // wheel_right
-  {
-//    if (protocol_version == "2.0")
-//    {
-//      curr_tick_right = kobuki_default.data.right_encoder;
-//      curr_timestamp = kobuki_default.data.time_stamp;
-//    }
-//
-//    if (!init_r)
-//    {
-//      last_tick_right = curr_tick_right;
-//      init_r = true;
-//    }
-//    diff_ticks = (double)(short)((curr_tick_right - last_tick_right) & 0xffff);
-//    last_tick_right = curr_tick_right;
-//    last_rad_right += tick_to_rad * diff_ticks;
-//    last_mm_right += tick_to_mm / 1000.0f * diff_ticks;
-    joint_state.position = last_rad_right;
-    joint_state.velocity = last_velocity_right;
-//    joint_state.velocity = last_mm_right;
-  }
-//
-//  if (curr_timestamp != last_timestamp)
-//  {
-//    last_diff_time = ((double)(short)((curr_timestamp - last_timestamp) & 0xffff)) / 1000.0f;
-//    last_timestamp = curr_timestamp;
-//  }
-//  joint_state.velocity = (tick_to_rad * diff_ticks) / last_diff_time;
-
-  joint_state.enabled = is_connected && is_running && is_enabled;
-
-#if 0
-  std::cout << joint_state.name
-  << "[" << diff_ticks << "]"
-  << "[" << last_rad_left << "]"
-  << "[" << last_mm_left << "]"
-  << std::endl;
-#endif
-  //joint_state.velocity=0.0f;
-
-  //are there considerations of overflow of position?
-  //are there range or limits?
-  //is it signed or unsigned?
-
-  //ticks [0-65535]
-  //positions [?-?]
-  //double [], store last data and integrate here.
 }
 
 void Kobuki::setCommand(double vx, double wz)
