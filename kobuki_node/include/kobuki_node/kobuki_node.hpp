@@ -21,6 +21,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include <ros/ros.h>
+#include <std_srvs/Empty.h>
 #include <std_msgs/String.h>
 #include <sensor_msgs/JointState.h>
 #include <sensor_msgs/Imu.h>
@@ -60,12 +61,14 @@ private:
   void publishTransform(const geometry_msgs::Quaternion &odom_quat);
   void publishOdom(const geometry_msgs::Quaternion &odom_quat, const ecl::linear_algebra::Vector3d &pose_update_rates);
 
-  Kobuki kobuki;
+  bool serveResetOdometry(std_srvs::Empty::Request &request, std_srvs::Empty::Response &response);
 
   /*********************
    ** Variables
    **********************/
   std::string name; // name of the ROS node
+
+  Kobuki kobuki;
 
   // Continuously published messages
   geometry_msgs::TransformStamped odom_trans;
@@ -82,6 +85,8 @@ private:
   /*********************
    ** Ros Comms
    **********************/
+  ros::ServiceServer reset_odometry_server;
+
   ros::Publisher ir_data_publisher, dock_ir_data_publisher, inertia_data_publisher, imu_data_publisher,
                  cliff_data_publisher, current_data_publisher, magnet_data_publisher, hw_data_publisher,
                  fw_data_publisher, time_data_publisher, st_gyro_data_publisher, eeprom_data_publisher,
@@ -144,14 +149,12 @@ private:
     kobuki.run();
     ROS_INFO_STREAM("kobuki enabled.");
   }
-  ;
 
   void disable(const std_msgs::StringConstPtr msg)
   {
     kobuki.stop();
     ROS_INFO_STREAM("kobuki disable.");
   }
-  ;
 };
 
 } // namespace kobuki

@@ -53,6 +53,12 @@ public:
     m_to_rad = metres_to_radians;
   }
 
+  void reset() {
+    left_wheel_angle = 0.0;
+    right_wheel_angle = 0.0;
+    heading = 0.0;
+  }
+
   void update() {
     ecl::TimeStamp stamp; // current stamp
     ecl::Duration diff = stamp - last_timestamp;
@@ -68,6 +74,7 @@ public:
     last_timestamp = stamp;
 //    std::cout << "[" << last_timestamp << "][" << left_wheel_angle << "," << right_wheel_angle << "][" << left_wheel_angle_rate << "," << right_wheel_angle_rate << "]" << std::endl;
   }
+
   void sleep() {
     snooze();
   }
