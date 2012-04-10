@@ -10,5 +10,5 @@
 # Files
 ##############################################################################
 
-add_subdirectory(nodelets)
+add_subdirectory(node)
 add_subdirectory(test)

@@ -6,20 +6,16 @@
  -->
 <launch>
     <arg name="simulation" default="false"/>
-    
-    <node pkg="nodelet" type="nodelet" name="mobile_base_manager" args="manager" output="screen"/>
-
-    <node pkg="nodelet" type="nodelet" name="robot_core" args="load kobuki_node/KobukiNodelet mobile_base_manager">
-        <rosparam file="$(find kobuki_bringup)/resources/yaml/diff_drive_base.yaml" command="load" />
-		<rosparam file="$(find kobuki_bringup)/resources/yaml/kobuki.yaml" command="load"/>
-		<remap from="robot_core/joint_state/wheel_left"  to="joint_state/wheel_left"/>
-		<remap from="robot_core/joint_state/wheel_right" to="joint_state/wheel_right"/>
-        <remap from="robot_core/odom" to="odom"/>
-        <remap from="robot_core/imu_data" to="imu_data"/>
-		<remap from="robot_core/cmd_vel" to="cmd_vel"/>
-		<remap from="robot_core/enable" to="enable"/>
-		<remap from="robot_core/disable" to="disable"/>
-        <remap from="robot_core/joint_states" to="joint_states"/>
-    </node>
+    <node pkg="kobuki_node" type="kobuki_node" name="kobuki_node"/>
+    <rosparam file="$(find kobuki_meta)/resources/yaml/diff_drive_base.yaml" command="load" />
+    <rosparam file="$(find kobuki_meta)/resources/yaml/kobuki.yaml" command="load"/>
+    <remap from="robot_core/joint_state/wheel_left"  to="joint_state/wheel_left"/>
+    <remap from="robot_core/joint_state/wheel_right" to="joint_state/wheel_right"/>
+    <remap from="robot_core/odom" to="odom"/>
+    <remap from="robot_core/imu_data" to="imu_data"/>
+    <remap from="robot_core/cmd_vel" to="cmd_vel"/>
+    <remap from="robot_core/enable" to="enable"/>
+    <remap from="robot_core/disable" to="disable"/>
+    <remap from="robot_core/joint_states" to="joint_states"/>
 </launch>
 
