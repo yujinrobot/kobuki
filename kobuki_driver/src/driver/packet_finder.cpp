@@ -35,7 +35,8 @@ PacketFinderBase::PacketFinderBase() :
 ** Public
 *****************************************************************************/
 
-void PacketFinderBase::configure(const BufferType & putStx, const BufferType & putEtx, unsigned int sizeLengthField,
+void PacketFinderBase::configure(const std::string &sigslots_namespace,
+               const BufferType & putStx, const BufferType & putEtx, unsigned int sizeLengthField,
                unsigned int sizeMaxPayload, unsigned int sizeChecksumField, bool variableSizePayload)
 {
   size_stx = putStx.size();
@@ -50,7 +51,7 @@ void PacketFinderBase::configure(const BufferType & putStx, const BufferType & p
   buffer = BufferType(size_stx + size_length_field + size_max_payload + size_checksum_field + size_etx);
   state = waitingForStx;
 
-  // std::cout << "install checksum operator " << std::endl;
+  sig_warn.connect(sigslots_namespace + std::string("/ros_warn"));
 
   //todo; exception
   // Problem1: size_length_field = 1, vairable_size_payload = false
@@ -308,11 +309,13 @@ bool PacketFinderBase::waitForPayloadAndEtx(const unsigned char * incoming, unsi
   **********************/
   if ( size_payload > size_max_payload ) {
     state = clearBuffer;
-    ROS_WARN_STREAM("Packet Handler : abnormally sized payload retrieved, clearing [" << size_max_payload << "][" << size_payload << "]");
+    std::ostringstream ostream;
+    ostream << "abnormally sized payload retrieved, clearing [" << size_max_payload << "][" << size_payload << "]";
     for (unsigned int i = 0; i < numberOfIncoming; ++i ) {
-      std::cout << std::hex << static_cast<int>(*(incoming+i)) << " ";
+      ostream << std::hex << static_cast<int>(*(incoming+i)) << " ";
     }
-    std::cout << std::dec << std::endl;
+    ostream << std::dec << "\n";
+    sig_warn.emit(ostream.str());
     return false;
   }
   // check when we need to wait for etx

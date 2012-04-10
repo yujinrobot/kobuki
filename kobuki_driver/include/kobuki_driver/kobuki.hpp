@@ -67,6 +67,7 @@ union union_sint16
 class PacketFinder : public PacketFinderBase
 {
 public:
+  virtual ~PacketFinder() {}
   bool checkSum();
 };
 

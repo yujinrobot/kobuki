@@ -53,6 +53,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   }
   protocol_version = parameters.protocol_version;
   simulation = parameters.simulation;
+  std::string sigslots_namespace = parameters.sigslots_namespace;
 
   if ( !simulation ) {
     serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
@@ -62,11 +63,10 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
     ecl::PushAndPop<unsigned char> etx(1);
     stx.push_back(0xaa);
     stx.push_back(0x55);
-    packet_finder.configure(stx, etx, 1, 64, 1, true);
+    packet_finder.configure(sigslots_namespace, stx, etx, 1, 64, 1, true);
     is_connected = true;
   }
 
-  std::string sigslots_namespace = parameters.sigslots_namespace;
   sig_wheel_state.connect(sigslots_namespace + std::string("/joint_state"));
   sig_sensor_data.connect(sigslots_namespace + std::string("/sensor_data"));
   //sig_serial_timeout.connect(sigslots_namespace+std::string("/serial_timeout"));

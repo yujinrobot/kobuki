@@ -126,19 +126,19 @@ private:
    **********************/
   void rosDebug(const std::string &msg)
   {
-    ROS_DEBUG_STREAM(msg);
+    ROS_DEBUG_STREAM("Kobuki : " << msg);
   }
   void rosInfo(const std::string &msg)
   {
-    ROS_INFO_STREAM(msg);
+    ROS_INFO_STREAM("Kobuki : " << msg);
   }
   void rosWarn(const std::string &msg)
   {
-    ROS_WARN_STREAM(msg);
+    ROS_WARN_STREAM("Kobuki : " << msg);
   }
   void rosError(const std::string &msg)
   {
-    ROS_ERROR_STREAM(msg);
+    ROS_ERROR_STREAM("Kobuki : " << msg);
   }
 
   void enable(const std_msgs::StringConstPtr msg)

@@ -22,6 +22,7 @@
  *****************************************************************************/
 
 #include <ecl/containers.hpp>
+#include <ecl/sigslots.hpp>
 
 /*****************************************************************************
  ** Namespaces
@@ -95,12 +96,15 @@ protected:
 
   bool verbose;
 
+  ecl::Signal<const std::string&> sig_warn;
+
 public:
   PacketFinderBase(); /**< Default constructor. Use with configure(). **/
 
   virtual ~PacketFinderBase() {};
 
-  void configure(const BufferType & putStx, const BufferType & putEtx, unsigned int sizeLengthField,
+  void configure(const std::string &sigslots_namespace,
+                 const BufferType & putStx, const BufferType & putEtx, unsigned int sizeLengthField,
                  unsigned int sizeMaxPayload, unsigned int sizeChecksumField, bool variableSizePayload);
   void clear();
   void enableVerbose();
