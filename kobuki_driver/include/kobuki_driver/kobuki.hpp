@@ -109,8 +109,8 @@ public:
   {
     return is_enabled;
   }
-  bool run();
-  bool stop();
+  bool enable();
+  bool disable();
   void close();
 
   ecl::Angle<double> getHeading() const;
@@ -118,7 +118,6 @@ public:
   void getSensorData(kobuki_comms::SensorData&);
   void getIRData(kobuki_comms::IR&);
   void getDockIRData(kobuki_comms::DockIR&);
-//  void getInertiaData(kobuki_comms::Inertia&);
   void getCliffData(kobuki_comms::Cliff&);
   void getCurrentData(kobuki_comms::Current&);
   void getMagnetData(kobuki_comms::Magnet&);

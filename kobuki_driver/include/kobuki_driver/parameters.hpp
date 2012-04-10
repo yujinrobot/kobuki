@@ -60,7 +60,7 @@ public:
   {
     if (protocol_version != "2.0")
     {
-      error_msg = std::string("protocol_version must be either '1.0' or '2.0' (") + protocol_version + std::string(")");
+      error_msg = std::string("protocol_version must be '2.0' (") + protocol_version + std::string(")");
       return false;
     }
     return true;

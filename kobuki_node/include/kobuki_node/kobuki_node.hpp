@@ -143,14 +143,14 @@ private:
 
   void enable(const std_msgs::StringConstPtr msg)
   {
-    kobuki.run();
+    kobuki.enable();
     ROS_INFO_STREAM("Kobuki : enabled.");
     last_cmd_time.fromSec(0);
   }
 
   void disable(const std_msgs::StringConstPtr msg)
   {
-    kobuki.stop();
+    kobuki.disable();
     ROS_INFO_STREAM("Kobuki : disabled.");
     last_cmd_time.fromSec(0);
   }

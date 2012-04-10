@@ -274,9 +274,7 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   /*********************
   ** Kobuki Esoterics
   **********************/
-
   sensor_data_publisher = nh.advertise < kobuki_comms::SensorData > ("sensor_data", 100);
-
   ir_data_publisher = nh.advertise < kobuki_comms::IR > ("ir_data", 100);
   dock_ir_data_publisher = nh.advertise < kobuki_comms::DockIR > ("dock_ir_data", 100);
   imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("imu_data", 100);
