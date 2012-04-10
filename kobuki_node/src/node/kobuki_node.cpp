@@ -290,8 +290,7 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
 void KobukiNode::subscribeTopics(ros::NodeHandle& nh)
 {
   velocity_command_subscriber = nh.subscribe(std::string("cmd_vel"), 10, &KobukiNode::subscribeVelocityCommand, this);
-  kobuki_command_subscriber = nh.subscribe(std::string("kobuki_command"), 10, &KobukiNode::subscribeKobukiCommand, this);
-
+  led_command_subscriber =  nh.subscribe(std::string("led_command"), 10, &KobukiNode::subscribeLedCommand, this);
   // A group enable/disable channel to listen to (these should get remapped to /enable in most cases).
   enable_subscriber = nh.subscribe("enable", 10, &KobukiNode::enable, this); // 10 is queue size
   disable_subscriber = nh.subscribe("disable", 10, &KobukiNode::disable, this);

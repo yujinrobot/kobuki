@@ -81,8 +81,6 @@ protected:
   template<typename T>
     void buildBytes(T & V, ecl::PushAndPop<unsigned char> & buffer)
     {
-      if (buffer.size() < sizeof(T))
-        return;
       unsigned int size_value(sizeof(T));
       for (unsigned int i = 0; i < size_value; i++)
       {

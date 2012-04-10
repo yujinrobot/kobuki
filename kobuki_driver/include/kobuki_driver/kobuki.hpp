@@ -39,7 +39,10 @@
 #include "eeprom.hpp"
 #include "gp_input.hpp"
 #include "command.hpp"
+
 #include "simulation.hpp"
+
+#include "led_array.hpp"
 
 /*****************************************************************************
  ** Namespaces
@@ -125,14 +128,25 @@ public:
   void getEEPROMData(kobuki_comms::EEPROM&);
   void getGpInputData(kobuki_comms::GpInput&);
 
-  void resetOdometry();
+  /*********************
+  ** Feedback
+  **********************/
   void getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
                             double &wheel_right_angle, double &wheel_right_angle_rate);
   void updateOdometry(ecl::Pose2D<double> &pose_update,
                       ecl::linear_algebra::Vector3d &pose_update_rates);
-  void setCommand(double, double);
-  void sendCommand();
-  void sendCommand(const kobuki_comms::CommandConstPtr &data);
+  /*********************
+  ** Soft Commands
+  **********************/
+  void resetOdometry();
+
+  /*********************
+  ** Hard Commands
+  **********************/
+  void toggleLed(const enum LedNumber &number, const enum LedColour &colour);
+  void setBaseControlCommand(double, double);
+  void sendBaseControlCommand();
+  void sendCommand(Command &command);
 
 private:
   ecl::StopWatch stopwatch;
@@ -176,7 +190,7 @@ private:
   GpInputData kobuki_gp_input;
   SimulationData kobuki_sim;
 
-  CommandData kobuki_command;
+  Command kobuki_command;
 
   PacketFinder packet_finder;
   PacketFinder::BufferType data_buffer;

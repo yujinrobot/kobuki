@@ -324,7 +324,7 @@ void Kobuki::runnable()
     }
 
     if (get_packet) {
-      sendCommand();
+      sendBaseControlCommand();
     } // send the command packet to mainboard;
 
 //    if ( !serial.remaining() ) {
@@ -486,7 +486,17 @@ void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update,
   }
 }
 
-void Kobuki::setCommand(double vx, double wz)
+/*****************************************************************************
+** Commands
+*****************************************************************************/
+void Kobuki::toggleLed(const enum LedNumber &number, const enum LedColour &colour) {
+  kobuki_command.update(number,colour);
+  Command outgoing = kobuki_command;
+  outgoing.data.command = Command::SetDigitalOut;
+  sendCommand(outgoing);
+}
+
+void Kobuki::setBaseControlCommand(double vx, double wz)
 {
   if (wz == 0.0f)
     radius = 0;
@@ -505,7 +515,7 @@ void Kobuki::setCommand(double vx, double wz)
   }
 }
 
-void Kobuki::sendCommand()
+void Kobuki::sendBaseControlCommand()
 {
   if ( !simulation ) {
     //std::cout << "speed = " << speed << ", radius = " << radius << std::endl;
@@ -532,22 +542,19 @@ void Kobuki::sendCommand()
   }
 }
 
-void Kobuki::sendCommand(const kobuki_comms::CommandConstPtr &data)
+void Kobuki::sendCommand(Command &command)
 {
   if ( !simulation ) {
-    kobuki_command.data = *data;
-
     command_buffer.clear();
     command_buffer.resize(64);
     command_buffer.push_back(0xaa);
     command_buffer.push_back(0x55);
     command_buffer.push_back(0); // size of payload only, not stx, not etx, not length
 
-    if (!kobuki_command.serialise(command_buffer))
+    if (!command.serialise(command_buffer))
     {
-      ROS_ERROR_STREAM("command serialise failed.");
+      sig_error.emit("command serialise failed.");
     }
-
     command_buffer[2] = command_buffer.size() - 3;
     unsigned char checksum = 0;
     for (unsigned int i = 2; i < command_buffer.size(); i++)
@@ -556,18 +563,17 @@ void Kobuki::sendCommand(const kobuki_comms::CommandConstPtr &data)
     command_buffer.push_back(checksum);
     serial.write(&command_buffer[0], command_buffer.size());
 
-    for (unsigned int i = 0; i < command_buffer.size(); ++i)
-    {
-      std::cout << "0x" << std::hex << std::setw(2) << std::setfill('0') << (unsigned)command_buffer[i] << std::dec
-          << std::setfill(' ') << " ";
-    }
+//    for (unsigned int i = 0; i < command_buffer.size(); ++i)
+//    {
+//      std::cout << "0x" << std::hex << std::setw(2) << std::setfill('0') << (unsigned)command_buffer[i] << std::dec
+//          << std::setfill(' ') << " ";
+//    }
+//    std::cout << std::endl;
 
-    std::cout << std::endl;
-
-    if (kobuki_command.data.command == kobuki_comms::Command::commandBaseControl)
+    if (command.data.command == Command::BaseControl)
     {
-      radius = kobuki_command.data.radius;
-      speed = kobuki_command.data.speed;
+      radius = command.data.radius;
+      speed = command.data.speed;
     }
   }
 }
@@ -581,8 +587,8 @@ bool Kobuki::enable()
 
 bool Kobuki::disable()
 {
-  setCommand(0.0f, 0.0f);
-  sendCommand();
+  setBaseControlCommand(0.0f, 0.0f);
+  sendBaseControlCommand();
 //	is_running = false;
   is_enabled = false;
   return true;

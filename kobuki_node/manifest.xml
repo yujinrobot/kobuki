@@ -26,4 +26,8 @@
   <depend package="ecl_exceptions"/>
   <depend package="ecl_sigslots"/>
   <depend package="ecl_streams"/>
+  
+   <!--  For Tests -->
+  <depend package="rospy"/>
+  
 </package>

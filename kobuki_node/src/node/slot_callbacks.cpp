@@ -11,6 +11,7 @@
 *****************************************************************************/
 
 #include "kobuki_node/kobuki_node.hpp"
+#include <kobuki_driver/led_array.hpp>
 
 /*****************************************************************************
  ** Namespaces
@@ -59,44 +60,6 @@ void KobukiNode::publishSensorData()
     }
   }
 }
-
-#if 0
-void KobukiNode::publishRawDataSent( const Packet::BufferStencil &bytes )
-{
-
-  if ( ros::ok() )
-  {
-    if ( raw_data_sent_publisher.getNumSubscribers() > 0 )
-    {
-      ecl::Format<Packet::Buffer> format;
-      ecl::StringStream sstream;
-      sstream << format(bytes);
-      std_msgs::String msg;
-      msg.data = sstream.str();
-      raw_data_sent_publisher.publish(msg);
-    }
-  }
-}
-#endif
-
-#if 0
-void KobukiNode::publishInvalidPacket( const Packet::BufferStencil &bytes )
-{
-
-  if ( ros::ok() )
-  {
-    if ( invalid_packet_publisher.getNumSubscribers() > 0 )
-    {
-      ecl::Format<Packet::Buffer> format;
-      ecl::StringStream sstream;
-      sstream << format(bytes);
-      std_msgs::String msg;
-      msg.data = sstream.str();
-      invalid_packet_publisher.publish(msg);
-    }
-  }
-}
-#endif
 
 void KobukiNode::publishIRData()
 {
@@ -267,20 +230,32 @@ void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg
     //double vx = msg->linear.x;        // in (m/s)
     //double wz = msg->angular.z;       // in (rad/s)
     ROS_DEBUG_STREAM("subscribeVelocityCommand: [" << msg->linear.x << "],[" << msg->angular.z << "]");
-    kobuki.setCommand(msg->linear.x, msg->angular.z);
+    kobuki.setBaseControlCommand(msg->linear.x, msg->angular.z);
 
     last_cmd_time = ros::Time::now();
   }
   return;
 }
 
-void KobukiNode::subscribeKobukiCommand(const kobuki_comms::CommandConstPtr msg)
+void KobukiNode::subscribeLedCommand(const kobuki_comms::LedArrayConstPtr msg)
 {
-  //if( kobuki.isEnabled() ) {
-  kobuki.sendCommand(msg);
-  //} else {
-  //    ROS_WARN("Robot is not enabled.");
-  //}
+  if ( msg->values.size() != 2 ) {
+    ROS_WARN_STREAM("Kobuki : led commands must specify values for both led's in the array.");
+    return;
+  }
+  for ( unsigned int i = 0; i < msg->values.size(); ++i ) {
+    LedNumber led = Led1;
+    if ( i == 1 ) { led = Led2; }
+    if ( msg->values[i] == kobuki_comms::LedArray::GREEN ) {
+      kobuki.toggleLed(led, Green);
+    } else if ( msg->values[i] == kobuki_comms::LedArray::ORANGE ) {
+      kobuki.toggleLed(led, Orange);
+    } else if ( msg->values[i] == kobuki_comms::LedArray::RED ) {
+      kobuki.toggleLed(led, Red);
+    } else {
+      kobuki.toggleLed(led, Black);
+    }
+  }
   return;
 }
 

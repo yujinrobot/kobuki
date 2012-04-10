@@ -28,6 +28,7 @@
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_broadcaster.h>
+#include <kobuki_comms/LedArray.h>
 #include <kobuki_comms/SensorData.h>
 #include <ecl/sigslots.hpp>
 #include <kobuki_driver/kobuki.hpp>
@@ -93,7 +94,9 @@ private:
                  fw_data_publisher, time_data_publisher, eeprom_data_publisher,
                  gp_input_data_publisher, joint_state_publisher, odom_publisher,
                  sensor_data_publisher;
-  ros::Subscriber velocity_command_subscriber, kobuki_command_subscriber, enable_subscriber, disable_subscriber;
+  ros::Subscriber velocity_command_subscriber;
+  ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
+  ros::Subscriber led_command_subscriber;
 
   ecl::Slot<> slot_wheel_state, slot_sensor_data, slot_ir, slot_dock_ir,
               slot_inertia, slot_cliff, slot_current, slot_hw, slot_fw, slot_time,
@@ -118,7 +121,7 @@ private:
   void publishEEPROMData();
   void publishGpInputData();
   void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
-  void subscribeKobukiCommand(const kobuki_comms::CommandConstPtr);
+  void subscribeLedCommand(const kobuki_comms::LedArrayConstPtr);
 
   /*********************
    ** Ros Logging
