@@ -316,6 +316,8 @@ void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg
     //double wz = msg->angular.z;       // in (rad/s)
     ROS_DEBUG_STREAM("subscribeVelocityCommand: [" << msg->linear.x << "],[" << msg->angular.z << "]");
     kobuki.setCommand(msg->linear.x, msg->angular.z);
+
+    last_cmd_time = ros::Time::now();
   }
   return;
 }

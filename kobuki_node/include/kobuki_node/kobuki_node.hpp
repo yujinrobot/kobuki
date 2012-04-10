@@ -48,6 +48,7 @@ public:
   ~KobukiNode();
 
   bool init(ros::NodeHandle& nh);
+  bool spin(ros::NodeHandle& nh);
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
@@ -78,6 +79,8 @@ private:
 
   std::string odom_frame;
   std::string base_frame;
+  ros::Duration cmd_vel_timeout;
+  ros::Time last_cmd_time;
   bool publish_tf;
 
   /*********************
@@ -142,12 +145,14 @@ private:
   {
     kobuki.run();
     ROS_INFO_STREAM("kobuki enabled.");
+    last_cmd_time.fromSec(0);
   }
 
   void disable(const std_msgs::StringConstPtr msg)
   {
     kobuki.stop();
     ROS_INFO_STREAM("kobuki disable.");
+    last_cmd_time.fromSec(0);
   }
 };
 

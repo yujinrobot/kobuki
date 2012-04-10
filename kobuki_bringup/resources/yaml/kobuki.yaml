@@ -18,6 +18,9 @@ wheel_radius: 0.042
 wheel_left_name: wheel_left 
 wheel_right_name: wheel_right
 
+# If a new command isn't received within this many seconds, the base is stopped (double, default: 0.6)
+cmd_vel_timeout: 1.0
+
 # Causes node to publish TF for odom to base_link, use only when no gyro exists (bool, default: False)
 publish_tf: false
 

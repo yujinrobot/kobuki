@@ -27,7 +27,7 @@ int main(int argc, char** argv)
   kobuki::KobukiNode kobuki_node(node_name);
   if (kobuki_node.init(nh))
   {
-    ros::spin();
+    kobuki_node.spin(nh);
   }
   else
   {

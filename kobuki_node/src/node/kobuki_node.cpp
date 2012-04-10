@@ -121,6 +121,11 @@ bool KobukiNode::init(ros::NodeHandle& nh)
    **********************/
   Parameters parameters;
 
+  double tmp;
+  nh.param("cmd_vel_timeout", tmp, 0.6);
+  cmd_vel_timeout.fromSec(tmp);
+  ROS_INFO_STREAM("Kobuki : Velocity commands timeout: " << tmp << " seconds [" << name << "].");
+
   nh.param("simulation", parameters.simulation, false);
   parameters.sigslots_namespace = name; // name is automatically picked up by device_nodelet parent.
   if (!nh.getParam("device_port", parameters.device_port))
@@ -232,6 +237,27 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   return true;
 }
 
+bool KobukiNode::spin(ros::NodeHandle& nh)
+{
+  ros::Rate loop_rate(10);
+
+  while (ros::ok())
+  {
+    if ((kobuki.isEnabled() == true) && (last_cmd_time.isZero() == false) &&
+        ((ros::Time::now() - last_cmd_time) > cmd_vel_timeout)) {
+      std_msgs::StringPtr msg;
+      disable(msg);
+
+      ROS_FATAL("No cmd_vel messages received within the last %.2f seconds; disable driver",
+                cmd_vel_timeout.toSec());
+    }
+
+    ros::spinOnce();
+    loop_rate.sleep();
+  }
+
+  return true;
+}
 /**
  * Two groups of publishers, one required by turtlebot, the other for
  * kobuki esoterics.
