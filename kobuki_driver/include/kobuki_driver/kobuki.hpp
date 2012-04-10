@@ -1,12 +1,9 @@
 /**
- * @file /cruizcore/include/cruizcore/cruizcore.hpp
+ * @file /include/kobuki/kobuki.hpp
  *
- * @brief Cpp interface for a cruizcore gyro device driver.
- *
- * @date 20/08/2010
+ * @brief Cpp device driver core interface.
  **/
 /*****************************************************************************
-<<<<<<< HEAD
  ** Ifdefs
  *****************************************************************************/
 
@@ -30,7 +27,6 @@
 #include "packet_finder.hpp"
 #include "parameters.hpp"
 
-// [ version 2 ]
 #include <kobuki_comms/Header.h>
 #include "default.hpp"
 #include "ir.hpp"
@@ -46,6 +42,7 @@
 #include "eeprom.hpp"
 #include "gp_input.hpp"
 #include "command.hpp"
+#include "simulation.hpp"
 
 /*****************************************************************************
  ** Namespaces
@@ -139,7 +136,6 @@ public:
   void setCommand(double, double);
   void sendCommand();
   void sendCommand(const kobuki_comms::CommandConstPtr &data);
-  void pubtime(const char *);
 
 private:
   ecl::StopWatch stopwatch;
@@ -183,6 +179,7 @@ private:
   StGyroData kobuki_st_gyro;
   EEPROMData kobuki_eeprom;
   GpInputData kobuki_gp_input;
+  SimulationData kobuki_sim;
 
   CommandData kobuki_command;
 
@@ -203,6 +200,6 @@ private:
   bool simulation;
 };
 
-} // namespace cruizcore
+} // namespace kobuki
 
 #endif /* KOBUKI_HPP_ */

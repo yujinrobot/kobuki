@@ -4,11 +4,11 @@
   the robot.
  -->
 <launch>
-  <arg name="simulation" value="true"/>
-  <param name="/use_sim_time" value="$(arg simulation)"/>
 
-  <!-- DJS : This xacro needs to be confirmed as turtlebot compatible, see turtlebot_description)/robots/turtlebot.urdf.xacro -->
-  <arg name="urdf_file" default="$(find xacro)/xacro.py '$(find kobuki_description)/robots/kobuki.urdf.xacro'" />
+  <arg name="simulation" value="true"/>
+  <param name="/use_sim_time" value="false"/>
+
+  <arg name="urdf_file" default="$(find xacro)/xacro.py '$(find kobuki_description)/robots/kobuki_kinect.urdf.xacro'" />
   <param name="robot_description" command="$(arg urdf_file)" />
   
   <!-- DJS : who is using these two parameters? -->
@@ -25,6 +25,7 @@
     </node>
 
     <!-- The odometry estimator -->
+    <!-- 
     <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf">
       <param name="freq" value="10.0"/>
       <param name="sensor_timeout" value="1.0"/>
@@ -35,7 +36,7 @@
       <param name="output_frame" value="odom"/>
       <remap from="imu_data" to="imu/data"/>
     </node>
-
+   -->
   </group>
   
   <!-- 

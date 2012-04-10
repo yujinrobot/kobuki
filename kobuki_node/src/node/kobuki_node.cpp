@@ -119,6 +119,12 @@ bool KobukiNode::init(ros::NodeHandle& nh)
    **********************/
   Parameters parameters;
 
+  nh.param("simulation", parameters.simulation, false);
+  if ( parameters.simulation ) {
+    ROS_INFO("Kobuki : driver going into loopback (simulation) mode.");
+  } else {
+    ROS_INFO("Kobuki : driver running in normal (non-simulation) mode.");
+  }
   parameters.sigslots_namespace = name; // name is automatically picked up by device_nodelet parent.
   if (!nh.getParam("device_port", parameters.device_port))
   {
@@ -307,26 +313,6 @@ void KobukiNode::publishOdom(const geometry_msgs::Quaternion &odom_quat,
 
 } // namespace kobuki
 
-//  MOVED TO main.cpp!
-/**
- * Initialises the ros node
- */
-int main(int argc, char** argv)
-{
-  ros::init(argc, argv, "kobuki_node");
-  ros::NodeHandle nh;
-  std::string node_name = ros::this_node::getName();
-  kobuki::KobukiNode kobuki_node(node_name);
-  if (kobuki_node.init(nh))
-  {
-    ros::spin();
-  }
-  else
-  {
-    ROS_ERROR_STREAM("Couldn't initialise kobuki_node.");
-  }
-  return(0);
-}
 
 /*		slot_reserved0, Rei */
 

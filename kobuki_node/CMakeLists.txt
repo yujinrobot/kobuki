@@ -6,6 +6,7 @@ cmake_minimum_required(VERSION 2.4.6)
 
 # Verbosity is useful - helps eclipse find paths also!
 set(CMAKE_VERBOSE_MAKEFILE true)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 ##############################################################################
 # YCS-ROS

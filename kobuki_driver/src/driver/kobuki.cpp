@@ -45,8 +45,6 @@ bool PacketFinder::checkSum()
 void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
 {
 
-  pubtime("init");
-
   if (!parameters.validate())
   {
     throw ecl::StandardException(LOC, ecl::ConfigurationError, "Kobuki's parameter settings did not validate.");
@@ -110,6 +108,9 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
 
   kinematics.reset(new ecl::DifferentialDrive::Kinematics(bias, wheel_radius));
 
+  if ( simulation ) {
+    kobuki_sim.init(bias, 1000 * tick_to_rad / tick_to_mm); // bias, metres to radians
+  }
   is_running = true;
   start();
 }
@@ -136,15 +137,19 @@ void Kobuki::runnable()
   bool get_packet;
   stopwatch.restart();
 
+  /*********************
+  ** Simulation Params
+  **********************/
+
   while (is_running)
   {
-    pubtime("every_tick");
     get_packet = false;
 
     if ( simulation ) {
-      // loopback motors here.
+      kobuki_sim.update();
+      kobuki_sim.sleep();
+      sig_wheel_state.emit();
     } else {
-
       /*********************
       ** Read Incoming
       **********************/
@@ -169,7 +174,6 @@ void Kobuki::runnable()
       if (packet_finder.update(buf, n))
       {
         std::cout << "Packet finder found the update" << std::endl;
-        pubtime("packet_find");
 
         // when packet_finder finds proper packet, we will get the buffer
         packet_finder.getBuffer(data_buffer);
@@ -328,7 +332,6 @@ void Kobuki::runnable()
         }
 
         get_packet = true;
-        pubtime("packet_emit");
       }
     }
 
@@ -428,57 +431,66 @@ void Kobuki::updateOdometry(double &wheel_left_position, double &wheel_left_velo
                             double &wheel_right_position, double &wheel_right_velocity,
                             ecl::Pose2D<double> &pose_update,
                             ecl::linear_algebra::Vector3d &pose_update_rates) {
-  static bool init_l = false;
-  static bool init_r = false;
-  double left_diff_ticks = 0.0f;
-  double right_diff_ticks = 0.0f;
-  unsigned short curr_tick_left = 0;
-  unsigned short curr_tick_right = 0;
-  unsigned short curr_timestamp = 0;
-  curr_timestamp = kobuki_default.data.time_stamp;
-  curr_tick_left = kobuki_default.data.left_encoder;
-  if (!init_l)
-  {
-    last_tick_left = curr_tick_left;
-    init_l = true;
-  }
-  left_diff_ticks = (double)(short)((curr_tick_left - last_tick_left) & 0xffff);
-  last_tick_left = curr_tick_left;
-  last_rad_left += tick_to_rad * left_diff_ticks;
-  last_mm_left += tick_to_mm / 1000.0f * left_diff_ticks;
+  if ( simulation ) {
+    wheel_left_position = kobuki_sim.left_wheel_angle;
+    wheel_right_position = kobuki_sim.left_wheel_angle;
+    wheel_left_velocity = kobuki_sim.left_wheel_angle_rate;
+    wheel_right_velocity = kobuki_sim.left_wheel_angle_rate;
+    pose_update = kinematics->forward(kobuki_sim.left_wheel_angle_update, kobuki_sim.right_wheel_angle_update);
 
-  curr_tick_right = kobuki_default.data.right_encoder;
-  if (!init_r)
-  {
-    last_tick_right = curr_tick_right;
-    init_r = true;
-  }
-  right_diff_ticks = (double)(short)((curr_tick_right - last_tick_right) & 0xffff);
-  last_tick_right = curr_tick_right;
-  last_rad_right += tick_to_rad * right_diff_ticks;
-  last_mm_right += tick_to_mm / 1000.0f * right_diff_ticks;
-
-  // TODO this line and the last statements are really ugly; refactor, put in another place
-  pose_update = kinematics->forward(tick_to_rad * left_diff_ticks, tick_to_rad * right_diff_ticks);
-
-  if (curr_timestamp != last_timestamp)
-  {
-    last_diff_time = ((double)(short)((curr_timestamp - last_timestamp) & 0xffff)) / 1000.0f;
-    last_timestamp = curr_timestamp;
-    last_velocity_left = (tick_to_rad * left_diff_ticks) / last_diff_time;
-    last_velocity_right = (tick_to_rad * right_diff_ticks) / last_diff_time;
-    wheel_left_velocity = last_velocity_left;
-    wheel_right_velocity = last_velocity_right;
   } else {
-    wheel_left_velocity = 0.0;
-    wheel_right_velocity = 0.0;
-  }
-  wheel_left_position = last_rad_left;
-  wheel_right_position = last_rad_right;
+    static bool init_l = false;
+    static bool init_r = false;
+    double left_diff_ticks = 0.0f;
+    double right_diff_ticks = 0.0f;
+    unsigned short curr_tick_left = 0;
+    unsigned short curr_tick_right = 0;
+    unsigned short curr_timestamp = 0;
+    curr_timestamp = kobuki_default.data.time_stamp;
+    curr_tick_left = kobuki_default.data.left_encoder;
+    if (!init_l)
+    {
+      last_tick_left = curr_tick_left;
+      init_l = true;
+    }
+    left_diff_ticks = (double)(short)((curr_tick_left - last_tick_left) & 0xffff);
+    last_tick_left = curr_tick_left;
+    last_rad_left += tick_to_rad * left_diff_ticks;
+    last_mm_left += tick_to_mm / 1000.0f * left_diff_ticks;
 
-  pose_update_rates << pose_update.x()/last_diff_time,
-                       pose_update.y()/last_diff_time,
-                       pose_update.heading()/last_diff_time;
+    curr_tick_right = kobuki_default.data.right_encoder;
+    if (!init_r)
+    {
+      last_tick_right = curr_tick_right;
+      init_r = true;
+    }
+    right_diff_ticks = (double)(short)((curr_tick_right - last_tick_right) & 0xffff);
+    last_tick_right = curr_tick_right;
+    last_rad_right += tick_to_rad * right_diff_ticks;
+    last_mm_right += tick_to_mm / 1000.0f * right_diff_ticks;
+
+    // TODO this line and the last statements are really ugly; refactor, put in another place
+    pose_update = kinematics->forward(tick_to_rad * left_diff_ticks, tick_to_rad * right_diff_ticks);
+
+    if (curr_timestamp != last_timestamp)
+    {
+      last_diff_time = ((double)(short)((curr_timestamp - last_timestamp) & 0xffff)) / 1000.0f;
+      last_timestamp = curr_timestamp;
+      last_velocity_left = (tick_to_rad * left_diff_ticks) / last_diff_time;
+      last_velocity_right = (tick_to_rad * right_diff_ticks) / last_diff_time;
+      wheel_left_velocity = last_velocity_left;
+      wheel_right_velocity = last_velocity_right;
+    } else {
+      wheel_left_velocity = 0.0;
+      wheel_right_velocity = 0.0;
+    }
+    wheel_left_position = last_rad_left;
+    wheel_right_position = last_rad_right;
+
+    pose_update_rates << pose_update.x()/last_diff_time,
+                         pose_update.y()/last_diff_time,
+                         pose_update.heading()/last_diff_time;
+  }
 }
 
 void Kobuki::getJointState(device_comms::JointState &joint_state)
@@ -571,6 +583,11 @@ void Kobuki::setCommand(double vx, double wz)
     radius = (short)(vx * 1000.0f / wz);
 
   speed = (short)(1000.0f * std::max(vx + bias * wz / 2.0f, vx - bias * wz / 2.0f));
+
+  if ( simulation ) {
+    kobuki_sim.velocity = vx;
+    kobuki_sim.angular_velocity = wz;
+  }
 }
 
 void Kobuki::sendCommand()
@@ -596,7 +613,6 @@ void Kobuki::sendCommand()
   cmd[8] = cs;
 
   serial.write(cmd, 9);
-  pubtime("send_cmd");
 }
 
 void Kobuki::sendCommand(const kobuki_comms::CommandConstPtr &data)
@@ -651,22 +667,6 @@ bool Kobuki::stop()
 //	is_running = false;
   is_enabled = false;
   return true;
-}
-
-void Kobuki::pubtime(const char *str)
-{
-  return;
-  //if( str != "every_tick" ) return ;
-  ecl::TimeStamp time = stopwatch.split();
-
-  //ROS_INFO_STREAM( "ecl_time:stopwatch:" << str << ":[" << time.sec() + time.usec()/0.000001 << "s]");
-
-  std::stringstream s;
-  s.precision(6);
-  s << "ecl_time:stopwatch:" << str << ":[" << time.sec() + time.usec() * 0.000001 << "s]";
-  ROS_INFO_STREAM(s.str());
-
-  return;
 }
 
 } // namespace kobuki

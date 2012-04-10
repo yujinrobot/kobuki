@@ -17,6 +17,7 @@ public:
   bool deserialise(ecl::PushAndPop<unsigned char> & byteStream);
   bool constrain();
   void showMe();
+
 };
 
 } // namespace kobuki

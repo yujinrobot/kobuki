@@ -5,13 +5,7 @@
 file(GLOB SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 
 ##############################################################################
-# LIBRARIES
-##############################################################################
-
-rosbuild_add_library(kobuki_node ${SOURCES})
-target_link_libraries(kobuki_node kobuki_node)
-
-##############################################################################
 # EXECUTABLES
 ##############################################################################
-rosbuild_add_executable(kobuki_node kobuki_node.cpp)
+
+rosbuild_add_executable(kobuki_node ${SOURCES})
