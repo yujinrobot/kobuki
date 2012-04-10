@@ -1,7 +1,7 @@
 /**
- * @file /kobuki_node/include/kobuki_node/sigslots.cpp
+ * @file src/node/slot_callbacks.cpp
  *
- * @brief sigslot gathering
+ * @brief All the slot callbacks for interrupts from the kobuki driver.
  *
  * Contains all SigSlots for the kobuki_node
  *

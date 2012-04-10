@@ -1,5 +1,4 @@
 <launch>
-    <group ns="kobuki">
 	  <!-- Kinect -->
 	  <node pkg="nodelet" type="nodelet" name="openni_manager" output="screen" respawn="true" args="manager"/>
 	
@@ -41,6 +40,5 @@
 	    <remap from="cloud" to="cloud_throttled"/>
 	    <remap from="scan" to="narrow_scan"/>
 	  </node>
-    </group>
 </launch>
 

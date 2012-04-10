@@ -1,4 +1,0 @@
-<launch>
-  <include file="$(find kobuki_bringup)/resources/launch/minimal.launch" />
-  <include file="$(find kobuki_bringup)/resources/launch/kinect.launch" />
-</launch>

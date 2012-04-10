@@ -1,0 +1,6 @@
+<launch>
+  <group ns="kobuki">
+    <include file="$(find kobuki_bringup)/resources/launch/robot.launch" />
+    <include file="$(find kobuki_bringup)/resources/launch/components/kinect.launch" />
+  </group>
+</launch>
