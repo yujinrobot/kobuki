@@ -1,4 +1,15 @@
 #!/usr/bin/env python
+
+# This is a script to convert the kobuki driver's output current data
+# into a format that rxplot can eat.
+#
+# Can be useful if we're doing speed under payload tests to find
+# problems.
+#
+# Note : doesn't work in its current state as we've removed all
+# ycs components. Fix if you want to ;)
+
+
 import roslib; roslib.load_manifest('kobuki_ros_node')
 import rospy
 

@@ -2,16 +2,15 @@
 # Cmake
 ##############################################################################
 
-cmake_minimum_required(VERSION 2.4.6)
+cmake_minimum_required(VERSION 2.6.0)
 
 # Verbosity is useful - helps eclipse find paths also!
 set(CMAKE_VERBOSE_MAKEFILE true)
 
 ##############################################################################
-# YCS-ROS
+# Ros
 ##############################################################################
 
-#include($ENV{YCS_ROOT}/ycs_tools/ycs_build/ycsbuild.cmake)
 include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 
 ##############################################################################
@@ -35,30 +34,10 @@ include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 # Init - the order of the preceding commands is important!
 ##############################################################################
 
-#ycsbuild_init()
 rosbuild_init()
-
-##############################################################################
-# Messages/Services
-##############################################################################
-
-#uncomment if you have defined messages
-#rosbuild_genmsg()
-#uncomment if you have defined services
-#rosbuild_gensrv()
 
 ##############################################################################
 # Actual project configuration
 ##############################################################################
 
-# Including a source directory
 #add_subdirectory(src)
-
-#common commands for building c++ executables and libraries
-#rosbuild_add_library(${PROJECT_NAME} src/example.cpp)
-#target_link_libraries(${PROJECT_NAME} another_library)
-#rosbuild_add_boost_directories()
-#rosbuild_link_boost(${PROJECT_NAME} thread)
-#rosbuild_add_executable(example examples/example.cpp)
-#target_link_libraries(example ${PROJECT_NAME})
-

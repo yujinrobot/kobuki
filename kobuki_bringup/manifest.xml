@@ -12,11 +12,9 @@
   <!-- Kobuki -->
   <depend package="kobuki_node"/>
   <depend package="kobuki_description"/>
-  
-  <!--  Ycs - These need to disappear -->
-<!--   <depend package="diff_drive_base"/> deprecated -->
-<!--   <depend package="diff_drive_gyro_base"/> deprecated -->
-  <depend package="keyop_core"/> <!-- launch file dependency; either this or turtlebot teleop -->
+ 
+  <!-- Turtlebot --> 
+  <depend package="turtlebot_teleop"/> <!-- launch file dependency -->
   
   <!--  Ros -->
   <depend package="robot_state_publisher"/>

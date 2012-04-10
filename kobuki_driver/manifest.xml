@@ -19,9 +19,7 @@
   <depend package="ecl_time"/>
   
   <!-- **** These have to disappear **** -->
-  <!-- Ros -->
   <depend package="roscpp"/>
-  <!-- Kobuki -->
   <depend package="kobuki_comms"/>
   
   <export>

@@ -16,15 +16,11 @@
   <depend package="sensor_msgs"/>
   <depend package="nav_msgs"/>
   <depend package="tf"/>
+  <depend package="std_srvs"/>
 
   <!--  Kobuki -->
   <depend package="kobuki_comms"/>
   <depend package="kobuki_driver"/>
-  
-  <!-- Ycs -->
-  <depend package="device_nodelet"/>
-  <depend package="device_comms"/>
-<!--   <depend package="standard_comms"/> -->
   
   <!-- Ecl -->
   <depend package="ecl_exceptions"/>
