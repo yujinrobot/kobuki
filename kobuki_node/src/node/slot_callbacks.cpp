@@ -3,8 +3,6 @@
  *
  * @brief All the slot callbacks for interrupts from the kobuki driver.
  *
- * Contains all SigSlots for the kobuki_node
- *
  * @date Apr 10, 2012
  **/
 

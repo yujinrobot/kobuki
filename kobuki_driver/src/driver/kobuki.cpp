@@ -363,12 +363,12 @@ void Kobuki::getDockIRData(kobuki_comms::DockIR &data)
 ecl::Angle<double> Kobuki::getHeading() const {
   ecl::Angle<double> heading;
   if ( simulation ) {
-    return kobuki_sim.heading;
-  }
-  if (protocol_version == "2.0") {
+    heading = kobuki_sim.heading;
+  } else {
     // raw data angles are in hundredths of a degree, convert to radians.
-    heading = static_cast<double>(kobuki_inertia.data.angle) * 100.0 * ecl::pi /180.0;
+    heading = (static_cast<double>(kobuki_inertia.data.angle) / 100.0) * ecl::pi /180.0;
   }
+  return heading;
 }
 
 void Kobuki::getCliffData(kobuki_comms::Cliff &data)

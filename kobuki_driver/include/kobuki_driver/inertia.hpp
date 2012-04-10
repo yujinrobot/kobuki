@@ -10,6 +10,7 @@
 *****************************************************************************/
 
 #include "payload_base.hpp"
+#include <stdint.h>
 
 /*****************************************************************************
 ** Namespaces
@@ -27,8 +28,8 @@ class Inertia : public packet_handler::payloadBase
 public:
   struct Data {
     unsigned char header_id;
-    unsigned short angle;
-    unsigned short angle_rate;
+    int16_t angle;
+    int16_t angle_rate;
     unsigned char acc[3];
   } data;
 
