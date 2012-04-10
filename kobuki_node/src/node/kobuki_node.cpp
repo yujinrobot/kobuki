@@ -49,7 +49,6 @@ KobukiNode::KobukiNode(std::string& node_name) :
     slot_inertia(&KobukiNode::publishInertiaData, *this),
     slot_cliff(&KobukiNode::publishCliffData, *this),
     slot_current(&KobukiNode::publishCurrentData, *this),
-    slot_magnet(&KobukiNode::publishMagnetData, *this),
     slot_hw(&KobukiNode::publishHWData, *this),
     slot_fw(&KobukiNode::publishFWData, *this),
     slot_time(&KobukiNode::publishTimeData, *this),
@@ -102,7 +101,6 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   slot_inertia.connect(name + std::string("/inertia"));
   slot_cliff.connect(name + std::string("/cliff"));
   slot_current.connect(name + std::string("/current"));
-  slot_magnet.connect(name + std::string("/magnet"));
   slot_hw.connect(name + std::string("/hw"));
   slot_fw.connect(name + std::string("/fw"));
   slot_time.connect(name + std::string("/time"));
@@ -278,7 +276,6 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("imu_data", 100);
   cliff_data_publisher = nh.advertise < kobuki_comms::Cliff > ("cliff_data", 100);
   current_data_publisher = nh.advertise < kobuki_comms::Current > ("current_data", 100);
-  magnet_data_publisher = nh.advertise < kobuki_comms::Magnet > ("merge_data", 100);
   hw_data_publisher = nh.advertise < kobuki_comms::HW > ("hw_data", 100);
   fw_data_publisher = nh.advertise < kobuki_comms::FW > ("fw_data", 100);
   time_data_publisher = nh.advertise < kobuki_comms::Time > ("time_data", 100);

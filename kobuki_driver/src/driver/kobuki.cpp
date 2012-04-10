@@ -231,10 +231,6 @@ void Kobuki::runnable()
                 sig_index.insert(data_buffer[0]);
                 kobuki_current.deserialise(data_buffer);
                 break;
-              case kobuki_comms::Header::header_magnet:
-                sig_index.insert(data_buffer[0]);
-                kobuki_magnet.deserialise(data_buffer);
-                break;
               case kobuki_comms::Header::header_time:
                 sig_index.insert(data_buffer[0]);
                 kobuki_time.deserialise(data_buffer);
@@ -295,9 +291,6 @@ void Kobuki::runnable()
                 break;
               case kobuki_comms::Header::header_current: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
                 sig_current.emit();
-                break;
-              case kobuki_comms::Header::header_magnet: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-                sig_magnet.emit();
                 break;
               case kobuki_comms::Header::header_time: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
                 sig_time.emit();
@@ -380,12 +373,6 @@ void Kobuki::getCurrentData(kobuki_comms::Current &data)
 {
   if (protocol_version == "2.0")
     data = kobuki_current.data;
-}
-
-void Kobuki::getMagnetData(kobuki_comms::Magnet &data)
-{
-  if (protocol_version == "2.0")
-    data = kobuki_magnet.data;
 }
 
 void Kobuki::getHWData(kobuki_comms::HW &data)

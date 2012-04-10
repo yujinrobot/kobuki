@@ -183,21 +183,6 @@ void KobukiNode::publishCurrentData()
   }
 }
 
-void KobukiNode::publishMagnetData()
-{
-  if (ros::ok())
-  {
-    if (magnet_data_publisher.getNumSubscribers() > 0)
-    {
-      kobuki_comms::Magnet data;
-      kobuki.getMagnetData(data);
-      data.header.stamp = ros::Time::now();
-      magnet_data_publisher.publish(data);
-      //std::cout << __func__ << std::endl;
-    }
-  }
-}
-
 void KobukiNode::publishHWData()
 {
   if (ros::ok())

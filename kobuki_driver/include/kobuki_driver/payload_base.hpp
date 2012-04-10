@@ -91,6 +91,12 @@ protected:
     }
 };
 
+/**
+ * Need to be very careful with this - it will only work across platforms if they
+ * happen to be doing reinterpret_cast with the same float standard.
+ * @param V
+ * @param buffer
+ */
 template<>
 inline   void payloadBase::buildVariable<float>(float & V, ecl::PushAndPop<unsigned char> & buffer)
   {

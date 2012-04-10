@@ -89,14 +89,14 @@ private:
   ros::ServiceServer reset_odometry_server;
 
   ros::Publisher ir_data_publisher, dock_ir_data_publisher, imu_data_publisher,
-                 cliff_data_publisher, current_data_publisher, magnet_data_publisher, hw_data_publisher,
+                 cliff_data_publisher, current_data_publisher, hw_data_publisher,
                  fw_data_publisher, time_data_publisher, eeprom_data_publisher,
                  gp_input_data_publisher, joint_state_publisher, odom_publisher,
                  sensor_data_publisher;
   ros::Subscriber velocity_command_subscriber, kobuki_command_subscriber, enable_subscriber, disable_subscriber;
 
   ecl::Slot<> slot_wheel_state, slot_sensor_data, slot_ir, slot_dock_ir,
-              slot_inertia, slot_cliff, slot_current, slot_magnet, slot_hw, slot_fw, slot_time,
+              slot_inertia, slot_cliff, slot_current, slot_hw, slot_fw, slot_time,
               slot_eeprom, slot_gp_input;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
   tf::TransformBroadcaster odom_broadcaster;
@@ -112,7 +112,6 @@ private:
   void publishInertiaData();
   void publishCliffData();
   void publishCurrentData();
-  void publishMagnetData();
   void publishHWData();
   void publishFWData();
   void publishTimeData();

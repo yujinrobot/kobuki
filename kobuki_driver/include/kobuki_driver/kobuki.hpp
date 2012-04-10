@@ -33,7 +33,6 @@
 #include "inertia.hpp"
 #include "cliff.hpp"
 #include "current.hpp"
-#include "magnet.hpp"
 #include "time.hpp"
 #include "hw.hpp"
 #include "fw.hpp"
@@ -120,7 +119,6 @@ public:
   void getDockIRData(kobuki_comms::DockIR&);
   void getCliffData(kobuki_comms::Cliff&);
   void getCurrentData(kobuki_comms::Current&);
-  void getMagnetData(kobuki_comms::Magnet&);
   void getHWData(kobuki_comms::HW&);
   void getFWData(kobuki_comms::FW&);
   void getTimeData(kobuki_comms::Time&);
@@ -171,7 +169,6 @@ private:
   Inertia kobuki_inertia;
   CliffData kobuki_cliff;
   CurrentData kobuki_current;
-  MagnetData kobuki_magnet;
   TimeData kobuki_time;
   HWData kobuki_hw;
   FWData kobuki_fw;

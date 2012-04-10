@@ -7,7 +7,6 @@ uint8 header_dock_ir  = 3
 uint8 header_inertia  = 4
 uint8 header_cliff    = 5
 uint8 header_current  = 6
-uint8 header_magnet   = 7
 
 uint8 header_hw       = 10
 uint8 header_fw       = 11
