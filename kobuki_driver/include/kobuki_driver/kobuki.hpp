@@ -151,7 +151,7 @@ private:
   short speed;
   double bias; //wheelbase, wheel_to_wheel, in [m]
   double wheel_radius;
-  double imu_heading_offset;
+  int imu_heading_offset;
 
   std::string device_type;
   std::string protocol_version;

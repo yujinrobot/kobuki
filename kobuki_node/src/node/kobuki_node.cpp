@@ -248,7 +248,7 @@ bool KobukiNode::spin(ros::NodeHandle& nh)
       std_msgs::StringPtr msg;
       disable(msg);
 
-      ROS_FATAL("No cmd_vel messages received within the last %.2f seconds; disable driver",
+      ROS_DEBUG("No cmd_vel messages received within the last %.2f seconds; disable driver",
                 cmd_vel_timeout.toSec());
     }
 
@@ -258,6 +258,7 @@ bool KobukiNode::spin(ros::NodeHandle& nh)
 
   return true;
 }
+
 /**
  * Two groups of publishers, one required by turtlebot, the other for
  * kobuki esoterics.

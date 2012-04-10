@@ -105,7 +105,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   speed = 0;
   bias = 0.298; //wheelbase, wheel_to_wheel, in [m]
   wheel_radius = 0.042;
-  imu_heading_offset = 0.0;
+  imu_heading_offset = 0;
 
   kinematics.reset(new ecl::DifferentialDrive::Kinematics(bias, wheel_radius));
 
@@ -363,11 +363,13 @@ void Kobuki::getInertiaData(kobuki_comms::Inertia &data)
   if (protocol_version == "2.0")
     data = kobuki_inertia.data;
 
-  if ( simulation )
-    data.angle = kobuki_sim.heading;
-  else
-    // gyro angle comes as hundredths of degree, convert to radians
-    data.angle = (data.angle/18000.0)*M_PI - imu_heading_offset;
+  if ( simulation ) {
+    // gyro angle are hundredths of degree, convert from radians
+    data.angle = (int)round((kobuki_sim.heading/M_PI)*18000);
+  }
+  else {
+    data.angle -= imu_heading_offset;
+  }
 }
 
 void Kobuki::getCliffData(kobuki_comms::Cliff &data)
@@ -432,7 +434,7 @@ void Kobuki::resetOdometry() {
   last_velocity_left = 0.0;
   last_velocity_right = 0.0;
 
-  imu_heading_offset = (kobuki_inertia.data.angle/18000.0)*M_PI;
+  imu_heading_offset = kobuki_inertia.data.angle;
 }
 
 void Kobuki::getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,

@@ -150,12 +150,15 @@ void KobukiNode::publishInertiaData()
       kobuki_comms::Inertia data;
       kobuki.getInertiaData(data);
 
+////      if (! isnan(data.angle)) {
       sensor_msgs::Imu msg;
       msg.header.frame_id = "gyro_link";
       msg.header.seq = data.header.seq;
       msg.header.stamp = ros::Time::now();
 
-      msg.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0, 0.0, data.angle);
+      // gyro angle comes as hundredths of degree, convert to radians
+      double yaw = (data.angle/18000.0)*M_PI;
+      msg.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0, 0.0, yaw);
 
       // set a very large covariance on unused dimensions (pitch and roll);
       // set yaw covariance as very low, to make it dominate over the odometry heading
