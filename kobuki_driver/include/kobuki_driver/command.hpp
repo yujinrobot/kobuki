@@ -77,36 +77,37 @@ public:
       ROS_WARN_STREAM("kobuki_node: kobuki_command: serialise failed. empty byte stream.");
       return false;
     }
+    // need to be sure we don't pass through an emum to the Trans'd buildBytes functions.
+    unsigned char cmd = static_cast<unsigned char>(data.command);
     switch (data.command)
     {
       case BaseControl:
-        buildBytes(data.command, byteStream);
+        buildBytes(cmd, byteStream);
         buildBytes(data.speed, byteStream);
         buildBytes(data.radius, byteStream);
         break;
       case Sound:
-        buildBytes(data.command, byteStream);
+        buildBytes(cmd, byteStream);
         buildBytes(data.note, byteStream);
         buildBytes(data.duration, byteStream);
         break;
       case SoundSequence:
-        buildBytes(data.command, byteStream);
+        buildBytes(cmd, byteStream);
         buildBytes(data.segment_name, byteStream);
         break;
       case RequestExtra:
-        buildBytes(data.command, byteStream);
+        buildBytes(cmd, byteStream);
         buildBytes(data.request_flags, byteStream);
         break;
       case ChangeFrame:
-        buildBytes(data.command, byteStream);
+        buildBytes(cmd, byteStream);
         buildBytes(data.frame_id, byteStream);
         break;
       case RequestEeprom:
-        buildBytes(data.command, byteStream);
+        buildBytes(cmd, byteStream);
         buildBytes(data.frame_id, byteStream);
         break;
       case SetDigitalOut: { // this one controls led, external power sources, gp digitial output
-        unsigned char cmd = static_cast<unsigned char>(data.command);
         buildBytes(cmd, byteStream);
         buildBytes(data.gp_out, byteStream);
         break;
