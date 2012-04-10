@@ -329,7 +329,9 @@ void Kobuki::runnable()
       }
     }
 
-    if (get_packet) { sendCommand(); } // send the command packet to mainboard;
+    if (get_packet) {
+      sendCommand();
+    } // send the command packet to mainboard;
 
 //    if ( !serial.remaining() ) {
 //      ecl::MilliSleep(1)();
@@ -524,64 +526,68 @@ void Kobuki::setCommand(double vx, double wz)
 
 void Kobuki::sendCommand()
 {
-  //std::cout << "speed = " << speed << ", radius = " << radius << std::endl;
-  unsigned char cmd[] = {0xaa, 0x55, 5, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00};
-  unsigned char cs(0);
+  if ( !simulation ) {
+    //std::cout << "speed = " << speed << ", radius = " << radius << std::endl;
+    unsigned char cmd[] = {0xaa, 0x55, 5, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00};
+    unsigned char cs(0);
 
-  union_sint16 union_speed, union_radius;
-  union_speed.word = speed;
-  union_radius.word = radius;
+    union_sint16 union_speed, union_radius;
+    union_speed.word = speed;
+    union_radius.word = radius;
 
-  cmd[4] = union_speed.byte[0];
-  cmd[5] = union_speed.byte[1];
-  cmd[6] = union_radius.byte[0];
-  cmd[7] = union_radius.byte[1];
+    cmd[4] = union_speed.byte[0];
+    cmd[5] = union_speed.byte[1];
+    cmd[6] = union_radius.byte[0];
+    cmd[7] = union_radius.byte[1];
 
-  //memcpy(cmd + 4, &speed,  sizeof(short) );
-  //memcpy(cmd + 6, &radius, sizeof(short) );
+    //memcpy(cmd + 4, &speed,  sizeof(short) );
+    //memcpy(cmd + 6, &radius, sizeof(short) );
 
-  for (int i = 2; i <= 6; i++)
-    cs ^= cmd[i];
-  cmd[8] = cs;
+    for (int i = 2; i <= 6; i++)
+      cs ^= cmd[i];
+    cmd[8] = cs;
 
-  serial.write(cmd, 9);
+    serial.write(cmd, 9);
+  }
 }
 
 void Kobuki::sendCommand(const kobuki_comms::CommandConstPtr &data)
 {
-  kobuki_command.data = *data;
+  if ( !simulation ) {
+    kobuki_command.data = *data;
 
-  command_buffer.clear();
-  command_buffer.resize(64);
-  command_buffer.push_back(0xaa);
-  command_buffer.push_back(0x55);
-  command_buffer.push_back(0); // size of payload only, not stx, not etx, not length
+    command_buffer.clear();
+    command_buffer.resize(64);
+    command_buffer.push_back(0xaa);
+    command_buffer.push_back(0x55);
+    command_buffer.push_back(0); // size of payload only, not stx, not etx, not length
 
-  if (!kobuki_command.serialise(command_buffer))
-  {
-    ROS_ERROR_STREAM("command serialise failed.");
-  }
+    if (!kobuki_command.serialise(command_buffer))
+    {
+      ROS_ERROR_STREAM("command serialise failed.");
+    }
 
-  command_buffer[2] = command_buffer.size() - 3;
-  unsigned char checksum = 0;
-  for (unsigned int i = 2; i < command_buffer.size(); i++)
-    checksum ^= (command_buffer[i]);
+    command_buffer[2] = command_buffer.size() - 3;
+    unsigned char checksum = 0;
+    for (unsigned int i = 2; i < command_buffer.size(); i++)
+      checksum ^= (command_buffer[i]);
 
-  command_buffer.push_back(checksum);
-  serial.write(&command_buffer[0], command_buffer.size());
+    command_buffer.push_back(checksum);
+    serial.write(&command_buffer[0], command_buffer.size());
 
-  for (unsigned int i = 0; i < command_buffer.size(); ++i)
-  {
-    std::cout << "0x" << std::hex << std::setw(2) << std::setfill('0') << (unsigned)command_buffer[i] << std::dec
-        << std::setfill(' ') << " ";
-  }
+    for (unsigned int i = 0; i < command_buffer.size(); ++i)
+    {
+      std::cout << "0x" << std::hex << std::setw(2) << std::setfill('0') << (unsigned)command_buffer[i] << std::dec
+          << std::setfill(' ') << " ";
+    }
 
-  std::cout << std::endl;
+    std::cout << std::endl;
 
-  if (kobuki_command.data.command == kobuki_comms::Command::commandBaseControl)
-  {
-    radius = kobuki_command.data.radius;
-    speed = kobuki_command.data.speed;
+    if (kobuki_command.data.command == kobuki_comms::Command::commandBaseControl)
+    {
+      radius = kobuki_command.data.radius;
+      speed = kobuki_command.data.speed;
+    }
   }
 }
 
