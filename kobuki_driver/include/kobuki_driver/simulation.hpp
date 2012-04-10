@@ -35,6 +35,9 @@ namespace kobuki {
 class SimulationData {
 public:
   SimulationData() :
+    heading(0.0),
+    velocity(0.0),
+    angular_velocity(0.0),
     left_wheel_angle(0.0),
     right_wheel_angle(0.0),
     left_wheel_angle_update(0.0),
@@ -59,8 +62,11 @@ public:
     right_wheel_angle_update = right_wheel_angle_rate * diff;
     left_wheel_angle += left_wheel_angle_update;
     right_wheel_angle += right_wheel_angle_update;
+
+    heading += angular_velocity * diff;
+
     last_timestamp = stamp;
-    std::cout << "[" << last_timestamp << "][" << left_wheel_angle << "," << right_wheel_angle << "][" << left_wheel_angle_rate << "," << right_wheel_angle_rate << "]" << std::endl;
+//    std::cout << "[" << last_timestamp << "][" << left_wheel_angle << "," << right_wheel_angle << "][" << left_wheel_angle_rate << "," << right_wheel_angle_rate << "]" << std::endl;
   }
   void sleep() {
     snooze();
@@ -68,6 +74,7 @@ public:
 
   double bias;
   double m_to_rad;
+  double heading;
   double velocity, angular_velocity;
   double left_wheel_angle, right_wheel_angle;
   double left_wheel_angle_update, right_wheel_angle_update;

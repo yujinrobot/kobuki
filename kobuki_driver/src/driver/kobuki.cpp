@@ -146,9 +146,14 @@ void Kobuki::runnable()
     get_packet = false;
 
     if ( simulation ) {
+      // this only does wheel updates, you want to
+      // 1) calculate the heading variable in update(), store it
+      // 2) add an if( simulation ) { ... to getInertiaData (c.f. updateOdometry)
+      // 3) do sig_inertia.emit()
       kobuki_sim.update();
       kobuki_sim.sleep();
       sig_wheel_state.emit();
+      sig_inertia.emit();
     } else {
       /*********************
       ** Read Incoming
@@ -364,6 +369,11 @@ void Kobuki::getDockIRData(kobuki_comms::DockIR &data)
 
 void Kobuki::getInertiaData(kobuki_comms::Inertia &data)
 {
+  if ( simulation ) {
+    // angle must be in hundredths of degree, convert from radians
+    kobuki_inertia.data.angle = (kobuki_sim.heading/M_PI)*18000;
+  }
+
   if (protocol_version == "2.0")
     data = kobuki_inertia.data;
 }
