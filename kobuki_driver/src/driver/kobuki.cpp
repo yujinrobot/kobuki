@@ -192,115 +192,71 @@ void Kobuki::runnable()
         data_buffer.pop_front();
         data_buffer.pop_front();
 
+        std::cout << "Packet retrieved" << std::endl;
         if (protocol_version == "2.0")
         {
-          sig_index.clear();
           while (data_buffer.size() > 1/*size of etx*/)
           {
             // std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
             // std::cout << "remains: " << data_buffer.size() << " | ";
             switch (data_buffer[0])
             {
+              // these come with the streamed feedback
               case kobuki_comms::Header::header_default:
-                sig_index.insert(data_buffer[0]);
                 kobuki_default.deserialise(data_buffer);
-                break;
-              case kobuki_comms::Header::header_ir:
-                sig_index.insert(data_buffer[0]);
-                kobuki_ir.deserialise(data_buffer);
-                break;
-              case kobuki_comms::Header::header_dock_ir:
-                sig_index.insert(data_buffer[0]);
-                kobuki_dock_ir.deserialise(data_buffer);
-                break;
-              case kobuki_comms::Header::header_inertia:
-                sig_index.insert(data_buffer[0]);
-                kobuki_inertia.deserialise(data_buffer);
-                break;
-              case kobuki_comms::Header::header_cliff:
-                sig_index.insert(data_buffer[0]);
-                kobuki_cliff.deserialise(data_buffer);
-                break;
-              case kobuki_comms::Header::header_current:
-                sig_index.insert(data_buffer[0]);
-                kobuki_current.deserialise(data_buffer);
-                break;
-              case kobuki_comms::Header::header_time:
-                sig_index.insert(data_buffer[0]);
-                kobuki_time.deserialise(data_buffer);
-                break;
-              case kobuki_comms::Header::header_hw:
-                sig_index.insert(data_buffer[0]);
-                kobuki_hw.deserialise(data_buffer);
-                break;
-              case kobuki_comms::Header::header_fw:
-                sig_index.insert(data_buffer[0]);
-                kobuki_fw.deserialise(data_buffer);
-                break;
-              case kobuki_comms::Header::header_eeprom:
-                sig_index.insert(data_buffer[0]);
-                kobuki_eeprom.deserialise(data_buffer);
-                break;
-              case kobuki_comms::Header::header_gp_input:
-                sig_index.insert(data_buffer[0]);
-                kobuki_gp_input.deserialise(data_buffer);
-                break;
-              default:
-                std::cout << "unexpected case reached. flushing current buffer." << std::endl;
-                data_buffer.clear();
-                break;
-            }
-          }
-
-          std::cout << "Packet retrieved" << std::endl;
-          std::set<unsigned char>::iterator it;
-          for (it = sig_index.begin(); it != sig_index.end(); ++it)
-          {
-            switch ((*it))
-            {
-              case kobuki_comms::Header::header_default:
-                std::cout << "  Default" << std::endl;
+                // std::cout << "  Default" << std::endl;
                 sig_sensor_data.emit();
                 sig_wheel_state.emit();
                 break;
               case kobuki_comms::Header::header_dock_ir:
-                std::cout << "  Dock" << std::endl;
+                kobuki_dock_ir.deserialise(data_buffer);
+                // std::cout << "  Dock" << std::endl;
                 sig_dock_ir.emit();
                 break;
               case kobuki_comms::Header::header_inertia:
-                std::cout << "  Inertia" << std::endl;
+                kobuki_inertia.deserialise(data_buffer);
+                // std::cout << "  Inertia" << std::endl;
                 sig_inertia.emit();
                 break;
               case kobuki_comms::Header::header_cliff:
-                std::cout << "  Cliff" << std::endl;
+                kobuki_cliff.deserialise(data_buffer);
+                // std::cout << "  Cliff" << std::endl;
                 sig_cliff.emit();
                 break;
               case kobuki_comms::Header::header_current:
-                std::cout << "  Current" << std::endl;
+                kobuki_current.deserialise(data_buffer);
+                // std::cout << "  Current" << std::endl;
                 sig_current.emit();
                 break;
               case kobuki_comms::Header::header_gp_input:
+                kobuki_gp_input.deserialise(data_buffer);
                 std::cout << "  Gpio" << std::endl;
                 sig_gp_input.emit();
                 break;
+              // the rest are services
               case kobuki_comms::Header::header_ir:
-                std::cout << "  Infrared" << std::endl;
+                kobuki_ir.deserialise(data_buffer);
+                // std::cout << "  Infrared" << std::endl;
                 sig_ir.emit();
                 break;
               case kobuki_comms::Header::header_time:
-                std::cout << "  Time" << std::endl;
+                kobuki_time.deserialise(data_buffer);
+                // std::cout << "  Time" << std::endl;
                 sig_time.emit();
                 break;
               case kobuki_comms::Header::header_hw:
-                std::cout << "  Hw" << std::endl;
+                kobuki_hw.deserialise(data_buffer);
+                // std::cout << "  Hw" << std::endl;
                 sig_hw.emit();
                 break;
               case kobuki_comms::Header::header_fw:
-                std::cout << "  Fw" << std::endl;
+                kobuki_fw.deserialise(data_buffer);
+                // std::cout << "  Fw" << std::endl;
                 sig_fw.emit();
                 break;
               case kobuki_comms::Header::header_eeprom:
-                std::cout << "  Eeprom" << std::endl;
+                kobuki_eeprom.deserialise(data_buffer);
+                // std::cout << "  Eeprom" << std::endl;
                 sig_eeprom.emit();
                 break;
               default:
