@@ -41,13 +41,9 @@ bool DefaultData::serialise(ecl::PushAndPop<unsigned char> & byteStream)
   buildBytes(data.right_encoder, byteStream);
   buildBytes(data.left_pwm, byteStream);
   buildBytes(data.right_pwm, byteStream);
-  //buildBytes( data.dustbin,                 byteStream );
   buildBytes(data.remote, byteStream);
-  //buildBytes( data.button,          byteStream );
   buildBytes(data.charger, byteStream);
   buildBytes(data.battery, byteStream);
-  //buildBytes( data.caster,          byteStream );
-  //buildBytes( data.over_current,    byteStream );
 
   return true;
 }
@@ -68,13 +64,9 @@ bool DefaultData::deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   buildVariable(data.right_encoder, byteStream);
   buildVariable(data.left_pwm, byteStream);
   buildVariable(data.right_pwm, byteStream);
-  //buildVariable( data.dustbin,              byteStream );
   buildVariable(data.remote, byteStream);
-  //buildVariable( data.button,               byteStream );
   buildVariable(data.charger, byteStream);
   buildVariable(data.battery, byteStream);
-  //buildVariable( data.caster,               byteStream );
-  //buildVariable( data.over_current, byteStream );
 
   return true;
 }

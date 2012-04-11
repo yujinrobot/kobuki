@@ -11,10 +11,6 @@ uint16 left_encoder
 uint16 right_encoder
 int8  left_pwm
 int8  right_pwm
-uint8  dustbin
 uint8  remote
-uint8  button
 uint8  charger
 uint8  battery
-uint8  caster
-uint8  over_current
