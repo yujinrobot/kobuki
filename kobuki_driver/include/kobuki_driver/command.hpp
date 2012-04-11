@@ -2,7 +2,7 @@
 #define KOBUKI_COMMAND_DATA_HPP__
 
 #include <ecl/containers.hpp>
-#include "payload_base.hpp"
+#include "packet_handler/payload_base.hpp"
 #include <kobuki_comms/Header.h>
 #include "led_array.hpp"
 

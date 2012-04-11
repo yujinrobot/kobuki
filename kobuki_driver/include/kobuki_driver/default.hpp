@@ -3,7 +3,7 @@
 
 #include <ecl/containers.hpp>
 #include <kobuki_comms/SensorData.h>
-#include "payload_base.hpp"
+#include "packet_handler/payload_base.hpp"
 
 namespace kobuki
 {

@@ -13,7 +13,7 @@
 *****************************************************************************/
 
 #include <ros/ros.h>
-#include "../../include/kobuki_driver/packet_finder.hpp"
+#include "../../include/kobuki_driver/packet_handler/packet_finder.hpp"
 
 /*****************************************************************************
 ** Namespaces

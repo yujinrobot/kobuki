@@ -204,28 +204,23 @@ void Kobuki::runnable()
               // these come with the streamed feedback
               case kobuki_comms::Header::header_default:
                 kobuki_default.deserialise(data_buffer);
-                // std::cout << "  Default" << std::endl;
                 sig_sensor_data.emit();
                 sig_wheel_state.emit();
                 break;
               case kobuki_comms::Header::header_dock_ir:
                 kobuki_dock_ir.deserialise(data_buffer);
-                // std::cout << "  Dock" << std::endl;
                 sig_dock_ir.emit();
                 break;
               case kobuki_comms::Header::header_inertia:
                 kobuki_inertia.deserialise(data_buffer);
-                // std::cout << "  Inertia" << std::endl;
                 sig_inertia.emit();
                 break;
               case kobuki_comms::Header::header_cliff:
                 kobuki_cliff.deserialise(data_buffer);
-                // std::cout << "  Cliff" << std::endl;
                 sig_cliff.emit();
                 break;
               case kobuki_comms::Header::header_current:
                 kobuki_current.deserialise(data_buffer);
-                // std::cout << "  Current" << std::endl;
                 sig_current.emit();
                 break;
               case kobuki_comms::Header::header_gp_input:
@@ -236,27 +231,22 @@ void Kobuki::runnable()
               // the rest are services
               case kobuki_comms::Header::header_ir:
                 kobuki_ir.deserialise(data_buffer);
-                // std::cout << "  Infrared" << std::endl;
                 sig_ir.emit();
                 break;
               case kobuki_comms::Header::header_time:
                 kobuki_time.deserialise(data_buffer);
-                // std::cout << "  Time" << std::endl;
                 sig_time.emit();
                 break;
               case kobuki_comms::Header::header_hw:
                 kobuki_hw.deserialise(data_buffer);
-                // std::cout << "  Hw" << std::endl;
                 sig_hw.emit();
                 break;
               case kobuki_comms::Header::header_fw:
                 kobuki_fw.deserialise(data_buffer);
-                // std::cout << "  Fw" << std::endl;
                 sig_fw.emit();
                 break;
               case kobuki_comms::Header::header_eeprom:
                 kobuki_eeprom.deserialise(data_buffer);
-                // std::cout << "  Eeprom" << std::endl;
                 sig_eeprom.emit();
                 break;
               default:
