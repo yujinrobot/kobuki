@@ -195,10 +195,9 @@ private:
   PacketFinder packet_finder;
   PacketFinder::BufferType data_buffer;
   ecl::PushAndPop<unsigned char> command_buffer;
-
   ecl::Signal<> sig_wheel_state, sig_sensor_data;
   ecl::Signal<> sig_ir, sig_dock_ir, sig_inertia, sig_cliff, sig_current, sig_magnet, sig_hw, sig_fw,
-                sig_time, sig_st_gyro, sig_eeprom, sig_gp_input;
+                sig_time, sig_eeprom, sig_gp_input;
 
   ecl::Signal<const std::string&> sig_debug, sig_info, sig_warn, sig_error;
 

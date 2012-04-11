@@ -80,7 +80,6 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_hw.connect(sigslots_namespace + std::string("/hw"));
   sig_fw.connect(sigslots_namespace + std::string("/fw"));
   sig_time.connect(sigslots_namespace + std::string("/time"));
-  sig_st_gyro.connect(sigslots_namespace + std::string("/st_gyro"));
   sig_eeprom.connect(sigslots_namespace + std::string("/eeprom"));
   sig_gp_input.connect(sigslots_namespace + std::string("/gp_input"));
 
@@ -149,10 +148,6 @@ void Kobuki::runnable()
     get_packet = false;
 
     if ( simulation ) {
-      // this only does wheel updates, you want to
-      // 1) calculate the heading variable in update(), store it
-      // 2) add an if( simulation ) { ... to getInertiaData (c.f. updateOdometry)
-      // 3) do sig_inertia.emit()
       kobuki_sim.update();
       kobuki_sim.sleep();
       sig_wheel_state.emit();
@@ -177,10 +172,9 @@ void Kobuki::runnable()
 //        }
       }
 
-      if (packet_finder.update(buf, n))
+      if (packet_finder.update(buf, n)) // this clears packet finder's buffer and transfers important bytes into it
       {
-        // when packet_finder finds proper packet, we will get the buffer
-        packet_finder.getBuffer(data_buffer);
+        packet_finder.getBuffer(data_buffer);  // get a reference to packet finder's buffer.
 
   #if 0
         if( verbose )
@@ -243,9 +237,6 @@ void Kobuki::runnable()
                 sig_index.insert(data_buffer[0]);
                 kobuki_fw.deserialise(data_buffer);
                 break;
-              // case kobuki_comms::Header::header_st_gyro:  // UNUSED
-                //   sig_index.insert(data_buffer[0]);
-                // break;
               case kobuki_comms::Header::header_eeprom:
                 sig_index.insert(data_buffer[0]);
                 kobuki_eeprom.deserialise(data_buffer);
@@ -260,55 +251,57 @@ void Kobuki::runnable()
                 break;
             }
           }
-        }
-        //std::cout << "sig_index_size: " << sig_index.size() << std::endl;
-        //ROS_DEBUG_STREAM("kobuki_node:left_encoder [" << data2.data.left_encoder << "], remaining[" << serial.remaining() << "]" );
 
-        //if( verbose ) data.showMe();
-        //data.showMe();
-        if (protocol_version == "2.0")
-        {
+          std::cout << "Packet retrieved" << std::endl;
           std::set<unsigned char>::iterator it;
           for (it = sig_index.begin(); it != sig_index.end(); ++it)
           {
             switch ((*it))
             {
-              case kobuki_comms::Header::header_default: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+              case kobuki_comms::Header::header_default:
+                std::cout << "  Default" << std::endl;
                 sig_sensor_data.emit();
                 sig_wheel_state.emit();
                 break;
-              case kobuki_comms::Header::header_ir: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-                sig_ir.emit();
-                break;
-              case kobuki_comms::Header::header_dock_ir: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+              case kobuki_comms::Header::header_dock_ir:
+                std::cout << "  Dock" << std::endl;
                 sig_dock_ir.emit();
                 break;
-              case kobuki_comms::Header::header_inertia: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+              case kobuki_comms::Header::header_inertia:
+                std::cout << "  Inertia" << std::endl;
                 sig_inertia.emit();
                 break;
-              case kobuki_comms::Header::header_cliff: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+              case kobuki_comms::Header::header_cliff:
+                std::cout << "  Cliff" << std::endl;
                 sig_cliff.emit();
                 break;
-              case kobuki_comms::Header::header_current: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+              case kobuki_comms::Header::header_current:
+                std::cout << "  Current" << std::endl;
                 sig_current.emit();
                 break;
-              case kobuki_comms::Header::header_time: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+              case kobuki_comms::Header::header_gp_input:
+                std::cout << "  Gpio" << std::endl;
+                sig_gp_input.emit();
+                break;
+              case kobuki_comms::Header::header_ir:
+                std::cout << "  Infrared" << std::endl;
+                sig_ir.emit();
+                break;
+              case kobuki_comms::Header::header_time:
+                std::cout << "  Time" << std::endl;
                 sig_time.emit();
                 break;
-              case kobuki_comms::Header::header_hw: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+              case kobuki_comms::Header::header_hw:
+                std::cout << "  Hw" << std::endl;
                 sig_hw.emit();
                 break;
-              case kobuki_comms::Header::header_fw: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+              case kobuki_comms::Header::header_fw:
+                std::cout << "  Fw" << std::endl;
                 sig_fw.emit();
                 break;
-              case kobuki_comms::Header::header_st_gyro: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-                sig_st_gyro.emit();
-                break;
-              case kobuki_comms::Header::header_eeprom: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
+              case kobuki_comms::Header::header_eeprom:
+                std::cout << "  Eeprom" << std::endl;
                 sig_eeprom.emit();
-                break;
-              case kobuki_comms::Header::header_gp_input: /*std::cout << " --- " << (int)( *it ) << std::endl;*/
-                sig_gp_input.emit();
                 break;
               default:
                 std::cout << "unexpected case reached. flushing current buffer." << std::endl;
@@ -316,9 +309,7 @@ void Kobuki::runnable()
                 break;
             }
           }
-
         }
-
         get_packet = true;
       }
     }
@@ -326,10 +317,6 @@ void Kobuki::runnable()
     if (get_packet) {
       sendBaseControlCommand();
     } // send the command packet to mainboard;
-
-//    if ( !serial.remaining() ) {
-//      ecl::MilliSleep(1)();
-//    }
   }
 }
 
