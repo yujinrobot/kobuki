@@ -36,7 +36,7 @@ public:
   static const unsigned char Hardware = 10;
   static const unsigned char Firmware = 11;
   static const unsigned char Eeprom = 15;
-  static const unsigned char Gpio = 16;
+  static const unsigned char GpInput = 16;
 
   static const unsigned char Reserved = 20;
 };

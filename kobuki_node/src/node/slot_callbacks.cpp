@@ -11,6 +11,7 @@
 *****************************************************************************/
 
 #include "kobuki_node/kobuki_node.hpp"
+#include <kobuki_driver/modules/gp_input.hpp>
 
 /*****************************************************************************
  ** Namespaces
@@ -165,13 +166,11 @@ void KobukiNode::publishHWData()
   {
     if (hw_data_publisher.getNumSubscribers() > 0)
     {
-      HW::Data data;
+      Hardware::Data data;
       kobuki.getHWData(data);
-      kobuki_comms::HW ros_data;
-      ros_data.header.stamp = ros::Time::now();
-      ros_data.mainboard_version = data.mainboard_version;
+      kobuki_comms::Hardware ros_data;
+      ros_data.version = data.version;
       hw_data_publisher.publish(ros_data);
-      //std::cout << __func__ << std::endl;
     }
   }
 }
@@ -182,14 +181,11 @@ void KobukiNode::publishFWData()
   {
     if (fw_data_publisher.getNumSubscribers() > 0)
     {
-      FW::Data data;
+      Firmware::Data data;
       kobuki.getFWData(data);
-      // convert data format
-      kobuki_comms::FW ros_data;
-      ros_data.header.stamp = ros::Time::now();
-      ros_data.fw_version = data.fw_version;
+      kobuki_comms::Firmware ros_data;
+      ros_data.version = data.version;
       fw_data_publisher.publish(ros_data);
-      //std::cout << __func__ << std::endl;
     }
   }
 }
@@ -215,11 +211,12 @@ void KobukiNode::publishGpInputData()
   {
     if (gp_input_data_publisher.getNumSubscribers() > 0)
     {
-      kobuki_comms::GpInput data;
+      GpInput::Data data;
       kobuki.getGpInputData(data);
-      data.header.stamp = ros::Time::now();
-      gp_input_data_publisher.publish(data);
-      //std::cout << __func__ << std::endl;
+      kobuki_comms::GpInput ros_data;
+      ros_data.header.stamp = ros::Time::now();
+      ros_data.gp_input = data.gp_input;
+      gp_input_data_publisher.publish(ros_data);
     }
   }
 }

@@ -26,12 +26,12 @@
 #include "modules/cliff.hpp"
 #include "modules/core_sensors.hpp"
 #include "modules/current.hpp"
-#include "modules/fw.hpp"
+#include "modules/gp_input.hpp"
 #include "modules/inertia.hpp"
 #include "modules/dock_ir.hpp"
-#include "modules/hw.hpp"
+#include "modules/firmware.hpp"
+#include "modules/hardware.hpp"
 #include "eeprom.hpp"
-#include "gp_input.hpp"
 #include "command.hpp"
 #include "simulation.hpp"
 #include "led_array.hpp"
@@ -109,15 +109,17 @@ public:
 
   ecl::Angle<double> getHeading() const;
 
+  // streamed
   void getCoreSensorData(CoreSensors::Data&);
   void getDockIRData(DockIR::Data&);
   void getCliffData(Cliff::Data&);
   void getCurrentData(Current::Data&);
-  void getHWData(HW::Data&);
-  void getFWData(FW::Data&);
+  void getGpInputData(GpInput::Data&);
+  // services
+  void getHWData(Hardware::Data&);
+  void getFWData(Firmware::Data&);
 
   void getEEPROMData(kobuki_comms::EEPROM&);
-  void getGpInputData(kobuki_comms::GpInput&);
 
   /*********************
   ** Feedback
@@ -174,12 +176,12 @@ private:
   DockIR dock_ir;
   Cliff cliff;
   Current current;
+  GpInput gp_input;
   // Service Payloads
-  HW hardware;
-  FW firmware;
+  Hardware hardware;
+  Firmware firmware;
 
   EEPROMData kobuki_eeprom;
-  GpInputData kobuki_gp_input;
   Simulation simulation;
 
   Command kobuki_command;

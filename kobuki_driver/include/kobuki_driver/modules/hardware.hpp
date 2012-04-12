@@ -1,14 +1,14 @@
 /**
- * @file /include/kobuki_driver/modules/fw.hpp
+ * @file /include/kobuki_driver/modules/hardware.hpp
  *
- * Module for handling of firmware version request packet payloads.
+ * Module for handling of hardware version request packet payloads.
  */
 /*****************************************************************************
 ** Preprocessor
 *****************************************************************************/
 
-#ifndef KOBUKI_FW_DATA_HPP__
-#define KOBUKI_FW_DATA_HPP__
+#ifndef KOBUKI_HW_DATA_HPP__
+#define KOBUKI_HW_DATA_HPP__
 
 /*****************************************************************************
 ** Include
@@ -28,11 +28,11 @@ namespace kobuki
 ** Interface
 *****************************************************************************/
 
-class FW : public packet_handler::payloadBase
+class Hardware : public packet_handler::payloadBase
 {
 public:
   struct Data {
-    uint16_t fw_version;
+    uint16_t version;
   } data;
 
   // methods
@@ -40,12 +40,12 @@ public:
   {
     if (!(byteStream.size() > 0))
     {
-      printf("kobuki_node: kobuki_fw: serialise failed. empty byte stream.");
+      printf("kobuki_node: kobuki_hw: serialise failed. empty byte stream.");
       return false;
     }
 
-    buildBytes(Header::Firmware, byteStream);
-    buildBytes(data.fw_version, byteStream);
+    buildBytes(Header::Hardware, byteStream);
+    buildBytes(data.version, byteStream);
     return true;
   }
 
@@ -53,13 +53,13 @@ public:
   {
     if (!(byteStream.size() > 0))
     {
-      printf("kobuki_node: kobuki_fw: deserialise failed. empty byte stream.");
+      printf("kobuki_node: kobuki_hw: deserialise failed. empty byte stream.");
       return false;
     }
 
     unsigned char header_id;
     buildVariable(header_id, byteStream);
-    buildVariable(data.fw_version, byteStream);
+    buildVariable(data.version, byteStream);
 
     //showMe();
     return constrain();
@@ -78,5 +78,5 @@ public:
 
 } // namespace kobuki
 
-#endif /* KOBUKI_FW_DATA_HPP__ */
+#endif /* KOBUKI_HW_DATA_HPP__ */
 

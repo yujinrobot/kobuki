@@ -222,8 +222,8 @@ void Kobuki::runnable()
                 current.deserialise(data_buffer);
                 sig_current.emit();
                 break;
-              case Header::Gpio:
-                kobuki_gp_input.deserialise(data_buffer);
+              case Header::GpInput:
+                gp_input.deserialise(data_buffer);
                 sig_gp_input.emit();
                 break;
               // the rest are services
@@ -282,8 +282,9 @@ ecl::Angle<double> Kobuki::getHeading() const {
 
 void Kobuki::getCliffData(Cliff::Data &data) { data = cliff.data; }
 void Kobuki::getCurrentData(Current::Data &data) { data = current.data; }
-void Kobuki::getHWData(HW::Data &data) { data = hardware.data; }
-void Kobuki::getFWData(FW::Data &data) { data = firmware.data; }
+void Kobuki::getGpInputData(GpInput::Data &data) { data = gp_input.data; }
+void Kobuki::getHWData(Hardware::Data &data) { data = hardware.data; }
+void Kobuki::getFWData(Firmware::Data &data) { data = firmware.data; }
 
 void Kobuki::getEEPROMData(kobuki_comms::EEPROM &data)
 {
@@ -291,11 +292,6 @@ void Kobuki::getEEPROMData(kobuki_comms::EEPROM &data)
     data = kobuki_eeprom.data;
 }
 
-void Kobuki::getGpInputData(kobuki_comms::GpInput &data)
-{
-  if (protocol_version == "2.0")
-    data = kobuki_gp_input.data;
-}
 void Kobuki::resetOdometry() {
   if ( is_simulation ) {
     simulation.reset();

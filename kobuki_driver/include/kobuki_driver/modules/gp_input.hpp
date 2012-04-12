@@ -1,19 +1,20 @@
 /**
- * @file /include/kobuki_driver/modules/hw.hpp
+ * @file /include/kobuki_driver/modules/gp_input.hpp
  *
- * Module for handling of hardware version request packet payloads.
+ * Module for handling of gpio data commands.
  */
 /*****************************************************************************
 ** Preprocessor
 *****************************************************************************/
 
-#ifndef KOBUKI_HW_DATA_HPP__
-#define KOBUKI_HW_DATA_HPP__
+#ifndef KOBUKI_GPIO_HPP__
+#define KOBUKI_GPIO_HPP__
 
 /*****************************************************************************
 ** Include
 *****************************************************************************/
 
+#include <vector>
 #include "../packet_handler/payload_base.hpp"
 #include "../packet_handler/payload_headers.hpp"
 
@@ -28,24 +29,29 @@ namespace kobuki
 ** Interface
 *****************************************************************************/
 
-class HW : public packet_handler::payloadBase
+class GpInput : public packet_handler::payloadBase
 {
 public:
   struct Data {
-    uint16_t mainboard_version;
+    Data() : gp_adc(7) {}
+    uint16_t gp_input;
+    std::vector<uint16_t> gp_adc;
   } data;
 
-  // methods
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
     if (!(byteStream.size() > 0))
     {
-      printf("kobuki_node: kobuki_hw: serialise failed. empty byte stream.");
+      //ROS_WARN_STREAM("kobuki_node: kobuki_inertia: serialise failed. empty byte stream.");
       return false;
     }
 
-    buildBytes(Header::Hardware, byteStream);
-    buildBytes(data.mainboard_version, byteStream);
+    buildBytes(Header::GpInput, byteStream);
+    buildBytes(data.gp_input, byteStream);
+    for (unsigned int i = 0; i < data.gp_adc.size(); ++i)
+    {
+      buildBytes(data.gp_adc[i], byteStream);
+    }
     return true;
   }
 
@@ -53,13 +59,17 @@ public:
   {
     if (!(byteStream.size() > 0))
     {
-      printf("kobuki_node: kobuki_hw: deserialise failed. empty byte stream.");
+      //ROS_WARN_STREAM("kobuki_node: kobuki_inertia: deserialise failed. empty byte stream.");
       return false;
     }
 
     unsigned char header_id;
     buildVariable(header_id, byteStream);
-    buildVariable(data.mainboard_version, byteStream);
+    buildVariable(data.gp_input, byteStream);
+    for (unsigned int i = 0; i < data.gp_adc.size(); ++i)
+    {
+      buildVariable(data.gp_adc[i], byteStream);
+    }
 
     //showMe();
     return constrain();
@@ -72,11 +82,11 @@ public:
 
   void showMe()
   {
-    //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, acc[2], acc[1], acc[0] );
+    //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, gp_adc[2], gp_adc[1], gp_adc[0] );
   }
 };
 
 } // namespace kobuki
 
-#endif /* KOBUKI_HW_DATA_HPP__ */
+#endif /* KOBUKI_GPIO_HPP__ */
 

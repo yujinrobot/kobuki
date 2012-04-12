@@ -266,10 +266,10 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("imu_data", 100);
   cliff_data_publisher = nh.advertise < kobuki_comms::Cliff > ("cliff_data", 100);
   current_data_publisher = nh.advertise < kobuki_comms::Current > ("current_data", 100);
-  hw_data_publisher = nh.advertise < kobuki_comms::HW > ("hw_data", 100);
-  fw_data_publisher = nh.advertise < kobuki_comms::FW > ("fw_data", 100);
+  hw_data_publisher = nh.advertise < kobuki_comms::Hardware > ("hardware_version", 100);
+  fw_data_publisher = nh.advertise < kobuki_comms::Firmware > ("firmware_version", 100);
   eeprom_data_publisher = nh.advertise < kobuki_comms::EEPROM > ("eeprom_data", 100);
-  gp_input_data_publisher = nh.advertise < kobuki_comms::GpInput > ("gp_input_data", 100);
+  gp_input_data_publisher = nh.advertise < kobuki_comms::GpInput > ("gp_inputs", 100);
   button_events_publisher = nh.advertise < kobuki_comms::Buttons > ("button_events", 100);
 }
 

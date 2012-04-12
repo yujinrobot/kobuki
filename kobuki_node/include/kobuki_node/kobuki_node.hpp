@@ -33,8 +33,9 @@
 #include <kobuki_comms/Buttons.h>
 #include <kobuki_comms/CoreSensors.h>
 #include <kobuki_comms/Current.h>
-#include <kobuki_comms/FW.h>
-#include <kobuki_comms/HW.h>
+#include <kobuki_comms/GpInput.h>
+#include <kobuki_comms/Firmware.h>
+#include <kobuki_comms/Hardware.h>
 #include <kobuki_comms/LedArray.h>
 #include <kobuki_driver/kobuki.hpp>
 
