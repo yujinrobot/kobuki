@@ -77,12 +77,22 @@ void KobukiNode::publishCoreSensorData()
       if (data.buttons != buttons_state)
       {
         kobuki_comms::Buttons buttons;
-        buttons.values.push_back((data.buttons & kobuki_comms::CoreSensors::F0)?
-            kobuki_comms::Buttons::PRESSED : kobuki_comms::Buttons::RELEASED);
-        buttons.values.push_back((data.buttons & kobuki_comms::CoreSensors::F1)?
-            kobuki_comms::Buttons::PRESSED : kobuki_comms::Buttons::RELEASED);
-        buttons.values.push_back((data.buttons & kobuki_comms::CoreSensors::F2)?
-            kobuki_comms::Buttons::PRESSED : kobuki_comms::Buttons::RELEASED);
+        // g++ complains if you use tertiary operators here - spitting the dummy because of uint8's? wierd.
+        if ( data.buttons & kobuki_comms::CoreSensors::F0) {
+          buttons.values.push_back(kobuki_comms::Buttons::PRESSED);
+        } else {
+          buttons.values.push_back(kobuki_comms::Buttons::RELEASED);
+        }
+        if ( data.buttons & kobuki_comms::CoreSensors::F1) {
+          buttons.values.push_back(kobuki_comms::Buttons::PRESSED);
+        } else {
+          buttons.values.push_back(kobuki_comms::Buttons::RELEASED);
+        }
+        if ( data.buttons & kobuki_comms::CoreSensors::F2) {
+          buttons.values.push_back(kobuki_comms::Buttons::PRESSED);
+        } else {
+          buttons.values.push_back(kobuki_comms::Buttons::RELEASED);
+        }
         button_events_publisher.publish(buttons);
 
         buttons_state = data.buttons;
