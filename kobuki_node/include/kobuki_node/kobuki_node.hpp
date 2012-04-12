@@ -28,6 +28,7 @@
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_broadcaster.h>
+#include <kobuki_comms/Buttons.h>
 #include <kobuki_comms/LedArray.h>
 #include <kobuki_comms/CoreSensors.h>
 #include <kobuki_comms/FW.h>
@@ -71,6 +72,8 @@ private:
 
   Kobuki kobuki;
 
+  uint8_t buttons_state;
+
   // Continuously published messages
   geometry_msgs::TransformStamped odom_trans;
   nav_msgs::Odometry odom;
@@ -94,7 +97,7 @@ private:
                  cliff_data_publisher, current_data_publisher, hw_data_publisher,
                  fw_data_publisher, time_data_publisher, eeprom_data_publisher,
                  gp_input_data_publisher, joint_state_publisher, odom_publisher,
-                 core_sensor_data_publisher;
+                 core_sensor_data_publisher, button_events_publisher;
   ros::Subscriber velocity_command_subscriber, led_command_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
 

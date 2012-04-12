@@ -41,7 +41,7 @@ bool CoreSensors::serialise(ecl::PushAndPop<unsigned char> & byteStream)
   buildBytes(data.right_encoder, byteStream);
   buildBytes(data.left_pwm, byteStream);
   buildBytes(data.right_pwm, byteStream);
-  buildBytes(data.remote, byteStream);
+  buildBytes(data.buttons, byteStream);
   buildBytes(data.charger, byteStream);
   buildBytes(data.battery, byteStream);
 
@@ -64,7 +64,7 @@ bool CoreSensors::deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   buildVariable(data.right_encoder, byteStream);
   buildVariable(data.left_pwm, byteStream);
   buildVariable(data.right_pwm, byteStream);
-  buildVariable(data.remote, byteStream);
+  buildVariable(data.buttons, byteStream);
   buildVariable(data.charger, byteStream);
   buildVariable(data.battery, byteStream);
 
