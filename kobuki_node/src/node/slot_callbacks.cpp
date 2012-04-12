@@ -147,7 +147,7 @@ void KobukiNode::publishCliffData()
   {
     if (cliff_data_publisher.getNumSubscribers() > 0)
     {
-      CliffData::Data data;
+      Cliff::Data data;
       kobuki.getCliffData(data);
       kobuki_comms::Cliff ros_data;
       ros_data.header.stamp = ros::Time::now();
@@ -165,7 +165,7 @@ void KobukiNode::publishCurrentData()
   {
     if (current_data_publisher.getNumSubscribers() > 0)
     {
-      CurrentData::Data data;
+      Current::Data data;
       kobuki.getCurrentData(data);
       kobuki_comms::Current ros_data;
       ros_data.header.stamp = ros::Time::now();
@@ -183,7 +183,7 @@ void KobukiNode::publishHWData()
   {
     if (hw_data_publisher.getNumSubscribers() > 0)
     {
-      HWData::Data data;
+      HW::Data data;
       kobuki.getHWData(data);
       kobuki_comms::HW ros_data;
       ros_data.header.stamp = ros::Time::now();
@@ -201,7 +201,7 @@ void KobukiNode::publishFWData()
   {
     if (fw_data_publisher.getNumSubscribers() > 0)
     {
-      FWData::Data data;
+      FW::Data data;
       kobuki.getFWData(data);
       // convert data format
       kobuki_comms::FW ros_data;
