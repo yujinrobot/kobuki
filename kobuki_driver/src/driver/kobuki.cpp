@@ -313,7 +313,7 @@ void Kobuki::getHWData(kobuki_comms::HW &data)
     data = kobuki_hw.data;
 }
 
-void Kobuki::getFWData(kobuki_comms::FW &data)
+void Kobuki::getFWData(FWData::Data &data)
 {
   if (protocol_version == "2.0")
     data = kobuki_fw.data;

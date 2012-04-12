@@ -33,7 +33,7 @@
 #include "current.hpp"
 #include "time.hpp"
 #include "hw.hpp"
-#include "fw.hpp"
+#include "modules/fw.hpp"
 #include "eeprom.hpp"
 #include "gp_input.hpp"
 #include "command.hpp"
@@ -121,7 +121,7 @@ public:
   void getCliffData(kobuki_comms::Cliff&);
   void getCurrentData(kobuki_comms::Current&);
   void getHWData(kobuki_comms::HW&);
-  void getFWData(kobuki_comms::FW&);
+  void getFWData(FWData::Data&);
   void getTimeData(kobuki_comms::Time&);
   void getEEPROMData(kobuki_comms::EEPROM&);
   void getGpInputData(kobuki_comms::GpInput&);

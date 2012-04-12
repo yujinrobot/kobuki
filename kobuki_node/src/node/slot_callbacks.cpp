@@ -13,6 +13,7 @@
 #include "kobuki_node/kobuki_node.hpp"
 #include <kobuki_driver/led_array.hpp>
 #include <kobuki_driver/modules/core_sensors.hpp>
+#include <kobuki_driver/modules/fw.hpp>
 
 /*****************************************************************************
  ** Namespaces
@@ -166,10 +167,14 @@ void KobukiNode::publishFWData()
   {
     if (fw_data_publisher.getNumSubscribers() > 0)
     {
-      kobuki_comms::FW data;
+      FWData::Data data;
       kobuki.getFWData(data);
-      data.header.stamp = ros::Time::now();
-      fw_data_publisher.publish(data);
+      // convert data format
+      kobuki_comms::FW ros_data;
+      ros_data.header.stamp = ros::Time::now();
+      ros_data.header_id = data.header_id;
+      ros_data.fw_version = data.fw_version;
+      fw_data_publisher.publish(ros_data);
       //std::cout << __func__ << std::endl;
     }
   }

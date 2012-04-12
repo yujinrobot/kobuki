@@ -2,8 +2,8 @@
 #define KOBUKI_FW_DATA_HPP__
 
 #include <ecl/containers.hpp>
-#include "packet_handler/payload_base.hpp"
-#include <kobuki_comms/FW.h>
+#include "../packet_handler/payload_base.hpp"
+//#include <kobuki_comms/FW.h>
 
 namespace kobuki
 {
@@ -12,7 +12,11 @@ class FWData : public packet_handler::payloadBase
 {
 public:
   // container
-  kobuki_comms::FW data;
+  //kobuki_comms::FW data;
+  struct Data {
+    uint8_t header_id;
+    uint16_t fw_version;
+  } data;
 
   // methods
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)

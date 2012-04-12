@@ -30,6 +30,7 @@
 #include <tf/transform_broadcaster.h>
 #include <kobuki_comms/LedArray.h>
 #include <kobuki_comms/CoreSensors.h>
+#include <kobuki_comms/FW.h>
 #include <ecl/sigslots.hpp>
 #include <kobuki_driver/kobuki.hpp>
 
