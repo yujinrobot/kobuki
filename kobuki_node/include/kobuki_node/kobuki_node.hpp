@@ -28,10 +28,13 @@
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_broadcaster.h>
-#include <kobuki_comms/LedArray.h>
-#include <kobuki_comms/CoreSensors.h>
-#include <kobuki_comms/FW.h>
 #include <ecl/sigslots.hpp>
+#include <kobuki_comms/Cliff.h>
+#include <kobuki_comms/CoreSensors.h>
+#include <kobuki_comms/Current.h>
+#include <kobuki_comms/FW.h>
+#include <kobuki_comms/HW.h>
+#include <kobuki_comms/LedArray.h>
 #include <kobuki_driver/kobuki.hpp>
 
 /*****************************************************************************

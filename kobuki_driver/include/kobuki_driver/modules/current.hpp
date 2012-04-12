@@ -1,9 +1,9 @@
 #ifndef KOBUKI_CURRENT_DATA_HPP__
 #define KOBUKI_CURRENT_DATA_HPP__
 
+#include <vector>
 #include <ecl/containers.hpp>
-#include "packet_handler/payload_base.hpp"
-#include <kobuki_comms/Current.h>
+#include "../packet_handler/payload_base.hpp"
 
 namespace kobuki
 {
@@ -12,11 +12,14 @@ class CurrentData : public packet_handler::payloadBase
 {
 public:
   // container
-  kobuki_comms::Current data;
+  struct Data {
+    Data() : current(2) {}
+    uint8_t header_id;
+    std::vector<uint8_t> current;
+  } data;
 
   CurrentData()
   {
-    data.current.resize(2);
   }
 
   // methods
@@ -24,7 +27,7 @@ public:
   {
     if (!(byteStream.size() > 0))
     {
-      ROS_WARN_STREAM("kobuki_node: kobuki_current: serialise failed. empty byte stream.");
+      printf("kobuki_node: kobuki_current: serialise failed. empty byte stream.");
       return false;
     }
 
@@ -42,7 +45,7 @@ public:
   {
     if (!(byteStream.size() > 0))
     {
-      ROS_WARN_STREAM("kobuki_node: kobuki_current: deserialise failed. empty byte stream.");
+      printf("kobuki_node: kobuki_current: deserialise failed. empty byte stream.");
       return false;
     }
 

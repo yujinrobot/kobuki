@@ -11,9 +11,6 @@
 *****************************************************************************/
 
 #include "kobuki_node/kobuki_node.hpp"
-#include <kobuki_driver/led_array.hpp>
-#include <kobuki_driver/modules/core_sensors.hpp>
-#include <kobuki_driver/modules/fw.hpp>
 
 /*****************************************************************************
  ** Namespaces
@@ -122,10 +119,13 @@ void KobukiNode::publishCliffData()
   {
     if (cliff_data_publisher.getNumSubscribers() > 0)
     {
-      kobuki_comms::Cliff data;
+      CliffData::Data data;
       kobuki.getCliffData(data);
-      data.header.stamp = ros::Time::now();
-      cliff_data_publisher.publish(data);
+      kobuki_comms::Cliff ros_data;
+      ros_data.header.stamp = ros::Time::now();
+      ros_data.header_id = data.header_id;
+      ros_data.bottom = data.bottom;
+      cliff_data_publisher.publish(ros_data);
       //std::cout << __func__ << std::endl;
     }
   }
@@ -137,10 +137,13 @@ void KobukiNode::publishCurrentData()
   {
     if (current_data_publisher.getNumSubscribers() > 0)
     {
-      kobuki_comms::Current data;
+      CurrentData::Data data;
       kobuki.getCurrentData(data);
-      data.header.stamp = ros::Time::now();
-      current_data_publisher.publish(data);
+      kobuki_comms::Current ros_data;
+      ros_data.header.stamp = ros::Time::now();
+      ros_data.header_id = data.header_id;
+      ros_data.current = data.current;
+      current_data_publisher.publish(ros_data);
       //std::cout << __func__ << std::endl;
     }
   }
@@ -152,10 +155,13 @@ void KobukiNode::publishHWData()
   {
     if (hw_data_publisher.getNumSubscribers() > 0)
     {
-      kobuki_comms::HW data;
+      HWData::Data data;
       kobuki.getHWData(data);
-      data.header.stamp = ros::Time::now();
-      hw_data_publisher.publish(data);
+      kobuki_comms::HW ros_data;
+      ros_data.header.stamp = ros::Time::now();
+      ros_data.header_id = data.header_id;
+      ros_data.mainboard_version = data.mainboard_version;
+      hw_data_publisher.publish(ros_data);
       //std::cout << __func__ << std::endl;
     }
   }

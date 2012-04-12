@@ -11,13 +11,10 @@
  *****************************************************************************/
 
 #include <float.h>
-
 #include <tf/tf.h>
-
 #include <pluginlib/class_list_macros.h>
 #include <ecl/streams/string_stream.hpp>
 #include "kobuki_node/kobuki_node.hpp"
-
 
 /*****************************************************************************
  ** Namespaces

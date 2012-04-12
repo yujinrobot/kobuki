@@ -278,7 +278,7 @@ void Kobuki::getIRData(kobuki_comms::IR &data)
     data = kobuki_ir.data;
 }
 
-void Kobuki::getDockIRData(kobuki_comms::DockIR &data)
+void Kobuki::getDockIRData(DockIRData::Data &data)
 {
   if (protocol_version == "2.0")
     data = kobuki_dock_ir.data;
@@ -295,19 +295,19 @@ ecl::Angle<double> Kobuki::getHeading() const {
   return heading;
 }
 
-void Kobuki::getCliffData(kobuki_comms::Cliff &data)
+void Kobuki::getCliffData(CliffData::Data &data)
 {
   if (protocol_version == "2.0")
     data = kobuki_cliff.data;
 }
 
-void Kobuki::getCurrentData(kobuki_comms::Current &data)
+void Kobuki::getCurrentData(CurrentData::Data &data)
 {
   if (protocol_version == "2.0")
     data = kobuki_current.data;
 }
 
-void Kobuki::getHWData(kobuki_comms::HW &data)
+void Kobuki::getHWData(HWData::Data &data)
 {
   if (protocol_version == "2.0")
     data = kobuki_hw.data;

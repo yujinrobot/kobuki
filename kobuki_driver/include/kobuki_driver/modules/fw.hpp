@@ -3,7 +3,7 @@
 
 #include <ecl/containers.hpp>
 #include "../packet_handler/payload_base.hpp"
-//#include <kobuki_comms/FW.h>
+
 
 namespace kobuki
 {
@@ -12,7 +12,6 @@ class FWData : public packet_handler::payloadBase
 {
 public:
   // container
-  //kobuki_comms::FW data;
   struct Data {
     uint8_t header_id;
     uint16_t fw_version;
@@ -23,7 +22,7 @@ public:
   {
     if (!(byteStream.size() > 0))
     {
-      ROS_WARN_STREAM("kobuki_node: kobuki_fw: serialise failed. empty byte stream.");
+      printf("kobuki_node: kobuki_fw: serialise failed. empty byte stream.");
       return false;
     }
 
@@ -36,7 +35,7 @@ public:
   {
     if (!(byteStream.size() > 0))
     {
-      ROS_WARN_STREAM("kobuki_node: kobuki_fw: deserialise failed. empty byte stream.");
+      printf("kobuki_node: kobuki_fw: deserialise failed. empty byte stream.");
       return false;
     }
 

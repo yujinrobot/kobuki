@@ -2,8 +2,7 @@
 #define KOBUKI_DOCK_IR_DATA_HPP__
 
 #include <ecl/containers.hpp>
-#include "packet_handler/payload_base.hpp"
-#include <kobuki_comms/DockIR.h>
+#include "../packet_handler/payload_base.hpp"
 
 namespace kobuki
 {
@@ -12,11 +11,14 @@ class DockIRData : public packet_handler::payloadBase
 {
 public:
   // container
-  kobuki_comms::DockIR data;
+  struct Data {
+    Data() : docking(3) {}
+    uint8_t header_id;
+    std::vector<uint8_t> docking;
+  } data;
 
   DockIRData()
   {
-    data.docking.resize(3);
   }
 
   // methods
@@ -24,7 +26,7 @@ public:
   {
     if (!(byteStream.size() > 0))
     {
-      ROS_WARN_STREAM("kobuki_node: kobuki_dock_ir: serialise failed. empty byte stream.");
+      printf("kobuki_node: kobuki_dock_ir: serialise failed. empty byte stream.");
       return false;
     }
 
@@ -39,7 +41,7 @@ public:
   {
     if (!(byteStream.size() > 0))
     {
-      ROS_WARN_STREAM("kobuki_node: kobuki_dock_ir: deserialise failed. empty byte stream.");
+      printf("kobuki_node: kobuki_dock_ir: deserialise failed. empty byte stream.");
       return false;
     }
 

@@ -1,9 +1,10 @@
 #ifndef KOBUKI_CLIFF_DATA_HPP__
 #define KOBUKI_CLIFF_DATA_HPP__
 
+#include <vector>
 #include <ecl/containers.hpp>
-#include "packet_handler/payload_base.hpp"
-#include <kobuki_comms/Cliff.h>
+#include "../packet_handler/payload_base.hpp"
+
 
 namespace kobuki
 {
@@ -12,11 +13,14 @@ class CliffData : public packet_handler::payloadBase
 {
 public:
   // container
-  kobuki_comms::Cliff data;
+  struct Data {
+    Data() : bottom(3) {}
+    uint8_t header_id;
+    std::vector<uint16_t> bottom;
+  } data;
 
   CliffData()
   {
-    data.bottom.resize(3);
   }
 
   // methods
@@ -24,7 +28,7 @@ public:
   {
     if (!(byteStream.size() > 0))
     {
-      ROS_WARN_STREAM("kobuki_node: kobuki_cliff: serialise failed. empty byte stream.");
+      printf("kobuki_node: kobuki_cliff: serialise failed. empty byte stream.");
       return false;
     }
 
@@ -39,7 +43,7 @@ public:
   {
     if (!(byteStream.size() > 0))
     {
-      ROS_WARN_STREAM("kobuki_node: kobuki_cliff: deserialise failed. empty byte stream.");
+      printf("kobuki_node: kobuki_cliff: deserialise failed. empty byte stream.");
       return false;
     }
 

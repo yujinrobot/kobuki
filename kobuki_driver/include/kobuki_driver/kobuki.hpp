@@ -20,26 +20,22 @@
 #include <ecl/devices.hpp>
 #include <ecl/time.hpp>
 #include <ecl/mobile_robot.hpp>
-
 #include <ecl/exceptions/standard_exception.hpp>
 #include "packet_handler/packet_finder.hpp"
 #include "parameters.hpp"
-
+#include "modules/cliff.hpp"
 #include "modules/core_sensors.hpp"
-#include "modules/inertia.hpp"
-#include "ir.hpp"
-#include "dock_ir.hpp"
-#include "cliff.hpp"
-#include "current.hpp"
-#include "time.hpp"
-#include "hw.hpp"
+#include "modules/current.hpp"
 #include "modules/fw.hpp"
+#include "modules/inertia.hpp"
+#include "modules/dock_ir.hpp"
+#include "modules/hw.hpp"
+#include "ir.hpp"
+#include "time.hpp"
 #include "eeprom.hpp"
 #include "gp_input.hpp"
 #include "command.hpp"
-
 #include "simulation.hpp"
-
 #include "led_array.hpp"
 
 /*****************************************************************************
@@ -117,10 +113,10 @@ public:
 
   void getCoreSensorData(CoreSensors::Data&);
   void getIRData(kobuki_comms::IR&);
-  void getDockIRData(kobuki_comms::DockIR&);
-  void getCliffData(kobuki_comms::Cliff&);
-  void getCurrentData(kobuki_comms::Current&);
-  void getHWData(kobuki_comms::HW&);
+  void getDockIRData(DockIRData::Data&);
+  void getCliffData(CliffData::Data&);
+  void getCurrentData(CurrentData::Data&);
+  void getHWData(HWData::Data&);
   void getFWData(FWData::Data&);
   void getTimeData(kobuki_comms::Time&);
   void getEEPROMData(kobuki_comms::EEPROM&);

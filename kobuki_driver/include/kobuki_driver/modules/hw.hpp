@@ -2,8 +2,7 @@
 #define KOBUKI_HW_DATA_HPP__
 
 #include <ecl/containers.hpp>
-#include "packet_handler/payload_base.hpp"
-#include <kobuki_comms/HW.h>
+#include "../packet_handler/payload_base.hpp"
 
 namespace kobuki
 {
@@ -12,14 +11,17 @@ class HWData : public packet_handler::payloadBase
 {
 public:
   // container
-  kobuki_comms::HW data;
+  struct Data {
+    uint8_t header_id;
+    uint16_t mainboard_version;
+  } data;
 
   // methods
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
     if (!(byteStream.size() > 0))
     {
-      ROS_WARN_STREAM("kobuki_node: kobuki_hw: serialise failed. empty byte stream.");
+      printf("kobuki_node: kobuki_hw: serialise failed. empty byte stream.");
       return false;
     }
 
@@ -32,7 +34,7 @@ public:
   {
     if (!(byteStream.size() > 0))
     {
-      ROS_WARN_STREAM("kobuki_node: kobuki_hw: deserialise failed. empty byte stream.");
+      printf("kobuki_node: kobuki_hw: deserialise failed. empty byte stream.");
       return false;
     }
 
