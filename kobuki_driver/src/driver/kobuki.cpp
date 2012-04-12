@@ -72,7 +72,6 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_core_sensors.connect(sigslots_namespace + std::string("/core_sensors"));
   //sig_serial_timeout.connect(sigslots_namespace+std::string("/serial_timeout"));
 
-  sig_ir.connect(sigslots_namespace + std::string("/ir"));
   sig_dock_ir.connect(sigslots_namespace + std::string("/dock_ir"));
   sig_inertia.connect(sigslots_namespace + std::string("/inertia"));
   sig_cliff.connect(sigslots_namespace + std::string("/cliff"));
@@ -228,10 +227,6 @@ void Kobuki::runnable()
                 sig_gp_input.emit();
                 break;
               // the rest are services
-              case Header::InfraRed:
-                kobuki_ir.deserialise(data_buffer);
-                sig_ir.emit();
-                break;
               case Header::Hardware:
                 hardware.deserialise(data_buffer);
                 sig_hw.emit();
@@ -266,12 +261,6 @@ void Kobuki::getCoreSensorData(CoreSensors::Data &sensor_data)
   if (protocol_version == "2.0") {
     sensor_data = core_sensors.data;
   }
-}
-
-void Kobuki::getIRData(kobuki_comms::IR &data)
-{
-  if (protocol_version == "2.0")
-    data = kobuki_ir.data;
 }
 
 void Kobuki::getDockIRData(DockIR::Data &data)

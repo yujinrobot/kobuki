@@ -96,7 +96,7 @@ private:
    **********************/
   ros::ServiceServer reset_odometry_server;
 
-  ros::Publisher ir_data_publisher, imu_data_publisher,
+  ros::Publisher imu_data_publisher,
                  cliff_data_publisher, current_data_publisher, hw_data_publisher,
                  fw_data_publisher, eeprom_data_publisher,
                  gp_input_data_publisher, joint_state_publisher, odom_publisher,
@@ -104,7 +104,7 @@ private:
   ros::Subscriber velocity_command_subscriber, led_command_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
 
-  ecl::Slot<> slot_wheel_state, slot_core_sensors, slot_ir,
+  ecl::Slot<> slot_wheel_state, slot_core_sensors,
               slot_inertia, slot_cliff, slot_current, slot_hw, slot_fw,
               slot_eeprom, slot_gp_input;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
@@ -116,7 +116,6 @@ private:
    **********************/
   void publishWheelState();
   void publishCoreSensorData();
-  void publishIRData();
   void publishInertiaData();
   void publishCliffData();
   void publishCurrentData();

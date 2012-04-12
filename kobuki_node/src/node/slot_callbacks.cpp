@@ -100,21 +100,6 @@ void KobukiNode::publishCoreSensorData()
   }
 }
 
-void KobukiNode::publishIRData()
-{
-  if (ros::ok())
-  {
-    if (ir_data_publisher.getNumSubscribers() > 0)
-    {
-      kobuki_comms::IR data;
-      kobuki.getIRData(data);
-      data.header.stamp = ros::Time::now();
-      ir_data_publisher.publish(data);
-      //std::cout << __func__ << std::endl;
-    }
-  }
-}
-
 void KobukiNode::publishInertiaData()
 {
   if (ros::ok())

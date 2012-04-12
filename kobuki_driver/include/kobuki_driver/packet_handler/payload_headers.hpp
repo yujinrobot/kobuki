@@ -27,7 +27,6 @@ class Header {
 public:
   // Streamed payloads
   static const unsigned char CoreSensors = 1;
-  static const unsigned char InfraRed = 2;
   static const unsigned char DockInfraRed = 3;
   static const unsigned char Inertia = 4;
   static const unsigned char Cliff = 5;

@@ -30,7 +30,6 @@
 #include "modules/inertia.hpp"
 #include "modules/dock_ir.hpp"
 #include "modules/hw.hpp"
-#include "ir.hpp"
 #include "eeprom.hpp"
 #include "gp_input.hpp"
 #include "command.hpp"
@@ -111,7 +110,6 @@ public:
   ecl::Angle<double> getHeading() const;
 
   void getCoreSensorData(CoreSensors::Data&);
-  void getIRData(kobuki_comms::IR&);
   void getDockIRData(DockIR::Data&);
   void getCliffData(Cliff::Data&);
   void getCurrentData(Current::Data&);
@@ -180,7 +178,6 @@ private:
   HW hardware;
   FW firmware;
 
-  IRData kobuki_ir;
   EEPROMData kobuki_eeprom;
   GpInputData kobuki_gp_input;
   Simulation simulation;
@@ -191,7 +188,7 @@ private:
   PacketFinder::BufferType data_buffer;
   ecl::PushAndPop<unsigned char> command_buffer;
   ecl::Signal<> sig_wheel_state, sig_core_sensors;
-  ecl::Signal<> sig_ir, sig_dock_ir, sig_inertia, sig_cliff, sig_current, sig_magnet, sig_hw, sig_fw,
+  ecl::Signal<> sig_dock_ir, sig_inertia, sig_cliff, sig_current, sig_magnet, sig_hw, sig_fw,
                 sig_time, sig_eeprom, sig_gp_input;
 
   ecl::Signal<const std::string&> sig_debug, sig_info, sig_warn, sig_error;
