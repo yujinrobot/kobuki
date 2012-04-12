@@ -40,7 +40,7 @@ public:
     uint16_t right_encoder;
     char left_pwm;
     char right_pwm;
-    unsigned char remote;
+    unsigned char buttons;
     unsigned char charger;
     unsigned char battery;
   } data;

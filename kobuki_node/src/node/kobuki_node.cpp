@@ -34,6 +34,7 @@ namespace kobuki
  */
 KobukiNode::KobukiNode(std::string& node_name) :
     name(node_name),
+    buttons_state(0),
     wheel_left_name("wheel_left"),
     wheel_right_name("wheel_right"),
     odom_frame("odom"),
@@ -275,6 +276,7 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   time_data_publisher = nh.advertise < kobuki_comms::Time > ("time_data", 100);
   eeprom_data_publisher = nh.advertise < kobuki_comms::EEPROM > ("eeprom_data", 100);
   gp_input_data_publisher = nh.advertise < kobuki_comms::GpInput > ("gp_input_data", 100);
+  button_events_publisher = nh.advertise < kobuki_comms::Buttons > ("button_events", 100);
 }
 
 /**

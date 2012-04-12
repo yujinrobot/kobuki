@@ -49,10 +49,11 @@ void KobukiNode::publishCoreSensorData()
 {
   if (ros::ok())
   {
+    CoreSensors::Data data;
+    kobuki.getCoreSensorData(data);
+
     if (core_sensor_data_publisher.getNumSubscribers() > 0)
     {
-      CoreSensors::Data data;
-      kobuki.getCoreSensorData(data);
       // convert data format
       kobuki_comms::CoreSensors ros_data;
       ros_data.header0 = data.header_id;
@@ -65,10 +66,27 @@ void KobukiNode::publishCoreSensorData()
       ros_data.right_encoder = data.right_encoder;
       ros_data.left_pwm = data.left_pwm;
       ros_data.right_pwm = data.right_pwm;
-      ros_data.remote = data.remote;
+      ros_data.buttons = data.buttons;
       ros_data.charger = data.charger;
       ros_data.battery = data.battery;
       core_sensor_data_publisher.publish(ros_data);
+    }
+
+    if (button_events_publisher.getNumSubscribers() > 0)
+    {
+      if (data.buttons != buttons_state)
+      {
+        kobuki_comms::Buttons buttons;
+        buttons.values.push_back((data.buttons & kobuki_comms::CoreSensors::F0)?
+            kobuki_comms::Buttons::PRESSED : kobuki_comms::Buttons::RELEASED);
+        buttons.values.push_back((data.buttons & kobuki_comms::CoreSensors::F1)?
+            kobuki_comms::Buttons::PRESSED : kobuki_comms::Buttons::RELEASED);
+        buttons.values.push_back((data.buttons & kobuki_comms::CoreSensors::F2)?
+            kobuki_comms::Buttons::PRESSED : kobuki_comms::Buttons::RELEASED);
+        button_events_publisher.publish(buttons);
+
+        buttons_state = data.buttons;
+      }
     }
   }
 }
