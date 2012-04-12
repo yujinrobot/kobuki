@@ -190,21 +190,6 @@ void KobukiNode::publishFWData()
   }
 }
 
-void KobukiNode::publishEEPROMData()
-{
-  if (ros::ok())
-  {
-    if (eeprom_data_publisher.getNumSubscribers() > 0)
-    {
-      kobuki_comms::EEPROM data;
-      kobuki.getEEPROMData(data);
-      data.header.stamp = ros::Time::now();
-      eeprom_data_publisher.publish(data);
-      //std::cout << __func__ << std::endl;
-    }
-  }
-}
-
 void KobukiNode::publishGpInputData()
 {
   if (ros::ok())
