@@ -23,10 +23,9 @@
 #include <ecl/mobile_robot.hpp>
 
 #include <ecl/exceptions/standard_exception.hpp>
-#include "packet_finder.hpp"
+#include "packet_handler/packet_finder.hpp"
 #include "parameters.hpp"
 
-#include <kobuki_comms/Header.h>
 #include "default.hpp"
 #include "ir.hpp"
 #include "dock_ir.hpp"

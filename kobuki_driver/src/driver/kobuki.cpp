@@ -16,6 +16,7 @@
 #include <ecl/geometry/angle.hpp>
 #include <ecl/time/timestamp.hpp>
 #include "../../include/kobuki_driver/kobuki.hpp"
+#include "../../include/kobuki_driver/packet_handler/payload_headers.hpp"
 
 /*****************************************************************************
  ** Namespaces
@@ -192,7 +193,6 @@ void Kobuki::runnable()
         data_buffer.pop_front();
         data_buffer.pop_front();
 
-        std::cout << "Packet retrieved" << std::endl;
         if (protocol_version == "2.0")
         {
           while (data_buffer.size() > 1/*size of etx*/)
@@ -202,50 +202,49 @@ void Kobuki::runnable()
             switch (data_buffer[0])
             {
               // these come with the streamed feedback
-              case kobuki_comms::Header::header_default:
+              case Header::CoreSensors:
                 kobuki_default.deserialise(data_buffer);
                 sig_sensor_data.emit();
                 sig_wheel_state.emit();
                 break;
-              case kobuki_comms::Header::header_dock_ir:
+              case Header::DockInfraRed:
                 kobuki_dock_ir.deserialise(data_buffer);
                 sig_dock_ir.emit();
                 break;
-              case kobuki_comms::Header::header_inertia:
+              case Header::Inertia:
                 kobuki_inertia.deserialise(data_buffer);
                 sig_inertia.emit();
                 break;
-              case kobuki_comms::Header::header_cliff:
+              case Header::Cliff:
                 kobuki_cliff.deserialise(data_buffer);
                 sig_cliff.emit();
                 break;
-              case kobuki_comms::Header::header_current:
+              case Header::Current:
                 kobuki_current.deserialise(data_buffer);
                 sig_current.emit();
                 break;
-              case kobuki_comms::Header::header_gp_input:
+              case Header::Gpio:
                 kobuki_gp_input.deserialise(data_buffer);
-                std::cout << "  Gpio" << std::endl;
                 sig_gp_input.emit();
                 break;
               // the rest are services
-              case kobuki_comms::Header::header_ir:
+              case Header::InfraRed:
                 kobuki_ir.deserialise(data_buffer);
                 sig_ir.emit();
                 break;
-              case kobuki_comms::Header::header_time:
+              case Header::Time:
                 kobuki_time.deserialise(data_buffer);
                 sig_time.emit();
                 break;
-              case kobuki_comms::Header::header_hw:
+              case Header::Hardware:
                 kobuki_hw.deserialise(data_buffer);
                 sig_hw.emit();
                 break;
-              case kobuki_comms::Header::header_fw:
+              case Header::Firmware:
                 kobuki_fw.deserialise(data_buffer);
                 sig_fw.emit();
                 break;
-              case kobuki_comms::Header::header_eeprom:
+              case Header::Eeprom:
                 kobuki_eeprom.deserialise(data_buffer);
                 sig_eeprom.emit();
                 break;
