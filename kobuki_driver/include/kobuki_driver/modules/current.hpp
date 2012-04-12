@@ -8,10 +8,14 @@
 namespace kobuki
 {
 
+/**
+ * This comes back in the streamed feedback. It has two values
+ * (left and right) indicating the supplied current which can be useful for
+ * detecting when the robot is blocked.
+ */
 class CurrentData : public packet_handler::payloadBase
 {
 public:
-  // container
   struct Data {
     Data() : current(2) {}
     uint8_t header_id;

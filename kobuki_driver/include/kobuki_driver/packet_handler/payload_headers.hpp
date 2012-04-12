@@ -36,7 +36,6 @@ public:
   // Service Payloads
   static const unsigned char Hardware = 10;
   static const unsigned char Firmware = 11;
-  static const unsigned char Time = 12;
   static const unsigned char Eeprom = 15;
   static const unsigned char Gpio = 16;
 

@@ -31,7 +31,6 @@
 #include "modules/dock_ir.hpp"
 #include "modules/hw.hpp"
 #include "ir.hpp"
-#include "time.hpp"
 #include "eeprom.hpp"
 #include "gp_input.hpp"
 #include "command.hpp"
@@ -118,7 +117,6 @@ public:
   void getCurrentData(CurrentData::Data&);
   void getHWData(HWData::Data&);
   void getFWData(FWData::Data&);
-  void getTimeData(kobuki_comms::Time&);
   void getEEPROMData(kobuki_comms::EEPROM&);
   void getGpInputData(kobuki_comms::GpInput&);
 
@@ -178,7 +176,6 @@ private:
   DockIRData kobuki_dock_ir;
   CliffData kobuki_cliff;
   CurrentData kobuki_current;
-  TimeData kobuki_time;
   HWData kobuki_hw;
   FWData kobuki_fw;
   EEPROMData kobuki_eeprom;

@@ -232,10 +232,6 @@ void Kobuki::runnable()
                 kobuki_ir.deserialise(data_buffer);
                 sig_ir.emit();
                 break;
-              case Header::Time:
-                kobuki_time.deserialise(data_buffer);
-                sig_time.emit();
-                break;
               case Header::Hardware:
                 kobuki_hw.deserialise(data_buffer);
                 sig_hw.emit();
@@ -317,12 +313,6 @@ void Kobuki::getFWData(FWData::Data &data)
 {
   if (protocol_version == "2.0")
     data = kobuki_fw.data;
-}
-
-void Kobuki::getTimeData(kobuki_comms::Time &data)
-{
-  if (protocol_version == "2.0")
-    data = kobuki_time.data;
 }
 
 void Kobuki::getEEPROMData(kobuki_comms::EEPROM &data)

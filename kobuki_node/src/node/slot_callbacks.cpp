@@ -204,21 +204,6 @@ void KobukiNode::publishFWData()
   }
 }
 
-void KobukiNode::publishTimeData()
-{
-  if (ros::ok())
-  {
-    if (time_data_publisher.getNumSubscribers() > 0)
-    {
-      kobuki_comms::Time data;
-      kobuki.getTimeData(data);
-      data.header.stamp = ros::Time::now();
-      time_data_publisher.publish(data);
-      //std::cout << __func__ << std::endl;
-    }
-  }
-}
-
 void KobukiNode::publishEEPROMData()
 {
   if (ros::ok())

@@ -98,14 +98,14 @@ private:
 
   ros::Publisher ir_data_publisher, imu_data_publisher,
                  cliff_data_publisher, current_data_publisher, hw_data_publisher,
-                 fw_data_publisher, time_data_publisher, eeprom_data_publisher,
+                 fw_data_publisher, eeprom_data_publisher,
                  gp_input_data_publisher, joint_state_publisher, odom_publisher,
                  core_sensor_data_publisher, button_events_publisher;
   ros::Subscriber velocity_command_subscriber, led_command_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
 
   ecl::Slot<> slot_wheel_state, slot_core_sensors, slot_ir,
-              slot_inertia, slot_cliff, slot_current, slot_hw, slot_fw, slot_time,
+              slot_inertia, slot_cliff, slot_current, slot_hw, slot_fw,
               slot_eeprom, slot_gp_input;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
   tf::TransformBroadcaster odom_broadcaster;
@@ -122,7 +122,6 @@ private:
   void publishCurrentData();
   void publishHWData();
   void publishFWData();
-  void publishTimeData();
   void publishEEPROMData();
   void publishGpInputData();
   void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
@@ -131,22 +130,10 @@ private:
   /*********************
    ** Ros Logging
    **********************/
-  void rosDebug(const std::string &msg)
-  {
-    ROS_DEBUG_STREAM("Kobuki : " << msg);
-  }
-  void rosInfo(const std::string &msg)
-  {
-    ROS_INFO_STREAM("Kobuki : " << msg);
-  }
-  void rosWarn(const std::string &msg)
-  {
-    ROS_WARN_STREAM("Kobuki : " << msg);
-  }
-  void rosError(const std::string &msg)
-  {
-    ROS_ERROR_STREAM("Kobuki : " << msg);
-  }
+  void rosDebug(const std::string &msg) { ROS_DEBUG_STREAM("Kobuki : " << msg); }
+  void rosInfo(const std::string &msg) { ROS_INFO_STREAM("Kobuki : " << msg); }
+  void rosWarn(const std::string &msg) { ROS_WARN_STREAM("Kobuki : " << msg); }
+  void rosError(const std::string &msg) { ROS_ERROR_STREAM("Kobuki : " << msg); }
 
   void enable(const std_msgs::StringConstPtr msg)
   {
