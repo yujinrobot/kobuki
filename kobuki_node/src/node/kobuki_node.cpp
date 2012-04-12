@@ -43,9 +43,8 @@ KobukiNode::KobukiNode(std::string& node_name) :
     base_frame("base_footprint"),
     publish_tf(false),
     slot_wheel_state(&KobukiNode::publishWheelState, *this),
-    slot_sensor_data(&KobukiNode::publishSensorData,*this),
+    slot_core_sensors(&KobukiNode::publishCoreSensorData,*this),
     slot_ir(&KobukiNode::publishIRData, *this),
-    slot_dock_ir(&KobukiNode::publishDockIRData, *this),
     slot_inertia(&KobukiNode::publishInertiaData, *this),
     slot_cliff(&KobukiNode::publishCliffData, *this),
     slot_current(&KobukiNode::publishCurrentData, *this),
@@ -95,9 +94,8 @@ bool KobukiNode::init(ros::NodeHandle& nh)
    ** Sigslots
    **********************/
   slot_wheel_state.connect(name + std::string("/joint_state"));
-  slot_sensor_data.connect(name + std::string("/sensor_data"));
+  slot_core_sensors.connect(name + std::string("/core_sensor_data"));
   slot_ir.connect(name + std::string("/ir"));
-  slot_dock_ir.connect(name + std::string("/dock_ir"));
   slot_inertia.connect(name + std::string("/inertia"));
   slot_cliff.connect(name + std::string("/cliff"));
   slot_current.connect(name + std::string("/current"));
@@ -270,9 +268,8 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   /*********************
   ** Kobuki Esoterics
   **********************/
-  sensor_data_publisher = nh.advertise < kobuki_comms::SensorData > ("sensor_data", 100);
+  core_sensor_data_publisher = nh.advertise < kobuki_comms::CoreSensors > ("core_sensors", 100);
   ir_data_publisher = nh.advertise < kobuki_comms::IR > ("ir_data", 100);
-  dock_ir_data_publisher = nh.advertise < kobuki_comms::DockIR > ("dock_ir_data", 100);
   imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("imu_data", 100);
   cliff_data_publisher = nh.advertise < kobuki_comms::Cliff > ("cliff_data", 100);
   current_data_publisher = nh.advertise < kobuki_comms::Current > ("current_data", 100);

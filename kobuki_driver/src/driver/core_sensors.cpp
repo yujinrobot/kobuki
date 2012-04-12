@@ -1,5 +1,5 @@
 /**
- * @file /kobuki_driver/src/driver/default.cpp
+ * @file /kobuki_driver/src/driver/core_sensors.cpp
  *
  * @brief File comment
  *
@@ -12,7 +12,7 @@
 ** Includes
 *****************************************************************************/
 
-#include "../../include/kobuki_driver/default.hpp"
+#include "../../include/kobuki_driver/core_sensors.hpp"
 
 /*****************************************************************************
 ** Namespaces

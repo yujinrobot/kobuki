@@ -16,7 +16,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include <kobuki_comms/SensorData.h>
+#include <kobuki_comms/CoreSensors.h>
 #include <ecl/threads.hpp>
 #include <ecl/devices.hpp>
 #include <ecl/time.hpp>
@@ -26,10 +26,10 @@
 #include "packet_handler/packet_finder.hpp"
 #include "parameters.hpp"
 
-#include "default.hpp"
+#include "core_sensors.hpp"
 #include "ir.hpp"
 #include "dock_ir.hpp"
-#include "inertia.hpp"
+#include "modules/inertia.hpp"
 #include "cliff.hpp"
 #include "current.hpp"
 #include "time.hpp"
@@ -116,7 +116,7 @@ public:
 
   ecl::Angle<double> getHeading() const;
 
-  void getSensorData(kobuki_comms::SensorData&);
+  void getCoreSensorData(kobuki_comms::CoreSensors&);
   void getIRData(kobuki_comms::IR&);
   void getDockIRData(kobuki_comms::DockIR&);
   void getCliffData(kobuki_comms::Cliff&);
@@ -194,7 +194,7 @@ private:
   PacketFinder packet_finder;
   PacketFinder::BufferType data_buffer;
   ecl::PushAndPop<unsigned char> command_buffer;
-  ecl::Signal<> sig_wheel_state, sig_sensor_data;
+  ecl::Signal<> sig_wheel_state, sig_core_sensors;
   ecl::Signal<> sig_ir, sig_dock_ir, sig_inertia, sig_cliff, sig_current, sig_magnet, sig_hw, sig_fw,
                 sig_time, sig_eeprom, sig_gp_input;
 

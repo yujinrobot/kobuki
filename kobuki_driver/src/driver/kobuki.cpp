@@ -69,7 +69,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   }
 
   sig_wheel_state.connect(sigslots_namespace + std::string("/joint_state"));
-  sig_sensor_data.connect(sigslots_namespace + std::string("/sensor_data"));
+  sig_core_sensors.connect(sigslots_namespace + std::string("/core_sensors"));
   //sig_serial_timeout.connect(sigslots_namespace+std::string("/serial_timeout"));
 
   sig_ir.connect(sigslots_namespace + std::string("/ir"));
@@ -204,7 +204,7 @@ void Kobuki::runnable()
               // these come with the streamed feedback
               case Header::CoreSensors:
                 kobuki_default.deserialise(data_buffer);
-                sig_sensor_data.emit();
+                sig_core_sensors.emit();
                 sig_wheel_state.emit();
                 break;
               case Header::DockInfraRed:
@@ -265,7 +265,7 @@ void Kobuki::runnable()
   }
 }
 
-void Kobuki::getSensorData(kobuki_comms::SensorData &sensor_data)
+void Kobuki::getCoreSensorData(kobuki_comms::CoreSensors &sensor_data)
 {
   if (protocol_version == "2.0") {
     sensor_data = kobuki_default.data;

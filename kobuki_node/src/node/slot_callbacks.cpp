@@ -46,16 +46,16 @@ void KobukiNode::publishWheelState()
   }
 }
 
-void KobukiNode::publishSensorData()
+void KobukiNode::publishCoreSensorData()
 {
   if (ros::ok())
   {
-    if (sensor_data_publisher.getNumSubscribers() > 0)
+    if (core_sensor_data_publisher.getNumSubscribers() > 0)
     {
-      kobuki_comms::SensorData data;
-      kobuki.getSensorData(data);
+      kobuki_comms::CoreSensors data;
+      kobuki.getCoreSensorData(data);
       data.header.stamp = ros::Time::now();
-      sensor_data_publisher.publish(data);
+      core_sensor_data_publisher.publish(data);
       //std::cout << "publishSensorData()" << std::endl;
     }
   }
@@ -71,21 +71,6 @@ void KobukiNode::publishIRData()
       kobuki.getIRData(data);
       data.header.stamp = ros::Time::now();
       ir_data_publisher.publish(data);
-      //std::cout << __func__ << std::endl;
-    }
-  }
-}
-
-void KobukiNode::publishDockIRData()
-{
-  if (ros::ok())
-  {
-    if (sensor_data_publisher.getNumSubscribers() > 0)
-    {
-      kobuki_comms::SensorData data;
-      kobuki.getSensorData(data);
-      data.header.stamp = ros::Time::now();
-      sensor_data_publisher.publish(data);
       //std::cout << __func__ << std::endl;
     }
   }
