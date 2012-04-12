@@ -15,6 +15,7 @@
 *****************************************************************************/
 
 #include "../packet_handler/payload_base.hpp"
+#include "../packet_handler/payload_headers.hpp"
 
 /*****************************************************************************
 ** Namespaces
@@ -31,7 +32,6 @@ class Inertia : public packet_handler::payloadBase
 {
 public:
   struct Data {
-    unsigned char header_id;
     int16_t angle;
     int16_t angle_rate;
     unsigned char acc[3];
@@ -47,7 +47,7 @@ public:
       return false;
     }
 
-    buildBytes(data.header_id, byteStream);
+    buildBytes(Header::Inertia, byteStream);
     buildBytes(data.angle, byteStream);
     buildBytes(data.angle_rate, byteStream);
     buildBytes(data.acc[0], byteStream);
@@ -64,7 +64,8 @@ public:
       return false;
     }
 
-    buildVariable(data.header_id, byteStream);
+    unsigned char header_id;
+    buildVariable(header_id, byteStream);
     buildVariable(data.angle, byteStream);
     buildVariable(data.angle_rate, byteStream);
     buildVariable(data.acc[0], byteStream);

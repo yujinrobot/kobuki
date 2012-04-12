@@ -31,7 +31,6 @@ class CoreSensors : public packet_handler::payloadBase
 {
 public:
   struct Data {
-    unsigned char header_id;
     uint16_t time_stamp;
     unsigned char bump;
     unsigned char wheel_drop;

@@ -16,6 +16,7 @@
 
 #include <vector>
 #include "../packet_handler/payload_base.hpp"
+#include "../packet_handler/payload_headers.hpp"
 
 /*****************************************************************************
 ** Namespace
@@ -33,7 +34,6 @@ class Cliff : public packet_handler::payloadBase
 public:
   struct Data {
     Data() : bottom(3) {}
-    uint8_t header_id;
     std::vector<uint16_t> bottom;
   } data;
 
@@ -45,7 +45,7 @@ public:
       return false;
     }
 
-    buildBytes(data.header_id, byteStream);
+    buildBytes(Header::Cliff, byteStream);
     buildBytes(data.bottom[0], byteStream);
     buildBytes(data.bottom[1], byteStream);
     buildBytes(data.bottom[2], byteStream);
@@ -60,7 +60,8 @@ public:
       return false;
     }
 
-    buildVariable(data.header_id, byteStream);
+    unsigned char header_id;
+    buildVariable(header_id, byteStream);
     buildVariable(data.bottom[0], byteStream);
     buildVariable(data.bottom[1], byteStream);
     buildVariable(data.bottom[2], byteStream);

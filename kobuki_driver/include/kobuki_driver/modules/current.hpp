@@ -16,6 +16,7 @@
 
 #include <vector>
 #include "../packet_handler/payload_base.hpp"
+#include "../packet_handler/payload_headers.hpp"
 
 /*****************************************************************************
 ** Namespace
@@ -37,7 +38,6 @@ class Current : public packet_handler::payloadBase
 public:
   struct Data {
     Data() : current(2) {}
-    uint8_t header_id;
     std::vector<uint8_t> current;
   } data;
 
@@ -50,13 +50,9 @@ public:
       return false;
     }
 
-    buildBytes(data.header_id, byteStream);
+    buildBytes(Header::Current, byteStream);
     buildBytes(data.current[0], byteStream);
     buildBytes(data.current[1], byteStream);
-    //buildBytes( data.current[2], byteStream );
-    //buildBytes( data.current[3], byteStream );
-    //buildBytes( data.current[4], byteStream );
-    //buildBytes( data.current[5], byteStream );
     return true;
   }
 
@@ -68,15 +64,10 @@ public:
       return false;
     }
 
-    buildVariable(data.header_id, byteStream);
+    unsigned char header_id;
+    buildVariable(header_id, byteStream);
     buildVariable(data.current[0], byteStream);
     buildVariable(data.current[1], byteStream);
-    //buildVariable( data.current[2], byteStream );
-    //buildVariable( data.current[3], byteStream );
-    //buildVariable( data.current[4], byteStream );
-    //buildVariable( data.current[5], byteStream );
-
-    //showMe();
     return constrain();
   }
 

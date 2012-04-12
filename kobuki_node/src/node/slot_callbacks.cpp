@@ -56,7 +56,6 @@ void KobukiNode::publishCoreSensorData()
     {
       // convert data format
       kobuki_comms::CoreSensors ros_data;
-      ros_data.header0 = data.header_id;
       ros_data.header.stamp = ros::Time::now();
       ros_data.time_stamp = data.time_stamp; // firmware time stamp
       ros_data.bump = data.bump;
@@ -151,7 +150,6 @@ void KobukiNode::publishCliffData()
       kobuki.getCliffData(data);
       kobuki_comms::Cliff ros_data;
       ros_data.header.stamp = ros::Time::now();
-      ros_data.header_id = data.header_id;
       ros_data.bottom = data.bottom;
       cliff_data_publisher.publish(ros_data);
       //std::cout << __func__ << std::endl;
@@ -169,7 +167,6 @@ void KobukiNode::publishCurrentData()
       kobuki.getCurrentData(data);
       kobuki_comms::Current ros_data;
       ros_data.header.stamp = ros::Time::now();
-      ros_data.header_id = data.header_id;
       ros_data.current = data.current;
       current_data_publisher.publish(ros_data);
       //std::cout << __func__ << std::endl;
@@ -187,7 +184,6 @@ void KobukiNode::publishHWData()
       kobuki.getHWData(data);
       kobuki_comms::HW ros_data;
       ros_data.header.stamp = ros::Time::now();
-      ros_data.header_id = data.header_id;
       ros_data.mainboard_version = data.mainboard_version;
       hw_data_publisher.publish(ros_data);
       //std::cout << __func__ << std::endl;
@@ -206,7 +202,6 @@ void KobukiNode::publishFWData()
       // convert data format
       kobuki_comms::FW ros_data;
       ros_data.header.stamp = ros::Time::now();
-      ros_data.header_id = data.header_id;
       ros_data.fw_version = data.fw_version;
       fw_data_publisher.publish(ros_data);
       //std::cout << __func__ << std::endl;

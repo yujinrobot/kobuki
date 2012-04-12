@@ -13,6 +13,7 @@
 *****************************************************************************/
 
 #include "../../include/kobuki_driver/modules/core_sensors.hpp"
+#include "../../include/kobuki_driver/packet_handler/payload_headers.hpp"
 
 /*****************************************************************************
 ** Namespaces
@@ -31,8 +32,7 @@ bool CoreSensors::serialise(ecl::PushAndPop<unsigned char> & byteStream)
     //ROS_WARN_STREAM("kobuki_node: kobuki_default: serialise failed. empty byte stream.");
     return false;
   }
-
-  buildBytes(data.header_id, byteStream);
+  buildBytes(Header::CoreSensors, byteStream);
   buildBytes(data.time_stamp, byteStream);
   buildBytes(data.bump, byteStream);
   buildBytes(data.wheel_drop, byteStream);
@@ -55,7 +55,8 @@ bool CoreSensors::deserialise(ecl::PushAndPop<unsigned char> & byteStream)
     return false;
   }
 
-  buildVariable(data.header_id, byteStream);
+  unsigned char header_id;
+  buildVariable(header_id, byteStream);
   buildVariable(data.time_stamp, byteStream);
   buildVariable(data.bump, byteStream);
   buildVariable(data.wheel_drop, byteStream);

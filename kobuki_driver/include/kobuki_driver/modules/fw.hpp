@@ -15,6 +15,7 @@
 *****************************************************************************/
 
 #include "../packet_handler/payload_base.hpp"
+#include "../packet_handler/payload_headers.hpp"
 
 /*****************************************************************************
 ** Namespace
@@ -31,7 +32,6 @@ class FW : public packet_handler::payloadBase
 {
 public:
   struct Data {
-    uint8_t header_id;
     uint16_t fw_version;
   } data;
 
@@ -44,7 +44,7 @@ public:
       return false;
     }
 
-    buildBytes(data.header_id, byteStream);
+    buildBytes(Header::Firmware, byteStream);
     buildBytes(data.fw_version, byteStream);
     return true;
   }
@@ -57,7 +57,8 @@ public:
       return false;
     }
 
-    buildVariable(data.header_id, byteStream);
+    unsigned char header_id;
+    buildVariable(header_id, byteStream);
     buildVariable(data.fw_version, byteStream);
 
     //showMe();

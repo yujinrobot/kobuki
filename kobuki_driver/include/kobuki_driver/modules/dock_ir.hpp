@@ -15,6 +15,7 @@
 *****************************************************************************/
 
 #include "../packet_handler/payload_base.hpp"
+#include "../packet_handler/payload_headers.hpp"
 
 /*****************************************************************************
 ** Namespace
@@ -32,7 +33,6 @@ class DockIR : public packet_handler::payloadBase
 public:
   struct Data {
     Data() : docking(3) {}
-    uint8_t header_id;
     std::vector<uint8_t> docking;
   } data;
 
@@ -44,7 +44,7 @@ public:
       return false;
     }
 
-    buildBytes(data.header_id, byteStream);
+    buildBytes(Header::DockInfraRed, byteStream);
     buildBytes(data.docking[0], byteStream);
     buildBytes(data.docking[1], byteStream);
     buildBytes(data.docking[2], byteStream);
@@ -59,7 +59,8 @@ public:
       return false;
     }
 
-    buildVariable(data.header_id, byteStream);
+    unsigned char header_id;
+    buildVariable(header_id, byteStream);
     buildVariable(data.docking[0], byteStream);
     buildVariable(data.docking[1], byteStream);
     buildVariable(data.docking[2], byteStream);

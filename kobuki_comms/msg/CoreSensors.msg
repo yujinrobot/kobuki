@@ -5,7 +5,6 @@ uint8 F1 = 1  # bitmask 0x01
 uint8 F2 = 4  # bitmask 0x04
 
 Header header
-uint8  header0
 uint16 time_stamp
 uint8  bump
 uint8  wheel_drop
