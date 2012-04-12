@@ -203,7 +203,7 @@ void Kobuki::runnable()
             {
               // these come with the streamed feedback
               case Header::CoreSensors:
-                kobuki_default.deserialise(data_buffer);
+                core_sensors.deserialise(data_buffer);
                 sig_core_sensors.emit();
                 sig_wheel_state.emit();
                 break;
@@ -212,7 +212,7 @@ void Kobuki::runnable()
                 sig_dock_ir.emit();
                 break;
               case Header::Inertia:
-                kobuki_inertia.deserialise(data_buffer);
+                inertia.deserialise(data_buffer);
                 sig_inertia.emit();
                 break;
               case Header::Cliff:
@@ -265,10 +265,10 @@ void Kobuki::runnable()
   }
 }
 
-void Kobuki::getCoreSensorData(kobuki_comms::CoreSensors &sensor_data)
+void Kobuki::getCoreSensorData(CoreSensors::Data &sensor_data)
 {
   if (protocol_version == "2.0") {
-    sensor_data = kobuki_default.data;
+    sensor_data = core_sensors.data;
   }
 }
 
@@ -290,7 +290,7 @@ ecl::Angle<double> Kobuki::getHeading() const {
     heading = kobuki_sim.heading;
   } else {
     // raw data angles are in hundredths of a degree, convert to radians.
-    heading = (static_cast<double>(kobuki_inertia.data.angle) / 100.0) * ecl::pi /180.0;
+    heading = (static_cast<double>(inertia.data.angle) / 100.0) * ecl::pi /180.0;
   }
   return heading;
 }
@@ -345,7 +345,7 @@ void Kobuki::resetOdometry() {
   last_velocity_left = 0.0;
   last_velocity_right = 0.0;
 
-  imu_heading_offset = kobuki_inertia.data.angle;
+  imu_heading_offset = inertia.data.angle;
 }
 
 void Kobuki::getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
@@ -376,8 +376,8 @@ void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update,
     unsigned short curr_tick_left = 0;
     unsigned short curr_tick_right = 0;
     unsigned short curr_timestamp = 0;
-    curr_timestamp = kobuki_default.data.time_stamp;
-    curr_tick_left = kobuki_default.data.left_encoder;
+    curr_timestamp = core_sensors.data.time_stamp;
+    curr_tick_left = core_sensors.data.left_encoder;
     if (!init_l)
     {
       last_tick_left = curr_tick_left;
@@ -388,7 +388,7 @@ void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update,
     last_rad_left += tick_to_rad * left_diff_ticks;
     last_mm_left += tick_to_mm / 1000.0f * left_diff_ticks;
 
-    curr_tick_right = kobuki_default.data.right_encoder;
+    curr_tick_right = core_sensors.data.right_encoder;
     if (!init_r)
     {
       last_tick_right = curr_tick_right;

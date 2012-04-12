@@ -12,7 +12,7 @@
 ** Includes
 *****************************************************************************/
 
-#include "../../include/kobuki_driver/core_sensors.hpp"
+#include "../../include/kobuki_driver/modules/core_sensors.hpp"
 
 /*****************************************************************************
 ** Namespaces
@@ -24,15 +24,15 @@ namespace kobuki {
 ** Implementation
 *****************************************************************************/
 
-bool DefaultData::serialise(ecl::PushAndPop<unsigned char> & byteStream)
+bool CoreSensors::serialise(ecl::PushAndPop<unsigned char> & byteStream)
 {
   if (!(byteStream.size() > 0))
   {
-    ROS_WARN_STREAM("kobuki_node: kobuki_default: serialise failed. empty byte stream.");
+    //ROS_WARN_STREAM("kobuki_node: kobuki_default: serialise failed. empty byte stream.");
     return false;
   }
 
-  buildBytes(data.header0, byteStream);
+  buildBytes(data.header_id, byteStream);
   buildBytes(data.time_stamp, byteStream);
   buildBytes(data.bump, byteStream);
   buildBytes(data.wheel_drop, byteStream);
@@ -47,15 +47,15 @@ bool DefaultData::serialise(ecl::PushAndPop<unsigned char> & byteStream)
 
   return true;
 }
-bool DefaultData::deserialise(ecl::PushAndPop<unsigned char> & byteStream)
+bool CoreSensors::deserialise(ecl::PushAndPop<unsigned char> & byteStream)
 {
   if (!(byteStream.size() > 0))
   {
-    ROS_WARN_STREAM("kobuki_node: kobuki_default: deserialise failed. empty byte stream.");
+    //ROS_WARN_STREAM("kobuki_node: kobuki_default: deserialise failed. empty byte stream.");
     return false;
   }
 
-  buildVariable(data.header0, byteStream);
+  buildVariable(data.header_id, byteStream);
   buildVariable(data.time_stamp, byteStream);
   buildVariable(data.bump, byteStream);
   buildVariable(data.wheel_drop, byteStream);

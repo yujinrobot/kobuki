@@ -16,7 +16,6 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include <kobuki_comms/CoreSensors.h>
 #include <ecl/threads.hpp>
 #include <ecl/devices.hpp>
 #include <ecl/time.hpp>
@@ -26,10 +25,10 @@
 #include "packet_handler/packet_finder.hpp"
 #include "parameters.hpp"
 
-#include "core_sensors.hpp"
+#include "modules/core_sensors.hpp"
+#include "modules/inertia.hpp"
 #include "ir.hpp"
 #include "dock_ir.hpp"
-#include "modules/inertia.hpp"
 #include "cliff.hpp"
 #include "current.hpp"
 #include "time.hpp"
@@ -116,7 +115,7 @@ public:
 
   ecl::Angle<double> getHeading() const;
 
-  void getCoreSensorData(kobuki_comms::CoreSensors&);
+  void getCoreSensorData(CoreSensors::Data&);
   void getIRData(kobuki_comms::IR&);
   void getDockIRData(kobuki_comms::DockIR&);
   void getCliffData(kobuki_comms::Cliff&);
@@ -176,10 +175,11 @@ private:
 
   ecl::Serial serial;
 
-  DefaultData kobuki_default;
+  CoreSensors core_sensors;
+  Inertia inertia;
+
   IRData kobuki_ir;
   DockIRData kobuki_dock_ir;
-  Inertia kobuki_inertia;
   CliffData kobuki_cliff;
   CurrentData kobuki_current;
   TimeData kobuki_time;

@@ -12,6 +12,7 @@
 
 #include "kobuki_node/kobuki_node.hpp"
 #include <kobuki_driver/led_array.hpp>
+#include <kobuki_driver/modules/core_sensors.hpp>
 
 /*****************************************************************************
  ** Namespaces
@@ -52,11 +53,24 @@ void KobukiNode::publishCoreSensorData()
   {
     if (core_sensor_data_publisher.getNumSubscribers() > 0)
     {
-      kobuki_comms::CoreSensors data;
+      CoreSensors::Data data;
       kobuki.getCoreSensorData(data);
-      data.header.stamp = ros::Time::now();
-      core_sensor_data_publisher.publish(data);
-      //std::cout << "publishSensorData()" << std::endl;
+      // convert data format
+      kobuki_comms::CoreSensors ros_data;
+      ros_data.header0 = data.header_id;
+      ros_data.header.stamp = ros::Time::now();
+      ros_data.time_stamp = data.time_stamp; // firmware time stamp
+      ros_data.bump = data.bump;
+      ros_data.wheel_drop = data.wheel_drop;
+      ros_data.cliff = data.cliff;
+      ros_data.left_encoder = data.left_encoder;
+      ros_data.right_encoder = data.right_encoder;
+      ros_data.left_pwm = data.left_pwm;
+      ros_data.right_pwm = data.right_pwm;
+      ros_data.remote = data.remote;
+      ros_data.charger = data.charger;
+      ros_data.battery = data.battery;
+      core_sensor_data_publisher.publish(ros_data);
     }
   }
 }
