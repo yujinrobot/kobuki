@@ -33,9 +33,9 @@ namespace kobuki {
 
 
 
-class SimulationData {
+class Simulation {
 public:
-  SimulationData() :
+  Simulation() :
     heading(0.0),
     velocity(0.0),
     angular_velocity(0.0),

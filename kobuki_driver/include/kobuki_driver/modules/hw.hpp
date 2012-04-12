@@ -1,16 +1,35 @@
+/**
+ * @file /include/kobuki_driver/modules/hw.hpp
+ *
+ * Module for handling of hardware version request packet payloads.
+ */
+/*****************************************************************************
+** Preprocessor
+*****************************************************************************/
+
 #ifndef KOBUKI_HW_DATA_HPP__
 #define KOBUKI_HW_DATA_HPP__
 
-#include <ecl/containers.hpp>
+/*****************************************************************************
+** Include
+*****************************************************************************/
+
 #include "../packet_handler/payload_base.hpp"
+
+/*****************************************************************************
+** Namespace
+*****************************************************************************/
 
 namespace kobuki
 {
 
-class HWData : public packet_handler::payloadBase
+/*****************************************************************************
+** Interface
+*****************************************************************************/
+
+class HW : public packet_handler::payloadBase
 {
 public:
-  // container
   struct Data {
     uint8_t header_id;
     uint16_t mainboard_version;

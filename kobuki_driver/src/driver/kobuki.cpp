@@ -53,10 +53,10 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
     throw ecl::StandardException(LOC, ecl::ConfigurationError, "Kobuki's parameter settings did not validate.");
   }
   protocol_version = parameters.protocol_version;
-  simulation = parameters.simulation;
+  is_simulation = parameters.simulation;
   std::string sigslots_namespace = parameters.sigslots_namespace;
 
-  if ( !simulation ) {
+  if ( !is_simulation ) {
     serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
     serial.block(4000); // blocks by default, but just to be clear!
     serial.clear();
@@ -111,8 +111,8 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
 
   kinematics.reset(new ecl::DifferentialDrive::Kinematics(bias, wheel_radius));
 
-  if ( simulation ) {
-    kobuki_sim.init(bias, 1000 * tick_to_rad / tick_to_mm); // bias, metres to radians
+  if ( is_simulation ) {
+    simulation.init(bias, 1000 * tick_to_rad / tick_to_mm); // bias, metres to radians
   }
   is_running = true;
   start();
@@ -148,9 +148,9 @@ void Kobuki::runnable()
   {
     get_packet = false;
 
-    if ( simulation ) {
-      kobuki_sim.update();
-      kobuki_sim.sleep();
+    if ( is_simulation ) {
+      simulation.update();
+      simulation.sleep();
       sig_wheel_state.emit();
       sig_inertia.emit();
     } else {
@@ -208,7 +208,7 @@ void Kobuki::runnable()
                 sig_wheel_state.emit();
                 break;
               case Header::DockInfraRed:
-                kobuki_dock_ir.deserialise(data_buffer);
+                dock_ir.deserialise(data_buffer);
                 sig_dock_ir.emit();
                 break;
               case Header::Inertia:
@@ -216,11 +216,11 @@ void Kobuki::runnable()
                 sig_inertia.emit();
                 break;
               case Header::Cliff:
-                kobuki_cliff.deserialise(data_buffer);
+                cliff.deserialise(data_buffer);
                 sig_cliff.emit();
                 break;
               case Header::Current:
-                kobuki_current.deserialise(data_buffer);
+                current.deserialise(data_buffer);
                 sig_current.emit();
                 break;
               case Header::Gpio:
@@ -233,11 +233,11 @@ void Kobuki::runnable()
                 sig_ir.emit();
                 break;
               case Header::Hardware:
-                kobuki_hw.deserialise(data_buffer);
+                hardware.deserialise(data_buffer);
                 sig_hw.emit();
                 break;
               case Header::Firmware:
-                kobuki_fw.deserialise(data_buffer);
+                firmware.deserialise(data_buffer);
                 sig_fw.emit();
                 break;
               case Header::Eeprom:
@@ -274,16 +274,16 @@ void Kobuki::getIRData(kobuki_comms::IR &data)
     data = kobuki_ir.data;
 }
 
-void Kobuki::getDockIRData(DockIRData::Data &data)
+void Kobuki::getDockIRData(DockIR::Data &data)
 {
   if (protocol_version == "2.0")
-    data = kobuki_dock_ir.data;
+    data = dock_ir.data;
 }
 
 ecl::Angle<double> Kobuki::getHeading() const {
   ecl::Angle<double> heading;
-  if ( simulation ) {
-    heading = kobuki_sim.heading;
+  if ( is_simulation ) {
+    heading = simulation.heading;
   } else {
     // raw data angles are in hundredths of a degree, convert to radians.
     heading = (static_cast<double>(inertia.data.angle) / 100.0) * ecl::pi /180.0;
@@ -291,29 +291,10 @@ ecl::Angle<double> Kobuki::getHeading() const {
   return heading;
 }
 
-void Kobuki::getCliffData(CliffData::Data &data)
-{
-  if (protocol_version == "2.0")
-    data = kobuki_cliff.data;
-}
-
-void Kobuki::getCurrentData(CurrentData::Data &data)
-{
-  if (protocol_version == "2.0")
-    data = kobuki_current.data;
-}
-
-void Kobuki::getHWData(HWData::Data &data)
-{
-  if (protocol_version == "2.0")
-    data = kobuki_hw.data;
-}
-
-void Kobuki::getFWData(FWData::Data &data)
-{
-  if (protocol_version == "2.0")
-    data = kobuki_fw.data;
-}
+void Kobuki::getCliffData(Cliff::Data &data) { data = cliff.data; }
+void Kobuki::getCurrentData(Current::Data &data) { data = current.data; }
+void Kobuki::getHWData(HW::Data &data) { data = hardware.data; }
+void Kobuki::getFWData(FW::Data &data) { data = firmware.data; }
 
 void Kobuki::getEEPROMData(kobuki_comms::EEPROM &data)
 {
@@ -327,8 +308,8 @@ void Kobuki::getGpInputData(kobuki_comms::GpInput &data)
     data = kobuki_gp_input.data;
 }
 void Kobuki::resetOdometry() {
-  if ( simulation ) {
-    kobuki_sim.reset();
+  if ( is_simulation ) {
+    simulation.reset();
   }
   last_rad_left = 0.0;
   last_rad_right = 0.0;
@@ -341,11 +322,11 @@ void Kobuki::resetOdometry() {
 void Kobuki::getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
                           double &wheel_right_angle, double &wheel_right_angle_rate) {
 
-  if ( simulation ) {
-    wheel_left_angle = kobuki_sim.left_wheel_angle;
-    wheel_right_angle = kobuki_sim.right_wheel_angle;
-    wheel_left_angle_rate = kobuki_sim.left_wheel_angle_rate;
-    wheel_right_angle_rate = kobuki_sim.right_wheel_angle_rate;
+  if ( is_simulation ) {
+    wheel_left_angle = simulation.left_wheel_angle;
+    wheel_right_angle = simulation.right_wheel_angle;
+    wheel_left_angle_rate = simulation.left_wheel_angle_rate;
+    wheel_right_angle_rate = simulation.right_wheel_angle_rate;
   } else {
     wheel_left_angle = last_rad_left;
     wheel_right_angle = last_rad_right;
@@ -355,8 +336,8 @@ void Kobuki::getWheelJointStates(double &wheel_left_angle, double &wheel_left_an
 }
 void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update,
                             ecl::linear_algebra::Vector3d &pose_update_rates) {
-  if ( simulation ) {
-    pose_update = kinematics->forward(kobuki_sim.left_wheel_angle_update, kobuki_sim.right_wheel_angle_update);
+  if ( is_simulation ) {
+    pose_update = kinematics->forward(simulation.left_wheel_angle_update, simulation.right_wheel_angle_update);
     // should add pose_update_rates here as well.
   } else {
     static bool init_l = false;
@@ -431,15 +412,15 @@ void Kobuki::setBaseControlCommand(double vx, double wz)
 
   speed = (short)(1000.0f * std::max(vx + bias * wz / 2.0f, vx - bias * wz / 2.0f));
 
-  if ( simulation ) {
-    kobuki_sim.velocity = vx;
-    kobuki_sim.angular_velocity = wz;
+  if ( is_simulation ) {
+    simulation.velocity = vx;
+    simulation.angular_velocity = wz;
   }
 }
 
 void Kobuki::sendBaseControlCommand()
 {
-  if ( !simulation ) {
+  if ( !is_simulation ) {
     //std::cout << "speed = " << speed << ", radius = " << radius << std::endl;
     unsigned char cmd[] = {0xaa, 0x55, 5, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00};
     unsigned char cs(0);
@@ -466,7 +447,7 @@ void Kobuki::sendBaseControlCommand()
 
 void Kobuki::sendCommand(Command &command)
 {
-  if ( !simulation ) {
+  if ( !is_simulation ) {
     command_buffer.clear();
     command_buffer.resize(64);
     command_buffer.push_back(0xaa);

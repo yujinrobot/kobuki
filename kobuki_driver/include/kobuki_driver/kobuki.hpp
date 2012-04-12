@@ -112,11 +112,12 @@ public:
 
   void getCoreSensorData(CoreSensors::Data&);
   void getIRData(kobuki_comms::IR&);
-  void getDockIRData(DockIRData::Data&);
-  void getCliffData(CliffData::Data&);
-  void getCurrentData(CurrentData::Data&);
-  void getHWData(HWData::Data&);
-  void getFWData(FWData::Data&);
+  void getDockIRData(DockIR::Data&);
+  void getCliffData(Cliff::Data&);
+  void getCurrentData(Current::Data&);
+  void getHWData(HW::Data&);
+  void getFWData(FW::Data&);
+
   void getEEPROMData(kobuki_comms::EEPROM&);
   void getGpInputData(kobuki_comms::GpInput&);
 
@@ -169,18 +170,20 @@ private:
 
   ecl::Serial serial;
 
+  // Streamed Data
   CoreSensors core_sensors;
   Inertia inertia;
+  DockIR dock_ir;
+  Cliff cliff;
+  Current current;
+  // Service Payloads
+  HW hardware;
+  FW firmware;
 
   IRData kobuki_ir;
-  DockIRData kobuki_dock_ir;
-  CliffData kobuki_cliff;
-  CurrentData kobuki_current;
-  HWData kobuki_hw;
-  FWData kobuki_fw;
   EEPROMData kobuki_eeprom;
   GpInputData kobuki_gp_input;
-  SimulationData kobuki_sim;
+  Simulation simulation;
 
   Command kobuki_command;
 
@@ -194,7 +197,7 @@ private:
   ecl::Signal<const std::string&> sig_debug, sig_info, sig_warn, sig_error;
 
   boost::shared_ptr<ecl::DifferentialDrive::Kinematics> kinematics;
-  bool simulation;
+  bool is_simulation;
 };
 
 } // namespace kobuki

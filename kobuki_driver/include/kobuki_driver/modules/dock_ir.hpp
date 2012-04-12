@@ -1,27 +1,41 @@
+/**
+ * @file /include/kobuki_driver/modules/dock_ir.hpp
+ *
+ * Module for handling of docking infrared sensor packet payloads.
+ */
+/*****************************************************************************
+** Preprocessor
+*****************************************************************************/
+
 #ifndef KOBUKI_DOCK_IR_DATA_HPP__
 #define KOBUKI_DOCK_IR_DATA_HPP__
 
-#include <ecl/containers.hpp>
+/*****************************************************************************
+** Include
+*****************************************************************************/
+
 #include "../packet_handler/payload_base.hpp"
+
+/*****************************************************************************
+** Namespace
+*****************************************************************************/
 
 namespace kobuki
 {
 
-class DockIRData : public packet_handler::payloadBase
+/*****************************************************************************
+** Interface
+*****************************************************************************/
+
+class DockIR : public packet_handler::payloadBase
 {
 public:
-  // container
   struct Data {
     Data() : docking(3) {}
     uint8_t header_id;
     std::vector<uint8_t> docking;
   } data;
 
-  DockIRData()
-  {
-  }
-
-  // methods
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
     if (!(byteStream.size() > 0))

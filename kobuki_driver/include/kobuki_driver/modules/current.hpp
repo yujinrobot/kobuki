@@ -1,19 +1,38 @@
+/**
+ * @file /include/kobuki_driver/modules/current.hpp
+ *
+ * Module for handling of current level packet payloads.
+ */
+/*****************************************************************************
+** Preprocessor
+*****************************************************************************/
+
 #ifndef KOBUKI_CURRENT_DATA_HPP__
 #define KOBUKI_CURRENT_DATA_HPP__
 
+/*****************************************************************************
+** Include
+*****************************************************************************/
+
 #include <vector>
-#include <ecl/containers.hpp>
 #include "../packet_handler/payload_base.hpp"
+
+/*****************************************************************************
+** Namespace
+*****************************************************************************/
 
 namespace kobuki
 {
 
+/*****************************************************************************
+** Interface
+*****************************************************************************/
 /**
  * This comes back in the streamed feedback. It has two values
  * (left and right) indicating the supplied current which can be useful for
  * detecting when the robot is blocked.
  */
-class CurrentData : public packet_handler::payloadBase
+class Current : public packet_handler::payloadBase
 {
 public:
   struct Data {
@@ -21,10 +40,6 @@ public:
     uint8_t header_id;
     std::vector<uint8_t> current;
   } data;
-
-  CurrentData()
-  {
-  }
 
   // methods
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)

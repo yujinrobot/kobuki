@@ -1,29 +1,42 @@
+/**
+ * @file /include/kobuki_driver/modules/cliff.hpp
+ *
+ * Module for handling of cliff sensor packet payloads.
+ */
+/*****************************************************************************
+** Preprocessor
+*****************************************************************************/
+
 #ifndef KOBUKI_CLIFF_DATA_HPP__
 #define KOBUKI_CLIFF_DATA_HPP__
 
+/*****************************************************************************
+** Include
+*****************************************************************************/
+
 #include <vector>
-#include <ecl/containers.hpp>
 #include "../packet_handler/payload_base.hpp"
 
+/*****************************************************************************
+** Namespace
+*****************************************************************************/
 
 namespace kobuki
 {
 
-class CliffData : public packet_handler::payloadBase
+/*****************************************************************************
+** Interface
+*****************************************************************************/
+
+class Cliff : public packet_handler::payloadBase
 {
 public:
-  // container
   struct Data {
     Data() : bottom(3) {}
     uint8_t header_id;
     std::vector<uint16_t> bottom;
   } data;
 
-  CliffData()
-  {
-  }
-
-  // methods
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
     if (!(byteStream.size() > 0))

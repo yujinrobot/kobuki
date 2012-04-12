@@ -1,17 +1,35 @@
+/**
+ * @file /include/kobuki_driver/modules/fw.hpp
+ *
+ * Module for handling of firmware version request packet payloads.
+ */
+/*****************************************************************************
+** Preprocessor
+*****************************************************************************/
+
 #ifndef KOBUKI_FW_DATA_HPP__
 #define KOBUKI_FW_DATA_HPP__
 
-#include <ecl/containers.hpp>
+/*****************************************************************************
+** Include
+*****************************************************************************/
+
 #include "../packet_handler/payload_base.hpp"
 
+/*****************************************************************************
+** Namespace
+*****************************************************************************/
 
 namespace kobuki
 {
 
-class FWData : public packet_handler::payloadBase
+/*****************************************************************************
+** Interface
+*****************************************************************************/
+
+class FW : public packet_handler::payloadBase
 {
 public:
-  // container
   struct Data {
     uint8_t header_id;
     uint16_t fw_version;
