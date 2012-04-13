@@ -76,24 +76,42 @@ void KobukiNode::publishCoreSensorData()
     {
       if (data.buttons != buttons_state)
       {
-        kobuki_comms::Buttons buttons;
-        // g++ complains if you use tertiary operators here - spitting the dummy because of uint8's? wierd.
-        if ( data.buttons & kobuki_comms::CoreSensors::F0) {
-          buttons.values.push_back(kobuki_comms::Buttons::PRESSED);
-        } else {
-          buttons.values.push_back(kobuki_comms::Buttons::RELEASED);
+        kobuki_comms::ButtonEvent msg;
+
+        // Check changes in each button state's; event if this block of code
+        // supports it, two buttons cannot be pressed simultaneously
+        if ((data.buttons | buttons_state) & kobuki_comms::CoreSensors::F0) {
+          msg.button = kobuki_comms::ButtonEvent::F0;
+          if (data.buttons & kobuki_comms::CoreSensors::F0) {
+            msg.event = kobuki_comms::ButtonEvent::PRESSED;
+          }
+          else {
+            msg.event = kobuki_comms::ButtonEvent::RELEASED;
+          }
+          button_events_publisher.publish(msg);
         }
-        if ( data.buttons & kobuki_comms::CoreSensors::F1) {
-          buttons.values.push_back(kobuki_comms::Buttons::PRESSED);
-        } else {
-          buttons.values.push_back(kobuki_comms::Buttons::RELEASED);
+
+        if ((data.buttons | buttons_state) & kobuki_comms::CoreSensors::F1) {
+          msg.button = kobuki_comms::ButtonEvent::F1;
+          if (data.buttons & kobuki_comms::CoreSensors::F1) {
+            msg.event = kobuki_comms::ButtonEvent::PRESSED;
+          }
+          else {
+            msg.event = kobuki_comms::ButtonEvent::RELEASED;
+          }
+          button_events_publisher.publish(msg);
         }
-        if ( data.buttons & kobuki_comms::CoreSensors::F2) {
-          buttons.values.push_back(kobuki_comms::Buttons::PRESSED);
-        } else {
-          buttons.values.push_back(kobuki_comms::Buttons::RELEASED);
+
+        if ((data.buttons | buttons_state) & kobuki_comms::CoreSensors::F2) {
+          msg.button = kobuki_comms::ButtonEvent::F2;
+          if (data.buttons & kobuki_comms::CoreSensors::F2) {
+            msg.event = kobuki_comms::ButtonEvent::PRESSED;
+          }
+          else {
+            msg.event = kobuki_comms::ButtonEvent::RELEASED;
+          }
+          button_events_publisher.publish(msg);
         }
-        button_events_publisher.publish(buttons);
 
         buttons_state = data.buttons;
       }
@@ -186,21 +204,6 @@ void KobukiNode::publishFWData()
       kobuki_comms::Firmware ros_data;
       ros_data.version = data.version;
       fw_data_publisher.publish(ros_data);
-    }
-  }
-}
-
-void KobukiNode::publishEEPROMData()
-{
-  if (ros::ok())
-  {
-    if (eeprom_data_publisher.getNumSubscribers() > 0)
-    {
-      kobuki_comms::EEPROM data;
-      kobuki.getEEPROMData(data);
-      data.header.stamp = ros::Time::now();
-      eeprom_data_publisher.publish(data);
-      //std::cout << __func__ << std::endl;
     }
   }
 }

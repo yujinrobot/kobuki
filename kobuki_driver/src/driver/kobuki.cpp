@@ -80,7 +80,6 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_hw.connect(sigslots_namespace + std::string("/hw"));
   sig_fw.connect(sigslots_namespace + std::string("/fw"));
   sig_time.connect(sigslots_namespace + std::string("/time"));
-  sig_eeprom.connect(sigslots_namespace + std::string("/eeprom"));
   sig_gp_input.connect(sigslots_namespace + std::string("/gp_input"));
 
   sig_debug.connect(sigslots_namespace + std::string("/ros_debug"));
@@ -235,10 +234,6 @@ void Kobuki::runnable()
                 firmware.deserialise(data_buffer);
                 sig_fw.emit();
                 break;
-              case Header::Eeprom:
-                kobuki_eeprom.deserialise(data_buffer);
-                sig_eeprom.emit();
-                break;
               default:
                 std::cout << "unexpected case reached. flushing current buffer." << std::endl;
                 data_buffer.clear();
@@ -285,12 +280,6 @@ void Kobuki::getCurrentData(Current::Data &data) { data = current.data; }
 void Kobuki::getGpInputData(GpInput::Data &data) { data = gp_input.data; }
 void Kobuki::getHWData(Hardware::Data &data) { data = hardware.data; }
 void Kobuki::getFWData(Firmware::Data &data) { data = firmware.data; }
-
-void Kobuki::getEEPROMData(kobuki_comms::EEPROM &data)
-{
-  if (protocol_version == "2.0")
-    data = kobuki_eeprom.data;
-}
 
 void Kobuki::resetOdometry() {
   if ( is_simulation ) {

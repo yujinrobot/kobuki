@@ -47,7 +47,6 @@ KobukiNode::KobukiNode(std::string& node_name) :
     slot_current(&KobukiNode::publishCurrentData, *this),
     slot_hw(&KobukiNode::publishHWData, *this),
     slot_fw(&KobukiNode::publishFWData, *this),
-    slot_eeprom(&KobukiNode::publishEEPROMData, *this),
     slot_gp_input(&KobukiNode::publishGpInputData, *this),
     slot_debug(&KobukiNode::rosDebug, *this),
     slot_info(&KobukiNode::rosInfo, *this),
@@ -96,7 +95,6 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   slot_current.connect(name + std::string("/current"));
   slot_hw.connect(name + std::string("/hw"));
   slot_fw.connect(name + std::string("/fw"));
-  slot_eeprom.connect(name + std::string("/eeprom"));
   slot_gp_input.connect(name + std::string("/gp_input"));
 
   slot_debug.connect(name + std::string("/ros_debug"));
@@ -268,9 +266,8 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   current_data_publisher = nh.advertise < kobuki_comms::Current > ("current_data", 100);
   hw_data_publisher = nh.advertise < kobuki_comms::Hardware > ("hardware_version", 100);
   fw_data_publisher = nh.advertise < kobuki_comms::Firmware > ("firmware_version", 100);
-  eeprom_data_publisher = nh.advertise < kobuki_comms::EEPROM > ("eeprom_data", 100);
   gp_input_data_publisher = nh.advertise < kobuki_comms::GpInput > ("gp_inputs", 100);
-  button_events_publisher = nh.advertise < kobuki_comms::Buttons > ("button_events", 100);
+  button_events_publisher = nh.advertise < kobuki_comms::ButtonEvent > ("button_events", 100);
 }
 
 /**

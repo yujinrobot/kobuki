@@ -30,7 +30,7 @@
 #include <tf/transform_broadcaster.h>
 #include <ecl/sigslots.hpp>
 #include <kobuki_comms/Cliff.h>
-#include <kobuki_comms/Buttons.h>
+#include <kobuki_comms/ButtonEvent.h>
 #include <kobuki_comms/CoreSensors.h>
 #include <kobuki_comms/Current.h>
 #include <kobuki_comms/GpInput.h>
@@ -99,7 +99,7 @@ private:
 
   ros::Publisher imu_data_publisher,
                  cliff_data_publisher, current_data_publisher, hw_data_publisher,
-                 fw_data_publisher, eeprom_data_publisher,
+                 fw_data_publisher,
                  gp_input_data_publisher, joint_state_publisher, odom_publisher,
                  core_sensor_data_publisher, button_events_publisher;
   ros::Subscriber velocity_command_subscriber, led_command_subscriber;
@@ -107,7 +107,7 @@ private:
 
   ecl::Slot<> slot_wheel_state, slot_core_sensors,
               slot_inertia, slot_cliff, slot_current, slot_hw, slot_fw,
-              slot_eeprom, slot_gp_input;
+              slot_gp_input;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
   tf::TransformBroadcaster odom_broadcaster;
   sensor_msgs::JointState joint_states;
@@ -122,7 +122,6 @@ private:
   void publishCurrentData();
   void publishHWData();
   void publishFWData();
-  void publishEEPROMData();
   void publishGpInputData();
   void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
   void subscribeLedCommand(const kobuki_comms::LedArrayConstPtr);

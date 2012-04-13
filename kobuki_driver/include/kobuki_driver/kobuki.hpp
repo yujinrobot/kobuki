@@ -13,9 +13,12 @@
 /*****************************************************************************
  ** Includes
  *****************************************************************************/
+
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <ros/ros.h>
+#include <boost/shared_ptr.hpp>
 #include <ecl/threads.hpp>
 #include <ecl/devices.hpp>
 #include <ecl/time.hpp>
@@ -31,7 +34,6 @@
 #include "modules/dock_ir.hpp"
 #include "modules/firmware.hpp"
 #include "modules/hardware.hpp"
-#include "eeprom.hpp"
 #include "command.hpp"
 #include "simulation.hpp"
 #include "led_array.hpp"
@@ -119,8 +121,6 @@ public:
   void getHWData(Hardware::Data&);
   void getFWData(Firmware::Data&);
 
-  void getEEPROMData(kobuki_comms::EEPROM&);
-
   /*********************
   ** Feedback
   **********************/
@@ -181,7 +181,6 @@ private:
   Hardware hardware;
   Firmware firmware;
 
-  EEPROMData kobuki_eeprom;
   Simulation simulation;
 
   Command kobuki_command;
@@ -191,7 +190,7 @@ private:
   ecl::PushAndPop<unsigned char> command_buffer;
   ecl::Signal<> sig_wheel_state, sig_core_sensors;
   ecl::Signal<> sig_dock_ir, sig_inertia, sig_cliff, sig_current, sig_magnet, sig_hw, sig_fw,
-                sig_time, sig_eeprom, sig_gp_input;
+                sig_time, sig_gp_input;
 
   ecl::Signal<const std::string&> sig_debug, sig_info, sig_warn, sig_error;
 
