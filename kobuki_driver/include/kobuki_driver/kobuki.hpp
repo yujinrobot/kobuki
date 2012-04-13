@@ -110,6 +110,7 @@ public:
   void close();
 
   ecl::Angle<double> getHeading() const;
+  double getAngularVelocity() const;
 
   // streamed
   void getCoreSensorData(CoreSensors::Data&);

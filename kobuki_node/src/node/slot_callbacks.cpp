@@ -138,7 +138,15 @@ void KobukiNode::publishInertiaData()
       msg.orientation_covariance[4] = DBL_MAX;
       msg.orientation_covariance[8] = 0.005;
 
-      // ignore velocity and acceleration for now - kobuki driver can give us rates though.
+      // fill angular velocity; we ignore acceleration for now
+      msg.angular_velocity.z = kobuki.getAngularVelocity();
+
+      // angular velocity covariance; useless by now, but robot_pose_ekf's
+      // roadmap claims that it will compute velocities in the future
+      msg.angular_velocity_covariance[0] = DBL_MAX;
+      msg.angular_velocity_covariance[4] = DBL_MAX;
+      msg.angular_velocity_covariance[8] = 0.005;
+
       imu_data_publisher.publish(msg);
     }
   }
