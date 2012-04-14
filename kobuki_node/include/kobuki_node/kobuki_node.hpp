@@ -87,7 +87,8 @@ private:
   ros::Publisher imu_data_publisher,
                  cliff_sensor_publisher, current_sensor_publisher, version_info_publisher,
                  gp_input_data_publisher, joint_state_publisher, odom_publisher,
-                 core_sensor_data_publisher, button_events_publisher;
+                 core_sensor_data_publisher;
+  ros::Publisher button_events_publisher;
   ros::Subscriber velocity_command_subscriber, led_command_subscriber, reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
 

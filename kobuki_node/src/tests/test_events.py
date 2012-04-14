@@ -6,7 +6,7 @@ import rospy
 from kobuki_comms.msg import ButtonEvent
 
 def callback(data):
-    if ( data.event == ButtonEvent.RELEASED ) :
+    if ( data.event == ButtonEvent.Released ) :
         state = "released"
     else:
         state = "pressed"  

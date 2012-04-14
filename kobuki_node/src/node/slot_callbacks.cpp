@@ -84,10 +84,10 @@ void KobukiNode::publishCoreSensorData()
         if ((data.buttons | buttons_state) & kobuki_comms::CoreSensors::F0) {
           msg.button = kobuki_comms::ButtonEvent::F0;
           if (data.buttons & kobuki_comms::CoreSensors::F0) {
-            msg.event = kobuki_comms::ButtonEvent::PRESSED;
+            msg.event = kobuki_comms::ButtonEvent::Pressed;
           }
           else {
-            msg.event = kobuki_comms::ButtonEvent::RELEASED;
+            msg.event = kobuki_comms::ButtonEvent::Released;
           }
           button_events_publisher.publish(msg);
         }
@@ -95,10 +95,10 @@ void KobukiNode::publishCoreSensorData()
         if ((data.buttons | buttons_state) & kobuki_comms::CoreSensors::F1) {
           msg.button = kobuki_comms::ButtonEvent::F1;
           if (data.buttons & kobuki_comms::CoreSensors::F1) {
-            msg.event = kobuki_comms::ButtonEvent::PRESSED;
+            msg.event = kobuki_comms::ButtonEvent::Pressed;
           }
           else {
-            msg.event = kobuki_comms::ButtonEvent::RELEASED;
+            msg.event = kobuki_comms::ButtonEvent::Released;
           }
           button_events_publisher.publish(msg);
         }
@@ -106,10 +106,10 @@ void KobukiNode::publishCoreSensorData()
         if ((data.buttons | buttons_state) & kobuki_comms::CoreSensors::F2) {
           msg.button = kobuki_comms::ButtonEvent::F2;
           if (data.buttons & kobuki_comms::CoreSensors::F2) {
-            msg.event = kobuki_comms::ButtonEvent::PRESSED;
+            msg.event = kobuki_comms::ButtonEvent::Pressed;
           }
           else {
-            msg.event = kobuki_comms::ButtonEvent::RELEASED;
+            msg.event = kobuki_comms::ButtonEvent::Released;
           }
           button_events_publisher.publish(msg);
         }
