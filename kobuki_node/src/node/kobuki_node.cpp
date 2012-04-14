@@ -258,7 +258,7 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   cliff_sensor_publisher = nh.advertise < kobuki_comms::Cliff > ("sensors/cliff", 100);
   current_sensor_publisher = nh.advertise < kobuki_comms::Current > ("sensors/current", 100);
   gp_input_data_publisher = nh.advertise < kobuki_comms::GpInput > ("sensors/gp_inputs", 100);
-  imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("imu_data", 100);
+  imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("sensors/imu_data", 100);
   button_events_publisher = nh.advertise < kobuki_comms::ButtonEvent > ("button_events", 100);
 }
 

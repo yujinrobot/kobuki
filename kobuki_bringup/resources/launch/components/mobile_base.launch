@@ -13,17 +13,14 @@
 	    <rosparam file="$(find kobuki_bringup)/resources/yaml/kobuki.yaml" command="load"/>
 	    <param name="simulation" value="$(arg simulation)"/>
 	    <remap from="mobile_base/odom" to="odom"/>
-	    <remap from="mobile_base/imu_data" to="imu_data"/>
 	    <remap from="mobile_base/cmd_vel" to="cmd_vel"/>
 	    <remap from="mobile_base/enable" to="enable"/>
 	    <remap from="mobile_base/disable" to="disable"/>
 	    <remap from="mobile_base/joint_states" to="joint_states"/>
         <remap from="mobile_base/reset_odometry" to="reset_odometry"/>
-        <remap from="mobile_base/" to="mobile_base/sensors/"/>
-        <remap from="mobile_base/" to="mobile_base/sensors/"/>
     </node>
-    <!-- The odometry estimator -->
     <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf">
+      <remap from="imu_data" to="mobile_base/sensors/imu_data"/>
       <param name="freq" value="10.0"/>
       <param name="sensor_timeout" value="1.0"/>
       <param name="odom_used" value="true"/>
