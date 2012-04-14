@@ -157,10 +157,12 @@ void Kobuki::runnable()
       **********************/
       int n = serial.read(buf, packet_finder.numberOfDataToRead());
       if (n == 0) {
-        ROS_ERROR_STREAM("kobuki_node : no serial data in.");
+        sig_error.emit("kobuki_node : no serial data in.");
         continue;
       } else {
-        ROS_DEBUG_STREAM("kobuki_node : serial_read(" << n << ")");
+        std::ostringstream ostream;
+        ostream << "kobuki_node : serial_read(" << n << ")";
+        sig_debug.emit(ostream.str());
         // might be useful to send this to a topic if there is subscribers
 //        static unsigned char last_char(buf[0]);
 //        for( int i(0); i<n; i++ )

@@ -1,7 +1,7 @@
 unison:
   ubuntu: unison unison-gtk
   gentoo: net-misc/unison
-ftdi:
+libftdi-dev:
   ubuntu: libftdi-dev
   gentoo: dev-embedded/libftdi
 ftdi-eeprom:

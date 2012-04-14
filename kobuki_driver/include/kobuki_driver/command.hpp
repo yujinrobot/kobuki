@@ -118,28 +118,10 @@ public:
     return true;
   }
 
-  bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
-  {
-    if (!(byteStream.size() > 0))
-    {
-      //ROS_WARN_STREAM("kobuki_node: kobuki_command: deserialise failed. empty byte stream.");
-      return false;
-    }
-    return true;
-
-    //showMe();
-    return constrain();
-  }
-
-  bool constrain()
-  {
-    return true;
-  }
-
-  void showMe()
-  {
-    //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, acc[2], acc[1], acc[0] );
-  }
+  /**
+   * Unused.
+   */
+  bool deserialise(ecl::PushAndPop<unsigned char> & byteStream) { return true; }
 };
 
 } // namespace kobuki

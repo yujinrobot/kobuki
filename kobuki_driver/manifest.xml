@@ -18,10 +18,6 @@
   <depend package="ecl_sigslots"/>
   <depend package="ecl_time"/>
   
-  <!-- **** These have to disappear **** -->
-  <depend package="roscpp"/>
-  <depend package="kobuki_comms"/>
-  
   <export>
     <cpp cflags="-I${prefix}/include" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lkobuki"/>
   </export>

@@ -1,9 +1,7 @@
 /**
- * @file /ftdi/src/utils/ftdi_scan_id.cpp
+ * @file src/ftdi_scan.cpp
  *
  * @brief Scan existing ftdi chips and print out their serial id strings.
- *
- * @date August 2010
  **/
 
 /*****************************************************************************

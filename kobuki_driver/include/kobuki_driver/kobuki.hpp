@@ -17,7 +17,6 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include <ros/ros.h>
 #include <boost/shared_ptr.hpp>
 #include <ecl/threads.hpp>
 #include <ecl/devices.hpp>

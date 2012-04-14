@@ -60,7 +60,6 @@ public:
    */
   virtual bool serialise(ecl::PushAndPop<unsigned char> & byteStream)=0;
   virtual bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)=0;
-  virtual bool constrain() { return true; }
 
   // utilities
   // todo; let's put more useful converters here. Or we may use generic converters
