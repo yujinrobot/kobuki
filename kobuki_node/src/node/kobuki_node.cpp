@@ -82,13 +82,13 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   /*********************
    ** Sigslots
    **********************/
-  slot_wheel_state.connect(name + std::string("/joint_state"));
-  slot_core_sensors.connect(name + std::string("/core_sensors"));
-  slot_inertia.connect(name + std::string("/inertia"));
-  slot_cliff.connect(name + std::string("/cliff"));
-  slot_current.connect(name + std::string("/current"));
+  slot_wheel_state.connect(name + std::string("/stream_data"));
+  slot_core_sensors.connect(name + std::string("/stream_data"));
+  slot_inertia.connect(name + std::string("/stream_data"));
+  slot_cliff.connect(name + std::string("/stream_data"));
+  slot_current.connect(name + std::string("/stream_data"));
+  slot_gp_input.connect(name + std::string("/stream_data"));
   slot_version_info.connect(name + std::string("/version_info"));
-  slot_gp_input.connect(name + std::string("/gp_input"));
 
   slot_debug.connect(name + std::string("/ros_debug"));
   slot_info.connect(name + std::string("/ros_info"));

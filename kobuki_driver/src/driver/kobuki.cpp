@@ -68,17 +68,9 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
     is_connected = true;
   }
 
-  sig_wheel_state.connect(sigslots_namespace + std::string("/joint_state"));
-  sig_core_sensors.connect(sigslots_namespace + std::string("/core_sensors"));
-  //sig_serial_timeout.connect(sigslots_namespace+std::string("/serial_timeout"));
-
-  sig_dock_ir.connect(sigslots_namespace + std::string("/dock_ir"));
-  sig_inertia.connect(sigslots_namespace + std::string("/inertia"));
-  sig_cliff.connect(sigslots_namespace + std::string("/cliff"));
-  sig_current.connect(sigslots_namespace + std::string("/current"));
-  sig_gp_input.connect(sigslots_namespace + std::string("/gp_input"));
-
   sig_version_info.connect(sigslots_namespace + std::string("/version_info"));
+  sig_stream_data.connect(sigslots_namespace + std::string("/stream_data"));
+  //sig_serial_timeout.connect(sigslots_namespace+std::string("/serial_timeout"));
 
   sig_debug.connect(sigslots_namespace + std::string("/ros_debug"));
   sig_info.connect(sigslots_namespace + std::string("/ros_info"));
@@ -152,8 +144,9 @@ void Kobuki::runnable()
     if ( is_simulation ) {
       simulation.update();
       simulation.sleep();
-      sig_wheel_state.emit();
-      sig_inertia.emit();
+      sig_stream_data.emit();
+//      sig_wheel_state.emit();
+//      sig_inertia.emit();
     } else {
       /*********************
       ** Read Incoming
@@ -196,63 +189,51 @@ void Kobuki::runnable()
         data_buffer.pop_front();
         data_buffer.pop_front();
 
-        if (protocol_version == "2.0")
+        while (data_buffer.size() > 1/*size of etx*/)
         {
-          while (data_buffer.size() > 1/*size of etx*/)
+          // std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
+          // std::cout << "remains: " << data_buffer.size() << " | ";
+          switch (data_buffer[0])
           {
-            // std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
-            // std::cout << "remains: " << data_buffer.size() << " | ";
-            switch (data_buffer[0])
-            {
-              // these come with the streamed feedback
-              case Header::CoreSensors:
-                core_sensors.deserialise(data_buffer);
-                sig_core_sensors.emit();
-                sig_wheel_state.emit();
-                break;
-              case Header::DockInfraRed:
-                dock_ir.deserialise(data_buffer);
-                sig_dock_ir.emit();
-                break;
-              case Header::Inertia:
-                inertia.deserialise(data_buffer);
-                sig_inertia.emit();
-                break;
-              case Header::Cliff:
-                cliff.deserialise(data_buffer);
-                sig_cliff.emit();
-                break;
-              case Header::Current:
-                current.deserialise(data_buffer);
-                sig_current.emit();
-                break;
-              case Header::GpInput:
-                gp_input.deserialise(data_buffer);
-                sig_gp_input.emit();
-                break;
-              // the rest are services
-              case Header::Hardware:
-                hardware.deserialise(data_buffer);
-                sig_version_info.emit();
-                break;
-              case Header::Firmware:
-                firmware.deserialise(data_buffer);
-                sig_version_info.emit();
-                break;
-              default:
-                std::cout << "unexpected case reached. flushing current buffer." << std::endl;
-                data_buffer.clear();
-                break;
-            }
+            // these come with the streamed feedback
+            case Header::CoreSensors:
+              core_sensors.deserialise(data_buffer);
+              break;
+            case Header::DockInfraRed:
+              dock_ir.deserialise(data_buffer);
+              break;
+            case Header::Inertia:
+              inertia.deserialise(data_buffer);
+              break;
+            case Header::Cliff:
+              cliff.deserialise(data_buffer);
+              break;
+            case Header::Current:
+              current.deserialise(data_buffer);
+              break;
+            case Header::GpInput:
+              gp_input.deserialise(data_buffer);
+              break;
+            // the rest are only included on request
+            case Header::Hardware:
+              hardware.deserialise(data_buffer);
+              sig_version_info.emit();
+              break;
+            case Header::Firmware:
+              firmware.deserialise(data_buffer);
+              sig_version_info.emit();
+              break;
+            default:
+              std::cout << "unexpected case reached. flushing current buffer." << std::endl;
+              data_buffer.clear();
+              break;
           }
         }
         get_packet = true;
+        sig_stream_data.emit();
+        sendBaseControlCommand(); // send the command packet to mainboard;
       }
     }
-
-    if (get_packet) {
-      sendBaseControlCommand();
-    } // send the command packet to mainboard;
   }
 }
 
