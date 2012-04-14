@@ -211,7 +211,8 @@ private:
   PacketFinder::BufferType data_buffer;
   ecl::PushAndPop<unsigned char> command_buffer;
 
-  ecl::Signal<> sig_stream_data, sig_version_info;
+  ecl::Signal<> sig_stream_data;
+  ecl::Signal<const VersionInfo&> sig_version_info;
   ecl::Signal<const std::string&> sig_debug, sig_info, sig_warn, sig_error;
 
   boost::shared_ptr<ecl::DifferentialDrive::Kinematics> kinematics;

@@ -246,11 +246,11 @@ void Kobuki::spin()
             // the rest are only included on request
             case Header::Hardware:
               hardware.deserialise(data_buffer);
-              sig_version_info.emit();
+              sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
               break;
             case Header::Firmware:
               firmware.deserialise(data_buffer);
-              sig_version_info.emit();
+              sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
               break;
             default:
               std::cout << "unexpected case reached. flushing current buffer." << std::endl;

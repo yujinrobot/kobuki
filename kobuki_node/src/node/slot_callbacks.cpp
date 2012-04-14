@@ -247,11 +247,10 @@ void KobukiNode::publishGpInputData()
  * The driver will only gather this data when initialising so it is
  * important that this publisher is latched.
  */
-void KobukiNode::publishVersionInfo()
+void KobukiNode::publishVersionInfo(const VersionInfo &version_info)
 {
   if (ros::ok())
   {
-    VersionInfo version_info = kobuki.versionInfo();
     kobuki_comms::VersionInfo msg;
     msg.firmware = version_info.firmware;
     msg.hardware = version_info.hardware;

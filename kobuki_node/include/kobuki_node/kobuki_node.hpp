@@ -120,7 +120,8 @@ private:
   ros::Subscriber velocity_command_subscriber, led_command_subscriber, reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
 
-  ecl::Slot<> slot_stream_data, slot_version_info;
+  ecl::Slot<> slot_stream_data;
+  ecl::Slot<const VersionInfo&> slot_version_info;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
   tf::TransformBroadcaster odom_broadcaster;
   sensor_msgs::JointState joint_states;
@@ -134,7 +135,7 @@ private:
   void publishInertia();
   void publishCliffData();
   void publishCurrentData();
-  void publishVersionInfo();
+  void publishVersionInfo(const VersionInfo &version_info);
   void publishGpInputData();
   void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
   void subscribeLedCommand(const kobuki_comms::LedArrayConstPtr);
