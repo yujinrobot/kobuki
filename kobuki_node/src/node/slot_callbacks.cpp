@@ -64,8 +64,7 @@ void KobukiNode::publishSensorState()
   if ( ros::ok() ) {
     if (sensor_state_publisher.getNumSubscribers() > 0) {
       kobuki_comms::SensorState state;
-      CoreSensors::Data data;
-      kobuki.getCoreSensorData(data);
+      CoreSensors::Data data = kobuki.getCoreSensorData();
       state.header.stamp = ros::Time::now();
       state.time_stamp = data.time_stamp; // firmware time stamp
       state.bump = data.bump;
@@ -79,16 +78,13 @@ void KobukiNode::publishSensorState()
       state.charger = data.charger;
       state.battery = data.battery;
 
-      Cliff::Data cliff_data;
-      kobuki.getCliffData(cliff_data);
+      Cliff::Data cliff_data = kobuki.getCliffData();
       state.bottom = cliff_data.bottom;
 
-      Current::Data current_data;
-      kobuki.getCurrentData(current_data);
+      Current::Data current_data = kobuki.getCurrentData();
       state.current = current_data.current;
 
-      GpInput::Data gp_input_data;
-      kobuki.getGpInputData(gp_input_data);
+      GpInput::Data gp_input_data = kobuki.getGpInputData();
       state.gp_input = gp_input_data.gp_input;
 
       sensor_state_publisher.publish(state);

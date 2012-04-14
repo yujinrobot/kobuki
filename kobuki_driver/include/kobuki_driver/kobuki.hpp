@@ -42,30 +42,17 @@
  ** Includes
  *****************************************************************************/
 
-#include <iostream>
 #include <string>
-#include <algorithm>
-#include <boost/shared_ptr.hpp>
 #include <ecl/threads.hpp>
 #include <ecl/devices.hpp>
-#include <ecl/time.hpp>
-#include <ecl/mobile_robot.hpp>
 #include <ecl/exceptions/standard_exception.hpp>
 #include "version_info.hpp"
 #include "parameters.hpp"
 #include "event_manager.hpp"
 #include "command.hpp"
 #include "simulation.hpp"
-#include "modules/battery.hpp"
-#include "modules/led_array.hpp"
-#include "packets/cliff.hpp"
-#include "packets/core_sensors.hpp"
-#include "packets/current.hpp"
-#include "packets/gp_input.hpp"
-#include "packets/inertia.hpp"
-#include "packets/dock_ir.hpp"
-#include "packets/firmware.hpp"
-#include "packets/hardware.hpp"
+#include "modules/modules.hpp"
+#include "packets/packets.hpp"
 #include "packet_handler/packet_finder.hpp"
 
 /*****************************************************************************
@@ -133,11 +120,11 @@ public:
   /******************************************
   ** Raw Data Api
   *******************************************/
-  void getCoreSensorData(CoreSensors::Data&) const;
-  void getDockIRData(DockIR::Data&) const;
-  void getCliffData(Cliff::Data&) const;
-  void getCurrentData(Current::Data&) const;
-  void getGpInputData(GpInput::Data&) const;
+  CoreSensors::Data getCoreSensorData() const { return core_sensors.data; }
+  DockIR::Data getDockIRData() const { return dock_ir.data; }
+  Cliff::Data getCliffData() const { return cliff.data; }
+  Current::Data getCurrentData() const { return current.data; }
+  GpInput::Data getGpInputData() const { return gp_input.data; }
 
   /*********************
   ** Feedback
@@ -170,21 +157,7 @@ private:
   /*********************
   ** Odometry
   **********************/
-  unsigned short last_timestamp;
-  double last_velocity_left, last_velocity_right;
-  double last_diff_time;
-
-  unsigned short last_tick_left, last_tick_right;
-  double last_rad_left, last_rad_right;
-  double last_mm_left, last_mm_right;
-
-  short v, w;
-  short radius;
-  short speed;
-  double bias; //wheelbase, wheel_to_wheel, in [m]
-  double wheel_radius;
-  int imu_heading_offset;
-  const double tick_to_mm, tick_to_rad;
+  DiffDrive diff_drive;
 
   bool is_enabled;
 
@@ -221,7 +194,6 @@ private:
   ecl::Signal<const VersionInfo&> sig_version_info;
   ecl::Signal<const std::string&> sig_debug, sig_info, sig_warn, sig_error;
 
-  boost::shared_ptr<ecl::DifferentialDrive::Kinematics> kinematics;
 };
 
 } // namespace kobuki

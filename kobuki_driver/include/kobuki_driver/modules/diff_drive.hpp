@@ -27,20 +27,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /**
- * @file /kobuki_driver/src/driver/battery.cpp
+ * @file /kobuki_driver/include/kobuki_driver/modules/diff_drive.hpp
  *
- * @brief File comment
+ * @brief Simple module for the diff drive odometry.
  *
- * File comment
- *
- * @date 15/04/2012
  **/
+/*****************************************************************************
+** Ifdefs
+*****************************************************************************/
+
+#ifndef KOBUKI_DIFF_DRIVE_HPP_
+#define KOBUKI_DIFF_DRIVE_HPP_
 
 /*****************************************************************************
 ** Includes
 *****************************************************************************/
 
-#include "../../include/kobuki_driver/modules/battery.hpp"
+#include <stdint.h>
+#include <boost/shared_ptr.hpp>
+#include <ecl/mobile_robot.hpp>
 
 /*****************************************************************************
 ** Namespaces
@@ -49,28 +54,49 @@
 namespace kobuki {
 
 /*****************************************************************************
-** Statics
+** Interfaces
 *****************************************************************************/
 
-uint8_t Battery::capacity = 170;
+class DiffDrive {
+public:
+  DiffDrive();
+  void init();
+  boost::shared_ptr<ecl::DifferentialDrive::Kinematics> kinematics() { return diff_drive_kinematics; }
+  void update(const uint16_t &time_stamp,
+              const uint16_t &left_encoder,
+              const uint16_t &right_encoder,
+              ecl::Pose2D<double> &pose_update,
+              ecl::linear_algebra::Vector3d &pose_update_rates);
+  void reset(const double& current_heading);
+  void getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
+                            double &wheel_right_angle, double &wheel_right_angle_rate) const;
+  void velocityCommands(const double &vx, const double &wz);
+  void velocityCommands(const short &cmd_speed, const short &cmd_radius);
+  std::vector<short> velocityCommands() const;
+  double wheel_bias() const { return bias; }
+  double m_to_rad() const { return 1000 * tick_to_rad / tick_to_mm; }
 
-/*****************************************************************************
-** Implementation
-*****************************************************************************/
+private:
+  unsigned short last_timestamp;
+  double last_velocity_left, last_velocity_right;
+  double last_diff_time;
 
-Battery::Battery (const uint8_t &new_voltage, const uint8_t &charger_flag) :
-  voltage(new_voltage)
-{
-  if ( charger_flag & CoreSensors::Flags::Adapter ) {
-    charging_source = Adapter;
-  } else if ( charger_flag & CoreSensors::Flags::Dock ) {
-    charging_source = Dock;
-  } else {
-    charging_source = None;
-  }
-  // add a check here to modify the capacity if the incoming charger flag
-  // is set to Adapter or dock, and the flag also indicates that it is maxed
-  // i.e. set capacity == voltage_level in this case
+  unsigned short last_tick_left, last_tick_right;
+  double last_rad_left, last_rad_right;
+  double last_mm_left, last_mm_right;
+
+  short v, w;
+  short radius;
+  short speed;
+  double bias; //wheelbase, wheel_to_wheel, in [m]
+  double wheel_radius;
+  int imu_heading_offset;
+  const double tick_to_mm, tick_to_rad;
+
+  boost::shared_ptr<ecl::DifferentialDrive::Kinematics> diff_drive_kinematics;
+
 };
 
 } // namespace kobuki
+
+#endif /* KOBUKI_DIFF_DRIVE_HPP_ */

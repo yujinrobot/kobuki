@@ -75,9 +75,6 @@ bool PacketFinder::checkSum()
 
 Kobuki::Kobuki() :
   shutdown_requested(false),
-  last_velocity_left(0.0),
-  last_velocity_right(0.0),
-  tick_to_mm(0.0845813406577f), tick_to_rad(0.00201384144460884f),
   is_enabled(false)
 {}
 
@@ -124,30 +121,11 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_error.connect(sigslots_namespace + std::string("/ros_error"));
 
 
-  /******************************************
-   ** Configuration & Connection Test
-   *******************************************/
-
-  last_tick_left = 0;
-  last_tick_right = 0;
-  last_rad_left = 0.0;
-  last_rad_right = 0.0;
-  last_mm_left = 0.0;
-  last_mm_right = 0.0;
-
-  v = 0;
-  w = 0;
-  radius = 0;
-  speed = 0;
-  bias = 0.298; //wheelbase, wheel_to_wheel, in [m]
-  wheel_radius = 0.042;
-  imu_heading_offset = 0;
-
-  kinematics.reset(new ecl::DifferentialDrive::Kinematics(bias, wheel_radius));
-
+  diff_drive.init();
   if (  parameters.simulation ) {
-    simulation.init(bias, 1000 * tick_to_rad / tick_to_mm); // bias, metres to radians
+    simulation.init(diff_drive.wheel_bias(), diff_drive.m_to_rad()); // bias, metres to radians
   }
+
   /******************************************
   ** Get Version Info Commands
   *******************************************/
@@ -307,22 +285,11 @@ double Kobuki::getAngularVelocity() const {
 ** Implementation [Raw Data Accessors]
 *****************************************************************************/
 
-void Kobuki::getCoreSensorData(CoreSensors::Data &sensor_data) const { sensor_data = core_sensors.data; }
-void Kobuki::getDockIRData(DockIR::Data &data) const { data = dock_ir.data; }
-void Kobuki::getCliffData(Cliff::Data &data) const { data = cliff.data; }
-void Kobuki::getCurrentData(Current::Data &data) const { data = current.data; }
-void Kobuki::getGpInputData(GpInput::Data &data) const { data = gp_input.data; }
-
 void Kobuki::resetOdometry() {
   if ( simulation() ) {
     simulation.reset();
   }
-  last_rad_left = 0.0;
-  last_rad_right = 0.0;
-  last_velocity_left = 0.0;
-  last_velocity_right = 0.0;
-
-  imu_heading_offset = inertia.data.angle;
+  diff_drive.reset(inertia.data.angle);
 }
 
 void Kobuki::getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
@@ -334,90 +301,35 @@ void Kobuki::getWheelJointStates(double &wheel_left_angle, double &wheel_left_an
     wheel_left_angle_rate = simulation.left_wheel_angle_rate;
     wheel_right_angle_rate = simulation.right_wheel_angle_rate;
   } else {
-    wheel_left_angle = last_rad_left;
-    wheel_right_angle = last_rad_right;
-    wheel_left_angle_rate = last_velocity_left;
-    wheel_right_angle_rate = last_velocity_right;
+    diff_drive.getWheelJointStates(wheel_left_angle, wheel_left_angle_rate, wheel_right_angle, wheel_right_angle_rate);
   }
 }
 void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update,
                             ecl::linear_algebra::Vector3d &pose_update_rates) {
   if ( simulation() ) {
-    pose_update = kinematics->forward(simulation.left_wheel_angle_update, simulation.right_wheel_angle_update);
+    pose_update = diff_drive.kinematics()->forward(simulation.left_wheel_angle_update, simulation.right_wheel_angle_update);
     // should add pose_update_rates here as well.
   } else {
-    static bool init_l = false;
-    static bool init_r = false;
-    double left_diff_ticks = 0.0f;
-    double right_diff_ticks = 0.0f;
-    unsigned short curr_tick_left = 0;
-    unsigned short curr_tick_right = 0;
-    unsigned short curr_timestamp = 0;
-    curr_timestamp = core_sensors.data.time_stamp;
-    curr_tick_left = core_sensors.data.left_encoder;
-    if (!init_l)
-    {
-      last_tick_left = curr_tick_left;
-      init_l = true;
-    }
-    left_diff_ticks = (double)(short)((curr_tick_left - last_tick_left) & 0xffff);
-    last_tick_left = curr_tick_left;
-    last_rad_left += tick_to_rad * left_diff_ticks;
-    last_mm_left += tick_to_mm / 1000.0f * left_diff_ticks;
-
-    curr_tick_right = core_sensors.data.right_encoder;
-    if (!init_r)
-    {
-      last_tick_right = curr_tick_right;
-      init_r = true;
-    }
-    right_diff_ticks = (double)(short)((curr_tick_right - last_tick_right) & 0xffff);
-    last_tick_right = curr_tick_right;
-    last_rad_right += tick_to_rad * right_diff_ticks;
-    last_mm_right += tick_to_mm / 1000.0f * right_diff_ticks;
-
-    // TODO this line and the last statements are really ugly; refactor, put in another place
-    pose_update = kinematics->forward(tick_to_rad * left_diff_ticks, tick_to_rad * right_diff_ticks);
-
-    if (curr_timestamp != last_timestamp)
-    {
-      last_diff_time = ((double)(short)((curr_timestamp - last_timestamp) & 0xffff)) / 1000.0f;
-      last_timestamp = curr_timestamp;
-      last_velocity_left = (tick_to_rad * left_diff_ticks) / last_diff_time;
-      last_velocity_right = (tick_to_rad * right_diff_ticks) / last_diff_time;
-    } else {
-      // we need to set the last_velocity_xxx to zero?
-    }
-
-    pose_update_rates << pose_update.x()/last_diff_time,
-                         pose_update.y()/last_diff_time,
-                         pose_update.heading()/last_diff_time;
+    diff_drive.update(core_sensors.data.time_stamp, core_sensors.data.left_encoder, core_sensors.data.right_encoder,
+                    pose_update, pose_update_rates);
   }
 }
 
 /*****************************************************************************
 ** Commands
 *****************************************************************************/
+
 void Kobuki::toggleLed(const enum LedNumber &number, const enum LedColour &colour) {
   sendCommand(Command::SetLedArray(number,colour,kobuki_command.data));
 }
 
 void Kobuki::setBaseControlCommand(double vx, double wz)
 {
-  if (wz == 0.0f)
-    radius = 0;
-  else if (vx == 0.0f && wz > 0.0f)
-    radius = 1;
-  else if (vx == 0.0f && wz < 0.0f)
-    radius = -1;
-  else
-    radius = (short)(vx * 1000.0f / wz);
-
-  speed = (short)(1000.0f * std::max(vx + bias * wz / 2.0f, vx - bias * wz / 2.0f));
-
   if ( simulation() ) {
     simulation.velocity = vx;
     simulation.angular_velocity = wz;
+  } else {
+    diff_drive.velocityCommands(vx, wz);
   }
 }
 
@@ -429,8 +341,9 @@ void Kobuki::sendBaseControlCommand()
     unsigned char cs(0);
 
     union_sint16 union_speed, union_radius;
-    union_speed.word = speed;
-    union_radius.word = radius;
+    std::vector<short> velocity_commands = diff_drive.velocityCommands();
+    union_speed.word = velocity_commands[0]; // speed
+    union_radius.word = velocity_commands[1]; // radius
 
     cmd[4] = union_speed.byte[0];
     cmd[5] = union_speed.byte[1];
@@ -478,8 +391,8 @@ void Kobuki::sendCommand(Command command)
 
     if (command.data.command == Command::BaseControl)
     {
-      radius = command.data.radius;
-      speed = command.data.speed;
+      diff_drive.velocityCommands(command.data.speed, command.data.radius);
+      sendBaseControlCommand();
     }
   }
 }

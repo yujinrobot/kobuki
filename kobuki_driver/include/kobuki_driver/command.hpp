@@ -78,8 +78,8 @@ public:
     Name command;
 
     // BaseControl
-    uint16_t speed;
-    uint16_t radius;
+    int16_t speed;
+    int16_t radius;
 
     // Sound
     uint16_t note;
