@@ -1,8 +1,0 @@
-<launch>
-    <node pkg="nodelet" type="nodelet" name="kobuki_ros_node" args="standalone kobuki_ros_node/KobukiNodelet" output="screen">
-        <!-- 
-        <remap from="cruizcore/mobile_base_gyro" to="/mobile_base_gyro"/>
-        -->
-        <rosparam file="$(find kobuki_ros_node)/resources/yaml/buster_2_0.yaml" command="load"/>
-    </node>
-</launch>

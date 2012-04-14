@@ -73,7 +73,6 @@ KobukiNode::~KobukiNode()
 
 bool KobukiNode::init(ros::NodeHandle& nh)
 {
-
   /*********************
    ** Communications
    **********************/
@@ -217,7 +216,7 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   return true;
 }
 
-bool KobukiNode::spin(ros::NodeHandle& nh)
+bool KobukiNode::spin()
 {
   ros::Rate loop_rate(10); // 100ms - cmd_vel_timeout should be greater than this
 
@@ -254,12 +253,12 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   /*********************
   ** Kobuki Esoterics
   **********************/
-  core_sensor_data_publisher = nh.advertise < kobuki_comms::CoreSensors > ("core_sensors", 100);
-  imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("imu_data", 100);
-  cliff_data_publisher = nh.advertise < kobuki_comms::Cliff > ("cliff_data", 100);
-  current_data_publisher = nh.advertise < kobuki_comms::Current > ("current_data", 100);
   version_info_publisher = nh.advertise < kobuki_comms::VersionInfo > ("version_info", 100, true); // latched publisher
-  gp_input_data_publisher = nh.advertise < kobuki_comms::GpInput > ("gp_inputs", 100);
+  core_sensor_data_publisher = nh.advertise < kobuki_comms::CoreSensors > ("sensors/core", 100);
+  cliff_sensor_publisher = nh.advertise < kobuki_comms::Cliff > ("sensors/cliff", 100);
+  current_sensor_publisher = nh.advertise < kobuki_comms::Current > ("sensors/current", 100);
+  gp_input_data_publisher = nh.advertise < kobuki_comms::GpInput > ("sensors/gp_inputs", 100);
+  imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("imu_data", 100);
   button_events_publisher = nh.advertise < kobuki_comms::ButtonEvent > ("button_events", 100);
 }
 

@@ -157,14 +157,14 @@ void KobukiNode::publishCliffData()
 {
   if (ros::ok())
   {
-    if (cliff_data_publisher.getNumSubscribers() > 0)
+    if (cliff_sensor_publisher.getNumSubscribers() > 0)
     {
       Cliff::Data data;
       kobuki.getCliffData(data);
       kobuki_comms::Cliff ros_data;
       ros_data.header.stamp = ros::Time::now();
       ros_data.bottom = data.bottom;
-      cliff_data_publisher.publish(ros_data);
+      cliff_sensor_publisher.publish(ros_data);
       //std::cout << __func__ << std::endl;
     }
   }
@@ -174,14 +174,14 @@ void KobukiNode::publishCurrentData()
 {
   if (ros::ok())
   {
-    if (current_data_publisher.getNumSubscribers() > 0)
+    if (current_sensor_publisher.getNumSubscribers() > 0)
     {
       Current::Data data;
       kobuki.getCurrentData(data);
       kobuki_comms::Current ros_data;
       ros_data.header.stamp = ros::Time::now();
       ros_data.current = data.current;
-      current_data_publisher.publish(ros_data);
+      current_sensor_publisher.publish(ros_data);
       //std::cout << __func__ << std::endl;
     }
   }

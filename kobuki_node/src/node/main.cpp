@@ -22,12 +22,12 @@
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "kobuki");
-  ros::NodeHandle nh_private("~");
+  ros::NodeHandle nh("~");
   std::string node_name = ros::this_node::getName();
   kobuki::KobukiNode kobuki_node(node_name);
-  if (kobuki_node.init(nh_private))
+  if (kobuki_node.init(nh))
   {
-    kobuki_node.spin(nh_private);
+    kobuki_node.spin();
   }
   else
   {

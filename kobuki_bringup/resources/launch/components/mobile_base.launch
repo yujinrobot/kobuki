@@ -1,21 +1,26 @@
 <!--
   The mobile platform base.
   
-  This can be used for both simulation and the robot by making sure the simulation arg is set
-  true or false respectively.
+  This can be used for both simulation and the robot by making sure the 
+  simulation arg is set true or false respectively.
+  
+  We use this to move kobuki driver public topics/services out from their 
+  private namespace (maybe should do that in kobuki_node itself?)
  -->
 <launch>
     <arg name="simulation" default="false"/>
-    <node pkg="kobuki_node" type="kobuki_node" name="driver" output="screen">
+    <node pkg="kobuki_node" type="kobuki_node" name="mobile_base" output="screen">
 	    <rosparam file="$(find kobuki_bringup)/resources/yaml/kobuki.yaml" command="load"/>
 	    <param name="simulation" value="$(arg simulation)"/>
-	    <remap from="driver/odom" to="odom"/>
-	    <remap from="driver/imu_data" to="imu_data"/>
-	    <remap from="driver/cmd_vel" to="cmd_vel"/>
-	    <remap from="driver/enable" to="enable"/>
-	    <remap from="driver/disable" to="disable"/>
-	    <remap from="driver/joint_states" to="joint_states"/>
-        <remap from="driver/reset_odometry" to="reset_odometry"/>
+	    <remap from="mobile_base/odom" to="odom"/>
+	    <remap from="mobile_base/imu_data" to="imu_data"/>
+	    <remap from="mobile_base/cmd_vel" to="cmd_vel"/>
+	    <remap from="mobile_base/enable" to="enable"/>
+	    <remap from="mobile_base/disable" to="disable"/>
+	    <remap from="mobile_base/joint_states" to="joint_states"/>
+        <remap from="mobile_base/reset_odometry" to="reset_odometry"/>
+        <remap from="mobile_base/" to="mobile_base/sensors/"/>
+        <remap from="mobile_base/" to="mobile_base/sensors/"/>
     </node>
     <!-- The odometry estimator -->
     <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf">
