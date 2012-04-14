@@ -76,11 +76,9 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_inertia.connect(sigslots_namespace + std::string("/inertia"));
   sig_cliff.connect(sigslots_namespace + std::string("/cliff"));
   sig_current.connect(sigslots_namespace + std::string("/current"));
-  sig_magnet.connect(sigslots_namespace + std::string("/magnet"));
-  sig_hw.connect(sigslots_namespace + std::string("/hw"));
-  sig_fw.connect(sigslots_namespace + std::string("/fw"));
-  sig_time.connect(sigslots_namespace + std::string("/time"));
   sig_gp_input.connect(sigslots_namespace + std::string("/gp_input"));
+
+  sig_version_info.connect(sigslots_namespace + std::string("/version_info"));
 
   sig_debug.connect(sigslots_namespace + std::string("/ros_debug"));
   sig_info.connect(sigslots_namespace + std::string("/ros_info"));
@@ -112,6 +110,11 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   if ( is_simulation ) {
     simulation.init(bias, 1000 * tick_to_rad / tick_to_mm); // bias, metres to radians
   }
+  /******************************************
+  ** Get Version Info Commands
+  *******************************************/
+  sendCommand(Command::GetVersionInfo());
+
   is_running = true;
   start();
 }
@@ -230,11 +233,11 @@ void Kobuki::runnable()
               // the rest are services
               case Header::Hardware:
                 hardware.deserialise(data_buffer);
-                sig_hw.emit();
+                sig_version_info.emit();
                 break;
               case Header::Firmware:
                 firmware.deserialise(data_buffer);
-                sig_fw.emit();
+                sig_version_info.emit();
                 break;
               default:
                 std::cout << "unexpected case reached. flushing current buffer." << std::endl;
@@ -251,19 +254,6 @@ void Kobuki::runnable()
       sendBaseControlCommand();
     } // send the command packet to mainboard;
   }
-}
-
-void Kobuki::getCoreSensorData(CoreSensors::Data &sensor_data)
-{
-  if (protocol_version == "2.0") {
-    sensor_data = core_sensors.data;
-  }
-}
-
-void Kobuki::getDockIRData(DockIR::Data &data)
-{
-  if (protocol_version == "2.0")
-    data = dock_ir.data;
 }
 
 ecl::Angle<double> Kobuki::getHeading() const {
@@ -286,11 +276,15 @@ double Kobuki::getAngularVelocity() const {
   }
 }
 
-void Kobuki::getCliffData(Cliff::Data &data) { data = cliff.data; }
-void Kobuki::getCurrentData(Current::Data &data) { data = current.data; }
-void Kobuki::getGpInputData(GpInput::Data &data) { data = gp_input.data; }
-void Kobuki::getHWData(Hardware::Data &data) { data = hardware.data; }
-void Kobuki::getFWData(Firmware::Data &data) { data = firmware.data; }
+/*****************************************************************************
+** Raw Data Accessors
+*****************************************************************************/
+
+void Kobuki::getCoreSensorData(CoreSensors::Data &sensor_data) const { sensor_data = core_sensors.data; }
+void Kobuki::getDockIRData(DockIR::Data &data) const { data = dock_ir.data; }
+void Kobuki::getCliffData(Cliff::Data &data) const { data = cliff.data; }
+void Kobuki::getCurrentData(Current::Data &data) const { data = current.data; }
+void Kobuki::getGpInputData(GpInput::Data &data) const { data = gp_input.data; }
 
 void Kobuki::resetOdometry() {
   if ( is_simulation ) {
@@ -378,10 +372,7 @@ void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update,
 ** Commands
 *****************************************************************************/
 void Kobuki::toggleLed(const enum LedNumber &number, const enum LedColour &colour) {
-  kobuki_command.update(number,colour);
-  Command outgoing = kobuki_command;
-  outgoing.data.command = Command::SetDigitalOut;
-  sendCommand(outgoing);
+  sendCommand(Command::SetLedArray(number,colour,kobuki_command.data));
 }
 
 void Kobuki::setBaseControlCommand(double vx, double wz)
@@ -430,7 +421,7 @@ void Kobuki::sendBaseControlCommand()
   }
 }
 
-void Kobuki::sendCommand(Command &command)
+void Kobuki::sendCommand(Command command)
 {
   if ( !is_simulation ) {
     command_buffer.clear();

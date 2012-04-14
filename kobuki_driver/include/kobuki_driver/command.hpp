@@ -22,11 +22,28 @@ public:
     SetDigitalOut = 12
   };
 
+  enum RequestExtraFlag {
+    HardwareVersion = 0x01,
+    FirmwareVersion = 0x02
+    // Time = 0x04
+  };
+
+  /**
+   * Data structure containing data for commands. It is important to keep this
+   * state as it will have to retain knowledge of the last known command in
+   * some instances - e.g. for gp_out commands, quite often the incoming command
+   * is only to set the output for a single led while keeping the rest of the current
+   * gp_out values as is.
+   *
+   * For generating individual commands we modify the data here, then copy the command
+   * class (avoid doing mutexes) and spin it off for sending down to the device.
+   */
   struct Data {
     Data() :
       command(BaseControl),
       speed(0),
       radius(0),
+      request_flags(0),
       gp_out(0x00f0) // set all the power pins high, others low.
     {}
 
@@ -54,16 +71,42 @@ public:
   };
 
   virtual ~Command() {}
-  void update(const enum LedNumber &number, const enum LedColour &colour) {
+
+  /******************************************
+  ** Command Wizards
+  *******************************************/
+  /**
+   * Update the gp_out bits and get ready for sending as a SetDigitalOut
+   * command.
+   *
+   * Important to overlay this on top of the existing gp_out configuration.
+   *
+   * @param number : led enumerated number
+   * @param colour : green, orange, red or black
+   */
+  static Command SetLedArray(const enum LedNumber &number, const enum LedColour &colour, Command::Data &current_data) {
     // gp_out is 16 bits
     uint16_t value;
     if ( number == Led1 ) {
       value = colour;  // defined with the correct bit specification.
-      data.gp_out = ( data.gp_out & 0xfcff ) | value; // update first
+      current_data.gp_out = ( current_data.gp_out & 0xfcff ) | value; // update first
     } else {
       value = colour << 2;
-      data.gp_out = ( data.gp_out & 0xf3ff ) | value; // update first
+      current_data.gp_out = ( current_data.gp_out & 0xf3ff ) | value; // update first
     }
+    Command outgoing;
+    outgoing.data = current_data;
+    outgoing.data.command = Command::SetDigitalOut;
+    return outgoing;
+  }
+
+  static Command GetVersionInfo() {
+    Command outgoing;
+    outgoing.data.request_flags = 0;
+    outgoing.data.request_flags |= static_cast<uint16_t>(HardwareVersion);
+    outgoing.data.request_flags |= static_cast<uint16_t>(FirmwareVersion);
+    outgoing.data.command = Command::RequestExtra;
+    return outgoing;
   }
 
   Data data;

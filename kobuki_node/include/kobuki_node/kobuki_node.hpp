@@ -34,8 +34,6 @@
 #include <kobuki_comms/CoreSensors.h>
 #include <kobuki_comms/Current.h>
 #include <kobuki_comms/GpInput.h>
-#include <kobuki_comms/Firmware.h>
-#include <kobuki_comms/Hardware.h>
 #include <kobuki_comms/LedArray.h>
 #include <kobuki_driver/kobuki.hpp>
 
@@ -63,29 +61,21 @@ private:
 
   void advertiseTopics(ros::NodeHandle& nh);
   void subscribeTopics(ros::NodeHandle& nh);
-
   void publishTransform(const geometry_msgs::Quaternion &odom_quat);
   void publishOdom(const geometry_msgs::Quaternion &odom_quat, const ecl::linear_algebra::Vector3d &pose_update_rates);
-
   bool serveResetOdometry(std_srvs::Empty::Request &request, std_srvs::Empty::Response &response);
 
   /*********************
    ** Variables
    **********************/
   std::string name; // name of the ROS node
-
   Kobuki kobuki;
-
   uint8_t buttons_state;
-
-  // Continuously published messages
   geometry_msgs::TransformStamped odom_trans;
   nav_msgs::Odometry odom;
   ecl::Pose2D<double> pose;
-
   const std::string wheel_left_name;
   const std::string wheel_right_name;
-
   std::string odom_frame;
   std::string base_frame;
   ros::Duration cmd_vel_timeout;
@@ -96,17 +86,15 @@ private:
    ** Ros Comms
    **********************/
   ros::ServiceServer reset_odometry_server;
-
   ros::Publisher imu_data_publisher,
-                 cliff_data_publisher, current_data_publisher, hw_data_publisher,
-                 fw_data_publisher,
+                 cliff_data_publisher, current_data_publisher, version_info_publisher,
                  gp_input_data_publisher, joint_state_publisher, odom_publisher,
                  core_sensor_data_publisher, button_events_publisher;
   ros::Subscriber velocity_command_subscriber, led_command_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
 
   ecl::Slot<> slot_wheel_state, slot_core_sensors,
-              slot_inertia, slot_cliff, slot_current, slot_hw, slot_fw,
+              slot_inertia, slot_cliff, slot_current, slot_version_info,
               slot_gp_input;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
   tf::TransformBroadcaster odom_broadcaster;
@@ -120,8 +108,7 @@ private:
   void publishInertiaData();
   void publishCliffData();
   void publishCurrentData();
-  void publishHWData();
-  void publishFWData();
+  void publishVersionInfo();
   void publishGpInputData();
   void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
   void subscribeLedCommand(const kobuki_comms::LedArrayConstPtr);

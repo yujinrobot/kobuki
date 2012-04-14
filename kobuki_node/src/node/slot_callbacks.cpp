@@ -10,8 +10,9 @@
 ** Includes
 *****************************************************************************/
 
-#include "kobuki_node/kobuki_node.hpp"
+#include <kobuki_comms/VersionInfo.h>
 #include <kobuki_driver/modules/gp_input.hpp>
+#include "kobuki_node/kobuki_node.hpp"
 
 /*****************************************************************************
  ** Namespaces
@@ -186,33 +187,16 @@ void KobukiNode::publishCurrentData()
   }
 }
 
-void KobukiNode::publishHWData()
+void KobukiNode::publishVersionInfo()
 {
   if (ros::ok())
   {
-    if (hw_data_publisher.getNumSubscribers() > 0)
-    {
-      Hardware::Data data;
-      kobuki.getHWData(data);
-      kobuki_comms::Hardware ros_data;
-      ros_data.version = data.version;
-      hw_data_publisher.publish(ros_data);
-    }
-  }
-}
-
-void KobukiNode::publishFWData()
-{
-  if (ros::ok())
-  {
-    if (fw_data_publisher.getNumSubscribers() > 0)
-    {
-      Firmware::Data data;
-      kobuki.getFWData(data);
-      kobuki_comms::Firmware ros_data;
-      ros_data.version = data.version;
-      fw_data_publisher.publish(ros_data);
-    }
+    VersionInfo version_info = kobuki.versionInfo();
+    kobuki_comms::VersionInfo msg;
+    msg.firmware = version_info.firmware;
+    msg.hardware = version_info.hardware;
+    msg.software = version_info.software;
+    version_info_publisher.publish(msg);
   }
 }
 

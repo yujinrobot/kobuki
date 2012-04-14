@@ -1,9 +1,7 @@
 /**
  * @file /kobuki_node/src/node/kobuki_node.cpp
  *
- * @brief ...
- *
- * @date 10/04/2012
+ * @brief Implementation for the ros kobuki node wrapper.
  **/
 
 /*****************************************************************************
@@ -12,8 +10,8 @@
 
 #include <float.h>
 #include <tf/tf.h>
-#include <pluginlib/class_list_macros.h>
 #include <ecl/streams/string_stream.hpp>
+#include <kobuki_comms/VersionInfo.h>
 #include "kobuki_node/kobuki_node.hpp"
 
 /*****************************************************************************
@@ -45,8 +43,7 @@ KobukiNode::KobukiNode(std::string& node_name) :
     slot_inertia(&KobukiNode::publishInertiaData, *this),
     slot_cliff(&KobukiNode::publishCliffData, *this),
     slot_current(&KobukiNode::publishCurrentData, *this),
-    slot_hw(&KobukiNode::publishHWData, *this),
-    slot_fw(&KobukiNode::publishFWData, *this),
+    slot_version_info(&KobukiNode::publishVersionInfo, *this),
     slot_gp_input(&KobukiNode::publishGpInputData, *this),
     slot_debug(&KobukiNode::rosDebug, *this),
     slot_info(&KobukiNode::rosInfo, *this),
@@ -93,8 +90,7 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   slot_inertia.connect(name + std::string("/inertia"));
   slot_cliff.connect(name + std::string("/cliff"));
   slot_current.connect(name + std::string("/current"));
-  slot_hw.connect(name + std::string("/hw"));
-  slot_fw.connect(name + std::string("/fw"));
+  slot_version_info.connect(name + std::string("/version_info"));
   slot_gp_input.connect(name + std::string("/gp_input"));
 
   slot_debug.connect(name + std::string("/ros_debug"));
@@ -225,7 +221,7 @@ bool KobukiNode::init(ros::NodeHandle& nh)
 
 bool KobukiNode::spin(ros::NodeHandle& nh)
 {
-  ros::Rate loop_rate(10);
+  ros::Rate loop_rate(10); // 100ms - cmd_vel_timeout should be greater than this
 
   while (ros::ok())
   {
@@ -234,7 +230,7 @@ bool KobukiNode::spin(ros::NodeHandle& nh)
       std_msgs::StringPtr msg;
       disable(msg);
 
-      ROS_DEBUG("No cmd_vel messages received within the last %.2f seconds; disable driver",
+      ROS_WARN("No cmd_vel messages received within the last %.2f seconds; disable driver",
                 cmd_vel_timeout.toSec());
     }
 
@@ -264,8 +260,7 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("imu_data", 100);
   cliff_data_publisher = nh.advertise < kobuki_comms::Cliff > ("cliff_data", 100);
   current_data_publisher = nh.advertise < kobuki_comms::Current > ("current_data", 100);
-  hw_data_publisher = nh.advertise < kobuki_comms::Hardware > ("hardware_version", 100);
-  fw_data_publisher = nh.advertise < kobuki_comms::Firmware > ("firmware_version", 100);
+  version_info_publisher = nh.advertise < kobuki_comms::VersionInfo > ("version_info", 100, true); // latched publisher
   gp_input_data_publisher = nh.advertise < kobuki_comms::GpInput > ("gp_inputs", 100);
   button_events_publisher = nh.advertise < kobuki_comms::ButtonEvent > ("button_events", 100);
 }
