@@ -1,8 +1,4 @@
 # Kobuki Sensor Data Messages
-#
-uint8 F0 = 2  # bitmask 0x02
-uint8 F1 = 1  # bitmask 0x01
-uint8 F2 = 4  # bitmask 0x04
 
 Header header
 uint16 time_stamp

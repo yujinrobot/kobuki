@@ -60,14 +60,14 @@ namespace kobuki
  */
 KobukiNode::KobukiNode(std::string& node_name) :
     name(node_name),
-    buttons_state(0),
     wheel_left_name("wheel_left"),
     wheel_right_name("wheel_right"),
     odom_frame("odom"),
     base_frame("base_footprint"),
     publish_tf(false),
-    slot_stream_data(&KobukiNode::processStreamData, *this),
     slot_version_info(&KobukiNode::publishVersionInfo, *this),
+    slot_stream_data(&KobukiNode::processStreamData, *this),
+    slot_button_event(&KobukiNode::publishButtonEvent, *this),
     slot_debug(&KobukiNode::rosDebug, *this),
     slot_info(&KobukiNode::rosInfo, *this),
     slot_warn(&KobukiNode::rosWarn, *this),
@@ -104,6 +104,7 @@ bool KobukiNode::init(ros::NodeHandle& nh)
    **********************/
   slot_stream_data.connect(name + std::string("/stream_data"));
   slot_version_info.connect(name + std::string("/version_info"));
+  slot_button_event.connect(name + std::string("/button_event"));
   slot_debug.connect(name + std::string("/ros_debug"));
   slot_info.connect(name + std::string("/ros_info"));
   slot_warn.connect(name + std::string("/ros_warn"));
@@ -224,6 +225,8 @@ bool KobukiNode::init(ros::NodeHandle& nh)
 
 //  ecl::SigSlotsManager<>::printStatistics();
 //  ecl::SigSlotsManager<const std::string&>::printStatistics();
+//  ecl::SigSlotsManager<const VersionInfo&>::printStatistics();
+//  ecl::SigSlotsManager<const ButtonEvent&>::printStatistics();
 
   return true;
 }
@@ -266,12 +269,12 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   ** Kobuki Esoterics
   **********************/
   version_info_publisher = nh.advertise < kobuki_comms::VersionInfo > ("version_info", 100, true); // latched publisher
+  button_event_publisher = nh.advertise < kobuki_comms::ButtonEvent > ("events/buttons", 100);
   core_sensor_data_publisher = nh.advertise < kobuki_comms::CoreSensors > ("sensors/core", 100);
   cliff_sensor_publisher = nh.advertise < kobuki_comms::Cliff > ("sensors/cliff", 100);
   current_sensor_publisher = nh.advertise < kobuki_comms::Current > ("sensors/current", 100);
   gp_input_data_publisher = nh.advertise < kobuki_comms::GpInput > ("sensors/gp_inputs", 100);
   imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("sensors/imu_data", 100);
-  button_events_publisher = nh.advertise < kobuki_comms::ButtonEvent > ("events/buttons", 100);
 }
 
 /**

@@ -93,6 +93,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   protocol_version = parameters.protocol_version;
   is_simulation = parameters.simulation;
   std::string sigslots_namespace = parameters.sigslots_namespace;
+  event_manager.init(sigslots_namespace);
 
   if ( !is_simulation ) {
     serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
@@ -227,6 +228,7 @@ void Kobuki::spin()
             // these come with the streamed feedback
             case Header::CoreSensors:
               core_sensors.deserialise(data_buffer);
+              event_manager.update(core_sensors.data.buttons);
               break;
             case Header::DockInfraRed:
               dock_ir.deserialise(data_buffer);

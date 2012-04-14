@@ -51,8 +51,12 @@
 #include <ecl/time.hpp>
 #include <ecl/mobile_robot.hpp>
 #include <ecl/exceptions/standard_exception.hpp>
-#include "packet_handler/packet_finder.hpp"
+#include "version_info.hpp"
 #include "parameters.hpp"
+#include "event_manager.hpp"
+#include "command.hpp"
+#include "simulation.hpp"
+#include "led_array.hpp"
 #include "modules/cliff.hpp"
 #include "modules/core_sensors.hpp"
 #include "modules/current.hpp"
@@ -61,10 +65,7 @@
 #include "modules/dock_ir.hpp"
 #include "modules/firmware.hpp"
 #include "modules/hardware.hpp"
-#include "command.hpp"
-#include "simulation.hpp"
-#include "led_array.hpp"
-#include "version_info.hpp"
+#include "packet_handler/packet_finder.hpp"
 
 /*****************************************************************************
  ** Namespaces
@@ -204,6 +205,7 @@ private:
   Firmware firmware;
 
   Simulation simulation;
+  EventManager event_manager;
   Command kobuki_command;
 
   ecl::Serial serial;

@@ -8,5 +8,5 @@ uint8 F2 = 2
 uint8 Released = 0
 uint8 Pressed  = 1
 
-uint8 event
+uint8 state
 uint8 button

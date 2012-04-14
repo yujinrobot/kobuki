@@ -107,51 +107,6 @@ void KobukiNode::publishCoreSensors()
       ros_data.battery = data.battery;
       core_sensor_data_publisher.publish(ros_data);
     }
-
-    if (button_events_publisher.getNumSubscribers() > 0)
-    {
-      if (data.buttons != buttons_state)
-      {
-        kobuki_comms::ButtonEvent msg;
-
-        // Check changes in each button state's; event if this block of code
-        // supports it, two buttons cannot be pressed simultaneously
-        if ((data.buttons | buttons_state) & kobuki_comms::CoreSensors::F0) {
-          msg.button = kobuki_comms::ButtonEvent::F0;
-          if (data.buttons & kobuki_comms::CoreSensors::F0) {
-            msg.event = kobuki_comms::ButtonEvent::Pressed;
-          }
-          else {
-            msg.event = kobuki_comms::ButtonEvent::Released;
-          }
-          button_events_publisher.publish(msg);
-        }
-
-        if ((data.buttons | buttons_state) & kobuki_comms::CoreSensors::F1) {
-          msg.button = kobuki_comms::ButtonEvent::F1;
-          if (data.buttons & kobuki_comms::CoreSensors::F1) {
-            msg.event = kobuki_comms::ButtonEvent::Pressed;
-          }
-          else {
-            msg.event = kobuki_comms::ButtonEvent::Released;
-          }
-          button_events_publisher.publish(msg);
-        }
-
-        if ((data.buttons | buttons_state) & kobuki_comms::CoreSensors::F2) {
-          msg.button = kobuki_comms::ButtonEvent::F2;
-          if (data.buttons & kobuki_comms::CoreSensors::F2) {
-            msg.event = kobuki_comms::ButtonEvent::Pressed;
-          }
-          else {
-            msg.event = kobuki_comms::ButtonEvent::Released;
-          }
-          button_events_publisher.publish(msg);
-        }
-
-        buttons_state = data.buttons;
-      }
-    }
   }
 }
 
@@ -256,6 +211,33 @@ void KobukiNode::publishVersionInfo(const VersionInfo &version_info)
     msg.hardware = version_info.hardware;
     msg.software = version_info.software;
     version_info_publisher.publish(msg);
+  }
+}
+
+/*****************************************************************************
+** Events
+*****************************************************************************/
+
+/**
+ * @brief Publish button events.
+ */
+void KobukiNode::publishButtonEvent(const ButtonEvent &event)
+{
+  if (ros::ok())
+  {
+    kobuki_comms::ButtonEvent msg;
+    switch(event.state) {
+      case(ButtonEvent::Pressed) : { msg.state = kobuki_comms::ButtonEvent::Pressed; break; }
+      case(ButtonEvent::Released) : { msg.state = kobuki_comms::ButtonEvent::Released; break; }
+      default: break;
+    }
+    switch(event.button) {
+      case(ButtonEvent::F0) : { msg.button = kobuki_comms::ButtonEvent::F0; break; }
+      case(ButtonEvent::F1) : { msg.button = kobuki_comms::ButtonEvent::F1; break; }
+      case(ButtonEvent::F2) : { msg.button = kobuki_comms::ButtonEvent::F2; break; }
+      default: break;
+    }
+    button_event_publisher.publish(msg);
   }
 }
 

@@ -27,63 +27,78 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /**
- * @file /include/kobuki_driver/modules/core_sensors.hpp
+ * @file /kobuki_driver/src/driver/event_manager.cpp
  *
- * Module for handling of core sensor packet payloads.
- */
-/*****************************************************************************
-** Preprocessor
-*****************************************************************************/
-
-#ifndef KOBUKI_CORE_SENSORS_HPP__
-#define KOBUKI_CORE_SENSORS_HPP__
+ * @brief Implementation of the event black magic.
+ *
+ * @date 14/04/2012
+ **/
 
 /*****************************************************************************
-** Include
+** Includes
 *****************************************************************************/
 
-#include "../packet_handler/payload_base.hpp"
-#include <stdint.h>
+#include "../../include/kobuki_driver/event_manager.hpp"
+#include "../../include/kobuki_driver/modules/core_sensors.hpp"
 
 /*****************************************************************************
 ** Namespaces
 *****************************************************************************/
 
-namespace kobuki
-{
+namespace kobuki {
 
 /*****************************************************************************
-** Interface
+** Implementation
 *****************************************************************************/
 
-class CoreSensors : public packet_handler::payloadBase
-{
-public:
-  struct Data {
-    uint16_t time_stamp;
-    uint8_t bump;
-    uint8_t wheel_drop;
-    uint8_t cliff;
-    uint16_t left_encoder;
-    uint16_t right_encoder;
-    char left_pwm;
-    char right_pwm;
-    uint8_t buttons;
-    uint8_t charger;
-    uint8_t battery;
-  } data;
+void EventManager::init ( const std::string &sigslots_namespace ) {
+  sig_button_event.connect(sigslots_namespace + std::string("/button_event"));
+}
 
-  struct Flags {
-    // buttons
-    static const uint8_t F0 = 0x02;
-    static const uint8_t F1 = 0x01;
-    static const uint8_t F2 = 0x04;
-  };
+/**
+ * Update with incoming data and emit events if necessary.
+ * @param new_button_state
+ */
+void EventManager::update(const uint8_t &new_button_state) {
+  if (last_button_state != new_button_state)
+  {
+    // Note that the touch pad means at most one button can be pressed
+    // at a time.
+    ButtonEvent event;
+    // Check changes in each button state's; event if this block of code
+    // supports it, two buttons cannot be pressed simultaneously
+    if ((new_button_state | last_button_state) & CoreSensors::Flags::F0) {
+      event.button = ButtonEvent::F0;
+      if (new_button_state & CoreSensors::Flags::F0) {
+        event.state = ButtonEvent::Pressed;
+      } else {
+        event.state = ButtonEvent::Released;
+      }
+      sig_button_event.emit(event);
+    }
 
-  bool serialise(ecl::PushAndPop<unsigned char> & byteStream);
-  bool deserialise(ecl::PushAndPop<unsigned char> & byteStream);
-};
+    if ((new_button_state | last_button_state) & CoreSensors::Flags::F1) {
+      event.button = ButtonEvent::F1;
+      if (new_button_state & CoreSensors::Flags::F1) {
+        event.state = ButtonEvent::Pressed;
+      } else {
+        event.state = ButtonEvent::Released;
+      }
+      sig_button_event.emit(event);
+    }
+
+    if ((new_button_state | last_button_state) & CoreSensors::Flags::F2) {
+      event.button = ButtonEvent::F2;
+      if (new_button_state & CoreSensors::Flags::F2) {
+        event.state = ButtonEvent::Pressed;
+      } else {
+        event.state = ButtonEvent::Released;
+      }
+      sig_button_event.emit(event);
+    }
+    last_button_state = new_button_state;
+  }
+}
+
 
 } // namespace kobuki
-
-#endif /* KOBUKI_CORE_SENSORS_HPP__ */

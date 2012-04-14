@@ -97,7 +97,6 @@ private:
    **********************/
   std::string name; // name of the ROS node
   Kobuki kobuki;
-  uint8_t buttons_state;
   geometry_msgs::TransformStamped odom_trans;
   nav_msgs::Odometry odom;
   ecl::Pose2D<double> pose;
@@ -116,12 +115,13 @@ private:
                  cliff_sensor_publisher, current_sensor_publisher, version_info_publisher,
                  gp_input_data_publisher, joint_state_publisher, odom_publisher,
                  core_sensor_data_publisher;
-  ros::Publisher button_events_publisher;
+  ros::Publisher button_event_publisher;
   ros::Subscriber velocity_command_subscriber, led_command_subscriber, reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
 
-  ecl::Slot<> slot_stream_data;
   ecl::Slot<const VersionInfo&> slot_version_info;
+  ecl::Slot<> slot_stream_data;
+  ecl::Slot<const ButtonEvent&> slot_button_event;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
   tf::TransformBroadcaster odom_broadcaster;
   sensor_msgs::JointState joint_states;
@@ -136,6 +136,7 @@ private:
   void publishCliffData();
   void publishCurrentData();
   void publishVersionInfo(const VersionInfo &version_info);
+  void publishButtonEvent(const ButtonEvent &event);
   void publishGpInputData();
   void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
   void subscribeLedCommand(const kobuki_comms::LedArrayConstPtr);
