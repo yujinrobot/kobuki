@@ -44,6 +44,16 @@ bool PacketFinder::checkSum()
 /*****************************************************************************
  ** Implementation [Kobuki]
  *****************************************************************************/
+/**
+ * Shutdown the driver - make sure we wait for the thread to finish.
+ */
+Kobuki::~Kobuki()
+{
+  disable();
+  shutdown_requested = true; // thread's spin() will catch this and terminate
+  thread.join();
+  sig_debug.emit("Device: kobuki driver terminated.");
+}
 
 void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
 {
@@ -107,15 +117,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   *******************************************/
   sendCommand(Command::GetVersionInfo());
 
-  is_running = true;
-  start();
-}
-
-void Kobuki::close()
-{
-  disable();
-  sig_debug.emit("Device: kobuki driver terminated.");
-  return;
+  thread.start(&Kobuki::spin, *this);
 }
 
 /**
@@ -127,17 +129,16 @@ void Kobuki::close()
  * Or, if in simulation, just loopsback the motor devices.
  */
 
-void Kobuki::runnable()
+void Kobuki::spin()
 {
   unsigned char buf[256];
   bool get_packet;
-  stopwatch.restart();
 
   /*********************
   ** Simulation Params
   **********************/
 
-  while (is_running)
+  while (!shutdown_requested)
   {
     get_packet = false;
 
@@ -440,7 +441,6 @@ void Kobuki::sendCommand(Command command)
 
 bool Kobuki::enable()
 {
-//	is_running = true;
   is_enabled = true;
   return true;
 }
@@ -449,7 +449,6 @@ bool Kobuki::disable()
 {
   setBaseControlCommand(0.0f, 0.0f);
   sendBaseControlCommand();
-//	is_running = false;
   is_enabled = false;
   return true;
 }

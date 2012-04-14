@@ -74,28 +74,22 @@ public:
  *
  * This connects to the outside world via sigslots and get accessors.
  **/
-class Kobuki : public ecl::Threadable
+class Kobuki
 {
 public:
   Kobuki() :
     last_velocity_left(0.0),
     last_velocity_right(0.0),
-    is_connected(false), is_running(false), is_enabled(false),
+    is_connected(false), shutdown_requested(false), is_enabled(false),
     tick_to_mm(0.0845813406577f), tick_to_rad(0.00201384144460884f)
   {
   }
-  ~Kobuki()
-  {
-    serial.close();
-    is_connected = false;
-    is_running = false;
-    is_enabled = false;
-  }
+  ~Kobuki();
 
   /*********************
    ** Configuration
    **********************/
-  void runnable();
+  void spin();
   void init(Parameters &parameters) throw (ecl::StandardException);
   bool connected() const
   {
@@ -107,7 +101,6 @@ public:
   }
   bool enable();
   bool disable();
-  void close();
 
   /******************************************
   ** User Friendly Api
@@ -119,7 +112,6 @@ public:
   /******************************************
   ** Raw Data Api
   *******************************************/
-  // streamed
   void getCoreSensorData(CoreSensors::Data&) const;
   void getDockIRData(DockIR::Data&) const;
   void getCliffData(Cliff::Data&) const;
@@ -133,6 +125,7 @@ public:
                             double &wheel_right_angle, double &wheel_right_angle_rate);
   void updateOdometry(ecl::Pose2D<double> &pose_update,
                       ecl::linear_algebra::Vector3d &pose_update_rates);
+
   /*********************
   ** Soft Commands
   **********************/
@@ -147,7 +140,7 @@ public:
   void sendCommand(Command command);
 
 private:
-  ecl::StopWatch stopwatch;
+  ecl::Thread thread;
 
   unsigned short last_timestamp;
   double last_velocity_left, last_velocity_right;
@@ -164,16 +157,12 @@ private:
   double wheel_radius;
   int imu_heading_offset;
 
-  std::string device_type;
   std::string protocol_version;
   bool is_connected; // True if there's a serial/usb connection open.
-  bool is_running;
+  bool shutdown_requested; // helper to shutdown the worker thread.
   bool is_enabled;
 
-  unsigned int count;
   const double tick_to_mm, tick_to_rad;
-
-  ecl::Serial serial;
 
   // Streamed Data
   CoreSensors core_sensors;
@@ -182,19 +171,19 @@ private:
   Cliff cliff;
   Current current;
   GpInput gp_input;
-  // Service Payloads
+  // Request Services
   Hardware hardware;
   Firmware firmware;
 
   Simulation simulation;
-
   Command kobuki_command;
 
+  ecl::Serial serial;
   PacketFinder packet_finder;
   PacketFinder::BufferType data_buffer;
   ecl::PushAndPop<unsigned char> command_buffer;
-  ecl::Signal<> sig_stream_data, sig_version_info;
 
+  ecl::Signal<> sig_stream_data, sig_version_info;
   ecl::Signal<const std::string&> sig_debug, sig_info, sig_warn, sig_error;
 
   boost::shared_ptr<ecl::DifferentialDrive::Kinematics> kinematics;

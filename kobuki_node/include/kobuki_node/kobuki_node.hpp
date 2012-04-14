@@ -92,9 +92,7 @@ private:
   ros::Subscriber velocity_command_subscriber, led_command_subscriber, reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
 
-  ecl::Slot<> slot_wheel_state, slot_core_sensors,
-              slot_inertia, slot_cliff, slot_current, slot_version_info,
-              slot_gp_input;
+  ecl::Slot<> slot_stream_data, slot_version_info;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
   tf::TransformBroadcaster odom_broadcaster;
   sensor_msgs::JointState joint_states;
@@ -102,9 +100,10 @@ private:
   /*********************
    ** SigSlots
    **********************/
+  void processStreamData();
   void publishWheelState();
-  void publishCoreSensorData();
-  void publishInertiaData();
+  void publishCoreSensors();
+  void publishInertia();
   void publishCliffData();
   void publishCurrentData();
   void publishVersionInfo();

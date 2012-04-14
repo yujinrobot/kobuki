@@ -38,13 +38,8 @@ KobukiNode::KobukiNode(std::string& node_name) :
     odom_frame("odom"),
     base_frame("base_footprint"),
     publish_tf(false),
-    slot_wheel_state(&KobukiNode::publishWheelState, *this),
-    slot_core_sensors(&KobukiNode::publishCoreSensorData,*this),
-    slot_inertia(&KobukiNode::publishInertiaData, *this),
-    slot_cliff(&KobukiNode::publishCliffData, *this),
-    slot_current(&KobukiNode::publishCurrentData, *this),
+    slot_stream_data(&KobukiNode::processStreamData, *this),
     slot_version_info(&KobukiNode::publishVersionInfo, *this),
-    slot_gp_input(&KobukiNode::publishGpInputData, *this),
     slot_debug(&KobukiNode::rosDebug, *this),
     slot_info(&KobukiNode::rosInfo, *this),
     slot_warn(&KobukiNode::rosWarn, *this),
@@ -60,15 +55,12 @@ KobukiNode::KobukiNode(std::string& node_name) :
 }
 
 /**
- :* @brief Destructs, but only after the thread has cleanly terminated.
- *
- * Ensures we stay alive long enough for the thread to cleanly terminate.
+ * This will wait some time while kobuki internally closes its threads and destructs
+ * itself.
  */
 KobukiNode::~KobukiNode()
 {
   ROS_INFO_STREAM("Kobuki : waiting for kobuki thread to finish [" << name << "].");
-  kobuki.close();
-  //kobuki.join();
 }
 
 bool KobukiNode::init(ros::NodeHandle& nh)
@@ -80,16 +72,10 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   subscribeTopics(nh);
 
   /*********************
-   ** Sigslots
+   ** Slots
    **********************/
-  slot_wheel_state.connect(name + std::string("/stream_data"));
-  slot_core_sensors.connect(name + std::string("/stream_data"));
-  slot_inertia.connect(name + std::string("/stream_data"));
-  slot_cliff.connect(name + std::string("/stream_data"));
-  slot_current.connect(name + std::string("/stream_data"));
-  slot_gp_input.connect(name + std::string("/stream_data"));
+  slot_stream_data.connect(name + std::string("/stream_data"));
   slot_version_info.connect(name + std::string("/version_info"));
-
   slot_debug.connect(name + std::string("/ros_debug"));
   slot_info.connect(name + std::string("/ros_info"));
   slot_warn.connect(name + std::string("/ros_warn"));

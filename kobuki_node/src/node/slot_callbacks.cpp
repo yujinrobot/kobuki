@@ -21,12 +21,19 @@
 namespace kobuki
 {
 
+void KobukiNode::processStreamData() {
+  publishWheelState();
+  publishCoreSensors();
+  publishInertia();
+  publishCliffData();
+  publishCurrentData();
+  publishGpInputData();
+}
+
 void KobukiNode::publishWheelState()
 {
   if (ros::ok())
   {
-
-    // TODO really horrible; refactor
     ecl::Pose2D<double> pose_update;
     ecl::linear_algebra::Vector3d pose_update_rates;
 
@@ -47,7 +54,7 @@ void KobukiNode::publishWheelState()
   }
 }
 
-void KobukiNode::publishCoreSensorData()
+void KobukiNode::publishCoreSensors()
 {
   if (ros::ok())
   {
@@ -120,7 +127,7 @@ void KobukiNode::publishCoreSensorData()
   }
 }
 
-void KobukiNode::publishInertiaData()
+void KobukiNode::publishInertia()
 {
   if (ros::ok())
   {
@@ -187,6 +194,25 @@ void KobukiNode::publishCurrentData()
   }
 }
 
+void KobukiNode::publishGpInputData()
+{
+  if (ros::ok())
+  {
+    if (gp_input_data_publisher.getNumSubscribers() > 0)
+    {
+      GpInput::Data data;
+      kobuki.getGpInputData(data);
+      kobuki_comms::GpInput ros_data;
+      ros_data.header.stamp = ros::Time::now();
+      ros_data.gp_input = data.gp_input;
+      gp_input_data_publisher.publish(ros_data);
+    }
+  }
+}
+
+/*****************************************************************************
+** Non Default Stream Packets
+*****************************************************************************/
 /**
  * @brief Publish fw, hw, sw version information.
  *
@@ -205,22 +231,5 @@ void KobukiNode::publishVersionInfo()
     version_info_publisher.publish(msg);
   }
 }
-
-void KobukiNode::publishGpInputData()
-{
-  if (ros::ok())
-  {
-    if (gp_input_data_publisher.getNumSubscribers() > 0)
-    {
-      GpInput::Data data;
-      kobuki.getGpInputData(data);
-      kobuki_comms::GpInput ros_data;
-      ros_data.header.stamp = ros::Time::now();
-      ros_data.gp_input = data.gp_input;
-      gp_input_data_publisher.publish(ros_data);
-    }
-  }
-}
-
 
 } // namespace kobuki
