@@ -82,6 +82,10 @@ public:
     static const uint8_t LeftBumper = 0x04;
     static const uint8_t CentreBumper = 0x02;
     static const uint8_t RightBumper = 0x01;
+    // charging
+    static const uint8_t Charging = 0x02;
+    static const uint8_t Adapter = 0x04;
+    static const uint8_t Dock = 0x06;
   };
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream);

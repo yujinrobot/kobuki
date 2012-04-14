@@ -98,20 +98,9 @@ public:
     {
       buildVariable(data.gp_adc[i], byteStream);
     }
-
-    //showMe();
-    return constrain();
-  }
-
-  bool constrain()
-  {
     return true;
   }
 
-  void showMe()
-  {
-    //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, gp_adc[2], gp_adc[1], gp_adc[0] );
-  }
 };
 
 } // namespace kobuki

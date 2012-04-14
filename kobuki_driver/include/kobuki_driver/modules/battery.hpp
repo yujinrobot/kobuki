@@ -15,6 +15,9 @@
 ** Includes
 *****************************************************************************/
 
+#include <stdint.h>
+#include "../packets/core_sensors.hpp"
+
 /*****************************************************************************
 ** Namespaces
 *****************************************************************************/
@@ -33,9 +36,32 @@ namespace kobuki {
  **/
 class Battery {
 public:
-  Battery () {}; /**< Default constructor. **/
+  enum Source {
+    None,
+    Adapter,
+    Dock
+  };
+  enum Level {
+    Dangerous,
+    Low,
+    Healthy,
+    Maximum
+  };
+  Battery() {} /**< Default constructor. **/
+  Battery (const uint8_t &new_voltage, const uint8_t &charger_flag);
+  Level level() const {
+    if ( voltage == capacity ) { return Maximum; }
+    float remaining = static_cast<float>(voltage)/static_cast<float>(capacity);
+    const float healthy = 0.9;
+    const float low = 0.85;
+    if ( remaining > healthy ) { return Healthy; }
+    if ( remaining > low ) { return Low; }
+    return Dangerous;
+  }
 
-private:
+  static uint8_t capacity;
+  uint8_t voltage;
+  Source charging_source;
 };
 
 } // namespace kobuki

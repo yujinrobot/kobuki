@@ -39,7 +39,7 @@
 *****************************************************************************/
 
 #include <kobuki_comms/VersionInfo.h>
-#include <kobuki_driver/modules/gp_input.hpp>
+#include <kobuki_driver/packets/gp_input.hpp>
 #include "kobuki_node/kobuki_node.hpp"
 
 /*****************************************************************************
