@@ -70,8 +70,17 @@ bool PacketFinder::checkSum()
 
 
 /*****************************************************************************
- ** Implementation [Kobuki]
+ ** Implementation [Initialisation]
  *****************************************************************************/
+
+Kobuki::Kobuki() :
+  shutdown_requested(false),
+  last_velocity_left(0.0),
+  last_velocity_right(0.0),
+  tick_to_mm(0.0845813406577f), tick_to_rad(0.00201384144460884f),
+  is_enabled(false)
+{}
+
 /**
  * Shutdown the driver - make sure we wait for the thread to finish.
  */
@@ -91,11 +100,10 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
     throw ecl::StandardException(LOC, ecl::ConfigurationError, "Kobuki's parameter settings did not validate.");
   }
   protocol_version = parameters.protocol_version;
-  is_simulation = parameters.simulation;
   std::string sigslots_namespace = parameters.sigslots_namespace;
   event_manager.init(sigslots_namespace);
 
-  if ( !is_simulation ) {
+  if ( !simulation() ) {
     serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
     serial.block(4000); // blocks by default, but just to be clear!
     serial.clear();
@@ -104,7 +112,6 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
     stx.push_back(0xaa);
     stx.push_back(0x55);
     packet_finder.configure(sigslots_namespace, stx, etx, 1, 64, 1, true);
-    is_connected = true;
   }
 
   sig_version_info.connect(sigslots_namespace + std::string("/version_info"));
@@ -138,7 +145,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
 
   kinematics.reset(new ecl::DifferentialDrive::Kinematics(bias, wheel_radius));
 
-  if ( is_simulation ) {
+  if (  parameters.simulation ) {
     simulation.init(bias, 1000 * tick_to_rad / tick_to_mm); // bias, metres to radians
   }
   /******************************************
@@ -148,6 +155,10 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
 
   thread.start(&Kobuki::spin, *this);
 }
+
+/*****************************************************************************
+ ** Implementation [Runtime]
+ *****************************************************************************/
 
 /**
  * @brief Performs a scan looking for incoming data packets.
@@ -171,7 +182,7 @@ void Kobuki::spin()
   {
     get_packet = false;
 
-    if ( is_simulation ) {
+    if ( simulation() ) {
       simulation.update();
       simulation.sleep();
       sig_stream_data.emit();
@@ -268,9 +279,13 @@ void Kobuki::spin()
   }
 }
 
+/*****************************************************************************
+ ** Implementation [Human Friendly Accessors]
+ *****************************************************************************/
+
 ecl::Angle<double> Kobuki::getHeading() const {
   ecl::Angle<double> heading;
-  if ( is_simulation ) {
+  if ( simulation() ) {
     heading = simulation.heading;
   } else {
     // raw data angles are in hundredths of a degree, convert to radians.
@@ -280,7 +295,7 @@ ecl::Angle<double> Kobuki::getHeading() const {
 }
 
 double Kobuki::getAngularVelocity() const {
-  if ( is_simulation ) {
+  if ( simulation() ) {
     return simulation.angular_velocity;
   } else {
     // raw data angles are in hundredths of a degree, convert to radians.
@@ -289,7 +304,7 @@ double Kobuki::getAngularVelocity() const {
 }
 
 /*****************************************************************************
-** Raw Data Accessors
+** Implementation [Raw Data Accessors]
 *****************************************************************************/
 
 void Kobuki::getCoreSensorData(CoreSensors::Data &sensor_data) const { sensor_data = core_sensors.data; }
@@ -299,7 +314,7 @@ void Kobuki::getCurrentData(Current::Data &data) const { data = current.data; }
 void Kobuki::getGpInputData(GpInput::Data &data) const { data = gp_input.data; }
 
 void Kobuki::resetOdometry() {
-  if ( is_simulation ) {
+  if ( simulation() ) {
     simulation.reset();
   }
   last_rad_left = 0.0;
@@ -313,7 +328,7 @@ void Kobuki::resetOdometry() {
 void Kobuki::getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
                           double &wheel_right_angle, double &wheel_right_angle_rate) {
 
-  if ( is_simulation ) {
+  if ( simulation() ) {
     wheel_left_angle = simulation.left_wheel_angle;
     wheel_right_angle = simulation.right_wheel_angle;
     wheel_left_angle_rate = simulation.left_wheel_angle_rate;
@@ -327,7 +342,7 @@ void Kobuki::getWheelJointStates(double &wheel_left_angle, double &wheel_left_an
 }
 void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update,
                             ecl::linear_algebra::Vector3d &pose_update_rates) {
-  if ( is_simulation ) {
+  if ( simulation() ) {
     pose_update = kinematics->forward(simulation.left_wheel_angle_update, simulation.right_wheel_angle_update);
     // should add pose_update_rates here as well.
   } else {
@@ -400,7 +415,7 @@ void Kobuki::setBaseControlCommand(double vx, double wz)
 
   speed = (short)(1000.0f * std::max(vx + bias * wz / 2.0f, vx - bias * wz / 2.0f));
 
-  if ( is_simulation ) {
+  if ( simulation() ) {
     simulation.velocity = vx;
     simulation.angular_velocity = wz;
   }
@@ -408,7 +423,7 @@ void Kobuki::setBaseControlCommand(double vx, double wz)
 
 void Kobuki::sendBaseControlCommand()
 {
-  if ( !is_simulation ) {
+  if ( !simulation() ) {
     //std::cout << "speed = " << speed << ", radius = " << radius << std::endl;
     unsigned char cmd[] = {0xaa, 0x55, 5, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00};
     unsigned char cs(0);
@@ -435,7 +450,7 @@ void Kobuki::sendBaseControlCommand()
 
 void Kobuki::sendCommand(Command command)
 {
-  if ( !is_simulation ) {
+  if ( !simulation() ) {
     command_buffer.clear();
     command_buffer.resize(64);
     command_buffer.push_back(0xaa);

@@ -65,6 +65,7 @@
 #include <kobuki_comms/GpInput.h>
 #include <kobuki_comms/LedArray.h>
 #include <kobuki_driver/kobuki.hpp>
+#include "diagnostics.hpp"
 
 /*****************************************************************************
  ** Namespaces
@@ -75,24 +76,13 @@ namespace kobuki
 class KobukiNode
 {
 public:
-  /*********************
-   ** C&D
-   **********************/
   KobukiNode(std::string& node_name);
   ~KobukiNode();
-
   bool init(ros::NodeHandle& nh);
   bool spin();
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
 private:
-
-  void advertiseTopics(ros::NodeHandle& nh);
-  void subscribeTopics(ros::NodeHandle& nh);
-  void publishTransform(const geometry_msgs::Quaternion &odom_quat);
-  void publishOdom(const geometry_msgs::Quaternion &odom_quat, const ecl::linear_algebra::Vector3d &pose_update_rates);
-
   /*********************
    ** Variables
    **********************/
@@ -120,25 +110,50 @@ private:
   ros::Subscriber velocity_command_subscriber, led_command_subscriber, reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
 
+  tf::TransformBroadcaster odom_broadcaster;
+  sensor_msgs::JointState joint_states;
+
+  void advertiseTopics(ros::NodeHandle& nh);
+  void subscribeTopics(ros::NodeHandle& nh);
+  void publishTransform(const geometry_msgs::Quaternion &odom_quat);
+  void publishOdom(const geometry_msgs::Quaternion &odom_quat, const ecl::linear_algebra::Vector3d &pose_update_rates);
+
+  /*********************
+  ** Ros Callbacks
+  **********************/
+  void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
+  void subscribeLedCommand(const kobuki_comms::LedArrayConstPtr);
+  void subscribeResetOdometry(const std_msgs::EmptyConstPtr);
+  void enable(const std_msgs::StringConstPtr msg);
+  void disable(const std_msgs::StringConstPtr msg);
+
+  /*********************
+   ** SigSlots
+   **********************/
   ecl::Slot<const VersionInfo&> slot_version_info;
   ecl::Slot<> slot_stream_data;
   ecl::Slot<const ButtonEvent&> slot_button_event;
   ecl::Slot<const BumperEvent&> slot_bumper_event;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
-  tf::TransformBroadcaster odom_broadcaster;
-  sensor_msgs::JointState joint_states;
 
   /*********************
-   ** SigSlots
+   ** Slot Callbacks
    **********************/
   void processStreamData();
   void publishVersionInfo(const VersionInfo &version_info);
   void publishButtonEvent(const ButtonEvent &event);
   void publishBumperEvent(const BumperEvent &event);
   void publishGpInputData();
-  void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
-  void subscribeLedCommand(const kobuki_comms::LedArrayConstPtr);
-  void subscribeResetOdometry(const std_msgs::EmptyConstPtr);
+  void rosDebug(const std::string &msg) { ROS_DEBUG_STREAM("Kobuki : " << msg); }
+  void rosInfo(const std::string &msg) { ROS_INFO_STREAM("Kobuki : " << msg); }
+  void rosWarn(const std::string &msg) { ROS_WARN_STREAM("Kobuki : " << msg); }
+  void rosError(const std::string &msg) { ROS_ERROR_STREAM("Kobuki : " << msg); }
+
+  /*********************
+  ** Diagnostics
+  **********************/
+  diagnostic_updater::Updater updater;
+  BatteryTask battery_diagnostics;
 
   /*********************
   ** Stream Data Workers
@@ -149,27 +164,6 @@ private:
   void publishCliffData();
   void publishCurrentData();
 
-  /*********************
-   ** Ros Logging
-   **********************/
-  void rosDebug(const std::string &msg) { ROS_DEBUG_STREAM("Kobuki : " << msg); }
-  void rosInfo(const std::string &msg) { ROS_INFO_STREAM("Kobuki : " << msg); }
-  void rosWarn(const std::string &msg) { ROS_WARN_STREAM("Kobuki : " << msg); }
-  void rosError(const std::string &msg) { ROS_ERROR_STREAM("Kobuki : " << msg); }
-
-  void enable(const std_msgs::StringConstPtr msg)
-  {
-    kobuki.enable();
-    ROS_INFO_STREAM("Kobuki : enabled.");
-    last_cmd_time.fromSec(0);
-  }
-
-  void disable(const std_msgs::StringConstPtr msg)
-  {
-    kobuki.disable();
-    ROS_INFO_STREAM("Kobuki : disabled.");
-    last_cmd_time.fromSec(0);
-  }
 };
 
 } // namespace kobuki

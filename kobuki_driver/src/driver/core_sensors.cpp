@@ -29,9 +29,7 @@
 /**
  * @file /kobuki_driver/src/driver/core_sensors.cpp
  *
- * @brief File comment
- *
- * File comment
+ * @brief Implementation of the core sensor packet data.
  *
  * @date 06/04/2012
  **/
@@ -40,7 +38,7 @@
 ** Includes
 *****************************************************************************/
 
-#include "../../include/kobuki_driver/modules/core_sensors.hpp"
+#include "../../include/kobuki_driver/packets/core_sensors.hpp"
 #include "../../include/kobuki_driver/packet_handler/payload_headers.hpp"
 
 /*****************************************************************************

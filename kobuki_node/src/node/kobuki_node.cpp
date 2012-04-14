@@ -81,6 +81,7 @@ KobukiNode::KobukiNode(std::string& node_name) :
   joint_states.position.resize(4,0.0);
   joint_states.velocity.resize(4,0.0);
   joint_states.effort.resize(4,0.0);
+  updater.add(battery_diagnostics);
 }
 
 /**
@@ -248,6 +249,7 @@ bool KobukiNode::spin()
                 cmd_vel_timeout.toSec());
     }
 
+    updater.update();
     ros::spinOnce();
     loop_rate.sleep();
   }

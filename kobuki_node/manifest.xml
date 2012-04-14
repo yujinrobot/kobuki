@@ -15,7 +15,9 @@
   <depend package="sensor_msgs"/>
   <depend package="nav_msgs"/>
   <depend package="tf"/>
-  <depend package="std_srvs"/>
+  <depend package="std_msgs"/>
+  <depend package="diagnostic_updater"/>
+  <depend package="diagnostic_msgs"/>
 
   <!--  Kobuki -->
   <depend package="kobuki_comms"/>

@@ -31,7 +31,7 @@
 
 #include <ecl/containers.hpp>
 #include "packet_handler/payload_base.hpp"
-#include "led_array.hpp"
+#include "modules/led_array.hpp"
 
 namespace kobuki
 {

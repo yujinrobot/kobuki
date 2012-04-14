@@ -103,5 +103,19 @@ void KobukiNode::subscribeResetOdometry(const std_msgs::EmptyConstPtr /* msg */)
   return;
 }
 
+void KobukiNode::enable(const std_msgs::StringConstPtr msg)
+{
+  kobuki.enable();
+  ROS_INFO_STREAM("Kobuki : enabled.");
+  last_cmd_time.fromSec(0);
+}
+
+void KobukiNode::disable(const std_msgs::StringConstPtr msg)
+{
+  kobuki.disable();
+  ROS_INFO_STREAM("Kobuki : disabled.");
+  last_cmd_time.fromSec(0);
+}
+
 
 } // namespace kobuki

@@ -5,7 +5,7 @@
   <param name="robot_description" command="$(arg urdf_file)" />
   
   <!-- DJS : who is using these two parameters? -->
-  <param name="robot/name" value="turtlebot2"/>
+  <param name="robot/name" value="kobukibot"/>
   <param name="robot/type" value="turtlebot"/>
 
   <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher" output="screen">

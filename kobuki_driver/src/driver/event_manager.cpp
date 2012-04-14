@@ -39,7 +39,7 @@
 *****************************************************************************/
 
 #include "../../include/kobuki_driver/event_manager.hpp"
-#include "../../include/kobuki_driver/modules/core_sensors.hpp"
+#include "../../include/kobuki_driver/packets/core_sensors.hpp"
 
 /*****************************************************************************
 ** Namespaces

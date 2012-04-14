@@ -56,15 +56,16 @@
 #include "event_manager.hpp"
 #include "command.hpp"
 #include "simulation.hpp"
-#include "led_array.hpp"
-#include "modules/cliff.hpp"
-#include "modules/core_sensors.hpp"
-#include "modules/current.hpp"
-#include "modules/gp_input.hpp"
-#include "modules/inertia.hpp"
-#include "modules/dock_ir.hpp"
-#include "modules/firmware.hpp"
-#include "modules/hardware.hpp"
+#include "modules/battery.hpp"
+#include "modules/led_array.hpp"
+#include "packets/cliff.hpp"
+#include "packets/core_sensors.hpp"
+#include "packets/current.hpp"
+#include "packets/gp_input.hpp"
+#include "packets/inertia.hpp"
+#include "packets/dock_ir.hpp"
+#include "packets/firmware.hpp"
+#include "packets/hardware.hpp"
 #include "packet_handler/packet_finder.hpp"
 
 /*****************************************************************************
@@ -106,13 +107,7 @@ public:
 class Kobuki
 {
 public:
-  Kobuki() :
-    last_velocity_left(0.0),
-    last_velocity_right(0.0),
-    is_connected(false), shutdown_requested(false), is_enabled(false),
-    tick_to_mm(0.0845813406577f), tick_to_rad(0.00201384144460884f)
-  {
-  }
+  Kobuki();
   ~Kobuki();
 
   /*********************
@@ -120,10 +115,6 @@ public:
    **********************/
   void spin();
   void init(Parameters &parameters) throw (ecl::StandardException);
-  bool connected() const
-  {
-    return is_connected;
-  }
   bool isEnabled() const
   {
     return is_enabled;
@@ -169,8 +160,15 @@ public:
   void sendCommand(Command command);
 
 private:
+  /*********************
+  ** Thread
+  **********************/
   ecl::Thread thread;
+  bool shutdown_requested; // helper to shutdown the worker thread.
 
+  /*********************
+  ** Odometry
+  **********************/
   unsigned short last_timestamp;
   double last_velocity_left, last_velocity_right;
   double last_diff_time;
@@ -185,15 +183,13 @@ private:
   double bias; //wheelbase, wheel_to_wheel, in [m]
   double wheel_radius;
   int imu_heading_offset;
-
-  std::string protocol_version;
-  bool is_connected; // True if there's a serial/usb connection open.
-  bool shutdown_requested; // helper to shutdown the worker thread.
-  bool is_enabled;
-
   const double tick_to_mm, tick_to_rad;
 
-  // Streamed Data
+  bool is_enabled;
+
+  /*********************
+  ** Packet Handling
+  **********************/
   CoreSensors core_sensors;
   Inertia inertia;
   DockIR dock_ir;
@@ -204,21 +200,27 @@ private:
   Hardware hardware;
   Firmware firmware;
 
-  Simulation simulation;
-  EventManager event_manager;
-  Command kobuki_command;
-
+  std::string protocol_version;
   ecl::Serial serial;
   PacketFinder packet_finder;
   PacketFinder::BufferType data_buffer;
+
+  /*********************
+  ** System Components
+  **********************/
+  Simulation simulation;
+  EventManager event_manager;
+  Command kobuki_command;
   ecl::PushAndPop<unsigned char> command_buffer;
 
+  /*********************
+  ** Signals
+  **********************/
   ecl::Signal<> sig_stream_data;
   ecl::Signal<const VersionInfo&> sig_version_info;
   ecl::Signal<const std::string&> sig_debug, sig_info, sig_warn, sig_error;
 
   boost::shared_ptr<ecl::DifferentialDrive::Kinematics> kinematics;
-  bool is_simulation;
 };
 
 } // namespace kobuki
