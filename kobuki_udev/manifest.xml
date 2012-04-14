@@ -1,12 +1,13 @@
 <package>
-  <description brief="kobuki_udev">
+  <description brief="Utilities for flashing and enabling the usb connection">
 
-     kobuki_udev
+     Contains utilities for flashing the kobuki (usually done at the factory)
+     and enabling the device to appear as /dev/kobuki on the user's pc.
 
   </description>
   <author>Daniel Stonier</author>
   <license>BSD</license>
-  <review status="unreviewed" notes=""/>
+  <review status="experimental" notes=""/>
   <url>http://ros.org/wiki/kobuki_udev</url>
   <depend package="ecl_command_line"/>
   <rosdep name="libftdi-dev"/>
