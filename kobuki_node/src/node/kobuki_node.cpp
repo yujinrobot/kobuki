@@ -60,9 +60,6 @@ namespace kobuki
  */
 KobukiNode::KobukiNode(std::string& node_name) :
     name(node_name),
-    odom_frame("odom"),
-    base_frame("base_footprint"),
-    publish_tf(false),
     slot_version_info(&KobukiNode::publishVersionInfo, *this),
     slot_stream_data(&KobukiNode::processStreamData, *this),
     slot_button_event(&KobukiNode::publishButtonEvent, *this),
@@ -114,14 +111,9 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   slot_error.connect(name + std::string("/ros_error"));
 
   /*********************
-   ** Parameters
+   ** Driver Parameters
    **********************/
   Parameters parameters;
-
-  double tmp;
-  nh.param("cmd_vel_timeout", tmp, 0.6);
-  cmd_vel_timeout.fromSec(tmp);
-  ROS_INFO_STREAM("Kobuki : Velocity commands timeout: " << tmp << " seconds [" << name << "].");
 
   nh.param("simulation", parameters.simulation, false);
   parameters.sigslots_namespace = name; // name is automatically picked up by device_nodelet parent.
@@ -156,44 +148,7 @@ bool KobukiNode::init(ros::NodeHandle& nh)
     }
   }
 
-  /*********************
-   ** Frames
-   **********************/
-  if (!nh.getParam("odom_frame", odom_frame)) {
-    ROS_WARN_STREAM("Kobuki : no param server setting for odom_frame, using default [" << odom_frame << "][" << name << "].");
-  } else {
-    ROS_INFO_STREAM("Kobuki : using odom_frame [" << odom_frame << "][" << name << "].");
-  }
-
-  if (!nh.getParam("base_frame", base_frame)) {
-    ROS_WARN_STREAM("Kobuki : no param server setting for base_frame, using default [" << base_frame << "][" << name << "].");
-  } else {
-    ROS_INFO_STREAM("Kobuki : using base_frame [" << base_frame << "][" << name << "].");
-  }
-
-  if (!nh.getParam("publish_tf", publish_tf)) {
-    ROS_WARN_STREAM("Kobuki : no param server setting for publish_tf, using default [" << publish_tf << "][" << name << "].");
-  } else {
-    ROS_INFO_STREAM("Kobuki : using publish_tf [" << publish_tf << "][" << name << "].");
-  }
-
-  odom_trans.header.frame_id = odom_frame;
-  odom_trans.child_frame_id = base_frame;
-  odom.header.frame_id = odom_frame;
-  odom.child_frame_id = base_frame;
-
-  // Pose covariance (required by robot_pose_ekf) TODO: publish realistic values
-  // Odometry yaw covariance must be much bigger than the covariance provided
-  // by the imu, as the later takes much better measures
-  odom.pose.covariance[0]  = 0.1;
-  odom.pose.covariance[7]  = 0.1;
-  odom.pose.covariance[35] = 0.2;
-
-  odom.pose.covariance[14] = DBL_MAX; // set a very large covariance on unused
-  odom.pose.covariance[21] = DBL_MAX; // dimensions (z, pitch and roll); this
-  odom.pose.covariance[28] = DBL_MAX; // is a requirement of robot_pose_ekf
-
-  pose.setIdentity();
+  odometry.init(nh, name);
 
   /*********************
    ** Driver Init
@@ -237,16 +192,19 @@ bool KobukiNode::init(ros::NodeHandle& nh)
 bool KobukiNode::spin()
 {
   ros::Rate loop_rate(10); // 100ms - cmd_vel_timeout should be greater than this
+  bool timed_out = false; // stops warning spam when vel_cmd flags as timed out more than once in a row
 
   while (ros::ok())
   {
-    if ((kobuki.isEnabled() == true) && (last_cmd_time.isZero() == false) &&
-        ((ros::Time::now() - last_cmd_time) > cmd_vel_timeout)) {
-      std_msgs::StringPtr msg;
-      disable(msg);
-
-      ROS_WARN("No cmd_vel messages received within the last %.2f seconds; disable driver",
-                cmd_vel_timeout.toSec());
+    if ( (kobuki.isEnabled() == true) && odometry.commandTimeout()) {
+      if ( !timed_out ) {
+        std_msgs::StringPtr msg;
+        disable(msg);
+        timed_out = true;
+        ROS_WARN("Incoming velocity commands not received for more than %.2f seconds -> disabling driver", odometry.timeout().toSec());
+      }
+    } else {
+      timed_out = false;
     }
 
     battery_diagnostics.update(kobuki.batteryStatus());
@@ -268,7 +226,6 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   ** Turtlebot Required
   **********************/
   joint_state_publisher = nh.advertise <sensor_msgs::JointState>("joint_states",100);
-  odom_publisher = nh.advertise<nav_msgs::Odometry>("odom", 50); // topic name and queue size
 
   /*********************
   ** Kobuki Esoterics
@@ -293,38 +250,6 @@ void KobukiNode::subscribeTopics(ros::NodeHandle& nh)
   disable_subscriber = nh.subscribe("disable", 10, &KobukiNode::disable, this);
   reset_odometry_subscriber = nh.subscribe("reset_odometry", 10, &KobukiNode::subscribeResetOdometry, this);
 
-}
-
-void KobukiNode::publishTransform(const geometry_msgs::Quaternion &odom_quat)
-{
-  if (publish_tf == false)
-    return;
-
-  odom_trans.header.stamp = ros::Time::now();
-  odom_trans.transform.translation.x = pose.x();
-  odom_trans.transform.translation.y = pose.y();
-  odom_trans.transform.translation.z = 0.0;
-  odom_trans.transform.rotation = odom_quat;
-  odom_broadcaster.sendTransform(odom_trans);
-}
-
-void KobukiNode::publishOdom(const geometry_msgs::Quaternion &odom_quat,
-                             const ecl::linear_algebra::Vector3d &pose_update_rates)
-{
-  odom.header.stamp = ros::Time::now();
-
-  // Position
-  odom.pose.pose.position.x = pose.x();
-  odom.pose.pose.position.y = pose.y();
-  odom.pose.pose.position.z = 0.0;
-  odom.pose.pose.orientation = odom_quat;
-
-  // Velocity
-  odom.twist.twist.linear.x = pose_update_rates[0];
-  odom.twist.twist.linear.y = pose_update_rates[1];
-  odom.twist.twist.angular.z = pose_update_rates[2];
-
-  odom_publisher.publish(odom);
 }
 
 

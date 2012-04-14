@@ -53,9 +53,6 @@
 #include <std_msgs/String.h>
 #include <sensor_msgs/JointState.h>
 #include <sensor_msgs/Imu.h>
-#include <geometry_msgs/Twist.h>
-#include <nav_msgs/Odometry.h>
-#include <tf/transform_broadcaster.h>
 #include <ecl/sigslots.hpp>
 #include <kobuki_comms/SensorState.h>
 #include <kobuki_comms/ButtonEvent.h>
@@ -63,6 +60,7 @@
 #include <kobuki_comms/LedArray.h>
 #include <kobuki_driver/kobuki.hpp>
 #include "diagnostics.hpp"
+#include "odometry.hpp"
 
 /*****************************************************************************
  ** Namespaces
@@ -85,31 +83,20 @@ private:
    **********************/
   std::string name; // name of the ROS node
   Kobuki kobuki;
-  geometry_msgs::TransformStamped odom_trans;
-  nav_msgs::Odometry odom;
-  ecl::Pose2D<double> pose;
-  std::string odom_frame;
-  std::string base_frame;
-  ros::Duration cmd_vel_timeout;
-  ros::Time last_cmd_time;
-  bool publish_tf;
+  sensor_msgs::JointState joint_states;
+  Odometry odometry;
 
   /*********************
    ** Ros Comms
    **********************/
   ros::Publisher version_info_publisher;
-  ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher, odom_publisher;
+  ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher;
   ros::Publisher button_event_publisher, bumper_event_publisher;
   ros::Subscriber velocity_command_subscriber, led_command_subscriber, reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
 
-  tf::TransformBroadcaster odom_broadcaster;
-  sensor_msgs::JointState joint_states;
-
   void advertiseTopics(ros::NodeHandle& nh);
   void subscribeTopics(ros::NodeHandle& nh);
-  void publishTransform(const geometry_msgs::Quaternion &odom_quat);
-  void publishOdom(const geometry_msgs::Quaternion &odom_quat, const ecl::linear_algebra::Vector3d &pose_update_rates);
 
   /*********************
   ** Ros Callbacks
@@ -133,6 +120,9 @@ private:
    ** Slot Callbacks
    **********************/
   void processStreamData();
+  void publishWheelState();
+  void publishInertia();
+  void publishSensorState();
   void publishVersionInfo(const VersionInfo &version_info);
   void publishButtonEvent(const ButtonEvent &event);
   void publishBumperEvent(const BumperEvent &event);
@@ -146,13 +136,6 @@ private:
   **********************/
   diagnostic_updater::Updater updater;
   BatteryTask battery_diagnostics;
-
-  /*********************
-  ** Stream Data Workers
-  **********************/
-  void publishWheelState();
-  void publishInertia();
-  void publishSensorState();
 
 };
 

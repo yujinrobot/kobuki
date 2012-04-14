@@ -98,25 +98,18 @@ void KobukiNode::publishSensorState()
 
 void KobukiNode::publishWheelState()
 {
+  ecl::Pose2D<double> pose_update;
+  ecl::linear_algebra::Vector3d pose_update_rates;
+  kobuki.updateOdometry(pose_update, pose_update_rates);
+  kobuki.getWheelJointStates(joint_states.position[0],joint_states.velocity[0],   // left wheel
+                             joint_states.position[1],joint_states.velocity[1] ); // right wheel
+
+  odometry.update(pose_update, pose_update_rates);
+
   if (ros::ok())
   {
-    ecl::Pose2D<double> pose_update;
-    ecl::linear_algebra::Vector3d pose_update_rates;
-
-    kobuki.updateOdometry(pose_update, pose_update_rates);
-    kobuki.getWheelJointStates(joint_states.position[0],joint_states.velocity[0],   // left wheel
-                               joint_states.position[1],joint_states.velocity[1] ); // right wheel
-
     joint_states.header.stamp = ros::Time::now();
     joint_state_publisher.publish(joint_states);
-
-    pose *= pose_update;
-
-    //since all ros tf odometry is 6DOF we'll need a quaternion created from yaw
-    geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(pose.heading());
-
-    publishTransform(odom_quat);
-    publishOdom(odom_quat, pose_update_rates);
   }
 }
 

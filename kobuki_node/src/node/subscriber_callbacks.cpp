@@ -60,8 +60,7 @@ void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg
     //double wz = msg->angular.z;       // in (rad/s)
     ROS_DEBUG_STREAM("subscribeVelocityCommand: [" << msg->linear.x << "],[" << msg->angular.z << "]");
     kobuki.setBaseControlCommand(msg->linear.x, msg->angular.z);
-
-    last_cmd_time = ros::Time::now();
+    odometry.resetTimeout();
   }
   return;
 }
@@ -94,11 +93,11 @@ void KobukiNode::subscribeLedCommand(const kobuki_comms::LedArrayConstPtr msg)
 void KobukiNode::subscribeResetOdometry(const std_msgs::EmptyConstPtr /* msg */)
 {
   ROS_INFO_STREAM("Mobile base : resetting the odometry [" << name << "].");
-  pose.setIdentity();
   joint_states.position[0] = 0.0; // wheel_left
   joint_states.velocity[0] = 0.0;
   joint_states.position[1] = 0.0; // wheel_right
   joint_states.velocity[1] = 0.0;
+  odometry.resetOdometry();
   kobuki.resetOdometry();
   return;
 }
@@ -107,14 +106,14 @@ void KobukiNode::enable(const std_msgs::StringConstPtr msg)
 {
   kobuki.enable();
   ROS_INFO_STREAM("Kobuki : enabled.");
-  last_cmd_time.fromSec(0);
+  odometry.resetTimeout();
 }
 
 void KobukiNode::disable(const std_msgs::StringConstPtr msg)
 {
   kobuki.disable();
   ROS_INFO_STREAM("Kobuki : disabled.");
-  last_cmd_time.fromSec(0);
+  odometry.resetTimeout();
 }
 
 
