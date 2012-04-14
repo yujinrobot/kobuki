@@ -34,8 +34,8 @@ namespace kobuki {
 
 struct ButtonEvent {
   enum State {
-    Released = 0,
-    Pressed = 1
+    Released,
+    Pressed
   } state;
   enum Button {
     F0,
@@ -44,20 +44,33 @@ struct ButtonEvent {
   } button;
 };
 
+struct BumperEvent {
+  enum State {
+    Released,
+    Pressed
+  } state;
+  enum Bumper {
+    Left,
+    Centre,
+    Right
+  } bumper;
+};
+
 /*****************************************************************************
 ** Interfaces
 *****************************************************************************/
 
 class EventManager {
 public:
-  EventManager() : last_button_state(0) {}
+  EventManager() : last_button_state(0), last_bumper_state(0) {}
 
   void init(const std::string &sigslots_namespace);
-  void update(const uint8_t &new_button_state);
+  void update(const uint8_t &new_button_state, const uint8_t &new_bumper_state);
 
 private:
-  uint8_t last_button_state;
+  uint8_t last_button_state, last_bumper_state;
   ecl::Signal<const ButtonEvent&> sig_button_event;
+  ecl::Signal<const BumperEvent&> sig_bumper_event;
 };
 
 

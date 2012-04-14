@@ -218,9 +218,6 @@ void KobukiNode::publishVersionInfo(const VersionInfo &version_info)
 ** Events
 *****************************************************************************/
 
-/**
- * @brief Publish button events.
- */
 void KobukiNode::publishButtonEvent(const ButtonEvent &event)
 {
   if (ros::ok())
@@ -238,6 +235,26 @@ void KobukiNode::publishButtonEvent(const ButtonEvent &event)
       default: break;
     }
     button_event_publisher.publish(msg);
+  }
+}
+
+void KobukiNode::publishBumperEvent(const BumperEvent &event)
+{
+  if (ros::ok())
+  {
+    kobuki_comms::BumperEvent msg;
+    switch(event.state) {
+      case(BumperEvent::Pressed) : { msg.state = kobuki_comms::BumperEvent::Pressed; break; }
+      case(BumperEvent::Released) : { msg.state = kobuki_comms::BumperEvent::Released; break; }
+      default: break;
+    }
+    switch(event.bumper) {
+      case(BumperEvent::Left) : { msg.bumper = kobuki_comms::BumperEvent::Left; break; }
+      case(BumperEvent::Centre) : { msg.bumper = kobuki_comms::BumperEvent::Centre; break; }
+      case(BumperEvent::Right) : { msg.bumper = kobuki_comms::BumperEvent::Right; break; }
+      default: break;
+    }
+    bumper_event_publisher.publish(msg);
   }
 }
 

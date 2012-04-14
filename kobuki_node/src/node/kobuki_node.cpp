@@ -68,6 +68,7 @@ KobukiNode::KobukiNode(std::string& node_name) :
     slot_version_info(&KobukiNode::publishVersionInfo, *this),
     slot_stream_data(&KobukiNode::processStreamData, *this),
     slot_button_event(&KobukiNode::publishButtonEvent, *this),
+    slot_bumper_event(&KobukiNode::publishBumperEvent, *this),
     slot_debug(&KobukiNode::rosDebug, *this),
     slot_info(&KobukiNode::rosInfo, *this),
     slot_warn(&KobukiNode::rosWarn, *this),
@@ -105,6 +106,7 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   slot_stream_data.connect(name + std::string("/stream_data"));
   slot_version_info.connect(name + std::string("/version_info"));
   slot_button_event.connect(name + std::string("/button_event"));
+  slot_bumper_event.connect(name + std::string("/bumper_event"));
   slot_debug.connect(name + std::string("/ros_debug"));
   slot_info.connect(name + std::string("/ros_info"));
   slot_warn.connect(name + std::string("/ros_warn"));
@@ -270,6 +272,7 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   **********************/
   version_info_publisher = nh.advertise < kobuki_comms::VersionInfo > ("version_info", 100, true); // latched publisher
   button_event_publisher = nh.advertise < kobuki_comms::ButtonEvent > ("events/buttons", 100);
+  bumper_event_publisher = nh.advertise < kobuki_comms::BumperEvent > ("events/bumpers", 100);
   core_sensor_data_publisher = nh.advertise < kobuki_comms::CoreSensors > ("sensors/core", 100);
   cliff_sensor_publisher = nh.advertise < kobuki_comms::Cliff > ("sensors/cliff", 100);
   current_sensor_publisher = nh.advertise < kobuki_comms::Current > ("sensors/current", 100);

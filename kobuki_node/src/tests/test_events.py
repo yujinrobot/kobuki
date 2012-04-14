@@ -36,8 +36,9 @@ import roslib; roslib.load_manifest('kobuki_node')
 import rospy
 
 from kobuki_comms.msg import ButtonEvent
+from kobuki_comms.msg import BumperEvent
 
-def callback(data):
+def buttonEventCallback(data):
     if ( data.state == ButtonEvent.Released ) :
         state = "released"
     else:
@@ -49,11 +50,25 @@ def callback(data):
     else:
         button = "F2"
     rospy.loginfo("Button %s was %s"%(state, button))
+
+def bumperEventCallback(data):
+    if ( data.state == BumperEvent.Released ) :
+        state = "released"
+    else:
+        state = "pressed"  
+    if ( data.bumper == BumperEvent.Left ) :
+        bumper = "Left"
+    elif ( data.bumper == BumperEvent.Centre ) :
+        bumper = "Centre"
+    else:
+        bumper = "Right"
+    rospy.loginfo("%s bumper %s."%(bumper, state))
     
 rospy.init_node("test_button_events")
-rospy.Subscriber("/kobuki/mobile_base/events/buttons",ButtonEvent,callback)
+rospy.Subscriber("/kobuki/mobile_base/events/buttons",ButtonEvent,buttonEventCallback)
+rospy.Subscriber("/kobuki/mobile_base/events/bumpers",BumperEvent,bumperEventCallback)
 print ""
-print "Start pushing kobuki's buttons.....but be wary."
+print "Start pushing kobuki's buttons/bumper.....but be wary."
 print ""
 rospy.spin()
     

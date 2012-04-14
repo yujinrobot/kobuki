@@ -53,13 +53,14 @@ namespace kobuki {
 
 void EventManager::init ( const std::string &sigslots_namespace ) {
   sig_button_event.connect(sigslots_namespace + std::string("/button_event"));
+  sig_bumper_event.connect(sigslots_namespace + std::string("/bumper_event"));
 }
 
 /**
  * Update with incoming data and emit events if necessary.
  * @param new_button_state
  */
-void EventManager::update(const uint8_t &new_button_state) {
+void EventManager::update(const uint8_t &new_button_state, const uint8_t &new_bumper_state) {
   if (last_button_state != new_button_state)
   {
     // Note that the touch pad means at most one button can be pressed
@@ -97,6 +98,45 @@ void EventManager::update(const uint8_t &new_button_state) {
       sig_button_event.emit(event);
     }
     last_button_state = new_button_state;
+  }
+
+  if (last_bumper_state != new_bumper_state)
+  {
+    // Note that the touch pad means at most one button can be pressed
+    // at a time.
+    BumperEvent event;
+    // Check changes in each button state's; event if this block of code
+    // supports it, two buttons cannot be pressed simultaneously
+    if ((new_bumper_state | last_bumper_state) & CoreSensors::Flags::LeftBumper) {
+      event.bumper = BumperEvent::Left;
+      if (new_bumper_state & CoreSensors::Flags::LeftBumper) {
+        event.state = BumperEvent::Pressed;
+      } else {
+        event.state = BumperEvent::Released;
+      }
+      sig_bumper_event.emit(event);
+    }
+
+    if ((new_bumper_state | last_bumper_state) & CoreSensors::Flags::CentreBumper) {
+      event.bumper = BumperEvent::Centre;
+      if (new_bumper_state & CoreSensors::Flags::CentreBumper) {
+        event.state = BumperEvent::Pressed;
+      } else {
+        event.state = BumperEvent::Released;
+      }
+      sig_bumper_event.emit(event);
+    }
+
+    if ((new_bumper_state | last_bumper_state) & CoreSensors::Flags::RightBumper) {
+      event.bumper = BumperEvent::Right;
+      if (new_bumper_state & CoreSensors::Flags::RightBumper) {
+        event.state = BumperEvent::Pressed;
+      } else {
+        event.state = BumperEvent::Released;
+      }
+      sig_bumper_event.emit(event);
+    }
+    last_bumper_state = new_bumper_state;
   }
 }
 

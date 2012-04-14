@@ -59,6 +59,7 @@
 #include <ecl/sigslots.hpp>
 #include <kobuki_comms/Cliff.h>
 #include <kobuki_comms/ButtonEvent.h>
+#include <kobuki_comms/BumperEvent.h>
 #include <kobuki_comms/CoreSensors.h>
 #include <kobuki_comms/Current.h>
 #include <kobuki_comms/GpInput.h>
@@ -115,13 +116,14 @@ private:
                  cliff_sensor_publisher, current_sensor_publisher, version_info_publisher,
                  gp_input_data_publisher, joint_state_publisher, odom_publisher,
                  core_sensor_data_publisher;
-  ros::Publisher button_event_publisher;
+  ros::Publisher button_event_publisher, bumper_event_publisher;
   ros::Subscriber velocity_command_subscriber, led_command_subscriber, reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
 
   ecl::Slot<const VersionInfo&> slot_version_info;
   ecl::Slot<> slot_stream_data;
   ecl::Slot<const ButtonEvent&> slot_button_event;
+  ecl::Slot<const BumperEvent&> slot_bumper_event;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
   tf::TransformBroadcaster odom_broadcaster;
   sensor_msgs::JointState joint_states;
@@ -130,17 +132,22 @@ private:
    ** SigSlots
    **********************/
   void processStreamData();
+  void publishVersionInfo(const VersionInfo &version_info);
+  void publishButtonEvent(const ButtonEvent &event);
+  void publishBumperEvent(const BumperEvent &event);
+  void publishGpInputData();
+  void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
+  void subscribeLedCommand(const kobuki_comms::LedArrayConstPtr);
+  void subscribeResetOdometry(const std_msgs::EmptyConstPtr);
+
+  /*********************
+  ** Stream Data Workers
+  **********************/
   void publishWheelState();
   void publishCoreSensors();
   void publishInertia();
   void publishCliffData();
   void publishCurrentData();
-  void publishVersionInfo(const VersionInfo &version_info);
-  void publishButtonEvent(const ButtonEvent &event);
-  void publishGpInputData();
-  void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
-  void subscribeLedCommand(const kobuki_comms::LedArrayConstPtr);
-  void subscribeResetOdometry(const std_msgs::EmptyConstPtr);
 
   /*********************
    ** Ros Logging

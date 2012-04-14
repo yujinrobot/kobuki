@@ -78,6 +78,10 @@ public:
     static const uint8_t F0 = 0x02;
     static const uint8_t F1 = 0x01;
     static const uint8_t F2 = 0x04;
+    // bumper
+    static const uint8_t LeftBumper = 0x04;
+    static const uint8_t CentreBumper = 0x02;
+    static const uint8_t RightBumper = 0x01;
   };
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream);
