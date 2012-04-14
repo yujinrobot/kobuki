@@ -76,24 +76,42 @@ void KobukiNode::publishCoreSensorData()
     {
       if (data.buttons != buttons_state)
       {
-        kobuki_comms::Buttons buttons;
-        // g++ complains if you use tertiary operators here - spitting the dummy because of uint8's? wierd.
-        if ( data.buttons & kobuki_comms::CoreSensors::F0) {
-          buttons.values.push_back(kobuki_comms::Buttons::PRESSED);
-        } else {
-          buttons.values.push_back(kobuki_comms::Buttons::RELEASED);
+        kobuki_comms::ButtonEvent msg;
+
+        // Check changes in each button state's; event if this block of code
+        // supports it, two buttons cannot be pressed simultaneously
+        if ((data.buttons | buttons_state) & kobuki_comms::CoreSensors::F0) {
+          msg.button = kobuki_comms::ButtonEvent::F0;
+          if (data.buttons & kobuki_comms::CoreSensors::F0) {
+            msg.event = kobuki_comms::ButtonEvent::PRESSED;
+          }
+          else {
+            msg.event = kobuki_comms::ButtonEvent::RELEASED;
+          }
+          button_events_publisher.publish(msg);
         }
-        if ( data.buttons & kobuki_comms::CoreSensors::F1) {
-          buttons.values.push_back(kobuki_comms::Buttons::PRESSED);
-        } else {
-          buttons.values.push_back(kobuki_comms::Buttons::RELEASED);
+
+        if ((data.buttons | buttons_state) & kobuki_comms::CoreSensors::F1) {
+          msg.button = kobuki_comms::ButtonEvent::F1;
+          if (data.buttons & kobuki_comms::CoreSensors::F1) {
+            msg.event = kobuki_comms::ButtonEvent::PRESSED;
+          }
+          else {
+            msg.event = kobuki_comms::ButtonEvent::RELEASED;
+          }
+          button_events_publisher.publish(msg);
         }
-        if ( data.buttons & kobuki_comms::CoreSensors::F2) {
-          buttons.values.push_back(kobuki_comms::Buttons::PRESSED);
-        } else {
-          buttons.values.push_back(kobuki_comms::Buttons::RELEASED);
+
+        if ((data.buttons | buttons_state) & kobuki_comms::CoreSensors::F2) {
+          msg.button = kobuki_comms::ButtonEvent::F2;
+          if (data.buttons & kobuki_comms::CoreSensors::F2) {
+            msg.event = kobuki_comms::ButtonEvent::PRESSED;
+          }
+          else {
+            msg.event = kobuki_comms::ButtonEvent::RELEASED;
+          }
+          button_events_publisher.publish(msg);
         }
-        button_events_publisher.publish(buttons);
 
         buttons_state = data.buttons;
       }
@@ -120,7 +138,15 @@ void KobukiNode::publishInertiaData()
       msg.orientation_covariance[4] = DBL_MAX;
       msg.orientation_covariance[8] = 0.005;
 
-      // ignore velocity and acceleration for now - kobuki driver can give us rates though.
+      // fill angular velocity; we ignore acceleration for now
+      msg.angular_velocity.z = kobuki.getAngularVelocity();
+
+      // angular velocity covariance; useless by now, but robot_pose_ekf's
+      // roadmap claims that it will compute velocities in the future
+      msg.angular_velocity_covariance[0] = DBL_MAX;
+      msg.angular_velocity_covariance[4] = DBL_MAX;
+      msg.angular_velocity_covariance[8] = 0.005;
+
       imu_data_publisher.publish(msg);
     }
   }

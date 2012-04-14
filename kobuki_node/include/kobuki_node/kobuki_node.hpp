@@ -30,7 +30,7 @@
 #include <tf/transform_broadcaster.h>
 #include <ecl/sigslots.hpp>
 #include <kobuki_comms/Cliff.h>
-#include <kobuki_comms/Buttons.h>
+#include <kobuki_comms/ButtonEvent.h>
 #include <kobuki_comms/CoreSensors.h>
 #include <kobuki_comms/Current.h>
 #include <kobuki_comms/GpInput.h>

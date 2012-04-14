@@ -277,6 +277,15 @@ ecl::Angle<double> Kobuki::getHeading() const {
   return heading;
 }
 
+double Kobuki::getAngularVelocity() const {
+  if ( is_simulation ) {
+    return simulation.angular_velocity;
+  } else {
+    // raw data angles are in hundredths of a degree, convert to radians.
+    return (static_cast<double>(inertia.data.angle_rate) / 100.0) * ecl::pi /180.0;
+  }
+}
+
 void Kobuki::getCliffData(Cliff::Data &data) { data = cliff.data; }
 void Kobuki::getCurrentData(Current::Data &data) { data = current.data; }
 void Kobuki::getGpInputData(GpInput::Data &data) { data = gp_input.data; }

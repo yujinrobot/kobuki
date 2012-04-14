@@ -267,7 +267,7 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   hw_data_publisher = nh.advertise < kobuki_comms::Hardware > ("hardware_version", 100);
   fw_data_publisher = nh.advertise < kobuki_comms::Firmware > ("firmware_version", 100);
   gp_input_data_publisher = nh.advertise < kobuki_comms::GpInput > ("gp_inputs", 100);
-  button_events_publisher = nh.advertise < kobuki_comms::Buttons > ("button_events", 100);
+  button_events_publisher = nh.advertise < kobuki_comms::ButtonEvent > ("button_events", 100);
 }
 
 /**
