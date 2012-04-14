@@ -79,8 +79,6 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   advertiseTopics(nh);
   subscribeTopics(nh);
 
-  reset_odometry_server = nh.advertiseService("reset_odometry", &KobukiNode::serveResetOdometry, this);
-
   /*********************
    ** Sigslots
    **********************/
@@ -273,6 +271,8 @@ void KobukiNode::subscribeTopics(ros::NodeHandle& nh)
   // A group enable/disable channel to listen to (these should get remapped to /enable in most cases).
   enable_subscriber = nh.subscribe("enable", 10, &KobukiNode::enable, this); // 10 is queue size
   disable_subscriber = nh.subscribe("disable", 10, &KobukiNode::disable, this);
+  reset_odometry_subscriber = nh.subscribe("reset_odometry", 10, &KobukiNode::subscribeResetOdometry, this);
+
 }
 
 void KobukiNode::publishTransform(const geometry_msgs::Quaternion &odom_quat)
@@ -307,31 +307,6 @@ void KobukiNode::publishOdom(const geometry_msgs::Quaternion &odom_quat,
   odom_publisher.publish(odom);
 }
 
-
-/*****************************************************************************
- ** Service Callbacks
- *****************************************************************************/
-/**
- * @brief Reset the odometry variables.
- *
- * @param request : the stream type to send back.
- * @param response : the outgoing data stream (empty).
- * @return bool : always succeeds (true).
- */
-bool KobukiNode::serveResetOdometry(std_srvs::Empty::Request &request,
-                                    std_srvs::Empty::Response &response)
-{
-  ROS_INFO_STREAM("Mobile base : resetting the odometry [" << name << "].");
-  pose.setIdentity();
-  joint_states.position[0] = 0.0; // wheel_left
-  joint_states.velocity[0] = 0.0;
-  joint_states.position[1] = 0.0; // wheel_right
-  joint_states.velocity[1] = 0.0;
-
-  kobuki.resetOdometry();
-
-  return true;
-}
 
 } // namespace kobuki
 

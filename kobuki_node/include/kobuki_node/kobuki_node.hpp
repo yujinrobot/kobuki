@@ -21,7 +21,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include <ros/ros.h>
-#include <std_srvs/Empty.h>
+#include <std_msgs/Empty.h>
 #include <std_msgs/String.h>
 #include <sensor_msgs/JointState.h>
 #include <sensor_msgs/Imu.h>
@@ -63,7 +63,6 @@ private:
   void subscribeTopics(ros::NodeHandle& nh);
   void publishTransform(const geometry_msgs::Quaternion &odom_quat);
   void publishOdom(const geometry_msgs::Quaternion &odom_quat, const ecl::linear_algebra::Vector3d &pose_update_rates);
-  bool serveResetOdometry(std_srvs::Empty::Request &request, std_srvs::Empty::Response &response);
 
   /*********************
    ** Variables
@@ -85,12 +84,11 @@ private:
   /*********************
    ** Ros Comms
    **********************/
-  ros::ServiceServer reset_odometry_server;
   ros::Publisher imu_data_publisher,
                  cliff_sensor_publisher, current_sensor_publisher, version_info_publisher,
                  gp_input_data_publisher, joint_state_publisher, odom_publisher,
                  core_sensor_data_publisher, button_events_publisher;
-  ros::Subscriber velocity_command_subscriber, led_command_subscriber;
+  ros::Subscriber velocity_command_subscriber, led_command_subscriber, reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
 
   ecl::Slot<> slot_wheel_state, slot_core_sensors,
@@ -112,6 +110,7 @@ private:
   void publishGpInputData();
   void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
   void subscribeLedCommand(const kobuki_comms::LedArrayConstPtr);
+  void subscribeResetOdometry(const std_msgs::EmptyConstPtr);
 
   /*********************
    ** Ros Logging

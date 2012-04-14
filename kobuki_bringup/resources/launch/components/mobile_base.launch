@@ -17,7 +17,6 @@
 	    <remap from="mobile_base/enable" to="enable"/>
 	    <remap from="mobile_base/disable" to="disable"/>
 	    <remap from="mobile_base/joint_states" to="joint_states"/>
-        <remap from="mobile_base/reset_odometry" to="reset_odometry"/>
     </node>
     <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf">
       <remap from="imu_data" to="mobile_base/sensors/imu_data"/>
