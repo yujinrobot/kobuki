@@ -57,12 +57,9 @@
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_broadcaster.h>
 #include <ecl/sigslots.hpp>
-#include <kobuki_comms/Cliff.h>
+#include <kobuki_comms/SensorState.h>
 #include <kobuki_comms/ButtonEvent.h>
 #include <kobuki_comms/BumperEvent.h>
-#include <kobuki_comms/CoreSensors.h>
-#include <kobuki_comms/Current.h>
-#include <kobuki_comms/GpInput.h>
 #include <kobuki_comms/LedArray.h>
 #include <kobuki_driver/kobuki.hpp>
 #include "diagnostics.hpp"
@@ -102,10 +99,8 @@ private:
   /*********************
    ** Ros Comms
    **********************/
-  ros::Publisher imu_data_publisher,
-                 cliff_sensor_publisher, current_sensor_publisher, version_info_publisher,
-                 gp_input_data_publisher, joint_state_publisher, odom_publisher,
-                 core_sensor_data_publisher;
+  ros::Publisher version_info_publisher;
+  ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher, odom_publisher;
   ros::Publisher button_event_publisher, bumper_event_publisher;
   ros::Subscriber velocity_command_subscriber, led_command_subscriber, reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
@@ -143,7 +138,6 @@ private:
   void publishVersionInfo(const VersionInfo &version_info);
   void publishButtonEvent(const ButtonEvent &event);
   void publishBumperEvent(const BumperEvent &event);
-  void publishGpInputData();
   void rosDebug(const std::string &msg) { ROS_DEBUG_STREAM("Kobuki : " << msg); }
   void rosInfo(const std::string &msg) { ROS_INFO_STREAM("Kobuki : " << msg); }
   void rosWarn(const std::string &msg) { ROS_WARN_STREAM("Kobuki : " << msg); }
@@ -159,10 +153,8 @@ private:
   ** Stream Data Workers
   **********************/
   void publishWheelState();
-  void publishCoreSensors();
   void publishInertia();
-  void publishCliffData();
-  void publishCurrentData();
+  void publishSensorState();
 
 };
 

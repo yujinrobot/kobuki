@@ -278,10 +278,7 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   version_info_publisher = nh.advertise < kobuki_comms::VersionInfo > ("version_info", 100, true); // latched publisher
   button_event_publisher = nh.advertise < kobuki_comms::ButtonEvent > ("events/buttons", 100);
   bumper_event_publisher = nh.advertise < kobuki_comms::BumperEvent > ("events/bumpers", 100);
-  core_sensor_data_publisher = nh.advertise < kobuki_comms::CoreSensors > ("sensors/core", 100);
-  cliff_sensor_publisher = nh.advertise < kobuki_comms::Cliff > ("sensors/cliff", 100);
-  current_sensor_publisher = nh.advertise < kobuki_comms::Current > ("sensors/current", 100);
-  gp_input_data_publisher = nh.advertise < kobuki_comms::GpInput > ("sensors/gp_inputs", 100);
+  sensor_state_publisher = nh.advertise < kobuki_comms::SensorState > ("sensors/core", 100);
   imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("sensors/imu_data", 100);
 }
 

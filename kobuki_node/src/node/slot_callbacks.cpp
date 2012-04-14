@@ -51,11 +51,49 @@ namespace kobuki
 
 void KobukiNode::processStreamData() {
   publishWheelState();
-  publishCoreSensors();
+  publishSensorState();
   publishInertia();
-  publishCliffData();
-  publishCurrentData();
-  publishGpInputData();
+}
+
+/*****************************************************************************
+** Publish Sensor Stream Workers
+*****************************************************************************/
+
+void KobukiNode::publishSensorState()
+{
+  if ( ros::ok() ) {
+    if (sensor_state_publisher.getNumSubscribers() > 0) {
+      kobuki_comms::SensorState state;
+      CoreSensors::Data data;
+      kobuki.getCoreSensorData(data);
+      state.header.stamp = ros::Time::now();
+      state.time_stamp = data.time_stamp; // firmware time stamp
+      state.bump = data.bump;
+      state.wheel_drop = data.wheel_drop;
+      state.cliff = data.cliff;
+      state.left_encoder = data.left_encoder;
+      state.right_encoder = data.right_encoder;
+      state.left_pwm = data.left_pwm;
+      state.right_pwm = data.right_pwm;
+      state.buttons = data.buttons;
+      state.charger = data.charger;
+      state.battery = data.battery;
+
+      Cliff::Data cliff_data;
+      kobuki.getCliffData(cliff_data);
+      state.bottom = cliff_data.bottom;
+
+      Current::Data current_data;
+      kobuki.getCurrentData(current_data);
+      state.current = current_data.current;
+
+      GpInput::Data gp_input_data;
+      kobuki.getGpInputData(gp_input_data);
+      state.gp_input = gp_input_data.gp_input;
+
+      sensor_state_publisher.publish(state);
+    }
+  }
 }
 
 void KobukiNode::publishWheelState()
@@ -79,34 +117,6 @@ void KobukiNode::publishWheelState()
 
     publishTransform(odom_quat);
     publishOdom(odom_quat, pose_update_rates);
-  }
-}
-
-void KobukiNode::publishCoreSensors()
-{
-  if (ros::ok())
-  {
-    CoreSensors::Data data;
-    kobuki.getCoreSensorData(data);
-
-    if (core_sensor_data_publisher.getNumSubscribers() > 0)
-    {
-      // convert data format
-      kobuki_comms::CoreSensors ros_data;
-      ros_data.header.stamp = ros::Time::now();
-      ros_data.time_stamp = data.time_stamp; // firmware time stamp
-      ros_data.bump = data.bump;
-      ros_data.wheel_drop = data.wheel_drop;
-      ros_data.cliff = data.cliff;
-      ros_data.left_encoder = data.left_encoder;
-      ros_data.right_encoder = data.right_encoder;
-      ros_data.left_pwm = data.left_pwm;
-      ros_data.right_pwm = data.right_pwm;
-      ros_data.buttons = data.buttons;
-      ros_data.charger = data.charger;
-      ros_data.battery = data.battery;
-      core_sensor_data_publisher.publish(ros_data);
-    }
   }
 }
 
@@ -143,55 +153,6 @@ void KobukiNode::publishInertia()
   }
 }
 
-void KobukiNode::publishCliffData()
-{
-  if (ros::ok())
-  {
-    if (cliff_sensor_publisher.getNumSubscribers() > 0)
-    {
-      Cliff::Data data;
-      kobuki.getCliffData(data);
-      kobuki_comms::Cliff ros_data;
-      ros_data.header.stamp = ros::Time::now();
-      ros_data.bottom = data.bottom;
-      cliff_sensor_publisher.publish(ros_data);
-      //std::cout << __func__ << std::endl;
-    }
-  }
-}
-
-void KobukiNode::publishCurrentData()
-{
-  if (ros::ok())
-  {
-    if (current_sensor_publisher.getNumSubscribers() > 0)
-    {
-      Current::Data data;
-      kobuki.getCurrentData(data);
-      kobuki_comms::Current ros_data;
-      ros_data.header.stamp = ros::Time::now();
-      ros_data.current = data.current;
-      current_sensor_publisher.publish(ros_data);
-      //std::cout << __func__ << std::endl;
-    }
-  }
-}
-
-void KobukiNode::publishGpInputData()
-{
-  if (ros::ok())
-  {
-    if (gp_input_data_publisher.getNumSubscribers() > 0)
-    {
-      GpInput::Data data;
-      kobuki.getGpInputData(data);
-      kobuki_comms::GpInput ros_data;
-      ros_data.header.stamp = ros::Time::now();
-      ros_data.gp_input = data.gp_input;
-      gp_input_data_publisher.publish(ros_data);
-    }
-  }
-}
 
 /*****************************************************************************
 ** Non Default Stream Packets
