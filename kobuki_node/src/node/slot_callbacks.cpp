@@ -187,6 +187,12 @@ void KobukiNode::publishCurrentData()
   }
 }
 
+/**
+ * @brief Publish fw, hw, sw version information.
+ *
+ * The driver will only gather this data when initialising so it is
+ * important that this publisher is latched.
+ */
 void KobukiNode::publishVersionInfo()
 {
   if (ros::ok())

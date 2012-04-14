@@ -150,15 +150,17 @@ bool KobukiNode::init(ros::NodeHandle& nh)
     ROS_INFO_STREAM("Kobuki : using odom_frame [" << odom_frame << "][" << name << "].");
   }
 
-  if (!nh.getParam("base_frame", base_frame))
+  if (!nh.getParam("base_frame", base_frame)) {
     ROS_WARN_STREAM("Kobuki : no param server setting for base_frame, using default [" << base_frame << "][" << name << "].");
-  else
+  } else {
     ROS_INFO_STREAM("Kobuki : using base_frame [" << base_frame << "][" << name << "].");
+  }
 
-  if (!nh.getParam("publish_tf", publish_tf))
+  if (!nh.getParam("publish_tf", publish_tf)) {
     ROS_WARN_STREAM("Kobuki : no param server setting for publish_tf, using default [" << publish_tf << "][" << name << "].");
-  else
+  } else {
     ROS_INFO_STREAM("Kobuki : using publish_tf [" << publish_tf << "][" << name << "].");
+  }
 
   odom_trans.header.frame_id = odom_frame;
   odom_trans.child_frame_id = base_frame;
@@ -177,10 +179,6 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   odom.pose.covariance[28] = DBL_MAX; // is a requirement of robot_pose_ekf
 
   pose.setIdentity();
-
-  /*********************
-   ** Published msgs
-   **********************/
 
   /*********************
    ** Driver Init
