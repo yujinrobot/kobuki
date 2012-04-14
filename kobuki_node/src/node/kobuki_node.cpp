@@ -60,8 +60,6 @@ namespace kobuki
  */
 KobukiNode::KobukiNode(std::string& node_name) :
     name(node_name),
-    wheel_left_name("wheel_left"),
-    wheel_right_name("wheel_right"),
     odom_frame("odom"),
     base_frame("base_footprint"),
     publish_tf(false),

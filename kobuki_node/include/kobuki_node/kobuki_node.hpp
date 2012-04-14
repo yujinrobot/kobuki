@@ -88,8 +88,6 @@ private:
   geometry_msgs::TransformStamped odom_trans;
   nav_msgs::Odometry odom;
   ecl::Pose2D<double> pose;
-  const std::string wheel_left_name;
-  const std::string wheel_right_name;
   std::string odom_frame;
   std::string base_frame;
   ros::Duration cmd_vel_timeout;
