@@ -184,8 +184,13 @@ int main(int argc, char **argv)
   } else {
     std::cout << "    Chip Type   : " << eeprom.chip_type << std::endl;
   }
-//  std::cout << "    Invert      : " << eeprom.invert << std::endl;
+  // Looks like the eeprom structure gets TYPE_AM (0)...if we reprogram with
+  // that, for some reason the chip fails. Guesses: maybe this variable is
+  // like the size variable (below), it isn't stored in the eeprom and
+  // we have to manually set it before flashing.
+  eeprom.chip_type = TYPE_R;
 
+//  std::cout << "    Invert      : " << eeprom.invert << std::endl;
 
   // The size is not stored in the eeprom on the chip itself...rather this
   // variable is used when passing eeprom_binary to the ftdi_eeprom_build command.
@@ -194,6 +199,7 @@ int main(int argc, char **argv)
   std::cout << "  New serial    : " << new_id << "." << std::endl;
   std::cout << "  New manufact. : " << new_manufacturer << "." << std::endl;
   std::cout << "  New product   : " << new_product << "." << std::endl;
+  std::cout << "  New chip type : TYPE_R." << std::endl;
   free(eeprom.serial);
   eeprom.serial = (char*)malloc(new_id.size() + 1);
   std::strcpy(eeprom.serial, new_id.c_str());
