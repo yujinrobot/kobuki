@@ -17,6 +17,12 @@ wheel_radius: 0.042
 wheel_left_name: wheel_left 
 wheel_right_name: wheel_right
 
+# floor value for battery voltage (0%) (float, default: 14.0)
+battery_min_volts: 14.0
+
+# ceiling value for battery voltage (100%) (float, default: 19.0)
+battery_max_volts: 19.0
+
 # If a new command isn't received within this many seconds, the base is stopped (double, default: 0.6)
 cmd_vel_timeout: 1.0
 
