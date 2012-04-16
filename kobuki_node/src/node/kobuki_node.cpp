@@ -160,7 +160,7 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   try
   {
     kobuki.init(parameters);
-    ros::Duration(0,250).sleep(); // wait for some data to come in.
+    ros::Duration(0.25).sleep(); // wait for some data to come in.
     if ( !kobuki.isAlive() ) {
       ROS_ERROR_STREAM("Kobuki : no data stream, is kobuki turned on?");
       // don't need to return false here - simply turning kobuki on while spin()'ing should resurrect the situation.
@@ -218,7 +218,7 @@ bool KobukiNode::spin()
 
     bool is_alive = kobuki.isAlive();
     if ( watchdog_diagnostics.isAlive() && !is_alive ) {
-      ROS_ERROR_STREAM("Kobuki : has gone into his shell... [streamed data timed out][" << name << "].");
+      ROS_ERROR_STREAM("Kobuki : timed out waiting for the serial data stream [" << name << "].");
     }
     watchdog_diagnostics.update(is_alive);
     battery_diagnostics.update(kobuki.batteryStatus());

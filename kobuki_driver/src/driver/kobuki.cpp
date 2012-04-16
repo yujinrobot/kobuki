@@ -172,7 +172,9 @@ void Kobuki::spin()
       **********************/
       int n = serial.read(buf, packet_finder.numberOfDataToRead());
       if (n == 0) {
-        sig_error.emit("kobuki_node : no serial data in.");
+        if ( is_alive && ( ( ecl::TimeStamp() - last_signal_time ) > timeout ) ) {
+          is_alive = false;
+        }
         continue;
       } else {
         std::ostringstream ostream;

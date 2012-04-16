@@ -81,11 +81,13 @@ public:
     int16_t speed;
     int16_t radius;
 
-    // Sound
+    // Sound - not yet implemented
     uint16_t note;
     unsigned char duration;
 
     // SoundSequence
+    // 0 - turning on, 1 - turn off, 2 - recharge start, 3 - press button,
+    // 4 - error sound, 5 - start cleaning, 6 - cleaning end
     unsigned char segment_name;
 
     // RequestExtra
