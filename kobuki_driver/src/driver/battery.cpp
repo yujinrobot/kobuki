@@ -61,13 +61,17 @@ uint8_t Battery::capacity = 170;
 Battery::Battery (const uint8_t &new_voltage, const uint8_t &charger_flag) :
   voltage(new_voltage)
 {
-  if ( charger_flag & CoreSensors::Flags::Adapter ) {
+  if ( charger_flag & CoreSensors::Flags::AdapterType ) {
     charging_source = Adapter;
-  } else if ( charger_flag & CoreSensors::Flags::Dock ) {
-    charging_source = Dock;
   } else {
-    charging_source = None;
+    charging_source = Dock;
   }
+
+  battery_state = (charger_flag & CoreSensors::Flags::BatteryState);
+
+  if (battery_state == Discharging)
+    charging_source = None;
+
   // add a check here to modify the capacity if the incoming charger flag
   // is set to Adapter or dock, and the flag also indicates that it is maxed
   // i.e. set capacity == voltage_level in this case
