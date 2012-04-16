@@ -1,13 +1,13 @@
 <package>
-  <description brief="Meta package for kobukibot">
+  <description brief="Meta and start-up package for kobukibot">
 
-    The meta package for the kobuki stack.
+    The meta package for the Kobuki stack. It also contains all necessary scripts and launch files to start up Kobuki.
      
   </description>
-  <author>Younghun Ju</author>
-  <license>Yujin</license>
+  <author>Daniel Stonier, 주영훈</author>
+  <license>BSD</license>
   <review status="unreviewed" notes=""/>
-  <url>http://www.ros.org/wiki/kobuki/kobuki_bringup</url>
+  <url>http://www.ros.org/wiki/kobuki_bringup</url>
 
   <!-- Kobuki -->
   <depend package="kobuki_node"/>
@@ -23,16 +23,15 @@
   <depend package="rviz"/>
   <depend package="joint_state_publisher"/>
   
-  <!-- System Utilities -->
-  <rosdep name="unison"/>
-
   <!-- 3d Sensing -->
   <depend package="openni_camera"/>
   <depend package="pointcloud_to_laserscan"/>
 
+  <!-- System Utilities -->
+  <rosdep name="unison"/>
+
   <!-- Integrate Later
   <depends package="navigation"/>
   <depends package="gmapping"/>
- -->
- 
+ --> 
 </package>

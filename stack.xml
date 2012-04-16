@@ -1,11 +1,24 @@
 <stack>
-  <description brief="yujin robot's mobile research base">Software for Yujin's mobile research base.</description>
+  <description brief="Yujin Robot's mobile research base">
+    Software for Yujin Robot's mobile research base.
+  </description>
   <author>Maintained by Daniel Stonier</author>
   <license>BSD</license>  
   <review status="experimental" notes=""/>
   <url>http://ros.org/wiki/kobuki</url>
-  <depend stack="ros" />
-  <depend stack="ecl_core" />
-  <depend stack="turtlebot_apps"/>
-  <!-- need to properly flesh this out -->
+  <depend stack="common_msgs" /> <!-- nav_msgs, sensor_msgs, geometry_msgs, diagnostic_msgs -->
+  <depend stack="control" /> <!-- control_msgs -->
+  <depend stack="diagnostics" /> <!-- diagnostic_updater -->
+  <depend stack="dynamixel_motor" /> <!-- dynamixel_msgs, dynamixel_controllers -->
+  <depend stack="ecl_core" /> <!-- ecl_command_line, ecl_devices, ecl_streams, ecl_converters, ecl_time, ecl_geometry, ecl_sigslots, ecl_exceptions -->
+  <depend stack="ecl_navigation" /> <!-- ecl_mobile_robot -->
+  <depend stack="geometry" /> <!-- tf -->
+  <depend stack="openni_kinect" /> <!-- openni_camera -->
+  <depend stack="robot_model" /> <!-- robot_state_publisher -->
+  <depend stack="robot_model_visualization" /> <!-- joint_state_publisher -->
+  <depend stack="ros" /> <!-- roslib -->
+  <depend stack="ros_comm" /> <!-- std_msgs, rospy, roscpp -->
+  <depend stack="turtlebot_apps" /> <!-- turtlebot_teleop -->
+  <depend stack="visualization" /> <!-- rviz -->
+  <depend stack="ycs_devices" /> <!-- pointcloud_to_laserscan -->
 </stack>

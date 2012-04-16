@@ -1,13 +1,13 @@
 <package>
-  <description brief="Kobuki msg and srv types">
-
-     Custom comms for the kobuki packages.
-     
+  <description brief="Kobuki message and service types">
+    <p>
+      Custom messages and services for the Kobuki packages.
+    </p> 
   </description>
-  <author>Daniel Stonier</author>
+  <author>Daniel Stonier, 주영훈</author>
   <license>BSD</license>
   <review status="experimental" notes=""/>
-  <url>http://www.ros.org/wiki/kobuki/kobuki_comms/</url>
+  <url>http://www.ros.org/wiki/kobuki_comms</url>
   <export>
     <cpp cflags="-I${prefix}/msg_gen/cpp/include -I${prefix}/srv_gen/cpp/include"/>
   </export>

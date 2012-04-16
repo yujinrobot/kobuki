@@ -5,19 +5,18 @@
 
   </description>
   <author>Daniel Stonier</author>
-  <license>Yujin</license>
-  <review status="unreviewed" notes=""/>
-  <url>http://www.ros.org/wiki/kobuki/kobuki_arm</url>
+  <license>BSD</license>
+  <review status="experimental" notes=""/>
+  <url>http://www.ros.org/wiki/kobuki_arm</url>
 
+  <!-- Ros -->
   <depend package="rospy"/>
   <depend package="roslib"/>
-
   <depend package="std_msgs"/>
   <depend package="control_msgs"/>
   <depend package="dynamixel_msgs"/>
-
   <depend package="dynamixel_controllers"/>
 
+  <!-- System dependencies -->
   <rosdep name="wxpython"/>
-
 </package>

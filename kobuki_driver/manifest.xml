@@ -1,16 +1,16 @@
 <package>
   <description brief="c++ driver library for kobuki">
     <p>
-      Pure c++ driver library for kobuki. This is for those who do not wish to use 
-      ros on their systems.
+      Pure c++ driver library for Kobuki. This is for those who do not wish to use 
+      ROS on their systems.
     </p>
   </description>
-  <author>Daniel Stonier</author>
+  <author>Daniel Stonier, Jorge Santos Simon, 주영훈</author>
   <license>BSD</license>
-  <review status="experimental" notes=""/>
+  <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/kobuki_driver</url>
   
-  <!--  Embedded control libraries -->
+  <!--  Ecl -->
   <depend package="ecl_mobile_robot"/>
   <depend package="ecl_converters"/>
   <depend package="ecl_devices"/>
