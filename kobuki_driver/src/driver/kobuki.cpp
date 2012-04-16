@@ -76,7 +76,7 @@ bool PacketFinder::checkSum()
 Kobuki::Kobuki() :
   shutdown_requested(false),
   is_enabled(false),
-  is_live(false)
+  is_alive(false)
 {}
 
 /**
@@ -249,14 +249,14 @@ void Kobuki::spin()
               break;
           }
         }
-        is_live = true;
+        is_alive = true;
         last_signal_time.stamp();
         sig_stream_data.emit();
         sendBaseControlCommand(); // send the command packet to mainboard;
       } else {
         // watchdog
-        if ( is_live && ( ( ecl::TimeStamp() - last_signal_time ) > timeout ) ) {
-          is_live = false;
+        if ( is_alive && ( ( ecl::TimeStamp() - last_signal_time ) > timeout ) ) {
+          is_alive = false;
         }
       }
     }

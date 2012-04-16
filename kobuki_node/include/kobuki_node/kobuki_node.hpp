@@ -136,7 +136,7 @@ private:
   **********************/
   diagnostic_updater::Updater updater;
   BatteryTask battery_diagnostics;
-
+  WatchdogTask watchdog_diagnostics;
 };
 
 } // namespace kobuki

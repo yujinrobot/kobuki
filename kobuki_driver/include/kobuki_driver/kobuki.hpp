@@ -101,7 +101,7 @@ public:
    ** Configuration
    **********************/
   void init(Parameters &parameters) throw (ecl::StandardException);
-  bool isLive() const { return is_live; } /**< Whether the connection to the robot is alive and currently streaming. **/
+  bool isAlive() const { return is_alive; } /**< Whether the connection to the robot is alive and currently streaming. **/
   bool isEnabled() const { return is_enabled; } /**< Whether the motor power is enabled or disabled. **/
   bool enable(); /**< Enable power to the motors. **/
   bool disable(); /**< Disable power to the motors. **/
@@ -174,7 +174,7 @@ private:
   ecl::Serial serial;
   PacketFinder packet_finder;
   PacketFinder::BufferType data_buffer;
-  bool is_live; // used as a flag set by the data stream watchdog
+  bool is_alive; // used as a flag set by the data stream watchdog
 
   /*********************
   ** System Components

@@ -79,6 +79,7 @@ KobukiNode::KobukiNode(std::string& node_name) :
 
   updater.setHardwareID("Kobuki");
   updater.add(battery_diagnostics);
+  updater.add(watchdog_diagnostics);
 }
 
 /**
@@ -210,6 +211,11 @@ bool KobukiNode::spin()
       timed_out = false;
     }
 
+    bool is_alive = kobuki.isAlive();
+    if ( watchdog_diagnostics.isAlive() && !is_alive ) {
+      ROS_ERROR_STREAM("Kobuki : died miserably... [streamed data timed out][" << name << "].");
+    }
+    watchdog_diagnostics.update(is_alive);
     battery_diagnostics.update(kobuki.batteryStatus());
     updater.update();
     ros::spinOnce();
