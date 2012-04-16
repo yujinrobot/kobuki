@@ -29,11 +29,7 @@
 /**
  * @file /kobuki_node/src/node/main.cpp
  *
- * @brief File comment
- *
- * File comment
- *
- * @date 10/04/2012
+ * @brief Main ros node.
  **/
 
 /*****************************************************************************
