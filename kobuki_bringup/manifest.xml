@@ -15,6 +15,7 @@
  
   <!-- Turtlebot --> 
   <depend package="turtlebot_teleop"/> <!-- launch file dependency -->
+  <depend package="turtlebot_interactive_markers"/> <!-- launch file dependency -->
   
   <!--  Ros -->
   <depend package="robot_state_publisher"/>

@@ -19,6 +19,7 @@
   <depend stack="ros" /> <!-- roslib -->
   <depend stack="ros_comm" /> <!-- std_msgs, rospy, roscpp -->
   <depend stack="turtlebot_apps" /> <!-- turtlebot_teleop -->
+  <depend stack="turtlebot_viz" /> <!-- turtlebot_interactive_markers -->
   <depend stack="visualization" /> <!-- rviz -->
   <depend stack="ycs_devices" /> <!-- pointcloud_to_laserscan -->
 </stack>
