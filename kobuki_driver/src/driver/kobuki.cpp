@@ -75,7 +75,8 @@ bool PacketFinder::checkSum()
 
 Kobuki::Kobuki() :
   shutdown_requested(false),
-  is_enabled(false)
+  is_enabled(false),
+  is_live(false)
 {}
 
 /**
@@ -149,8 +150,9 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
 
 void Kobuki::spin()
 {
+  ecl::TimeStamp last_signal_time;
+  ecl::Duration timeout(0.1);
   unsigned char buf[256];
-  bool get_packet;
 
   /*********************
   ** Simulation Params
@@ -158,8 +160,6 @@ void Kobuki::spin()
 
   while (!shutdown_requested)
   {
-    get_packet = false;
-
     if ( simulation() ) {
       simulation.update();
       simulation.sleep();
@@ -249,9 +249,15 @@ void Kobuki::spin()
               break;
           }
         }
-        get_packet = true;
+        is_live = true;
+        last_signal_time.stamp();
         sig_stream_data.emit();
         sendBaseControlCommand(); // send the command packet to mainboard;
+      } else {
+        // watchdog
+        if ( is_live && ( ( ecl::TimeStamp() - last_signal_time ) > timeout ) ) {
+          is_live = false;
+        }
       }
     }
   }

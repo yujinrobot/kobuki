@@ -139,7 +139,13 @@ void PacketFinderBase::getBuffer(BufferType & bufferRef)
   bufferRef = buffer;
 }
 
-
+/**
+ * Checks for incoming packets.
+ *
+ * @param incoming
+ * @param numberOfIncoming
+ * @return bool : true if a valid incoming packet has been found.
+ */
 bool PacketFinderBase::update(const unsigned char * incoming, unsigned int numberOfIncoming)
 {
   // clearBuffer = 0, waitingForStx, waitingForPayloadSize, waitingForPayloadToEtx, waitingForEtx,

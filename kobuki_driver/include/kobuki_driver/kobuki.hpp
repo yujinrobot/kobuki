@@ -100,14 +100,12 @@ public:
   /*********************
    ** Configuration
    **********************/
-  void spin();
   void init(Parameters &parameters) throw (ecl::StandardException);
-  bool isEnabled() const
-  {
-    return is_enabled;
-  }
-  bool enable();
-  bool disable();
+  bool isLive() const { return is_live; } /**< Whether the connection to the robot is alive and currently streaming. **/
+  bool isEnabled() const { return is_enabled; } /**< Whether the motor power is enabled or disabled. **/
+  bool enable(); /**< Enable power to the motors. **/
+  bool disable(); /**< Disable power to the motors. **/
+  void spin();
 
   /******************************************
   ** User Friendly Api
@@ -158,7 +156,6 @@ private:
   ** Odometry
   **********************/
   DiffDrive diff_drive;
-
   bool is_enabled;
 
   /*********************
@@ -170,14 +167,14 @@ private:
   Cliff cliff;
   Current current;
   GpInput gp_input;
-  // Request Services
-  Hardware hardware;
-  Firmware firmware;
+  Hardware hardware; // requestable
+  Firmware firmware; // requestable
 
   std::string protocol_version;
   ecl::Serial serial;
   PacketFinder packet_finder;
   PacketFinder::BufferType data_buffer;
+  bool is_live; // used as a flag set by the data stream watchdog
 
   /*********************
   ** System Components
