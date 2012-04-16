@@ -44,6 +44,7 @@
 *****************************************************************************/
 
 #include <stdint.h>
+#include "../parameters.hpp"
 #include "../packets/core_sensors.hpp"
 
 /*****************************************************************************
@@ -75,6 +76,12 @@ public:
     Healthy,
     Maximum
   };
+  enum State {
+    Discharging = 0,
+    Charged     = 2,
+    Charging    = 6
+  };
+
   Battery() {} /**< Default constructor. **/
   Battery (const uint8_t &new_voltage, const uint8_t &charger_flag);
   Level level() const {
@@ -87,8 +94,16 @@ public:
     return Dangerous;
   }
 
+  float percent(const Parameters &parameters) const {
+    // TODO avoid need of passing parameters
+    // battery level comes as tenths of volt; convert to percent
+    return (10*voltage - 100*parameters.battery_min_volts) /
+           (parameters.battery_max_volts - parameters.battery_min_volts);
+  }
+
   static uint8_t capacity;
   uint8_t voltage;
+  uint8_t battery_state;
   Source charging_source;
 };
 

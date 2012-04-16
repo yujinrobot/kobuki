@@ -82,10 +82,12 @@ public:
     static const uint8_t LeftBumper = 0x04;
     static const uint8_t CentreBumper = 0x02;
     static const uint8_t RightBumper = 0x01;
-    // charging
-    static const uint8_t Charging = 0x02;
-    static const uint8_t Adapter = 0x04;
-    static const uint8_t Dock = 0x06;
+
+    // Byte "charger" format:
+    // - first four bits distinguish between adapter or docking base charging
+    static const uint8_t AdapterType  = 0x10;
+    // - last 4 bits specified the charging status (see Battery.hpp for details)
+    static const uint8_t BatteryState = 0x0F;
   };
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream);

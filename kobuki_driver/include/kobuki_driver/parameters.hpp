@@ -62,10 +62,12 @@ class Parameters
 public:
   Parameters() : simulation(false) {}
 
-  std::string device_port;         /**< For the serial device, a port (e.g. "/dev/ttyUSB0"). **/
-  std::string protocol_version;    /**< firmware version number (e.g. '2.0') **/
-  std::string sigslots_namespace;  /**< this should match the kobuki-node namespace **/
-  bool simulation;                 /**< whether to put the motors in loopback mode or not. **/
+  std::string device_port;         /** For the serial device, a port (e.g. "/dev/ttyUSB0") **/
+  std::string protocol_version;    /** firmware version number (e.g. '2.0') **/
+  std::string sigslots_namespace;  /** this should match the kobuki-node namespace **/
+  bool simulation;                 /** whether to put the motors in loopback mode or not **/
+  double battery_min_volts;        /** floor value for battery voltage (0%) **/
+  double battery_max_volts;        /** ceiling value for battery voltage (100%) **/
 
   /**
    * @brief This is a very rough validator for input configurations.
