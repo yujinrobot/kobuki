@@ -64,9 +64,6 @@ double Battery::dangerous = 13.1;
 Battery::Battery (const uint8_t &new_voltage, const uint8_t &charger_flag) :
   voltage(static_cast<double>(new_voltage)/10.0)
 {
-  std::cout << "Capacity : " << capacity << std::endl;
-  std::cout << "Low      : " << low << std::endl;
-  std::cout << "Dangerous: " << dangerous << std::endl;
   uint8_t state = (charger_flag & CoreSensors::Flags::BatteryStateMask);
   if ( state == CoreSensors::Flags::Charging) {
     charging_state = Charging;
