@@ -165,6 +165,7 @@ bool KobukiNode::init(ros::NodeHandle& nh)
       ROS_ERROR_STREAM("Kobuki : no data stream, is kobuki turned on?");
       // don't need to return false here - simply turning kobuki on while spin()'ing should resurrect the situation.
     }
+    kobuki.enable();
   }
   catch (const ecl::StandardException &e)
   {
