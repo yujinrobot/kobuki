@@ -44,7 +44,6 @@
 *****************************************************************************/
 
 #include <stdint.h>
-#include "../parameters.hpp"
 #include "../packets/core_sensors.hpp"
 
 /*****************************************************************************
@@ -86,15 +85,20 @@ public:
   Battery (const uint8_t &new_voltage, const uint8_t &charger_flag);
   Level level() const;
 
-  float percent(const Parameters &parameters) const {
-    // TODO avoid need of passing parameters
-    // battery level comes as tenths of volt; convert to percent
-    return (10*voltage - 100*parameters.battery_min_volts) /
-           (parameters.battery_max_volts - parameters.battery_min_volts);
-  }
+//  /**
+//   * @brief Currently graveyarded - work
+//   * @param parameters
+//   * @return
+//   */
+//  float percent(const Parameters &parameters) const {
+//    // TODO avoid need of passing parameters
+//    // battery level comes as tenths of volt; convert to percent
+//    return (10*voltage - 100*parameters.battery_min_volts) /
+//           (parameters.battery_max_volts - parameters.battery_min_volts);
+//  }
 
-  static uint8_t capacity, low, dangerous;
-  uint8_t voltage;
+  static double capacity, low, dangerous;
+  double voltage;
   State charging_state;
   Source charging_source;
 };

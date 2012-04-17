@@ -43,6 +43,7 @@
  *****************************************************************************/
 
 #include <string>
+#include "modules/battery.hpp"
 
 /*****************************************************************************
  ** Namespaces
@@ -60,14 +61,21 @@ namespace kobuki
 class Parameters
 {
 public:
-  Parameters() : simulation(false) {}
+  Parameters() :
+    simulation(false),
+    battery_capacity(Battery::capacity),
+    battery_low(Battery::low),
+    battery_dangerous(Battery::dangerous)
+  {
+  }
 
-  std::string device_port;         /** For the serial device, a port (e.g. "/dev/ttyUSB0") **/
-  std::string protocol_version;    /** firmware version number (e.g. '2.0') **/
-  std::string sigslots_namespace;  /** this should match the kobuki-node namespace **/
-  bool simulation;                 /** whether to put the motors in loopback mode or not **/
-  double battery_min_volts;        /** floor value for battery voltage (0%) **/
-  double battery_max_volts;        /** ceiling value for battery voltage (100%) **/
+  std::string device_port;         /**< For the serial device, a port (e.g. "/dev/ttyUSB0") **/
+  std::string protocol_version;    /**< firmware version number (e.g. '2.0') **/
+  std::string sigslots_namespace;  /**< this should match the kobuki-node namespace **/
+  bool simulation;                 /**< whether to put the motors in loopback mode or not **/
+  double battery_capacity;         /**< Capacity voltage of the battery **/
+  double battery_low;              /**< Low level warning for battery level. **/
+  double battery_dangerous;        /**< Battery in imminent danger of running out. **/
 
   /**
    * @brief This is a very rough validator for input configurations.

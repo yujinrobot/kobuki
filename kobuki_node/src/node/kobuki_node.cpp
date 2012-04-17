@@ -117,8 +117,9 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   Parameters parameters;
 
   nh.param("simulation", parameters.simulation, false);
-  nh.param("battery_max_volts", parameters.battery_max_volts, 19.0);
-  nh.param("battery_min_volts", parameters.battery_min_volts, 14.0);
+  nh.param("battery_capacity", parameters.battery_capacity, Battery::capacity);
+  nh.param("battery_low", parameters.battery_low, Battery::low);
+  nh.param("battery_dangerous", parameters.battery_dangerous, Battery::dangerous);
 
   parameters.sigslots_namespace = name; // name is automatically picked up by device_nodelet parent.
   if (!nh.getParam("device_port", parameters.device_port))
