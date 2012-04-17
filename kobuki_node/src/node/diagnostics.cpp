@@ -68,8 +68,8 @@ void BatteryTask::run(diagnostic_updater::DiagnosticStatusWrapper &stat) {
       break;
     }
   }
-  stat.add("Capacity", static_cast<int>(status.capacity));
-  stat.add("Voltage", static_cast<int>(status.voltage));
+  stat.add("Capacity", status.capacity);
+  stat.add("Voltage", status.voltage);
   switch (status.charging_source ) {
     case(Battery::None) : {
       stat.add("Source", "None");
@@ -94,7 +94,7 @@ void BatteryTask::run(diagnostic_updater::DiagnosticStatusWrapper &stat) {
       break;
     }
     case ( Battery::Discharging ) : {
-      stat.add("State", "Discharged");
+      stat.add("State", "Discharging");
       break;
     }
     default: break;

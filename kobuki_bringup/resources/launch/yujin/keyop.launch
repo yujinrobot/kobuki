@@ -3,7 +3,7 @@
  -->
 <launch>
   <group ns="kobuki">
-    <node pkg="keyop_core" type="keyop" name="keyop">
+    <node pkg="keyop_core" type="keyop" name="keyop" output="screen">
       <remap from="keyop/enable" to="enable"/>
       <remap from="keyop/disable" to="disable"/>
       <remap from="keyop/cmd_vel" to="cmd_vel"/>

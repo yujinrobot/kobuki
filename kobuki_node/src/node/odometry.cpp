@@ -51,7 +51,11 @@ void Odometry::init(ros::NodeHandle& nh, const std::string& name) {
   if (!nh.getParam("publish_tf", publish_tf)) {
     ROS_WARN_STREAM("Kobuki : no param server setting for publish_tf, using default [" << publish_tf << "][" << name << "].");
   } else {
-    ROS_INFO_STREAM("Kobuki : using publish_tf [" << publish_tf << "][" << name << "].");
+    if ( publish_tf ) {
+      ROS_INFO_STREAM("Kobuki : publishing transforms [" << name << "].");
+    } else {
+      ROS_INFO_STREAM("Kobuki : not publishing transforms (see robot_pose_ekf) [" << name << "].");
+    }
   }
 
   odom_trans.header.frame_id = odom_frame;
