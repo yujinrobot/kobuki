@@ -84,6 +84,21 @@ void BatteryTask::run(diagnostic_updater::DiagnosticStatusWrapper &stat) {
       break;
     }
   }
+  switch ( status.charging_state ) {
+    case ( Battery::Charged ) : {
+      stat.add("State", "Charged");
+      break;
+    }
+    case ( Battery::Charging ) : {
+      stat.add("State", "Charging");
+      break;
+    }
+    case ( Battery::Discharging ) : {
+      stat.add("State", "Discharged");
+      break;
+    }
+    default: break;
+  }
 }
 
 void WatchdogTask::run(diagnostic_updater::DiagnosticStatusWrapper &stat) {

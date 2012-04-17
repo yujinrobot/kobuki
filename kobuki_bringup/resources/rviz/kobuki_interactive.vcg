@@ -1,7 +1,7 @@
 Background\ ColorR=0.25098
 Background\ ColorG=0.25098
 Background\ ColorB=0.25098
-Fixed\ Frame=/base_footprint
+Fixed\ Frame=/odom
 Target\ Frame=<Fixed Frame>
 Grid.Alpha=0.5
 Grid.Cell\ Size=0.5
@@ -92,7 +92,7 @@ Tool\ 2D\ Nav\ GoalTopic=goal
 Tool\ 2D\ Pose\ EstimateTopic=initialpose
 Camera\ Type=rviz::OrbitViewController
 Camera\ Config=0.861 5.87582 0.82885 0.63052 0.730905 -0.384909
-Property\ Grid\ State=selection=;expanded=;scrollpos=0,0;splitterpos=182,366;ispageselected=1
+Property\ Grid\ State=selection=Fixed Frame;expanded=.Global Options;scrollpos=0,0;splitterpos=244,505;ispageselected=1
 [Display0]
 Name=Grid
 Package=rviz

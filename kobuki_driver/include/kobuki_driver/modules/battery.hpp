@@ -77,22 +77,14 @@ public:
     Maximum
   };
   enum State {
-    Discharging = 0,
-    Charged     = 2,
-    Charging    = 6
+    Discharging,
+    Charged,
+    Charging
   };
 
   Battery() {} /**< Default constructor. **/
   Battery (const uint8_t &new_voltage, const uint8_t &charger_flag);
-  Level level() const {
-    if ( voltage == capacity ) { return Maximum; }
-    float remaining = static_cast<float>(voltage)/static_cast<float>(capacity);
-    const float healthy = 0.9;
-    const float low = 0.85;
-    if ( remaining > healthy ) { return Healthy; }
-    if ( remaining > low ) { return Low; }
-    return Dangerous;
-  }
+  Level level() const;
 
   float percent(const Parameters &parameters) const {
     // TODO avoid need of passing parameters
@@ -101,9 +93,9 @@ public:
            (parameters.battery_max_volts - parameters.battery_min_volts);
   }
 
-  static uint8_t capacity;
+  static uint8_t capacity, low, dangerous;
   uint8_t voltage;
-  uint8_t battery_state;
+  State charging_state;
   Source charging_source;
 };
 

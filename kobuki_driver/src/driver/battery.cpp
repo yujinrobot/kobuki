@@ -29,11 +29,7 @@
 /**
  * @file /kobuki_driver/src/driver/battery.cpp
  *
- * @brief File comment
- *
- * File comment
- *
- * @date 15/04/2012
+ * @brief Battery/charging source implementation
  **/
 
 /*****************************************************************************
@@ -53,6 +49,8 @@ namespace kobuki {
 *****************************************************************************/
 
 uint8_t Battery::capacity = 170;
+uint8_t Battery::low = 135;
+uint8_t Battery::dangerous = 131;
 
 /*****************************************************************************
 ** Implementation
@@ -61,20 +59,30 @@ uint8_t Battery::capacity = 170;
 Battery::Battery (const uint8_t &new_voltage, const uint8_t &charger_flag) :
   voltage(new_voltage)
 {
-  if ( charger_flag & CoreSensors::Flags::AdapterType ) {
+  uint8_t state = (charger_flag & CoreSensors::Flags::BatteryStateMask);
+  if ( state == CoreSensors::Flags::Charging) {
+    charging_state = Charging;
+  } else if ( state == CoreSensors::Flags::Charged ) {
+    charging_state = Charged;
+    capacity = new_voltage;
+  } else {
+    charging_state = Discharging;
+  }
+
+  if (charging_state == Discharging) {
+    charging_source = None;
+  } else if ( charger_flag & CoreSensors::Flags::AdapterType ) {
     charging_source = Adapter;
   } else {
     charging_source = Dock;
   }
-
-  battery_state = (charger_flag & CoreSensors::Flags::BatteryState);
-
-  if (battery_state == Discharging)
-    charging_source = None;
-
-  // add a check here to modify the capacity if the incoming charger flag
-  // is set to Adapter or dock, and the flag also indicates that it is maxed
-  // i.e. set capacity == voltage_level in this case
 };
+
+Battery::Level Battery::level() const {
+  if ( charging_state == Charged ) { return Maximum; }
+  if ( voltage > low ) { return Healthy; }
+  if ( voltage > dangerous ) { return Low; }
+  return Dangerous;
+}
 
 } // namespace kobuki
