@@ -1,6 +1,6 @@
 <!--
   Before launching this:
-    roslaunch kobuki_bringup kobukibot.launch  
+    roslaunch kobuki_bringup minimal.launch  
  -->
 <launch>
   <group ns="kobuki">
