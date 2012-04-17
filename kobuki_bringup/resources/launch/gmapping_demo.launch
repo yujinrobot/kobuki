@@ -1,0 +1,12 @@
+<launch>
+
+  <!--- Run the kinect -->
+  <include file="$(find kobuki_bringup)/components/kinect.launch" />
+
+  <!--- Run gmapping -->
+  <include file="$(find turtlebot_navigation)/config/gmapping_turtlebot.launch" />
+
+  <!--- Run Move Base -->
+  <include file="$(find turtlebot_navigation)/config/move_base_turtlebot.launch" />
+
+</launch>
