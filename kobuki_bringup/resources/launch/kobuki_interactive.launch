@@ -18,5 +18,5 @@
   </group>
   
   <!-- start Rviz -->
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kobuki_bringup)/resources/rviz/kobuki_interactive.vcg" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kobuki_bringup)/resources/rviz/interactive_markers.vcg" />
 </launch>

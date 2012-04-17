@@ -3,8 +3,6 @@
 #   - sudo apt-get install ros-electric-turtlebot-robot ros-electric-dynamixel-motor ros-electric-laser-drivers
 # * For using the arm:
 #   - sudo apt-get install ros-electric-turtlebot-arm 
-# * Yujin stacks:
-#   - rosinstall /opt/yujin/unstable/stacks http://embedded-control-library.googlecode.com/svn/trunk/ecl_unstable.rosinstall
 
 # Official ROS Stacks
 - other:
@@ -12,9 +10,10 @@
 - other:
     local-name: /opt/ros/electric/stacks
 
-# Yujin stacks
-- other:
-    local-name: /opt/yujin/unstable/stacks/ecl
+# Yujin Stacks
+- svn:
+    uri: https://embedded-control-library.googlecode.com/svn/trunk
+    local-name: ecl
 
 # Kobuki stack
 - git:

@@ -1,12 +1,15 @@
+<!--
+  Before launching this:
+    roslaunch kobuki_bringup kobukibot.launch  
+ -->
 <launch>
+  <group ns="kobuki">
 
-  <!--- Run the kinect -->
-  <include file="$(find kobuki_bringup)/resources/launch/components/kinect.launch" />
+    <!--- Run gmapping -->
+    <include file="$(find kobuki_bringup)/resources/launch/components/navigation/gmapping.launch" />
 
-  <!--- Run gmapping -->
-  <include file="$(find kobuki_bringup)/resources/launch/components/navigation/gmapping.launch" />
-
-  <!--- Run Move Base -->
-  <include file="$(find kobuki_bringup)/resources/launch/components/navigation/move_base.launch" />
-
+    <!--- Run Move Base -->
+    <include file="$(find kobuki_bringup)/resources/launch/components/navigation/move_base.launch" />
+    
+  </group>
 </launch>

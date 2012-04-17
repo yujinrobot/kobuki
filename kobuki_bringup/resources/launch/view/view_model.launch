@@ -6,5 +6,5 @@
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
   <param name="use_gui" value="true"/>
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>  
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kobuki_bringup)/resources/rviz/view_model.vcg" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kobuki_bringup)/resources/rviz/robot_model.vcg" />
 </launch>
