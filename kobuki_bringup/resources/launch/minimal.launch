@@ -1,23 +1,13 @@
 <!--
-  This is a robot specific configuration for the kobuki runtime.
+  - robot base
+  - kinect
+  - arm (later)
  -->
 <launch>
-  <arg name="simulation" value="false"/>
-  <param name="/use_sim_time" value="false"/>
+  <include file="$(find kobuki_bringup)/resources/launch/minimal.launch"/>
 
   <group ns="kobuki">
-    <include file="$(find kobuki_bringup)/resources/launch/components/robot.launch"/>
-    <include file="$(find kobuki_bringup)/resources/launch/components/mobile_base.launch">
-      <arg name="simulation" value="$(arg simulation)"/>
-    </include>
+    <include file="$(find kobuki_bringup)/resources/launch/components/kinect.launch"/>
   </group>
-  
-  <!-- 
-  <include file="$(find turtlebot_bringup)/app_manager.launch" />
-   -->
-  
-  <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
-    <rosparam command="load" file="$(find kobuki_bringup)/resources/yaml/diagnostics.yaml" />
-  </node>
 
 </launch>
