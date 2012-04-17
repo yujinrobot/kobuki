@@ -43,7 +43,7 @@ rospy.init_node("test_rotation")
 pub = rospy.Publisher('/kobuki/cmd_vel',Twist)
 rate = rospy.Rate(1)
 twist = Twist()
-yaw_rate = 0.5
+yaw_rate = 0.8
 twist.linear.x = 0
 twist.linear.y = 0
 twist.linear.z = 0
