@@ -19,7 +19,7 @@ root = ssh://turtlebot@turtlebot.yujin.com//opt/kobuki
 # Ignores
 ######################################################
 
-ignore = Path kobuki/setup.sh
+#ignore = Path kobuki/setup.sh
 ignore = Name *.pyc
 ignore = Name .svn
 ignore = Name .hg
