@@ -12,8 +12,18 @@
 
 # Yujin Stacks
 - svn:
-    uri: https://embedded-control-library.googlecode.com/svn/trunk
-    local-name: ecl
+    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_tools/0.43.8
+    local-name: ecl_tools
+- svn:
+    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_lite/0.43.8
+    local-name: ecl_lite
+- svn:
+    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_core/0.43.8
+    local-name: ecl_core
+- svn:
+    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_navigation/0.43.8
+    local-name: ecl_navigation
+
 
 # Kobuki stack
 - git:
