@@ -127,6 +127,11 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
     simulation.init(diff_drive.wheel_bias(), diff_drive.m_to_rad()); // bias, metres to radians
   }
 
+  // in case the user changed these from the defaults
+  Battery::capacity = parameters.battery_capacity;
+  Battery::low = parameters.battery_low;
+  Battery::dangerous = parameters.battery_dangerous;
+
   /******************************************
   ** Get Version Info Commands
   *******************************************/

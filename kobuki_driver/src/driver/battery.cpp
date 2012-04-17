@@ -48,23 +48,28 @@ namespace kobuki {
 ** Statics
 *****************************************************************************/
 
-uint8_t Battery::capacity = 170;
-uint8_t Battery::low = 135;
-uint8_t Battery::dangerous = 131;
+double Battery::capacity = 17.0;
+double Battery::low = 13.5;
+double Battery::dangerous = 13.1;
 
 /*****************************************************************************
 ** Implementation
 *****************************************************************************/
-
+/**
+ * Configures the battery status given the current sensor readings.
+ *
+ * @param new_voltage : measured voltage*10
+ * @param charger_flag : bit flag representing charging status and source
+ */
 Battery::Battery (const uint8_t &new_voltage, const uint8_t &charger_flag) :
-  voltage(new_voltage)
+  voltage(static_cast<double>(new_voltage)/10.0)
 {
   uint8_t state = (charger_flag & CoreSensors::Flags::BatteryStateMask);
   if ( state == CoreSensors::Flags::Charging) {
     charging_state = Charging;
   } else if ( state == CoreSensors::Flags::Charged ) {
     charging_state = Charged;
-    capacity = new_voltage;
+    capacity = voltage;
   } else {
     charging_state = Discharging;
   }
