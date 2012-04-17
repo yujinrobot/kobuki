@@ -5,6 +5,9 @@
 <launch>
   <group ns="kobuki">
 
+    <!--- Run Kinect -->
+    <include file="$(find kobuki_bringup)/resources/launch/components/kinect.launch" />
+
     <!--- Run gmapping -->
     <include file="$(find kobuki_bringup)/resources/launch/components/navigation/gmapping.launch" />
 
