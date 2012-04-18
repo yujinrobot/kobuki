@@ -45,5 +45,6 @@
 #include "battery.hpp"
 #include "led_array.hpp"
 #include "diff_drive.hpp"
+#include "sound.hpp"
 
 #endif /* KOBUKI_MODULES_HPP_ */

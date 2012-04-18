@@ -53,14 +53,13 @@ DiffDrive::DiffDrive() :
   last_tick_right(0),
   last_rad_left(0.0),
   last_rad_right(0.0),
-  last_mm_left(0.0),
-  last_mm_right(0.0),
   v(0), w(0),
   radius(0), speed(0),
   bias(0.298), //wheelbase, wheel_to_wheel, in [m]
   wheel_radius(0.042),
   imu_heading_offset(0),
-  tick_to_mm(0.0845813406577f), tick_to_rad(0.00201384144460884f)
+  //tick_to_mm(0.0845813406577f),
+  tick_to_rad(0.00201384144460884f)
 {}
 
 void DiffDrive::init() {
@@ -100,7 +99,6 @@ void DiffDrive::update(const uint16_t &time_stamp,
   left_diff_ticks = (double)(short)((curr_tick_left - last_tick_left) & 0xffff);
   last_tick_left = curr_tick_left;
   last_rad_left += tick_to_rad * left_diff_ticks;
-  last_mm_left += tick_to_mm / 1000.0f * left_diff_ticks;
 
   curr_tick_right = right_encoder;
   if (!init_r)
@@ -111,7 +109,6 @@ void DiffDrive::update(const uint16_t &time_stamp,
   right_diff_ticks = (double)(short)((curr_tick_right - last_tick_right) & 0xffff);
   last_tick_right = curr_tick_right;
   last_rad_right += tick_to_rad * right_diff_ticks;
-  last_mm_right += tick_to_mm / 1000.0f * right_diff_ticks;
 
   // TODO this line and the last statements are really ugly; refactor, put in another place
   pose_update = diff_drive_kinematics->forward(tick_to_rad * left_diff_ticks, tick_to_rad * right_diff_ticks);

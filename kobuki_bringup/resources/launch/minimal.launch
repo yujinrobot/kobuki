@@ -7,9 +7,7 @@
 
   <group ns="kobuki">
     <include file="$(find kobuki_bringup)/resources/launch/components/robot.launch"/>
-    <include file="$(find kobuki_bringup)/resources/launch/components/mobile_base.launch">
-      <arg name="simulation" value="$(arg simulation)"/>
-    </include>
+    <include file="$(find kobuki_bringup)/resources/launch/components/mobile_base.launch"/>
   </group>
   
   <include file="$(find kobuki_bringup)/resources/launch/components/app_manager.launch" />

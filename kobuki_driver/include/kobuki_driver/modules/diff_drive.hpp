@@ -74,7 +74,6 @@ public:
   void velocityCommands(const short &cmd_speed, const short &cmd_radius);
   std::vector<short> velocityCommands() const;
   double wheel_bias() const { return bias; }
-  double m_to_rad() const { return 1000 * tick_to_rad / tick_to_mm; }
 
 private:
   unsigned short last_timestamp;
@@ -83,7 +82,6 @@ private:
 
   unsigned short last_tick_left, last_tick_right;
   double last_rad_left, last_rad_right;
-  double last_mm_left, last_mm_right;
 
   short v, w;
   short radius;
@@ -91,7 +89,7 @@ private:
   double bias; //wheelbase, wheel_to_wheel, in [m]
   double wheel_radius;
   int imu_heading_offset;
-  const double tick_to_mm, tick_to_rad;
+  const double tick_to_rad;
 
   boost::shared_ptr<ecl::DifferentialDrive::Kinematics> diff_drive_kinematics;
 

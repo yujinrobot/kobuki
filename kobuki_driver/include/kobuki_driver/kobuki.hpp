@@ -50,7 +50,6 @@
 #include "parameters.hpp"
 #include "event_manager.hpp"
 #include "command.hpp"
-#include "simulation.hpp"
 #include "modules/modules.hpp"
 #include "packets/packets.hpp"
 #include "packet_handler/packet_finder.hpp"
@@ -180,7 +179,6 @@ private:
   /*********************
   ** System Components
   **********************/
-  Simulation simulation;
   EventManager event_manager;
   Command kobuki_command;
   ecl::PushAndPop<unsigned char> command_buffer;
