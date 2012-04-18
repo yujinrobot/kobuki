@@ -35,20 +35,21 @@
  **/
 
 /*****************************************************************************
-** Includes
-*****************************************************************************/
+ ** Includes
+ *****************************************************************************/
 
 #include "../../include/kobuki_node/kobuki_node.hpp"
 
 /*****************************************************************************
-** Namespaces
-*****************************************************************************/
+ ** Namespaces
+ *****************************************************************************/
 
-namespace kobuki {
+namespace kobuki
+{
 
 /*****************************************************************************
-** Implementation
-*****************************************************************************/
+ ** Implementation
+ *****************************************************************************/
 
 void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg)
 {
@@ -67,22 +68,74 @@ void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg
 
 void KobukiNode::subscribeLedCommand(const kobuki_comms::LedArrayConstPtr msg)
 {
-  if ( msg->values.size() != 2 ) {
+  if (msg->values.size() != 2)
+  {
     ROS_WARN_STREAM("Kobuki : led commands must specify values for both led's in the array.");
     return;
   }
-  for ( unsigned int i = 0; i < msg->values.size(); ++i ) {
+  for (unsigned int i = 0; i < msg->values.size(); ++i)
+  {
     LedNumber led = Led1;
-    if ( i == 1 ) { led = Led2; }
-    if ( msg->values[i] == kobuki_comms::LedArray::GREEN ) {
+    if (i == 1)
+    {
+      led = Led2;
+    }
+    if (msg->values[i] == kobuki_comms::LedArray::GREEN)
+    {
       kobuki.toggleLed(led, Green);
-    } else if ( msg->values[i] == kobuki_comms::LedArray::ORANGE ) {
+    }
+    else if (msg->values[i] == kobuki_comms::LedArray::ORANGE)
+    {
       kobuki.toggleLed(led, Orange);
-    } else if ( msg->values[i] == kobuki_comms::LedArray::RED ) {
+    }
+    else if (msg->values[i] == kobuki_comms::LedArray::RED)
+    {
       kobuki.toggleLed(led, Red);
-    } else {
+    }
+    else
+    {
       kobuki.toggleLed(led, Black);
     }
+  }
+  return;
+}
+
+/**
+ * @brief Play a predefined sound (single sound or sound sequence)
+ */
+void KobukiNode::subscribeSoundCommand(const kobuki_comms::SoundConstPtr msg)
+{
+  if ( msg->value == kobuki_comms::Sound::ON )
+  {
+    kobuki.playSoundSequence(On);
+  }
+  else if ( msg->value == kobuki_comms::Sound::OFF )
+  {
+    kobuki.playSoundSequence(Off);
+  }
+  else if ( msg->value == kobuki_comms::Sound::RECHARGE )
+  {
+    kobuki.playSoundSequence(Recharge);
+  }
+  else if ( msg->value == kobuki_comms::Sound::BUTTON )
+  {
+    kobuki.playSoundSequence(Button);
+  }
+  else if ( msg->value == kobuki_comms::Sound::ERROR )
+  {
+    kobuki.playSoundSequence(Error);
+  }
+  else if ( msg->value == kobuki_comms::Sound::CLEANINGSTART )
+  {
+    kobuki.playSoundSequence(CleaningStart);
+  }
+  else if ( msg->value == kobuki_comms::Sound::CLEANINGEND )
+  {
+    kobuki.playSoundSequence(CleaningEnd);
+  }
+  else
+  {
+    ROS_WARN_STREAM("Kobuki: Invalid sound command! There is no sound stored for value '" << msg->value << "'.");
   }
   return;
 }
@@ -115,6 +168,5 @@ void KobukiNode::disable(const std_msgs::StringConstPtr msg)
   ROS_INFO_STREAM("Kobuki : disabled.");
   odometry.resetTimeout();
 }
-
 
 } // namespace kobuki

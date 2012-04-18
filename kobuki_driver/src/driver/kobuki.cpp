@@ -54,8 +54,8 @@ namespace kobuki
 {
 
 /*****************************************************************************
-** Implementation [PacketFinder]
-*****************************************************************************/
+ ** Implementation [PacketFinder]
+ *****************************************************************************/
 
 bool PacketFinder::checkSum()
 {
@@ -68,16 +68,14 @@ bool PacketFinder::checkSum()
   return cs ? false : true;
 }
 
-
 /*****************************************************************************
  ** Implementation [Initialisation]
  *****************************************************************************/
 
 Kobuki::Kobuki() :
-  shutdown_requested(false),
-  is_enabled(false),
-  is_alive(false)
-{}
+    shutdown_requested(false), is_enabled(false), is_alive(false)
+{
+}
 
 /**
  * Shutdown the driver - make sure we wait for the thread to finish.
@@ -101,7 +99,8 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   std::string sigslots_namespace = parameters.sigslots_namespace;
   event_manager.init(sigslots_namespace);
 
-  if ( !simulation() ) {
+  if (!simulation())
+  {
     serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
     serial.block(4000); // blocks by default, but just to be clear!
     serial.clear();
@@ -121,9 +120,9 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_warn.connect(sigslots_namespace + std::string("/ros_warn"));
   sig_error.connect(sigslots_namespace + std::string("/ros_error"));
 
-
   diff_drive.init();
-  if (  parameters.simulation ) {
+  if (parameters.simulation)
+  {
     simulation.init(diff_drive.wheel_bias(), diff_drive.m_to_rad()); // bias, metres to radians
   }
 
@@ -133,8 +132,8 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   Battery::dangerous = parameters.battery_dangerous;
 
   /******************************************
-  ** Get Version Info Commands
-  *******************************************/
+   ** Get Version Info Commands
+   *******************************************/
   sendCommand(Command::GetVersionInfo());
 
   thread.start(&Kobuki::spin, *this);
@@ -160,28 +159,35 @@ void Kobuki::spin()
   unsigned char buf[256];
 
   /*********************
-  ** Simulation Params
-  **********************/
+   ** Simulation Params
+   **********************/
 
   while (!shutdown_requested)
   {
-    if ( simulation() ) {
+    if (simulation())
+    {
       simulation.update();
       simulation.sleep();
       sig_stream_data.emit();
 //      sig_wheel_state.emit();
 //      sig_inertia.emit();
-    } else {
+    }
+    else
+    {
       /*********************
-      ** Read Incoming
-      **********************/
+       ** Read Incoming
+       **********************/
       int n = serial.read(buf, packet_finder.numberOfDataToRead());
-      if (n == 0) {
-        if ( is_alive && ( ( ecl::TimeStamp() - last_signal_time ) > timeout ) ) {
+      if (n == 0)
+      {
+        if (is_alive && ((ecl::TimeStamp() - last_signal_time) > timeout))
+        {
           is_alive = false;
         }
         continue;
-      } else {
+      }
+      else
+      {
         std::ostringstream ostream;
         ostream << "kobuki_node : serial_read(" << n << ")";
         sig_debug.emit(ostream.str());
@@ -197,9 +203,9 @@ void Kobuki::spin()
 
       if (packet_finder.update(buf, n)) // this clears packet finder's buffer and transfers important bytes into it
       {
-        packet_finder.getBuffer(data_buffer);  // get a reference to packet finder's buffer.
+        packet_finder.getBuffer(data_buffer); // get a reference to packet finder's buffer.
 
-  #if 0
+#if 0
         if( verbose )
         {
           printf("Packet: ");
@@ -209,7 +215,7 @@ void Kobuki::spin()
             if( i != 0 && ((i%5)==0) ) printf(" ");
           }
         }
-  #endif
+#endif
         // deserialise; first three bytes are not data.
         data_buffer.pop_front();
         data_buffer.pop_front();
@@ -241,7 +247,7 @@ void Kobuki::spin()
             case Header::GpInput:
               gp_input.deserialise(data_buffer);
               break;
-            // the rest are only included on request
+              // the rest are only included on request
             case Header::Hardware:
               hardware.deserialise(data_buffer);
               sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
@@ -260,9 +266,12 @@ void Kobuki::spin()
         last_signal_time.stamp();
         sig_stream_data.emit();
         sendBaseControlCommand(); // send the command packet to mainboard;
-      } else {
+      }
+      else
+      {
         // watchdog
-        if ( is_alive && ( ( ecl::TimeStamp() - last_signal_time ) > timeout ) ) {
+        if (is_alive && ((ecl::TimeStamp() - last_signal_time) > timeout))
+        {
           is_alive = false;
         }
       }
@@ -274,81 +283,114 @@ void Kobuki::spin()
  ** Implementation [Human Friendly Accessors]
  *****************************************************************************/
 
-ecl::Angle<double> Kobuki::getHeading() const {
+ecl::Angle<double> Kobuki::getHeading() const
+{
   ecl::Angle<double> heading;
-  if ( simulation() ) {
+  if (simulation())
+  {
     heading = simulation.heading;
-  } else {
+  }
+  else
+  {
     // raw data angles are in hundredths of a degree, convert to radians.
-    heading = (static_cast<double>(inertia.data.angle) / 100.0) * ecl::pi /180.0;
+    heading = (static_cast<double>(inertia.data.angle) / 100.0) * ecl::pi / 180.0;
   }
   return heading;
 }
 
-double Kobuki::getAngularVelocity() const {
-  if ( simulation() ) {
+double Kobuki::getAngularVelocity() const
+{
+  if (simulation())
+  {
     return simulation.angular_velocity;
-  } else {
+  }
+  else
+  {
     // raw data angles are in hundredths of a degree, convert to radians.
-    return (static_cast<double>(inertia.data.angle_rate) / 100.0) * ecl::pi /180.0;
+    return (static_cast<double>(inertia.data.angle_rate) / 100.0) * ecl::pi / 180.0;
   }
 }
 
 /*****************************************************************************
-** Implementation [Raw Data Accessors]
-*****************************************************************************/
+ ** Implementation [Raw Data Accessors]
+ *****************************************************************************/
 
-void Kobuki::resetOdometry() {
-  if ( simulation() ) {
+void Kobuki::resetOdometry()
+{
+  if (simulation())
+  {
     simulation.reset();
   }
   diff_drive.reset(inertia.data.angle);
 }
 
-void Kobuki::getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
-                          double &wheel_right_angle, double &wheel_right_angle_rate) {
+void Kobuki::getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate, double &wheel_right_angle,
+                                 double &wheel_right_angle_rate)
+{
 
-  if ( simulation() ) {
+  if (simulation())
+  {
     wheel_left_angle = simulation.left_wheel_angle;
     wheel_right_angle = simulation.right_wheel_angle;
     wheel_left_angle_rate = simulation.left_wheel_angle_rate;
     wheel_right_angle_rate = simulation.right_wheel_angle_rate;
-  } else {
+  }
+  else
+  {
     diff_drive.getWheelJointStates(wheel_left_angle, wheel_left_angle_rate, wheel_right_angle, wheel_right_angle_rate);
   }
 }
-void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update,
-                            ecl::linear_algebra::Vector3d &pose_update_rates) {
-  if ( simulation() ) {
-    pose_update = diff_drive.kinematics()->forward(simulation.left_wheel_angle_update, simulation.right_wheel_angle_update);
+void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update, ecl::linear_algebra::Vector3d &pose_update_rates)
+{
+  if (simulation())
+  {
+    pose_update = diff_drive.kinematics()->forward(simulation.left_wheel_angle_update,
+                                                   simulation.right_wheel_angle_update);
     // should add pose_update_rates here as well.
-  } else {
+  }
+  else
+  {
     diff_drive.update(core_sensors.data.time_stamp, core_sensors.data.left_encoder, core_sensors.data.right_encoder,
-                    pose_update, pose_update_rates);
+                      pose_update, pose_update_rates);
   }
 }
 
 /*****************************************************************************
-** Commands
-*****************************************************************************/
+ ** Commands
+ *****************************************************************************/
 
-void Kobuki::toggleLed(const enum LedNumber &number, const enum LedColour &colour) {
-  sendCommand(Command::SetLedArray(number,colour,kobuki_command.data));
+void Kobuki::toggleLed(const enum LedNumber &number, const enum LedColour &colour)
+{
+  sendCommand(Command::SetLedArray(number, colour, kobuki_command.data));
+}
+
+//void Kobuki::playSound(const enum Sounds &number)
+//{
+//  sendCommand(Command::PlaySound(number, kobuki_command.data));
+//}
+
+void Kobuki::playSoundSequence(const enum SoundSequences &number)
+{
+  sendCommand(Command::PlaySoundSequence(number, kobuki_command.data));
 }
 
 void Kobuki::setBaseControlCommand(double vx, double wz)
 {
-  if ( simulation() ) {
+  if (simulation())
+  {
     simulation.velocity = vx;
     simulation.angular_velocity = wz;
-  } else {
+  }
+  else
+  {
     diff_drive.velocityCommands(vx, wz);
   }
 }
 
 void Kobuki::sendBaseControlCommand()
 {
-  if ( !simulation() ) {
+  if (!simulation())
+  {
     //std::cout << "speed = " << speed << ", radius = " << radius << std::endl;
     unsigned char cmd[] = {0xaa, 0x55, 5, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00};
     unsigned char cs(0);
@@ -376,7 +418,8 @@ void Kobuki::sendBaseControlCommand()
 
 void Kobuki::sendCommand(Command command)
 {
-  if ( !simulation() ) {
+  if (!simulation())
+  {
     command_buffer.clear();
     command_buffer.resize(64);
     command_buffer.push_back(0xaa);

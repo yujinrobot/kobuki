@@ -32,6 +32,7 @@
 #include <ecl/containers.hpp>
 #include "packet_handler/payload_base.hpp"
 #include "modules/led_array.hpp"
+#include "modules/sound.hpp"
 
 namespace kobuki
 {
@@ -40,20 +41,16 @@ class Command : public packet_handler::payloadBase
 {
 public:
   // These values are very important - they go into the packet command id byte
-  enum Name {
-    BaseControl = 1,
-    Sound = 3,
-    SoundSequence = 4,
-    RequestExtra = 9,
-    ChangeFrame = 10,
-    RequestEeprom = 11,
+  enum Name
+  {
+    BaseControl = 1, Sound = 3, SoundSequence = 4, RequestExtra = 9, ChangeFrame = 10, RequestEeprom = 11,
     SetDigitalOut = 12
   };
 
-  enum RequestExtraFlag {
-    HardwareVersion = 0x01,
-    FirmwareVersion = 0x02
-    // Time = 0x04
+  enum RequestExtraFlag
+  {
+    HardwareVersion = 0x01, FirmwareVersion = 0x02
+  // Time = 0x04
   };
 
   /**
@@ -66,14 +63,12 @@ public:
    * For generating individual commands we modify the data here, then copy the command
    * class (avoid doing mutexes) and spin it off for sending down to the device.
    */
-  struct Data {
+  struct Data
+  {
     Data() :
-      command(BaseControl),
-      speed(0),
-      radius(0),
-      request_flags(0),
-      gp_out(0x00f0) // set all the power pins high, others low.
-    {}
+        command(BaseControl), speed(0), radius(0), request_flags(0), gp_out(0x00f0) // set all the power pins high, others low.
+    {
+    }
 
     Name command;
 
@@ -100,11 +95,13 @@ public:
     uint16_t gp_out;
   };
 
-  virtual ~Command() {}
+  virtual ~Command()
+  {
+  }
 
   /******************************************
-  ** Command Wizards
-  *******************************************/
+   ** Command Wizards
+   *******************************************/
   /**
    * Update the gp_out bits and get ready for sending as a SetDigitalOut
    * command.
@@ -114,15 +111,19 @@ public:
    * @param number : led enumerated number
    * @param colour : green, orange, red or black
    */
-  static Command SetLedArray(const enum LedNumber &number, const enum LedColour &colour, Command::Data &current_data) {
+  static Command SetLedArray(const enum LedNumber &number, const enum LedColour &colour, Command::Data &current_data)
+  {
     // gp_out is 16 bits
     uint16_t value;
-    if ( number == Led1 ) {
-      value = colour;  // defined with the correct bit specification.
-      current_data.gp_out = ( current_data.gp_out & 0xfcff ) | value; // update first
-    } else {
+    if (number == Led1)
+    {
+      value = colour; // defined with the correct bit specification.
+      current_data.gp_out = (current_data.gp_out & 0xfcff) | value; // update first
+    }
+    else
+    {
       value = colour << 2;
-      current_data.gp_out = ( current_data.gp_out & 0xf3ff ) | value; // update first
+      current_data.gp_out = (current_data.gp_out & 0xf3ff) | value; // update first
     }
     Command outgoing;
     outgoing.data = current_data;
@@ -130,7 +131,21 @@ public:
     return outgoing;
   }
 
-  static Command GetVersionInfo() {
+  static Command PlaySoundSequence(const enum SoundSequences &number, Command::Data &current_data)
+  {
+    uint16_t value; // gp_out is 16 bits
+    value = number; // defined with the correct bit specification.
+    //current_data.gp_out = (current_data.gp_out & 0xfcff) | value; // update first
+    //current_data.gp_out = value;
+
+    Command outgoing;
+    outgoing.data.segment_name = value;
+    outgoing.data.command = Command::SoundSequence;
+    return outgoing;
+  }
+
+  static Command GetVersionInfo()
+  {
     Command outgoing;
     outgoing.data.request_flags = 0;
     outgoing.data.request_flags |= static_cast<uint16_t>(HardwareVersion);
@@ -179,7 +194,8 @@ public:
         buildBytes(cmd, byteStream);
         buildBytes(data.frame_id, byteStream);
         break;
-      case SetDigitalOut: { // this one controls led, external power sources, gp digitial output
+      case SetDigitalOut:
+      { // this one controls led, external power sources, gp digitial output
         buildBytes(cmd, byteStream);
         buildBytes(data.gp_out, byteStream);
         break;
@@ -194,7 +210,10 @@ public:
   /**
    * Unused.
    */
-  bool deserialise(ecl::PushAndPop<unsigned char> & byteStream) { return true; }
+  bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
+  {
+    return true;
+  }
 };
 
 } // namespace kobuki

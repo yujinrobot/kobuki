@@ -141,6 +141,7 @@ public:
   ** Hard Commands
   **********************/
   void toggleLed(const enum LedNumber &number, const enum LedColour &colour);
+  void playSoundSequence(const enum SoundSequences &number);
   void setBaseControlCommand(double, double);
   void sendBaseControlCommand();
   void sendCommand(Command command);
