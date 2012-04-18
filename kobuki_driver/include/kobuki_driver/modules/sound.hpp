@@ -63,24 +63,17 @@ enum Sounds
 };
 
 /**
- * The available sound sequences:
- * 0 - turn on
- * 1 - turn off
- * 2 - recharge start
- * 3 - press button,
- * 4 - error sound
- * 5 - start cleaning
- * 6 - cleaning end
+ * The available sound sequences, by firmware flag.
  */
 enum SoundSequences
 {
-  On = 0x000,
-  Off = 0x100,
-  Recharge = 0x200,
-  Button = 0x300,
-  Error = 0x400,
-  CleaningStart = 0x500,
-  CleaningEnd = 0x600,
+  On = 0x0, /**< Turn on **/
+  Off = 0x1, /**< Turn off **/
+  Recharge = 0x2, /**< Recharging starting **/
+  Button = 0x3, /**< Button pressed  **/
+  Error = 0x4, /**< Error sound **/
+  CleaningStart = 0x5, /**< Cleaning started **/
+  CleaningEnd = 0x6, /**< Cleaning ended **/
 };
 
 } // namespace kobuki

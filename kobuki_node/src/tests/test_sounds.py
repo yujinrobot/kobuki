@@ -37,27 +37,18 @@ import rospy
 
 from kobuki_comms.msg import Sound
 
-sound_sequences = ["On", "Off", "RECHARGE", Button", "Error", "Error", "Error"]
+sounds = [Sound.ON, Sound.OFF, Sound.RECHARGE, Sound.BUTTON, Sound.ERROR, Sound.CLEANINGSTART, Sound.CLEANINGEND]
+texts = ["On", "Off", "Recharge", "Button", "Error", "CleaningStart", "CleaningEnd"]
 
 rospy.init_node("test_sounds")
-pub = rospy.Publisher('/kobuki/mobile_base/sound_command',LedArray)
-rate = rospy.Rate(1)
-sounds = Sound()
-sounds.value = [LedArray.GREEN, LedArray.BLACK]
+pub = rospy.Publisher('/kobuki/mobile_base/commands/sound', Sound)
+rate = rospy.Rate(0.5)
+msg = Sound()
 while not rospy.is_shutdown():
-    new_led_array = LedArray()
-    new_led_array.values = []
-    for led in led_array.values:
-        if led == LedArray.GREEN:
-            new_led_array.values.append(LedArray.ORANGE)
-        elif led == LedArray.ORANGE:
-            new_led_array.values.append(LedArray.RED)
-        elif led == LedArray.RED:
-            new_led_array.values.append(LedArray.BLACK)
-        elif led == LedArray.BLACK:
-            new_led_array.values.append(LedArray.GREEN)
-    led_array = new_led_array
-    print "[" + colours[led_array.values[0]] + "," + colours[led_array.values[1]] + "]" 
-    pub.publish(led_array)
-    rate.sleep()
+    for sound, text in zip(sounds, texts):
+        msg.value = sound
+        print text 
+        pub.publish(msg)
+        rate.sleep()
+    break
     
