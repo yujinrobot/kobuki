@@ -1,21 +1,18 @@
 <!-- 
   Control Kobuki using interactive markers in RViz 
   For this to work you need to have the turtlebot_interactive_markers package installed.
-  Also, remember to activate Kobuki's motors, e.g. by using "rostopic pub /kobuki/enable std_msgs/String all".
+  
+  Before launching this:
+    roslaunch kobuki_bringup minimal.launch  
  -->
 <launch>
-  <!-- start minimal Kobuki configuration -->
-  <include file="$(find kobuki_bringup)/resources/launch/minimal.launch"/>
-
   <!-- start interactive markers server -->  
-  <group ns="kobuki"> 
     <node pkg="turtlebot_interactive_markers" type="turtlebot_marker_server" name="turtlebot_marker_server">
       <param name="link_name" value="/odom" type="string"/>
       <param name="linear_scale"  value="0.5" type="double"/>
       <param name="angular_scale"  value="1.0" type="double"/>
       <remap from="/cmd_vel" to="cmd_vel"/>
     </node>
-  </group>
   
   <!-- start Rviz -->
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kobuki_bringup)/resources/rviz/interactive_markers.vcg" />

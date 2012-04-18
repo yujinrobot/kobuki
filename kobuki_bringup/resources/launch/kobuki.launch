@@ -5,9 +5,5 @@
  -->
 <launch>
   <include file="$(find kobuki_bringup)/resources/launch/minimal.launch"/>
-
-  <group ns="kobuki">
-    <include file="$(find kobuki_bringup)/resources/launch/components/kinect.launch"/>
-  </group>
-
+  <include file="$(find kobuki_bringup)/resources/launch/components/kinect.launch"/>
 </launch>

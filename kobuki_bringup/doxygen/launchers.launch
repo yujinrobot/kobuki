@@ -10,6 +10,8 @@ Goal is to replicate the minimal.launch, kinect.launch, turtlebot.launch(?) in t
 
 - Obviously, kobuki_node replaces turtlebot node here.
 - Namespaced in kobuki
+
+Forgetting the namespace - too many absolute or global references and also android doesn't play nicely with that.
  
 \section Kinect
 

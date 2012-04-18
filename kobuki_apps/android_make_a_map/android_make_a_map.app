@@ -11,4 +11,4 @@ clients:
      intent-action: ros.android.makeamap.MakeAMap
    app: 
      gravityMode: 0
-     base_control_topic: /kobuki/cmd_vel 
+     base_control_topic: /cmd_vel 

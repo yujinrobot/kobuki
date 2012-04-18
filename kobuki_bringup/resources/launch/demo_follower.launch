@@ -3,8 +3,6 @@
     roslaunch kobuki_bringup minimal.launch  
  -->
 <launch>
-  <group ns="kobuki">
-
     <!-- Kinect -->
     <node pkg="nodelet" type="nodelet" name="openni_manager" output="screen" respawn="true" args="manager"/>
 
@@ -32,5 +30,4 @@
       <param name="max_z" value="1.0" />
       <param name="goal_z" value="0.6" />
     </node>
-  </group>
 </launch>

@@ -1,6 +1,4 @@
 <launch>
-  <group ns="kobuki">
-
     <param name="camera/rgb/image_color/compressed/jpeg_quality" value="22"/>
 
     <!-- Make a slower camera feed available. -->
@@ -31,6 +29,6 @@
       <param name="overwrite" value="false"/>
     </node>
     <node pkg="map_store" type="map_saver" name="map_saver" output="screen"/>
-  </group>
+  <!--</group>-->
 </launch>
 

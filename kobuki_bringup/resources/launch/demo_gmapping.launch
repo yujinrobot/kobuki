@@ -3,8 +3,6 @@
     roslaunch kobuki_bringup minimal.launch  
  -->
 <launch>
-  <group ns="kobuki">
-
     <!--- Run Kinect -->
     <include file="$(find kobuki_bringup)/resources/launch/components/kinect.launch" />
 
@@ -13,6 +11,4 @@
 
     <!--- Run Move Base -->
     <include file="$(find kobuki_bringup)/resources/launch/components/navigation/move_base.launch" />
-    
-  </group>
 </launch>
