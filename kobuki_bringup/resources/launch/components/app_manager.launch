@@ -2,6 +2,6 @@
   <node pkg="app_manager" type="appmaster" name="appmaster" args="-p 11312"/>
 
   <node pkg="app_manager" type="app_manager" name="app_manager" args="--applist $(find kobuki_bringup)/resources/apps" output="screen">
-        <param name="interface_master" value="http://snorriwork.yujin.com:11312"/>
+        <param name="interface_master" value="http://localhost:11312"/>
   </node>
 </launch>

@@ -17,7 +17,7 @@
     </rosparam>
   </node>
 
-  <include file="$(find kobuki_bringup)/kinect.launch"/>
+  <include file="$(find kobuki_bringup)/resources/launch/components/kinect.launch"/>
 
   <!--- Run Move Base and Robot Pose EKF -->
   <include file="$(find kobuki_bringup)/resources/launch/components/navigation/move_base.launch" />
