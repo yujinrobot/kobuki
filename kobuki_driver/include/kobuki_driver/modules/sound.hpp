@@ -27,18 +27,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /**
- * @file /kobuki_driver/include/kobuki_driver/modules/led_array.hpp
+ * @file /kobuki_driver/include/kobuki_driver/modules/sound.hpp
  *
- * @brief Definitions for manipulating the led's.
- *
- * @date 10/04/2012
+ * @brief Definitions for triggering sounds and sound sequences.
  **/
 /*****************************************************************************
 ** Ifdefs
 *****************************************************************************/
 
-#ifndef KOBUKI_LED_ARRAY_HPP_
-#define KOBUKI_LED_ARRAY_HPP_
+#ifndef KOBUKI_SOUND_HPP_
+#define KOBUKI_SOUND_HPP_
 
 /*****************************************************************************
 ** Includes
@@ -71,4 +69,4 @@ enum LedColour {
 
 } // namespace kobuki
 
-#endif /* LED_ARRAY_HPP_ */
+#endif /* SOUND_HPP_ */
