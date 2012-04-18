@@ -5,8 +5,8 @@
   <arg name="simulation" value="false"/>
   <param name="/use_sim_time" value="false"/>
 
-  <include file="$(find kobuki_bringup)/resources/launch/components/robot.launch"/>
   <group ns="kobuki">
+    <include file="$(find kobuki_bringup)/resources/launch/components/robot.launch"/>
     <include file="$(find kobuki_bringup)/resources/launch/components/mobile_base.launch">
       <arg name="simulation" value="$(arg simulation)"/>
     </include>
