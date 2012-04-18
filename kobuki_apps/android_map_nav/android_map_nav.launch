@@ -27,7 +27,7 @@
     <param name="database_path" value="warehouse_data"/>
     <param name="overwrite" value="false"/>
   </node>
-  <node pkg="map_store" type="map_loader" name="map_loader" output="screen"/>
+  <node pkg="map_store" type="map_manager" name="map_manager" output="screen"/>
 
   <!--- Run AMCL -->
   <include file="$(find kobuki_bringup)/resources/launch/components/navigation/amcl.launch">
