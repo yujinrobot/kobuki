@@ -19,7 +19,7 @@
 
     <include file="$(find kobuki_bringup)/resources/launch/components/kinect.launch"/>
 
-    <!--- Run Move Base and Robot Pose EKF -->
+    <!--- Run Move Base -->
     <include file="$(find kobuki_bringup)/resources/launch/components/navigation/move_base.launch" />
 
     <!--- Run gmapping to make maps-->
