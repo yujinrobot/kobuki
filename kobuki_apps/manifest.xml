@@ -1,0 +1,16 @@
+<package>
+  <description brief="the installed app set for kobuki">
+
+     App definitions for kobuki. This doesn't actually change the turtlebot apps, 
+     just lists them centrally, modifies their namespace (no good reason, just the way
+     we started) and centralises the required rosmake dependencies.
+
+  </description>
+  <author>Daniel Stonier</author>
+  <license>BSD</license>
+  <review status="experimental" notes=""/>
+  <url>http://ros.org/wiki/kobuki_apps</url>
+
+</package>
+
+

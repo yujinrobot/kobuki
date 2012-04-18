@@ -2,15 +2,15 @@
 # They don't need new code, just need to reorient and remap the launchers correctly.
 
 apps:
- - display: Android Teleop
-   app: turtlebot_teleop/android_teleop
- - display: PS3 Joystick
-   app: turtlebot_teleop/ps3_teleop
- - display: Follower
-   app: turtlebot_follower/follower
+# - display: Android Teleop
+#   app: kobuki_apps/android_teleop
+# - display: PS3 Joystick
+#   app: kobuki_apps/ps3_teleop
+# - display: Follower
+#   app: kobuki_apps/follower
  - display: Chirp
-   app: turtlebot_sounds/chirp
+   app: kobuki_apps/chirp
  - display: Make a Map
-   app: turtlebot_teleop/android_make_a_map
- - display: Map Nav
-   app: turtlebot_teleop/android_map_nav
+   app: kobuki_apps/android_make_a_map
+# - display: Map Nav
+#   app: kobuki_apps/android_map_nav

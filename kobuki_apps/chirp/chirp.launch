@@ -1,0 +1,5 @@
+<launch>
+  <group ns="kobuki">
+    <node name="chirp" pkg="turtlebot_sounds" type="chirp.bash" cwd="node"/>
+  </group>
+</launch>
