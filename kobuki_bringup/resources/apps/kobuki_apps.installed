@@ -1,6 +1,7 @@
 # Basic plan : remake launchers here in kobuki_bringup...or maybe a separate kobuki_apps.
 # They don't need new code, just need to reorient and remap the launchers correctly.
 
+apps:
  - display: Android Teleop
    app: turtlebot_teleop/android_teleop
  - display: PS3 Joystick
