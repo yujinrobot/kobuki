@@ -24,9 +24,13 @@
     uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_navigation/0.43.8
     local-name: ecl_navigation
 
+- git: 
+    uri: git://github.com/stonier/zeroconf_implementations.git
+    local-name: zeroconf_implementations
+    version: master 
 
 # Kobuki stack
 - git:
     uri: git@github.com:yujinrobot/kobuki.git
-    version: master
     local-name: kobuki
+    version: master
