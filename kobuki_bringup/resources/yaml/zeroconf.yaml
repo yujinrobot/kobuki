@@ -1,0 +1,9 @@
+
+# Publishes the ros master service on avahi.
+
+services: 
+  - 
+     name: "Kobukibot"
+     type: _ros-master._tcp 
+     domain: local 
+     description: "ros master"

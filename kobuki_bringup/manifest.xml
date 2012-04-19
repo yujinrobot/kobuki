@@ -12,6 +12,7 @@
   <!-- Kobuki -->
   <depend package="kobuki_node"/>
   <depend package="kobuki_description"/>
+  <depend package="zeroconf_avahi"/>
  
   <!-- Turtlebot --> 
   <depend package="turtlebot_teleop"/> <!-- launch dependency -->
@@ -21,7 +22,7 @@
   <!--  Ros -->
   <depend package="robot_state_publisher"/>
 
-  <!-- visualization -->
+  <!-- Visualization -->
   <depend package="rviz"/>
   <depend package="joint_state_publisher"/>
   
