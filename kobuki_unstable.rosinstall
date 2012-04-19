@@ -27,7 +27,7 @@
 - git: 
     uri: git://github.com/stonier/zeroconf_implementations.git
     local-name: zeroconf_implementations
-    version: master 
+    version: 0.1.5 
 
 # Kobuki stack
 - git:
