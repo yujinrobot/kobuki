@@ -246,7 +246,7 @@ void Kobuki::spin()
             for (unsigned int i = 0; i < data_buffer.size(); ++i ) {
               ostream << std::hex << static_cast<int>(data_buffer[i]) << " " << std::dec;
             }
-            std::cout << "]";
+            ostream << "]";
             sig_error.emit(ostream.str());
             data_buffer.clear();
             break;
