@@ -345,9 +345,8 @@ bool PacketFinderBase::waitForPayloadAndEtx(const unsigned char * incoming, unsi
     std::ostringstream ostream;
     ostream << "abnormally sized payload retrieved, clearing [" << size_max_payload << "][" << size_payload << "]";
     for (unsigned int i = 0; i < numberOfIncoming; ++i ) {
-      ostream << std::hex << static_cast<int>(*(incoming+i)) << " ";
+      ostream << std::hex << static_cast<int>(*(incoming+i)) << " " << std::dec;
     }
-    ostream << std::dec << "\n";
     sig_warn.emit(ostream.str());
     return false;
   }
