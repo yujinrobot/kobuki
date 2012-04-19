@@ -32,35 +32,28 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-# Puts the robot into continual rotation - useful for aging/battery tests.
-
 import roslib; roslib.load_manifest('kobuki_node')
 import rospy
 
-from geometry_msgs.msg import Twist
+from kobuki_comms.msg import DigitalOutput
 
-rospy.init_node("test_rotation")
-pub = rospy.Publisher('/cmd_vel',Twist)
+rospy.init_node("test_digital_output")
+pub = rospy.Publisher('/mobile_base/commands/digital_output',DigitalOutput)
 rate = rospy.Rate(1)
-twist = Twist()
-yaw_rate = 0.8
-twist.linear.x = 0
-twist.linear.y = 0
-twist.linear.z = 0
-twist.angular.x = 0
-twist.angular.y = 0
-twist.angular.z = yaw_rate
-rotate_count = 0
-max_rotate_count = int(3.14/yaw_rate)
-start = rospy.get_rostime()
+digital_output = DigitalOutput()
+digital_output.values = [ False, False, False, False]
+digital_output.mask = [ True, True, False, True ]
 while not rospy.is_shutdown():
-    if rotate_count == max_rotate_count:
-        twist.angular.z = - twist.angular.z
-        rotate_count = 0
-    else:
-        rotate_count += 1
-    now = rospy.get_rostime()
-    rospy.loginfo("Running time: %ds", now.secs - start.secs)
-    pub.publish(twist)
+    # incrementally convert a false, to true and then reset them all to false.
+    try:
+        index = digital_output.values.index(False)
+        for i in range(0,4):
+            if not digital_output.values[i]:
+                digital_output.values[i] = True
+                break
+    except ValueError:
+        digital_output.values = [ False, False, False, False]
+    print digital_output
+    pub.publish(digital_output)
     rate.sleep()
     

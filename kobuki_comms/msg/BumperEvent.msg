@@ -1,12 +1,12 @@
 # Provides a button event
 # This message is generated whenever a button is pressed or released
 
-uint8 Left = 0
-uint8 Centre = 1
-uint8 Right = 2
+uint8 LEFT = 0
+uint8 CENTRE = 1
+uint8 RIGHT = 2
 
-uint8 Released = 0
-uint8 Pressed  = 1
+uint8 RELEASED = 0
+uint8 PRESSED  = 1
 
 uint8 state
 uint8 bumper

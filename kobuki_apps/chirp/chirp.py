@@ -32,35 +32,23 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-# Puts the robot into continual rotation - useful for aging/battery tests.
-
 import roslib; roslib.load_manifest('kobuki_node')
 import rospy
 
-from geometry_msgs.msg import Twist
+from kobuki_comms.msg import Sound
 
-rospy.init_node("test_rotation")
-pub = rospy.Publisher('/cmd_vel',Twist)
-rate = rospy.Rate(1)
-twist = Twist()
-yaw_rate = 0.8
-twist.linear.x = 0
-twist.linear.y = 0
-twist.linear.z = 0
-twist.angular.x = 0
-twist.angular.y = 0
-twist.angular.z = yaw_rate
-rotate_count = 0
-max_rotate_count = int(3.14/yaw_rate)
-start = rospy.get_rostime()
+sounds = [Sound.ON, Sound.OFF, Sound.RECHARGE, Sound.BUTTON, Sound.ERROR, Sound.CLEANINGSTART, Sound.CLEANINGEND]
+texts = ["On", "Off", "Recharge", "Button", "Error", "CleaningStart", "CleaningEnd"]
+
+rospy.init_node("chirp")
+pub = rospy.Publisher('/mobile_base/commands/sound', Sound)
+rate = rospy.Rate(0.5)
+msg = Sound()
 while not rospy.is_shutdown():
-    if rotate_count == max_rotate_count:
-        twist.angular.z = - twist.angular.z
-        rotate_count = 0
-    else:
-        rotate_count += 1
-    now = rospy.get_rostime()
-    rospy.loginfo("Running time: %ds", now.secs - start.secs)
-    pub.publish(twist)
-    rate.sleep()
+    for sound, text in zip(sounds, texts):
+        msg.value = sound
+        print text 
+        pub.publish(msg)
+        rate.sleep()
+    break
     

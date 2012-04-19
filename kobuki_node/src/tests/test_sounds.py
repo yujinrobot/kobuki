@@ -41,7 +41,7 @@ sounds = [Sound.ON, Sound.OFF, Sound.RECHARGE, Sound.BUTTON, Sound.ERROR, Sound.
 texts = ["On", "Off", "Recharge", "Button", "Error", "CleaningStart", "CleaningEnd"]
 
 rospy.init_node("test_sounds")
-pub = rospy.Publisher('/kobuki/mobile_base/commands/sound', Sound)
+pub = rospy.Publisher('/mobile_base/commands/sound', Sound)
 rate = rospy.Rate(0.5)
 msg = Sound()
 while not rospy.is_shutdown():

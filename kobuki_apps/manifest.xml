@@ -10,7 +10,12 @@
   <license>BSD</license>
   <review status="experimental" notes=""/>
   <url>http://ros.org/wiki/kobuki_apps</url>
-
+  <depend package="kobuki_bringup"/> <!-- all -->
+  <depend package="kobuki_comms"/> <!-- chirp -->
+  <depend package="topic_tools"/> <!-- android_teleop -->
+  <depend package="mongodb"/> <!-- android_map_nav -->
+  <depend package="map_store"/> <!-- android_map_nav -->
+  <depend package="tf"/> <!-- android_make_a_map -->
 </package>
 
 

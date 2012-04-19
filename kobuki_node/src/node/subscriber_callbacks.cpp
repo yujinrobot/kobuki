@@ -82,21 +82,32 @@ void KobukiNode::subscribeLedCommand(const kobuki_comms::LedArrayConstPtr msg)
     }
     if (msg->values[i] == kobuki_comms::LedArray::GREEN)
     {
-      kobuki.toggleLed(led, Green);
+      kobuki.setLed(led, Green);
     }
     else if (msg->values[i] == kobuki_comms::LedArray::ORANGE)
     {
-      kobuki.toggleLed(led, Orange);
+      kobuki.setLed(led, Orange);
     }
     else if (msg->values[i] == kobuki_comms::LedArray::RED)
     {
-      kobuki.toggleLed(led, Red);
+      kobuki.setLed(led, Red);
     }
     else
     {
-      kobuki.toggleLed(led, Black);
+      kobuki.setLed(led, Black);
     }
   }
+  return;
+}
+
+void KobukiNode::subscribeDigitalOutputCommand(const kobuki_comms::DigitalOutputConstPtr msg)
+{
+  DigitalOutput digital_output;
+  for ( unsigned int i = 0; i < 4; ++i ) {
+    digital_output.values[i] = msg->values[i];
+    digital_output.mask[i] = msg->mask[i];
+  }
+  kobuki.setDigitalOutput(digital_output);
   return;
 }
 

@@ -261,6 +261,7 @@ void KobukiNode::subscribeTopics(ros::NodeHandle& nh)
 {
   velocity_command_subscriber = nh.subscribe(std::string("cmd_vel"), 10, &KobukiNode::subscribeVelocityCommand, this);
   led_command_subscriber =  nh.subscribe(std::string("commands/led"), 10, &KobukiNode::subscribeLedCommand, this);
+  digital_output_command_subscriber =  nh.subscribe(std::string("commands/digital_output"), 10, &KobukiNode::subscribeDigitalOutputCommand, this);
   sound_command_subscriber =  nh.subscribe(std::string("commands/sound"), 10, &KobukiNode::subscribeSoundCommand, this);
   // A group enable/disable channel to listen to (these should get remapped to /enable in most cases).
   enable_subscriber = nh.subscribe("enable", 10, &KobukiNode::enable, this); // 10 is queue size

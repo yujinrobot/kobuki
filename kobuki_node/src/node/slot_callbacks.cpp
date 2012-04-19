@@ -174,8 +174,8 @@ void KobukiNode::publishButtonEvent(const ButtonEvent &event)
   {
     kobuki_comms::ButtonEvent msg;
     switch(event.state) {
-      case(ButtonEvent::Pressed) : { msg.state = kobuki_comms::ButtonEvent::Pressed; break; }
-      case(ButtonEvent::Released) : { msg.state = kobuki_comms::ButtonEvent::Released; break; }
+      case(ButtonEvent::Pressed) : { msg.state = kobuki_comms::ButtonEvent::PRESSED; break; }
+      case(ButtonEvent::Released) : { msg.state = kobuki_comms::ButtonEvent::RELEASED; break; }
       default: break;
     }
     switch(event.button) {
@@ -194,14 +194,14 @@ void KobukiNode::publishBumperEvent(const BumperEvent &event)
   {
     kobuki_comms::BumperEvent msg;
     switch(event.state) {
-      case(BumperEvent::Pressed) : { msg.state = kobuki_comms::BumperEvent::Pressed; break; }
-      case(BumperEvent::Released) : { msg.state = kobuki_comms::BumperEvent::Released; break; }
+      case(BumperEvent::Pressed) : { msg.state = kobuki_comms::BumperEvent::PRESSED; break; }
+      case(BumperEvent::Released) : { msg.state = kobuki_comms::BumperEvent::RELEASED; break; }
       default: break;
     }
     switch(event.bumper) {
-      case(BumperEvent::Left) : { msg.bumper = kobuki_comms::BumperEvent::Left; break; }
-      case(BumperEvent::Centre) : { msg.bumper = kobuki_comms::BumperEvent::Centre; break; }
-      case(BumperEvent::Right) : { msg.bumper = kobuki_comms::BumperEvent::Right; break; }
+      case(BumperEvent::Left) : { msg.bumper = kobuki_comms::BumperEvent::LEFT; break; }
+      case(BumperEvent::Centre) : { msg.bumper = kobuki_comms::BumperEvent::CENTRE; break; }
+      case(BumperEvent::Right) : { msg.bumper = kobuki_comms::BumperEvent::RIGHT; break; }
       default: break;
     }
     bumper_event_publisher.publish(msg);

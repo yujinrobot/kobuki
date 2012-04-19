@@ -35,8 +35,8 @@
 ** Preprocessor
 *****************************************************************************/
 
-#ifndef KOBUKI_GPIO_HPP__
-#define KOBUKI_GPIO_HPP__
+#ifndef KOBUKI_GP_INPUT_HPP__
+#define KOBUKI_GP_INPUT_HPP__
 
 /*****************************************************************************
 ** Include
@@ -105,5 +105,5 @@ public:
 
 } // namespace kobuki
 
-#endif /* KOBUKI_GPIO_HPP__ */
+#endif /* KOBUKI_GP_INPUT_HPP__ */
 

@@ -13,14 +13,14 @@
 ** Includes
 *****************************************************************************/
 
-#include "cliff.hpp"
-#include "core_sensors.hpp"
-#include "current.hpp"
-#include "gp_input.hpp"
-#include "inertia.hpp"
-#include "dock_ir.hpp"
-#include "firmware.hpp"
-#include "hardware.hpp"
+#include "packets/cliff.hpp"
+#include "packets/core_sensors.hpp"
+#include "packets/current.hpp"
+#include "packets/gp_input.hpp"
+#include "packets/inertia.hpp"
+#include "packets/dock_ir.hpp"
+#include "packets/firmware.hpp"
+#include "packets/hardware.hpp"
 
 
 #endif /* KOBUKI_PACKETS_HPP_ */

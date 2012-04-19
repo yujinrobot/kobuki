@@ -27,42 +27,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /**
- * @file /kobuki_driver/include/kobuki_driver/modules/sound.hpp
+ * @file /kobuki_driver/include/kobuki_driver/modules.hpp
  *
- * @brief Flags and id's for commanding sound sequences.
+ * @date 15/04/2012
  **/
 /*****************************************************************************
 ** Ifdefs
 *****************************************************************************/
 
-#ifndef KOBUKI_SOUND_HPP_
-#define KOBUKI_SOUND_HPP_
+#ifndef KOBUKI_MODULES_HPP_
+#define KOBUKI_MODULES_HPP_
 
 /*****************************************************************************
 ** Includes
 *****************************************************************************/
 
-/*****************************************************************************
-** Namespaces
-*****************************************************************************/
+#include "modules/battery.hpp"
+#include "modules/digital_output.hpp"
+#include "modules/led_array.hpp"
+#include "modules/diff_drive.hpp"
+#include "modules/sound.hpp"
 
-namespace kobuki {
-
-/*****************************************************************************
-** Enums
-*****************************************************************************/
-
-enum SoundSequences
-{
-  On = 0x0, /**< Turn on **/
-  Off = 0x1, /**< Turn off **/
-  Recharge = 0x2, /**< Recharging starting **/
-  Button = 0x3, /**< Button pressed  **/
-  Error = 0x4, /**< Error sound **/
-  CleaningStart = 0x5, /**< Cleaning started **/
-  CleaningEnd = 0x6, /**< Cleaning ended **/
-};
-
-} // namespace kobuki
-
-#endif /* KOBUKI_SOUND_HPP_ */
+#endif /* KOBUKI_MODULES_HPP_ */

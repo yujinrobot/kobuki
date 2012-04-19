@@ -33,6 +33,7 @@
 #include "packet_handler/payload_base.hpp"
 #include "modules/led_array.hpp"
 #include "modules/sound.hpp"
+#include "modules.hpp"
 
 namespace kobuki
 {
@@ -47,10 +48,9 @@ public:
     SetDigitalOut = 12
   };
 
-  enum RequestExtraFlag
+  enum VersionFlag
   {
-    HardwareVersion = 0x01, FirmwareVersion = 0x02
-  // Time = 0x04
+    HardwareVersion = 0x01, FirmwareVersion = 0x02 // Time = 0x04
   };
 
   /**
@@ -85,13 +85,16 @@ public:
     // 4 - error sound, 5 - start cleaning, 6 - cleaning end
     unsigned char segment_name;
 
-    // RequestExtra
+    // RequestExtra (version flags)
     uint16_t request_flags;
 
     // ChangeFrame & RequestEeprom
     unsigned char frame_id;
 
     // SetDigitalOut
+    // 0x000f - digital output pins 0-3 (0x0001, 0x0002, 0x0004, 0x0008)
+    // 0x00f0 - external power breakers (3.3V, 5V, 12V 12V1A) (0x0010, 0x0020, 0x0040, 0x0080)
+    // 0x0f00 - led array (red1, green1, red2, green2) ( 0x0100, 0x0200, 0x0400, 0x0800)
     uint16_t gp_out;
   };
 
@@ -106,10 +109,21 @@ public:
    * Update the gp_out bits and get ready for sending as a SetDigitalOut
    * command.
    *
+   * The led arrays are obtained from the gp_outputs with a 0x0f00 mask.
+   *
+   * - Led1 Red    : 0x0100
+   * - Led1 Green  : 0x0200
+   * - Led1 Orange : 0x0300
+   * - Led2 Red    : 0x0400
+   * - Led2 Green  : 0x0800
+   * - Led2 Orange : 0x0c00
+   *
    * Important to overlay this on top of the existing gp_out configuration.
    *
    * @param number : led enumerated number
    * @param colour : green, orange, red or black
+   * @param current_data : need to store settings as the gp_output command is a combo command
+   * @return Command : the command to send down the wire.
    */
   static Command SetLedArray(const enum LedNumber &number, const enum LedColour &colour, Command::Data &current_data)
   {
@@ -131,12 +145,53 @@ public:
     return outgoing;
   }
 
+  /**
+   * Set one of the digital out pins available to the user. See the GpioPin for bit
+   * values corresponding to each of the four pins.
+   *
+   * @param current_data : need to store settings as the gp_output command is a combo command
+   * @return Command : the command to send down the wire.
+   */
+  static Command SetDigitalOutput(const DigitalOutput &digital_output, Command::Data &current_data)
+  {
+    uint16_t values = 0x0000;
+    uint16_t clear_mask = 0xfff0;
+    std::cout << "SetDigitalOutput" << std::endl;
+    std::cout << "  Front: " << (current_data.gp_out & 0xfff0) << std::endl;
+    std::cout << "  Back: " << (current_data.gp_out & 0x000f) << std::endl;
+    std::cout << "  [";
+    for ( unsigned int i = 0; i < 4; ++i ) {
+      if ( digital_output.values[i]) {
+        std::cout << " True";
+      } else {
+        std::cout << " False";
+      }
+    }
+    std::cout << " ]" << std::endl;
+    for ( unsigned int i = 0; i < 4; ++i ) {
+      if ( digital_output.mask[i] ) {
+        if ( digital_output.values[i] ) {
+          values |= ( 1 << i );
+        }
+      } else {
+        clear_mask |= ( 1 << i ); // don't clear this bit, so set a 1 here
+      }
+    }
+    std::cout << "  Clear mask: " << clear_mask << std::endl;
+    std::cout << "  Values: " << std::hex << values << std::dec  << std::endl;
+    current_data.gp_out = (current_data.gp_out & clear_mask) | values;
+    std::cout << "  After Front: " << (current_data.gp_out & 0xfff0) << std::endl;
+    std::cout << "  After Back: " << (current_data.gp_out & 0x000f) << std::endl;
+    Command outgoing;
+    outgoing.data = current_data;
+    outgoing.data.command = Command::SetDigitalOut;
+    return outgoing;
+  }
+
   static Command PlaySoundSequence(const enum SoundSequences &number, Command::Data &current_data)
   {
     uint16_t value; // gp_out is 16 bits
     value = number; // defined with the correct bit specification.
-    //current_data.gp_out = (current_data.gp_out & 0xfcff) | value; // update first
-    //current_data.gp_out = value;
 
     Command outgoing;
     outgoing.data.segment_name = value;

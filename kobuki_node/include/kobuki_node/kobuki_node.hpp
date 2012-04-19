@@ -56,6 +56,7 @@
 #include <ecl/sigslots.hpp>
 #include <kobuki_comms/ButtonEvent.h>
 #include <kobuki_comms/BumperEvent.h>
+#include <kobuki_comms/DigitalOutput.h>
 #include <kobuki_comms/LedArray.h>
 #include <kobuki_comms/SensorState.h>
 #include <kobuki_comms/Sound.h>
@@ -93,7 +94,7 @@ private:
   ros::Publisher version_info_publisher;
   ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher;
   ros::Publisher button_event_publisher, bumper_event_publisher;
-  ros::Subscriber velocity_command_subscriber, led_command_subscriber, sound_command_subscriber;
+  ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber, led_command_subscriber, sound_command_subscriber;
   ros::Subscriber reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
 
@@ -105,6 +106,7 @@ private:
   **********************/
   void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
   void subscribeLedCommand(const kobuki_comms::LedArrayConstPtr);
+  void subscribeDigitalOutputCommand(const kobuki_comms::DigitalOutputConstPtr);
   void subscribeResetOdometry(const std_msgs::EmptyConstPtr);
   void subscribeSoundCommand(const kobuki_comms::SoundConstPtr);
   void enable(const std_msgs::StringConstPtr msg);

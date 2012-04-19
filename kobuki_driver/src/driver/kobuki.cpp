@@ -303,9 +303,13 @@ void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update, ecl::linear_algebr
  ** Commands
  *****************************************************************************/
 
-void Kobuki::toggleLed(const enum LedNumber &number, const enum LedColour &colour)
+void Kobuki::setLed(const enum LedNumber &number, const enum LedColour &colour)
 {
   sendCommand(Command::SetLedArray(number, colour, kobuki_command.data));
+}
+
+void Kobuki::setDigitalOutput(const DigitalOutput &digital_output) {
+  sendCommand(Command::SetDigitalOutput(digital_output, kobuki_command.data));
 }
 
 //void Kobuki::playSound(const enum Sounds &number)

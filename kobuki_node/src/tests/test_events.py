@@ -39,7 +39,7 @@ from kobuki_comms.msg import ButtonEvent
 from kobuki_comms.msg import BumperEvent
 
 def buttonEventCallback(data):
-    if ( data.state == ButtonEvent.Released ) :
+    if ( data.state == ButtonEvent.RELEASED ) :
         state = "released"
     else:
         state = "pressed"  
@@ -52,21 +52,21 @@ def buttonEventCallback(data):
     rospy.loginfo("Button %s was %s"%(state, button))
 
 def bumperEventCallback(data):
-    if ( data.state == BumperEvent.Released ) :
+    if ( data.state == BumperEvent.RELEASED ) :
         state = "released"
     else:
         state = "pressed"  
-    if ( data.bumper == BumperEvent.Left ) :
+    if ( data.bumper == BumperEvent.LEFT ) :
         bumper = "Left"
-    elif ( data.bumper == BumperEvent.Centre ) :
+    elif ( data.bumper == BumperEvent.CENTRE ) :
         bumper = "Centre"
     else:
         bumper = "Right"
     rospy.loginfo("%s bumper %s."%(bumper, state))
     
 rospy.init_node("test_button_events")
-rospy.Subscriber("/kobuki/mobile_base/events/buttons",ButtonEvent,buttonEventCallback)
-rospy.Subscriber("/kobuki/mobile_base/events/bumpers",BumperEvent,bumperEventCallback)
+rospy.Subscriber("/mobile_base/events/buttons",ButtonEvent,buttonEventCallback)
+rospy.Subscriber("/mobile_base/events/bumpers",BumperEvent,bumperEventCallback)
 print ""
 print "Start pushing kobuki's buttons/bumper.....but be wary."
 print ""

@@ -50,8 +50,8 @@
 #include "parameters.hpp"
 #include "event_manager.hpp"
 #include "command.hpp"
-#include "modules/modules.hpp"
-#include "packets/packets.hpp"
+#include "modules.hpp"
+#include "packets.hpp"
 #include "packet_handler/packet_finder.hpp"
 
 /*****************************************************************************
@@ -139,7 +139,8 @@ public:
   /*********************
   ** Hard Commands
   **********************/
-  void toggleLed(const enum LedNumber &number, const enum LedColour &colour);
+  void setLed(const enum LedNumber &number, const enum LedColour &colour);
+  void setDigitalOutput(const DigitalOutput &digital_output);
   void playSoundSequence(const enum SoundSequences &number);
   void setBaseControlCommand(double, double);
   void sendBaseControlCommand();

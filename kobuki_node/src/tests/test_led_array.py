@@ -40,10 +40,11 @@ from kobuki_comms.msg import LedArray
 colours = ["Black", "Green", "Orange", "Red"]
 
 rospy.init_node("test_led_array")
-pub = rospy.Publisher('/kobuki/mobile_base/commands/led',LedArray)
+pub = rospy.Publisher('/mobile_base/commands/led',LedArray)
 rate = rospy.Rate(1)
 led_array = LedArray()
 led_array.values = [LedArray.GREEN, LedArray.BLACK]
+rate.sleep()
 while not rospy.is_shutdown():
     new_led_array = LedArray()
     new_led_array.values = []
