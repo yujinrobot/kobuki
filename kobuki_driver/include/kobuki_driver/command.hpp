@@ -26,8 +26,16 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+/*****************************************************************************
+** Preprocessor
+*****************************************************************************/
+
 #ifndef KOBUKI_COMMAND_DATA_HPP__
 #define KOBUKI_COMMAND_DATA_HPP__
+
+/*****************************************************************************
+** Includes
+*****************************************************************************/
 
 #include <ecl/containers.hpp>
 #include "packet_handler/payload_base.hpp"
@@ -41,7 +49,9 @@ namespace kobuki
 class Command : public packet_handler::payloadBase
 {
 public:
-  // These values are very important - they go into the packet command id byte
+  /**
+   * These values are used to detect the type of sub-payload that is ensuing.
+   */
   enum Name
   {
     BaseControl = 1, Sound = 3, SoundSequence = 4, RequestExtra = 9, ChangeFrame = 10, RequestEeprom = 11,
@@ -98,177 +108,17 @@ public:
     uint16_t gp_out;
   };
 
-  virtual ~Command()
-  {
-  }
+  virtual ~Command() {}
 
-  /******************************************
-   ** Command Wizards
-   *******************************************/
-  /**
-   * Update the gp_out bits and get ready for sending as a SetDigitalOut
-   * command.
-   *
-   * The led arrays are obtained from the gp_outputs with a 0x0f00 mask.
-   *
-   * - Led1 Red    : 0x0100
-   * - Led1 Green  : 0x0200
-   * - Led1 Orange : 0x0300
-   * - Led2 Red    : 0x0400
-   * - Led2 Green  : 0x0800
-   * - Led2 Orange : 0x0c00
-   *
-   * Important to overlay this on top of the existing gp_out configuration.
-   *
-   * @param number : led enumerated number
-   * @param colour : green, orange, red or black
-   * @param current_data : need to store settings as the gp_output command is a combo command
-   * @return Command : the command to send down the wire.
-   */
-  static Command SetLedArray(const enum LedNumber &number, const enum LedColour &colour, Command::Data &current_data)
-  {
-    // gp_out is 16 bits
-    uint16_t value;
-    if (number == Led1)
-    {
-      value = colour; // defined with the correct bit specification.
-      current_data.gp_out = (current_data.gp_out & 0xfcff) | value; // update first
-    }
-    else
-    {
-      value = colour << 2;
-      current_data.gp_out = (current_data.gp_out & 0xf3ff) | value; // update first
-    }
-    Command outgoing;
-    outgoing.data = current_data;
-    outgoing.data.command = Command::SetDigitalOut;
-    return outgoing;
-  }
-
-  /**
-   * Set one of the digital out pins available to the user. See the GpioPin for bit
-   * values corresponding to each of the four pins.
-   *
-   * @param current_data : need to store settings as the gp_output command is a combo command
-   * @return Command : the command to send down the wire.
-   */
-  static Command SetDigitalOutput(const DigitalOutput &digital_output, Command::Data &current_data)
-  {
-    uint16_t values = 0x0000;
-    uint16_t clear_mask = 0xfff0;
-    std::cout << "SetDigitalOutput" << std::endl;
-    std::cout << "  Front: " << (current_data.gp_out & 0xfff0) << std::endl;
-    std::cout << "  Back: " << (current_data.gp_out & 0x000f) << std::endl;
-    std::cout << "  [";
-    for ( unsigned int i = 0; i < 4; ++i ) {
-      if ( digital_output.values[i]) {
-        std::cout << " True";
-      } else {
-        std::cout << " False";
-      }
-    }
-    std::cout << " ]" << std::endl;
-    for ( unsigned int i = 0; i < 4; ++i ) {
-      if ( digital_output.mask[i] ) {
-        if ( digital_output.values[i] ) {
-          values |= ( 1 << i );
-        }
-      } else {
-        clear_mask |= ( 1 << i ); // don't clear this bit, so set a 1 here
-      }
-    }
-    std::cout << "  Clear mask: " << clear_mask << std::endl;
-    std::cout << "  Values: " << std::hex << values << std::dec  << std::endl;
-    current_data.gp_out = (current_data.gp_out & clear_mask) | values;
-    std::cout << "  After Front: " << (current_data.gp_out & 0xfff0) << std::endl;
-    std::cout << "  After Back: " << (current_data.gp_out & 0x000f) << std::endl;
-    Command outgoing;
-    outgoing.data = current_data;
-    outgoing.data.command = Command::SetDigitalOut;
-    return outgoing;
-  }
-
-  static Command PlaySoundSequence(const enum SoundSequences &number, Command::Data &current_data)
-  {
-    uint16_t value; // gp_out is 16 bits
-    value = number; // defined with the correct bit specification.
-
-    Command outgoing;
-    outgoing.data.segment_name = value;
-    outgoing.data.command = Command::SoundSequence;
-    return outgoing;
-  }
-
-  static Command GetVersionInfo()
-  {
-    Command outgoing;
-    outgoing.data.request_flags = 0;
-    outgoing.data.request_flags |= static_cast<uint16_t>(HardwareVersion);
-    outgoing.data.request_flags |= static_cast<uint16_t>(FirmwareVersion);
-    outgoing.data.command = Command::RequestExtra;
-    return outgoing;
-  }
+  static Command SetLedArray(const enum LedNumber &number, const enum LedColour &colour, Command::Data &current_data);
+  static Command SetDigitalOutput(const DigitalOutput &digital_output, Command::Data &current_data);
+  static Command PlaySoundSequence(const enum SoundSequences &number, Command::Data &current_data);
+  static Command GetVersionInfo();
 
   Data data;
 
-  // methods
-  bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
-  {
-    if (!(byteStream.size() > 0))
-    {
-      //ROS_WARN_STREAM("kobuki_node: kobuki_command: serialise failed. empty byte stream.");
-      return false;
-    }
-    // need to be sure we don't pass through an emum to the Trans'd buildBytes functions.
-    unsigned char cmd = static_cast<unsigned char>(data.command);
-    switch (data.command)
-    {
-      case BaseControl:
-        buildBytes(cmd, byteStream);
-        buildBytes(data.speed, byteStream);
-        buildBytes(data.radius, byteStream);
-        break;
-      case Sound:
-        buildBytes(cmd, byteStream);
-        buildBytes(data.note, byteStream);
-        buildBytes(data.duration, byteStream);
-        break;
-      case SoundSequence:
-        buildBytes(cmd, byteStream);
-        buildBytes(data.segment_name, byteStream);
-        break;
-      case RequestExtra:
-        buildBytes(cmd, byteStream);
-        buildBytes(data.request_flags, byteStream);
-        break;
-      case ChangeFrame:
-        buildBytes(cmd, byteStream);
-        buildBytes(data.frame_id, byteStream);
-        break;
-      case RequestEeprom:
-        buildBytes(cmd, byteStream);
-        buildBytes(data.frame_id, byteStream);
-        break;
-      case SetDigitalOut:
-      { // this one controls led, external power sources, gp digitial output
-        buildBytes(cmd, byteStream);
-        buildBytes(data.gp_out, byteStream);
-        break;
-      }
-      default:
-        return false;
-        break;
-    }
-    return true;
-  }
-
-  /**
-   * Unused.
-   */
-  bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
-  {
-    return true;
-  }
+  bool serialise(ecl::PushAndPop<unsigned char> & byteStream);
+  bool deserialise(ecl::PushAndPop<unsigned char> & byteStream) { return true; } /**< Unused **/
 };
 
 } // namespace kobuki
