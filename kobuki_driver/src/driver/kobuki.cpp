@@ -241,7 +241,7 @@ void Kobuki::spin()
             break;
           default:
             std::stringstream ostream;
-            ostream << "Unexpected sub-payload received [" << data_buffer[0] << "]" << std::endl;
+            ostream << "unexpected sub-payload received [" << static_cast<unsigned int>(data_buffer[0]) << "]" << std::endl;
             sig_error.emit(ostream.str());
             data_buffer.clear();
             break;
