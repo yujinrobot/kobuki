@@ -60,7 +60,7 @@ void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg
     //double vx = msg->linear.x;        // in (m/s)
     //double wz = msg->angular.z;       // in (rad/s)
     ROS_DEBUG_STREAM("subscribeVelocityCommand: [" << msg->linear.x << "],[" << msg->angular.z << "]");
-    kobuki.setBaseControlCommand(msg->linear.x, msg->angular.z);
+    kobuki.setBaseControl(msg->linear.x, msg->angular.z);
     odometry.resetTimeout();
   }
   return;

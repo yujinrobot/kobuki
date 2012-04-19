@@ -85,7 +85,10 @@ void KobukiNode::publishSensorState()
       state.current = current_data.current;
 
       GpInput::Data gp_input_data = kobuki.getGpInputData();
-      state.gp_input = gp_input_data.gp_input;
+      state.digital_input = gp_input_data.digital_input;
+      for ( unsigned int i = 0; i < gp_input_data.analog_input.size(); ++i ) {
+        state.analog_input.push_back(gp_input_data.analog_input[i]);
+      }
 
       sensor_state_publisher.publish(state);
     }

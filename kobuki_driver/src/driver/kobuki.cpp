@@ -322,9 +322,9 @@ void Kobuki::playSoundSequence(const enum SoundSequences &number)
   sendCommand(Command::PlaySoundSequence(number, kobuki_command.data));
 }
 
-void Kobuki::setBaseControlCommand(double vx, double wz)
+void Kobuki::setBaseControl(const double &linear_velocity, const double &angular_velocity)
 {
-  diff_drive.velocityCommands(vx, wz);
+  diff_drive.velocityCommands(linear_velocity, angular_velocity);
 }
 
 void Kobuki::sendBaseControlCommand()
@@ -395,7 +395,7 @@ bool Kobuki::enable()
 
 bool Kobuki::disable()
 {
-  setBaseControlCommand(0.0f, 0.0f);
+  setBaseControl(0.0f, 0.0f);
   sendBaseControlCommand();
   is_enabled = false;
   return true;

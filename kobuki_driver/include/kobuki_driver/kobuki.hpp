@@ -139,12 +139,10 @@ public:
   /*********************
   ** Hard Commands
   **********************/
+  void setBaseControl(const double &linear_velocity, const double &angular_velocity);
   void setLed(const enum LedNumber &number, const enum LedColour &colour);
   void setDigitalOutput(const DigitalOutput &digital_output);
   void playSoundSequence(const enum SoundSequences &number);
-  void setBaseControlCommand(double, double);
-  void sendBaseControlCommand();
-  void sendCommand(Command command);
 
 private:
   /*********************
@@ -176,6 +174,9 @@ private:
   PacketFinder packet_finder;
   PacketFinder::BufferType data_buffer;
   bool is_alive; // used as a flag set by the data stream watchdog
+
+  void sendBaseControlCommand();
+  void sendCommand(Command command);
 
   /*********************
   ** System Components

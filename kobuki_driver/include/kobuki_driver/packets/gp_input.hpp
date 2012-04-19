@@ -61,9 +61,14 @@ class GpInput : public packet_handler::payloadBase
 {
 public:
   struct Data {
-    Data() : gp_adc(7) {}
-    uint16_t gp_input;
-    std::vector<uint16_t> gp_adc;
+    Data() : analog_input(4) {}
+    uint16_t digital_input;
+    /**
+     * This currently returns 4 unsigned shorts containing analog values that
+     * vary between 0 and 4095. These represent the values coming in on the
+     * analog pins.
+     */
+    std::vector<uint16_t> analog_input;
   } data;
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
@@ -75,10 +80,10 @@ public:
     }
 
     buildBytes(Header::GpInput, byteStream);
-    buildBytes(data.gp_input, byteStream);
-    for (unsigned int i = 0; i < data.gp_adc.size(); ++i)
+    buildBytes(data.digital_input, byteStream);
+    for (unsigned int i = 0; i < data.analog_input.size(); ++i)
     {
-      buildBytes(data.gp_adc[i], byteStream);
+      buildBytes(data.analog_input[i], byteStream);
     }
     return true;
   }
@@ -93,10 +98,20 @@ public:
 
     unsigned char header_id;
     buildVariable(header_id, byteStream);
-    buildVariable(data.gp_input, byteStream);
-    for (unsigned int i = 0; i < data.gp_adc.size(); ++i)
+    buildVariable(data.digital_input, byteStream);
+
+    //for (unsigned int i = 0; i < data.analog_input.size(); ++i)
+    // It's actually sending 7 16bit variables.
+    // 0-3 : the analog pin inputs
+    // 4 : ???
+    // 5-6 : 0
+    for (unsigned int i = 0; i < 4; ++i)
     {
-      buildVariable(data.gp_adc[i], byteStream);
+      buildVariable(data.analog_input[i], byteStream);
+    }
+    for (unsigned int i = 0; i < 3; ++i) {
+      uint16_t dummy;
+      buildVariable(dummy, byteStream);
     }
     return true;
   }

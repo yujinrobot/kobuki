@@ -45,5 +45,5 @@ uint8[] current
 ###################
 # GP Input Packet
 ###################
-uint16 gp_input
-uint16[] gp_adc
+uint16 digital_input
+uint16[] analog_input
