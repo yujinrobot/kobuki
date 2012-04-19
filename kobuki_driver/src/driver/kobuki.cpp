@@ -240,7 +240,9 @@ void Kobuki::spin()
             sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
             break;
           default:
-            std::cout << "Unexpected sub-payload received [" << data_buffer[0] << "]" << std::endl;
+            std::stringstream ostream;
+            ostream << "Unexpected sub-payload received [" << data_buffer[0] << "]" << std::endl;
+            sig_error.emit(ostream.str());
             data_buffer.clear();
             break;
         }
