@@ -240,7 +240,7 @@ void Kobuki::spin()
             sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
             break;
           default:
-            std::cout << "unexpected case reached. flushing current buffer." << std::endl;
+            std::cout << "Unexpected sub-payload received [" << data_buffer[0] << "]" << std::endl;
             data_buffer.clear();
             break;
         }
