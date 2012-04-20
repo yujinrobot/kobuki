@@ -10,4 +10,7 @@
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/kobuki_description</url>
+  <depend package="urdf"/>
+  <depend package="xacro"/>
+  <depend package="kobuki_description"/> <!-- gazebo controller dependency, add the other missing, too! -->
 </package>
