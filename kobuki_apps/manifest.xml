@@ -1,9 +1,11 @@
 <package>
   <description brief="the installed app set for kobuki">
 
-     App definitions for kobuki. This doesn't actually change the turtlebot apps, 
-     just lists them centrally, modifies their namespace (no good reason, just the way
-     we started) and centralises the required rosmake dependencies.
+     App definitions for kobuki. This mostly doesn't change the turtlebot apps,
+     except to fix some bugs, or some kobuki eccentricities. Chirp is different 
+     though - it causes the robot to chirp rather than the netbook.
+      
+     It also centralises the required rosmake dependencies.
 
   </description>
   <author>Daniel Stonier</author>

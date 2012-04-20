@@ -1,8 +1,11 @@
 # Before rosinstalling, make sure you installed:
-# * Standard turtlebot setup:
-#   - sudo apt-get install ros-electric-turtlebot-robot ros-electric-dynamixel-motor ros-electric-laser-drivers
-# * For using the arm:
-#   - sudo apt-get install ros-electric-turtlebot-arm 
+
+# For the robot
+#   sudo apt-get install ros-electric-turtlebot-robot ros-electric-map-store
+# For desktop simulations and remote connections
+#   sudo apt-get install ros-electric-turtlebot-desktop ros-electric-turtlebot-simulator-desktop
+# For our custom arm
+#   sudo apt-get install ros-electric-turtlebot-arm ros-electric-dynamixel-motor
 
 # Official ROS Stacks
 - other:
