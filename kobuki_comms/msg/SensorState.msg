@@ -21,7 +21,7 @@ Header header
 # Core Packet
 ###################
 uint16 time_stamp
-uint8  bump
+uint8  bumper
 uint8  wheel_drop
 uint8  cliff
 uint16 left_encoder

@@ -61,7 +61,7 @@ class CoreSensors : public packet_handler::payloadBase
 public:
   struct Data {
     uint16_t time_stamp;
-    uint8_t bump;
+    uint8_t bumper;
     uint8_t wheel_drop;
     uint8_t cliff;
     uint16_t left_encoder;

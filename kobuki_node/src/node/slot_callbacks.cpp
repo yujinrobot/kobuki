@@ -67,7 +67,7 @@ void KobukiNode::publishSensorState()
       CoreSensors::Data data = kobuki.getCoreSensorData();
       state.header.stamp = ros::Time::now();
       state.time_stamp = data.time_stamp; // firmware time stamp
-      state.bump = data.bump;
+      state.bumper = data.bumper;
       state.wheel_drop = data.wheel_drop;
       state.cliff = data.cliff;
       state.left_encoder = data.left_encoder;

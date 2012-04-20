@@ -60,7 +60,7 @@ bool CoreSensors::serialise(ecl::PushAndPop<unsigned char> & byteStream)
   }
   buildBytes(Header::CoreSensors, byteStream);
   buildBytes(data.time_stamp, byteStream);
-  buildBytes(data.bump, byteStream);
+  buildBytes(data.bumper, byteStream);
   buildBytes(data.wheel_drop, byteStream);
   buildBytes(data.cliff, byteStream);
   buildBytes(data.left_encoder, byteStream);
@@ -84,7 +84,7 @@ bool CoreSensors::deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   unsigned char header_id;
   buildVariable(header_id, byteStream);
   buildVariable(data.time_stamp, byteStream);
-  buildVariable(data.bump, byteStream);
+  buildVariable(data.bumper, byteStream);
   buildVariable(data.wheel_drop, byteStream);
   buildVariable(data.cliff, byteStream);
   buildVariable(data.left_encoder, byteStream);
