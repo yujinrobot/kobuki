@@ -1,0 +1,15 @@
+<package>
+  <description brief="kobuki_gazebo_plugins">
+
+     kobuki_gazebo_plugins
+
+  </description>
+  <author>Marcus Liebhardt</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/kobuki_gazebo_plugins</url>
+  <depend package="gazebo"/>
+
+</package>
+
+

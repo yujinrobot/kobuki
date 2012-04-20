@@ -1,0 +1,14 @@
+<package>
+  <description brief="kobuki_gazebo">
+
+     kobuki_gazebo
+
+  </description>
+  <author>Marcus Liebhardt</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/kobuki_gazebo</url>
+
+</package>
+
+
