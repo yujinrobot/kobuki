@@ -1,7 +1,8 @@
 #!/bin/bash
 # installs and builds kobuki's software bundle
 
-sudo apt-get install -y ros-electric-turtlebot-robot ros-electric-turtlebot-viz ros-electric-dynamixel-motor ros-electric-laser-drivers
+sudo apt-get install -y ros-electric-turtlebot-robot ros-electric-turtlebot-viz ros-electric-dynamixel-motor 
+sudo apt-get install -y ros-electric-laser-drivers ros-electric-turtlebot-simulator-desktop
 rm -rf ${WORKSPACE}/kobuki_workspace
 rosinstall ${WORKSPACE}/kobuki_workspace https://raw.github.com/yujinrobot/kobuki/master/kobuki_unstable_jenkins.rosinstall
 source ${WORKSPACE}/kobuki_workspace/setup.bash
