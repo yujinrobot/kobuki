@@ -1,0 +1,54 @@
+<!-- copied from turtlebot_gazebo and modified-->
+<launch>
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find kobuki_description)/robots/kobuki_kinect.urdf.xacro'"/>
+
+<!--   <node launch-prefix="gdb -ex run --args" pkg="gazebo" type="spawn_model" name="spawn_kobuki_model"  -->
+<!--         args="$(optenv ROBOT_INITIAL_POSE) -unpause -urdf -param robot_description -model kobuki" respawn="false"/> -->
+
+<!--   <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" > -->
+<!--     <rosparam command="load" file="$(find turtlebot_bringup)/config/diagnostics.yaml" /> -->
+<!--   </node> -->
+  
+<!--   <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher"> -->
+<!--     <param name="publish_frequency" type="double" value="30.0" /> -->
+<!--   </node> -->
+
+  <!-- odometry estimator -->
+<!--   <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf"> -->
+<!--     <param name="freq" value="30.0"/> -->
+<!--     <param name="sensor_timeout" value="1.0"/> -->
+<!--     <param name="publish_tf" value="true"/> -->
+<!--     <param name="odom_used" value="true"/> -->
+<!--     <param name="imu_used" value="false"/> -->
+<!--     <param name="vo_used" value="false"/> -->
+<!--   </node> -->
+
+  <!-- throttling -->
+<!--   <node pkg="nodelet" type="nodelet" name="pointcloud_throttle"  -->
+<!--         args="load pointcloud_to_laserscan/CloudThrottle openni_manager" respawn="true"> -->
+<!--     <param name="max_rate" value="20.0"/> -->
+<!--     <remap from="cloud_in" to="/camera/depth/points"/> -->
+<!--     <remap from="cloud_out" to="cloud_throttled"/> -->
+<!--   </node> -->
+
+  <!-- fake Laser -->
+<!--   <node pkg="nodelet" type="nodelet" name="kinect_laser" args="load pointcloud_to_laserscan/CloudToScan openni_manager" -->
+<!--         respawn="true"> -->
+<!--     <param name="output_frame_id" value="/camera_depth_frame"/> -->
+  <!-- heights are in the (optical?) frame of the kinect -->  
+<!--     <param name="min_height" value="-0.15"/> -->
+<!--     <param name="max_height" value="0.15"/> -->
+<!--     <remap from="cloud" to="/cloud_throttled"/> -->
+<!--   </node> -->
+
+  <!-- fake Laser (narrow one, for localisation -->
+<!--   <node pkg="nodelet" type="nodelet" name="kinect_laser_narrow"  -->
+<!--         args="load pointcloud_to_laserscan/CloudToScan openni_manager" respawn="true"> -->
+<!--     <param name="output_frame_id" value="/camera_depth_frame"/> -->
+   <!-- heights are in the (optical?) frame of the kinect -->  
+<!--     <param name="min_height" value="-0.025"/> -->
+<!--     <param name="max_height" value="0.025"/> -->
+<!--     <remap from="cloud" to="/cloud_throttled"/> -->
+<!--     <remap from="scan" to="/narrow_scan"/> -->
+<!--   </node> -->
+</launch>

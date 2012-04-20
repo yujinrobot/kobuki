@@ -123,6 +123,24 @@
   </gazebo>
 </xacro:macro>
 
+<xacro:macro name="turtlebot_sim_kobuki">
+  <gazebo>
+    <controller:gazebo_ros_kobuki name="kobuki_controller" plugin="libgazebo_ros_kobuki.so">
+      <alwaysOn>true</alwaysOn>
+      <node_namespace>turtlebot_node</node_namespace>
+      <left_wheel_joint>left_wheel_joint</left_wheel_joint>
+      <right_wheel_joint>right_wheel_joint</right_wheel_joint>
+      <front_castor_joint>front_castor_joint</front_castor_joint>
+      <rear_castor_joint>rear_castor_joint</rear_castor_joint>
+      <wheel_separation>.260</wheel_separation>
+      <wheel_diameter>0.066</wheel_diameter>
+      <base_geom>base_link_geom_base_link</base_geom>
+      <updateRate>40</updateRate>
+      <torque>1.0</torque>
+    </controller:gazebo_ros_kobuki>
+  </gazebo>
+</xacro:macro>
+
 <xacro:macro name="turtlebot_sim_wall_sensors">
   <gazebo reference="wall_sensor_link">
     <sensor:ray name="wall_sensor">

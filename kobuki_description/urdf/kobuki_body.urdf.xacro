@@ -284,9 +284,9 @@
     </link>
     
     <!-- Simulation sensors TODO-->
-<!--     <turtlebot_sim_imu/> -->
-<!--     <turtlebot_sim_laser/> -->
-<!--     <turtlebot_sim_create/> -->
-<!--     <turtlebot_sim_wall_sensors/> -->
+    <turtlebot_sim_imu/>
+    <turtlebot_sim_laser/>
+    <turtlebot_sim_kobuki/>
+    <turtlebot_sim_wall_sensors/>
   </xacro:macro>
 </robot>

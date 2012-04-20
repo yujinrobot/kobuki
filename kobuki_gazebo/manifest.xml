@@ -8,7 +8,14 @@
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/kobuki_gazebo</url>
-
+ 
+  <depend package="gazebo"/> <!-- launch file dependency -->
+  <depend package="diagnostic_aggregator"/> <!-- launch file dependency -->
+  <depend package="robot_state_publisher"/> <!-- launch file dependency -->
+  <depend package="robot_pose_ekf"/> <!-- launch file dependency -->
+  <depend package="nodelet"/> <!-- launch file dependency -->
+  <depend package="pointcloud_to_laserscan"/> <!-- launch file dependency -->  
+  <depend package="kobuki_description"/> <!-- launch file dependency -->  
 </package>
 
 
