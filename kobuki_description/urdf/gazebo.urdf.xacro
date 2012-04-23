@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 
-<robot xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller" xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface" xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor" xmlns:xacro="http://ros.org/wiki/xacro" name="turtlebot_gazebo">
+<robot xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller" 
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:xacro="http://ros.org/wiki/xacro"
+       name="turtlebot_gazebo">
 
 <!-- ASUS Xtion PRO camera for simulation -->
 <!-- gazebo_ros_wge100 plugin is in kt2_gazebo_plugins package -->
@@ -81,25 +85,22 @@
     <sensor:ray name="laser">
       <rayCount>180</rayCount>
       <rangeCount>180</rangeCount>
-      <laserCount>1</laserCount>
-      
+      <laserCount>1</laserCount>      
       <origin>0.0 0.0 0.0</origin>
-      <displayRays>false</displayRays>
-      
+      <displayRays>false</displayRays>      
       <minAngle>-130</minAngle>
-      <maxAngle>130</maxAngle>
-      
+      <maxAngle>130</maxAngle>      
       <minRange>0.08</minRange>
       <maxRange>10.0</maxRange>
       <resRange>0.01</resRange>
       <updateRate>20</updateRate>
       <controller:gazebo_ros_laser name="gazebo_ros_laser_controller" plugin="libgazebo_ros_laser.so">
-	<gaussianNoise>0.005</gaussianNoise>
-	<alwaysOn>true</alwaysOn>
-	<updateRate>20</updateRate>
-	<topicName>scan</topicName>
-	<frameName>laser</frameName>
-	<interface:laser name="gazebo_ros_laser_iface" />
+      	<gaussianNoise>0.005</gaussianNoise>
+      	<alwaysOn>true</alwaysOn>
+      	<updateRate>20</updateRate>
+      	<topicName>scan</topicName>
+      	<frameName>laser</frameName>
+      	<interface:laser name="gazebo_ros_laser_iface" />
       </controller:gazebo_ros_laser>
     </sensor:ray>
   </gazebo>
@@ -223,8 +224,6 @@
     </sensor:ray>
   </gazebo>
 
-
-
   <gazebo reference="left_wheel_link">
     <mu1 value="10"/>
     <mu2 value="10"/>
@@ -253,5 +252,6 @@
     <kp value="100000000.0"/>
     <kd value="10000.0"/>
   </gazebo>
+  
 </xacro:macro>
 </robot>

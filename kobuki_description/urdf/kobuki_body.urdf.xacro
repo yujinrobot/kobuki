@@ -1,8 +1,10 @@
 <?xml version="1.0" ?>
 <robot name="turtlebot_hardware" xmlns:xacro="http://ros.org/wiki/xacro">
   <include filename="$(find kobuki_description)/urdf/gazebo.urdf.xacro"/>
-  <include filename="$(find kobuki_description)/urdf/turtlebot_hardware.urdf.xacro"/>  
+  <include filename="$(find kobuki_description)/urdf/turtlebot_hardware.urdf.xacro"/>
+  
   <xacro:property name="pi" value="3.1415926535897931" />
+  
   <xacro:property name="material_white">
     <material name="white">
       <color rgba="1 1 1 1"/>
@@ -38,6 +40,7 @@
       <color rgba="1 0 0 1"/>
     </material>
   </xacro:property>
+  
   <xacro:macro name="wheel" params="name length radius off_x off_y off_z type">
     <joint name="${name}_joint" type="${type}">
       <parent link="base_link"/>
@@ -52,33 +55,36 @@
         <origin rpy="0 ${pi/2} 0" xyz="0 0 0"/>
         <xacro:insert_block name="material_red"/>
       </visual>
-    </link>    
+      <collision>
+        <geometry>
+          <cylinder length="${length}" radius="${radius}"/>
+        </geometry>
+        <origin rpy="0 ${pi/2} 0" xyz="0 0 0"/>
+        <xacro:insert_block name="material_red"/>      
+      </collision>      
+      <inertial>
+        <mass value="0.01" />
+        <origin xyz="0 0 0" />        
+        <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                 iyy="0.001" iyz="0.0" 
+                 izz="0.001" />
+      </inertial>
+    </link>
+    <gazebo reference="${name}_link">
+      <material>Gazebo/Black</material>
+    </gazebo>   
   </xacro:macro>
 	
   <xacro:macro name="kobuki_body">	  
-    <!-- needed for navigation stack -->
     <link name="base_footprint">
 <!--       ML: KDL doesn't like inertia in the root link! -->
-<!--       <visual> -->
-<!--         <origin xyz="0 0 0" rpy="0 0 0" /> -->
-<!--         <geometry> -->
-<!-- 	        <box size="0.001 0.001 0.001" /> -->
-<!-- 	      </geometry> -->
-<!-- 	      <xacro:insert_block name="material_red" /> -->
-<!-- 	    </visual> -->
-<!--       <inertial> -->
-<!--         <mass value="0.0001" /> -->
-<!--         <origin xyz="0 0 0" /> -->
-<!--         <inertia ixx="0.0001" ixy="0.0" ixz="0.0" -->
-<!--                  iyy="0.0001" iyz="0.0"  -->
-<!--                  izz="0.0001" /> -->
-<!--       </inertial> -->
-<!--       <collision> -->
-<!-- 	      <origin xyz="0 0 0.017" rpy="0 0 0" /> -->
-<!--   	      <geometry> -->
-<!-- 	          <box size="0.001 0.001 0.001" /> -->
-<!-- 	        </geometry> -->
-<!-- 	    </collision> -->
+      <inertial>
+        <mass value="0.0001" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                 iyy="0.0001" iyz="0.0" 
+                 izz="0.0001" />
+      </inertial>
 	  </link>
     
 		<joint name="base_joint" type="fixed">
@@ -95,11 +101,32 @@
 	      <xacro:insert_block name="material_black" />
 <!--   TODO: <mesh filename="package://kobuki_description/meshes/kobuki_body.dae"/> -->
 	    </visual>
+      <collision>
+        <geometry>
+          <cylinder length="0.075" radius="0.175"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0.0125"/>
+        <xacro:insert_block name="material_black" />        
+      </collision>
+      <inertial>
+        <mass value="0.0001" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                 iyy="0.0001" iyz="0.0" 
+                 izz="0.0001" />
+      </inertial>
 	  </link>
-	  <xacro:wheel name="left_wheel"  length="0.020" radius="0.035" off_x="0.00"  off_y="${0.23/2}"  off_z="0.000"   type="continuous">	</xacro:wheel>
-	  <xacro:wheel name="right_wheel" length="0.020" radius="0.035" off_x="0.00"  off_y="-${0.23/2}" off_z="0.000"   type="continuous">	</xacro:wheel>  
-	  <xacro:wheel name="front_wheel" length="0.017" radius="0.0175" off_x="0.12"  off_y="0"          off_z="-0.0175" type="fixed">	    </xacro:wheel>
-	  <xacro:wheel name="rear_wheel"  length="0.017" radius="0.0175" off_x="-0.12" off_y="0"          off_z="-0.0175" type="fixed">      </xacro:wheel>
+    <gazebo reference="base_link">
+      <material>Gazebo/Black</material>
+    </gazebo>        
+	  <xacro:wheel name="left_wheel"  length="0.020" radius="0.035" off_x="0.00"   off_y="${0.23/2}"  off_z="0.000"   
+                 type="continuous">	</xacro:wheel>
+	  <xacro:wheel name="right_wheel" length="0.020" radius="0.035" off_x="0.00"   off_y="-${0.23/2}" off_z="0.000"   
+                 type="continuous">	</xacro:wheel>  
+	  <xacro:wheel name="front_wheel" length="0.017" radius="0.0175" off_x="0.12"  off_y="0"          off_z="-0.0175"
+                 type="fixed">      </xacro:wheel>
+	  <xacro:wheel name="rear_wheel"  length="0.017" radius="0.0175" off_x="-0.12" off_y="0"          off_z="-0.0175"
+                 type="fixed">        </xacro:wheel>
 	
     <!-- turtlebot topping -->
   
@@ -143,8 +170,7 @@
           izz="0.0001" />
       </inertial>
     </link>
-  
-  
+    
     <joint name="plate_0_joint" type="fixed">
       <origin xyz="-0.04334 0  0.06775704" rpy="0 0 0" />
       <parent link="base_link"/>
@@ -282,6 +308,82 @@
         </geometry>
       </collision>
     </link>
+
+  <joint name="base_wall_sensor_joint" type="fixed">
+    <origin xyz="0.09 -0.120 0.042" rpy="0 0 -1.0" />        
+    <parent link="base_link"/>
+    <child link="wall_sensor_link" />
+  </joint>
+
+  <joint name="base_left_cliff_sensor_joint" type="fixed">
+    <origin xyz="0.07 0.14 0.01" rpy="0 1.57079 0" />        
+    <parent link="base_link"/>
+    <child link="left_cliff_sensor_link" />
+  </joint>
+
+  <joint name="base_right_cliff_sensor_joint" type="fixed">
+    <origin xyz="0.07 -0.14 0.01" rpy="0 1.57079 0" />        
+    <parent link="base_link"/>
+    <child link="right_cliff_sensor_link" />
+  </joint>
+
+  <joint name="base_leftfront_cliff_sensor_joint" type="fixed">
+    <origin xyz="0.15 0.04 0.01" rpy="0 1.57079 0" />        
+    <parent link="base_link"/>
+    <child link="leftfront_cliff_sensor_link" />
+  </joint>
+
+  <joint name="base_rightfront_cliff_sensor_joint" type="fixed">
+    <origin xyz="0.15 -0.04 0.01" rpy="0 1.57079 0" />        
+    <parent link="base_link"/>
+    <child link="rightfront_cliff_sensor_link" />
+  </joint>
+
+  <link name="wall_sensor_link">
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+        iyy="0.001" iyz="0.0" izz="0.001" />
+    </inertial>
+  </link>
+
+  <link name="left_cliff_sensor_link">
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+        iyy="0.001" iyz="0.0" izz="0.001" />
+    </inertial>
+  </link>
+
+  <link name="right_cliff_sensor_link">
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+        iyy="0.001" iyz="0.0" izz="0.001" />
+    </inertial>
+  </link>
+
+  <link name="leftfront_cliff_sensor_link">
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="0 0 0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+        iyy="0.01" iyz="0.0" izz="0.01" />
+    </inertial>
+  </link>
+
+  <link name="rightfront_cliff_sensor_link">
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+        iyy="0.001" iyz="0.0" izz="0.001" />
+    </inertial>
+  </link>
+
     
     <!-- Simulation sensors TODO-->
     <turtlebot_sim_imu/>

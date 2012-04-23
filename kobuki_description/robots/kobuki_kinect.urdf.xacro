@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!--
-    kobuki with Kinect
-    Modified copy from the turtlebot stack
+    Kobuki with Kinect
 -->    
 <robot name="kobuki"
        xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
        xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
-       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:xacro="http://ros.org/wiki/xacro">
 
 	<!-- Included URDF Files -->
   <include filename="$(find kobuki_description)/urdf/kobuki_body.urdf.xacro" />

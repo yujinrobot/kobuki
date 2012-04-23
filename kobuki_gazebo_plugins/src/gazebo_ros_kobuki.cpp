@@ -30,7 +30,6 @@
  */
 
 #include <ros/time.h>
-
 #include <nav_msgs/Odometry.h>
 
 #include <turtlebot_node/TurtlebotSensorState.h> // change to kobuki-specific message or remove completely?

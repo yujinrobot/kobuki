@@ -1,8 +1,8 @@
-<!-- copied from turtlebot_gazebo and modified -->
 <launch>
   <!-- start gazebo with an empty plane -->
   <param name="/use_sim_time" value="true" />
-  <node launch-prefix="gdb -ex run --args" name="gazebo" pkg="gazebo" type="gazebo" args="-u $(find kobuki_gazebo)/worlds/empty.world" respawn="false"/>
-
+  <node name="gazebo" pkg="gazebo" type="gazebo" args="-u $(find kobuki_gazebo)/worlds/empty.world" respawn="false"/>
+  
+  <!-- spawn the robot -->
   <include file="$(find kobuki_gazebo)/launch/robot.launch"/>
 </launch>
