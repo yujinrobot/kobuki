@@ -22,12 +22,11 @@
   <depend stack="ros" /> <!-- roslib -->
   <depend stack="ros_comm" /> <!-- std_msgs, topic_tools, rospy, roscpp -->
   <depend stack="simulator_gazebo" /> <!-- gazebo -->
-  <depend stack="turtlebot" /> <!-- turtlebot_node -->
+  <depend stack="turtlebot" /> <!-- turtlebot_node, pointcloud_to_laserscan --> 
   <depend stack="turtlebot_apps" /> <!-- turtlebot_teleop, turtlebot_navigation -->
   <depend stack="turtlebot_viz" /> <!-- turtlebot_interactive_markers -->
   <depend stack="visualization" /> <!-- rviz -->
   <depend stack="warehousewg" /> <!-- mongodb -->
-  <depend stack="ycs_devices" /> <!-- pointcloud_to_laserscan -->
   <depend stack="zeroconf_implementations" /> <!-- zeroconf_avahi -->
 
 </stack>

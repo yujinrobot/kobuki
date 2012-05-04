@@ -9,9 +9,20 @@
 # For desktop simulations and remote connections (update for Fuerte!)
 #   sudo apt-get install ros-electric-turtlebot-desktop ros-electric-turtlebot-simulator-desktop
 # For our custom arm (update for Fuerte!)
-#   sudo apt-get install ros-electric-turtlebot-arm ros-electric-dynamixel-motor
+#   sudo apt-get install ros-fuerte-turtlebot-arm ros-fuerte-dynamixel-motor (not exisiting yet)
+#   in the meanwhile to allow compiling do:
+#   sudo apt-get install ros-fuerte-simple-arms
+#   and
 
-# Official ROS Stacks
+# (Temporary) Fuerte fixes
+- svn:
+    local-name: dynamixel_motor
+    uri: http://ua-ros-pkg.googlecode.com/svn/stacks/dynamixel_motor/tags/electric
+- hg:
+    local-name: map_store
+    uri: https://kforge.ros.org/mapstore/hg
+    version: fuerte
+
 - other:
     local-name: /opt/ros/fuerte/share/ros
 - other:
