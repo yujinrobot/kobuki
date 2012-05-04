@@ -36,7 +36,7 @@
     local-name: /opt/yujin/stacks/ecl/ecl_navigation
 - git: 
     uri: https://github.com/stonier/zeroconf_implementations.git
-    local-name: /opt/yujin/stacks/ecl/zeroconf_implementations
+    local-name: /opt/yujin/stacks/zeroconf_implementations
     version: 0.1.5 
 
 # Kobuki stack
