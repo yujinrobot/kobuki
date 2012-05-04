@@ -5,6 +5,8 @@
 # For the robot
 #   sudo apt-get install ros-fuerte-turtlebot ros-fuerte-turtlebot-viz ros-fuerte-turtlebot-apps
 #   
+# For ?
+#   sudo apt-get install ros-fuerte-warehousewg
 # TODO
 # For desktop simulations and remote connections (update for Fuerte!)
 #   sudo apt-get install ros-electric-turtlebot-desktop ros-electric-turtlebot-simulator-desktop
@@ -50,8 +52,12 @@
     local-name: /opt/yujin/stacks/zeroconf_implementations
     version: 0.1.5 
 
-# Kobuki stack
+# Kobuki stacks
 - git:
     uri: https://github.com/yujinrobot/kobuki.git
     local-name: kobuki
+    version: master
+- git:
+    uri: https://github.com/yujinrobot/kobuki_simulator.git
+    local-name: kobuki_simulator
     version: master
