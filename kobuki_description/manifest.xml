@@ -12,5 +12,4 @@
   <url>http://ros.org/wiki/kobuki_description</url>
   <depend package="urdf"/>
   <depend package="xacro"/>
-  <depend package="kobuki_gazebo_plugins"/> <!-- gazebo controller dependency, add the other missing, too! -->
 </package>
