@@ -1,2 +1,4 @@
-SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{serial}=="kobuki" SYMLINK+="kobuki"
+# On precise, for some reason, USER and GROUP are getting ignored.
+# So setting mode = 0666 for now.
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{serial}=="kobuki", MODE:="0666", GROUP:="dialout", SYMLINK+="kobuki"
 
