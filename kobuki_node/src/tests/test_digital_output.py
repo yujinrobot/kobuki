@@ -43,6 +43,10 @@ rate = rospy.Rate(1)
 digital_output = DigitalOutput()
 digital_output.values = [ False, False, False, False]
 digital_output.mask = [ True, True, False, True ]
+print ""
+print "This program will start sending a variety of digital io signals to the robot."
+print "The masks are used to selectively send only a subset of signals."
+print ""
 while not rospy.is_shutdown():
     # incrementally convert a false, to true and then reset them all to false.
     try:
