@@ -1,5 +1,7 @@
 include $(shell rospack find mk)/cmake.mk
 
+DUDE=$(USER)
+
 help:
 	@echo ""
 	@echo "Valid targets are: "
@@ -8,7 +10,7 @@ help:
 	@echo ""
 	@echo "There is no make target for actually flashing the device."
 	@echo "Because this is dangerous, be sure to read doxygen/mainpage.dox"
-	@echo "for detailed info on how to do this by hand."
+	@echo "for detailed info on how to do this by hand (./bin/ftdi_kobuki)."
 	@echo ""
 
 utils: all
@@ -17,6 +19,7 @@ udev:
 	@echo ""
 	@echo "Copying 57-kobuki.rules -> to /etc/udev/rules.d"
 	@echo ""
+	@sudo addgroup $(DUDE) dialout
 	@sudo cp 57-kobuki.rules /etc/udev/rules.d
 	@sudo service udev reload
 	@sudo service udev restart
