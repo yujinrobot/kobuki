@@ -68,9 +68,12 @@ void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg
 
 void KobukiNode::subscribeLedCommand(const kobuki_comms::LedArrayConstPtr msg)
 {
-  if (msg->values.size() != 2)
+  if (msg->values.size() < 2)
   {
-    ROS_WARN_STREAM("Kobuki : led commands must specify values for both led's in the array.");
+    ROS_WARN_STREAM("Kobuki : you must specify command for both (2) controllable led's in the command array.");
+    return;
+  } else if (msg->values.size() > 2) {
+    ROS_WARN_STREAM("Kobuki : you can only control two led's on the kobuki (2nd and 3rd leds).");
     return;
   }
   for (unsigned int i = 0; i < msg->values.size(); ++i)
