@@ -272,6 +272,3 @@ void KobukiNode::subscribeTopics(ros::NodeHandle& nh)
 
 } // namespace kobuki
 
-
-/*		slot_reserved0, Rei */
-

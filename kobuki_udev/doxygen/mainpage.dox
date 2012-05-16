@@ -56,4 +56,23 @@ Might work out of the box on oneiric, but I haven't tried.
 - src/ftdi_scan.cpp : scans ftdi devices for the serial strings.
 - src/ftdi_write_eeprom.cpp : writes a backed up eeprom binary to the device.
 
+@section utilities System Utilities
+
+@subsection lsusb
+
+Make sure you use sudo, if not, it will only retrieve part of the information.
+@code
+> sudo lsusb
+# Get the two numbers to the left of the ftdi device (bus and ?? number) (e.g. 002, 007)
+> sudo lsusb -v -s 002:007
+@endcode
+
+@subsection udevadm
+
+Much more detailed information of a currently connected device.
+
+@code
+udevadm info -a --name /dev/ttyUSB0
+@endcode
+
 */

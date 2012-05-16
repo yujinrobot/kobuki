@@ -1,39 +1,69 @@
 # Before rosinstalling, make sure you installed:
-
+#
+# Basic ROS
+#   sudo apt-get install ros-fuerte-desktop-full
+#
 # For the robot
-#   sudo apt-get install ros-electric-turtlebot-robot ros-electric-map-store
+#   sudo apt-get install ros-fuerte-turtlebot ros-fuerte-turtlebot-apps ros-fuerte-control 
+#   sudo apt-get install ros-fuerte-warehousewg
+#
 # For desktop simulations and remote connections
-#   sudo apt-get install ros-electric-turtlebot-desktop ros-electric-turtlebot-simulator-desktop
-# For our custom arm
-#   sudo apt-get install ros-electric-turtlebot-arm ros-electric-dynamixel-motor
+#   sudo apt-get install ros-fuerte-turtlebot-viz ros-fuerte-simulators
+#
+# TODO
+# For desktop simulations and remote connections (update for Fuerte!)
+#   sudo apt-get install ros-electric-turtlebot-desktop 
+# For our custom arm (update for Fuerte!)
+#   sudo apt-get install ros-fuerte-turtlebot-arm ros-fuerte-dynamixel-motor (not exisiting yet)
+#   in the meanwhile to allow compiling do:
+#   sudo apt-get install ros-fuerte-simple-arms
+#   and
 
-# Official ROS Stacks
+# Official ros stacks
+
 - other:
-    local-name: /opt/ros/electric/ros
+    local-name: /opt/ros/fuerte/share/ros
 - other:
-    local-name: /opt/ros/electric/stacks
+    local-name: /opt/ros/fuerte/share
+- other:
+    local-name: /opt/ros/fuerte/stacks
+- setup-file:
+    local-name: /opt/ros/fuerte/setup.sh
+
+# Fuerte not yet deb'd stacks
+- svn:
+    local-name: dynamixel_motor
+    uri: http://ua-ros-pkg.googlecode.com/svn/stacks/dynamixel_motor/tags/electric
+- hg:
+    local-name: map_store
+    uri: https://kforge.ros.org/mapstore/hg
+    version: fuerte
 
 # Yujin Stacks
 - svn:
     uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_tools/0.43.8
-    local-name: ecl_tools
+    local-name: /opt/yujin/stacks/ecl/ecl_tools
 - svn:
     uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_lite/0.43.8
-    local-name: ecl_lite
+    local-name: /opt/yujin/stacks/ecl/ecl_lite
 - svn:
     uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_core/0.43.8
-    local-name: ecl_core
+    local-name: /opt/yujin/stacks/ecl/ecl_core
 - svn:
     uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_navigation/0.43.8
-    local-name: ecl_navigation
-
+    local-name: /opt/yujin/stacks/ecl/ecl_navigation
 - git: 
-    uri: git://github.com/stonier/zeroconf_implementations.git
-    local-name: zeroconf_implementations
+    uri: https://github.com/stonier/zeroconf_implementations.git
+    local-name: /opt/yujin/stacks/zeroconf_implementations
     version: 0.1.5 
 
-# Kobuki stack
+# Kobuki stacks
 - git:
-    uri: git://github.com/yujinrobot/kobuki.git
+    uri: https://github.com/yujinrobot/kobuki.git
     local-name: kobuki
+    version: master
+
+- git:
+    uri: https://github.com/yujinrobot/kobuki_simulator.git
+    local-name: kobuki_simulator
     version: master
