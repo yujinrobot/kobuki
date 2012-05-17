@@ -152,7 +152,11 @@ void DiffDrive::velocityCommands(const double &vx, const double &wz) {
   } else {
     radius = (short)(vx * 1000.0f / wz);
   }
-  speed = (short)(1000.0f * std::max(vx + bias * wz / 2.0f, vx - bias * wz / 2.0f));
+  if ( vx < 0 ) {
+    speed = (short)(1000.0f * std::min(vx + bias * wz / 2.0f, vx - bias * wz / 2.0f));
+  } else {
+    speed = (short)(1000.0f * std::max(vx + bias * wz / 2.0f, vx - bias * wz / 2.0f));
+  }
 }
 
 void DiffDrive::velocityCommands(const short &cmd_speed, const short &cmd_radius) {
