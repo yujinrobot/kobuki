@@ -41,7 +41,8 @@ from geometry_msgs.msg import Twist
 
 rospy.init_node("test_rotation")
 pub = rospy.Publisher('/cmd_vel',Twist)
-rate = rospy.Rate(1)
+freq = 5
+rate = rospy.Rate(freq)
 twist = Twist()
 yaw_rate = 0.8
 twist.linear.x = 0
@@ -51,7 +52,7 @@ twist.angular.x = 0
 twist.angular.y = 0
 twist.angular.z = yaw_rate
 rotate_count = 0
-max_rotate_count = int(3.14/yaw_rate)
+max_rotate_count = freq*int(3.14/yaw_rate)
 start = rospy.get_rostime()
 while not rospy.is_shutdown():
     if rotate_count == max_rotate_count:
@@ -73,15 +74,3 @@ while not rospy.is_shutdown():
     rospy.loginfo("Rotate: %ds", now.secs - start.secs)
     pub.publish(twist)
     rate.sleep()
-
-#while not rospy.is_shutdown():
-#    if rotate_count == max_rotate_count:
-#        twist.angular.z = - twist.angular.z
-#        rotate_count = 0
-#    else:
-#        rotate_count += 1
-#    now = rospy.get_rostime()
-#    rospy.loginfo("Running time: %ds", now.secs - start.secs)
-#    pub.publish(twist)
-#    rate.sleep()
-#    
