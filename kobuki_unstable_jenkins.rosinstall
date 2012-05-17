@@ -1,0 +1,71 @@
+# Rosinstaller for Jenkins (absolute paths don't work there)
+#
+# Before rosinstalling, make sure you installed:
+#
+# Basic ROS
+#   sudo apt-get install ros-fuerte-desktop-full
+#
+# For the robot
+#   sudo apt-get install ros-fuerte-turtlebot ros-fuerte-turtlebot-apps ros-fuerte-control 
+#   sudo apt-get install ros-fuerte-warehousewg
+#
+# For desktop simulations and remote connections
+#   sudo apt-get install ros-fuerte-turtlebot-viz ros-fuerte-simulators
+#
+# TODO
+# For desktop simulations and remote connections (update for Fuerte!)
+#   sudo apt-get install ros-electric-turtlebot-desktop 
+# For our custom arm (update for Fuerte!)
+#   sudo apt-get install ros-fuerte-turtlebot-arm ros-fuerte-dynamixel-motor (not exisiting yet)
+#   in the meanwhile to allow compiling do:
+#   sudo apt-get install ros-fuerte-simple-arms
+#   and
+
+# Official ros stacks
+
+- other:
+    local-name: /opt/ros/fuerte/share/ros
+- other:
+    local-name: /opt/ros/fuerte/share
+- other:
+    local-name: /opt/ros/fuerte/stacks
+- setup-file:
+    local-name: /opt/ros/fuerte/setup.sh
+
+# Fuerte not yet deb'd stacks
+- svn:
+    local-name: dynamixel_motor
+    uri: http://ua-ros-pkg.googlecode.com/svn/stacks/dynamixel_motor/tags/electric
+- hg:
+    local-name: map_store
+    uri: https://kforge.ros.org/mapstore/hg
+    version: fuerte
+
+# Yujin Stacks
+- svn:
+    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_tools/0.43.8
+    local-name: ecl/ecl_tools
+- svn:
+    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_lite/0.43.8
+    local-name: ecl/ecl_lite
+- svn:
+    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_core/0.43.8
+    local-name: ecl/ecl_core
+- svn:
+    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_navigation/0.43.8
+    local-name: ecl/ecl_navigation
+- git: 
+    uri: https://github.com/stonier/zeroconf_implementations.git
+    local-name: zeroconf_implementations
+    version: 0.1.5 
+
+# Kobuki stacks
+- git:
+    uri: https://github.com/yujinrobot/kobuki.git
+    local-name: kobuki
+    version: master
+
+- git:
+    uri: https://github.com/yujinrobot/kobuki_simulator.git
+    local-name: kobuki_simulator
+    version: master
