@@ -143,16 +143,17 @@ void DiffDrive::getWheelJointStates(double &wheel_left_angle, double &wheel_left
 }
 
 void DiffDrive::velocityCommands(const double &vx, const double &wz) {
-  if (wz == 0.0f) {
+  const double epsilon = 0.0001;
+  if ( std::abs(wz) < epsilon ) {
     radius = 0;
-  } else if (vx == 0.0f && wz > 0.0f) {
+  } else if ( (std::abs(vx) < epsilon ) && ( wz > epsilon ) ) {
     radius = 1;
-  } else if (vx == 0.0f && wz < 0.0f) {
+  } else if ((std::abs(vx) < epsilon ) && ( wz < -1*epsilon ) ) {
     radius = -1;
   } else {
     radius = (short)(vx * 1000.0f / wz);
   }
-  if ( vx < 0 ) {
+  if ( vx < 0.0 ) {
     speed = (short)(1000.0f * std::min(vx + bias * wz / 2.0f, vx - bias * wz / 2.0f));
   } else {
     speed = (short)(1000.0f * std::max(vx + bias * wz / 2.0f, vx - bias * wz / 2.0f));
