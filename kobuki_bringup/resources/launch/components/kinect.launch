@@ -1,8 +1,7 @@
 <launch>
-	  <!-- Kinect -->
-	  <node pkg="nodelet" type="nodelet" name="openni_manager" output="screen" respawn="true" args="manager"/>
+    <node pkg="nodelet" type="nodelet" name="openni_manager" output="screen" respawn="true" args="manager"/>
 	
-	  <node pkg="nodelet" type="nodelet" name="openni_camera" args="load openni_camera/OpenNINodelet openni_manager" respawn="true">
+	  <node pkg="nodelet" type="nodelet" name="openni_camera_deprecated" args="load openni_camera/OpenNINodelet openni_manager" respawn="true">
 	    <param name="rgb_frame_id" value="camera_rgb_optical_frame" />
 	    <param name="depth_frame_id" value="camera_depth_optical_frame" />
 	    <param name="depth_registration" value="true" />
@@ -12,33 +11,50 @@
 	    <param name="depth_time_offset" value="-0.055" />
 	    <param name="image_time_offset" value="0" />
 	
-	    <rosparam command="load" file="$(find openni_camera)/info/openni_params.yaml" />
+	    <rosparam command="load" file="$(find openni_camera_deprecated)/info/openni_params.yaml" />
 	  </node>
-	
-	  <!-- throttling -->
-	  <node pkg="nodelet" type="nodelet" name="pointcloud_throttle" args="load pointcloud_to_laserscan/CloudThrottle openni_manager" respawn="true">
-	    <param name="max_rate" value="20.0"/>
-	    <remap from="cloud_in" to="camera/depth/points"/>
-	    <remap from="cloud_out" to="cloud_throttled"/>
-	  </node>
-	
-	  <!-- Fake Laser -->
-	  <node pkg="nodelet" type="nodelet" name="kinect_laser" args="load pointcloud_to_laserscan/CloudToScan openni_manager" respawn="true">
-	    <param name="output_frame_id" value="/camera_depth_frame"/>
-	    <!-- heights are in the (optical?) frame of the kinect -->
+	  
+      <!-- throttling -->
+      <node pkg="nodelet" type="nodelet" name="pointcloud_throttle" args="load pointcloud_to_laserscan/CloudThrottle openni_manager" respawn="true">
+        <param name="max_rate" value="20.0"/>
+        <remap from="cloud_in" to="camera/depth/points"/>
+        <remap from="cloud_out" to="cloud_throttled"/>
+      </node>
+
+    
+      <!-- Fake Laser -->
+      <node pkg="nodelet" type="nodelet" name="kinect_laser" args="load pointcloud_to_laserscan/CloudToScan openni_manager" respawn="true">
+        <param name="output_frame_id" value="/camera_depth_frame"/>
+        <!-- heights are in the (optical?) frame of the kinect -->
         <param name="min_height" value="-0.32"/>
         <param name="max_height" value="0.32"/>
-	    <remap from="cloud" to="cloud_throttled"/>
-	  </node>
-	
-	  <!-- Fake Laser (narrow one, for localization -->
-	  <node pkg="nodelet" type="nodelet" name="camera_laser_narrow" args="load pointcloud_to_laserscan/CloudToScan openni_manager" respawn="true">
-	    <param name="output_frame_id" value="/camera_depth_frame"/>
-	    <!-- heights are in the (optical?) frame of the kinect -->
-	    <param name="min_height" value="-0.025"/>
-	    <param name="max_height" value="0.025"/>
-	    <remap from="cloud" to="cloud_throttled"/>
-	    <remap from="scan" to="narrow_scan"/>
-	  </node>
+        <remap from="cloud" to="cloud_throttled"/>
+      </node>
+    
+      <!-- Fake Laser (narrow one, for localization -->
+      <node pkg="nodelet" type="nodelet" name="camera_laser_narrow" args="load pointcloud_to_laserscan/CloudToScan openni_manager" respawn="true">
+        <param name="output_frame_id" value="/camera_depth_frame"/>
+        <!-- heights are in the (optical?) frame of the kinect -->
+        <param name="min_height" value="-0.025"/>
+        <param name="max_height" value="0.025"/>
+        <remap from="cloud" to="cloud_throttled"/>
+        <remap from="scan" to="narrow_scan"/>
+      </node>
+          
+      <!-- For the new openni framework (not tested) 
+  <arg name="manager" value="openni_manager" />
+  <include file="$(find openni_launch)/launch/includes/manager.launch">
+    <arg name="name" value="$(arg manager)" />
+  </include>
+  <include file="$(find openni_launch)/launch/includes/device.launch">
+      <arg name="manager"               value="/$(arg manager)" /> 
+      <arg name="device_id"             value="#1" />  
+      <arg name="rgb_frame_id"          value="camera_rgb_optical_frame" />
+      <arg name="depth_frame_id"        value="camera_depth_optical_frame" />
+      <arg name="rgb_camera_info_url"   value="" />
+      <arg name="depth_camera_info_url" value="" />
+      <arg name="depth_registration"    value="true" />
+    </include>
+    -->
 </launch>
 
