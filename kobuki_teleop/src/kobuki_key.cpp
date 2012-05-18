@@ -41,10 +41,10 @@
 #define KEYCODE_D 0x42
 #define KEYCODE_Q 0x71
 
-class TurtlebotTeleop
+class KobukiTeleop
 {
 public:
-  TurtlebotTeleop();
+  KobukiTeleop();
   void keyLoop();
   void watchdog();
 
@@ -62,7 +62,7 @@ private:
 
 };
 
-TurtlebotTeleop::TurtlebotTeleop():
+KobukiTeleop::KobukiTeleop():
   ph_("~"),
   linear_(0),
   angular_(0),
@@ -88,16 +88,16 @@ void quit(int sig)
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "turtlebot_teleop");
-  TurtlebotTeleop turtlebot_teleop;
+  ros::init(argc, argv, "kobuki_teleop");
+  KobukiTeleop kobuki_teleop;
   ros::NodeHandle n;
 
   signal(SIGINT,quit);
 
-  boost::thread my_thread(boost::bind(&TurtlebotTeleop::keyLoop, &turtlebot_teleop));
+  boost::thread my_thread(boost::bind(&KobukiTeleop::keyLoop, &kobuki_teleop));
   
   
-  ros::Timer timer = n.createTimer(ros::Duration(0.1), boost::bind(&TurtlebotTeleop::watchdog, &turtlebot_teleop));
+  ros::Timer timer = n.createTimer(ros::Duration(0.1), boost::bind(&KobukiTeleop::watchdog, &kobuki_teleop));
 
   ros::spin();
 
@@ -108,7 +108,7 @@ int main(int argc, char** argv)
 }
 
 
-void TurtlebotTeleop::watchdog()
+void KobukiTeleop::watchdog()
 {
   boost::mutex::scoped_lock lock(publish_mutex_);
   if ((ros::Time::now() > last_publish_ + ros::Duration(0.15)) && 
@@ -116,7 +116,7 @@ void TurtlebotTeleop::watchdog()
     publish(0, 0);
 }
 
-void TurtlebotTeleop::keyLoop()
+void KobukiTeleop::keyLoop()
 {
   char c;
 
@@ -132,7 +132,7 @@ void TurtlebotTeleop::keyLoop()
 
   puts("Reading from keyboard");
   puts("---------------------------");
-  puts("Use arrow keys to move the turtlebot.");
+  puts("Use arrow keys to move the kobuki.");
 
 
   while (ros::ok())
@@ -178,7 +178,7 @@ void TurtlebotTeleop::keyLoop()
   return;
 }
 
-void TurtlebotTeleop::publish(double angular, double linear)  
+void KobukiTeleop::publish(double angular, double linear)  
 {
     geometry_msgs::Twist vel;
     vel.angular.z = a_scale_*angular;
