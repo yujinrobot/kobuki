@@ -4,19 +4,38 @@
 
 \section Launchers
 
-Goal is to replicate the minimal.launch, kinect.launch, turtlebot.launch(?) in turtlebot_brinup. Eventually we should be almost exactly the same.
+Goal is to replicate the minimal.launch, kinect.launch, 
+turtlebot.launch(?) in turtlebot_brinup. Eventually we 
+should be almost exactly the same.
 
-\seciton Minimal
+\section Minimal
+
+@code
+> roslaunch kobuki_bringup minimal.launch
+@endcode
 
 - Obviously, kobuki_node replaces turtlebot node here.
-- Namespaced in kobuki
 
 Forgetting the namespace - too many absolute or global references and also android doesn't play nicely with that.
  
 \section Kinect
 
-- Got rid of the kinect breaker - do we really need?
-- Namespaced in kobuki
+To test the kinect, in different shells:
+
+@code
+> roslaunch kobuki_bringup minimal.launch
+> roslaunch kobuki_bringup kinect.launch
+> roslaunch kobuki_bringup view_robot.launch
+@endcode
+
+@section appmanager App Manager
+
+@subsection Configuration
+
+If using static ip's, set them everywhere, if hostnames, set them.
+
+- setup.bash, ROS_MASTER_URI, ROS_IP, ROS_HOSTNAME
+- kobuki_bringup/resources/yaml/app_manager.yaml
 
 
 */

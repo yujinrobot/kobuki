@@ -1,0 +1,3 @@
+# Configures the location of the app manager's master sync.
+
+interface_master: http://192.168.10.97:11312

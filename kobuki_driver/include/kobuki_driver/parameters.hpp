@@ -62,6 +62,7 @@ class Parameters
 {
 public:
   Parameters() :
+    simulation(false),
     battery_capacity(Battery::capacity),
     battery_low(Battery::low),
     battery_dangerous(Battery::dangerous)
