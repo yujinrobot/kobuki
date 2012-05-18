@@ -37,7 +37,7 @@
 
 from __future__ import division
 
-import roslib; roslib.load_manifest('turtlebot_node')
+import roslib; roslib.load_manifest('kobuki_node')
 
 from   collections import deque
 import threading
