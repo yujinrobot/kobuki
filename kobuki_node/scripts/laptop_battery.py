@@ -45,6 +45,7 @@ import copy
 import yaml
 import math
 import rospy
+import os  # to check path existence
 
 from turtlebot_node.msg import LaptopChargeStatus
 from diagnostic_msgs.msg import DiagnosticStatus, DiagnosticArray, KeyValue
@@ -93,7 +94,12 @@ def slerp(filename):
 
 #/proc/acpi/battery/BAT0/state
 def _check_battery_info():
-    o = slerp('/proc/acpi/battery/BAT1/info')
+    if os.access('/proc/acpi/battery/BAT0', os.F_OK):
+        o = slerp('/proc/acpi/battery/BAT0/info')
+    elif os.access('/proc/acpi/battery/BAT1', os.F_OK):
+        o = slerp('/proc/acpi/battery/BAT1/info')
+    else:
+        raise Exception('/proc/acpi/battery/BAT* directory is not exist.')
 
     batt_info = yaml.load(o)
     design_capacity    = _strip_Ah(batt_info.get('design capacity',    '0 mAh'))
@@ -113,8 +119,12 @@ def _check_battery_state():
     """
     @return LaptopChargeStatus
     """
-    o = slerp('/proc/acpi/battery/BAT1/state')
-
+    if os.access('/proc/acpi/battery/BAT0', os.F_OK):
+        o = slerp('/proc/acpi/battery/BAT0/state')
+    elif os.access('/proc/acpi/battery/BAT1', os.F_OK):
+        o = slerp('/proc/acpi/battery/BAT1/state')
+    else:
+        raise Exception('/proc/acpi/battery/BAT* directory is not exist.')
     batt_info = yaml.load(o)
 
     rv = LaptopChargeStatus()
