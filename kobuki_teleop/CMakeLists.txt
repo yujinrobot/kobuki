@@ -29,7 +29,8 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #rosbuild_add_executable(example examples/example.cpp)
 #target_link_libraries(example ${PROJECT_NAME})
 
-rosbuild_add_boost_directories()
-rosbuild_add_executable(kobuki_teleop_key src/kobuki_key.cpp)
-rosbuild_link_boost(kobuki_teleop_key thread)
+
+#rosbuild_add_boost_directories()
+#rosbuild_add_executable(kobuki_teleop_key src/kobuki_key.cpp)
+#rosbuild_link_boost(kobuki_teleop_key thread)
 
