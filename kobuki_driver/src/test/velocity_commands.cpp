@@ -50,7 +50,7 @@ public:
         }
         else if( std::abs(static_cast<float>(leftWheelVelocity)) == std::abs(static_cast<float>(rightWheelVelocity)) )
         {
-            desiredSpeed = std::abs(leftWheelVelocity);
+            desiredSpeed = std::abs(static_cast<float>(leftWheelVelocity));
             if( leftWheelVelocity < rightWheelVelocity )    desiredRadius = +1;
             else                                            desiredRadius = -1;
         }
