@@ -30,31 +30,22 @@
 - setup-file:
     local-name: /opt/ros/fuerte/setup.sh
 
-# Fuerte not yet deb'd stacks
-- svn:
-    local-name: dynamixel_motor
-    uri: http://ua-ros-pkg.googlecode.com/svn/stacks/dynamixel_motor/tags/electric
-- hg:
-    local-name: map_store
-    uri: https://kforge.ros.org/mapstore/hg
-    version: fuerte
-
 # Yujin Stacks
 - svn:
     uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_tools/0.43.8
-    local-name: /opt/yujin/stacks/ecl/ecl_tools
+    local-name: ecl/ecl_tools
 - svn:
     uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_lite/0.43.8
-    local-name: /opt/yujin/stacks/ecl/ecl_lite
+    local-name: ecl/ecl_lite
 - svn:
     uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_core/0.43.8
-    local-name: /opt/yujin/stacks/ecl/ecl_core
+    local-name: ecl/ecl_core
 - svn:
     uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_navigation/0.43.8
-    local-name: /opt/yujin/stacks/ecl/ecl_navigation
+    local-name: ecl/ecl_navigation
 - git: 
     uri: https://github.com/stonier/zeroconf_implementations.git
-    local-name: /opt/yujin/stacks/zeroconf_implementations
+    local-name: zeroconf_implementations
     version: 0.1.5 
 
 # Kobuki stacks
@@ -67,3 +58,15 @@
     uri: https://github.com/yujinrobot/kobuki_simulator.git
     local-name: kobuki_simulator
     version: master
+
+# Fuerte not yet deb'd stacks
+- svn:
+    uri: http://ua-ros-pkg.googlecode.com/svn/stacks/dynamixel_motor/tags/electric
+    local-name: dynamixel_motor
+
+- hg:
+    uri: https://kforge.ros.org/mapstore/hg
+    version: fuerte
+    local-name: map_store
+
+
