@@ -32,8 +32,8 @@ public:
 
     void getVW( const int leftWheelVelocity, const int rightWheelVelocity, int & linearSpeed, int & rotationalSpeedInDegree )
     {
-        if( std::abs( leftWheelVelocity )
-            > std::abs( rightWheelVelocity ) )
+        if( std::abs( static_cast<float>(leftWheelVelocity ))
+            > std::abs( static_cast<float>(rightWheelVelocity) ) )
             linearSpeed = leftWheelVelocity;
         else
             linearSpeed = rightWheelVelocity;
@@ -48,7 +48,7 @@ public:
             desiredSpeed    = leftWheelVelocity;
             desiredRadius   = 0;
         }
-        else if( std::abs(leftWheelVelocity) == std::abs(rightWheelVelocity) )
+        else if( std::abs(static_cast<float>(leftWheelVelocity)) == std::abs(static_cast<float>(rightWheelVelocity)) )
         {
             desiredSpeed = std::abs(leftWheelVelocity);
             if( leftWheelVelocity < rightWheelVelocity )    desiredRadius = +1;
@@ -57,7 +57,7 @@ public:
         else
         {
             desiredRadius   = -(leftWheelVelocity+rightWheelVelocity)*half_wheel_2_wheel/(leftWheelVelocity-rightWheelVelocity);
-            if( std::abs(leftWheelVelocity) < std::abs(rightWheelVelocity) )
+            if( std::abs(static_cast<float>(leftWheelVelocity)) < std::abs(static_cast<float>(rightWheelVelocity)) )
             {
                 desiredSpeed    = rightWheelVelocity;
             }
