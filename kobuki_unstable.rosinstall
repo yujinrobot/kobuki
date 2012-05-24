@@ -10,6 +10,9 @@
 # For desktop simulations and remote connections
 #   sudo apt-get install ros-fuerte-turtlebot-viz ros-fuerte-simulators
 #
+# For suppporting libraries
+# sudo apt-get install ros-fuerte-ecl-tools ros-fuerte-ecl_lite ros-fuerte-ecl-core ros-fuerte-ecl-navigation ros-fuerte-zeroconf-implementations
+#
 # TODO
 # For desktop simulations and remote connections (update for Fuerte!)
 #   sudo apt-get install ros-electric-turtlebot-desktop 
@@ -29,24 +32,6 @@
     local-name: /opt/ros/fuerte/stacks
 - setup-file:
     local-name: /opt/ros/fuerte/setup.sh
-
-# Yujin Stacks
-- svn:
-    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_tools/0.43.8
-    local-name: ecl/ecl_tools
-- svn:
-    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_lite/0.43.8
-    local-name: ecl/ecl_lite
-- svn:
-    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_core/0.43.8
-    local-name: ecl/ecl_core
-- svn:
-    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_navigation/0.43.8
-    local-name: ecl/ecl_navigation
-- git: 
-    uri: https://github.com/stonier/zeroconf_implementations.git
-    local-name: zeroconf_implementations
-    version: 0.1.5 
 
 # Kobuki stacks
 - git:
