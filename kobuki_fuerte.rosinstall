@@ -1,0 +1,84 @@
+# Before rosinstalling, make sure you installed:
+#
+# Basic ROS
+#   sudo apt-get install ros-fuerte-desktop-full
+#
+# For the robot
+#   sudo apt-get install ros-fuerte-turtlebot ros-fuerte-turtlebot-apps ros-fuerte-control 
+#   sudo apt-get install ros-fuerte-warehousewg
+#
+# For desktop simulations and remote connections
+#   sudo apt-get install ros-fuerte-turtlebot-viz ros-fuerte-simulators
+#
+# For suppporting libraries
+# sudo apt-get install ros-fuerte-ecl-tools ros-fuerte-ecl-lite ros-fuerte-ecl-core ros-fuerte-ecl-navigation ros-fuerte-zeroconf-implementations
+#
+# TODO
+# For desktop simulations and remote connections (update for Fuerte!)
+#   sudo apt-get install ros-electric-turtlebot-desktop 
+# For our custom arm (update for Fuerte!)
+#   sudo apt-get install ros-fuerte-turtlebot-arm ros-fuerte-dynamixel-motor (not exisiting yet)
+#   in the meanwhile to allow compiling do:
+#   sudo apt-get install ros-fuerte-simple-arms
+#   and
+
+# Official ros stacks
+
+- other:
+    local-name: /opt/ros/fuerte/share/ros
+- other:
+    local-name: /opt/ros/fuerte/share
+- other:
+    local-name: /opt/ros/fuerte/stacks
+- setup-file:
+    local-name: /opt/ros/fuerte/setup.sh
+
+# Kobuki stacks
+- git:
+    uri: https://github.com/yujinrobot/kobuki.git
+    local-name: kobuki
+    version: fuerte
+
+- git:
+    uri: https://github.com/yujinrobot/kobuki_simulator.git
+    local-name: kobuki_simulator
+    version: fuerte
+
+# Until the ecl 0.43.9 and zeroconf_implementations 0.1.5 debs are pushed
+
+- svn:
+    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_tools
+    local-name: ecl/ecl_tools
+    version: fuerte
+- svn:
+    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_lite
+    local-name: ecl/ecl_lite
+    version: fuerte
+
+- svn:
+    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_core
+    local-name: ecl/ecl_core
+    version: fuerte
+
+- svn:
+    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_navigation
+    local-name: ecl/ecl_navigation
+    version: fuerte
+
+- git:
+    uri: https://github.com/stonier/zeroconf_implementations.git
+    version: fuerte
+    local-name: zeroconf_implementations
+
+
+# Fuerte not yet deb'd stacks
+- svn:
+    uri: http://ua-ros-pkg.googlecode.com/svn/stacks/dynamixel_motor/tags/electric
+    local-name: dynamixel_motor
+
+- hg:
+    uri: https://kforge.ros.org/mapstore/hg
+    version: fuerte
+    local-name: map_store
+
+
