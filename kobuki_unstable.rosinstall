@@ -47,29 +47,25 @@
 # Until the ecl 0.43.9 and zeroconf_implementations 0.1.5 debs are pushed
 
 - svn:
-    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_tools
+    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_tools/fuerte
     local-name: ecl/ecl_tools
-    version: fuerte
+
 - svn:
-    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_lite
+    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_lite/fuerte
     local-name: ecl/ecl_lite
-    version: fuerte
 
 - svn:
-    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_core
+    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_core/fuerte
     local-name: ecl/ecl_core
-    version: fuerte
 
 - svn:
-    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_navigation
+    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_navigation/fuerte
     local-name: ecl/ecl_navigation
-    version: fuerte
 
 - git:
     uri: https://github.com/stonier/zeroconf_implementations.git
-    version: fuerte
     local-name: zeroconf_implementations
-
+    version: fuerte
 
 # Fuerte not yet deb'd stacks
 - svn:
