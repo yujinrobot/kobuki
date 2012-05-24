@@ -11,7 +11,7 @@
 #   sudo apt-get install ros-fuerte-turtlebot-viz ros-fuerte-simulators
 #
 # For suppporting libraries
-# sudo apt-get install ros-fuerte-ecl-tools ros-fuerte-ecl_lite ros-fuerte-ecl-core ros-fuerte-ecl-navigation ros-fuerte-zeroconf-implementations
+# sudo apt-get install ros-fuerte-ecl-tools ros-fuerte-ecl-lite ros-fuerte-ecl-core ros-fuerte-ecl-navigation ros-fuerte-zeroconf-implementations
 #
 # TODO
 # For desktop simulations and remote connections (update for Fuerte!)
