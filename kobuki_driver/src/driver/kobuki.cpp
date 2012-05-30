@@ -213,7 +213,7 @@ void Kobuki::spin()
           // these come with the streamed feedback
           case Header::CoreSensors:
             core_sensors.deserialise(data_buffer);
-            event_manager.update(core_sensors.data.buttons, core_sensors.data.bumper);
+            event_manager.update(core_sensors.data.buttons, core_sensors.data.bumper, core_sensors.data.wheel_drop);
             break;
           case Header::DockInfraRed:
             dock_ir.deserialise(data_buffer);

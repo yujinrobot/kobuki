@@ -82,6 +82,10 @@ public:
     static const uint8_t LeftBumper = 0x04;
     static const uint8_t CentreBumper = 0x02;
     static const uint8_t RightBumper = 0x01;
+    // wheel_drop
+    static const uint8_t LeftWheelDrop = 0x02;
+    static const uint8_t RightWheelDrop = 0x01;
+
 
     // Charging source
     // - first four bits distinguish between adapter or docking base charging
