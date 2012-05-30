@@ -66,7 +66,30 @@ void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg
   return;
 }
 
-void KobukiNode::subscribeLedCommand(const kobuki_comms::LedArrayConstPtr msg)
+  
+void KobukiNode::subscribeLed1Command(const kobuki_comms::LedConstPtr msg)
+{
+  switch( msg->value ) {
+  case kobuki_comms::Led::GREEN:  kobuki.setLed(Led1, Green );
+  case kobuki_comms::Led::ORANGE: kobuki.setLed(Led1, Orange );
+  case kobuki_comms::Led::RED:    kobuki.setLed(Led1, Red );
+  default: ROS_WARN_STREAM("kobuki : exceed rages.");
+  }
+  return;
+}
+
+void KobukiNode::subscribeLed2Command(const kobuki_comms::LedConstPtr msg)
+{
+  switch( msg->value ) {
+  case kobuki_comms::Led::GREEN:  kobuki.setLed(Led2, Green );
+  case kobuki_comms::Led::ORANGE: kobuki.setLed(Led2, Orange );
+  case kobuki_comms::Led::RED:    kobuki.setLed(Led2, Red );
+  default: ROS_WARN_STREAM("kobuki : exceed rages.");
+  }
+  return;
+}
+
+void KobukiNode::subscribeLedArrayCommand(const kobuki_comms::LedArrayConstPtr msg)
 {
   if (msg->values.size() < 2)
   {

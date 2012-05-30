@@ -260,7 +260,9 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
 void KobukiNode::subscribeTopics(ros::NodeHandle& nh)
 {
   velocity_command_subscriber = nh.subscribe(std::string("cmd_vel"), 10, &KobukiNode::subscribeVelocityCommand, this);
-  led_command_subscriber =  nh.subscribe(std::string("commands/led"), 10, &KobukiNode::subscribeLedCommand, this);
+  led_array_command_subscriber =  nh.subscribe(std::string("commands/led"), 10, &KobukiNode::subscribeLedArrayCommand, this);
+  led1_command_subscriber =  nh.subscribe(std::string("commands/led1"), 10, &KobukiNode::subscribeLed1Command, this);
+  led2_command_subscriber =  nh.subscribe(std::string("commands/led2"), 10, &KobukiNode::subscribeLed2Command, this);
   digital_output_command_subscriber =  nh.subscribe(std::string("commands/digital_output"), 10, &KobukiNode::subscribeDigitalOutputCommand, this);
   sound_command_subscriber =  nh.subscribe(std::string("commands/sound"), 10, &KobukiNode::subscribeSoundCommand, this);
   // A group enable/disable channel to listen to (these should get remapped to /enable in most cases).
