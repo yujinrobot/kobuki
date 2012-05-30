@@ -358,6 +358,7 @@ void Kobuki::sendBaseControlCommand()
   cmd[8] = cs;
 
   serial.write(cmd, 9);
+  debugStream("Raw data sent: ", cmd, 9, "[" + std::string(__func__) + "]");
 }
 
 void Kobuki::sendCommand(Command command)
@@ -379,6 +380,7 @@ void Kobuki::sendCommand(Command command)
 
   command_buffer.push_back(checksum);
   serial.write(&command_buffer[0], command_buffer.size());
+  debugStream("Raw data sent: ", &command_buffer[0], command_buffer.size(), "[" + std::string(__func__) + "]");
 
 //    for (unsigned int i = 0; i < command_buffer.size(); ++i)
 //    {
@@ -407,5 +409,27 @@ bool Kobuki::disable()
   is_enabled = false;
   return true;
 }
+
+void Kobuki::debugStream(const unsigned char *bytes, const unsigned int count ) { debugStream("", bytes, count, ""); }
+
+void Kobuki::debugStream(const std::string prepend, const unsigned char *bytes, const unsigned int count) { debugStream(prepend, bytes, count, ""); }
+
+void Kobuki::debugStream(const unsigned char *bytes, const unsigned int count, const std::string append) { debugStream("", bytes, count, append); }
+
+void Kobuki::debugStream(const std::string prepend, const unsigned char *bytes, const unsigned int count, const std::string append)
+{
+  std::ostringstream oss;
+  oss << prepend;
+  if( count > 0 ) {
+    for ( unsigned int i=0; i<count ; ++i )
+    {
+      oss << "0x" << std::hex << std::setw(2) << std::setfill('0') << (unsigned)bytes[i] << std::dec
+          << std::setfill(' ') << " ";
+    }                                                                                                                      
+  }
+  oss << append;
+  sig_debug.emit(oss.str());
+}
+
 
 } // namespace kobuki

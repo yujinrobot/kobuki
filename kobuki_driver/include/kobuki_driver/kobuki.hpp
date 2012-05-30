@@ -43,6 +43,7 @@
  *****************************************************************************/
 
 #include <string>
+#include <iomanip>
 #include <ecl/threads.hpp>
 #include <ecl/devices.hpp>
 #include <ecl/exceptions/standard_exception.hpp>
@@ -177,6 +178,10 @@ private:
 
   void sendBaseControlCommand();
   void sendCommand(Command command);
+  void debugStream(const unsigned char *bytes, const unsigned int count ); 
+  void debugStream(const std::string prepend, const unsigned char *bytes, const unsigned int count);
+  void debugStream(const unsigned char *bytes, const unsigned int count, const std::string append);
+  void debugStream(const std::string prepend, const unsigned char *bytes, const unsigned int count, const std::string append);
 
   /*********************
   ** System Components
