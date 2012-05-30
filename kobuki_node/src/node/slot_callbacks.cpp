@@ -211,4 +211,23 @@ void KobukiNode::publishBumperEvent(const BumperEvent &event)
   }
 }
 
+void KobukiNode::publishWheelDropEvent(const WheelDropEvent &event)
+{
+  if (ros::ok())
+  {
+    kobuki_comms::WheelDropEvent msg;
+    switch(event.state) {
+      case(WheelDropEvent::Raised) : { msg.state = kobuki_comms::WheelDropEvent::RAISED; break; }
+      case(WheelDropEvent::Dropped) : { msg.state = kobuki_comms::WheelDropEvent::DROPPED; break; }
+      default: break;
+    }
+    switch(event.wheel_drop) {
+      case(WheelDropEvent::Left) : { msg.wheel = kobuki_comms::WheelDropEvent::LEFT; break; }
+      case(WheelDropEvent::Right) : { msg.wheel = kobuki_comms::WheelDropEvent::RIGHT; break; }
+      default: break;
+    }
+    wheel_drop_event_publisher.publish(msg);
+  }
+}
+
 } // namespace kobuki
