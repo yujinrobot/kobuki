@@ -118,6 +118,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_error.connect(sigslots_namespace + std::string("/ros_error"));
 
   diff_drive.init();
+  gate_keeper.init(parameters.enable_gate_keeper);
 
   // in case the user changed these from the defaults
   Battery::capacity = parameters.battery_capacity;
@@ -342,6 +343,7 @@ void Kobuki::sendBaseControlCommand()
 
   union_sint16 union_speed, union_radius;
   std::vector<short> velocity_commands = diff_drive.velocityCommands();
+  gate_keeper.confirm(velocity_commands[0]);
   union_speed.word = velocity_commands[0]; // speed
   union_radius.word = velocity_commands[1]; // radius
 

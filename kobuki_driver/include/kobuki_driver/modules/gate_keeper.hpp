@@ -27,79 +27,60 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /**
- * @file /include/kobuki_driver/modules/core_sensors.hpp
+ * @file /kobuki_driver/include/kobuki_driver/modules/gate_keeper.hpp
  *
- * Module for handling of core sensor packet payloads.
- */
+ * @brief Simple module for the diff drive odometry.
+ *
+ **/
 /*****************************************************************************
-** Preprocessor
+** Ifdefs
 *****************************************************************************/
 
-#ifndef KOBUKI_CORE_SENSORS_HPP__
-#define KOBUKI_CORE_SENSORS_HPP__
+#ifndef KOBUKI_GATE_KEEPER_HPP_
+#define KOBUKI_GATE_KEEPER_HPP_
 
 /*****************************************************************************
-** Include
+** Includes
 *****************************************************************************/
 
-#include "../packet_handler/payload_base.hpp"
 #include <stdint.h>
 
 /*****************************************************************************
 ** Namespaces
 *****************************************************************************/
 
-namespace kobuki
-{
+namespace kobuki {
 
 /*****************************************************************************
-** Interface
+** Interfaces
 *****************************************************************************/
 
-class CoreSensors : public packet_handler::payloadBase
-{
+class GateKeeper {
 public:
-  struct Data {
-    uint16_t time_stamp;
-    uint8_t bumper;
-    uint8_t wheel_drop;
-    uint8_t cliff;
-    uint16_t left_encoder;
-    uint16_t right_encoder;
-    char left_pwm;
-    char right_pwm;
-    uint8_t buttons;
-    uint8_t charger;
-    uint8_t battery;
-  } data;
+  GateKeeper() :
+    is_enabled(true),
+    last_speed(0), 
+    last_timestamp(0)
+  {}
+  void init(bool enable_gate_keeper){ is_enabled = enable_gate_keeper; }
+  void confirm(short &speed) // or smoother, limiter, etc
+  {
+    if( is_enabled )
+    {
+      //get current time
+      //get time difference
+      //calculate acceleration
+      //if criterion meet some condition, limit input velocity in certain step
+      ;
+    }
+  }
 
-  struct Flags {
-    // buttons
-    static const uint8_t F0 = 0x02;
-    static const uint8_t F1 = 0x01;
-    static const uint8_t F2 = 0x04;
-    // bumper
-    static const uint8_t LeftBumper = 0x04;
-    static const uint8_t CentreBumper = 0x02;
-    static const uint8_t RightBumper = 0x01;
-    // wheel_drop
-    static const uint8_t LeftWheelDrop = 0x02;
-    static const uint8_t RightWheelDrop = 0x01;
-
-    // Charging source
-    // - first four bits distinguish between adapter or docking base charging
-    static const uint8_t AdapterType  = 0x10;
-    // - last 4 bits specified the charging status (see Battery.hpp for details)
-    static const uint8_t BatteryStateMask = 0x0F;
-    static const uint8_t Discharging = 0x00;
-    static const uint8_t Charged = 0x02;
-    static const uint8_t Charging = 0x06;
-  };
-
-  bool serialise(ecl::PushAndPop<unsigned char> & byteStream);
-  bool deserialise(ecl::PushAndPop<unsigned char> & byteStream);
+private:
+  bool is_enabled;
+  short last_speed;
+  unsigned short last_timestamp;
 };
 
 } // namespace kobuki
 
-#endif /* KOBUKI_CORE_SENSORS_HPP__ */
+#endif /* KOBUKI_GATE_KEEPER_HPP_ */

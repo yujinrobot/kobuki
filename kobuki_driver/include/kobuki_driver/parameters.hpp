@@ -63,6 +63,7 @@ class Parameters
 public:
   Parameters() :
     simulation(false),
+    enable_gate_keeper(true),
     battery_capacity(Battery::capacity),
     battery_low(Battery::low),
     battery_dangerous(Battery::dangerous)
@@ -73,9 +74,11 @@ public:
   std::string protocol_version;    /**< firmware version number (e.g. '2.0') **/
   std::string sigslots_namespace;  /**< this should match the kobuki-node namespace **/
   bool simulation;                 /**< whether to put the motors in loopback mode or not **/
+  bool enable_gate_keeper;
   double battery_capacity;         /**< Capacity voltage of the battery **/
   double battery_low;              /**< Low level warning for battery level. **/
   double battery_dangerous;        /**< Battery in imminent danger of running out. **/
+
 
   /**
    * @brief This is a very rough validator for input configurations.

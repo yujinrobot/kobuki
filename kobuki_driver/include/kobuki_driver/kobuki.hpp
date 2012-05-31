@@ -159,6 +159,11 @@ private:
   bool is_enabled;
 
   /*********************
+  ** Gate Keeper / High Acceleration Smoother / Limiter
+  **********************/
+  GateKeeper gate_keeper;
+
+  /*********************
   ** Packet Handling
   **********************/
   CoreSensors core_sensors;

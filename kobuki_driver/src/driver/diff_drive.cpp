@@ -134,6 +134,7 @@ void DiffDrive::reset(const double& current_heading) {
   last_velocity_right = 0.0;
   imu_heading_offset = current_heading;
 }
+
 void DiffDrive::getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
                           double &wheel_right_angle, double &wheel_right_angle_rate) const {
   wheel_left_angle = last_rad_left;
@@ -143,6 +144,8 @@ void DiffDrive::getWheelJointStates(double &wheel_left_angle, double &wheel_left
 }
 
 void DiffDrive::velocityCommands(const double &vx, const double &wz) {
+  // vx: in m/s
+  // wz: in rad/s
   const double epsilon = 0.0001;
   if ( std::abs(wz) < epsilon ) {
     radius = 0;
@@ -161,10 +164,9 @@ void DiffDrive::velocityCommands(const double &vx, const double &wz) {
 }
 
 void DiffDrive::velocityCommands(const short &cmd_speed, const short &cmd_radius) {
-  speed = cmd_speed;
-  radius = cmd_radius;
+  speed = cmd_speed; //in mm/s
+  radius = cmd_radius; //in mm/s
 }
-
 
 std::vector<short> DiffDrive::velocityCommands() const {
   std::vector<short> cmd(2);
@@ -172,6 +174,5 @@ std::vector<short> DiffDrive::velocityCommands() const {
   cmd[1] = radius;
   return cmd;
 }
-
 
 } // namespace kobuki

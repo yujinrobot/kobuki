@@ -47,5 +47,6 @@
 #include "modules/led_array.hpp"
 #include "modules/diff_drive.hpp"
 #include "modules/sound.hpp"
+#include "modules/gate_keeper.hpp"
 
 #endif /* KOBUKI_MODULES_HPP_ */
