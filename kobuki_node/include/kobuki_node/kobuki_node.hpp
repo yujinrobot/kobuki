@@ -59,7 +59,6 @@
 #include <kobuki_comms/WheelDropEvent.h>
 #include <kobuki_comms/DigitalOutput.h>
 #include <kobuki_comms/Led.h>
-#include <kobuki_comms/LedArray.h>
 #include <kobuki_comms/SensorState.h>
 #include <kobuki_comms/Sound.h>
 #include <kobuki_driver/kobuki.hpp>
@@ -96,7 +95,7 @@ private:
   ros::Publisher version_info_publisher;
   ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher;
   ros::Publisher button_event_publisher, bumper_event_publisher, wheel_drop_event_publisher;
-  ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber, led_array_command_subscriber, led1_command_subscriber, led2_command_subscriber, sound_command_subscriber;
+  ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber, led1_command_subscriber, led2_command_subscriber, sound_command_subscriber;
   ros::Subscriber reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
 
@@ -109,7 +108,6 @@ private:
   void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
   void subscribeLed1Command(const kobuki_comms::LedConstPtr);
   void subscribeLed2Command(const kobuki_comms::LedConstPtr);
-  void subscribeLedArrayCommand(const kobuki_comms::LedArrayConstPtr);
   void subscribeDigitalOutputCommand(const kobuki_comms::DigitalOutputConstPtr);
   void subscribeResetOdometry(const std_msgs::EmptyConstPtr);
   void subscribeSoundCommand(const kobuki_comms::SoundConstPtr);

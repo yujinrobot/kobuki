@@ -91,43 +91,6 @@ void KobukiNode::subscribeLed2Command(const kobuki_comms::LedConstPtr msg)
   return;
 }
 
-void KobukiNode::subscribeLedArrayCommand(const kobuki_comms::LedArrayConstPtr msg)
-{
-  if (msg->values.size() < 2)
-  {
-    ROS_WARN_STREAM("Kobuki : you must specify command for both (2) controllable led's in the command array.");
-    return;
-  } else if (msg->values.size() > 2) {
-    ROS_WARN_STREAM("Kobuki : you can only control two led's on the kobuki (2nd and 3rd leds).");
-    return;
-  }
-  for (unsigned int i = 0; i < msg->values.size(); ++i)
-  {
-    LedNumber led = Led1;
-    if (i == 1)
-    {
-      led = Led2;
-    }
-    if (msg->values[i] == kobuki_comms::LedArray::GREEN)
-    {
-      kobuki.setLed(led, Green);
-    }
-    else if (msg->values[i] == kobuki_comms::LedArray::ORANGE)
-    {
-      kobuki.setLed(led, Orange);
-    }
-    else if (msg->values[i] == kobuki_comms::LedArray::RED)
-    {
-      kobuki.setLed(led, Red);
-    }
-    else
-    {
-      kobuki.setLed(led, Black);
-    }
-  }
-  return;
-}
-
 void KobukiNode::subscribeDigitalOutputCommand(const kobuki_comms::DigitalOutputConstPtr msg)
 {
   DigitalOutput digital_output;
