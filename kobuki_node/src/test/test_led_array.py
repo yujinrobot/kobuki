@@ -35,30 +35,34 @@
 import roslib; roslib.load_manifest('kobuki_node')
 import rospy
 
-from kobuki_comms.msg import LedArray
+from kobuki_comms.msg import Led
 
 colours = ["Black", "Green", "Orange", "Red"]
 
 rospy.init_node("test_led_array")
-pub = rospy.Publisher('/mobile_base/commands/led',LedArray)
+pub = []
+pub.append(rospy.Publisher('/mobile_base/commands/led1',Led))
+pub.append(rospy.Publisher('/mobile_base/commands/led2',Led))
 rate = rospy.Rate(1)
-led_array = LedArray()
-led_array.values = [LedArray.GREEN, LedArray.BLACK]
+leds = []
+leds.append(Led())
+leds.append(Led())
+leds[0].value = Led.GREEN
+leds[1].value = Led.BLACK
 rate.sleep()
+
 while not rospy.is_shutdown():
-    new_led_array = LedArray()
-    new_led_array.values = []
-    for led in led_array.values:
-        if led == LedArray.GREEN:
-            new_led_array.values.append(LedArray.ORANGE)
-        elif led == LedArray.ORANGE:
-            new_led_array.values.append(LedArray.RED)
-        elif led == LedArray.RED:
-            new_led_array.values.append(LedArray.BLACK)
-        elif led == LedArray.BLACK:
-            new_led_array.values.append(LedArray.GREEN)
-    led_array = new_led_array
-    print "[" + colours[led_array.values[0]] + "," + colours[led_array.values[1]] + "]" 
-    pub.publish(led_array)
+    for led in leds:
+        if led.value == Led.GREEN:
+            led.value = Led.ORANGE
+        elif led.value == Led.ORANGE:
+            led.value = Led.RED
+        elif led.value == Led.RED:
+            led.value = Led.BLACK
+        elif led.value == Led.BLACK:
+            led.value = Led.GREEN
+    print "[" + colours[leds[0].value] + "," + colours[leds[1].value] + "]" 
+    pub[0].publish(leds[0])
+    pub[1].publish(leds[1])
     rate.sleep()
     
