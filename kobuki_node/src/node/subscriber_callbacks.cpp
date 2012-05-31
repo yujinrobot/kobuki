@@ -59,7 +59,7 @@ void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg
     // should be global frame and require a transform
     //double vx = msg->linear.x;        // in (m/s)
     //double wz = msg->angular.z;       // in (rad/s)
-    ROS_DEBUG_STREAM("subscribeVelocityCommand: [" << msg->linear.x << "],[" << msg->angular.z << "]");
+    ROS_DEBUG_STREAM("Kobuki : velocity command received [" << msg->linear.x << "],[" << msg->angular.z << "]");
     kobuki.setBaseControl(msg->linear.x, msg->angular.z);
     odometry.resetTimeout();
   }
@@ -74,7 +74,7 @@ void KobukiNode::subscribeLed1Command(const kobuki_comms::LedConstPtr msg)
   case kobuki_comms::Led::ORANGE: kobuki.setLed(Led1, Orange ); break; 
   case kobuki_comms::Led::RED:    kobuki.setLed(Led1, Red ); break;
   case kobuki_comms::Led::BLACK:  kobuki.setLed(Led1, Black ); break;
-  default: ROS_WARN_STREAM("kobuki : exceed rages."); break;
+  default: ROS_WARN_STREAM("Kobuki : led 1 command value invalid."); break;
   }
   return;
 }
@@ -86,7 +86,7 @@ void KobukiNode::subscribeLed2Command(const kobuki_comms::LedConstPtr msg)
   case kobuki_comms::Led::ORANGE: kobuki.setLed(Led2, Orange ); break;
   case kobuki_comms::Led::RED:    kobuki.setLed(Led2, Red ); break;
   case kobuki_comms::Led::BLACK:  kobuki.setLed(Led2, Black ); break;
-  default: ROS_WARN_STREAM("kobuki : exceed rages."); break;
+  default: ROS_WARN_STREAM("Kobuki : led 2 command value invalid."); break;
   }
   return;
 }
