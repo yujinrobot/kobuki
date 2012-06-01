@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Startup kobuki base and spin indefinitely to measure the battery usage.
+# The data is recorded in a ros bag file and optionally in a text file.
+# Optional parameters:
+#   $1 will be used as the bag filename
+#   $2 will be used as the text filename
+
+
+source /opt/kobuki/setup.bash
+roscore &
+sleep 3
+roslaunch --screen kobuki_bringup minimal.launch &
+sleep 6
+if [ $# -gt 0 ]; then
+  rosbag record -O $1 /mobile_base/sensors/core &
+else
+  rosbag record /mobile_base/sensors/core &
+fi
+sleep 1
+if [ $# -gt 1 ]; then
+  rostopic echo /mobile_base/sensors/core/battery | grep -v -e --- > $2 &
+fi
+rosrun kobuki_node test_rotate.py
