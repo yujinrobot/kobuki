@@ -76,11 +76,11 @@ public:
       double acceleration = ((double)(speed - last_speed)) / duration; // in mm/s^2
 
       //if criterion meet some condition, limit input velocity in certain step
-      std::ostringstream oss;
-      oss << "[" << duration << "]";
-      oss << "[" << last_speed << "]";
-      oss << "[" << speed << "]";
-      oss << "[" << acceleration << "]";
+//      std::ostringstream oss;
+//      oss << "[" << duration << "]";
+//      oss << "[" << last_speed << "]";
+//      oss << "[" << speed << "]";
+//      oss << "[" << acceleration << "]";
 
       if( std::abs(acceleration) > 20.0 ) // 20mm/s^2 ?
       { 
@@ -89,8 +89,8 @@ public:
           speed = last_speed + 8 * (short)(acceleration / std::abs(acceleration));
         }
       }
-      oss << "[" << speed << "]";
-      std::cout << oss.str() << std::endl;
+//      oss << "[" << speed << "]";
+//      std::cout << oss.str() << std::endl;
 
       //update last_speed
       last_speed = speed;

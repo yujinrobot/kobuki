@@ -360,7 +360,7 @@ void Kobuki::sendBaseControlCommand()
   cmd[8] = cs;
 
   serial.write(cmd, 9);
-  debugStream("Raw data sent: ", cmd, 9, "[" + std::string(__func__) + "]");
+//  debugStream("Raw data sent: ", cmd, 9, "[" + std::string(__func__) + "]");
 }
 
 void Kobuki::sendCommand(Command command)
@@ -382,7 +382,7 @@ void Kobuki::sendCommand(Command command)
 
   command_buffer.push_back(checksum);
   serial.write(&command_buffer[0], command_buffer.size());
-  debugStream("Raw data sent: ", &command_buffer[0], command_buffer.size(), "[" + std::string(__func__) + "]");
+//  debugStream("Raw data sent: ", &command_buffer[0], command_buffer.size(), "[" + std::string(__func__) + "]");
 
 //    for (unsigned int i = 0; i < command_buffer.size(); ++i)
 //    {
