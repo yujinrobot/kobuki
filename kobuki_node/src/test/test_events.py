@@ -37,8 +37,9 @@ import rospy
 
 from kobuki_comms.msg import ButtonEvent
 from kobuki_comms.msg import BumperEvent
+from kobuki_comms.msg import WheelDropEvent
 
-def buttonEventCallback(data):
+def ButtonEventCallback(data):
     if ( data.state == ButtonEvent.RELEASED ) :
         state = "released"
     else:
@@ -49,9 +50,9 @@ def buttonEventCallback(data):
         button = "F1"
     else:
         button = "F2"
-    rospy.loginfo("Button %s was %s"%(state, button))
+    rospy.loginfo("Button %s was %s."%(button, state))
 
-def bumperEventCallback(data):
+def BumperEventCallback(data):
     if ( data.state == BumperEvent.RELEASED ) :
         state = "released"
     else:
@@ -62,11 +63,23 @@ def bumperEventCallback(data):
         bumper = "Centre"
     else:
         bumper = "Right"
-    rospy.loginfo("%s bumper %s."%(bumper, state))
+    rospy.loginfo("%s bumper is %s."%(bumper, state))
     
-rospy.init_node("test_button_events")
-rospy.Subscriber("/mobile_base/events/buttons",ButtonEvent,buttonEventCallback)
-rospy.Subscriber("/mobile_base/events/bumpers",BumperEvent,bumperEventCallback)
+def WheelDropEventCallback(data):
+    if ( data.state == WheelDropEvent.RAISED ) :
+        state = "raised"
+    else:
+        state = "dropped"  
+    if ( data.wheel == WheelDropEvent.LEFT ) :
+        wheel = "Left"
+    else:
+        wheel = "Right"
+    rospy.loginfo("%s wheel is %s."%(wheel, state))
+    
+rospy.init_node("test_events")
+rospy.Subscriber("/mobile_base/events/buttons",ButtonEvent,ButtonEventCallback)
+rospy.Subscriber("/mobile_base/events/bumpers",BumperEvent,BumperEventCallback)
+rospy.Subscriber("/mobile_base/events/wheel_drops",WheelDropEvent,WheelDropEventCallback)
 print ""
 print "Start pushing kobuki's buttons/bumper.....but be wary."
 print ""
