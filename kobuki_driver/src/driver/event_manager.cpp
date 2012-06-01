@@ -103,11 +103,7 @@ void EventManager::update(const uint8_t &new_button_state, const uint8_t &new_bu
 
   if (last_bumper_state != new_bumper_state)
   {
-    // Note that the touch pad means at most one button can be pressed
-    // at a time.
     BumperEvent event;
-    // Check changes in each button state's; event if this block of code
-    // supports it, two buttons cannot be pressed simultaneously
     if ((new_bumper_state | last_bumper_state) & CoreSensors::Flags::LeftBumper) {
       event.bumper = BumperEvent::Left;
       if (new_bumper_state & CoreSensors::Flags::LeftBumper) {
@@ -142,11 +138,7 @@ void EventManager::update(const uint8_t &new_button_state, const uint8_t &new_bu
 
   if (last_wheel_drop_state != new_wheel_drop_state)
   {
-    // Note that the touch pad means at most one button can be pressed
-    // at a time.
     WheelDropEvent event;
-    // Check changes in each button state's; event if this block of code
-    // supports it, two buttons cannot be pressed simultaneously
     if ((new_wheel_drop_state | last_wheel_drop_state) & CoreSensors::Flags::LeftWheelDrop) {
       event.wheel_drop = WheelDropEvent::Left;
       if (new_wheel_drop_state & CoreSensors::Flags::LeftWheelDrop) {
