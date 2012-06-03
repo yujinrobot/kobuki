@@ -47,19 +47,19 @@
 # Later move these to debs.
 
 - svn:
-    uri: https://embedded-control-library.googlecode.com/svn/trunk
+    uri: https://embedded-control-library.googlecode.com/svn/trunk/ecl/ecl_tools
     local-name: ecl/ecl_tools
 
 - svn:
-    uri: https://embedded-control-library.googlecode.com/svn/trunk
+    uri: https://embedded-control-library.googlecode.com/svn/trunk/ecl/ecl_lite
     local-name: ecl/ecl_lite
 
 - svn:
-    uri: https://embedded-control-library.googlecode.com/svn/trunk
+    uri: https://embedded-control-library.googlecode.com/svn/trunk/ecl/ecl_core
     local-name: ecl/ecl_core
 
 - svn:
-    uri: https://embedded-control-library.googlecode.com/svn/trunk
+    uri: https://embedded-control-library.googlecode.com/svn/trunk/ecl/ecl_navigation
     local-name: ecl/ecl_navigation
 
 # Until the zeroconf_implementations 0.1.5 debs are pushed
