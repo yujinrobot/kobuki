@@ -44,23 +44,25 @@
     local-name: kobuki_simulator
     version: master
 
-# Until the ecl 0.43.9 and zeroconf_implementations 0.1.5 debs are pushed
+# Later move these to debs.
 
 - svn:
-    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_tools/fuerte
+    uri: https://embedded-control-library.googlecode.com/svn/trunk
     local-name: ecl/ecl_tools
 
 - svn:
-    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_lite/fuerte
+    uri: https://embedded-control-library.googlecode.com/svn/trunk
     local-name: ecl/ecl_lite
 
 - svn:
-    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_core/fuerte
+    uri: https://embedded-control-library.googlecode.com/svn/trunk
     local-name: ecl/ecl_core
 
 - svn:
-    uri: https://embedded-control-library.googlecode.com/svn/tags/ecl_navigation/fuerte
+    uri: https://embedded-control-library.googlecode.com/svn/trunk
     local-name: ecl/ecl_navigation
+
+# Until the zeroconf_implementations 0.1.5 debs are pushed
 
 - git:
     uri: https://github.com/stonier/zeroconf_implementations.git
