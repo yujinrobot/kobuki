@@ -214,7 +214,7 @@ bool KobukiNode::spin()
         //disable(msg);
         kobuki.setBaseControl(0, 0);
         timed_out = true;
-        ROS_WARN("Incoming velocity commands not received for more than %.2f seconds -> disabling driver", odometry.timeout().toSec());
+        ROS_WARN("Incoming velocity commands not received for more than %.2f seconds -> zero'ing velocity commands", odometry.timeout().toSec());
       }
     } else {
       timed_out = false;
