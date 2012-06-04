@@ -95,6 +95,7 @@ private:
   ros::Publisher version_info_publisher;
   ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher;
   ros::Publisher button_event_publisher, bumper_event_publisher, wheel_drop_event_publisher;
+  ros::Publisher raw_data_command_publisher;
   ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber, led1_command_subscriber, led2_command_subscriber, sound_command_subscriber;
   ros::Subscriber reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
@@ -123,6 +124,7 @@ private:
   ecl::Slot<const BumperEvent&> slot_bumper_event;
   ecl::Slot<const WheelDropEvent&> slot_wheel_drop_event;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
+  ecl::Slot<Command::Buffer&> slot_raw_data_command;
 
   /*********************
    ** Slot Callbacks
@@ -135,10 +137,12 @@ private:
   void publishButtonEvent(const ButtonEvent &event);
   void publishBumperEvent(const BumperEvent &event);
   void publishWheelDropEvent(const WheelDropEvent &event);
+  // debugging
   void rosDebug(const std::string &msg) { ROS_DEBUG_STREAM("Kobuki : " << msg); }
   void rosInfo(const std::string &msg) { ROS_INFO_STREAM("Kobuki : " << msg); }
   void rosWarn(const std::string &msg) { ROS_WARN_STREAM("Kobuki : " << msg); }
   void rosError(const std::string &msg) { ROS_ERROR_STREAM("Kobuki : " << msg); }
+  void publishRawDataCommand(Command::Buffer &buffer);
 
   /*********************
   ** Diagnostics

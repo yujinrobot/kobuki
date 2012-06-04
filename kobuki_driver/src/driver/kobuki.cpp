@@ -110,6 +110,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
 
   sig_version_info.connect(sigslots_namespace + std::string("/version_info"));
   sig_stream_data.connect(sigslots_namespace + std::string("/stream_data"));
+  sig_raw_data_command.connect(sigslots_namespace + std::string("/raw_data_command"));
   //sig_serial_timeout.connect(sigslots_namespace+std::string("/serial_timeout"));
 
   sig_debug.connect(sigslots_namespace + std::string("/ros_debug"));
@@ -337,39 +338,24 @@ void Kobuki::setBaseControl(const double &linear_velocity, const double &angular
 
 void Kobuki::sendBaseControlCommand()
 {
-  //std::cout << "speed = " << speed << ", radius = " << radius << std::endl;
-  unsigned char cmd[] = {0xaa, 0x55, 5, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00};
-  unsigned char cs(0);
-
-  union_sint16 union_speed, union_radius;
   std::vector<short> velocity_commands = diff_drive.velocityCommands();
   gate_keeper.confirm(velocity_commands[0]);
-  union_speed.word = velocity_commands[0]; // speed
-  union_radius.word = velocity_commands[1]; // radius
-
-  cmd[4] = union_speed.byte[0];
-  cmd[5] = union_speed.byte[1];
-  cmd[6] = union_radius.byte[0];
-  cmd[7] = union_radius.byte[1];
-
-  //memcpy(cmd + 4, &speed,  sizeof(short) );
-  //memcpy(cmd + 6, &radius, sizeof(short) );
-
-  for (int i = 2; i <= 6; i++)
-    cs ^= cmd[i];
-  cmd[8] = cs;
-
-  serial.write(cmd, 9);
-//  debugStream("Raw data sent: ", cmd, 9, "[" + std::string(__func__) + "]");
+  sendCommand(Command::SetVelocityControl(velocity_commands[0], velocity_commands[1]));
 }
-
+/**
+ * @brief Send the prepared command to the serial port.
+ *
+ * Need to be a bit careful here, because we have no control over how the user
+ * is calling this - they may be calling from different threads (this is so for
+ * kobuki_node), so we mutex protect it here rather than relying on the user
+ * to do so above.
+ *
+ * @param command : prepared command template (see Command's static member functions).
+ */
 void Kobuki::sendCommand(Command command)
 {
-  command_buffer.clear();
-  command_buffer.resize(64);
-  command_buffer.push_back(0xaa);
-  command_buffer.push_back(0x55);
-  command_buffer.push_back(0); // size of payload only, not stx, not etx, not length
+  command_mutex.lock();
+  kobuki_command.resetBuffer(command_buffer);
 
   if (!command.serialise(command_buffer))
   {
@@ -382,20 +368,9 @@ void Kobuki::sendCommand(Command command)
 
   command_buffer.push_back(checksum);
   serial.write(&command_buffer[0], command_buffer.size());
-//  debugStream("Raw data sent: ", &command_buffer[0], command_buffer.size(), "[" + std::string(__func__) + "]");
 
-//    for (unsigned int i = 0; i < command_buffer.size(); ++i)
-//    {
-//      std::cout << "0x" << std::hex << std::setw(2) << std::setfill('0') << (unsigned)command_buffer[i] << std::dec
-//          << std::setfill(' ') << " ";
-//    }
-//    std::cout << std::endl;
-
-  if (command.data.command == Command::BaseControl)
-  {
-    diff_drive.velocityCommands(command.data.speed, command.data.radius);
-    sendBaseControlCommand();
-  }
+  sig_raw_data_command.emit(command_buffer);
+  command_mutex.unlock();
 }
 
 bool Kobuki::enable()
@@ -411,27 +386,5 @@ bool Kobuki::disable()
   is_enabled = false;
   return true;
 }
-
-void Kobuki::debugStream(const unsigned char *bytes, const unsigned int count ) { debugStream("", bytes, count, ""); }
-
-void Kobuki::debugStream(const std::string prepend, const unsigned char *bytes, const unsigned int count) { debugStream(prepend, bytes, count, ""); }
-
-void Kobuki::debugStream(const unsigned char *bytes, const unsigned int count, const std::string append) { debugStream("", bytes, count, append); }
-
-void Kobuki::debugStream(const std::string prepend, const unsigned char *bytes, const unsigned int count, const std::string append)
-{
-  std::ostringstream oss;
-  oss << prepend;
-  if( count > 0 ) {
-    for ( unsigned int i=0; i<count ; ++i )
-    {
-      oss << "0x" << std::hex << std::setw(2) << std::setfill('0') << (unsigned)bytes[i] << std::dec
-          << std::setfill(' ') << " ";
-    }                                                                                                                      
-  }
-  oss << append;
-  sig_debug.emit(oss.str());
-}
-
 
 } // namespace kobuki
