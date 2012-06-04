@@ -193,7 +193,7 @@ private:
   **********************/
   EventManager event_manager;
   Command kobuki_command;
-  ecl::Array<unsigned char,64> command_buffer;
+  ecl::PushAndPop<unsigned char> command_buffer;
 
   /*********************
   ** Signals
