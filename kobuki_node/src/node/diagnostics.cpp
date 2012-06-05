@@ -70,6 +70,7 @@ void BatteryTask::run(diagnostic_updater::DiagnosticStatusWrapper &stat) {
   }
   stat.add("Capacity", status.capacity);
   stat.add("Voltage", status.voltage);
+  stat.add("Percent", status.percent());
   switch (status.charging_source ) {
     case(Battery::None) : {
       stat.add("Source", "None");

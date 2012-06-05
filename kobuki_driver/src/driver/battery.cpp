@@ -48,9 +48,9 @@ namespace kobuki {
 ** Statics
 *****************************************************************************/
 
-double Battery::capacity = 17.0;
-double Battery::low = 13.5;
-double Battery::dangerous = 13.1;
+double Battery::capacity  = 16.5;
+double Battery::low       = 14.0;
+double Battery::dangerous = 13.2;
 
 /*****************************************************************************
 ** Implementation
@@ -88,6 +88,11 @@ Battery::Level Battery::level() const {
   if ( voltage > low ) { return Healthy; }
   if ( voltage > dangerous ) { return Low; }
   return Dangerous;
+}
+
+float Battery::percent() const {
+  // convert battery voltage to percent: 100% -> capacity / 5% -> dangerous
+  return ((95*(voltage - dangerous)) / (capacity - dangerous)) + 5;
 }
 
 } // namespace kobuki
