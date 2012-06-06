@@ -81,7 +81,7 @@ rospy.Subscriber("/mobile_base/events/buttons",ButtonEvent,ButtonEventCallback)
 rospy.Subscriber("/mobile_base/events/bumpers",BumperEvent,BumperEventCallback)
 rospy.Subscriber("/mobile_base/events/wheel_drops",WheelDropEvent,WheelDropEventCallback)
 print ""
-print "Start pushing kobuki's buttons/bumper.....but be wary."
+print "Start testing kobuki's buttons/bumper/wheel drops."
 print ""
 rospy.spin()
     

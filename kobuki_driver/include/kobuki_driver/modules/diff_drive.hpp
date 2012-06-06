@@ -72,7 +72,17 @@ public:
                             double &wheel_right_angle, double &wheel_right_angle_rate) const;
   void velocityCommands(const double &vx, const double &wz);
   void velocityCommands(const short &cmd_speed, const short &cmd_radius);
+
+  /*********************
+  ** Command Accessors
+  **********************/
   std::vector<short> velocityCommands() const;
+  int16_t commandSpeed() const { return speed; } // used to send to build into the fw command packet
+  int16_t commandRadius() const { return radius; } // used to send to build into the fw command packet
+
+  /*********************
+  ** Property Accessors
+  **********************/
   double wheel_bias() const { return bias; }
 
 private:
@@ -83,8 +93,8 @@ private:
   unsigned short last_tick_left, last_tick_right;
   double last_rad_left, last_rad_right;
 
-  short v, w;
-  short radius;
+  int16_t v, w;
+  int16_t radius;
   short speed;
   double bias; //wheelbase, wheel_to_wheel, in [m]
   double wheel_radius;

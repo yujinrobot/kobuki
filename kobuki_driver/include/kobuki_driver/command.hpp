@@ -40,8 +40,12 @@
 #include <ecl/containers.hpp>
 #include "packet_handler/payload_base.hpp"
 #include "modules/led_array.hpp"
-#include "modules/sound.hpp"
 #include "modules.hpp"
+
+/*****************************************************************************
+** Namespace
+*****************************************************************************/
+
 
 namespace kobuki
 {
@@ -49,6 +53,9 @@ namespace kobuki
 class Command : public packet_handler::payloadBase
 {
 public:
+  typedef ecl::PushAndPop<unsigned char> Buffer;
+  typedef ecl::Stencil< Buffer > BufferStencil;
+
   /**
    * These values are used to detect the type of sub-payload that is ensuing.
    */
@@ -114,11 +121,19 @@ public:
   static Command SetDigitalOutput(const DigitalOutput &digital_output, Command::Data &current_data);
   static Command PlaySoundSequence(const enum SoundSequences &number, Command::Data &current_data);
   static Command GetVersionInfo();
+  static Command SetVelocityControl(const DiffDrive& diff_drive);
+  static Command SetVelocityControl(const int16_t &speed, const int16_t &radius);
 
   Data data;
 
+  void resetBuffer(Buffer &buffer);
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream);
   bool deserialise(ecl::PushAndPop<unsigned char> & byteStream) { return true; } /**< Unused **/
+
+private:
+  static const unsigned char header0 = 0xaa;
+  static const unsigned char header1 = 0x55;
+
 };
 
 } // namespace kobuki

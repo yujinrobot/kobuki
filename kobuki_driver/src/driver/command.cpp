@@ -109,9 +109,36 @@ Command Command::GetVersionInfo()
   return outgoing;
 }
 
+Command Command::SetVelocityControl(const DiffDrive& diff_drive)
+{
+  Command outgoing;
+  outgoing.data.speed = diff_drive.commandSpeed();
+  outgoing.data.radius = diff_drive.commandRadius();
+  outgoing.data.command = Command::BaseControl;
+  return outgoing;
+}
+Command Command::SetVelocityControl(const int16_t &speed, const int16_t &radius)
+{
+  Command outgoing;
+  outgoing.data.speed = speed;
+  outgoing.data.radius = radius;
+  outgoing.data.command = Command::BaseControl;
+  return outgoing;
+}
+
 /*****************************************************************************
 ** Implementation [Serialisation]
 *****************************************************************************/
+/**
+ * Clears the command buffer and resets the header.
+ */
+void Command::resetBuffer(Buffer& buffer) {
+  buffer.clear();
+  buffer.resize(64);
+  buffer.push_back(Command::header0);
+  buffer.push_back(Command::header1);
+  buffer.push_back(0); // just initialise, we usually write in the payload here later (size of payload only, not stx, not etx, not length)
+}
 
 bool Command::serialise(ecl::PushAndPop<unsigned char> & byteStream)
 {

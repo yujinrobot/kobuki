@@ -46,6 +46,7 @@
 #include <iomanip>
 #include <ecl/threads.hpp>
 #include <ecl/devices.hpp>
+#include <ecl/threads/mutex.hpp>
 #include <ecl/exceptions/standard_exception.hpp>
 #include "version_info.hpp"
 #include "parameters.hpp"
@@ -181,19 +182,19 @@ private:
   PacketFinder::BufferType data_buffer;
   bool is_alive; // used as a flag set by the data stream watchdog
 
+  /*********************
+  ** Commands
+  **********************/
   void sendBaseControlCommand();
   void sendCommand(Command command);
-  void debugStream(const unsigned char *bytes, const unsigned int count ); 
-  void debugStream(const std::string prepend, const unsigned char *bytes, const unsigned int count);
-  void debugStream(const unsigned char *bytes, const unsigned int count, const std::string append);
-  void debugStream(const std::string prepend, const unsigned char *bytes, const unsigned int count, const std::string append);
+  ecl::Mutex command_mutex; // protection against the user calling the command functions from multiple threads
+  Command kobuki_command; // used to maintain some state about the command history
+  Command::Buffer command_buffer;
 
   /*********************
-  ** System Components
+  ** Events
   **********************/
   EventManager event_manager;
-  Command kobuki_command;
-  ecl::PushAndPop<unsigned char> command_buffer;
 
   /*********************
   ** Signals
@@ -201,7 +202,7 @@ private:
   ecl::Signal<> sig_stream_data;
   ecl::Signal<const VersionInfo&> sig_version_info;
   ecl::Signal<const std::string&> sig_debug, sig_info, sig_warn, sig_error;
-
+  ecl::Signal<Command::Buffer&> sig_raw_data_command; // should be const, but pushnpop is not fully realised yet for const args in the formatters.
 };
 
 } // namespace kobuki

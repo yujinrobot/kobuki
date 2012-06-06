@@ -38,6 +38,7 @@
 ** Includes
 *****************************************************************************/
 
+#include <std_msgs/String.h>
 #include <kobuki_comms/VersionInfo.h>
 #include <kobuki_driver/packets/gp_input.hpp>
 #include "kobuki_node/kobuki_node.hpp"
@@ -227,6 +228,21 @@ void KobukiNode::publishWheelDropEvent(const WheelDropEvent &event)
       default: break;
     }
     wheel_drop_event_publisher.publish(msg);
+  }
+}
+
+void KobukiNode::publishRawDataCommand(Command::Buffer &buffer)
+{
+  if ( raw_data_command_publisher.getNumSubscribers() > 0 ) { // do not do string processing if there is no-one listening.
+    std::ostringstream ostream;
+    Command::Buffer::Formatter format;
+    ostream << format(buffer); // convert to an easily readable hex string.
+    std_msgs::String s;
+    s.data = ostream.str();
+    if (ros::ok())
+    {
+      raw_data_command_publisher.publish(s);
+    }
   }
 }
 
