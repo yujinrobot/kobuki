@@ -125,8 +125,8 @@ def _check_battery_state():
         o = slerp('/proc/acpi/battery/BAT1/state')
     else:
         raise Exception('/proc/acpi/battery/BAT* directory is not exist.')
-    batt_info = yaml.load(o)
 
+    batt_info = yaml.load(o)
     rv = LaptopChargeStatus()
 
     state = batt_info.get('charging state', 'discharging')
@@ -199,6 +199,7 @@ class LaptopBatteryMonitor(object):
                     self._last_info_update        = rospy.get_time()
             except Exception, e:
                 rospy.logwarn('Unable to check laptop battery info. Exception: %s' % e)
+                rospy.signal_shutdown('Unable to check laptop battery state. Exception: %s' % e)
                 
             rate.sleep()
 
@@ -212,6 +213,7 @@ class LaptopBatteryMonitor(object):
                     self._last_state_update = rospy.get_time()
             except Exception, e:
                 rospy.logwarn('Unable to check laptop battery state. Exception: %s' % e)
+                rospy.signal_shutdown('Unable to check laptop battery state. Exception: %s' % e)
                 
             rate.sleep()
 
