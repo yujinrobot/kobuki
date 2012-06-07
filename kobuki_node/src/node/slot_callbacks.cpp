@@ -231,6 +231,26 @@ void KobukiNode::publishWheelDropEvent(const WheelDropEvent &event)
   }
 }
 
+void KobukiNode::publishCliffEvent(const CliffEvent &event)
+{
+  if (ros::ok())
+  {
+    kobuki_comms::CliffEvent msg;
+    switch(event.state) {
+      case(CliffEvent::Cliff) : { msg.state = kobuki_comms::CliffEvent::CLIFF; break; }
+      case(CliffEvent::Floor) : { msg.state = kobuki_comms::CliffEvent::FLOOR; break; }
+      default: break;
+    }
+    switch(event.cliff) {
+      case(CliffEvent::Left) : { msg.cliff = kobuki_comms::CliffEvent::LEFT; break; }
+      case(CliffEvent::Centre) : { msg.cliff = kobuki_comms::CliffEvent::CENTRE; break; }
+      case(CliffEvent::Right) : { msg.cliff = kobuki_comms::CliffEvent::RIGHT; break; }
+      default: break;
+    }
+    cliff_event_publisher.publish(msg);
+  }
+}
+
 void KobukiNode::publishRawDataCommand(Command::Buffer &buffer)
 {
   if ( raw_data_command_publisher.getNumSubscribers() > 0 ) { // do not do string processing if there is no-one listening.

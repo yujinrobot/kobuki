@@ -38,6 +38,7 @@ import rospy
 from kobuki_comms.msg import ButtonEvent
 from kobuki_comms.msg import BumperEvent
 from kobuki_comms.msg import WheelDropEvent
+from kobuki_comms.msg import CliffEvent
 
 def ButtonEventCallback(data):
     if ( data.state == ButtonEvent.RELEASED ) :
@@ -76,12 +77,26 @@ def WheelDropEventCallback(data):
         wheel = "Right"
     rospy.loginfo("%s wheel is %s."%(wheel, state))
     
+def CliffEventCallback(data):
+    if ( data.state == CliffEvent.FLOOR ) :
+        state = "on the floor"
+    else:
+        state = "on the cliff"  
+    if ( data.cliff == CliffEvent.LEFT ) :
+        cliff = "Left"
+    elif ( data.cliff == CliffEvent.CENTRE ) :
+        cliff = "Centre"
+    else:
+        cliff = "Right"
+    rospy.loginfo("%s side of robot is %s."%(cliff, state))
+    
 rospy.init_node("test_events")
 rospy.Subscriber("/mobile_base/events/buttons",ButtonEvent,ButtonEventCallback)
 rospy.Subscriber("/mobile_base/events/bumpers",BumperEvent,BumperEventCallback)
 rospy.Subscriber("/mobile_base/events/wheel_drops",WheelDropEvent,WheelDropEventCallback)
+rospy.Subscriber("/mobile_base/events/cliffs",CliffEvent,CliffEventCallback)
 print ""
-print "Start testing kobuki's buttons/bumper/wheel drops."
+print "Start testing kobuki's buttons/bumper/wheel drops/cliffs."
 print ""
 rospy.spin()
     
