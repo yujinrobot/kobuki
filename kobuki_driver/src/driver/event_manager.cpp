@@ -55,13 +55,20 @@ void EventManager::init ( const std::string &sigslots_namespace ) {
   sig_button_event.connect(sigslots_namespace + std::string("/button_event"));
   sig_bumper_event.connect(sigslots_namespace + std::string("/bumper_event"));
   sig_wheel_drop_event.connect(sigslots_namespace + std::string("/wheel_drop_event"));
+  sig_cliff_event.connect(sigslots_namespace + std::string("/cliff_event"));
 }
 
 /**
  * Update with incoming data and emit events if necessary.
  * @param new_button_state
  */
-void EventManager::update(const uint8_t &new_button_state, const uint8_t &new_bumper_state, const uint8_t &new_wheel_drop_state) {
+void EventManager::update(const uint8_t &new_button_state, const uint8_t &new_bumper_state, 
+    const uint8_t &new_wheel_drop_state, const uint8_t &new_cliff_state) {
+
+  // ------------
+  // Button Event
+  // ------------
+
   if (last_button_state != new_button_state)
   {
     // Note that the touch pad means at most one button can be pressed
@@ -101,6 +108,10 @@ void EventManager::update(const uint8_t &new_button_state, const uint8_t &new_bu
     last_button_state = new_button_state;
   }
 
+  // ------------
+  // Bumper Event
+  // ------------
+
   if (last_bumper_state != new_bumper_state)
   {
     BumperEvent event;
@@ -136,6 +147,10 @@ void EventManager::update(const uint8_t &new_button_state, const uint8_t &new_bu
     last_bumper_state = new_bumper_state;
   }
 
+  // ------------
+  // Wheel Drop Event
+  // ------------
+
   if (last_wheel_drop_state != new_wheel_drop_state)
   {
     WheelDropEvent event;
@@ -160,6 +175,47 @@ void EventManager::update(const uint8_t &new_button_state, const uint8_t &new_bu
     }
     last_wheel_drop_state = new_wheel_drop_state;
   }
+
+  // ------------
+  // Cliff Event
+  // ------------
+
+  if (last_cliff_state != new_cliff_state)
+  {
+    CliffEvent event;
+    if ((new_cliff_state | last_cliff_state) & CoreSensors::Flags::LeftCliff) {
+      event.cliff = CliffEvent::Left;
+      if (new_cliff_state & CoreSensors::Flags::LeftCliff) {
+        event.state = CliffEvent::Cliff;
+      } else {
+        event.state = CliffEvent::Floor;
+      }
+      sig_cliff_event.emit(event);
+    }
+
+    if ((new_cliff_state | last_cliff_state) & CoreSensors::Flags::CentreCliff) {
+      event.cliff = CliffEvent::Centre;
+      if (new_cliff_state & CoreSensors::Flags::CentreCliff) {
+        event.state = CliffEvent::Cliff;
+      } else {
+        event.state = CliffEvent::Floor;
+      }
+      sig_cliff_event.emit(event);
+    }
+
+    if ((new_cliff_state | last_cliff_state) & CoreSensors::Flags::RightCliff) {
+      event.cliff = CliffEvent::Right;
+      if (new_cliff_state & CoreSensors::Flags::RightCliff) {
+        event.state = CliffEvent::Cliff;
+      } else {
+        event.state = CliffEvent::Floor;
+      }
+      sig_cliff_event.emit(event);
+    }
+    last_cliff_state = new_cliff_state;
+  }
+
+
 }
 
 

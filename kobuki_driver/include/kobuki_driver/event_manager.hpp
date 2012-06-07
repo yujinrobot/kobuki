@@ -95,22 +95,38 @@ struct WheelDropEvent {
   } wheel_drop;
 };
 
+struct CliffEvent {
+  enum State {
+    Floor,
+    Cliff
+  } state;
+  enum Cliff {
+    Left,
+    Centre,
+    Right
+  } cliff;
+};
+
 /*****************************************************************************
 ** Interfaces
 *****************************************************************************/
 
 class EventManager {
 public:
-  EventManager() : last_button_state(0), last_bumper_state(0), last_wheel_drop_state(0) {}
+  EventManager() : 
+    last_button_state(0), last_bumper_state(0), last_wheel_drop_state(0), last_cliff_state(0) 
+  {}
 
   void init(const std::string &sigslots_namespace);
-  void update(const uint8_t &new_button_state, const uint8_t &new_bumper_state, const uint8_t &new_wheel_drop_state);
+  void update(const uint8_t &new_button_state, const uint8_t &new_bumper_state, 
+    const uint8_t &new_wheel_drop_state, const uint8_t &new_cliff_state);
 
 private:
-  uint8_t last_button_state, last_bumper_state, last_wheel_drop_state;
+  uint8_t last_button_state, last_bumper_state, last_wheel_drop_state, last_cliff_state;
   ecl::Signal<const ButtonEvent&> sig_button_event;
   ecl::Signal<const BumperEvent&> sig_bumper_event;
   ecl::Signal<const WheelDropEvent&> sig_wheel_drop_event;
+  ecl::Signal<const CliffEvent&> sig_cliff_event;
 };
 
 
