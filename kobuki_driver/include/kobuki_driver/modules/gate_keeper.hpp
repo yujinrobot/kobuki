@@ -64,7 +64,7 @@ public:
     last_timestamp(ecl::TimeStamp())
   {}
   void init(bool enable_gate_keeper){ is_enabled = enable_gate_keeper; }
-  void confirm(short &speed) // or smoother, limiter, etc
+  void confirm(short &speed, short &radius) // or smoother, limiter, etc
   {
     if( is_enabled )
     {
@@ -79,7 +79,7 @@ public:
 //      std::ostringstream oss;
 //      oss << "[" << duration << "]";
 //      oss << "[" << last_speed << "]";
-//      oss << "[" << speed << "]";
+//      oss << "[" << speed << ", " << radius << "]";
 //      oss << "[" << acceleration << "]";
 
       if( std::abs(acceleration) > 20.0 ) // 20mm/s^2 ?
@@ -89,8 +89,13 @@ public:
           speed = last_speed + 8 * (short)(acceleration / std::abs(acceleration));
         }
       }
-//      oss << "[" << speed << "]";
-//      std::cout << oss.str() << std::endl;
+      if( radius == 0 && std::abs(speed) > 0 ) {
+        radius = last_radius;
+      } else { 
+        last_radius = radius;
+      }
+ //     oss << "[" << speed << ", " << radius << "]";
+ //     std::cout << oss.str() << std::endl;
 
       //update last_speed
       last_speed = speed;
@@ -103,6 +108,7 @@ public:
 private:
   bool is_enabled;
   short last_speed;
+  short last_radius;
 //  unsigned short last_timestamp;
   ecl::TimeStamp last_timestamp;
 };

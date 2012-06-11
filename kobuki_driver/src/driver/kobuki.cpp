@@ -340,7 +340,8 @@ void Kobuki::setBaseControl(const double &linear_velocity, const double &angular
 void Kobuki::sendBaseControlCommand()
 {
   std::vector<short> velocity_commands = diff_drive.velocityCommands();
-  gate_keeper.confirm(velocity_commands[0]);
+  gate_keeper.confirm(velocity_commands[0], velocity_commands[1]);
+  //std::cout << "speed: " << velocity_commands[0] << ", radius: " << velocity_commands[1] << std::endl;
   sendCommand(Command::SetVelocityControl(velocity_commands[0], velocity_commands[1]));
 }
 /**
