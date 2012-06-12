@@ -92,7 +92,8 @@ Battery::Level Battery::level() const {
 
 float Battery::percent() const {
   // convert battery voltage to percent: 100% -> capacity / 5% -> dangerous
-  return ((95*(voltage - dangerous)) / (capacity - dangerous)) + 5;
+  float percent = ((95*(voltage - dangerous)) / (capacity - dangerous)) + 5;
+  return std::max(std::min(percent, 100.0f), 0.0f);
 }
 
 } // namespace kobuki
