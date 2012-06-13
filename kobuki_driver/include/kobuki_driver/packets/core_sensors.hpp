@@ -78,19 +78,29 @@ public:
     static const uint8_t F0 = 0x02;
     static const uint8_t F1 = 0x01;
     static const uint8_t F2 = 0x04;
+
     // bumper
-    static const uint8_t LeftBumper = 0x04;
-    static const uint8_t CentreBumper = 0x02;
-    static const uint8_t RightBumper = 0x01;
+    static const uint8_t LeftBumper   = 0x04;
+    static const uint8_t CenterBumper = 0x02;
+    static const uint8_t RightBumper  = 0x01;
+
+    // cliff sensor
+    static const uint8_t LeftCliff    = 0x04;
+    static const uint8_t CenterCliff  = 0x02;
+    static const uint8_t RightCliff   = 0x01;
+
+    // wheel drop sensor
+    static const uint8_t LeftWheel    = 0x02;
+    static const uint8_t RightWheel   = 0x01;
 
     // Charging source
     // - first four bits distinguish between adapter or docking base charging
     static const uint8_t AdapterType  = 0x10;
     // - last 4 bits specified the charging status (see Battery.hpp for details)
     static const uint8_t BatteryStateMask = 0x0F;
-    static const uint8_t Discharging = 0x00;
-    static const uint8_t Charged = 0x02;
-    static const uint8_t Charging = 0x06;
+    static const uint8_t Discharging  = 0x00;
+    static const uint8_t Charged      = 0x02;
+    static const uint8_t Charging     = 0x06;
   };
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream);

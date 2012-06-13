@@ -80,6 +80,13 @@ KobukiNode::KobukiNode(std::string& node_name) :
   updater.setHardwareID("Kobuki");
   updater.add(battery_diagnostics);
   updater.add(watchdog_diagnostics);
+  updater.add(bumper_diagnostics);
+  updater.add(cliff_diagnostics);
+  updater.add(wheel_diagnostics);
+  updater.add(motor_diagnostics);
+  updater.add(gyro_diagnostics);
+  updater.add(dinput_diagnostics);
+  updater.add(ainput_diagnostics);
 }
 
 /**
@@ -224,6 +231,13 @@ bool KobukiNode::spin()
     }
     watchdog_diagnostics.update(is_alive);
     battery_diagnostics.update(kobuki.batteryStatus());
+    cliff_diagnostics.update(kobuki.getCoreSensorData().cliff, kobuki.getCliffData());
+    bumper_diagnostics.update(kobuki.getCoreSensorData().bumper);
+    wheel_diagnostics.update(kobuki.getCoreSensorData().wheel_drop);
+    motor_diagnostics.update(kobuki.getCurrentData().current);
+    gyro_diagnostics.update(kobuki.getInertiaData().angle);
+    dinput_diagnostics.update(kobuki.getGpInputData().digital_input);
+    ainput_diagnostics.update(kobuki.getGpInputData().analog_input);
     updater.update();
     ros::spinOnce();
     loop_rate.sleep();

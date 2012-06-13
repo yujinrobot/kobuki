@@ -140,8 +140,15 @@ private:
   ** Diagnostics
   **********************/
   diagnostic_updater::Updater updater;
-  BatteryTask battery_diagnostics;
-  WatchdogTask watchdog_diagnostics;
+  BatteryTask     battery_diagnostics;
+  WatchdogTask   watchdog_diagnostics;
+  CliffSensorTask   cliff_diagnostics;
+  WallSensorTask   bumper_diagnostics;
+  WheelDropTask     wheel_diagnostics;
+  MotorCurrentTask  motor_diagnostics;
+  GyroSensorTask     gyro_diagnostics;
+  DigitalInputTask dinput_diagnostics;
+  AnalogInputTask  ainput_diagnostics;
 };
 
 } // namespace kobuki

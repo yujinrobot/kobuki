@@ -121,6 +121,7 @@ public:
   DockIR::Data getDockIRData() const { return dock_ir.data; }
   Cliff::Data getCliffData() const { return cliff.data; }
   Current::Data getCurrentData() const { return current.data; }
+  Inertia::Data getInertiaData() const { return inertia.data; }
   GpInput::Data getGpInputData() const { return gp_input.data; }
 
   /*********************
