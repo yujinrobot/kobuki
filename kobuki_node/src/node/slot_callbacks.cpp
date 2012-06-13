@@ -203,7 +203,7 @@ void KobukiNode::publishBumperEvent(const BumperEvent &event)
     }
     switch(event.bumper) {
       case(BumperEvent::Left) : { msg.bumper = kobuki_comms::BumperEvent::LEFT; break; }
-      case(BumperEvent::Centre) : { msg.bumper = kobuki_comms::BumperEvent::CENTRE; break; }
+      case(BumperEvent::Center) : { msg.bumper = kobuki_comms::BumperEvent::CENTER; break; }
       case(BumperEvent::Right) : { msg.bumper = kobuki_comms::BumperEvent::RIGHT; break; }
       default: break;
     }

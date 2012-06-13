@@ -79,7 +79,7 @@ struct BumperEvent {
   } state;
   enum Bumper {
     Left,
-    Centre,
+    Center,
     Right
   } bumper;
 };

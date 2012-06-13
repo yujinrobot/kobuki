@@ -117,9 +117,9 @@ void EventManager::update(const uint8_t &new_button_state, const uint8_t &new_bu
       sig_bumper_event.emit(event);
     }
 
-    if ((new_bumper_state | last_bumper_state) & CoreSensors::Flags::CentreBumper) {
-      event.bumper = BumperEvent::Centre;
-      if (new_bumper_state & CoreSensors::Flags::CentreBumper) {
+    if ((new_bumper_state | last_bumper_state) & CoreSensors::Flags::CenterBumper) {
+      event.bumper = BumperEvent::Center;
+      if (new_bumper_state & CoreSensors::Flags::CenterBumper) {
         event.state = BumperEvent::Pressed;
       } else {
         event.state = BumperEvent::Released;
