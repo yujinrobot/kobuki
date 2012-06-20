@@ -68,9 +68,12 @@ void BatteryTask::run(diagnostic_updater::DiagnosticStatusWrapper &stat) {
       break;
     }
   }
-  stat.add("Capacity", status.capacity);
-  stat.add("Voltage", status.voltage);
+
+  stat.add("Voltage (V)", status.voltage);
   stat.add("Percent", status.percent());
+  stat.add("Charge (Ah)", (2.2*status.percent())/100.0);
+  stat.add("Capacity (Ah)", 2.2); // TODO: how can we tell which battery is in use?
+
   switch (status.charging_source ) {
     case(Battery::None) : {
       stat.add("Source", "None");
@@ -88,14 +91,17 @@ void BatteryTask::run(diagnostic_updater::DiagnosticStatusWrapper &stat) {
   switch ( status.charging_state ) {
     case ( Battery::Charged ) : {
       stat.add("State", "Charged");
+      stat.add("Current (A)", 3.14); // TODO: what's the real value for our charger?
       break;
     }
     case ( Battery::Charging ) : {
       stat.add("State", "Charging");
+      stat.add("Current (A)", 3.14); // TODO: what's the real value for our charger?
       break;
     }
     case ( Battery::Discharging ) : {
       stat.add("State", "Discharging");
+      stat.add("Current (A)", 0.0);
       break;
     }
     default: break;
