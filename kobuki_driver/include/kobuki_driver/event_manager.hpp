@@ -50,6 +50,8 @@
 #include <vector>
 #include <ecl/sigslots.hpp>
 
+#include "packets/core_sensors.hpp"
+
 /*****************************************************************************
 ** Namespaces
 *****************************************************************************/
@@ -84,21 +86,60 @@ struct BumperEvent {
   } bumper;
 };
 
+struct CliffEvent {
+  enum State {
+    Safe,
+    Cliff
+  } state;
+  enum Sensor {
+    Left,
+    Center,
+    Right
+  } sensor;
+  uint16_t bottom;
+};
+
+struct WheelEvent {
+  enum State {
+    Raised,
+    Dropped
+  } state;
+  enum Wheel {
+    Left,
+    Right
+  } wheel;
+};
+
+struct InputEvent {
+  bool values[4]; /**< Digital on or off for pins 0-3 respectively. **/
+};
+
 /*****************************************************************************
 ** Interfaces
 *****************************************************************************/
 
 class EventManager {
 public:
-  EventManager() : last_button_state(0), last_bumper_state(0) {}
+  EventManager() {
+    last_state.buttons    = 0;
+    last_state.bumper     = 0;
+    last_state.cliff      = 0;
+    last_state.wheel_drop = 0;
+    last_digital_input    = 0;
+  }
 
   void init(const std::string &sigslots_namespace);
-  void update(const uint8_t &new_button_state, const uint8_t &new_bumper_state);
+  void update(const CoreSensors::Data &new_state, const std::vector<uint16_t> &cliff_data);
+  void update(const uint16_t &digital_input);
 
 private:
-  uint8_t last_button_state, last_bumper_state;
+  CoreSensors::Data last_state;
+  uint16_t last_digital_input;
   ecl::Signal<const ButtonEvent&> sig_button_event;
   ecl::Signal<const BumperEvent&> sig_bumper_event;
+  ecl::Signal<const CliffEvent&>  sig_cliff_event;
+  ecl::Signal<const WheelEvent&>  sig_wheel_event;
+  ecl::Signal<const InputEvent&>  sig_input_event;
 };
 
 

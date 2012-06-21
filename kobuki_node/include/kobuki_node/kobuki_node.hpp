@@ -56,6 +56,9 @@
 #include <ecl/sigslots.hpp>
 #include <kobuki_comms/ButtonEvent.h>
 #include <kobuki_comms/BumperEvent.h>
+#include <kobuki_comms/CliffEvent.h>
+#include <kobuki_comms/WheelDropEvent.h>
+#include <kobuki_comms/DigitalInputEvent.h>
 #include <kobuki_comms/DigitalOutput.h>
 #include <kobuki_comms/LedArray.h>
 #include <kobuki_comms/SensorState.h>
@@ -93,7 +96,9 @@ private:
    **********************/
   ros::Publisher version_info_publisher;
   ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher;
-  ros::Publisher button_event_publisher, bumper_event_publisher;
+  ros::Publisher button_event_publisher, input_event_publisher;
+  ros::Publisher bumper_event_publisher, cliff_event_publisher, wheel_event_publisher;
+
   ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber, led_command_subscriber, sound_command_subscriber;
   ros::Subscriber reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
@@ -119,6 +124,9 @@ private:
   ecl::Slot<> slot_stream_data;
   ecl::Slot<const ButtonEvent&> slot_button_event;
   ecl::Slot<const BumperEvent&> slot_bumper_event;
+  ecl::Slot<const CliffEvent&>  slot_cliff_event;
+  ecl::Slot<const WheelEvent&>  slot_wheel_event;
+  ecl::Slot<const InputEvent&>  slot_input_event;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
 
   /*********************
@@ -131,6 +139,9 @@ private:
   void publishVersionInfo(const VersionInfo &version_info);
   void publishButtonEvent(const ButtonEvent &event);
   void publishBumperEvent(const BumperEvent &event);
+  void publishCliffEvent(const CliffEvent &event);
+  void publishWheelEvent(const WheelEvent &event);
+  void publishInputEvent(const InputEvent &event);
   void rosDebug(const std::string &msg) { ROS_DEBUG_STREAM("Kobuki : " << msg); }
   void rosInfo(const std::string &msg) { ROS_INFO_STREAM("Kobuki : " << msg); }
   void rosWarn(const std::string &msg) { ROS_WARN_STREAM("Kobuki : " << msg); }
