@@ -60,8 +60,8 @@ def BumperEventCallback(data):
         state = "pressed"  
     if ( data.bumper == BumperEvent.LEFT ) :
         bumper = "Left"
-    elif ( data.bumper == BumperEvent.CENTRE ) :
-        bumper = "Centre"
+    elif ( data.bumper == BumperEvent.CENTER ) :
+        bumper = "Center"
     else:
         bumper = "Right"
     rospy.loginfo("%s bumper is %s."%(bumper, state))

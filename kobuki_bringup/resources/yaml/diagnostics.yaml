@@ -6,22 +6,25 @@ analyzers:
     path: 'Power System'
     timeout: 5.0
     contains: ['Battery', 'Laptop Battery']
+    remove_prefix: mobile_base
   kobuki:
     type: diagnostic_aggregator/GenericAnalyzer
     path: 'Kobuki'
     timeout: 5.0
     contains: ['Watchdog']
-
-#  sensors: 
-#    type: GenericAnalyzer
-#    path: 'Sensors'
-#    timeout: 5.0
-#    startswith: ['Cliff Sensor', 'Wall Sensor', 'Gyro Sensor']
-#  digital_io:
-#    type: diagnostic_aggregator/GenericAnalyzer
-#    path: 'Digital IO'
-#    timeout: 5.0
-#    startswith: ['Digital Outputs']
+    remove_prefix: mobile_base
+  sensors: 
+    type: diagnostic_aggregator/GenericAnalyzer
+    path: 'Sensors'
+    timeout: 5.0
+    contains: ['Cliff Sensor', 'Wall Sensor', 'Wheel Drop', 'Motor Current', 'Gyro Sensor']
+    remove_prefix: mobile_base
+  input_ports:
+    type: diagnostic_aggregator/GenericAnalyzer
+    path: 'Input Ports'
+    timeout: 5.0
+    contains: ['Digital Input', 'Analog Input']
+    remove_prefix: mobile_base
 #  nodes:
 #    type: diagnostic_aggregator/GenericAnalyzer
 #    path: 'Nodes'

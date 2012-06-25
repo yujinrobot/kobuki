@@ -84,18 +84,7 @@ public:
   Battery() {} /**< Default constructor. **/
   Battery (const uint8_t &new_voltage, const uint8_t &charger_flag);
   Level level() const;
-
-//  /**
-//   * @brief Currently graveyarded - work
-//   * @param parameters
-//   * @return
-//   */
-//  float percent(const Parameters &parameters) const {
-//    // TODO avoid need of passing parameters
-//    // battery level comes as tenths of volt; convert to percent
-//    return (10*voltage - 100*parameters.battery_min_volts) /
-//           (parameters.battery_max_volts - parameters.battery_min_volts);
-//  }
+  float percent() const;
 
   static double capacity, low, dangerous;
   double voltage;

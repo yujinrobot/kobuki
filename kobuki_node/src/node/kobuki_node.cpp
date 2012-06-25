@@ -64,8 +64,14 @@ KobukiNode::KobukiNode(std::string& node_name) :
     slot_stream_data(&KobukiNode::processStreamData, *this),
     slot_button_event(&KobukiNode::publishButtonEvent, *this),
     slot_bumper_event(&KobukiNode::publishBumperEvent, *this),
+<<<<<<< HEAD
     slot_wheel_drop_event(&KobukiNode::publishWheelDropEvent, *this),
     slot_cliff_event(&KobukiNode::publishCliffEvent, *this),
+=======
+    slot_cliff_event(&KobukiNode::publishCliffEvent, *this),
+    slot_wheel_event(&KobukiNode::publishWheelEvent, *this),
+    slot_input_event(&KobukiNode::publishInputEvent, *this),
+>>>>>>> refs/remotes/origin/fuerte
     slot_debug(&KobukiNode::rosDebug, *this),
     slot_info(&KobukiNode::rosInfo, *this),
     slot_warn(&KobukiNode::rosWarn, *this),
@@ -83,6 +89,13 @@ KobukiNode::KobukiNode(std::string& node_name) :
   updater.setHardwareID("Kobuki");
   updater.add(battery_diagnostics);
   updater.add(watchdog_diagnostics);
+  updater.add(bumper_diagnostics);
+  updater.add(cliff_diagnostics);
+  updater.add(wheel_diagnostics);
+  updater.add(motor_diagnostics);
+  updater.add(gyro_diagnostics);
+  updater.add(dinput_diagnostics);
+  updater.add(ainput_diagnostics);
 }
 
 /**
@@ -109,8 +122,14 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   slot_version_info.connect(name + std::string("/version_info"));
   slot_button_event.connect(name + std::string("/button_event"));
   slot_bumper_event.connect(name + std::string("/bumper_event"));
+<<<<<<< HEAD
   slot_wheel_drop_event.connect(name + std::string("/wheel_drop_event"));
   slot_cliff_event.connect(name + std::string("/cliff_event"));
+=======
+  slot_cliff_event.connect(name + std::string("/cliff_event"));
+  slot_wheel_event.connect(name + std::string("/wheel_event"));
+  slot_input_event.connect(name + std::string("/input_event"));
+>>>>>>> refs/remotes/origin/fuerte
   slot_debug.connect(name + std::string("/ros_debug"));
   slot_info.connect(name + std::string("/ros_info"));
   slot_warn.connect(name + std::string("/ros_warn"));
@@ -230,6 +249,13 @@ bool KobukiNode::spin()
     }
     watchdog_diagnostics.update(is_alive);
     battery_diagnostics.update(kobuki.batteryStatus());
+    cliff_diagnostics.update(kobuki.getCoreSensorData().cliff, kobuki.getCliffData());
+    bumper_diagnostics.update(kobuki.getCoreSensorData().bumper);
+    wheel_diagnostics.update(kobuki.getCoreSensorData().wheel_drop);
+    motor_diagnostics.update(kobuki.getCurrentData().current);
+    gyro_diagnostics.update(kobuki.getInertiaData().angle);
+    dinput_diagnostics.update(kobuki.getGpInputData().digital_input);
+    ainput_diagnostics.update(kobuki.getGpInputData().analog_input);
     updater.update();
     ros::spinOnce();
     loop_rate.sleep();
@@ -252,11 +278,20 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   /*********************
   ** Kobuki Esoterics
   **********************/
+<<<<<<< HEAD
   version_info_publisher = nh.advertise < kobuki_comms::VersionInfo > ("version_info", 100, true); // latched publisher
   button_event_publisher = nh.advertise < kobuki_comms::ButtonEvent > ("events/buttons", 100);
   bumper_event_publisher = nh.advertise < kobuki_comms::BumperEvent > ("events/bumpers", 100);
   wheel_drop_event_publisher = nh.advertise < kobuki_comms::WheelDropEvent > ("events/wheel_drops", 100);
   cliff_event_publisher = nh.advertise < kobuki_comms::CliffEvent > ("events/cliffs", 100);
+=======
+  version_info_publisher = nh.advertise < kobuki_comms::VersionInfo > ("version_info",  100, true); // latched publisher
+  button_event_publisher = nh.advertise < kobuki_comms::ButtonEvent > ("events/button", 100);
+  bumper_event_publisher = nh.advertise < kobuki_comms::BumperEvent > ("events/bumper", 100);
+  cliff_event_publisher  = nh.advertise < kobuki_comms::CliffEvent >  ("events/cliff",  100);
+  input_event_publisher  = nh.advertise < kobuki_comms::DigitalInputEvent > ("events/digital_input", 100);
+  wheel_event_publisher  = nh.advertise < kobuki_comms::WheelDropEvent > ("events/wheel_drop", 100);
+>>>>>>> refs/remotes/origin/fuerte
   sensor_state_publisher = nh.advertise < kobuki_comms::SensorState > ("sensors/core", 100);
   imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("sensors/imu_data", 100);
   raw_data_command_publisher = nh.advertise< std_msgs::String > ("debug/raw_data_command", 100);

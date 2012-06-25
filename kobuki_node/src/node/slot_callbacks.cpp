@@ -204,7 +204,7 @@ void KobukiNode::publishBumperEvent(const BumperEvent &event)
     }
     switch(event.bumper) {
       case(BumperEvent::Left) : { msg.bumper = kobuki_comms::BumperEvent::LEFT; break; }
-      case(BumperEvent::Centre) : { msg.bumper = kobuki_comms::BumperEvent::CENTRE; break; }
+      case(BumperEvent::Center) : { msg.bumper = kobuki_comms::BumperEvent::CENTER; break; }
       case(BumperEvent::Right) : { msg.bumper = kobuki_comms::BumperEvent::RIGHT; break; }
       default: break;
     }
@@ -212,6 +212,7 @@ void KobukiNode::publishBumperEvent(const BumperEvent &event)
   }
 }
 
+<<<<<<< HEAD
 void KobukiNode::publishWheelDropEvent(const WheelDropEvent &event)
 {
   if (ros::ok())
@@ -265,5 +266,58 @@ void KobukiNode::publishRawDataCommand(Command::Buffer &buffer)
     }
   }
 }
+=======
+void KobukiNode::publishCliffEvent(const CliffEvent &event)
+{
+  if (ros::ok())
+  {
+    kobuki_comms::CliffEvent msg;
+    switch(event.state) {
+      case(CliffEvent::Safe)  : { msg.state = kobuki_comms::CliffEvent::SAFE;  break; }
+      case(CliffEvent::Cliff) : { msg.state = kobuki_comms::CliffEvent::CLIFF; break; }
+      default: break;
+    }
+    switch(event.sensor) {
+      case(CliffEvent::Left)   : { msg.sensor = kobuki_comms::CliffEvent::LEFT;   break; }
+      case(CliffEvent::Center) : { msg.sensor = kobuki_comms::CliffEvent::CENTER; break; }
+      case(CliffEvent::Right)  : { msg.sensor = kobuki_comms::CliffEvent::RIGHT;  break; }
+      default: break;
+    }
+    msg.bottom = event.bottom;
+    cliff_event_publisher.publish(msg);
+  }
+}
+
+void KobukiNode::publishWheelEvent(const WheelEvent &event)
+{
+  if (ros::ok())
+  {
+    kobuki_comms::WheelDropEvent msg;
+    switch(event.state) {
+      case(WheelEvent::Dropped) : { msg.state = kobuki_comms::WheelDropEvent::DROPPED; break; }
+      case(WheelEvent::Raised)  : { msg.state = kobuki_comms::WheelDropEvent::RAISED;  break; }
+      default: break;
+    }
+    switch(event.wheel) {
+      case(WheelEvent::Left)  : { msg.wheel = kobuki_comms::WheelDropEvent::LEFT;  break; }
+      case(WheelEvent::Right) : { msg.wheel = kobuki_comms::WheelDropEvent::RIGHT; break; }
+      default: break;
+    }
+    wheel_event_publisher.publish(msg);
+  }
+}
+
+void KobukiNode::publishInputEvent(const InputEvent &event)
+{
+  if (ros::ok())
+  {
+    kobuki_comms::DigitalInputEvent msg;
+    for (unsigned int i = 0; i < msg.values.size(); i++)
+      msg.values[i] = event.values[i];
+    input_event_publisher.publish(msg);
+  }
+}
+
+>>>>>>> refs/remotes/origin/fuerte
 
 } // namespace kobuki

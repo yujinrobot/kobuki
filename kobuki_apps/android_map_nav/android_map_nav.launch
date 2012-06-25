@@ -1,7 +1,7 @@
 <launch>
   <param name="camera/rgb/image_color/compressed/jpeg_quality" value="22"/>
 
-  <include file="$(find openni_camera)/launch/kinect_frames.launch"/>
+  <include file="$(find openni_camera_deprecated)/launch/kinect_frames.launch"/>
 
   <!-- Make a slower camera feed available. -->
   <node pkg="topic_tools" type="throttle" name="camera_throttle" output="screen"
