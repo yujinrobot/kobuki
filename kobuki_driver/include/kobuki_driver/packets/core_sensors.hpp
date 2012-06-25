@@ -93,15 +93,6 @@ public:
     static const uint8_t LeftWheel    = 0x02;
     static const uint8_t RightWheel   = 0x01;
 
-    // wheel_drop
-    static const uint8_t LeftWheelDrop = 0x02;
-    static const uint8_t RightWheelDrop = 0x01;
-
-    // cliff
-    static const uint8_t LeftCliff = 0x04;
-    static const uint8_t CentreCliff = 0x02;
-    static const uint8_t RightCliff = 0x01;
-
     // Charging source
     // - first four bits distinguish between adapter or docking base charging
     static const uint8_t AdapterType  = 0x10;

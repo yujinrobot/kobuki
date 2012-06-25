@@ -54,14 +54,9 @@ namespace kobuki {
 void EventManager::init ( const std::string &sigslots_namespace ) {
   sig_button_event.connect(sigslots_namespace + std::string("/button_event"));
   sig_bumper_event.connect(sigslots_namespace + std::string("/bumper_event"));
-<<<<<<< HEAD
-  sig_wheel_drop_event.connect(sigslots_namespace + std::string("/wheel_drop_event"));
-  sig_cliff_event.connect(sigslots_namespace + std::string("/cliff_event"));
-=======
   sig_cliff_event.connect(sigslots_namespace  + std::string("/cliff_event"));
   sig_wheel_event.connect(sigslots_namespace  + std::string("/wheel_event"));
   sig_input_event.connect(sigslots_namespace  + std::string("/input_event"));
->>>>>>> refs/remotes/origin/fuerte
 }
 
 /**
@@ -69,20 +64,13 @@ void EventManager::init ( const std::string &sigslots_namespace ) {
  * @param new_state  Updated core sensors state
  * @param cliff_data Cliff sensors readings (we include them as an extra information on cliff events)
  */
-<<<<<<< HEAD
-void EventManager::update(const uint8_t &new_button_state, const uint8_t &new_bumper_state, 
-    const uint8_t &new_wheel_drop_state, const uint8_t &new_cliff_state) {
-
-  // ------------
-  // Button Event
-  // ------------
-
-  if (last_button_state != new_button_state)
-=======
 void EventManager::update(const CoreSensors::Data &new_state, const std::vector<uint16_t> &cliff_data) {
   if (last_state.buttons != new_state.buttons)
->>>>>>> refs/remotes/origin/fuerte
   {
+    // ------------
+    // Button Event
+    // ------------
+
     // Note that the touch pad means at most one button can be pressed
     // at a time.
     ButtonEvent event;
@@ -120,24 +108,16 @@ void EventManager::update(const CoreSensors::Data &new_state, const std::vector<
     }
   }
 
-<<<<<<< HEAD
   // ------------
   // Bumper Event
   // ------------
 
-  if (last_bumper_state != new_bumper_state)
-=======
   if (last_state.bumper != new_state.bumper)
->>>>>>> refs/remotes/origin/fuerte
   {
     BumperEvent event;
-<<<<<<< HEAD
-    if ((new_bumper_state | last_bumper_state) & CoreSensors::Flags::LeftBumper) {
-=======
 
     // Check changes in each bumper state's and raise an event if so
     if ((new_state.bumper ^ last_state.bumper) & CoreSensors::Flags::LeftBumper) {
->>>>>>> refs/remotes/origin/fuerte
       event.bumper = BumperEvent::Left;
       if (new_state.bumper & CoreSensors::Flags::LeftBumper) {
         event.state = BumperEvent::Pressed;
@@ -168,77 +148,10 @@ void EventManager::update(const CoreSensors::Data &new_state, const std::vector<
     }
   }
 
-<<<<<<< HEAD
-  // ------------
-  // Wheel Drop Event
-  // ------------
-
-  if (last_wheel_drop_state != new_wheel_drop_state)
-  {
-    WheelDropEvent event;
-    if ((new_wheel_drop_state | last_wheel_drop_state) & CoreSensors::Flags::LeftWheelDrop) {
-      event.wheel_drop = WheelDropEvent::Left;
-      if (new_wheel_drop_state & CoreSensors::Flags::LeftWheelDrop) {
-        event.state = WheelDropEvent::Dropped;
-      } else {
-        event.state = WheelDropEvent::Raised;
-      }
-      sig_wheel_drop_event.emit(event);
-    }
-
-    if ((new_wheel_drop_state | last_wheel_drop_state) & CoreSensors::Flags::RightWheelDrop) {
-      event.wheel_drop = WheelDropEvent::Right;
-      if (new_wheel_drop_state & CoreSensors::Flags::RightWheelDrop) {
-        event.state = WheelDropEvent::Dropped;
-      } else {
-        event.state = WheelDropEvent::Raised;
-      }
-      sig_wheel_drop_event.emit(event);
-    }
-    last_wheel_drop_state = new_wheel_drop_state;
-  }
-
   // ------------
   // Cliff Event
   // ------------
 
-  if (last_cliff_state != new_cliff_state)
-  {
-    CliffEvent event;
-    if ((new_cliff_state | last_cliff_state) & CoreSensors::Flags::LeftCliff) {
-      event.cliff = CliffEvent::Left;
-      if (new_cliff_state & CoreSensors::Flags::LeftCliff) {
-        event.state = CliffEvent::Cliff;
-      } else {
-        event.state = CliffEvent::Floor;
-      }
-      sig_cliff_event.emit(event);
-    }
-
-    if ((new_cliff_state | last_cliff_state) & CoreSensors::Flags::CentreCliff) {
-      event.cliff = CliffEvent::Centre;
-      if (new_cliff_state & CoreSensors::Flags::CentreCliff) {
-        event.state = CliffEvent::Cliff;
-      } else {
-        event.state = CliffEvent::Floor;
-      }
-      sig_cliff_event.emit(event);
-    }
-
-    if ((new_cliff_state | last_cliff_state) & CoreSensors::Flags::RightCliff) {
-      event.cliff = CliffEvent::Right;
-      if (new_cliff_state & CoreSensors::Flags::RightCliff) {
-        event.state = CliffEvent::Cliff;
-      } else {
-        event.state = CliffEvent::Floor;
-      }
-      sig_cliff_event.emit(event);
-    }
-    last_cliff_state = new_cliff_state;
-  }
-
-
-=======
   if (last_state.cliff != new_state.cliff)
   {
     CliffEvent event;
@@ -249,7 +162,7 @@ void EventManager::update(const CoreSensors::Data &new_state, const std::vector<
       if (new_state.cliff & CoreSensors::Flags::LeftCliff) {
         event.state = CliffEvent::Cliff;
       } else {
-        event.state = CliffEvent::Safe;
+        event.state = CliffEvent::Floor;
       }
       event.bottom = cliff_data[event.sensor];
       sig_cliff_event.emit(event);
@@ -260,7 +173,7 @@ void EventManager::update(const CoreSensors::Data &new_state, const std::vector<
       if (new_state.cliff & CoreSensors::Flags::CenterCliff) {
         event.state = CliffEvent::Cliff;
       } else {
-        event.state = CliffEvent::Safe;
+        event.state = CliffEvent::Floor;
       }
       event.bottom = cliff_data[event.sensor];
       sig_cliff_event.emit(event);
@@ -271,12 +184,16 @@ void EventManager::update(const CoreSensors::Data &new_state, const std::vector<
       if (new_state.cliff & CoreSensors::Flags::RightCliff) {
         event.state = CliffEvent::Cliff;
       } else {
-        event.state = CliffEvent::Safe;
+        event.state = CliffEvent::Floor;
       }
       event.bottom = cliff_data[event.sensor];
       sig_cliff_event.emit(event);
     }
   }
+
+  // ------------
+  // Wheel Drop Event
+  // ------------
 
   if (last_state.wheel_drop != new_state.wheel_drop)
   {
@@ -305,7 +222,6 @@ void EventManager::update(const CoreSensors::Data &new_state, const std::vector<
   }
 
   last_state = new_state;
->>>>>>> refs/remotes/origin/fuerte
 }
 
 /**

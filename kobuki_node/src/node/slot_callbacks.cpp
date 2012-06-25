@@ -212,68 +212,13 @@ void KobukiNode::publishBumperEvent(const BumperEvent &event)
   }
 }
 
-<<<<<<< HEAD
-void KobukiNode::publishWheelDropEvent(const WheelDropEvent &event)
-{
-  if (ros::ok())
-  {
-    kobuki_comms::WheelDropEvent msg;
-    switch(event.state) {
-      case(WheelDropEvent::Raised) : { msg.state = kobuki_comms::WheelDropEvent::RAISED; break; }
-      case(WheelDropEvent::Dropped) : { msg.state = kobuki_comms::WheelDropEvent::DROPPED; break; }
-      default: break;
-    }
-    switch(event.wheel_drop) {
-      case(WheelDropEvent::Left) : { msg.wheel = kobuki_comms::WheelDropEvent::LEFT; break; }
-      case(WheelDropEvent::Right) : { msg.wheel = kobuki_comms::WheelDropEvent::RIGHT; break; }
-      default: break;
-    }
-    wheel_drop_event_publisher.publish(msg);
-  }
-}
-
 void KobukiNode::publishCliffEvent(const CliffEvent &event)
 {
   if (ros::ok())
   {
     kobuki_comms::CliffEvent msg;
     switch(event.state) {
-      case(CliffEvent::Cliff) : { msg.state = kobuki_comms::CliffEvent::CLIFF; break; }
       case(CliffEvent::Floor) : { msg.state = kobuki_comms::CliffEvent::FLOOR; break; }
-      default: break;
-    }
-    switch(event.cliff) {
-      case(CliffEvent::Left) : { msg.cliff = kobuki_comms::CliffEvent::LEFT; break; }
-      case(CliffEvent::Centre) : { msg.cliff = kobuki_comms::CliffEvent::CENTRE; break; }
-      case(CliffEvent::Right) : { msg.cliff = kobuki_comms::CliffEvent::RIGHT; break; }
-      default: break;
-    }
-    cliff_event_publisher.publish(msg);
-  }
-}
-
-void KobukiNode::publishRawDataCommand(Command::Buffer &buffer)
-{
-  if ( raw_data_command_publisher.getNumSubscribers() > 0 ) { // do not do string processing if there is no-one listening.
-    std::ostringstream ostream;
-    Command::Buffer::Formatter format;
-    ostream << format(buffer); // convert to an easily readable hex string.
-    std_msgs::String s;
-    s.data = ostream.str();
-    if (ros::ok())
-    {
-      raw_data_command_publisher.publish(s);
-    }
-  }
-}
-=======
-void KobukiNode::publishCliffEvent(const CliffEvent &event)
-{
-  if (ros::ok())
-  {
-    kobuki_comms::CliffEvent msg;
-    switch(event.state) {
-      case(CliffEvent::Safe)  : { msg.state = kobuki_comms::CliffEvent::SAFE;  break; }
       case(CliffEvent::Cliff) : { msg.state = kobuki_comms::CliffEvent::CLIFF; break; }
       default: break;
     }
@@ -318,6 +263,19 @@ void KobukiNode::publishInputEvent(const InputEvent &event)
   }
 }
 
->>>>>>> refs/remotes/origin/fuerte
+void KobukiNode::publishRawDataCommand(Command::Buffer &buffer)
+{
+  if ( raw_data_command_publisher.getNumSubscribers() > 0 ) { // do not do string processing if there is no-one listening.
+    std::ostringstream ostream;
+    Command::Buffer::Formatter format;
+    ostream << format(buffer); // convert to an easily readable hex string.
+    std_msgs::String s;
+    s.data = ostream.str();
+    if (ros::ok())
+    {
+      raw_data_command_publisher.publish(s);
+    }
+  }
+}
 
 } // namespace kobuki
