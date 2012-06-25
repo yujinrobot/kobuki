@@ -66,6 +66,7 @@ KobukiNode::KobukiNode(std::string& node_name) :
     slot_bumper_event(&KobukiNode::publishBumperEvent, *this),
     slot_cliff_event(&KobukiNode::publishCliffEvent, *this),
     slot_wheel_event(&KobukiNode::publishWheelEvent, *this),
+    slot_power_event(&KobukiNode::publishPowerEvent, *this),
     slot_input_event(&KobukiNode::publishInputEvent, *this),
     slot_debug(&KobukiNode::rosDebug, *this),
     slot_info(&KobukiNode::rosInfo, *this),
@@ -119,6 +120,7 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   slot_bumper_event.connect(name + std::string("/bumper_event"));
   slot_cliff_event.connect(name + std::string("/cliff_event"));
   slot_wheel_event.connect(name + std::string("/wheel_event"));
+  slot_power_event.connect(name + std::string("/power_event"));
   slot_input_event.connect(name + std::string("/input_event"));
   slot_debug.connect(name + std::string("/ros_debug"));
   slot_info.connect(name + std::string("/ros_info"));
@@ -272,8 +274,9 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   button_event_publisher = nh.advertise < kobuki_comms::ButtonEvent > ("events/button", 100);
   bumper_event_publisher = nh.advertise < kobuki_comms::BumperEvent > ("events/bumper", 100);
   cliff_event_publisher  = nh.advertise < kobuki_comms::CliffEvent >  ("events/cliff",  100);
-  input_event_publisher  = nh.advertise < kobuki_comms::DigitalInputEvent > ("events/digital_input", 100);
   wheel_event_publisher  = nh.advertise < kobuki_comms::WheelDropEvent > ("events/wheel_drop", 100);
+  power_event_publisher  = nh.advertise < kobuki_comms::PowerSystemEvent > ("events/power_system", 100);
+  input_event_publisher  = nh.advertise < kobuki_comms::DigitalInputEvent > ("events/digital_input", 100);
   sensor_state_publisher = nh.advertise < kobuki_comms::SensorState > ("sensors/core", 100);
   imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("sensors/imu_data", 100);
   raw_data_command_publisher = nh.advertise< std_msgs::String > ("debug/raw_data_command", 100);

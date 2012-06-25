@@ -58,6 +58,7 @@
 #include <kobuki_comms/BumperEvent.h>
 #include <kobuki_comms/CliffEvent.h>
 #include <kobuki_comms/WheelDropEvent.h>
+#include <kobuki_comms/PowerSystemEvent.h>
 #include <kobuki_comms/DigitalInputEvent.h>
 #include <kobuki_comms/DigitalOutput.h>
 #include <kobuki_comms/Led.h>
@@ -97,7 +98,7 @@ private:
   ros::Publisher version_info_publisher;
   ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher;
   ros::Publisher button_event_publisher, input_event_publisher;
-  ros::Publisher bumper_event_publisher, cliff_event_publisher, wheel_event_publisher;
+  ros::Publisher bumper_event_publisher, cliff_event_publisher, wheel_event_publisher, power_event_publisher;
   ros::Publisher raw_data_command_publisher;
 
   ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber;
@@ -129,6 +130,7 @@ private:
   ecl::Slot<const BumperEvent&> slot_bumper_event;
   ecl::Slot<const CliffEvent&>  slot_cliff_event;
   ecl::Slot<const WheelEvent&>  slot_wheel_event;
+  ecl::Slot<const PowerEvent&>  slot_power_event;
   ecl::Slot<const InputEvent&>  slot_input_event;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
   ecl::Slot<Command::Buffer&> slot_raw_data_command;
@@ -145,6 +147,7 @@ private:
   void publishBumperEvent(const BumperEvent &event);
   void publishCliffEvent(const CliffEvent &event);
   void publishWheelEvent(const WheelEvent &event);
+  void publishPowerEvent(const PowerEvent &event);
   void publishInputEvent(const InputEvent &event);
 
   // debugging

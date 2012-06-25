@@ -110,6 +110,17 @@ struct WheelEvent {
   } wheel;
 };
 
+struct PowerEvent {
+  enum Event {
+    Unplugged         = 0,
+    PluggedToAdapter  = 1,
+    PluggedToDockbase = 2,
+    ChargeCompleted   = 3,
+    BatteryLow        = 4,
+    BatteryCritical   = 5
+  } event;
+};
+
 struct InputEvent {
   bool values[4]; /**< Digital on or off for pins 0-3 respectively. **/
 };
@@ -125,6 +136,8 @@ public:
     last_state.bumper     = 0;
     last_state.cliff      = 0;
     last_state.wheel_drop = 0;
+    last_state.charger    = 0;
+    last_state.battery    = 0;
     last_digital_input    = 0;
   }
 
@@ -134,12 +147,13 @@ public:
 
 private:
   CoreSensors::Data last_state;
-  uint16_t last_digital_input;
+  uint16_t  last_digital_input;
 
   ecl::Signal<const ButtonEvent&> sig_button_event;
   ecl::Signal<const BumperEvent&> sig_bumper_event;
   ecl::Signal<const CliffEvent&>  sig_cliff_event;
   ecl::Signal<const WheelEvent&>  sig_wheel_event;
+  ecl::Signal<const PowerEvent&>  sig_power_event;
   ecl::Signal<const InputEvent&>  sig_input_event;
 };
 

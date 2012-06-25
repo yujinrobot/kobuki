@@ -252,6 +252,30 @@ void KobukiNode::publishWheelEvent(const WheelEvent &event)
   }
 }
 
+void KobukiNode::publishPowerEvent(const PowerEvent &event)
+{
+  if (ros::ok())
+  {
+    kobuki_comms::PowerSystemEvent msg;
+    switch(event.event) {
+      case(PowerEvent::Unplugged) :
+        { msg.event = kobuki_comms::PowerSystemEvent::UNPLUGGED; break; }
+      case(PowerEvent::PluggedToAdapter) :
+        { msg.event = kobuki_comms::PowerSystemEvent::PLUGGED_TO_ADAPTER;  break; }
+      case(PowerEvent::PluggedToDockbase) :
+        { msg.event = kobuki_comms::PowerSystemEvent::PLUGGED_TO_DOCKBASE; break; }
+      case(PowerEvent::ChargeCompleted)  :
+        { msg.event = kobuki_comms::PowerSystemEvent::CHARGE_COMPLETED;  break; }
+      case(PowerEvent::BatteryLow) :
+        { msg.event = kobuki_comms::PowerSystemEvent::BATTERY_LOW; break; }
+      case(PowerEvent::BatteryCritical) :
+        { msg.event = kobuki_comms::PowerSystemEvent::BATTERY_CRITICAL;  break; }
+      default: break;
+    }
+    power_event_publisher.publish(msg);
+  }
+}
+
 void KobukiNode::publishInputEvent(const InputEvent &event)
 {
   if (ros::ok())

@@ -39,6 +39,7 @@
 *****************************************************************************/
 
 #include "../../include/kobuki_driver/event_manager.hpp"
+#include "../../include/kobuki_driver/modules/battery.hpp"
 #include "../../include/kobuki_driver/packets/core_sensors.hpp"
 
 /*****************************************************************************
@@ -56,6 +57,7 @@ void EventManager::init ( const std::string &sigslots_namespace ) {
   sig_bumper_event.connect(sigslots_namespace + std::string("/bumper_event"));
   sig_cliff_event.connect(sigslots_namespace  + std::string("/cliff_event"));
   sig_wheel_event.connect(sigslots_namespace  + std::string("/wheel_event"));
+  sig_power_event.connect(sigslots_namespace  + std::string("/power_event"));
   sig_input_event.connect(sigslots_namespace  + std::string("/input_event"));
 }
 
@@ -218,6 +220,60 @@ void EventManager::update(const CoreSensors::Data &new_state, const std::vector<
         event.state = WheelEvent::Raised;
       }
       sig_wheel_event.emit(event);
+    }
+  }
+
+  // ------------
+  // Power System Event
+  // ------------
+
+  if (last_state.charger != new_state.charger)
+  {
+    Battery battery_new(new_state.battery, new_state.charger);
+    Battery battery_last(last_state.battery, last_state.charger);
+
+    if (battery_last.charging_state != battery_new.charging_state)
+    {
+      PowerEvent event;
+      switch (battery_new.charging_state)
+      {
+        case Battery::Discharging:
+          event.event = PowerEvent::Unplugged;
+          break;
+        case Battery::Charged:
+          event.event = PowerEvent::ChargeCompleted;
+          break;
+        case Battery::Charging:
+          if (battery_new.charging_source == Battery::Adapter)
+            event.event = PowerEvent::PluggedToAdapter;
+          else
+            event.event = PowerEvent::PluggedToDockbase;
+          break;
+      }
+      sig_power_event.emit(event);
+    }
+  }
+
+  if (last_state.battery > new_state.battery)
+  {
+    Battery battery_new(new_state.battery, new_state.charger);
+    Battery battery_last(last_state.battery, last_state.charger);
+
+    if (battery_last.level() != battery_new.level())
+    {
+      PowerEvent event;
+      switch (battery_new.level())
+      {
+        case Battery::Low:
+          event.event = PowerEvent::BatteryLow;
+          break;
+        case Battery::Dangerous:
+          event.event = PowerEvent::BatteryCritical;
+          break;
+        default:
+          break;
+      }
+      sig_power_event.emit(event);
     }
   }
 
