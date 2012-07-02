@@ -4,7 +4,7 @@
   <!-- Load standard constellation of processing nodelets -->
   <include file="$(find openni_launch)/launch/openni.launch" ns="/">
     <arg name="camera" value="camera"/>
-    <arg name="publish_tf" default="true"/>
+    <arg name="publish_tf" default="false"/>
   </include>
 
   <!-- throttling -->

@@ -38,6 +38,70 @@
 
   </link>
 
+  <joint name="camera_depth_joint" type="fixed">
+    <origin xyz="0 0.0125 0" rpy="0 0 0" />
+    <parent link="camera_link" />
+    <child link="camera_depth_frame" />
+  </joint>
+
+  <link name="camera_depth_frame">
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+        iyy="0.001" iyz="0.0"
+        izz="0.001" />
+    </inertial>
+  </link>
+
+  <joint name="camera_depth_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
+    <parent link="camera_depth_frame" />
+    <child link="camera_depth_optical_frame" />
+  </joint>
+
+  <link name="camera_depth_optical_frame">
+    <inertial>
+      <mass value="0.001" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+        iyy="0.0001" iyz="0.0"
+        izz="0.0001" />
+    </inertial>
+  </link>
+
+  <joint name="camera_rgb_joint" type="fixed">
+    <origin xyz="0 -0.0125 0" rpy="0 0 0" />
+    <parent link="camera_link" />
+    <child link="camera_rgb_frame" />
+  </joint>
+
+  <link name="camera_rgb_frame">
+    <inertial>
+      <mass value="0.001" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+        iyy="0.0001" iyz="0.0"
+        izz="0.0001" />
+    </inertial>
+  </link>
+
+  <joint name="camera_rgb_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
+    <parent link="camera_rgb_frame" />
+    <child link="camera_rgb_optical_frame" />
+  </joint>
+
+  <link name="camera_rgb_optical_frame">
+    <inertial>
+      <mass value="0.001" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+        iyy="0.0001" iyz="0.0"
+        izz="0.0001" />
+    </inertial>
+  </link>
+
   <!-- Kinect sensor for simulation -->
   <turtlebot_sim_kinect/>
 </xacro:macro>
