@@ -122,6 +122,7 @@ bool KobukiNode::init(ros::NodeHandle& nh)
    **********************/
   Parameters parameters;
 
+  nh.param("gate_keeper", parameters.enable_gate_keeper, false);
   nh.param("battery_capacity", parameters.battery_capacity, Battery::capacity);
   nh.param("battery_low", parameters.battery_low, Battery::low);
   nh.param("battery_dangerous", parameters.battery_dangerous, Battery::dangerous);
