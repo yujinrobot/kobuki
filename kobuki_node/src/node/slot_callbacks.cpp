@@ -38,9 +38,6 @@
 ** Includes
 *****************************************************************************/
 
-#include <std_msgs/String.h>
-#include <kobuki_comms/VersionInfo.h>
-#include <kobuki_driver/packets/gp_input.hpp>
 #include "kobuki_node/kobuki_node.hpp"
 
 /*****************************************************************************
@@ -53,6 +50,7 @@ namespace kobuki
 void KobukiNode::processStreamData() {
   publishWheelState();
   publishSensorState();
+  publishDockIRData();
   publishInertia();
 }
 
@@ -146,6 +144,25 @@ void KobukiNode::publishInertia()
   }
 }
 
+void KobukiNode::publishDockIRData()
+{
+  if (ros::ok())
+  {
+    if (dock_ir_publisher.getNumSubscribers() > 0)
+   {
+      kobuki_comms::DockInfraRed msg;
+      DockIR::Data data = kobuki.getDockIRData();
+      msg.header.frame_id = "dock_ir_link";
+      msg.header.stamp = ros::Time::now();
+
+      msg.data.push_back( data.docking[0] ); 
+      msg.data.push_back( data.docking[1] ); 
+      msg.data.push_back( data.docking[2] ); 
+
+      dock_ir_publisher.publish(msg);
+    }
+  }
+}
 
 /*****************************************************************************
 ** Non Default Stream Packets

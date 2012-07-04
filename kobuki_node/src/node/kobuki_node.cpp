@@ -278,6 +278,7 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   power_event_publisher  = nh.advertise < kobuki_comms::PowerSystemEvent > ("events/power_system", 100);
   input_event_publisher  = nh.advertise < kobuki_comms::DigitalInputEvent > ("events/digital_input", 100);
   sensor_state_publisher = nh.advertise < kobuki_comms::SensorState > ("sensors/core", 100);
+  dock_ir_publisher = nh.advertise < kobuki_comms::DockInfraRed > ("sensors/dock_ir", 100);
   imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("sensors/imu_data", 100);
   raw_data_command_publisher = nh.advertise< std_msgs::String > ("debug/raw_data_command", 100);
 }
