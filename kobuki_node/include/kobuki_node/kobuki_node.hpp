@@ -56,12 +56,16 @@
 #include <ecl/sigslots.hpp>
 #include <kobuki_comms/ButtonEvent.h>
 #include <kobuki_comms/BumperEvent.h>
-#include <kobuki_comms/WheelDropEvent.h>
 #include <kobuki_comms/CliffEvent.h>
+#include <kobuki_comms/WheelDropEvent.h>
+#include <kobuki_comms/PowerSystemEvent.h>
+#include <kobuki_comms/DigitalInputEvent.h>
 #include <kobuki_comms/DigitalOutput.h>
 #include <kobuki_comms/Led.h>
 #include <kobuki_comms/SensorState.h>
+#include <kobuki_comms/DockInfraRed.h>
 #include <kobuki_comms/Sound.h>
+#include <kobuki_comms/VersionInfo.h>
 #include <kobuki_driver/kobuki.hpp>
 #include "diagnostics.hpp"
 #include "odometry.hpp"
@@ -94,10 +98,13 @@ private:
    ** Ros Comms
    **********************/
   ros::Publisher version_info_publisher;
-  ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher;
-  ros::Publisher button_event_publisher, bumper_event_publisher, wheel_drop_event_publisher, cliff_event_publisher;
+  ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher, dock_ir_publisher;
+  ros::Publisher button_event_publisher, input_event_publisher;
+  ros::Publisher bumper_event_publisher, cliff_event_publisher, wheel_event_publisher, power_event_publisher;
   ros::Publisher raw_data_command_publisher;
-  ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber, led1_command_subscriber, led2_command_subscriber, sound_command_subscriber;
+
+  ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber;
+  ros::Subscriber led1_command_subscriber, led2_command_subscriber, sound_command_subscriber;
   ros::Subscriber reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
 
@@ -123,8 +130,10 @@ private:
   ecl::Slot<> slot_stream_data;
   ecl::Slot<const ButtonEvent&> slot_button_event;
   ecl::Slot<const BumperEvent&> slot_bumper_event;
-  ecl::Slot<const WheelDropEvent&> slot_wheel_drop_event;
-  ecl::Slot<const CliffEvent&> slot_cliff_event;
+  ecl::Slot<const CliffEvent&>  slot_cliff_event;
+  ecl::Slot<const WheelEvent&>  slot_wheel_event;
+  ecl::Slot<const PowerEvent&>  slot_power_event;
+  ecl::Slot<const InputEvent&>  slot_input_event;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
   ecl::Slot<Command::Buffer&> slot_raw_data_command;
 
@@ -135,11 +144,15 @@ private:
   void publishWheelState();
   void publishInertia();
   void publishSensorState();
+  void publishDockIRData();
   void publishVersionInfo(const VersionInfo &version_info);
   void publishButtonEvent(const ButtonEvent &event);
   void publishBumperEvent(const BumperEvent &event);
-  void publishWheelDropEvent(const WheelDropEvent &event);
   void publishCliffEvent(const CliffEvent &event);
+  void publishWheelEvent(const WheelEvent &event);
+  void publishPowerEvent(const PowerEvent &event);
+  void publishInputEvent(const InputEvent &event);
+
   // debugging
   void rosDebug(const std::string &msg) { ROS_DEBUG_STREAM("Kobuki : " << msg); }
   void rosInfo(const std::string &msg) { ROS_INFO_STREAM("Kobuki : " << msg); }
@@ -151,8 +164,15 @@ private:
   ** Diagnostics
   **********************/
   diagnostic_updater::Updater updater;
-  BatteryTask battery_diagnostics;
-  WatchdogTask watchdog_diagnostics;
+  BatteryTask     battery_diagnostics;
+  WatchdogTask   watchdog_diagnostics;
+  CliffSensorTask   cliff_diagnostics;
+  WallSensorTask   bumper_diagnostics;
+  WheelDropTask     wheel_diagnostics;
+  MotorCurrentTask  motor_diagnostics;
+  GyroSensorTask     gyro_diagnostics;
+  DigitalInputTask dinput_diagnostics;
+  AnalogInputTask  ainput_diagnostics;
 };
 
 } // namespace kobuki

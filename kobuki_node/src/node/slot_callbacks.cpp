@@ -38,9 +38,6 @@
 ** Includes
 *****************************************************************************/
 
-#include <std_msgs/String.h>
-#include <kobuki_comms/VersionInfo.h>
-#include <kobuki_driver/packets/gp_input.hpp>
 #include "kobuki_node/kobuki_node.hpp"
 
 /*****************************************************************************
@@ -53,6 +50,7 @@ namespace kobuki
 void KobukiNode::processStreamData() {
   publishWheelState();
   publishSensorState();
+  publishDockIRData();
   publishInertia();
 }
 
@@ -146,6 +144,25 @@ void KobukiNode::publishInertia()
   }
 }
 
+void KobukiNode::publishDockIRData()
+{
+  if (ros::ok())
+  {
+    if (dock_ir_publisher.getNumSubscribers() > 0)
+   {
+      kobuki_comms::DockInfraRed msg;
+      DockIR::Data data = kobuki.getDockIRData();
+      msg.header.frame_id = "dock_ir_link";
+      msg.header.stamp = ros::Time::now();
+
+      msg.data.push_back( data.docking[0] ); 
+      msg.data.push_back( data.docking[1] ); 
+      msg.data.push_back( data.docking[2] ); 
+
+      dock_ir_publisher.publish(msg);
+    }
+  }
+}
 
 /*****************************************************************************
 ** Non Default Stream Packets
@@ -204,30 +221,11 @@ void KobukiNode::publishBumperEvent(const BumperEvent &event)
     }
     switch(event.bumper) {
       case(BumperEvent::Left) : { msg.bumper = kobuki_comms::BumperEvent::LEFT; break; }
-      case(BumperEvent::Centre) : { msg.bumper = kobuki_comms::BumperEvent::CENTRE; break; }
+      case(BumperEvent::Center) : { msg.bumper = kobuki_comms::BumperEvent::CENTER; break; }
       case(BumperEvent::Right) : { msg.bumper = kobuki_comms::BumperEvent::RIGHT; break; }
       default: break;
     }
     bumper_event_publisher.publish(msg);
-  }
-}
-
-void KobukiNode::publishWheelDropEvent(const WheelDropEvent &event)
-{
-  if (ros::ok())
-  {
-    kobuki_comms::WheelDropEvent msg;
-    switch(event.state) {
-      case(WheelDropEvent::Raised) : { msg.state = kobuki_comms::WheelDropEvent::RAISED; break; }
-      case(WheelDropEvent::Dropped) : { msg.state = kobuki_comms::WheelDropEvent::DROPPED; break; }
-      default: break;
-    }
-    switch(event.wheel_drop) {
-      case(WheelDropEvent::Left) : { msg.wheel = kobuki_comms::WheelDropEvent::LEFT; break; }
-      case(WheelDropEvent::Right) : { msg.wheel = kobuki_comms::WheelDropEvent::RIGHT; break; }
-      default: break;
-    }
-    wheel_drop_event_publisher.publish(msg);
   }
 }
 
@@ -237,17 +235,72 @@ void KobukiNode::publishCliffEvent(const CliffEvent &event)
   {
     kobuki_comms::CliffEvent msg;
     switch(event.state) {
-      case(CliffEvent::Cliff) : { msg.state = kobuki_comms::CliffEvent::CLIFF; break; }
       case(CliffEvent::Floor) : { msg.state = kobuki_comms::CliffEvent::FLOOR; break; }
+      case(CliffEvent::Cliff) : { msg.state = kobuki_comms::CliffEvent::CLIFF; break; }
       default: break;
     }
-    switch(event.cliff) {
-      case(CliffEvent::Left) : { msg.cliff = kobuki_comms::CliffEvent::LEFT; break; }
-      case(CliffEvent::Centre) : { msg.cliff = kobuki_comms::CliffEvent::CENTRE; break; }
-      case(CliffEvent::Right) : { msg.cliff = kobuki_comms::CliffEvent::RIGHT; break; }
+    switch(event.sensor) {
+      case(CliffEvent::Left)   : { msg.sensor = kobuki_comms::CliffEvent::LEFT;   break; }
+      case(CliffEvent::Center) : { msg.sensor = kobuki_comms::CliffEvent::CENTER; break; }
+      case(CliffEvent::Right)  : { msg.sensor = kobuki_comms::CliffEvent::RIGHT;  break; }
       default: break;
     }
+    msg.bottom = event.bottom;
     cliff_event_publisher.publish(msg);
+  }
+}
+
+void KobukiNode::publishWheelEvent(const WheelEvent &event)
+{
+  if (ros::ok())
+  {
+    kobuki_comms::WheelDropEvent msg;
+    switch(event.state) {
+      case(WheelEvent::Dropped) : { msg.state = kobuki_comms::WheelDropEvent::DROPPED; break; }
+      case(WheelEvent::Raised)  : { msg.state = kobuki_comms::WheelDropEvent::RAISED;  break; }
+      default: break;
+    }
+    switch(event.wheel) {
+      case(WheelEvent::Left)  : { msg.wheel = kobuki_comms::WheelDropEvent::LEFT;  break; }
+      case(WheelEvent::Right) : { msg.wheel = kobuki_comms::WheelDropEvent::RIGHT; break; }
+      default: break;
+    }
+    wheel_event_publisher.publish(msg);
+  }
+}
+
+void KobukiNode::publishPowerEvent(const PowerEvent &event)
+{
+  if (ros::ok())
+  {
+    kobuki_comms::PowerSystemEvent msg;
+    switch(event.event) {
+      case(PowerEvent::Unplugged) :
+        { msg.event = kobuki_comms::PowerSystemEvent::UNPLUGGED; break; }
+      case(PowerEvent::PluggedToAdapter) :
+        { msg.event = kobuki_comms::PowerSystemEvent::PLUGGED_TO_ADAPTER;  break; }
+      case(PowerEvent::PluggedToDockbase) :
+        { msg.event = kobuki_comms::PowerSystemEvent::PLUGGED_TO_DOCKBASE; break; }
+      case(PowerEvent::ChargeCompleted)  :
+        { msg.event = kobuki_comms::PowerSystemEvent::CHARGE_COMPLETED;  break; }
+      case(PowerEvent::BatteryLow) :
+        { msg.event = kobuki_comms::PowerSystemEvent::BATTERY_LOW; break; }
+      case(PowerEvent::BatteryCritical) :
+        { msg.event = kobuki_comms::PowerSystemEvent::BATTERY_CRITICAL;  break; }
+      default: break;
+    }
+    power_event_publisher.publish(msg);
+  }
+}
+
+void KobukiNode::publishInputEvent(const InputEvent &event)
+{
+  if (ros::ok())
+  {
+    kobuki_comms::DigitalInputEvent msg;
+    for (unsigned int i = 0; i < msg.values.size(); i++)
+      msg.values[i] = event.values[i];
+    input_event_publisher.publish(msg);
   }
 }
 

@@ -39,7 +39,7 @@
   </link>
 
   <joint name="camera_depth_joint" type="fixed">
-    <origin xyz="0 0.018 0" rpy="0 0 0" />
+    <origin xyz="0 0.0125 0" rpy="0 0 0" />
     <parent link="camera_link" />
     <child link="camera_depth_frame" />
   </joint>
@@ -71,7 +71,7 @@
   </link>
 
   <joint name="camera_rgb_joint" type="fixed">
-    <origin xyz="0 -0.005 0" rpy="0 0 0" />
+    <origin xyz="0 -0.0125 0" rpy="0 0 0" />
     <parent link="camera_link" />
     <child link="camera_rgb_frame" />
   </joint>

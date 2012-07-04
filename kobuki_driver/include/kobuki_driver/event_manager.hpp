@@ -50,6 +50,8 @@
 #include <vector>
 #include <ecl/sigslots.hpp>
 
+#include "packets/core_sensors.hpp"
+
 /*****************************************************************************
 ** Namespaces
 *****************************************************************************/
@@ -79,20 +81,9 @@ struct BumperEvent {
   } state;
   enum Bumper {
     Left,
-    Centre,
+    Center,
     Right
   } bumper;
-};
-
-struct WheelDropEvent {
-  enum State {
-    Raised,
-    Dropped
-  } state;
-  enum WheelDrop {
-    Left,
-    Right
-  } wheel_drop;
 };
 
 struct CliffEvent {
@@ -100,11 +91,38 @@ struct CliffEvent {
     Floor,
     Cliff
   } state;
-  enum Cliff {
+  enum Sensor {
     Left,
-    Centre,
+    Center,
     Right
-  } cliff;
+  } sensor;
+  uint16_t bottom;
+};
+
+struct WheelEvent {
+  enum State {
+    Raised,
+    Dropped
+  } state;
+  enum Wheel {
+    Left,
+    Right
+  } wheel;
+};
+
+struct PowerEvent {
+  enum Event {
+    Unplugged         = 0,
+    PluggedToAdapter  = 1,
+    PluggedToDockbase = 2,
+    ChargeCompleted   = 3,
+    BatteryLow        = 4,
+    BatteryCritical   = 5
+  } event;
+};
+
+struct InputEvent {
+  bool values[4]; /**< Digital on or off for pins 0-3 respectively. **/
 };
 
 /*****************************************************************************
@@ -113,20 +131,30 @@ struct CliffEvent {
 
 class EventManager {
 public:
-  EventManager() : 
-    last_button_state(0), last_bumper_state(0), last_wheel_drop_state(0), last_cliff_state(0) 
-  {}
+  EventManager() {
+    last_state.buttons    = 0;
+    last_state.bumper     = 0;
+    last_state.cliff      = 0;
+    last_state.wheel_drop = 0;
+    last_state.charger    = 0;
+    last_state.battery    = 0;
+    last_digital_input    = 0;
+  }
 
   void init(const std::string &sigslots_namespace);
-  void update(const uint8_t &new_button_state, const uint8_t &new_bumper_state, 
-    const uint8_t &new_wheel_drop_state, const uint8_t &new_cliff_state);
+  void update(const CoreSensors::Data &new_state, const std::vector<uint16_t> &cliff_data);
+  void update(const uint16_t &digital_input);
 
 private:
-  uint8_t last_button_state, last_bumper_state, last_wheel_drop_state, last_cliff_state;
+  CoreSensors::Data last_state;
+  uint16_t  last_digital_input;
+
   ecl::Signal<const ButtonEvent&> sig_button_event;
   ecl::Signal<const BumperEvent&> sig_bumper_event;
-  ecl::Signal<const WheelDropEvent&> sig_wheel_drop_event;
-  ecl::Signal<const CliffEvent&> sig_cliff_event;
+  ecl::Signal<const CliffEvent&>  sig_cliff_event;
+  ecl::Signal<const WheelEvent&>  sig_wheel_event;
+  ecl::Signal<const PowerEvent&>  sig_power_event;
+  ecl::Signal<const InputEvent&>  sig_input_event;
 };
 
 

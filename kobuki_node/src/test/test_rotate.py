@@ -64,7 +64,7 @@ while not rospy.is_shutdown():
         while math.fabs(twist.angular.z) <= yaw_rate:
             twist.angular.z = twist.angular.z + update
             pub.publish(twist)
-            rospy.sleep(0.1)
+            rospy.sleep(0.04)
         # Make sure it is exact so the inequality in the while loop doesn't mess up next time around
         twist.angular.z = mod*yaw_rate
         rotate_count = 0

@@ -2,8 +2,8 @@
 #
 
 # Buttons bitmasks to decode byte "buttons"
-uint8 F0 = 2  # 0x02
-uint8 F1 = 1  # 0x01
+uint8 F0 = 1  # 0x02
+uint8 F1 = 2  # 0x01
 uint8 F2 = 4  # 0x04
 
 # Byte "charger" format:

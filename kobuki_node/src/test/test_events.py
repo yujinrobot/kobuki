@@ -60,8 +60,8 @@ def BumperEventCallback(data):
         state = "pressed"  
     if ( data.bumper == BumperEvent.LEFT ) :
         bumper = "Left"
-    elif ( data.bumper == BumperEvent.CENTRE ) :
-        bumper = "Centre"
+    elif ( data.bumper == BumperEvent.CENTER ) :
+        bumper = "Center"
     else:
         bumper = "Right"
     rospy.loginfo("%s bumper is %s."%(bumper, state))
@@ -82,19 +82,19 @@ def CliffEventCallback(data):
         state = "on the floor"
     else:
         state = "on the cliff"  
-    if ( data.cliff == CliffEvent.LEFT ) :
+    if ( data.sensor == CliffEvent.LEFT ) :
         cliff = "Left"
-    elif ( data.cliff == CliffEvent.CENTRE ) :
+    elif ( data.sensor == CliffEvent.CENTER ) :
         cliff = "Centre"
     else:
         cliff = "Right"
     rospy.loginfo("%s side of robot is %s."%(cliff, state))
     
 rospy.init_node("test_events")
-rospy.Subscriber("/mobile_base/events/buttons",ButtonEvent,ButtonEventCallback)
-rospy.Subscriber("/mobile_base/events/bumpers",BumperEvent,BumperEventCallback)
-rospy.Subscriber("/mobile_base/events/wheel_drops",WheelDropEvent,WheelDropEventCallback)
-rospy.Subscriber("/mobile_base/events/cliffs",CliffEvent,CliffEventCallback)
+rospy.Subscriber("/mobile_base/events/button",ButtonEvent,ButtonEventCallback)
+rospy.Subscriber("/mobile_base/events/bumper",BumperEvent,BumperEventCallback)
+rospy.Subscriber("/mobile_base/events/wheel_drop",WheelDropEvent,WheelDropEventCallback)
+rospy.Subscriber("/mobile_base/events/cliff",CliffEvent,CliffEventCallback)
 print ""
 print "Start testing kobuki's buttons/bumper/wheel drops/cliffs."
 print ""

@@ -3,6 +3,7 @@
 	<name>kobuki_node</name>
 	<comment></comment>
 	<projects>
+		<project>kobuki_driver</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
