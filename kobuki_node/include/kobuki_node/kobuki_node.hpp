@@ -63,7 +63,9 @@
 #include <kobuki_comms/DigitalOutput.h>
 #include <kobuki_comms/Led.h>
 #include <kobuki_comms/SensorState.h>
+#include <kobuki_comms/DockInfraRed.h>
 #include <kobuki_comms/Sound.h>
+#include <kobuki_comms/VersionInfo.h>
 #include <kobuki_driver/kobuki.hpp>
 #include "diagnostics.hpp"
 #include "odometry.hpp"
@@ -96,7 +98,7 @@ private:
    ** Ros Comms
    **********************/
   ros::Publisher version_info_publisher;
-  ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher;
+  ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher, dock_ir_publisher;
   ros::Publisher button_event_publisher, input_event_publisher;
   ros::Publisher bumper_event_publisher, cliff_event_publisher, wheel_event_publisher, power_event_publisher;
   ros::Publisher raw_data_command_publisher;
@@ -142,6 +144,7 @@ private:
   void publishWheelState();
   void publishInertia();
   void publishSensorState();
+  void publishDockIRData();
   void publishVersionInfo(const VersionInfo &version_info);
   void publishButtonEvent(const ButtonEvent &event);
   void publishBumperEvent(const BumperEvent &event);
