@@ -17,7 +17,6 @@ unison:
                 echo ""; \
                 mkdir -p ~/.unison; \
                 cp resources/unison/kobuki.prf ~/.unison/kobuki.prf; \
-                cp resources/unison/yujin.prf ~/.unison/yujin.prf; \
         fi
 
 unison-update:
