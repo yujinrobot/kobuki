@@ -24,7 +24,6 @@ unison-update:
 	@echo "Updating the kobuki profile with the most recent version."
 	@echo ""
 	cp resources/unison/kobuki.prf ~/.unison/kobuki.prf
-	cp resources/unison/yujin.prf ~/.unison/yujin.prf
 	@echo ""
 
 .PHONY: unison unison-update
