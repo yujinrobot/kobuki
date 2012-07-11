@@ -56,9 +56,9 @@ DiffDrive::DiffDrive() :
   v(0), w(0),
   radius(0), speed(0),
   bias(0.23), //wheelbase, wheel_to_wheel, in [m]
-  wheel_radius(0.04),
+  wheel_radius(0.035),
   imu_heading_offset(0),
-  tick_to_rad(0.00201384144460884f)
+  tick_to_rad( 0.002436916871363930187454f)
 {}
 
 void DiffDrive::init() {
