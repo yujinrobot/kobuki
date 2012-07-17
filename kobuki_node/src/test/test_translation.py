@@ -37,6 +37,7 @@ import rospy
 import math
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
+from sensor_msgs.msg import Imu
 from kobuki_comms.msg import BumperEvent
 from kobuki_comms.msg import Sound
 
@@ -53,6 +54,7 @@ class Test_Translation:
 		
 		self.twist = Twist()
 
+		self.imu = 0
 		self.last_odom = 0
 		self.odom = 0
 		self.odom_count = 0	# Odometry Information
@@ -77,8 +79,9 @@ class Test_Translation:
 		self.cmd_vel_pub = rospy.Publisher("/cmd_vel", Twist)
 		self.odom_sub = rospy.Subscriber("/odom", Odometry, self.OdomInfoCallback)
 		self.bumper_event_sub = rospy.Subscriber("/mobile_base/events/bumper", BumperEvent, self.BumperEventCallback)
-		self.sound_sub = rospy.Subscriber("/mobile_base/commands/sound", Sound, self.SoundInfoCallback)
-
+		self.imu_sub = rospy.Subscriber("mobile_base/sensors/imu_data", Imu, self.ImuInfoCallback)
+		#self.sound_sub = rospy.Subscriber("/mobile_base/commands/sound", Sound, self.SoundInfoCallback)
+		
 
 	def OdomInfoCallback(self,data):
 		self.odom = data.pose.pose.position.x
@@ -91,8 +94,11 @@ class Test_Translation:
 		self.state = data.state
 		self.bumper = data.bumper
 
-	def SoundInfoCallback(self,data):
-		self.sound = data.value
+	def ImuInfoCallback(self, data):
+		self.imu = data.orientation.w
+
+	#def SoundInfoCallback(self,data):
+	#	self.sound = data.value
 
 
 	def ShowOdomInfo(self):
@@ -132,6 +138,9 @@ class Test_Translation:
 			bumper = "Right"
 		rospy.loginfo("%s bumper is %s", bumper, state)
 
+	def ShowImuInfo(self):
+		print "imu : %.6f"%self.imu
+
 
 def test_trans_main():
 	test_trans_obj = Test_Translation()
@@ -141,7 +150,11 @@ def test_trans_main():
 	
 #		test_trans_obj.ShowBumperEventInfo()
 
+#		test_trans_obj.ShowImuInfo()	
+
 #		test_trans.obj.ShowSoundInfo()
+
+
 
 	rospy.spin()
 

@@ -1,4 +1,4 @@
 # Configures the location of the app manager's master sync.
 
 interface_master: http://localhost:11312
-#interface_master: http://192.168.10.97:11312
+#interface_master: http://192.168.10.98:11312

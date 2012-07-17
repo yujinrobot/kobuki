@@ -1,0 +1,14 @@
+\subsubsection usage Usage
+\verbatim
+<node name="turtlebot_follower_dynamic_reconfigure" pkg="turtlebot_follower" type="turtlebot_follower_dynamic_reconfigure">
+  <param name="min_x" type="double" value="-0.2" />
+  <param name="max_x" type="double" value="0.2" />
+  <param name="min_y" type="double" value="0.1" />
+  <param name="max_y" type="double" value="0.5" />
+  <param name="max_z" type="double" value="0.8" />
+  <param name="goal_z" type="double" value="0.6" />
+  <param name="x_scale" type="double" value="1.0" />
+  <param name="z_scale" type="double" value="5.0" />
+</node>
+\endverbatim
+

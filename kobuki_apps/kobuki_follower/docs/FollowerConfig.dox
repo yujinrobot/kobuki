@@ -1,0 +1,13 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~min_x" : \b [double] The minimum x position of the points in the box. min: -3.0, default: -0.2, max: 3.0
+- \b "~max_x" : \b [double] The maximum x position of the points in the box. min: -3.0, default: 0.2, max: 3.0
+- \b "~min_y" : \b [double] The minimum y position of the points in the box. min: -1.0, default: 0.1, max: 3.0
+- \b "~max_y" : \b [double] The maximum y position of the points in the box. min: -1.0, default: 0.5, max: 3.0
+- \b "~max_z" : \b [double] The maximum z position of the points in the box. min: 0.0, default: 0.8, max: 3.0
+- \b "~goal_z" : \b [double] The distance away from the robot to hold the centroid. min: 0.0, default: 0.6, max: 3.0
+- \b "~x_scale" : \b [double] The scaling factor for translational robot speed. min: 0.0, default: 1.0, max: 3.0
+- \b "~z_scale" : \b [double] The scaling factor for rotational robot speed. min: 0.0, default: 5.0, max: 10.0
+

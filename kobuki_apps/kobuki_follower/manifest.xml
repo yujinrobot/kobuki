@@ -1,0 +1,22 @@
+<package>
+  <description brief="follower">
+
+     Follower for the turtlebot. Follows humans and robots around
+     by following the centroid of a box points infront of the
+     turtlebot.
+
+  </description>
+  <author>Tony Pratkanis</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/follower</url>
+  <depend package="nodelet"/>
+  <depend package="tf"/>
+  <depend package="roscpp"/>
+  <depend package="pcl_ros"/>
+  <export>
+    <nodelet plugin="${prefix}/nodelets.xml" />
+  </export>
+</package>
+
+
