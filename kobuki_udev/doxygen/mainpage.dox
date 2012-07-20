@@ -19,7 +19,7 @@ If it is the only ftdi device plugged in, simply
 > rosdep install kobuki_udev
 > roscd kobuki_udev
 > make
-> sudo ./bin/ftdi_koboku
+> sudo ./bin/ftdi_koboki
 @endcode
 
 will do the job, if not - optionally add an argument with the current serial id of the ftdi
