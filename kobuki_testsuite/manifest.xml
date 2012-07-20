@@ -1,0 +1,17 @@
+<package>
+  <description brief="kobuki_testsuite">
+
+     Kobuki test suite package provides scripts to thoroughly test kobuki hardware
+
+  </description>
+  <author>Jorge Santos</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/kobuki_testsuite</url>
+  <depend package="kobuki_node"/>
+  <depend package="kobuki_driver"/>
+  <depend package="kobuki_bringup"/>
+
+</package>
+
+

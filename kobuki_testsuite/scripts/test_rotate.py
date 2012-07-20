@@ -32,23 +32,45 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-import roslib; roslib.load_manifest('kobuki_node')
+# Puts the robot into continual rotation - useful for aging/battery tests.
+
+import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
+import math
+from geometry_msgs.msg import Twist
 
-from kobuki_comms.msg import Sound
-
-sounds = [Sound.ON, Sound.OFF, Sound.RECHARGE, Sound.BUTTON, Sound.ERROR, Sound.CLEANINGSTART, Sound.CLEANINGEND]
-texts = ["On", "Off", "Recharge", "Button", "Error", "CleaningStart", "CleaningEnd"]
-
-rospy.init_node("test_sounds")
-pub = rospy.Publisher('/mobile_base/commands/sound', Sound)
-rate = rospy.Rate(0.5)
-msg = Sound()
+rospy.init_node("test_rotation")
+pub = rospy.Publisher('/cmd_vel',Twist)
+freq = 5
+rate = rospy.Rate(freq)
+twist = Twist()
+yaw_rate = 0.8
+twist.linear.x = 0
+twist.linear.y = 0
+twist.linear.z = 0
+twist.angular.x = 0
+twist.angular.y = 0
+twist.angular.z = yaw_rate
+rotate_count = 0
+max_rotate_count = freq*int(3.14/yaw_rate)
+start = rospy.get_rostime()
 while not rospy.is_shutdown():
-    for sound, text in zip(sounds, texts):
-        msg.value = sound
-        print text 
-        pub.publish(msg)
-        rate.sleep()
-    break
-    
+    if rotate_count == max_rotate_count:
+        if twist.angular.z > 0:
+            mod = -1.0
+        else:
+            mod = 1.0
+        update = mod*yaw_rate/10.0
+        while math.fabs(twist.angular.z) <= yaw_rate:
+            twist.angular.z = twist.angular.z + update
+            pub.publish(twist)
+            rospy.sleep(0.04)
+        # Make sure it is exact so the inequality in the while loop doesn't mess up next time around
+        twist.angular.z = mod*yaw_rate
+        rotate_count = 0
+    else:
+        rotate_count += 1
+    now = rospy.get_rostime()
+    rospy.loginfo("Rotate: %ds", now.secs - start.secs)
+    pub.publish(twist)
+    rate.sleep()
