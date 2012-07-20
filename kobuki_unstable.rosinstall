@@ -79,4 +79,12 @@
     version: fuerte
     local-name: map_store
 
+# Turtlebot stacks - for merging.
 
+- hg:
+    uri: https://kforge.ros.org/turtlebot/turtlebot
+    local-name: turtlebot
+
+- hg:
+    uri: https://kforge.ros.org/turtlebot/simulator
+    local-name: turtlebot_simulator
