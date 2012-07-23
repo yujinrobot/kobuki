@@ -23,4 +23,4 @@ sleep 1
 if [ $# -gt 1 ]; then
   rostopic echo /mobile_base/sensors/core/battery | grep -v -e --- > $2 &
 fi
-rosrun kobuki_node test_rotate.py
+rosrun kobuki_testsuite test_rotate.py

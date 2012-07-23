@@ -34,7 +34,7 @@
 
 # Puts the robot into continual rotation - useful for aging/battery tests.
 
-import roslib; roslib.load_manifest('kobuki_node')
+import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
 import math
 from geometry_msgs.msg import Twist

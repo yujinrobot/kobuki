@@ -31,24 +31,33 @@
 # LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
+#
+# Continuously print angle and angular velocity from Imu messages
 
-import roslib; roslib.load_manifest('kobuki_node')
+import sys
+
+import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
 
-from kobuki_comms.msg import Sound
+roslib.load_manifest('kobuki_testsuite')
 
-sounds = [Sound.ON, Sound.OFF, Sound.RECHARGE, Sound.BUTTON, Sound.ERROR, Sound.CLEANINGSTART, Sound.CLEANINGEND]
-texts = ["On", "Off", "Recharge", "Button", "Error", "CleaningStart", "CleaningEnd"]
+from tf.transformations import euler_from_quaternion
+from math import degrees
 
-rospy.init_node("test_sounds")
-pub = rospy.Publisher('/mobile_base/commands/sound', Sound)
-rate = rospy.Rate(0.5)
-msg = Sound()
-while not rospy.is_shutdown():
-    for sound, text in zip(sounds, texts):
-        msg.value = sound
-        print text 
-        pub.publish(msg)
-        rate.sleep()
-    break
-    
+from sensor_msgs.msg import Imu
+from geometry_msgs.msg import Quaternion
+
+
+def ImuCallback(data):
+	quat = data.orientation
+	q = [quat.x, quat.y, quat.z, quat.w]
+	roll, pitch, yaw = euler_from_quaternion(q)
+	sys.stdout.write("\r\x1b[KGyro angle: " + "{0:+.4f}".format(yaw) + " rad; "\
+					+ "{0:+.2f}".format(degrees(yaw)) + " deg"\
+					+ ", rate:  " + "{0:+.2f}".format(data.angular_velocity.z) + " rad/s; "\
+					+ "{0:+.2f}".format(degrees(data.angular_velocity.z)) + " deg/s")
+	sys.stdout.flush()
+
+rospy.init_node("test_gyro")
+rospy.Subscriber("/mobile_base/sensors/imu_data", Imu, ImuCallback)
+rospy.spin()

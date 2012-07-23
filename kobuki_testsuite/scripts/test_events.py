@@ -32,13 +32,15 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-import roslib; roslib.load_manifest('kobuki_node')
+import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
 
 from kobuki_comms.msg import ButtonEvent
 from kobuki_comms.msg import BumperEvent
 from kobuki_comms.msg import WheelDropEvent
 from kobuki_comms.msg import CliffEvent
+from kobuki_comms.msg import PowerSystemEvent
+from kobuki_comms.msg import DigitalInputEvent
 
 def ButtonEventCallback(data):
     if ( data.state == ButtonEvent.RELEASED ) :
@@ -89,14 +91,47 @@ def CliffEventCallback(data):
     else:
         cliff = "Right"
     rospy.loginfo("%s side of robot is %s."%(cliff, state))
+
+def PowerEventCallback(data):
+    if   ( data.event == PowerSystemEvent.UNPLUGGED ) :
+        rospy.loginfo("Robot unplugged")
+    elif ( data.event == PowerSystemEvent.PLUGGED_TO_ADAPTER ) :
+        rospy.loginfo("Robot plugged to adapter")
+    elif ( data.event == PowerSystemEvent.PLUGGED_TO_DOCKBASE ) :
+        rospy.loginfo("Robot plugged to docking base")
+    elif ( data.event == PowerSystemEvent.CHARGE_COMPLETED ) :
+        rospy.loginfo("Robot charge completed")
+    elif ( data.event == PowerSystemEvent.BATTERY_LOW ) :
+        rospy.loginfo("Robot battery low")
+    elif ( data.event == PowerSystemEvent.BATTERY_CRITICAL ) :
+        rospy.loginfo("Robot battery critical")
+    else:
+        rospy.loginfo("WARN: Unexpected power system event: %d"%(data.event))
+
+def InputEventCallback(data):
+    val_str = ""
+    for val in data.values:
+        val_str = "%s, %s" % (val_str, str(val))
+    rospy.loginfo("Digital input values: [" + val_str[2:] + "]")
     
 rospy.init_node("test_events")
 rospy.Subscriber("/mobile_base/events/button",ButtonEvent,ButtonEventCallback)
 rospy.Subscriber("/mobile_base/events/bumper",BumperEvent,BumperEventCallback)
 rospy.Subscriber("/mobile_base/events/wheel_drop",WheelDropEvent,WheelDropEventCallback)
 rospy.Subscriber("/mobile_base/events/cliff",CliffEvent,CliffEventCallback)
+rospy.Subscriber("/mobile_base/events/power_system",PowerSystemEvent,PowerEventCallback)
+rospy.Subscriber("/mobile_base/events/digital_input",DigitalInputEvent,InputEventCallback)
 print ""
-print "Start testing kobuki's buttons/bumper/wheel drops/cliffs."
+print "Try kobuki's hardware components; the following events should be reported:"
+print "  - buttons"
+print "  - bumpers"
+print "  - wheel drops"
+print "  - cliffs"
+print "  - plug/unplug adapter"
+print "  - dock/undock on base"
+print "  - charge completed"
+print "  - battery low/critical"
+print "  - digital input changes"
 print ""
 rospy.spin()
     
