@@ -92,6 +92,6 @@
 # Kobuki apps 
 - git:
     uri: https://github.com/yujinrobot/kobuki_apps.git
-	local-name: kobuki_apps
+    local-name: kobuki_apps
     version: master
 
