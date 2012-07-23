@@ -88,3 +88,11 @@
 - hg:
     uri: https://kforge.ros.org/turtlebot/simulator
     local-name: turtlebot_simulator
+://github.com/yujinrobot/kobuki_apps.git
+
+# Kobuki apps 
+- git:
+    uri: https://github.com/yujinrobot/kobuki_apps.git
+	local-name: kobuki_apps
+    version: master
+
