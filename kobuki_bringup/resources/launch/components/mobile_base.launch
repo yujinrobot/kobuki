@@ -5,7 +5,7 @@
   private namespace (maybe should do that in kobuki_node itself?)
  -->
 <launch>
-    <node pkg="kobuki_node" type="kobuki_node" name="mobile_base" output="screen">
+    <node pkg="kobuki_node" type="kobuki_node" name="mobile_base" output="screen" required="true">
 	    <rosparam file="$(find kobuki_bringup)/resources/yaml/kobuki.yaml" command="load"/>
 	    <remap from="mobile_base/odom" to="odom"/>
 	    <remap from="mobile_base/cmd_vel" to="cmd_vel"/>
