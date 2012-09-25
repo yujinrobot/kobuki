@@ -86,11 +86,11 @@
     local-name: turtlebot
 
 - git:
-    uri: https://http://github.com/turtlebot/turtlebot_simulator.git
+    uri: https://github.com/turtlebot/turtlebot_simulator.git
     local-name: turtlebot_simulator
 
 - git:
-    uri: https://http://github.com/turtlebot/turtlebot_apps.git
+    uri: https://github.com/turtlebot/turtlebot_apps.git
     local-name: turtlebot_apps
 
 
