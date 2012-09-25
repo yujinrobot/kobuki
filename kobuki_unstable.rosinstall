@@ -81,13 +81,18 @@
 
 # Turtlebot stacks - for merging.
 
-- hg:
-    uri: https://kforge.ros.org/turtlebot/turtlebot
+- git:
+    uri: https://github.com/turtlebot/turtlebot.git
     local-name: turtlebot
 
-- hg:
-    uri: https://kforge.ros.org/turtlebot/simulator
+- git:
+    uri: https://http://github.com/turtlebot/turtlebot_simulator.git
     local-name: turtlebot_simulator
+
+- git:
+    uri: https://http://github.com/turtlebot/turtlebot_apps.git
+    local-name: turtlebot_apps
+
 
 # Kobuki apps 
 - git:
