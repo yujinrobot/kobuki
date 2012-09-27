@@ -1,8 +1,8 @@
 include $(shell rospack find mk)/cmake.mk
 
 maps:
-	wget http://rnd.yujinrobot.com/pub/maps/lobby.pgm -O resources/maps/lobby.pgm
-	wget http://rnd.yujinrobot.com/pub/maps/lab.pgm -O resources/maps/lab.pgm
+	wget http://files.yujinrobot.com/maps/lobby.pgm -O resources/maps/lobby.pgm
+	wget http://files.yujinrobot.com/maps/lab.pgm -O resources/maps/lab.pgm
 
 unison:
 	@if [ -f ~/.unison/kobuki.prf ]; then \
