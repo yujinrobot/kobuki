@@ -55,9 +55,10 @@ def ImuCallback(data):
 	sys.stdout.write("\r\x1b[KGyro angle: " + "{0:+.4f}".format(yaw) + " rad; "\
 					+ "{0:+.2f}".format(degrees(yaw)) + " deg"\
 					+ ", rate:  " + "{0:+.2f}".format(data.angular_velocity.z) + " rad/s; "\
-					+ "{0:+.2f}".format(degrees(data.angular_velocity.z)) + " deg/s")
+					+ "{0:+.2f}".format(degrees(data.angular_velocity.z)) + " deg/s ")
 	sys.stdout.flush()
 
 rospy.init_node("test_gyro")
 rospy.Subscriber("/mobile_base/sensors/imu_data", Imu, ImuCallback)
 rospy.spin()
+print '' # for clean output

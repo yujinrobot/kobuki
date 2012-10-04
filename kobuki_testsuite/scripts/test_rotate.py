@@ -40,7 +40,7 @@ import math
 from geometry_msgs.msg import Twist
 
 rospy.init_node("test_rotation")
-pub = rospy.Publisher('/cmd_vel',Twist)
+pub = rospy.Publisher('cmd_vel',Twist) # absolute topic name is not good for this script, it can not override namespace remappings, such as '__ns:=r1'
 freq = 5
 rate = rospy.Rate(freq)
 twist = Twist()
