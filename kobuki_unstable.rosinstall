@@ -93,10 +93,13 @@
     uri: https://github.com/turtlebot/turtlebot_apps.git
     local-name: turtlebot_apps
 
-#- git:
-#    uri: https://github.com/turtlebot/turtlebot_viz.git
-#    local-name: turtlebot_viz
+- git:
+    uri: https://github.com/turtlebot/turtlebot_viz.git
+    local-name: turtlebot_viz
 
+- git:
+    uri: https://github.com/turtlebot/turtlebot_arm.git
+    local-name: turtlebot_arm
 
 # Kobuki apps 
 - git:
