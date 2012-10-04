@@ -145,6 +145,7 @@ public:
   void setBaseControl(const double &linear_velocity, const double &angular_velocity);
   void setLed(const enum LedNumber &number, const enum LedColour &colour);
   void setDigitalOutput(const DigitalOutput &digital_output);
+  void setExternalPower(const DigitalOutput &digital_output);
   void playSoundSequence(const enum SoundSequences &number);
 
 private:

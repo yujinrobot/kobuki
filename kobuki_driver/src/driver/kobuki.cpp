@@ -98,8 +98,13 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   protocol_version = parameters.protocol_version;
   std::string sigslots_namespace = parameters.sigslots_namespace;
   event_manager.init(sigslots_namespace);
-
+  //try {
   serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
+  /*} catch (...){
+    std::cout << "exception raised." << std::endl;
+    throw; //kobuki_node will handle this
+    //exit(-1); //forcely exit here
+  }*/
   serial.block(4000); // blocks by default, but just to be clear!
   serial.clear();
   ecl::PushAndPop<unsigned char> stx(2, 0);
@@ -320,6 +325,10 @@ void Kobuki::setLed(const enum LedNumber &number, const enum LedColour &colour)
 
 void Kobuki::setDigitalOutput(const DigitalOutput &digital_output) {
   sendCommand(Command::SetDigitalOutput(digital_output, kobuki_command.data));
+}
+
+void Kobuki::setExternalPower(const DigitalOutput &digital_output) {
+  sendCommand(Command::SetExternalPower(digital_output, kobuki_command.data));
 }
 
 //void Kobuki::playSound(const enum Sounds &number)
