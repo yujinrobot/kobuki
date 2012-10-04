@@ -39,5 +39,4 @@
     <param name="recovery_alpha_fast" value="0.0"/>
     <remap from="scan" to="$(arg scan_topic)"/>    
   </node>
-
 </launch>
