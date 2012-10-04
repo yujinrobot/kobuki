@@ -24,4 +24,6 @@ udev:
 	@sudo service udev reload
 	@sudo service udev restart
 	@echo ""
+	@echo "Logout and log back in to make sure the dialout group permissions take affect."
+	@echo ""
 
