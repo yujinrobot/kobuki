@@ -54,18 +54,25 @@ def getKey():
     return key
 
 
-def print_state(values):
-        sys.stdout.write('\r')
-        for value in values:
-            if value:
-                sys.stdout.write('T ')
-            else: 
-                sys.stdout.write('F ')
-        sys.stdout.flush()
+label = [
+    '3.3V',
+    '5V',
+    '12V5A',
+    '12V1A',
+]
+
+def printStatus(values):
+    sys.stdout.write('\r')
+    for idx in range(0,4):
+        if values[idx]:
+            sys.stdout.write(label[idx]+'[\033[1mOn\033[0m ] ')
+        else: 
+            sys.stdout.write(label[idx]+'[Off] ')
+    sys.stdout.flush()
 
 
 settings = termios.tcgetattr(sys.stdin)
-bindings = {
+keyBindings = {
     '1':0,
     '2':1,
     '3':2,
@@ -90,17 +97,17 @@ print "p: publish power on/off status"
 print "q: quit"
 print ""
 while not rospy.is_shutdown():
-    print_state(digital_output.values)
+    printStatus(digital_output.values)
     key = getKey()
     if key == '': continue
-    elif key == 'q': 
+    if key == 'q' or key == 'Q': 
        print ''
        rospy.signal_shutdown('user_reuested')
-    elif key in bindings.keys():
-        digital_output.values[bindings[key]] ^= True
-        print_state(digital_output.values)
+    elif key in keyBindings.keys():
+        digital_output.values[keyBindings[key]] ^= True
+        printStatus(digital_output.values)
         #print digital_output.values    
-    elif key == '\n' or key == 'p':
+    elif key == '\n' or key == 'p' or key == 'P':
         pub.publish(digital_output)
         print ' - published [', datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %p %I:%M:%S"), ']'
         rate.sleep()
