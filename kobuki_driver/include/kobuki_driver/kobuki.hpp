@@ -162,6 +162,12 @@ private:
   bool is_enabled;
 
   /*********************
+  ** Driver Paramters
+  **********************/
+  Parameters parameters;
+  bool is_connected;
+
+  /*********************
   ** Gate Keeper / High Acceleration Smoother / Limiter
   **********************/
   GateKeeper gate_keeper;
