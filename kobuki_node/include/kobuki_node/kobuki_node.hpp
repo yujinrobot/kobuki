@@ -103,7 +103,7 @@ private:
   ros::Publisher bumper_event_publisher, cliff_event_publisher, wheel_event_publisher, power_event_publisher;
   ros::Publisher raw_data_command_publisher;
 
-  ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber;
+  ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber, external_power_command_subscriber;
   ros::Subscriber led1_command_subscriber, led2_command_subscriber, sound_command_subscriber;
   ros::Subscriber reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
@@ -118,6 +118,7 @@ private:
   void subscribeLed1Command(const kobuki_comms::LedConstPtr);
   void subscribeLed2Command(const kobuki_comms::LedConstPtr);
   void subscribeDigitalOutputCommand(const kobuki_comms::DigitalOutputConstPtr);
+  void subscribeExternalPowerCommand(const kobuki_comms::DigitalOutputConstPtr);
   void subscribeResetOdometry(const std_msgs::EmptyConstPtr);
   void subscribeSoundCommand(const kobuki_comms::SoundConstPtr);
   void enable(const std_msgs::StringConstPtr msg);

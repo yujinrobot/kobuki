@@ -88,6 +88,34 @@ Command Command::SetDigitalOutput(const DigitalOutput &digital_output, Command::
   return outgoing;
 }
 
+/**
+ * Set one of the external power sources available to the user.
+ *
+ * They set the second 4 bits(0x00f0) on the data.gp_out variable.
+ *
+ * @param current_data : need to store settings as the gp_output command is a combo command
+ * @return Command : the command to send down the wire.
+ */
+Command Command::SetExternalPower(const DigitalOutput &digital_output, Command::Data &current_data)
+{
+  uint16_t values = 0x0000;
+  uint16_t clear_mask = 0xff0f;
+  for ( unsigned int i = 0; i < 4; ++i ) {
+    if ( digital_output.mask[i] ) {
+      if ( digital_output.values[i] ) {
+        values |= ( 1 << (i+4) );
+      }
+    } else {
+      clear_mask |= ( 1 << (i+4) ); // don't clear this bit, so set a 1 here
+    }
+  }
+  current_data.gp_out = (current_data.gp_out & clear_mask) | values;
+  Command outgoing;
+  outgoing.data = current_data;
+  outgoing.data.command = Command::SetDigitalOut;
+  return outgoing;
+}
+
 Command Command::PlaySoundSequence(const enum SoundSequences &number, Command::Data &current_data)
 {
   uint16_t value; // gp_out is 16 bits

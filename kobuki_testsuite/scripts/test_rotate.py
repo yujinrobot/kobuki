@@ -35,25 +35,30 @@
 # Puts the robot into continual rotation - useful for aging/battery tests.
 
 import roslib; roslib.load_manifest('kobuki_testsuite')
+import kobuki_testsuite
+
+#kobuki_testsuite.rotate_main()
+
 import rospy
 import math
 from geometry_msgs.msg import Twist
 
 rospy.init_node("test_rotation")
-pub = rospy.Publisher('/cmd_vel',Twist)
+pub = rospy.Publisher('cmd_vel',Twist) # absolute topic name is not good for this script, it can not override namespace remappings, such as '__ns:=r1'
 freq = 5
 rate = rospy.Rate(freq)
 twist = Twist()
-yaw_rate = 0.8
+yaw_rate = 1.2
 twist.linear.x = 0
 twist.linear.y = 0
 twist.linear.z = 0
 twist.angular.x = 0
 twist.angular.y = 0
-twist.angular.z = yaw_rate
-rotate_count = 0
+twist.angular.z = 0
 max_rotate_count = freq*int(3.14/yaw_rate)
+rotate_count = max_rotate_count
 start = rospy.get_rostime()
+rospy.sleep(0.5)
 while not rospy.is_shutdown():
     if rotate_count == max_rotate_count:
         if twist.angular.z > 0:

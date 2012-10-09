@@ -102,6 +102,17 @@ void KobukiNode::subscribeDigitalOutputCommand(const kobuki_comms::DigitalOutput
   return;
 }
 
+void KobukiNode::subscribeExternalPowerCommand(const kobuki_comms::DigitalOutputConstPtr msg)
+{
+  DigitalOutput digital_output;
+  for ( unsigned int i = 0; i < 4; ++i ) {
+    digital_output.values[i] = msg->values[i];
+    digital_output.mask[i] = msg->mask[i];
+  }
+  kobuki.setExternalPower(digital_output);
+  return;
+}
+
 /**
  * @brief Play a predefined sound (single sound or sound sequence)
  */
