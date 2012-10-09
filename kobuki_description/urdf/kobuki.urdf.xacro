@@ -1,8 +1,11 @@
 <?xml version="1.0" ?>
-<robot name="turtlebot_hardware" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="kobuki" xmlns:xacro="http://ros.org/wiki/xacro">
   <include filename="$(find kobuki_description)/urdf/common_properties.urdf.xacro"/>
-  <include filename="$(find kobuki_description)/urdf/gazebo.urdf.xacro"/>
-  
+  <include filename="$(find kobuki_description)/urdf/kobuki_gazebo.urdf.xacro"/>
+
+  <!-- Xacro properties -->
+  <xacro:property name="M_SCALE" value="0.001"/>
+
   <!-- Xacro macros -->
   <xacro:macro name="wheel" params="name length radius off_x off_y off_z type">
     <joint name="${name}_joint" type="${type}">
@@ -34,15 +37,28 @@
                  izz="0.001" />
       </inertial>
     </link>
-<!--     TODO: Needed? -->
-<!--     <gazebo reference="${name}_link"> -->
-<!--       <material>Gazebo/Black</material> -->
-<!--     </gazebo>    -->
+    <gazebo reference="${name}_link">
+      <material>Gazebo/Black</material>
+    </gazebo>   
   </xacro:macro>
 
   <!-- Kobuki -->	
   <xacro:macro name="kobuki">	  
-    <link name="base_footprint"/>
+    <link name="base_footprint">
+      <visual>
+	      <origin xyz="0 0 0" rpy="0 0 0"/>
+	      <geometry>
+	        <box size="0.001 0.001 0.001"/>
+	      </geometry>
+        <xacro:insert_block name="material_black" />
+	    </visual>
+	    <collision>
+	      <origin xyz="0 0 0.035" rpy="0 0 0"/>
+	      <geometry>
+	       <box size="0.001 0.001 0.001"/>
+	      </geometry>
+	    </collision>
+   </link>
    
 		<joint name="base_joint" type="fixed">
 			<origin xyz="0 0 0.035" rpy="0 0 0" />        
@@ -52,7 +68,7 @@
 	  <link name="base_link">
 	    <visual>
 	      <geometry>
-	        <mesh filename="package://kobuki_description/meshes/test/simple_base_new_2.stl" scale="0.001 0.001 0.001"/>
+	        <mesh filename="package://kobuki_description/meshes/kobuki.stl" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}"/>
 	   	  </geometry>
         <origin xyz="0.0 0 0.025" rpy="${M_PI/2} 0 ${M_PI/2}"/>
         <xacro:insert_block name="material_black" />
@@ -64,12 +80,15 @@
         <origin xyz="0.0 0.0 0.03469" rpy="0 0 0"/>
       </collision>
       <inertial>
-        <mass value="0.0001" />
-        <origin xyz="0 0 0" />
+        <mass value="2.4"/> <!-- 2.4/2.6 kg for small/big battery pack -->
+        <origin xyz="0 0 0"/>
         <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
                  iyy="0.0001" iyz="0.0" 
                  izz="0.0001" />
       </inertial>
+      <gazebo reference="base_link">
+        <material>Gazebo/Black</material>
+      </gazebo>
 	  </link>
 <!--     TODO: Needed? -->
 <!--     <gazebo reference="base_link"> -->
@@ -102,30 +121,54 @@
       </inertial>
     </link>
 	
-	  <joint name="base_cliff_sensor_left_joint" type="fixed">
+	  <joint name="cliff_sensor_left_joint" type="fixed">
 	    <origin xyz="0.07 0.14 0.01" rpy="0 ${M_PI/2} 0" />        
 	    <parent link="base_link"/>
-	    <child link="base_cliff_sensor_left_link" />
+	    <child link="cliff_sensor_left_link" />
 	  </joint>
-	  <link name="base_cliff_sensor_left_link"/>
+	  <link name="cliff_sensor_left_link">
+      <inertial>
+        <mass value="0.0001" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                 iyy="0.0001" iyz="0.0" 
+                 izz="0.0001" />
+      </inertial>
+    </link>
 	
-	  <joint name="base_cliff_sensor_right_joint" type="fixed">
+	  <joint name="cliff_sensor_right_joint" type="fixed">
 	    <origin xyz="0.07 -0.14 0.01" rpy="0 ${M_PI/2} 0" />        
 	    <parent link="base_link"/>
-	    <child link="base_cliff_sensor_right_link" />
+	    <child link="cliff_sensor_right_link" />
 	  </joint>
-    <link name="base_cliff_sensor_right_link"/>
+    <link name="cliff_sensor_right_link">
+      <inertial>
+        <mass value="0.0001" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                 iyy="0.0001" iyz="0.0" 
+                 izz="0.0001" />
+      </inertial>
+    </link>
     
-    <joint name="base_cliff_sensor_front_joint" type="fixed">
+    <joint name="cliff_sensor_front_joint" type="fixed">
       <origin xyz="0.07 -0.14 0.01" rpy="0 ${M_PI/2} 0" />        
       <parent link="base_link"/>
-      <child link="base_cliff_sensor_front_link" />
+      <child link="cliff_sensor_front_link" />
     </joint>
-    <link name="base_cliff_sensor_front_link"/>
+    <link name="cliff_sensor_front_link">
+      <inertial>
+        <mass value="0.0001" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                 iyy="0.0001" iyz="0.0" 
+                 izz="0.0001" />
+      </inertial>
+    </link>
    
-    <!-- Simulation sensors TODO-->
-    <turtlebot_sim_kobuki/>
+    <!--  Gazebo additions -->
+    <kobuki_sim/>
+    <kobuki_cliff_sensors/>
     <turtlebot_sim_imu/>
-<!--     <turtlebot_sim_cliff_sensor/> -->
   </xacro:macro>
 </robot>
