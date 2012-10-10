@@ -36,6 +36,20 @@
     <kd value="10000.0"/>
     <fdir value="1 0 0"/>
   </gazebo>
+  
+  <gazebo reference="caster_front_link">
+    <mu1 value="0"/>
+    <mu2 value="0"/>
+    <kp value="100000000.0"/>
+    <kd value="10000.0"/>
+  </gazebo>
+  
+  <gazebo reference="caster_back_link">
+    <mu1 value="0"/>
+    <mu2 value="0"/>
+    <kp value="100000000.0"/>
+    <kd value="10000.0"/>
+  </gazebo>
 </xacro:macro>
 
 <xacro:macro name="kobuki_cliff_sensors">
