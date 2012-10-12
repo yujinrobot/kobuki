@@ -220,6 +220,10 @@ Name=Robot Model
 [TF.Frames.]
 base_footprint.Enabled=0
 base_link.Enabled=0
+camera_depth_frame.Enabled=0
+camera_depth_optical_frame.Enabled=0
+camera_rgb_frame.Enabled=0
+camera_rgb_optical_frame.Enabled=0
 caster_back_link.Enabled=0
 caster_front_link.Enabled=0
 cliff_sensor_front_link.Enabled=0
@@ -251,5 +255,5 @@ xtion_link.Enabled=0
 [Window]
 Height=1024
 Width=1932
-X=1704
-Y=-1378
+X=1698
+Y=-1406
