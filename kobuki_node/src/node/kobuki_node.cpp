@@ -74,10 +74,10 @@ KobukiNode::KobukiNode(std::string& node_name) :
     slot_error(&KobukiNode::rosError, *this),
     slot_raw_data_command(&KobukiNode::publishRawDataCommand, *this)
 {
-  joint_states.name.push_back("left_wheel_joint");
-  joint_states.name.push_back("right_wheel_joint");
-  joint_states.name.push_back("front_wheel_joint"); // front_castor_joint in create tbot
-  joint_states.name.push_back("rear_wheel_joint");  // back_castor_joint in create tbot
+  joint_states.name.push_back("wheel_left_joint");
+  joint_states.name.push_back("wheel_right_joint");
+  joint_states.name.push_back("caster_front_joint"); // front_castor_joint in create tbot
+  joint_states.name.push_back("caster_back_joint");  // back_castor_joint in create tbot
   joint_states.position.resize(4,0.0);
   joint_states.velocity.resize(4,0.0);
   joint_states.effort.resize(4,0.0);
