@@ -40,8 +40,7 @@ import sys, select, termios, tty
 import time
 from datetime import datetime
 
-from kobuki_comms.msg import DigitalOutput
-from kobuki_comms.msg import Led
+from kobuki_comms.msg import DigitalOutput, Led, Sound
 
 
 def getKey():
@@ -93,6 +92,16 @@ keyBindings3 = {
     '0':3,
 }
 
+keyBindings4 = {
+    'a':Sound.ON,
+    's':Sound.OFF,
+    'd':Sound.RECHARGE,
+    'f':Sound.BUTTON,
+    'z':Sound.ERROR,
+    'x':Sound.CLEANINGSTART,
+    'c':Sound.CLEANINGEND,
+}
+
 colorBindings = {
     Led.GREEN:Led.ORANGE,
     Led.ORANGE:Led.RED,
@@ -125,6 +134,7 @@ pub_dgt_out = rospy.Publisher('/mobile_base/commands/digital_output',DigitalOutp
 pub = []
 pub.append(rospy.Publisher('/mobile_base/commands/led1',Led))
 pub.append(rospy.Publisher('/mobile_base/commands/led2',Led))
+pub_sounds = rospy.Publisher('/mobile_base/commands/sound',Sound)
 
 # initial values
 external_power = DigitalOutput()
@@ -172,7 +182,12 @@ print "6: Control Led #2"
 print ""
 print "7~0: Toggle the state of DigitalOut_0~3"
 print ""
+print "Play Sounds"
+print "-----------"
+print "a: On   s: Off   d: Recharge   f: Button   z: Error   x: CleaningStart   c: CleaningEnd"
+print ""
 print "q: Quit"
+print ""
 print ""
 print "  3.3V  5.0V 12V5A 12V1A |   Led #1   Led #2 |  DO_0  DO_1  DO_2  DO_3"
 #print " [ On] [Off] [ On] [Off] | [Orange] [Orange] | [ On] [Off] [Off] [ On]"
@@ -196,8 +211,9 @@ while not rospy.is_shutdown():
 
     elif key in keyBindings2.keys():
         leds[keyBindings2[key]].value = colorBindings[ leds[keyBindings2[key]].value ]
-
         printStatus(external_power.values, digital_output.values, leds)
         pub[keyBindings2[key]].publish(leds[keyBindings2[key]])
+    elif key in keyBindings4.keys():
+        pub_sounds.publish(keyBindings4[key])
         #rate.sleep()
 
