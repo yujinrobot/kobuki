@@ -50,9 +50,8 @@ def getKey():
     else:
         key = ''
 
-    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+    #termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
     return key
-
 
 label = [
     '3.3V',
@@ -62,16 +61,18 @@ label = [
 ]
 
 def printStatus(values):
-    sys.stdout.write('\r')
+    sys.stdout.write('\r ')
     for idx in range(0,4):
         if values[idx]:
-            sys.stdout.write(label[idx]+'[\033[1mOn\033[0m ] ')
+#            sys.stdout.write(label[idx]+'[\033[1mOn\033[0m ] ')
+            sys.stdout.write('[ \033[1mOn\033[0m] ')
         else: 
-            sys.stdout.write(label[idx]+'[Off] ')
+#            sys.stdout.write(label[idx]+'[Off] ')
+            sys.stdout.write('[Off] ')
+    sys.stdout.write('\r')
     sys.stdout.flush()
 
 
-settings = termios.tcgetattr(sys.stdin)
 keyBindings = {
     '1':0,
     '2':1,
@@ -79,13 +80,23 @@ keyBindings = {
     '4':3,
 }
 
+settings = termios.tcgetattr(sys.stdin)
+
+def clearing():
+    sys.stdout.write('\r\n')
+    sys.stdout.flush()
+    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+
 rospy.init_node("test_external_power")
+rospy.on_shutdown(clearing)
 pub = rospy.Publisher('/mobile_base/commands/external_power',DigitalOutput)
 rate = rospy.Rate(10)
 digital_output = DigitalOutput()
 digital_output.values = [ True, True, True, True ]
 digital_output.mask = [ True, True, True, True ]
 print ""
+#print "If you want to control the timing of publish, uses -p option."
+#print ""
 print "Control External Power"
 print "----------------------"
 print "1: Toggle the state of 3.3V"
@@ -93,23 +104,29 @@ print "2: Toggle the state of 5V"
 print "3: Toggle the state of 12V5A(arm)"
 print "4: Toggle the state of 12V1A(kinect)"
 print ""
-print "p: publish power on/off status"
+#print "p: publish power on/off status"
 print "q: quit"
 print ""
+print "  3.3V  5.0V 12V5A 12V1A"
+#print " [ On] [Off] [ On] [Off]"
+
+# reset current state of external powers
+while pub.get_num_connections():
+    rate.sleep()
+pub.publish(digital_output)
+
 while not rospy.is_shutdown():
-    printStatus(digital_output.values)
     key = getKey()
+    printStatus(digital_output.values)
     if key == '': continue
     if key == 'q' or key == 'Q': 
-       print ''
-       rospy.signal_shutdown('user_reuested')
+       rospy.signal_shutdown('user request')
     elif key in keyBindings.keys():
         digital_output.values[keyBindings[key]] ^= True
         printStatus(digital_output.values)
         #print digital_output.values    
-    elif key == '\n' or key == 'p' or key == 'P':
+#    elif key == '\n' or key == 'p' or key == 'P':
         pub.publish(digital_output)
-        print ' - published [', datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %p %I:%M:%S"), ']'
-        rate.sleep()
+        #print ' - published [', datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %p %I:%M:%S"), ']'
+        #rate.sleep()
 
-termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
