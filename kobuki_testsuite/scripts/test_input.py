@@ -122,7 +122,7 @@ def clearing():
   stdscr.keypad(0)
   curses.endwin()  
 
-rospy.init_node('test_curses')
+rospy.init_node('test_input')
 rospy.on_shutdown(clearing)
 rospy.Subscriber("/mobile_base/sensors/imu_data", Imu, ImuCallback )
 rospy.Subscriber("/mobile_base/sensors/core", SensorState, SensorStateCallback )
@@ -135,7 +135,9 @@ rospy.Subscriber("/mobile_base/events/power_system",PowerSystemEvent,PowerEventC
 
 
 stdscr = curses.initscr()
-stdscr.addstr(1,1,"RosPy curses in action!!!")
+stdscr.addstr(2,1,"Test Every Input of Kobuki")
+stdscr.addstr(3,1,"--------------------------")
+stdscr.addstr(4,1,"q: Quit")
 curses.noecho()
 #curses.cbreak()
 stdscr.keypad(1)
@@ -143,12 +145,15 @@ stdscr.nodelay(1)
 
 idx=0
 while not rospy.is_shutdown():
-  idx+=1
-  size = stdscr.getmaxyx()
-  stdscr.getch()
-  stdscr.addstr(2,2,"%d"%idx)
-  stdscr.addstr(3,3,"%u x %u"%(size[1], size[0]))
-  stdscr.addstr(4,4,datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %p %I:%M:%S"))
+#  idx+=1
+#  size = stdscr.getmaxyx()
+  key = stdscr.getch()
+#  stdscr.addstr(2,2,"%d"%idx)
+#  stdscr.addstr(3,3,"%u x %u"%(size[1], size[0]))
+#  stdscr.addstr(4,4,datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %p %I:%M:%S"))
+  if key == 'q':
+    rospy.signal_shutdown('user request')
+
   stdscr.refresh()
 
 clearing()
