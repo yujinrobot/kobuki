@@ -36,7 +36,7 @@
 
 import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
-import curses
+import curses, sys, traceback
 
 import time
 from datetime import datetime
@@ -69,9 +69,18 @@ def SensorStateCallback(data):
                                         %(data.analog_input[0], data.analog_input[1], \
                                           data.analog_input[2], data.analog_input[3])))
 
+
+digitalS = [False, False, False, False]
+
 def DigitalInputEventCallback(data):
-  stdscr.addstr(7,3,"Digital input: [%5s, %5s, %5s, %5s]"\
-                     %(str(data.values[0]), str(data.values[1]), str(data.values[2]), str(data.values[3]))) 
+  global digitalS
+  digitalS = data.values
+
+#str("Digital input: [%5s, %5s, %5s, %5s]"\
+#                     %(str(data.values[0]), str(data.values[1]), str(data.values[2]), str(data.values[3])))
+#  stdscr.addstr(7,3,digitalS)
+#  stdscr.addstr(7,3,"Digital input: [%5s, %5s, %5s, %5s]"\
+#                     %(str(data.values[0]), str(data.values[1]), str(data.values[2]), str(data.values[3]))) 
 
 button0 = { ButtonEvent.F0:0, ButtonEvent.F1:1, ButtonEvent.F2:2, } 
 button1 = { ButtonEvent.RELEASED:'Released', ButtonEvent.PRESSED:'Pressed ', }
@@ -79,7 +88,7 @@ buttonS = [ 'Released',  'Released',  'Released', ]
 
 def ButtonEventCallback(data):
   buttonS[button0[data.button]]=button1[data.state]
-  stdscr.addstr(8,3,str("Button: F0: %s F1: %s F2: %s"%(buttonS[0], buttonS[1], buttonS[2])))
+#  stdscr.addstr(8,3,str("Button: F0: %s F1: %s F2: %s"%(buttonS[0], buttonS[1], buttonS[2])))
 
 bumper0 = { BumperEvent.LEFT:0, BumperEvent.CENTER:1, BumperEvent.RIGHT:2, } 
 bumper1 = { BumperEvent.RELEASED:'Released', BumperEvent.PRESSED:'Pressed ', }
@@ -87,7 +96,7 @@ bumperS = [ 'Released',  'Released',  'Released', ]
 
 def BumperEventCallback(data):
   bumperS[bumper0[data.bumper]]=bumper1[data.state]
-  stdscr.addstr(9,3,str("Bumper: Left: %s Center: %s Right: %s"%(bumperS[0], bumperS[1], bumperS[2])))
+#  stdscr.addstr(9,3,str("Bumper: Left: %s Center: %s Right: %s"%(bumperS[0], bumperS[1], bumperS[2])))
 
 wheel0 = { WheelDropEvent.LEFT:0, WheelDropEvent.RIGHT:1, } 
 wheel1 = { WheelDropEvent.RAISED:'Raised ', WheelDropEvent.DROPPED:'Dropped', }
@@ -95,15 +104,15 @@ wheelS = [ 'Raised ',  'Raised ', ]
 
 def WheelDropEventCallback(data):
   wheelS[wheel0[data.wheel]]=wheel1[data.state]
-  stdscr.addstr(10,3,str("WheelDrop: Left: %s Right: %s"%(wheelS[0], wheelS[1])))
+#  stdscr.addstr(10,3,str("WheelDrop: Left: %s Right: %s"%(wheelS[0], wheelS[1])))
 
 cliff0 = { CliffEvent.LEFT:0, CliffEvent.CENTER:1, CliffEvent.RIGHT:2, } 
-cliff1 = { CliffEvent.FLOOR:'On the floor', CliffEvent.CLIFF:'On the cliff', }
-cliffS = [ 'On the floor', 'On the floor', 'On the floor',]
+cliff1 = { CliffEvent.FLOOR:'Floor', CliffEvent.CLIFF:'Cliff', }
+cliffS = [ 'Floor', 'Floor', 'Floor',]
 
 def CliffEventCallback(data):
   cliffS[cliff0[data.sensor]]=cliff1[data.state]
-  stdscr.addstr(11,3,str("Cliff: Left: %s Center: %s Right: %s"%(cliffS[0], cliffS[1], cliffS[2])))
+#  stdscr.addstr(11,3,str("Cliff: Left: %s Center: %s Right: %s"%(cliffS[0], cliffS[1], cliffS[2])))
 
 power0 = { 
   PowerSystemEvent.UNPLUGGED:"Robot unplugged",
@@ -113,48 +122,62 @@ power0 = {
   PowerSystemEvent.BATTERY_LOW:"Robot battery low",
   PowerSystemEvent.BATTERY_CRITICAL:"Robot battery critical", }
 
+powerS = "Not Available"
 
 def PowerEventCallback(data):
-  stdscr.addstr(12,3,str("Power: " + "{0: <80s}".format(power0[data.event])))
+  global powerS
+  powerS  = power0[data.event]
+#  stdscr.addstr(12,3,powerS)
+#  stdscr.addstr(12,3,str("Power: " + "{0: <80s}".format(power0[data.event])))
 
 def clearing():
   curses.echo()
   stdscr.keypad(0)
   curses.endwin()  
 
-rospy.init_node('test_input')
-rospy.on_shutdown(clearing)
-rospy.Subscriber("/mobile_base/sensors/imu_data", Imu, ImuCallback )
-rospy.Subscriber("/mobile_base/sensors/core", SensorState, SensorStateCallback )
-rospy.Subscriber("/mobile_base/events/digital_input", DigitalInputEvent, DigitalInputEventCallback )
-rospy.Subscriber("/mobile_base/events/button", ButtonEvent, ButtonEventCallback )
-rospy.Subscriber("/mobile_base/events/bumper", BumperEvent, BumperEventCallback )
-rospy.Subscriber("/mobile_base/events/wheel_drop", WheelDropEvent, WheelDropEventCallback )
-rospy.Subscriber("/mobile_base/events/cliff", CliffEvent, CliffEventCallback )
-rospy.Subscriber("/mobile_base/events/power_system",PowerSystemEvent,PowerEventCallback)
 
-
-stdscr = curses.initscr()
-stdscr.addstr(2,1,"Test Every Input of Kobuki")
-stdscr.addstr(3,1,"--------------------------")
-stdscr.addstr(4,1,"q: Quit")
-curses.noecho()
-#curses.cbreak()
-stdscr.keypad(1)
-stdscr.nodelay(1)
-
-idx=0
-while not rospy.is_shutdown():
-#  idx+=1
-#  size = stdscr.getmaxyx()
-  key = stdscr.getch()
-#  stdscr.addstr(2,2,"%d"%idx)
-#  stdscr.addstr(3,3,"%u x %u"%(size[1], size[0]))
-#  stdscr.addstr(4,4,datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %p %I:%M:%S"))
-  if key == 'q':
-    rospy.signal_shutdown('user request')
-
-  stdscr.refresh()
-
-clearing()
-
+if __name__ == '__main__':
+  stdscr = curses.initscr()
+  stdscr.addstr(1,1,"Test Every Input of Kobuki")
+  stdscr.addstr(2,1,"--------------------------")
+  stdscr.addstr(3,1,"q: Quit")
+  curses.noecho()
+  #curses.cbreak()
+  stdscr.keypad(1)
+  stdscr.nodelay(1)
+  
+  rospy.init_node('test_input')
+  rospy.on_shutdown(clearing)
+  rospy.Subscriber("/mobile_base/sensors/imu_data", Imu, ImuCallback )
+  rospy.Subscriber("/mobile_base/sensors/core", SensorState, SensorStateCallback )
+  rospy.Subscriber("/mobile_base/events/digital_input", DigitalInputEvent, DigitalInputEventCallback )
+  rospy.Subscriber("/mobile_base/events/button", ButtonEvent, ButtonEventCallback )
+  rospy.Subscriber("/mobile_base/events/bumper", BumperEvent, BumperEventCallback )
+  rospy.Subscriber("/mobile_base/events/wheel_drop", WheelDropEvent, WheelDropEventCallback )
+  rospy.Subscriber("/mobile_base/events/cliff", CliffEvent, CliffEventCallback )
+  rospy.Subscriber("/mobile_base/events/power_system",PowerSystemEvent,PowerEventCallback)
+  
+  try:
+    #idx=0
+    while not rospy.is_shutdown():
+    #  idx+=1
+    #  size = stdscr.getmaxyx()
+    #  stdscr.addstr(2,2,"%d"%idx)
+    #  stdscr.addstr(3,3,"%u x %u"%(size[1], size[0]))
+    #  stdscr.addstr(4,4,datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %p %I:%M:%S"))
+      stdscr.addstr(7,3,str("Digital input: [%5s, %5s, %5s, %5s]"\
+                       %(str(digitalS[0]), str(digitalS[1]), str(digitalS[2]), str(digitalS[3]))))
+      stdscr.addstr(8,3,str("Button: F0: %s F1: %s F2: %s"%(buttonS[0], buttonS[1], buttonS[2])))
+      stdscr.addstr(9,3,str("Bumper: Left: %s Center: %s Right: %s"%(bumperS[0], bumperS[1], bumperS[2])))
+      stdscr.addstr(10,3,str("WheelDrop: Left: %s Right: %s"%(wheelS[0], wheelS[1])))
+      stdscr.addstr(11,3,str("Cliff: Left: %s Center: %s Right: %s"%(cliffS[0], cliffS[1], cliffS[2])))
+      stdscr.addstr(12,3,str("Power: " + "{0: <80s}".format(powerS)))
+      stdscr.refresh()
+      key = stdscr.getch()
+      if key == ord('q'):
+        rospy.signal_shutdown('user request')
+    
+    clearing()
+  except:
+    clearing()
+    traceback.print_exc()  
