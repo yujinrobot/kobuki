@@ -58,18 +58,45 @@ class EndlessBump(object):
     rospy.Subscriber("/mobile_base/events/bumper", BumperEvent, self.BumperEventCallback)
     rospy.Subscriber("/odom", Odometry, self.OdometryCallback)
     self.pub = rospy.Publisher("cmd_vel", Twist)
+    self.rate = rospy.Rate(50)
 
-    self.wz=0.0
-    self.count=0
-    self.state = 'translation'
+    self.ok = True
     self.theta = 0.0
     self.theta_goal = 0.0
+
+  def command(self, twist):
+    self.pub.publish(twist)
+    self.rate.sleep()
+
+  def go(self):
+    twist = Twist()
+    twist.linear.x = 0.3
+    while self.ok:
+      self.command(twist)
+      
+  def stepback(self):
+    twist = Twist()
+    twist.linear.x = -0.1
+    for i in range(0,10): 
+      self.command(twist)
  
+  def turn(self):
+    twist = Twist()
+    twist.angular.z = 0.33*5
+    while not self.reached():
+      self.command(twist)
+
+  def reached(self):
+    if abs(wrapToPi(self.theta_goal - self.theta)) < radians(3.0):
+      return True
+    else:
+      return False
+
   def spin(self):
     while not rospy.is_shutdown():
-      rate = rospy.Rate(50)
-      self.pub.publish(self.transition())
-      rate.sleep()
+      self.go()
+      self.stepback()
+      self.turn()
 
   def OdometryCallback(self, data):
     quat = data.pose.pose.orientation
@@ -78,31 +105,10 @@ class EndlessBump(object):
     self.theta = yaw
   
   def BumperEventCallback(self, data):
-    self.state = 'step_back'
-    self.count = 0
-    
-  def transition(self):
-    twist = Twist()
-    if self.state == 'translation':
-      twist.linear.x = 0.3
-  
-    elif self.state == 'rotation':
-      if abs(wrapToPi(self.theta_goal - self.theta)) < radians(1.0) :
-        self.state = 'translation'
-      else:
-        twist.angular.z = self.wz
-  
-    elif self.state == 'step_back':
-      if self.count > 10:
-        rand = 3.141592*random.uniform(-1,1)
-        self.theta_goal = wrapToPi( self.theta + rand ) 
-        self.wz = 1.5 * rand/abs(rand)
-        self.state = 'rotation'
-      else:
-        self.count += 1
-        twist.linear.x = -0.1
-        
-    return twist
+    self.ok = False
+    rand = 3.141592*random.uniform(-1,1)
+    self.theta_goal = wrapToPi( self.theta + rand ) 
+
 
 if __name__ == '__main__':
   try:
