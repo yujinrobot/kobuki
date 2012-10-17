@@ -47,74 +47,66 @@ from nav_msgs.msg import Odometry
 from kobuki_comms.msg import BumperEvent
 
 
-wz=0.0
-count=0
-state = 'translation'
-theta = 0.0
-theta_goal = 0.0
-
 def wrapToPi(x):
   import numpy as np
   return np.mod(x+np.pi,2*np.pi)-np.pi
+#export to angles?  
+
+class EndlessBump(object):
+  def __init__(self):
+    rospy.init_node('endless_bump')
+    rospy.Subscriber("/mobile_base/events/bumper", BumperEvent, self.BumperEventCallback)
+    rospy.Subscriber("/odom", Odometry, self.OdometryCallback)
+    self.pub = rospy.Publisher("cmd_vel", Twist)
+
+    self.wz=0.0
+    self.count=0
+    self.state = 'translation'
+    self.theta = 0.0
+    self.theta_goal = 0.0
+ 
+  def spin(self):
+    while not rospy.is_shutdown():
+      rate = rospy.Rate(50)
+      self.pub.publish(self.transition())
+      rate.sleep()
+
+  def OdometryCallback(self, data):
+    quat = data.pose.pose.orientation
+    q = [quat.x, quat.y, quat.z, quat.w]
+    roll, pitch, yaw = euler_from_quaternion(q)
+    self.theta = yaw
   
-def OdometryCallback(data):
-  global theta
-  quat = data.pose.pose.orientation
-  q = [quat.x, quat.y, quat.z, quat.w]
-  roll, pitch, yaw = euler_from_quaternion(q)
-  theta = yaw
-
-def BumperEventCallback(data):
-  #data.bumper
-  global state
-  global count
-  state = 'step_back'
-  count = 0
+  def BumperEventCallback(self, data):
+    self.state = 'step_back'
+    self.count = 0
+    
+  def transition(self):
+    twist = Twist()
+    if self.state == 'translation':
+      twist.linear.x = 0.3
   
-def transition():
-  global state
-  global count
-  global theta
-  global theta_goal
-  global wz
-
-  twist = Twist()
-  if state == 'translation':
-    twist.linear.x = 0.3
-
-  elif state == 'rotation':
-    if abs(wrapToPi(theta_goal - theta)) < radians(1.0) :
-      state = 'translation'
-    else:
-      twist.angular.z = wz
-
-  elif state == 'step_back':
-    if count > 10:
-      rand = 3.141592*random.uniform(-1,1)
-      theta_goal = wrapToPi( theta + rand ) 
-      wz = 1.5 * rand/abs(rand)
-      state = 'rotation'
-    else:
-      count += 1
-      twist.linear.x = -0.1
-      
-  return twist
+    elif self.state == 'rotation':
+      if abs(wrapToPi(self.theta_goal - self.theta)) < radians(1.0) :
+        self.state = 'translation'
+      else:
+        twist.angular.z = self.wz
+  
+    elif self.state == 'step_back':
+      if self.count > 10:
+        rand = 3.141592*random.uniform(-1,1)
+        self.theta_goal = wrapToPi( self.theta + rand ) 
+        self.wz = 1.5 * rand/abs(rand)
+        self.state = 'rotation'
+      else:
+        self.count += 1
+        twist.linear.x = -0.1
+        
+    return twist
 
 if __name__ == '__main__':
-  rospy.init_node('endless_bump')
-  rate = rospy.Rate(50)
-
-  rospy.Subscriber("/mobile_base/events/bumper", BumperEvent, BumperEventCallback)
-  rospy.Subscriber("/odom", Odometry, OdometryCallback)
-  pub = rospy.Publisher("cmd_vel", Twist)
-  # state
-  # subscribe bump
-  # 
-  # bump callback:
-  #   turn robot randomly; 30deg < x < 180deg or -180deg < x < -30deg
-  #   pub cmd_vel 
-  while not rospy.is_shutdown():
-    twist = transition()
-    pub.publish(twist)
-    rate.sleep()
+  try:
+    instance = EndlessBump()
+    instance.spin()
+  except rospy.ROSInterruptException: pass
  
