@@ -1,6 +1,0 @@
-<!--
-  Used for visualising the kobuki while navigating with the ros navistack. 
- -->
-<launch>
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kobuki_bringup)/resources/rviz/navigation.vcg" />
-</launch>

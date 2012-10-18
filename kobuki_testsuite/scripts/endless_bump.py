@@ -37,29 +37,85 @@
 import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
 
+from tf.transformations import euler_from_quaternion
+from math import degrees, radians
+
+import sys
 import random
 
 from geometry_msgs.msg import Twist
+from nav_msgs.msg import Odometry
 from kobuki_comms.msg import BumperEvent
 
-twist = Twist()
 
-def BumperEventCallback(data):
-  #data.bumper
-  twist.angular.z = 3.141592*random.uniform(-1,1)
+def wrapToPi(x):
+  import numpy as np
+  return np.mod(x+np.pi,2*np.pi)-np.pi
+#export to angles?  
+
+class EndlessBump(object):
+  def __init__(self):
+    rospy.init_node('endless_bump')
+    rospy.Subscriber("/mobile_base/events/bumper", BumperEvent, self.BumperEventCallback)
+    rospy.Subscriber("/odom", Odometry, self.OdometryCallback)
+    self.pub = rospy.Publisher("cmd_vel", Twist)
+    self.rate = rospy.Rate(50)
+
+    self.ok = True
+    self.theta = 0.0
+    self.theta_goal = 0.0
+
+  def command(self, twist):
+    self.pub.publish(twist)
+    self.rate.sleep()
+    if rospy.is_shutdown():
+      sys.exit()
+
+  def go(self):
+    twist = Twist()
+    twist.linear.x = 0.3
+    while self.ok:
+      self.command(twist)
+      
+  def stepback(self):
+    twist = Twist()
+    twist.linear.x = -0.1
+    for i in range(0,10): 
+      self.command(twist)
+ 
+  def turn(self):
+    twist = Twist()
+    twist.angular.z = 0.33*5
+    while not self.reached():
+      self.command(twist)
+
+  def reached(self):
+    if abs(wrapToPi(self.theta_goal - self.theta)) < radians(3.0):
+      return True
+    else:
+      return False
+
+  def spin(self):
+    while not rospy.is_shutdown():
+      self.go()
+      self.stepback()
+      self.turn()
+
+  def OdometryCallback(self, data):
+    quat = data.pose.pose.orientation
+    q = [quat.x, quat.y, quat.z, quat.w]
+    roll, pitch, yaw = euler_from_quaternion(q)
+    self.theta = yaw
   
-if __name__ == '__main__':
-  rospy.init_node('endless_bump')
-  rate = rospy.Rate(10)
+  def BumperEventCallback(self, data):
+    self.ok = False
+    rand = 3.141592*random.uniform(-1,1)
+    self.theta_goal = wrapToPi(self.theta + rand) 
 
-  rospy.Subscriber("/mobile_base/events/bumper", BumperEvent, BumperEventCallback)
-  pub = rospy.Publisher("cmd_vel", Twist)
-  # subscribe bump
-  # bump callback:
-  #   turn robot randomly
-  #   pub cmd_vel 
-  twist.angular.z = 3.141592*random.uniform(-1,1)
-  while not rospy.is_shutdown():
-    pub.publish(twist)
-    rate.sleep()
+
+if __name__ == '__main__':
+  try:
+    instance = EndlessBump()
+    instance.spin()
+  except rospy.ROSInterruptException: pass
  
