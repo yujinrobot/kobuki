@@ -40,6 +40,7 @@ import rospy
 from tf.transformations import euler_from_quaternion
 from math import degrees, radians
 
+import sys
 import random
 
 from geometry_msgs.msg import Twist
@@ -67,6 +68,8 @@ class EndlessBump(object):
   def command(self, twist):
     self.pub.publish(twist)
     self.rate.sleep()
+    if rospy.is_shutdown():
+      sys.exit()
 
   def go(self):
     twist = Twist()
@@ -107,7 +110,7 @@ class EndlessBump(object):
   def BumperEventCallback(self, data):
     self.ok = False
     rand = 3.141592*random.uniform(-1,1)
-    self.theta_goal = wrapToPi( self.theta + rand ) 
+    self.theta_goal = wrapToPi(self.theta + rand) 
 
 
 if __name__ == '__main__':
