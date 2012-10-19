@@ -217,9 +217,9 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   // footprint_padding and resolution local costmap parameters. This is a bit tricky parameter:
   // if it's too low, costmap will ignore this pointcloud, but if it's too big, hit obstacles will
   // be mapped too far from the robot and the navigation around them will probably fail.
-  nh.param("bump_pc_radius", bumper_pc_radius, 0.24);
-  side_bump_x_coord = bumper_pc_radius*sin(0.349065); // 20 degrees
-  side_bump_y_coord = bumper_pc_radius*cos(0.349065);
+  nh.param("bumper_pc_radius", bumper_pc_radius, 0.24);
+  side_bump_x_coord = bumper_pc_radius*sin(0.34906585); // 20 degrees
+  side_bump_y_coord = bumper_pc_radius*cos(0.34906585);
 
   bumper_pc.resize(3);
   bumper_pc.header.frame_id = "/base_link";
@@ -303,7 +303,7 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   dock_ir_publisher = nh.advertise < kobuki_comms::DockInfraRed > ("sensors/dock_ir", 100);
   imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("sensors/imu_data", 100);
   raw_data_command_publisher = nh.advertise< std_msgs::String > ("debug/raw_data_command", 100);
-  bumper_as_pc_publisher = nh.advertise < pcl::PointCloud<pcl::PointXYZ> > ("/bump", 100);
+  bumper_as_pc_publisher = nh.advertise < pcl::PointCloud<pcl::PointXYZ> > ("sensors/bump_pc", 100);
 }
 
 /**
