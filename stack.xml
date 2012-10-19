@@ -16,7 +16,7 @@
   <depend stack="map_store" /> <!-- map_store -->
   <depend stack="navigation" /> <!-- robot_pose_ekf -->
   <depend stack="nodelet_core" /> <!-- nodelet -->
-  <depend stack="openni_kinect" /> <!-- openni_camera -->
+  <depend stack="openni_launch" /> <!-- openni_launch -->
   <depend stack="robot_model" /> <!-- robot_state_publisher -->
   <depend stack="robot_model_visualization" /> <!-- joint_state_publisher -->
   <depend stack="ros" /> <!-- roslib -->

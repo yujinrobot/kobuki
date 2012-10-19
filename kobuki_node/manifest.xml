@@ -14,8 +14,10 @@
   <depend package="geometry_msgs"/>
   <depend package="sensor_msgs"/>
   <depend package="nav_msgs"/>
-  <depend package="tf"/>
   <depend package="std_msgs"/>
+  <depend package="tf"/>
+  <depend package="pcl"/>
+  <depend package="pcl_ros"/>
   <depend package="diagnostic_updater"/>
   <depend package="diagnostic_msgs"/>
 

@@ -4,11 +4,7 @@
 #   sudo apt-get install ros-fuerte-desktop-full
 #
 # For the robot
-#   sudo apt-get install ros-fuerte-turtlebot ros-fuerte-turtlebot-apps ros-fuerte-control 
-#   sudo apt-get install ros-fuerte-warehousewg
-#
-# For desktop simulations and remote connections
-#   sudo apt-get install ros-fuerte-turtlebot-viz ros-fuerte-simulators
+#   sudo apt-get install ros-fuerte-control ros-fuerte-warehousewg
 #
 # For suppporting libraries
 # sudo apt-get install ros-fuerte-ecl-tools ros-fuerte-ecl-lite ros-fuerte-ecl-core ros-fuerte-ecl-navigation ros-fuerte-zeroconf-implementations

@@ -97,7 +97,7 @@ int main(int argc, char **argv)
   }
   string new_id = new_arg.getValue();
   std::string new_manufacturer("Yujin Robot");
-  std::string new_product("IClebo Kobuki");
+  std::string new_product("iClebo Kobuki");
 
   /*********************
    ** Debug output
@@ -191,6 +191,8 @@ int main(int argc, char **argv)
   eeprom.chip_type = TYPE_R;
 
 //  std::cout << "    Invert      : " << eeprom.invert << std::endl;
+
+  new_id = new_id + "_" + std::string(eeprom.serial);
 
   // The size is not stored in the eeprom on the chip itself...rather this
   // variable is used when passing eeprom_binary to the ftdi_eeprom_build command.

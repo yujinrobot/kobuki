@@ -73,7 +73,7 @@ bool PacketFinder::checkSum()
  *****************************************************************************/
 
 Kobuki::Kobuki() :
-    shutdown_requested(false), is_enabled(false), is_alive(false)
+    shutdown_requested(false), is_enabled(false), is_connected(false), is_alive(false)
 {
 }
 
@@ -95,9 +95,22 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   {
     throw ecl::StandardException(LOC, ecl::ConfigurationError, "Kobuki's parameter settings did not validate.");
   }
+  this->parameters=parameters;
   protocol_version = parameters.protocol_version;
   std::string sigslots_namespace = parameters.sigslots_namespace;
   event_manager.init(sigslots_namespace);
+
+  //checking device
+  if( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
+      ecl::Sleep waiting(5); //for 5sec.
+      while( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
+        sig_info.emit("device is not exist. still waiting...");
+        waiting();
+      }
+  } else {
+    is_connected = true;
+  }
+
   //try {
   serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
   /*} catch (...){
@@ -164,6 +177,32 @@ void Kobuki::spin()
 
   while (!shutdown_requested)
   {
+    /*********************
+     ** Checking Connection
+     **********************/
+    if( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
+      sig_error.emit("device is not exist.");
+      is_connected = false;
+      is_alive = false;
+      if( serial.open() ) 
+      {
+        sig_info.emit("device is still open, closing it, and retry to open.");
+        serial.close();
+      }
+      //try_open();
+      ecl::Sleep waiting(5); //for 5sec.
+      while( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
+        sig_info.emit("device is not exist. still waiting...");
+        waiting();
+      }
+      serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
+      if( serial.open() ) {
+        sig_info.emit("device is conencted.");
+        is_alive = true;
+        is_connected = true;
+      }
+    }
+
     /*********************
      ** Read Incoming
      **********************/
@@ -365,6 +404,14 @@ void Kobuki::sendBaseControlCommand()
  */
 void Kobuki::sendCommand(Command command)
 {
+  if( !is_alive || !is_connected ) {
+    //need to do something
+    sig_debug.emit("device state is not ready yet.");
+    if( !is_alive     ) sig_debug.emit(" - device is not alive.");
+    if( !is_connected ) sig_debug.emit(" - device is not connected.");
+    //std::cout << is_enabled << ", " << is_alive << ", " << is_connected << std::endl;
+    return;
+  }
   command_mutex.lock();
   kobuki_command.resetBuffer(command_buffer);
 
@@ -378,6 +425,7 @@ void Kobuki::sendCommand(Command command)
     checksum ^= (command_buffer[i]);
 
   command_buffer.push_back(checksum);
+  //check_device();
   serial.write(&command_buffer[0], command_buffer.size());
 
   sig_raw_data_command.emit(command_buffer);

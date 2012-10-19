@@ -100,13 +100,13 @@ Command Command::SetExternalPower(const DigitalOutput &digital_output, Command::
 {
   uint16_t values = 0x0000;
   uint16_t clear_mask = 0xff0f;
-  for ( unsigned int i = 0+4; i < 4+4; ++i ) {
+  for ( unsigned int i = 0; i < 4; ++i ) {
     if ( digital_output.mask[i] ) {
       if ( digital_output.values[i] ) {
-        values |= ( 1 << i );
+        values |= ( 1 << (i+4) );
       }
     } else {
-      clear_mask |= ( 1 << i ); // don't clear this bit, so set a 1 here
+      clear_mask |= ( 1 << (i+4) ); // don't clear this bit, so set a 1 here
     }
   }
   current_data.gp_out = (current_data.gp_out & clear_mask) | values;
