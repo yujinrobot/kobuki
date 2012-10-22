@@ -3,7 +3,7 @@
   For this to work you need to have the turtlebot_interactive_markers package installed.
   
   Before launching this:
-    roslaunch kobuki_bringup minimal.launch  
+    roslaunch turtlebot_bringup minimal.launch  
  -->
 <launch>
   <!-- start interactive markers server -->  
@@ -15,5 +15,5 @@
     </node>
   
   <!-- start Rviz -->
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kobuki_bringup)/resources/rviz/interactive_markers.vcg" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kobuki_utilities)/resources/rviz/interactive_markers.vcg" />
 </launch>

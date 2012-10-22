@@ -10,7 +10,7 @@
   <url>http://ros.org/wiki/kobuki_testsuite</url>
   <depend package="kobuki_node"/>
   <depend package="kobuki_driver"/>
-  <depend package="kobuki_bringup"/>
+  <depend package="turtlebot_bringup"/>
 
 </package>
 
