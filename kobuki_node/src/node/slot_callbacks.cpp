@@ -91,6 +91,22 @@ void KobukiNode::publishSensorState()
 
       sensor_state_publisher.publish(state);
     }
+
+    if (bumper_as_pc_publisher.getNumSubscribers() > 0) {
+      uint8_t bumper = kobuki.getCoreSensorData().bumper;
+      bumper_pc.header.stamp = ros::Time::now();
+
+      // Republish bumper readings as pointcloud so navistack can use them for poor-man navigation
+      bumper_pc[1].x = (bumper & CoreSensors::Flags::CenterBumper) ? +  bumper_pc_radius : FLT_MAX;
+
+      bumper_pc[0].x = (bumper & CoreSensors::Flags::LeftBumper)   ? + side_bump_x_coord : FLT_MAX;
+      bumper_pc[2].x = (bumper & CoreSensors::Flags::RightBumper)  ? + side_bump_x_coord : FLT_MAX;
+
+      bumper_pc[0].y = (bumper & CoreSensors::Flags::LeftBumper)   ? + side_bump_y_coord : FLT_MAX;
+      bumper_pc[2].y = (bumper & CoreSensors::Flags::RightBumper)  ? - side_bump_y_coord : FLT_MAX;
+
+      bumper_as_pc_publisher.publish(bumper_pc);
+    }
   }
 }
 
@@ -149,15 +165,15 @@ void KobukiNode::publishDockIRData()
   if (ros::ok())
   {
     if (dock_ir_publisher.getNumSubscribers() > 0)
-   {
+    {
       kobuki_comms::DockInfraRed msg;
       DockIR::Data data = kobuki.getDockIRData();
       msg.header.frame_id = "dock_ir_link";
       msg.header.stamp = ros::Time::now();
 
-      msg.data.push_back( data.docking[0] ); 
-      msg.data.push_back( data.docking[1] ); 
-      msg.data.push_back( data.docking[2] ); 
+      msg.data.push_back( data.docking[0] );
+      msg.data.push_back( data.docking[1] );
+      msg.data.push_back( data.docking[2] );
 
       dock_ir_publisher.publish(msg);
     }

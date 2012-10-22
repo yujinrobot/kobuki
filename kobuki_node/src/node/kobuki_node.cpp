@@ -74,14 +74,6 @@ KobukiNode::KobukiNode(std::string& node_name) :
     slot_error(&KobukiNode::rosError, *this),
     slot_raw_data_command(&KobukiNode::publishRawDataCommand, *this)
 {
-  joint_states.name.push_back("wheel_left_joint");
-  joint_states.name.push_back("wheel_right_joint");
-  joint_states.name.push_back("caster_front_joint"); // front_castor_joint in create tbot
-  joint_states.name.push_back("caster_back_joint");  // back_castor_joint in create tbot
-  joint_states.position.resize(4,0.0);
-  joint_states.velocity.resize(4,0.0);
-  joint_states.effort.resize(4,0.0);
-
   updater.setHardwareID("Kobuki");
   updater.add(battery_diagnostics);
   updater.add(watchdog_diagnostics);
@@ -151,6 +143,34 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   }
 
   /*********************
+   ** Joint States
+   **********************/
+  std::string robot_description, wheel_left_joint_name, wheel_right_joint_name;
+
+  nh.param("wheel_left_joint_name", wheel_left_joint_name, std::string("wheel_left_joint"));
+  nh.param("wheel_right_joint_name", wheel_right_joint_name, std::string("wheel_right_joint"));
+
+  // minimalistic check: are joint names present on robot description file?
+  if (!nh.getParam("/robot_description", robot_description))
+  {
+    ROS_WARN("Kobuki : no robot description given on the parameter server");
+  }
+  else
+  {
+    if (robot_description.find(wheel_left_joint_name) == std::string::npos)
+      ROS_WARN("Kobuki : joint name %s not found on robot description", wheel_left_joint_name.c_str());
+
+    if (robot_description.find(wheel_right_joint_name) == std::string::npos)
+      ROS_WARN("Kobuki : joint name %s not found on robot description", wheel_right_joint_name.c_str());
+  }
+
+  joint_states.name.push_back(wheel_left_joint_name);
+  joint_states.name.push_back(wheel_right_joint_name);
+  joint_states.position.resize(2,0.0);
+  joint_states.velocity.resize(2,0.0);
+  joint_states.effort.resize(2,0.0);
+
+  /*********************
    ** Validation
    **********************/
   if (!parameters.validate())
@@ -208,6 +228,27 @@ bool KobukiNode::init(ros::NodeHandle& nh)
     }
     return false;
   }
+
+  /*********************
+   ** Config bumper pc
+   **********************/
+
+  // Bumpers pointcloud distance to base frame; should be something like the sum of robot_radius,
+  // footprint_padding and resolution local costmap parameters. This is a bit tricky parameter:
+  // if it's too low, costmap will ignore this pointcloud, but if it's too big, hit obstacles will
+  // be mapped too far from the robot and the navigation around them will probably fail.
+  nh.param("bumper_pc_radius", bumper_pc_radius, 0.24);
+  side_bump_x_coord = bumper_pc_radius*sin(0.34906585); // 20 degrees
+  side_bump_y_coord = bumper_pc_radius*cos(0.34906585);
+
+  bumper_pc.resize(3);
+  bumper_pc.header.frame_id = "/base_link";
+
+  // bumper "points" fix coordinates (the others depend on whether the bumper is hit/released)
+  bumper_pc[0].x = bumper_pc[1].y = bumper_pc[2].x = 0.0;   // +π/2, 0 and -π/2 from x-axis
+  bumper_pc[0].z = bumper_pc[1].z = bumper_pc[2].z = 0.015; // z: elevation from base frame
+
+  ROS_DEBUG("Bumpers as pointcloud configured at distance %f from base frame", bumper_pc_radius);
 
 //  ecl::SigSlotsManager<>::printStatistics();
 //  ecl::SigSlotsManager<const std::string&>::printStatistics();
@@ -282,6 +323,7 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   dock_ir_publisher = nh.advertise < kobuki_comms::DockInfraRed > ("sensors/dock_ir", 100);
   imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("sensors/imu_data", 100);
   raw_data_command_publisher = nh.advertise< std_msgs::String > ("debug/raw_data_command", 100);
+  bumper_as_pc_publisher = nh.advertise < pcl::PointCloud<pcl::PointXYZ> > ("sensors/bump_pc", 100);
 }
 
 /**

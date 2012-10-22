@@ -97,9 +97,9 @@
     uri: https://github.com/turtlebot/turtlebot_arm.git
     local-name: turtlebot_arm
 
-# Kobuki apps 
+# turtlebot apps 
 - git:
-    uri: https://github.com/yujinrobot/kobuki_apps.git
-    local-name: kobuki_apps
+    uri: https://github.com/turtlebot/turtlebot_apps.git
+    local-name: turtlebot_apps
     version: master
 
