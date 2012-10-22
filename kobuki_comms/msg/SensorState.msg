@@ -2,9 +2,9 @@
 #
 
 # Buttons bitmasks to decode byte "buttons"
-uint8 B0 = 1  # 0x02
-uint8 B1 = 2  # 0x01
-uint8 B2 = 4  # 0x04
+uint8 Button0 = 1  # 0x02
+uint8 Button1 = 2  # 0x01
+uint8 Button2 = 4  # 0x04
 
 # Byte "charger" format:
 # - first four bits distinguish between adapter or docking base charging
