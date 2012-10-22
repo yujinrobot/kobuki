@@ -75,9 +75,9 @@ public:
 
   struct Flags {
     // buttons
-    static const uint8_t F0 = 0x01;
-    static const uint8_t F1 = 0x02;
-    static const uint8_t F2 = 0x04;
+    static const uint8_t B0 = 0x01;
+    static const uint8_t B1 = 0x02;
+    static const uint8_t B2 = 0x04;
 
     // bumper
     static const uint8_t LeftBumper   = 0x04;

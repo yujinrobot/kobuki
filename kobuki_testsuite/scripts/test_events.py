@@ -47,12 +47,12 @@ def ButtonEventCallback(data):
         state = "released"
     else:
         state = "pressed"  
-    if ( data.button == ButtonEvent.F0 ) :
-        button = "F0"
-    elif ( data.button == ButtonEvent.F1 ) :
-        button = "F1"
+    if ( data.button == ButtonEvent.B0 ) :
+        button = "B0"
+    elif ( data.button == ButtonEvent.B1 ) :
+        button = "B1"
     else:
-        button = "F2"
+        button = "B2"
     rospy.loginfo("Button %s was %s."%(button, state))
 
 def BumperEventCallback(data):
