@@ -79,9 +79,9 @@ void EventManager::update(const CoreSensors::Data &new_state, const std::vector<
 
     // Check changes in each button state's; even if this block of code
     // supports it, two buttons cannot be pressed simultaneously
-    if ((new_state.buttons ^ last_state.buttons) & CoreSensors::Flags::B0) {
-      event.button = ButtonEvent::B0;
-      if (new_state.buttons & CoreSensors::Flags::B0) {
+    if ((new_state.buttons ^ last_state.buttons) & CoreSensors::Flags::Button0) {
+      event.button = ButtonEvent::Button0;
+      if (new_state.buttons & CoreSensors::Flags::Button0) {
         event.state = ButtonEvent::Pressed;
       } else {
         event.state = ButtonEvent::Released;
@@ -89,9 +89,9 @@ void EventManager::update(const CoreSensors::Data &new_state, const std::vector<
       sig_button_event.emit(event);
     }
 
-    if ((new_state.buttons ^ last_state.buttons) & CoreSensors::Flags::B1) {
-      event.button = ButtonEvent::B1;
-      if (new_state.buttons & CoreSensors::Flags::B1) {
+    if ((new_state.buttons ^ last_state.buttons) & CoreSensors::Flags::Button1) {
+      event.button = ButtonEvent::Button1;
+      if (new_state.buttons & CoreSensors::Flags::Button1) {
         event.state = ButtonEvent::Pressed;
       } else {
         event.state = ButtonEvent::Released;
@@ -99,9 +99,9 @@ void EventManager::update(const CoreSensors::Data &new_state, const std::vector<
       sig_button_event.emit(event);
     }
 
-    if ((new_state.buttons ^ last_state.buttons) & CoreSensors::Flags::B2) {
-      event.button = ButtonEvent::B2;
-      if (new_state.buttons & CoreSensors::Flags::B2) {
+    if ((new_state.buttons ^ last_state.buttons) & CoreSensors::Flags::Button2) {
+      event.button = ButtonEvent::Button2;
+      if (new_state.buttons & CoreSensors::Flags::Button2) {
         event.state = ButtonEvent::Pressed;
       } else {
         event.state = ButtonEvent::Released;

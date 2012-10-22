@@ -68,9 +68,9 @@ struct ButtonEvent {
     Pressed
   } state;
   enum Button {
-    B0,
-    B1,
-    B2
+    Button0,
+    Button1,
+    Button2
   } button;
 };
 
