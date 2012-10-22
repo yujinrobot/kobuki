@@ -10,9 +10,9 @@
 source /opt/kobuki/setup.bash
 roscore &
 sleep 3
-roslaunch --screen kobuki_bringup minimal.launch &
+roslaunch --screen turtlebot_bringup minimal.launch &
 sleep 6
-roslaunch --screen kobuki_bringup 3dsensor.launch &
+roslaunch --screen turtlebot_bringup 3dsensor.launch &
 sleep 6
 if [ $# -gt 0 ]; then
   rosbag record -O $1 /mobile_base/sensors/core &
