@@ -1,13 +1,11 @@
 <package>
-  <description brief="Meta and start-up package for kobukibot">
-
-    The meta package for the Kobuki stack. It also contains all necessary scripts and launch files to start up Kobuki.
-     
+  <description brief="Package containing utililities specific for kobukibot">
+    A dumping ground for our scripts, launchers that are kobukibot specific. 
   </description>
   <author>Daniel Stonier, 주영훈</author>
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
-  <url>http://www.ros.org/wiki/kobuki_bringup</url>
+  <url>http://www.ros.org/wiki/kobuki_utilities</url>
 
   <!-- Kobuki -->
   <depend package="kobuki_node"/>
@@ -16,6 +14,7 @@
  
   <!-- Turtlebot --> 
   <depend package="turtlebot_teleop"/> <!-- launch dependency -->
+  <depend package="turtlebot_bringup"/> <!-- launch dependency -->
   <depend package="turtlebot_navigation"/> <!-- indirect launch dependency -->
   
   <!--  Ros -->
