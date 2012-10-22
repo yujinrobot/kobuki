@@ -74,14 +74,6 @@ KobukiNode::KobukiNode(std::string& node_name) :
     slot_error(&KobukiNode::rosError, *this),
     slot_raw_data_command(&KobukiNode::publishRawDataCommand, *this)
 {
-  joint_states.name.push_back("wheel_left_joint");
-  joint_states.name.push_back("wheel_right_joint");
-  joint_states.name.push_back("caster_front_joint"); // front_castor_joint in create tbot
-  joint_states.name.push_back("caster_back_joint");  // back_castor_joint in create tbot
-  joint_states.position.resize(4,0.0);
-  joint_states.velocity.resize(4,0.0);
-  joint_states.effort.resize(4,0.0);
-
   updater.setHardwareID("Kobuki");
   updater.add(battery_diagnostics);
   updater.add(watchdog_diagnostics);
@@ -149,6 +141,34 @@ bool KobukiNode::init(ros::NodeHandle& nh)
     ROS_ERROR_STREAM("Kobuki : no protocol version given on the parameter server ('2.0')[" << name << "].");
     return false;
   }
+
+  /*********************
+   ** Joint States
+   **********************/
+  std::string robot_description, wheel_left_joint_name, wheel_right_joint_name;
+
+  nh.param("wheel_left_joint_name", wheel_left_joint_name, std::string("wheel_left_joint"));
+  nh.param("wheel_right_joint_name", wheel_right_joint_name, std::string("wheel_right_joint"));
+
+  // minimalistic check: are joint names present on robot description file?
+  if (!nh.getParam("/robot_description", robot_description))
+  {
+    ROS_WARN("Kobuki : no robot description given on the parameter server");
+  }
+  else
+  {
+    if (robot_description.find(wheel_left_joint_name) == std::string::npos)
+      ROS_WARN("Kobuki : joint name %s not found on robot description", wheel_left_joint_name.c_str());
+
+    if (robot_description.find(wheel_right_joint_name) == std::string::npos)
+      ROS_WARN("Kobuki : joint name %s not found on robot description", wheel_right_joint_name.c_str());
+  }
+
+  joint_states.name.push_back(wheel_left_joint_name);
+  joint_states.name.push_back(wheel_right_joint_name);
+  joint_states.position.resize(2,0.0);
+  joint_states.velocity.resize(2,0.0);
+  joint_states.effort.resize(2,0.0);
 
   /*********************
    ** Validation
@@ -228,7 +248,7 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   bumper_pc[0].x = bumper_pc[1].y = bumper_pc[2].x = 0.0;   // +π/2, 0 and -π/2 from x-axis
   bumper_pc[0].z = bumper_pc[1].z = bumper_pc[2].z = 0.015; // z: elevation from base frame
 
-  ROS_DEBUG("Bumpers as pointcloud convigured at distance %f from base frame", bumper_pc_radius);
+  ROS_DEBUG("Bumpers as pointcloud configured at distance %f from base frame", bumper_pc_radius);
 
 //  ecl::SigSlotsManager<>::printStatistics();
 //  ecl::SigSlotsManager<const std::string&>::printStatistics();
