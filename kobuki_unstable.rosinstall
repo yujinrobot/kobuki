@@ -3,15 +3,13 @@
 # Basic ROS
 #   sudo apt-get install ros-fuerte-desktop-full
 #
-# For the robot
-#   sudo apt-get install ros-fuerte-control ros-fuerte-warehousewg
+# Additional ROS packages
+#   sudo apt-get install ros-fuerte-multimaster-experimental ros-fuerte-joystick-drivers ros-fuerte-openni-launch
 #
-# For suppporting libraries
-# sudo apt-get install ros-fuerte-ecl-tools ros-fuerte-ecl-lite ros-fuerte-ecl-core ros-fuerte-ecl-navigation ros-fuerte-zeroconf-implementations
+# Additional ROS packages required for turtlebot_apps
+#   sudo apt-get install ros-fuerte-warehousewg ros-fuerte-mjpeg-server
 #
-# TODO
-# For desktop simulations and remote connections (update for Fuerte!)
-#   sudo apt-get install ros-electric-turtlebot-desktop 
+# TODO 
 # For our custom arm (update for Fuerte!)
 #   sudo apt-get install ros-fuerte-turtlebot-arm ros-fuerte-dynamixel-motor (not exisiting yet)
 #   in the meanwhile to allow compiling do:
