@@ -7,7 +7,7 @@
 #   sudo apt-get install ros-fuerte-multimaster-experimental ros-fuerte-joystick-drivers ros-fuerte-openni-launch
 #
 # Additional ROS packages required for turtlebot_apps
-#   sudo apt-get install ros-fuerte-warehousewg ros-fuerte-mjpeg-server
+#   sudo apt-get install ros-fuerte-warehousewg ros-fuerte-mjpeg-server ros-fuerte-rosbridge-suite
 #
 # TODO 
 # For our custom arm (update for Fuerte!)
