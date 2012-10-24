@@ -3,8 +3,11 @@
 # Basic ROS
 #   sudo apt-get install ros-fuerte-desktop-full
 #
-# Additional ROS packages commonly required
-#   sudo apt-get install ros-fuerte-multimaster-experimental ros-fuerte-joystick-drivers ros-fuerte-openni-camera ros-fuerte-openni-launch
+# ROS packages commonly required
+#   sudo apt-get install ros-fuerte-multimaster-experimental ros-fuerte-joystick-drivers
+#
+# ROS packages required to use OpenNI-compliant devices (both old and new methods)
+#   sudo apt-get install ros-fuerte-openni-kinect ros-fuerte-openni-camera ros-fuerte-openni-launch
 #
 # Additional ROS packages required for turtlebot_apps
 #   sudo apt-get install ros-fuerte-warehousewg ros-fuerte-mjpeg-server ros-fuerte-rosbridge-suite
