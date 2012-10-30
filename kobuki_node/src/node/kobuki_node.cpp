@@ -157,13 +157,14 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   }
   else
   {
-    if (robot_description.find(wheel_left_joint_name) == std::string::npos)
+    if (robot_description.find(wheel_left_joint_name) == std::string::npos) {
       ROS_WARN("Kobuki : joint name %s not found on robot description", wheel_left_joint_name.c_str());
+    }
 
-    if (robot_description.find(wheel_right_joint_name) == std::string::npos)
+    if (robot_description.find(wheel_right_joint_name) == std::string::npos) {
       ROS_WARN("Kobuki : joint name %s not found on robot description", wheel_right_joint_name.c_str());
+    }
   }
-
   joint_states.name.push_back(wheel_left_joint_name);
   joint_states.name.push_back(wheel_right_joint_name);
   joint_states.position.resize(2,0.0);
