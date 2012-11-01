@@ -11,6 +11,8 @@ rosinstall ${WORKSPACE}/kobuki_workspace https://raw.github.com/yujinrobot/kobuk
 source ${WORKSPACE}/kobuki_workspace/setup.bash
 export ROS_PARALLEL_JOBS="-l5"
 export ROS_HOME=${WORKSPACE}
-rosmake --rosdep-install kobuki_utilities
-rosmake --rosdep-install kobuki_gazebo
+rosdep install kobuki_utilities
+rosdep install kobuki_gazebo
+rosmake --pre-clean kobuki_utilities
+rosmake --pre-clean kobuki_gazebo
 rosmake --target=test kobuki_utilities
