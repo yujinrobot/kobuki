@@ -48,8 +48,14 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="kobuki_qtestsuite.null.487934743" name="kobuki_qtestsuite"/>
 	</storageModule>
+	<storageModule moduleId="refreshScope"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.1133524259;cdt.managedbuild.toolchain.gnu.base.1133524259.80765746;cdt.managedbuild.tool.gnu.cpp.compiler.base.897350463;cdt.managedbuild.tool.gnu.cpp.compiler.input.1718959888">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.base.1133524259;cdt.managedbuild.toolchain.gnu.base.1133524259.80765746;cdt.managedbuild.tool.gnu.c.compiler.base.267288495;cdt.managedbuild.tool.gnu.c.compiler.input.1726717684">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
+		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="refreshScope"/>
 </cproject>

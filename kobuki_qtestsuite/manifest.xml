@@ -16,4 +16,7 @@
   <depend package="rospy"/>
   <depend package="rqt_gui"/>
   <depend package="rqt_gui_py"/>
+  <depend package="rqt_py_common"/>
+  
+  <depend package="geometry_msgs"/>
 </package>
