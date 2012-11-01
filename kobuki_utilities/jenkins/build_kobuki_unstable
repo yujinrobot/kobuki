@@ -17,4 +17,4 @@ rosdep install kobuki_utilities
 rosdep install kobuki_gazebo
 rosmake --pre-clean kobuki_utilities
 rosmake --pre-clean kobuki_gazebo
-rosmake --target=test kobuki_utilities
+#rosmake --target=test kobuki_utilities
