@@ -6,6 +6,7 @@
     <qtgui>
       <group>
         <label>Kobuki Test Suite</label>
+        <icon type="file">../src/kobuki_qtestsuite/resources/images/kobuki_icon.png</icon>
       </group>
       <!-- optional grouping...
       <group>
@@ -13,8 +14,8 @@
       </group>
       -->
       <label>Climbing</label>
-      <icon type="theme">system-help</icon>
-      <statustip>Great user interface to provide real value.</statustip>
+      <icon type="theme">system-run</icon>
+      <statustip>Test kobuki's climbing ability (cables, door sills etc).</statustip>
     </qtgui>
   </class>
 </library>

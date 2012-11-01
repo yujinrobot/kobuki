@@ -1,32 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>climbing</class>
+ <widget class="QWidget" name="climbing">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>629</width>
+    <height>558</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Kobuki Test Suite - Climbing</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
+  <property name="windowIcon">
+   <iconset resource="../resources/common.qrc">
+    <normaloff>:/images/kobuki_icon.png</normaloff>:/images/kobuki_icon.png</iconset>
+  </property>
+  <widget class="QPushButton" name="button_stop">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>140</y>
+     <x>260</x>
+     <y>420</y>
      <width>93</width>
      <height>23</height>
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>Stop</string>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="text_browser">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>100</y>
+     <width>256</width>
+     <height>192</height>
+    </rect>
+   </property>
+   <property name="autoFormatting">
+    <set>QTextEdit::AutoAll</set>
+   </property>
+   <property name="tabChangesFocus">
+    <bool>true</bool>
+   </property>
+   <property name="documentTitle">
+    <string/>
+   </property>
+   <property name="source">
+    <url>
+     <string>qrc:/text/climbing.html</string>
+    </url>
+   </property>
+   <property name="openLinks">
+    <bool>false</bool>
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources/common.qrc"/>
+  <include location="../resources/climbing.qrc"/>
+ </resources>
  <connections/>
 </ui>
