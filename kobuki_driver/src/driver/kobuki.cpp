@@ -109,6 +109,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
       }
   } else {
     is_connected = true;
+    is_alive = true;
   }
 
   //try {
@@ -200,6 +201,7 @@ void Kobuki::spin()
         sig_info.emit("device is conencted.");
         is_alive = true;
         is_connected = true;
+        sendCommand(Command::GetVersionInfo());
       }
     }
 
