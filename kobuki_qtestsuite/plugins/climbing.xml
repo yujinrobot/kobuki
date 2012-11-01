@@ -1,0 +1,21 @@
+<library path="../src">
+  <class name="Kobuki Test Suite - Climbing" type="kobuki_qtestsuite.climbing.Climbing" base_class_type="rqt_gui_py::Plugin">
+    <description>
+      Plugin for the kobuki testsuite - it provides an interface for control and parameterisation of kobuki climbing tests.
+    </description>
+    <qtgui>
+      <group>
+        <label>Kobuki Test Suite</label>
+        <icon type="file">../src/kobuki_qtestsuite/resources/images/kobuki_icon.png</icon>
+      </group>
+      <!-- optional grouping...
+      <group>
+        <label>Subgroup</group>
+      </group>
+      -->
+      <label>Climbing</label>
+      <icon type="theme">system-run</icon>
+      <statustip>Test kobuki's climbing ability (cables, door sills etc).</statustip>
+    </qtgui>
+  </class>
+</library>

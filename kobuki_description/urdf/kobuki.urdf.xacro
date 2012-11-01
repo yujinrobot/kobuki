@@ -61,7 +61,7 @@
    </link>
    
 		<joint name="base_joint" type="fixed">
-			<origin xyz="0 0 0.035" rpy="0 0 0" />        
+			<origin xyz="0 0 0.017" rpy="0 0 0" />        
 			<parent link="base_footprint"/>
 			<child link="base_link" />
 		</joint>
@@ -70,7 +70,7 @@
 	      <geometry>
 	        <mesh filename="package://kobuki_description/meshes/kobuki.stl" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}"/>
 	   	  </geometry>
-        <origin xyz="0.0 0 0.025" rpy="${M_PI/2} 0 ${M_PI/2}"/>
+        <origin xyz="0.0 0 0.043" rpy="${M_PI/2} 0 ${M_PI/2}"/>
         <xacro:insert_block name="material_black" />
 	    </visual>
       <collision>
@@ -94,20 +94,20 @@
 <!--     <gazebo reference="base_link"> -->
 <!--       <material>Gazebo/Black</material> -->
 <!--     </gazebo>         -->
-	  <xacro:wheel name="wheel_left"  length="0.0206" radius="0.0350" off_x="0.00"   off_y="${0.23/2}"  off_z="0.000"   
+	  <xacro:wheel name="wheel_left"  length="0.0206" radius="0.0350" off_x="0.00"   off_y="${0.23/2}"  off_z="0.018"   
                  type="continuous">	</xacro:wheel>
-	  <xacro:wheel name="wheel_right" length="0.0206" radius="0.0350" off_x="0.00"   off_y="-${0.23/2}" off_z="0.000"   
+	  <xacro:wheel name="wheel_right" length="0.0206" radius="0.0350" off_x="0.00"   off_y="-${0.23/2}" off_z="0.018"   
                  type="continuous">	</xacro:wheel>  
-	  <xacro:wheel name="caster_front" length="0.0176" radius="0.0170" off_x="0.115"  off_y="0"          off_z="-0.0180"
+	  <xacro:wheel name="caster_front" length="0.0176" radius="0.0170" off_x="0.115"  off_y="0"          off_z="-0.0000"
                  type="fixed">      </xacro:wheel>
-	  <xacro:wheel name="caster_back"  length="0.0176" radius="0.0170" off_x="-0.135" off_y="0"          off_z="-0.0160"
+	  <xacro:wheel name="caster_back"  length="0.0176" radius="0.0170" off_x="-0.135" off_y="0"          off_z="0.0020"
                  type="fixed">      </xacro:wheel>
   
     <!-- Kobuki's sensors -->
-    <!-- TODO: Check placement! -->  
+    <!-- TODO: Check placement! -->
     <joint name="gyro_joint" type="fixed">
       <axis xyz="0 1 0"/>
-      <origin xyz="0 0 0.04" rpy="0 0 0"/>
+      <origin xyz="0 0 0.058" rpy="0 0 0"/>
       <parent link="base_link"/>
       <child link="gyro_link"/>
     </joint>
@@ -122,7 +122,7 @@
     </link>
 	
 	  <joint name="cliff_sensor_left_joint" type="fixed">
-	    <origin xyz="0.07 0.14 0.01" rpy="0 ${M_PI/2} 0" />        
+	    <origin xyz="0.07 0.14 0.028" rpy="0 ${M_PI/2} 0" />        
 	    <parent link="base_link"/>
 	    <child link="cliff_sensor_left_link" />
 	  </joint>
@@ -137,7 +137,7 @@
     </link>
 	
 	  <joint name="cliff_sensor_right_joint" type="fixed">
-	    <origin xyz="0.07 -0.14 0.01" rpy="0 ${M_PI/2} 0" />        
+	    <origin xyz="0.07 -0.14 0.028" rpy="0 ${M_PI/2} 0" />        
 	    <parent link="base_link"/>
 	    <child link="cliff_sensor_right_link" />
 	  </joint>
@@ -152,7 +152,7 @@
     </link>
     
     <joint name="cliff_sensor_front_joint" type="fixed">
-      <origin xyz="0.07 -0.14 0.01" rpy="0 ${M_PI/2} 0" />        
+      <origin xyz="0.07 -0.14 0.028" rpy="0 ${M_PI/2} 0" />        
       <parent link="base_link"/>
       <child link="cliff_sensor_front_link" />
     </joint>
