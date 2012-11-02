@@ -28,7 +28,12 @@ def sig(x):
 class SafeWandering(threading.Thread):
     
     '''
-      Initialise everything, then later start with the spin() method.
+      Initialise everything.
+
+      API:
+        start() - start to wander. 
+        stop()  - stop wandering.
+        set_vels(lin_xvel,stepback_xvel,ang_zvel)
       
       @param topic names
       @type strings
