@@ -68,6 +68,7 @@ KobukiNode::KobukiNode(std::string& node_name) :
     slot_wheel_event(&KobukiNode::publishWheelEvent, *this),
     slot_power_event(&KobukiNode::publishPowerEvent, *this),
     slot_input_event(&KobukiNode::publishInputEvent, *this),
+    slot_robot_event(&KobukiNode::publishRobotEvent, *this),
     slot_debug(&KobukiNode::rosDebug, *this),
     slot_info(&KobukiNode::rosInfo, *this),
     slot_warn(&KobukiNode::rosWarn, *this),
@@ -114,6 +115,7 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   slot_wheel_event.connect(name + std::string("/wheel_event"));
   slot_power_event.connect(name + std::string("/power_event"));
   slot_input_event.connect(name + std::string("/input_event"));
+  slot_robot_event.connect(name + std::string("/robot_event"));
   slot_debug.connect(name + std::string("/ros_debug"));
   slot_info.connect(name + std::string("/ros_info"));
   slot_warn.connect(name + std::string("/ros_warn"));
@@ -320,6 +322,7 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   wheel_event_publisher  = nh.advertise < kobuki_comms::WheelDropEvent > ("events/wheel_drop", 100);
   power_event_publisher  = nh.advertise < kobuki_comms::PowerSystemEvent > ("events/power_system", 100);
   input_event_publisher  = nh.advertise < kobuki_comms::DigitalInputEvent > ("events/digital_input", 100);
+  robot_event_publisher  = nh.advertise < kobuki_comms::RobotStateEvent > ("events/robot_state", 100, true); // also latched
   sensor_state_publisher = nh.advertise < kobuki_comms::SensorState > ("sensors/core", 100);
   dock_ir_publisher = nh.advertise < kobuki_comms::DockInfraRed > ("sensors/dock_ir", 100);
   imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("sensors/imu_data", 100);

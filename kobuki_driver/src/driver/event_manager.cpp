@@ -59,6 +59,7 @@ void EventManager::init ( const std::string &sigslots_namespace ) {
   sig_wheel_event.connect(sigslots_namespace  + std::string("/wheel_event"));
   sig_power_event.connect(sigslots_namespace  + std::string("/power_event"));
   sig_input_event.connect(sigslots_namespace  + std::string("/input_event"));
+  sig_robot_event.connect(sigslots_namespace  + std::string("/robot_event"));
 }
 
 /**
@@ -298,6 +299,26 @@ void EventManager::update(const uint16_t &new_digital_input)
     sig_input_event.emit(event);
 
     last_digital_input = new_digital_input;
+  }
+}
+
+/**
+ * Emit events if the robot gets online/offline.
+ * @param is_plugged Is the USB cable connected?.
+ * @param is_alive Is the robot alive?.
+ */
+void EventManager::update(bool is_plugged, bool is_alive)
+{
+  RobotEvent::State robot_state =
+      (is_plugged && is_alive)?RobotEvent::Online:RobotEvent::Offline;
+  if (last_robot_state != robot_state)
+  {
+    RobotEvent event;
+    event.state = robot_state;
+
+    sig_robot_event.emit(event);
+
+    last_robot_state = robot_state;
   }
 }
 
