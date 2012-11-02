@@ -28,7 +28,7 @@ def sig(x):
 class SafeWandering(threading.Thread):
     
     '''
-      Initialise everything.
+      Initialise everything, then starts with start()
 
       API:
         start() - start to wander. 

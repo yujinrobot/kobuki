@@ -35,47 +35,21 @@
 # Puts the robot into continual rotation - useful for aging/battery tests.
 
 import roslib; roslib.load_manifest('kobuki_testsuite')
-import kobuki_testsuite
-
-#kobuki_testsuite.rotate_main()
-
 import rospy
-import math
-from geometry_msgs.msg import Twist
 
-rospy.init_node("test_rotation")
-pub = rospy.Publisher('cmd_vel',Twist) # absolute topic name is not good for this script, it can not override namespace remappings, such as '__ns:=r1'
-freq = 5
-rate = rospy.Rate(freq)
-twist = Twist()
-yaw_rate = 1.2
-twist.linear.x = 0
-twist.linear.y = 0
-twist.linear.z = 0
-twist.angular.x = 0
-twist.angular.y = 0
-twist.angular.z = 0
-max_rotate_count = freq*int(3.14/yaw_rate)
-rotate_count = max_rotate_count
-start = rospy.get_rostime()
-rospy.sleep(0.5)
-while not rospy.is_shutdown():
-    if rotate_count == max_rotate_count:
-        if twist.angular.z > 0:
-            mod = -1.0
-        else:
-            mod = 1.0
-        update = mod*yaw_rate/10.0
-        while math.fabs(twist.angular.z) <= yaw_rate:
-            twist.angular.z = twist.angular.z + update
-            pub.publish(twist)
-            rospy.sleep(0.04)
-        # Make sure it is exact so the inequality in the while loop doesn't mess up next time around
-        twist.angular.z = mod*yaw_rate
-        rotate_count = 0
-    else:
-        rotate_count += 1
-    now = rospy.get_rostime()
-    rospy.loginfo("Rotate: %ds", now.secs - start.secs)
-    pub.publish(twist)
-    rate.sleep()
+from kobuki_testsuite import RotateTest
+
+
+if __name__ == '__main__':
+
+    rospy.init_node('test_rotate')
+
+    cmdvel_topic = '/cmd_vel'
+    log_topic = '/log'
+    rotator = RotateTest(cmdvel_topic,log_topic)
+
+    rospy.loginfo("Start to rotate")
+    rotator.start()
+    rospy.sleep(10)
+    rospy.loginfo("Stop rotating")
+    rotator.stop()

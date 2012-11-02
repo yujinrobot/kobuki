@@ -2,7 +2,7 @@
 import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
 
-from kobuki_testsuite.motion_wander import SafeWandering
+from kobuki_testsuite import SafeWandering
 
 if __name__ == '__main__':
 
