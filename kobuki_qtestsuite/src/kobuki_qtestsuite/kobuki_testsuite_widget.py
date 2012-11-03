@@ -16,39 +16,39 @@ from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 
 # Local resource imports
-import resources.common
-import resources.climbing
+import detail.common_rc
+import detail.climbing_rc
+from detail.kobuki_testsuite_ui import Ui_kobuki_testsuite_widget
+from configuration_dock_widget import ConfigurationDockWidget
 
-class ClimbingWidget(QWidget):
+class KobukiTestSuiteWidget(QWidget):
 
     def __init__(self, parent=None):
-        super(ClimbingWidget, self).__init__(parent)
+        super(KobukiTestSuiteWidget, self).__init__(parent)
         
         # get path to UI file which is a sibling of this file
         # in this example the .ui file is in the same folder as this Python file
-        ui_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'ui', 'climbing.ui')
+        #ui_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'ui', 'kobuki_testsuite.ui')
         # extend the widget with all attributes and children from UI file
-        loadUi(ui_file, self, {'ExtendedComboBox': ExtendedComboBox})
+        #loadUi(ui_file, self, {'ConfigurationDockWidget': ConfigurationDockWidget})
+        
+        self._ui = Ui_kobuki_testsuite_widget()
 
-        # give QObjects reasonable names
-        self.setObjectName('ClimbingUi')
-        
-        _, _, topic_types = rospy.get_master().getTopicTypes()
-        cmd_vel_topics = [ topic[0] for topic in topic_types if topic[1] == 'geometry_msgs/Twist' ]
-        self.cmd_vel_topic_combo_box.setItems.emit(sorted(cmd_vel_topics))
-        self.cmd_vel_publisher = rospy.Publisher(str(self.cmd_vel_topic_combo_box.currentText()), Twist)
-        odom_topics = [ topic[0] for topic in topic_types if topic[1] == 'nav_msgs/Odometry' ]
-        self.odom_topic_combo_box.setItems.emit(sorted(odom_topics))
-        self.odom_subscriber = rospy.Subscriber(str(self.odom_topic_combo_box.currentText()), Odometry, self.odometry_callback)
-        # UI
-        self.start_button.setEnabled(True)
-        self.stop_button.setEnabled(False)
-        
         self._run_thread = None
         self._current_pose = None
         self._starting_pose = None
         self._current_speed = 0.0
         
+    def setupUi(self):
+        self._ui.setupUi(self)
+        #self.cmd_vel_publisher = rospy.Publisher(self._ui.configuration_dock.cmd_vel_topic_name(), Twist)
+        #self.odom_subscriber = rospy.Subscriber(self._ui.configuration_dock.odom_topic_name(), Odometry, self.odometry_callback)
+        self.cmd_vel_publisher = rospy.Publisher('/cmd_vel', Twist)
+        self.odom_subscriber = rospy.Subscriber('/odom', Odometry, self.odometry_callback)
+        self._ui.start_button.setEnabled(True)
+        self._ui.stop_button.setEnabled(False)
+        self._ui.configuration_dock.setupUi()
+    
     def shutdown(self):
         cmd = Twist()
         cmd.linear.x = 0.0
@@ -76,8 +76,8 @@ class ClimbingWidget(QWidget):
 
     @Slot()
     def on_start_button_clicked(self):
-        self.start_button.setEnabled(False)
-        self.stop_button.setEnabled(True)
+        self._ui.start_button.setEnabled(False)
+        self._ui.stop_button.setEnabled(True)
         self._starting_pose = self._current_pose
         self._run_thread = WorkerThread(self._run, self._run_finished)
         self._run_thread.start()
@@ -92,8 +92,8 @@ class ClimbingWidget(QWidget):
         cmd.linear.x = 0.0
         self.cmd_vel_publisher.publish(cmd)
         self._stop()
-        self.start_button.setEnabled(True)
-        self.stop_button.setEnabled(False)
+        self._ui.start_button.setEnabled(True)
+        self._ui.stop_button.setEnabled(False)
 
     def _soft_stop(self):
         rate = rospy.Rate(10)
@@ -133,6 +133,6 @@ class ClimbingWidget(QWidget):
         self._soft_stop()
     
     def _run_finished(self):
-        self.start_button.setEnabled(True)
-        self.stop_button.setEnabled(False)
+        self._ui.start_button.setEnabled(True)
+        self._ui.stop_button.setEnabled(False)
     

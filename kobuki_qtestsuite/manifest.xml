@@ -10,7 +10,7 @@
   <review status="experimental" notes=""/>
   <url>http://ros.org/wiki/kobuki_qtestsuite</url>
   <export>
-    <rqt_gui plugin="${prefix}/plugins/climbing.xml"/>
+    <rqt_gui plugin="${prefix}/plugins/kobuki_testsuite.xml"/>
   </export>
   <depend package="rospy"/>
   <depend package="rospy"/>

@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>climbing</class>
- <widget class="QWidget" name="climbing">
+ <class>kobuki_testsuite_widget</class>
+ <widget class="QWidget" name="kobuki_testsuite_widget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>629</width>
-    <height>558</height>
+    <width>697</width>
+    <height>559</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Kobuki Test Suite - Climbing</string>
+   <string>Kobuki Test Suite</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/common.qrc">
     <normaloff>:/images/kobuki_icon.png</normaloff>:/images/kobuki_icon.png</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
     <widget class="QTextBrowser" name="text_browser">
      <property name="autoFormatting">
       <set>QTextEdit::AutoAll</set>
@@ -39,77 +39,18 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item row="0" column="1" rowspan="2">
+    <widget class="ConfigurationDockWidget" name="configuration_dock">
+     <widget class="QWidget" name="dockWidgetContents"/>
+    </widget>
+   </item>
+   <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Controls</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0" colspan="6">
-       <widget class="QFrame" name="frame_2">
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <spacer name="horizontalSpacer_4">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>96</width>
-          <height>17</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Cmd Vel Topic</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="ExtendedComboBox" name="cmd_vel_topic_combo_box">
-        <property name="editable">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="ExtendedComboBox" name="odom_topic_combo_box">
-        <property name="editable">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="4">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Odom Topic</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="5">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>58</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="2" column="0">
+      <item row="0" column="0">
        <spacer name="horizontalSpacer_5">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -122,7 +63,7 @@
         </property>
        </spacer>
       </item>
-      <item row="2" column="1">
+      <item row="0" column="1">
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Speed</string>
@@ -132,7 +73,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="2">
+      <item row="0" column="2">
        <widget class="QDoubleSpinBox" name="speed_spinbox">
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -154,7 +95,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="3">
+      <item row="0" column="3">
        <widget class="QDoubleSpinBox" name="distance_spinbox">
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -176,14 +117,14 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="4">
+      <item row="0" column="4">
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Distance</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="5">
+      <item row="0" column="5">
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -196,7 +137,7 @@
         </property>
        </spacer>
       </item>
-      <item row="3" column="0" colspan="2">
+      <item row="1" column="0" colspan="2">
        <spacer name="horizontalSpacer_6">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -209,21 +150,21 @@
         </property>
        </spacer>
       </item>
-      <item row="3" column="2">
+      <item row="1" column="2">
        <widget class="QPushButton" name="start_button">
         <property name="text">
          <string>Start</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="3">
+      <item row="1" column="3">
        <widget class="QPushButton" name="stop_button">
         <property name="text">
          <string>Stop</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="4" colspan="2">
+      <item row="1" column="4" colspan="2">
        <spacer name="horizontalSpacer_3">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -243,9 +184,10 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ExtendedComboBox</class>
-   <extends>QComboBox</extends>
-   <header>rqt_py_common.extended_combo_box</header>
+   <class>ConfigurationDockWidget</class>
+   <extends>QDockWidget</extends>
+   <header location="global">kobuki_qtestsuite.configuration_dock_widget</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

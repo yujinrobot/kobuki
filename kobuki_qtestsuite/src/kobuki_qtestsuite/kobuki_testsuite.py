@@ -14,22 +14,25 @@ from geometry_msgs.msg import Twist
 # Local resource imports
 import resources.common
 import resources.climbing
-from .climbing_widget import ClimbingWidget
+from .kobuki_testsuite_widget import KobukiTestSuiteWidget
+from .configuration_dock_widget import ConfigurationDockWidget
 
-class Climbing(Plugin):
+class KobukiTestSuite(Plugin):
 
     def __init__(self, context):
-        super(Climbing, self).__init__(context)
+        super(KobukiTestSuite, self).__init__(context)
         # give QObjects reasonable names
-        self.setObjectName('Climbing')
+        self.setObjectName('Kobuki Test Suite')
 
         # create QWidget
-        self._widget = ClimbingWidget()
+        self._widget = KobukiTestSuiteWidget()
+        #self._widget = ConfigurationDockWidget()
 
-        # give QObjects reasonable names
-        self._widget.setObjectName('ClimbingUi')
         # add widget to the user interface
         context.add_widget(self._widget)
+        
+        # Custom setup function to make sure promoted widgets all do their setup properly
+        self._widget.setupUi()
 
     def shutdown_plugin(self):
         self._widget.shutdown()
