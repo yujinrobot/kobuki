@@ -1,5 +1,6 @@
 import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
+import threading
 
 from tf.transformations import euler_from_quaternion
 from math import degrees, radians
@@ -24,15 +25,22 @@ def sig(x):
 '''
   Implements a safe wandering random motion using bump and cliff sensors. 
 '''
-class SafeWandering(object):
+class SafeWandering(threading.Thread):
     
     '''
-      Initialise everything, then later start with the spin() method.
+      Initialise everything, then starts with start()
+
+      API:
+        start() - start to wander. 
+        stop()  - stop wandering.
+        set_vels(lin_xvel,stepback_xvel,ang_zvel)
       
       @param topic names
       @type strings
     '''
     def __init__(self, cmd_vel_topic, odom_topic, bumper_topic, cliff_topic ):
+        threading.Thread.__init__(self)
+
         rospy.Subscriber(bumper_topic, BumperEvent, self.bumper_event_callback)
         rospy.Subscriber(cliff_topic, CliffEvent, self.cliff_event_callback)
         rospy.Subscriber(odom_topic, Odometry, self.odometry_callback)
@@ -42,6 +50,11 @@ class SafeWandering(object):
         self.ok = True
         self.theta = 0.0
         self.theta_goal = 0.0
+        self._stop = False
+
+        self._lin_xvel = 0.18
+        self._stepback_xvel = -0.1
+        self._ang_zvel = 1.8
 
     def command(self, twist):
         self.pub.publish(twist)
@@ -51,19 +64,19 @@ class SafeWandering(object):
 
     def go(self):
         twist = Twist()
-        twist.linear.x = 0.18
+        twist.linear.x = self._lin_xvel
         while self.ok:
             self.command(twist)
 
     def stepback(self):
         twist = Twist()
-        twist.linear.x = -0.1
+        twist.linear.x = self._stepback_xvel
         for i in range(0,35): 
             self.command(twist)
  
     def turn(self):
         twist = Twist()
-        twist.angular.z = 1.8*sig(wrapToPi(self.theta_goal - self.theta))
+        twist.angular.z = self._ang_zvel * sig(wrapToPi(self.theta_goal - self.theta))
         while not self.reached():
             self.command(twist)
         self.ok = True
@@ -74,11 +87,20 @@ class SafeWandering(object):
         else:
             return False
 
-    def spin(self):
-        while not rospy.is_shutdown():
+    def stop(self):
+        self._stop = True
+
+    def run(self):
+        self._stop = False
+        while not self._stop and not rospy.is_shutdown():
             self.go()
             self.stepback()
             self.turn()
+
+    def set_vels(self,lin_xvel,stepback_xvel,ang_zvel):
+        self._lin_xvel = lin_xvel
+        self._stepback_xvel = stepback_xvel
+        self._ang_zvel = ang_zvel
 
     ##########################################################################
     # Callbacks
