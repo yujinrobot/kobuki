@@ -1,3 +1,0 @@
-
-# Local imports
-#import climbing
