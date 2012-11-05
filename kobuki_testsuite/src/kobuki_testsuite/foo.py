@@ -1,0 +1,3 @@
+
+def bar():
+    print "Foobar"

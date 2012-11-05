@@ -12,15 +12,8 @@ from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from kobuki_comms.msg import BumperEvent, CliffEvent
 
-
-def wrapToPi(x):
-    import numpy as np
-    return np.mod(x+np.pi,2*np.pi)-np.pi
-
-def sig(x):
-    if x > 0: return +1
-    if x < 0: return -1
-    return 0
+# Local imports
+import utils
 
 '''
   Implements a safe wandering random motion using bump and cliff sensors. 
@@ -76,13 +69,13 @@ class SafeWandering(threading.Thread):
  
     def turn(self):
         twist = Twist()
-        twist.angular.z = self._ang_zvel * sig(wrapToPi(self.theta_goal - self.theta))
+        twist.angular.z = self._ang_zvel * utils.sign(utils.wrap_to_pi(self.theta_goal - self.theta))
         while not self.reached():
             self.command(twist)
         self.ok = True
 
     def reached(self):
-        if abs(wrapToPi(self.theta_goal - self.theta)) < radians(5.0):
+        if abs(utils.wrap_to_pi(self.theta_goal - self.theta)) < radians(5.0):
             return True
         else:
             return False
@@ -121,7 +114,7 @@ class SafeWandering(threading.Thread):
             elif data.bumper == BumperEvent.RIGHT:
                 self.theta_goal = self.theta + 3.141592*random.uniform(0.2, 1.0)
             else:
-                self.theta_goal = wrapToPi(self.theta + 3.141592*random.uniform(-1.0, 1.0))
+                self.theta_goal = utils.wrap_to_pi(self.theta + 3.141592*random.uniform(-1.0, 1.0))
 
     def cliff_event_callback(self, data):
         if data.state == CliffEvent.CLIFF:
@@ -131,5 +124,5 @@ class SafeWandering(threading.Thread):
             elif data.sensor == CliffEvent.RIGHT:
                 self.theta_goal = self.theta + 3.141592*random.uniform(0.2, 1.0)
             else:
-                self.theta_goal = wrapToPi(self.theta + 3.141592*random.uniform(-1.0, 1.0))
+                self.theta_goal = utils.wrap_to_pi(self.theta + 3.141592*random.uniform(-1.0, 1.0))
  
