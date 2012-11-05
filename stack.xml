@@ -17,4 +17,5 @@
   <depend stack="ros_comm" /> <!-- std_msgs, topic_tools, rospy, roscpp -->
   <depend stack="pcl_ros" /> <!-- std_msgs, topic_tools, rospy, roscpp -->
   <depend stack="robot_model"/> <!-- urdf -->
+  <depend stack="xacro"/>
 </stack>
