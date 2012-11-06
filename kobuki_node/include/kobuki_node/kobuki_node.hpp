@@ -62,6 +62,7 @@
 #include <kobuki_comms/WheelDropEvent.h>
 #include <kobuki_comms/PowerSystemEvent.h>
 #include <kobuki_comms/DigitalInputEvent.h>
+#include <kobuki_comms/RobotStateEvent.h>
 #include <kobuki_comms/DigitalOutput.h>
 #include <kobuki_comms/Led.h>
 #include <kobuki_comms/SensorState.h>
@@ -103,7 +104,7 @@ private:
    **********************/
   ros::Publisher version_info_publisher;
   ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher, dock_ir_publisher;
-  ros::Publisher button_event_publisher, input_event_publisher;
+  ros::Publisher button_event_publisher, input_event_publisher, robot_event_publisher;
   ros::Publisher bumper_event_publisher, cliff_event_publisher, wheel_event_publisher, power_event_publisher;
   ros::Publisher raw_data_command_publisher;
   ros::Publisher bumper_as_pc_publisher;
@@ -140,6 +141,7 @@ private:
   ecl::Slot<const WheelEvent&>  slot_wheel_event;
   ecl::Slot<const PowerEvent&>  slot_power_event;
   ecl::Slot<const InputEvent&>  slot_input_event;
+  ecl::Slot<const RobotEvent&>  slot_robot_event;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
   ecl::Slot<Command::Buffer&> slot_raw_data_command;
 
@@ -158,6 +160,7 @@ private:
   void publishWheelEvent(const WheelEvent &event);
   void publishPowerEvent(const PowerEvent &event);
   void publishInputEvent(const InputEvent &event);
+  void publishRobotEvent(const RobotEvent &event);
 
   // debugging
   void rosDebug(const std::string &msg) { ROS_DEBUG_STREAM("Kobuki : " << msg); }

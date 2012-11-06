@@ -103,15 +103,12 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   //checking device
   if( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
       ecl::Sleep waiting(5); //for 5sec.
+      event_manager.update(is_connected, is_alive);
       while( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
         sig_info.emit("device is not exist. still waiting...");
         waiting();
       }
-  } else {
-    is_connected = true;
-    is_alive = true;
   }
-
   //try {
   serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
   /*} catch (...){
@@ -119,6 +116,9 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
     throw; //kobuki_node will handle this
     //exit(-1); //forcely exit here
   }*/
+  is_connected = true;
+  event_manager.update(is_connected, is_alive);
+
   serial.block(4000); // blocks by default, but just to be clear!
   serial.clear();
   ecl::PushAndPop<unsigned char> stx(2, 0);
@@ -185,7 +185,9 @@ void Kobuki::spin()
       sig_error.emit("device is not exist.");
       is_connected = false;
       is_alive = false;
-      if( serial.open() ) 
+      event_manager.update(is_connected, is_alive);
+
+      if( serial.open() )
       {
         sig_info.emit("device is still open, closing it, and retry to open.");
         serial.close();
@@ -199,8 +201,8 @@ void Kobuki::spin()
       serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
       if( serial.open() ) {
         sig_info.emit("device is conencted.");
-        is_alive = true;
         is_connected = true;
+        event_manager.update(is_connected, is_alive);
         sendCommand(Command::GetVersionInfo());
       }
     }
@@ -215,6 +217,7 @@ void Kobuki::spin()
       {
         is_alive = false;
       }
+      event_manager.update(is_connected, is_alive);
       continue;
     }
     else
@@ -301,7 +304,9 @@ void Kobuki::spin()
             break;
         }
       }
+
       is_alive = true;
+      event_manager.update(is_connected, is_alive);
       last_signal_time.stamp();
       sig_stream_data.emit();
       sendBaseControlCommand(); // send the command packet to mainboard;
@@ -312,6 +317,7 @@ void Kobuki::spin()
       if (is_alive && ((ecl::TimeStamp() - last_signal_time) > timeout))
       {
         is_alive = false;
+        // do not call here the event manager update, as it generates a spurious offline state
       }
     }
   }

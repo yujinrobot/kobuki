@@ -320,6 +320,21 @@ void KobukiNode::publishInputEvent(const InputEvent &event)
   }
 }
 
+void KobukiNode::publishRobotEvent(const RobotEvent &event)
+{
+  if (ros::ok())
+  {
+    kobuki_comms::RobotStateEvent msg;
+    switch(event.state) {
+      case(RobotEvent::Online)  : { msg.state = kobuki_comms::RobotStateEvent::ONLINE;  break; }
+      case(RobotEvent::Offline) : { msg.state = kobuki_comms::RobotStateEvent::OFFLINE; break; }
+      default: break;
+    }
+
+    robot_event_publisher.publish(msg);
+  }
+}
+
 void KobukiNode::publishRawDataCommand(Command::Buffer &buffer)
 {
   if ( raw_data_command_publisher.getNumSubscribers() > 0 ) { // do not do string processing if there is no-one listening.

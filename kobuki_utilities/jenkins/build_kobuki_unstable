@@ -6,6 +6,7 @@ sudo apt-get install -y ros-fuerte-turtlebot ros-fuerte-turtlebot-apps ros-fuert
 sudo apt-get install -y ros-fuerte-warehousewg
 sudo apt-get install -y ros-fuerte-turtlebot-viz ros-fuerte-simulators
 sudo apt-get install -y ros-fuerte-mjpeg-server
+sudo apt-get install -y ros-fuerte-rosbridge-suite
 sudo apt-get install -y libavahi-core-dev
 rm -rf ${WORKSPACE}/kobuki_workspace
 rosinstall ${WORKSPACE}/kobuki_workspace https://raw.github.com/yujinrobot/kobuki/master/kobuki_unstable.rosinstall
@@ -16,4 +17,4 @@ rosdep install kobuki_utilities
 rosdep install kobuki_gazebo
 rosmake --pre-clean kobuki_utilities
 rosmake --pre-clean kobuki_gazebo
-rosmake --target=test kobuki_utilities
+#rosmake --target=test kobuki_utilities
