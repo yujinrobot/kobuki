@@ -9,16 +9,16 @@ import utils
     
 '''
   Travels forward a set distance. 
-'''
-class TravelForward(object):
-    '''
-      Initialise everything
 
       API:
         init(speed,distance) : (re)initialise parameters 
         stop()  - stop.
         execute() - pass this to a thread to run
         shutdown() - cleanup
+'''
+class TravelForward(object):
+    '''
+      Initialise everything
       
       @param topic names
       @type strings
@@ -39,6 +39,8 @@ class TravelForward(object):
         
     def shutdown(self):
         self.stop()
+        while self._running():
+            rospy.sleep(0.05)
         self.cmd_vel_publisher.unregister()
         self.odom_subscriber.unregister()
     

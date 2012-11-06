@@ -17,9 +17,18 @@ import utils
 
 '''
   Implements a safe wandering random motion using bump and cliff sensors. 
+
+      API:
+        init(speed,distance) : (re)initialise parameters 
+        stop()  - stop.
+        execute() - pass this to a thread to run
+        shutdown() - cleanup
+      
+      @param topic names
+      @type strings
+
 '''
-class SafeWandering(threading.Thread):
-    
+class SafeWandering(object):
     '''
       Initialise everything, then starts with start()
 
@@ -34,23 +43,33 @@ class SafeWandering(threading.Thread):
     def __init__(self, cmd_vel_topic, odom_topic, bumper_topic, cliff_topic ):
         threading.Thread.__init__(self)
 
-        rospy.Subscriber(bumper_topic, BumperEvent, self.bumper_event_callback)
-        rospy.Subscriber(cliff_topic, CliffEvent, self.cliff_event_callback)
-        rospy.Subscriber(odom_topic, Odometry, self.odometry_callback)
-        self.pub = rospy.Publisher(cmd_vel_topic, Twist)
+        bumper_subscriber = rospy.Subscriber(bumper_topic, BumperEvent, self.bumper_event_callback)
+        cliff_subscriber = rospy.Subscriber(cliff_topic, CliffEvent, self.cliff_event_callback)
+        odom_subscriber = rospy.Subscriber(odom_topic, Odometry, self.odometry_callback)
+        self.cmd_vel_publisher = rospy.Publisher(cmd_vel_topic, Twist)
         self.rate = rospy.Rate(50)
 
         self.ok = True
         self.theta = 0.0
         self.theta_goal = 0.0
         self._stop = False
+        self._running = False
 
         self._lin_xvel = 0.18
         self._stepback_xvel = -0.1
         self._ang_zvel = 1.8
+        
+    def shutdown(self):
+        self.stop()
+        while self._running():
+            rospy.sleep(0.05)
+        self.cmd_vel_publisher.unregister()
+        self.odom_subscriber.unregister()
+        self.bumper_subscriber.unregister()
+        self.cliff_subscriber.unregister()
 
     def command(self, twist):
-        self.pub.publish(twist)
+        self.cmd_vel_publisher.publish(twist)
         self.rate.sleep()
         if rospy.is_shutdown():
             sys.exit()
@@ -83,12 +102,17 @@ class SafeWandering(threading.Thread):
     def stop(self):
         self._stop = True
 
-    def run(self):
+    def execute(self):
+        if self._running:
+            rospy.logerr("Kobuki TestSuite: already executing wandering, ignoring the request")
+            return
         self._stop = False
+        self._running = True
         while not self._stop and not rospy.is_shutdown():
             self.go()
             self.stepback()
             self.turn()
+        self._running = False
 
     def set_vels(self,lin_xvel,stepback_xvel,ang_zvel):
         self._lin_xvel = lin_xvel
