@@ -117,7 +117,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
     //exit(-1); //forcely exit here
   }*/
   is_connected = true;
-  event_manager.update(is_connected, is_alive);
+  is_alive = true;
 
   serial.block(4000); // blocks by default, but just to be clear!
   serial.clear();
