@@ -1,0 +1,11 @@
+/opt/kobuki/kobuki/kobuki_factory_test/include/kobuki_factory_test/main_window.hpp
+/opt/kobuki/kobuki/kobuki_factory_test/include/kobuki_factory_test/qnode.hpp
+/opt/kobuki/kobuki/kobuki_factory_test/resources/images/icon.png
+/opt/kobuki/kobuki/kobuki_factory_test/resources/images.qrc
+/opt/kobuki/kobuki/kobuki_factory_test/src/main.cpp
+/opt/kobuki/kobuki/kobuki_factory_test/src/main_window.cpp
+/opt/kobuki/kobuki/kobuki_factory_test/src/qnode.cpp
+/opt/kobuki/kobuki/kobuki_factory_test/ui/main_window.ui
+/opt/kobuki/kobuki/kobuki_factory_test/CMakeLists.txt
+/opt/kobuki/kobuki/kobuki_factory_test/mainpage.dox
+/opt/kobuki/kobuki/kobuki_factory_test/manifest.xml
