@@ -39,7 +39,7 @@ class TravelForward(object):
         
     def shutdown(self):
         self.stop()
-        while self._running():
+        while self._running:
             rospy.sleep(0.05)
         self.cmd_vel_publisher.unregister()
         self.odom_subscriber.unregister()
@@ -60,6 +60,7 @@ class TravelForward(object):
         self._current_speed = 0.0
         current_distance_sq = 0.0
         distance_sq = self._distance*self._distance
+        self._starting_pose = self._current_pose
         while not self._stop and not rospy.is_shutdown():
             if current_distance_sq > distance_sq:
                 break
