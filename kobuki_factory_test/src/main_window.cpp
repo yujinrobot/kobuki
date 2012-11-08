@@ -10,7 +10,6 @@
 *****************************************************************************/
 
 #include <QtGui>
-#include <QMessageBox>
 #include <iostream>
 #include "../include/kobuki_factory_test/main_window.hpp"
 
@@ -29,6 +28,7 @@ using namespace Qt;
 MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     : QMainWindow(parent)
     , qnode(argc,argv)
+    , msg_box(this)
 {
     ui.setupUi(this); // Calling this incidentally connects all ui's triggers to on_...() callbacks in this class.
     QObject::connect(ui.actionAbout_Qt, SIGNAL(triggered(bool)), qApp, SLOT(aboutQt())); // qApp is a global variable for the application
@@ -42,8 +42,11 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     ** QNode interaction
     **********************/
 //    ui.view_logging->setModel(qnode.loggingModel());
-    QObject::connect(&qnode, SIGNAL(showMessage(const QString&, const QString&)),
-                       this,   SLOT(showPopupMsg(const QString&, const QString&)));
+//    QObject::connect(&qnode, SIGNAL(showMessage(const QString&, const QString&)),
+  //                     this,   SLOT(showPopupMsg(const QString&, const QString&)));
+//    QObject::connect(&qnode, SIGNAL(hideMessage()), this, SLOT(hidePopupMsg()));
+    QObject::connect(&qnode, SIGNAL(requestMW(QNodeRequest*)),
+                         this, SLOT(qNodeRequest(QNodeRequest*)));
 
     /*********************
     ** Logging
@@ -129,8 +132,36 @@ void MainWindow::updateLoggingView() {
  * the user can always see the latest log message.
  */
 void MainWindow::showPopupMsg(const QString& title, const QString& text) {
-  QMessageBox::information(this, title, text, QMessageBox::NoButton, QMessageBox::NoButton);
+  std::cout<<"      1111111111111111       \n";
+//  msg_box.setText(text);
+//  msg_box.setWindowTitle(title);
+//  msg_box.show();
+//  QMessageBox::information(this, title, text, QMessageBox::NoButton, QMessageBox::NoButton);
 }
+
+void MainWindow::qNodeRequest(QNodeRequest* request) {
+  QCoreApplication::postEvent(this, request);
+}
+
+bool MainWindow::event(QEvent* e) {
+  if (e->type() == QEvent::User) {
+    QNodeRequest* request = (QNodeRequest*)e;
+
+    if ((request->title.isEmpty() == false) || (request->text.isEmpty() == false)) {
+      msg_box.setText(request->text);
+      msg_box.setWindowTitle(request->title);
+      msg_box.show();
+    }
+    else
+      msg_box.hide();
+  }
+  else
+    QMainWindow::event(e);
+
+  return true;
+}
+
+
 
 /*****************************************************************************
 ** Implementation [Menu]

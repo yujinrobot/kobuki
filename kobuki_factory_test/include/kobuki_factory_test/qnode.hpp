@@ -18,6 +18,7 @@
 
 #include <ros/ros.h>
 
+#include <QEvent>
 #include <QThread>
 #include <QStringListModel>
 
@@ -47,6 +48,14 @@ namespace kobuki_factory_test {
 ** Class
 *****************************************************************************/
 
+class QNodeRequest : public QEvent {
+public:
+  QNodeRequest(const QString& title = "", const QString& text = "")
+      : QEvent(QEvent::User), title(title), text(text) { };
+  QString title;
+  QString text;
+};
+
 class QNode : public QThread {
   Q_OBJECT
 public:
@@ -56,6 +65,7 @@ public:
   void run();
 
   enum EvalStep {
+    INITIALIZATION,
     DC_JACK_PLUGGED,
     DC_JACK_UNPLUGGED,
     DOCKING_PLUGGED,
@@ -65,26 +75,28 @@ public:
     BUTTON_1_PRESSED,
     BUTTON_1_RELEASED,
     BUTTON_2_PRESSED,
-    BUTTON_2_RELEASED,
+    BUTTON_2_RELEASED,   // 10
     TEST_LEDS,
     TEST_SOUNDS,
-    CLIFF_AND_WHEEL_DROP,  // 10
-    CENTER_BUMPER_PRESSED, // 11
+    TEST_CLIFF_SENSORS,
+    TEST_WHEEL_DROP_SENSORS,  // 14
+    CENTER_BUMPER_PRESSED,
     CENTER_BUMPER_RELEASED,
     POINT_RIGHT_BUMPER,
     RIGHT_BUMPER_PRESSED,
     RIGHT_BUMPER_RELEASED,
-    POINT_LEFT_BUMPER,
-    LEFT_BUMPER_PRESSED,  // 17
+    POINT_LEFT_BUMPER,    // 20
+    LEFT_BUMPER_PRESSED,  // 21
     LEFT_BUMPER_RELEASED,
-    PREPARE_MOTORS_TEST,   // 19
-    TEST_MOTORS_FORWARD,   // 20
+    PREPARE_MOTORS_TEST,   // 23
+    TEST_MOTORS_FORWARD,   // 24
     TEST_MOTORS_BACKWARD,
     TEST_MOTORS_CLOCKWISE,
     TEST_MOTORS_COUNTERCW,
     EVAL_MOTORS_CURRENT,
-
     MEASURE_GYRO_ERROR,
+    EVALUATION_COMPLETED,
+
     MEASURE_CHARGING, //?
 
     SOMETHING_MORE,
@@ -107,13 +119,16 @@ public:
   void log(const LogLevel &level, const std::string &format, ...);
 
 Q_SIGNALS:
+  void requestMW(QNodeRequest* request);
   void showMessage(const QString& title, const QString& text);
   void loggingUpdated();
   void rosShutdown();
 
 private:
-  int init_argc;
-  char** init_argv;
+  int      init_argc;
+  char**   init_argv;
+
+//  TestIMU  imuTester;
 
   bool     timer_active;
   ros::Timer timer;
@@ -173,10 +188,11 @@ private:
   /*********************
   ** Other methods
   **********************/
-  void testLeds();
-  void testSounds();
-  void move(double v, double w, double t = 0.0);
-  bool saveResults(Robot* robot);
+  bool testIMU(bool show_msg);
+  void testLeds(bool show_msg);
+  void testSounds(bool show_msg);
+  void move(double v, double w, double t = 0.0, bool blocking = false);
+  bool saveResults();
 };
 
 }  // namespace kobuki_factory_test

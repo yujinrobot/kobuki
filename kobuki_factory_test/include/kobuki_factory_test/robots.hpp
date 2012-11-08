@@ -32,6 +32,19 @@ namespace kobuki_factory_test {
 typedef long long int int64;
 
 /*****************************************************************************
+** Helper functions
+*****************************************************************************/
+
+template<class T> std::string to_string(T i) {
+    std::stringstream ss;
+    std::string s;
+    ss << i;
+    s = ss.str();
+
+    return ss.str();
+}
+
+/*****************************************************************************
 ** Class
 *****************************************************************************/
 
@@ -78,39 +91,17 @@ public:
 
   Robot(unsigned int seq_nb) :
     seq_nb(seq_nb),
+    serial(to_string(seq_nb)), // temporally, until we have a real serial number
     state(UNKNOWN),
     device_ok(DEVICES_COUNT),
-    device_val(DEVICES_COUNT) {
-//    v_info(3),
-//    beacon(3),
-//    button(3),
-//    bumper(3),
-//    w_drop(2),
-//    cliff(3),
-//    power(2),
-//    input(4),
-//    motor(2),
-//    leds(3) {
+    device_val(DEVICES_COUNT),
+    imu_data(5) // test 1, diff 1, test 2, diff 2, current value
+    {
 
     for (unsigned int i = 0; i < DEVICES_COUNT; i++) {
       device_ok[i] = false;
       device_val[i] = 0;
     }
-
-//    v_info_ok = false;
-//    beacon_ok = false;
-//    gyro_ok = false;
-//    button_ok = false;
-//    bumper_ok = false;
-//    w_drop_ok = false;
-//    cliff_ok = false;
-//    power_ok = false;
-//    input_ok = false;
-//    output_ok = false;
-//    ext_pwr_ok = false;
-//    leds_ok = false;
-//    sound_ok = false;
-//    motor_ok = false;
   };
 
   ~Robot() { };
@@ -152,6 +143,9 @@ public:
   std::vector<bool>  device_ok;
   std::vector<int64> device_val;
 
+  // Some special (non integer) data
+  std::vector<double> imu_data;
+
 
 //  bool v_info_ok;
 //  bool beacon_ok;
@@ -184,7 +178,6 @@ public:
 class RobotList : public std::list<Robot> {
 
 };
-
 
 // Define a postfix increment operator for Robot::Device
 inline Robot::Device operator++(Robot::Device& rd, int)

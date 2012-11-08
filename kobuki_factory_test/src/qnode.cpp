@@ -14,8 +14,7 @@
 #include <sstream>
 #include <cstdarg>
 
-#include <QMessageBox>
-
+#include <tf/tf.h>
 #include <ros/ros.h>
 
 #include <geometry_msgs/Twist.h>
@@ -24,6 +23,7 @@
 #include <kobuki_comms/DigitalOutput.h>
 
 #include "../include/kobuki_factory_test/qnode.hpp"
+#include "../include/kobuki_factory_test/test_imu.hpp"
 
 /*****************************************************************************
 ** Namespaces
@@ -41,6 +41,7 @@ namespace kobuki_factory_test {
 #define TEST_MOTORS_A   (2.0*M_PI)  // turning, in rad
 #define TEST_BUMPERS_V   0.1
 #define TEST_BUMPERS_W  (M_PI/6.0)
+#define TEST_GYRO_W     (M_PI/6.0)
 
 /*****************************************************************************
 ** Implementation
@@ -95,6 +96,7 @@ void QNode::dockBeaconCB(const kobuki_comms::DockInfraRed::ConstPtr& msg) {
   if ((under_test == NULL) || (under_test->ir_dock_ok() == true))
     return;
 
+  // Collect ir dock readings at any moment; TODO should we restrict it to an evaluation step?
   if (msg->data[0] > 0) {
     under_test->device_val[Robot::IR_DOCK_L] = msg->data[0];
     under_test->device_ok[Robot::IR_DOCK_L] = true;
@@ -115,34 +117,42 @@ void QNode::dockBeaconCB(const kobuki_comms::DockInfraRed::ConstPtr& msg) {
                 under_test->device_val[Robot::IR_DOCK_L],
                 under_test->device_val[Robot::IR_DOCK_C],
                 under_test->device_val[Robot::IR_DOCK_R]);
-
-//  under_test->device_val[Robot::IR_DOCK_L] = std::max(under_test->device_val[Robot::IR_DOCK_L], (int)msg->data[0]);
-//  under_test->device_val[Robot::IR_DOCK_C] = std::max(under_test->device_val[Robot::IR_DOCK_C], (int)msg->data[1]);
-//  under_test->device_val[Robot::IR_DOCK_R] = std::max(under_test->device_val[Robot::IR_DOCK_R], (int)msg->data[2]);
-
   }
 
 void QNode::gyroscopeCB(const sensor_msgs::Imu::ConstPtr& msg) {
-  ;
+  if ((under_test == NULL) || (current_step != MEASURE_GYRO_ERROR))
+    return;
+
+  under_test->imu_data[4] = tf::getYaw(msg->orientation);
 }
 
 void QNode::buttonEventCB(const kobuki_comms::ButtonEvent::ConstPtr& msg) {
   if (under_test == NULL)
     return;
 
-  if ((current_step == TEST_LEDS) && (msg->state  == kobuki_comms::ButtonEvent::PRESSED)) {
-    // We are currently evaluating the LEDs; if tester press first button for ok or third otherwise
-    if (msg->button == kobuki_comms::ButtonEvent::Button0) {
-      under_test->device_ok[Robot::LED_1] = under_test->device_ok[Robot::LED_2] = true;
-      log(Info, "LEDs evaluation completed");
-      log(Info, "Raise and lower the robot three times");
+  if (((current_step == TEST_LEDS) || (current_step == TEST_SOUNDS)) &&
+      (msg->state  == kobuki_comms::ButtonEvent::PRESSED)) {
+    // We are currently evaluating a device that requires tester feedback
+    // he must press the first button if test is ok or the third otherwise
+    if ((msg->button == kobuki_comms::ButtonEvent::Button0) ||
+        (msg->button == kobuki_comms::ButtonEvent::Button2)) {
+      if (current_step == TEST_LEDS) {
+        under_test->device_ok[Robot::LED_1] = msg->button == kobuki_comms::ButtonEvent::Button0;
+        under_test->device_ok[Robot::LED_2] = msg->button == kobuki_comms::ButtonEvent::Button0;
+      }
+      else if (current_step == TEST_SOUNDS) {
+        under_test->device_ok[Robot::SOUNDS] = msg->button == kobuki_comms::ButtonEvent::Button0;
+      }
+
+      if (msg->button == kobuki_comms::ButtonEvent::Button0)
+        log(Info, "%s evaluation completed", (current_step == TEST_LEDS)?"LEDs":"Sounds");
+      else if (msg->button == kobuki_comms::ButtonEvent::Button2)
+        log(Warn, "%s didn't pass the test", (current_step == TEST_LEDS)?"LEDs":"Sounds");  // TODO  should we cancel eval?
+
+      Q_EMIT requestMW(new QNodeRequest("", "")); // hide user message  TODO veeeeeery crappy
       current_step++;
     }
-    else if (msg->button == kobuki_comms::ButtonEvent::Button2) {
-      under_test->device_ok[Robot::LED_1] = under_test->device_ok[Robot::LED_2] = false;
-      log(Warn, "LEDs didn't pass the test");  // TODO  should we cancel eval?
-      current_step++;
-    }
+
     return;
   }
 
@@ -159,8 +169,6 @@ void QNode::buttonEventCB(const kobuki_comms::ButtonEvent::ConstPtr& msg) {
   // Note that we assume that buttons are 0, 1 and 2, and states are 1 (pressed) and 0 (released)
   uint8_t expected_button = (current_step - BUTTON_0_PRESSED)/2;
   uint8_t expected_action = (current_step - BUTTON_0_PRESSED)%2 ^ 1;
-
-//  std::cout << "\n\n" << (int)expected_button << "   " << (int)expected_action << "   " << current_step << "    " << dev << "    " << "\n\n";
 
   if ((msg->button == expected_button) && (msg->state == expected_action)) {
     Robot::Device dev = (Robot::Device)(Robot::BUTTON_0 + msg->button);
@@ -194,9 +202,6 @@ void QNode::bumperEventCB(const kobuki_comms::BumperEvent::ConstPtr& msg) {
   int expected_action = ((current_step - CENTER_BUMPER_PRESSED)%3 ^ 1);
 
   if ((msg->bumper == expected_bumper) && (msg->state == expected_action)) {
-//    Robot::Device dev = (Robot::Device)(Robot::BUMPER_L + msg->bumper);
-//    std::cout << "\n" << (int)expected_bumper << "   " << (int)expected_action << "   " << (int)current_step << "    " << (int)dev << "    " << "\n";
-
     log(Info, "Bumper %d %s, as expected", msg->bumper, msg->state?"pressed":"released");
 
     if (msg->state == kobuki_comms::BumperEvent::PRESSED) {
@@ -214,7 +219,8 @@ void QNode::bumperEventCB(const kobuki_comms::BumperEvent::ConstPtr& msg) {
 }
 
 void QNode::wDropEventCB(const kobuki_comms::WheelDropEvent::ConstPtr& msg) {
-  if ((under_test == NULL) || (under_test->w_drop_ok() == true))
+  if ((under_test == NULL) || (current_step != TEST_WHEEL_DROP_SENSORS))// ||
+/////      (under_test->w_drop_ok() == true))
     return;
 
   Robot::Device dev =
@@ -229,9 +235,13 @@ void QNode::wDropEventCB(const kobuki_comms::WheelDropEvent::ConstPtr& msg) {
     log(Info, "%s wheel %s, as expected", msg->wheel?"Right":"Left", msg->state?"dropped":"raised");
     under_test->device_val[dev]++;
 
-    if (under_test->device_val[dev] == 6) {
+    if (under_test->device_val[dev] >= 6) {
       log(Info, "%s wheel drop evaluation completed", msg->wheel?"Right":"Left");
       under_test->device_ok[dev] = true;
+
+      // Wheel drop sensors evaluation complete
+      if (under_test->w_drop_ok() == true)
+        current_step++;
     }
   }
   else
@@ -239,7 +249,8 @@ void QNode::wDropEventCB(const kobuki_comms::WheelDropEvent::ConstPtr& msg) {
 }
 
 void QNode::cliffEventCB(const kobuki_comms::CliffEvent::ConstPtr& msg) {
-  if ((under_test == NULL) || (under_test->cliffs_ok() == true))
+  if ((under_test == NULL) || (current_step != TEST_CLIFF_SENSORS))// ||
+      ////////////////////////////////////////////(under_test->cliffs_ok() == true))
     return;
 
   Robot::Device dev = (msg->sensor == kobuki_comms::CliffEvent::LEFT) ?Robot::CLIFF_L:
@@ -257,10 +268,14 @@ void QNode::cliffEventCB(const kobuki_comms::CliffEvent::ConstPtr& msg) {
         msg->state?"cliff":"no cliff");
     under_test->device_val[dev]++;
 
-    if (under_test->device_val[dev] == 6) {
+    if (under_test->device_val[dev] >= 6) {
       log(Info, "%s cliff sensor evaluation completed",
            dev == Robot::CLIFF_R?"Right":dev == Robot::CLIFF_C?"Center":"Left");
       under_test->device_ok[dev] = true;
+
+      // Cliff sensors evaluation complete
+      if (under_test->cliffs_ok() == true)
+        current_step++;
     }
   }
   else
@@ -287,7 +302,7 @@ void QNode::powerEventCB(const kobuki_comms::PowerSystemEvent::ConstPtr& msg) {
         under_test->device_val[Robot::PWR_JACK]++;
 
         if (under_test->device_val[Robot::PWR_JACK] == 6) {
-          log(Info, "Adapter plugging evaluation completed; connect robot to docking base three times");
+          log(Info, "Adapter plugging evaluation completed");
           under_test->device_ok[Robot::PWR_JACK] = true;
 
           current_step = DOCKING_PLUGGED;
@@ -316,7 +331,7 @@ void QNode::powerEventCB(const kobuki_comms::PowerSystemEvent::ConstPtr& msg) {
           log(Info, "Adapter plugging evaluation completed");
           under_test->device_ok[Robot::PWR_DOCK] = true;
 
-//          /*  TODO NEXT STATE */current_step = BUTTON_0_PRESSED;
+          current_step++;
         }
         else
           current_step = DOCKING_PLUGGED;
@@ -396,8 +411,7 @@ void QNode::robotEventCB(const kobuki_comms::RobotStateEvent::ConstPtr& msg) {
     if (under_test != NULL) {
       log(Warn, "New robot connected while %s is still under evaluation; saving...",
            under_test->serial.c_str());
-      saveResults(under_test);
-      delete under_test;
+      saveResults();
     }
     else {
       log(Info, "New robot connected");
@@ -410,9 +424,6 @@ void QNode::robotEventCB(const kobuki_comms::RobotStateEvent::ConstPtr& msg) {
     // Resubscribe to version_info to get robot version number (it's a latched topic)
     v_info_sub.shutdown();
     v_info_sub = nh.subscribe("mobile_base/version_info", 1, &QNode::versionInfoCB, this);
-
-    // Point to the first evaluation task
-    log(Info, "Connect adapter to robot three times");
   }
   else if (msg->state == kobuki_comms::RobotStateEvent::OFFLINE) {
     if (under_test != NULL) {
@@ -422,12 +433,10 @@ void QNode::robotEventCB(const kobuki_comms::RobotStateEvent::ConstPtr& msg) {
              under_test->serial.c_str());
       }
       else {
-        log(Info, "Robot %s evaluation succesfully completed", under_test->serial.c_str());
+        log(Info, "Robot %s evaluation successfully completed", under_test->serial.c_str());
       }
 
-      saveResults(under_test);
-      delete under_test;
-      under_test = NULL;
+      saveResults();
     }
     else {
       // This should not happen
@@ -447,86 +456,160 @@ void QNode::timerEventCB(const ros::TimerEvent& event) {
   move(0.0, 0.0);
 }
 
-void QNode::move(double v, double w, double t) {
+void QNode::move(double v, double w, double t, bool blocking) {
   geometry_msgs::Twist vel;
 
   vel.linear.x  = v;
   vel.angular.z = w;
   cmd_vel_pub.publish(vel);
   if (t > 0.0) {
-    timer.stop();
-    timer.setPeriod(ros::Duration(t));
-    timer.start();
-    timer_active = true;
-  }
-}
-
-void QNode::testLeds() {
-  kobuki_comms::Led led;
-
-  log(Info, "You should see both leds blinking in green, orange and red alternatively");
-  log(Info, "Press first function button if so or third otherwise");
-
-  Q_EMIT showMessage("LEDs test",
-                     "You should see both LEDs blinking in green, orange and red alternatively" \
-                     "\nPress first function button if so or third otherwise");
-//  QMessageBox::information(NULL, "LEDs test",
-//                           "You should see both LEDs blinking in green, orange and red alternatively\n" \
-//                           "Press first function button if so or third otherwise", QMessageBox::NoButton);
-
-  for (unsigned int i = 0; i < 3; i++) {
-    for (uint8_t c = kobuki_comms::Led::GREEN; c <= kobuki_comms::Led::RED; c++) {
-      ros::Duration(0.5).sleep();
-
-      led.value = c;
-      led_1_pub.publish(led);
-      led_2_pub.publish(led);
-
-      ros::Duration(0.5).sleep();
-
-      led.value = kobuki_comms::Led::BLACK;
-      led_1_pub.publish(led);
-      led_2_pub.publish(led);
+    if (blocking == true)
+      ros::Duration(t).sleep();
+    else {
+      timer.stop();
+      timer.setPeriod(ros::Duration(t));
+      timer.start();
+      timer_active = true;
     }
   }
 }
 
-void QNode::testSounds() {
+void QNode::testLeds(bool show_msg) {
+  if (show_msg == true) {
+    // This should be executed only once
+    log(Info, "You should see both leds blinking in green, orange and red alternatively");
+    log(Info, "Press first function button if so or third otherwise");
+
+    Q_EMIT requestMW(new QNodeRequest("LEDs test",
+              "You should see both LEDs blinking in green, orange and red alternatively\n" \
+              "Press first function button if so or third otherwise"));
+  }
+
   kobuki_comms::Led led;
 
-  log(Info, "You should see both leds blinking in green, orange and red alternatively");
-  log(Info, "Press first function button if so or third otherwise");
+  for (uint8_t c = kobuki_comms::Led::GREEN; c <= kobuki_comms::Led::RED; c++) {
+    ros::Duration(0.5).sleep();
 
-  QMessageBox::information(NULL, "LEDs test",
-                           "You should see both LEDs blinking in green, orange and red alternatively\n" \
-                           "Press first function button if so or third otherwise", QMessageBox::NoButton);
+    led.value = c;
+    led_1_pub.publish(led);
+    led_2_pub.publish(led);
 
-  for (unsigned int i = 0; i < 3; i++) {
-    for (uint8_t c = kobuki_comms::Led::GREEN; c <= kobuki_comms::Led::RED; c++) {
-      ros::Duration(0.5).sleep();
+    ros::Duration(0.5).sleep();
 
-      led.value = c;
-      led_1_pub.publish(led);
-      led_2_pub.publish(led);
-
-      ros::Duration(0.5).sleep();
-
-      led.value = kobuki_comms::Led::BLACK;
-      led_1_pub.publish(led);
-      led_2_pub.publish(led);
-    }
+    led.value = kobuki_comms::Led::BLACK;
+    led_1_pub.publish(led);
+    led_2_pub.publish(led);
   }
 }
 
-bool QNode::saveResults(Robot* robot) {
-  log(Error, "TODO save results");
+void QNode::testSounds(bool show_msg) {
+  if (show_msg == true) {
+    // This should be executed only once
+    log(Info, "You should hear all robot sounds continuously");
+    log(Info, "Press first function button if so or third otherwise");
+
+    Q_EMIT requestMW(new QNodeRequest("Sounds test",
+              "You should hear sounds for 'On', 'Off', 'Recharge', 'Button', " \
+              "'Error', 'Cleaning Start' and 'Cleaning End' continuously\n"    \
+              "Press first function button if so or third otherwise"));
+  }
+
+//  sounds = [Sound.ON, Sound.OFF, Sound.RECHARGE, Sound.BUTTON, Sound.ERROR, Sound.CLEANINGSTART, Sound.CLEANINGEND]
+//  texts = ["On", "Off", "Recharge", "Button", "Error", "CleaningStart", "CleaningEnd"]
+
+  kobuki_comms::Sound sound;
+
+  for (uint8_t s = kobuki_comms::Sound::ON; s <= kobuki_comms::Sound::CLEANINGEND; s++) {
+    ros::Duration(0.5).sleep();
+
+    sound.value = s;
+    sound_pub.publish(sound);
+  }
+}
+
+bool QNode::testIMU(bool show_msg) {
+  if (show_msg == true) {
+    // This should be executed only once
+    log(Info, "Gyroscope testing: place the robot with the check board right below the camera");
+//    log(Info, "Press first function button if so or third otherwise");
+
+    Q_EMIT requestMW(new QNodeRequest("Gyroscope test",
+              "Gyroscope testing: place the robot with the check board right below the camera"));
+  }
+
+  std::string path;
+  ros::NodeHandle nh("~");
+  nh.getParam("camera_calibration_file", path);
+
+  TestIMU  imuTester;
+  if (imuTester.init(path) == false) {
+    log(Error, "Gyroscope test initialization failed; aborting test");
+    return false;
+  }
+
+  double vo_yaw[] = { std::numeric_limits<double>::quiet_NaN(),
+                      std::numeric_limits<double>::quiet_NaN() };
+
+  for (unsigned int i = 0; i < 2; i++) {
+    for (unsigned int j = 0; j < 10; j++) {  // 10 attempts
+      vo_yaw[i] = imuTester.getYaw();
+      if (isnan(vo_yaw[i]) == false)
+        break;
+
+      Q_EMIT requestMW(new QNodeRequest("Gyroscope test",
+           "Cannot recognize the check board; please place the robot right below the camera"));
+
+      ros::spinOnce();
+      ros::Duration(0.1).sleep();
+    }
+
+    if (isnan(vo_yaw[i]) == true) {
+      log(Error, "Cannot recognize the check board after 10 attempts; gyroscope test aborted");
+      Q_EMIT requestMW(new QNodeRequest());
+      return false;
+    }
+
+    log(Info, "Gyroscope test %d result: imu yaw = %.3f / vo yaw = %.3f / diff = %.3f", i + 1,
+               under_test->imu_data[4], vo_yaw[i],
+               under_test->imu_data[4] - vo_yaw[i]);
+
+    under_test->imu_data[i]       = under_test->imu_data[4];
+    under_test->imu_data[i*2 + 1] = under_test->imu_data[4] - vo_yaw[i];
+
+    if (i == 0) {
+      move(0.0, TEST_GYRO_W, (2.0*M_PI)/TEST_GYRO_W, true);  // 360 deg, blocking call
+      ros::spinOnce();
+    }
+    under_test->device_val[Robot::IMU_DEV]++;
+  }
+
+  if (abs(under_test->imu_data[1] - under_test->imu_data[3]) < 0.1) {
+    log(Info, "Gyroscope testing successful: diff 1 = %.3f / diff 2 = %.3f",
+        under_test->imu_data[1], under_test->imu_data[3]);
+    under_test->device_ok[Robot::IMU_DEV] = true;
+  }
+  else
+    log(Warn, "Gyroscope testing failed: diff 1 = %.3f / diff 2 = %.3f",
+        under_test->imu_data[1], under_test->imu_data[3]);
+
+  Q_EMIT requestMW(new QNodeRequest());
+
+  return true;
+}
+
+bool QNode::saveResults() {
+  log(Info, "Saving results for %s", under_test->serial.c_str());
+
+  delete under_test;
+  under_test = NULL;
+
   return true;
 }
 
 bool QNode::init() {
-  ros::init(init_argc,init_argv,"kobuki_factory_test");
-  if ( ! ros::master::check() ) {
-      return false;
+  ros::init(init_argc, init_argv, "kobuki_factory_test");
+  if (! ros::master::check()) {
+    return false;
   }
   ros::start(); // explicitly needed since our nodehandle is going out of scope.
   ros::NodeHandle nh;
@@ -555,11 +638,10 @@ bool QNode::init() {
 
   start();
 
-  current_step = RIGHT_BUMPER_PRESSED;
-  current_step = BUTTON_0_PRESSED;
-  current_step = DC_JACK_PLUGGED;
-  current_step = CLIFF_AND_WHEEL_DROP;
-  current_step = BUTTON_0_PRESSED;
+  current_step = INITIALIZATION;
+//  current_step = BUTTON_0_PRESSED;
+//  current_step = DC_JACK_PLUGGED;
+  //current_step = EVAL_MOTORS_CURRENT;
 
   timer_active = false;
 
@@ -588,14 +670,25 @@ void QNode::run() {
     if (timer_active == true)
       continue;
 
-    // Here we centralize the the succession of evaluation states
+//std::cout<< (timer_active == true)<< "   " << current_step <<"\n";
+
+    // Here we perform the evaluation actions that cannot be driven through events
     switch (current_step) {
+      case INITIALIZATION:
+        current_step++;
+        continue;
       case DC_JACK_PLUGGED:
+        if (previous_step != current_step)
+          log(Info, "Connect adapter to robot three times");
+        break;
       case DC_JACK_UNPLUGGED:
       case DOCKING_PLUGGED:
+        if (previous_step != current_step)
+          log(Info, "Connect robot to docking base three times");
+        break;
       case DOCKING_UNPLUGGED:
         if (under_test->pwr_src_ok() == true) {
-          current_step = BUTTON_0_PRESSED;
+     ///     current_step = BUTTON_0_PRESSED;
         }
         break;
       case BUTTON_0_PRESSED:
@@ -612,30 +705,32 @@ void QNode::run() {
         }
         break;
       case TEST_LEDS:
-        if (previous_step != current_step)
-          testLeds();
+        testLeds(previous_step != current_step);
         break;
       case TEST_SOUNDS:
-        if (previous_step != current_step)
-          testSounds();
+        testSounds(previous_step != current_step);
         break;
-      case CLIFF_AND_WHEEL_DROP:
-        if ((under_test->cliffs_ok() == true) && (under_test->w_drop_ok() == true))  {
-          current_step = CENTER_BUMPER_PRESSED;
+      case TEST_CLIFF_SENSORS:
+        if (previous_step != current_step)
+          log(Info, "Raise and lower the robot three times to test cliff sensors");
+        break;
+      case TEST_WHEEL_DROP_SENSORS:
+        if (previous_step != current_step)
+          log(Info, "Raise and lower the robot three times to test wheel drop sensors");
+        break;
+      case CENTER_BUMPER_PRESSED:
+        if (previous_step != current_step) {
           log(Info, "Place the robot facing a wall");
 
           // After a while, launch the robot to bump frontally
           ros::Duration(1.5).sleep();
+          move(+TEST_BUMPERS_V, 0.0);
         }
-        break;
-      case CENTER_BUMPER_PRESSED:
-        move(+TEST_BUMPERS_V, 0.0);
         break;
       case CENTER_BUMPER_RELEASED:
         break;
       case POINT_RIGHT_BUMPER:
-        move(0.0, +TEST_BUMPERS_W, 1.5);  // +45 deg, block call
-//        current_step = RIGHT_BUMPER_PRESSED;
+        move(0.0, +TEST_BUMPERS_W, (M_PI/4.0)/TEST_BUMPERS_W);  // +45 degrees
         break;
       case RIGHT_BUMPER_PRESSED:
         move(+TEST_BUMPERS_V, 0.0);
@@ -643,44 +738,33 @@ void QNode::run() {
       case RIGHT_BUMPER_RELEASED:
         break;
       case POINT_LEFT_BUMPER:
-        move(0.0, -TEST_BUMPERS_W, 3.0);  // -90 deg, block call
-//        current_step = LEFT_BUMPER_PRESSED;
+        move(0.0, -TEST_BUMPERS_W, (M_PI/2.0)/TEST_BUMPERS_W);  // -90 degrees
         break;
       case LEFT_BUMPER_PRESSED:
         move(+TEST_BUMPERS_V, 0.0);
         break;
       case LEFT_BUMPER_RELEASED:
-        if (under_test->bumpers_ok() == true)  {
+        if (under_test->bumpers_ok() == true)
           log(Info, "Now the robot will move forward, backward and spin to evaluate motors");
-
-          // Wait while to let the robot put in position
-     //     ros::Duration(3.0).sleep();
-  //        current_step = TEST_MOTORS_FORWARD;
-        }
         break;
       case PREPARE_MOTORS_TEST:
-        move(0.0, -TEST_BUMPERS_W, 1.5);  // -45 deg (parallel to wall)
+        move(0.0, -TEST_BUMPERS_W, (M_PI/4.0)/TEST_BUMPERS_W);  // -45 deg (parallel to wall)
         break;
       case TEST_MOTORS_FORWARD:
         move(+TEST_MOTORS_V, 0.0, TEST_MOTORS_D/TEST_MOTORS_V);
-//        current_step++;
         break;
       case TEST_MOTORS_BACKWARD:
       //      ros::Duration(0.25).sleep();
         move(-TEST_MOTORS_V, 0.0, TEST_MOTORS_D/TEST_MOTORS_V);
-  //      current_step++;
         break;
       case TEST_MOTORS_CLOCKWISE:
       //      ros::Duration(0.25).sleep();
         move(0.0, -TEST_MOTORS_W, TEST_MOTORS_A/TEST_MOTORS_W);
-    //    current_step++;
         break;
       case TEST_MOTORS_COUNTERCW:
       //      ros::Duration(0.25).sleep();
         move(0.0, +TEST_MOTORS_W, TEST_MOTORS_A/TEST_MOTORS_W);
-      //  current_step = SOMETHING_MORE;
         break;
-
       case EVAL_MOTORS_CURRENT:
         if (under_test->motors_ok() == true)
           log(Info, "Motors current evaluation completed (%d, %d)",
@@ -689,18 +773,26 @@ void QNode::run() {
           log(Warn, "Motors current too high! (%d, %d)",
                under_test->device_val[Robot::MOTOR_L], under_test->device_val[Robot::MOTOR_R]);
 
-      //current_step = RIGHT_BUMPER_PRESSED;
-        break;/*
-      default:
-        // it's not time to receive timer events; probably there's an error in the code
-        log(Warn, "Unexpected timer event; current step is %d", current_step);
-        move(0.0, 0.0);   // stop robot!
+        current_step++;  // NOTA  puedo usar ++ aqui pero tengo que llamar a continue despues para evitar   previous_step = current_step;
+        continue;
+      case MEASURE_GYRO_ERROR:
+        testIMU(previous_step != current_step);
+        current_step++;
+        continue;
+//        if (testIMU(previous_step != current_step) == false) {
+//          current_step++;
+//          continue;
+//        }
         break;
-      }
-      */
+      case EVALUATION_COMPLETED:
+        log(Info, "Evaluation completed");
+        saveResults();
+        current_step = INITIALIZATION;  // NOTA  puedo usar ++ aqui pero tengo que llamar a continue despues para evitar   previous_step = current_step;
+        break;
       default:
-        // nothing special at this point; we must be evaluating a multi-step device
+        // Should not be here, unless I decide no to enumerate here every step  >>>  nothing special at this point; we must be evaluating a multi-step device
         log(Warn, "Unknown evaluation step: %d", current_step);
+           ////////////////////////move(0.0, 0.0);   // stop robot!
         break;
     }
 

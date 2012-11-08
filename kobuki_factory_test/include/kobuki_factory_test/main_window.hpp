@@ -13,6 +13,7 @@
 *****************************************************************************/
 
 #include <QtGui/QMainWindow>
+#include <QtGui/QMessageBox>
 #include "ui_main_window.h"
 #include "qnode.hpp"
 
@@ -40,7 +41,7 @@ public:
 
     void closeEvent(QCloseEvent *event); // Overloaded function
     void showNoMasterMessage();
-
+    bool event(QEvent* request);
 public Q_SLOTS:
     /******************************************
     ** Auto-connections (connectSlotsByName())
@@ -54,10 +55,13 @@ public Q_SLOTS:
     *******************************************/
     void updateLoggingView(); // no idea why this can't connect automatically
     void showPopupMsg(const QString& title, const QString& text);
+    void qNodeRequest(QNodeRequest* request);
 
 private:
     Ui::MainWindowDesign ui;
     QNode qnode;
+
+    QMessageBox msg_box;
 };
 
 }  // namespace kobuki_factory_test
