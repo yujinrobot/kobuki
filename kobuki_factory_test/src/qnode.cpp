@@ -37,11 +37,11 @@ namespace kobuki_factory_test {
 
 #define TEST_MOTORS_V    0.2        // lin. speed, in m/s
 #define TEST_MOTORS_W   (M_PI/3.0)  // ang. speed, in rad/s
-#define TEST_MOTORS_D    0.6        // distance, in m
+#define TEST_MOTORS_D    0.4        // distance, in m
 #define TEST_MOTORS_A   (2.0*M_PI)  // turning, in rad
 #define TEST_BUMPERS_V   0.1
-#define TEST_BUMPERS_W  (M_PI/6.0)
-#define TEST_GYRO_W     (M_PI/6.0)
+#define TEST_BUMPERS_W  (M_PI/5.0)
+#define TEST_GYRO_W     (M_PI/4.0)
 
 /*****************************************************************************
 ** Implementation
@@ -57,6 +57,7 @@ inline QNode::EvalStep operator++(QNode::EvalStep& es, int)
 QNode::QNode(int argc, char** argv ) :
   init_argc(argc),
   init_argv(argv),
+  frequency(20.0),
   under_test(NULL)
   {}
 
@@ -89,6 +90,12 @@ void QNode::sensorsCoreCB(const kobuki_comms::SensorState::ConstPtr& msg) {
         std::max((uint8_t)under_test->device_val[Robot::MOTOR_L], msg->current[0]);
     under_test->device_val[Robot::MOTOR_R] =
         std::max((uint8_t)under_test->device_val[Robot::MOTOR_R], msg->current[1]);
+    return;
+  }
+
+  if ((current_step == MEASURE_CHARGING) && (msg->charger)) {
+    under_test->device_val[Robot::CHARGING] = msg->battery;
+    return;
   }
 }
 
@@ -120,7 +127,7 @@ void QNode::dockBeaconCB(const kobuki_comms::DockInfraRed::ConstPtr& msg) {
   }
 
 void QNode::gyroscopeCB(const sensor_msgs::Imu::ConstPtr& msg) {
-  if ((under_test == NULL) || (current_step != MEASURE_GYRO_ERROR))
+  if (under_test == NULL)
     return;
 
   under_test->imu_data[4] = tf::getYaw(msg->orientation);
@@ -149,7 +156,7 @@ void QNode::buttonEventCB(const kobuki_comms::ButtonEvent::ConstPtr& msg) {
       else if (msg->button == kobuki_comms::ButtonEvent::Button2)
         log(Warn, "%s didn't pass the test", (current_step == TEST_LEDS)?"LEDs":"Sounds");  // TODO  should we cancel eval?
 
-      Q_EMIT requestMW(new QNodeRequest("", "")); // hide user message  TODO veeeeeery crappy
+      Q_EMIT requestMW(new QNodeRequest()); // hide user message  TODO veeeeeery crappy
       current_step++;
     }
 
@@ -286,70 +293,50 @@ void QNode::powerEventCB(const kobuki_comms::PowerSystemEvent::ConstPtr& msg) {
   if ((under_test == NULL) || (under_test->pwr_src_ok() == true))
     return;
 
-  switch (current_step) {
-    case DC_JACK_PLUGGED:
-      if (msg->event == kobuki_comms::PowerSystemEvent::PLUGGED_TO_ADAPTER) {
-        log(Info, "Adapter %s, as expected", msg->event?"plugged":"unplugged");
-        under_test->device_val[Robot::PWR_JACK]++;
-        current_step = DC_JACK_UNPLUGGED;
-      }
-      else
-        log(Warn, "Unexpected power event: %d", msg->event);
-      break;
-    case DC_JACK_UNPLUGGED:
-      if (msg->event == kobuki_comms::PowerSystemEvent::UNPLUGGED) {
-        log(Info, "Adapter %s, as expected", msg->event?"plugged":"unplugged");
-        under_test->device_val[Robot::PWR_JACK]++;
+  if ((current_step != TEST_DC_ADAPTER) && (current_step != TEST_DOCKING_BASE)) {
+    // It's not time to evaluate power sources; it can be just an irrelevant event but
+    // also the tester can not be following the protocol or there's an error in the code
+    if ((msg->event != kobuki_comms::PowerSystemEvent::CHARGE_COMPLETED) &&
+        (msg->event != kobuki_comms::PowerSystemEvent::BATTERY_LOW)      &&
+        (msg->event != kobuki_comms::PowerSystemEvent::BATTERY_CRITICAL))
+      log(Warn, "Power event %d while current step is %d", msg->event, current_step);
 
-        if (under_test->device_val[Robot::PWR_JACK] == 6) {
-          log(Info, "Adapter plugging evaluation completed");
-          under_test->device_ok[Robot::PWR_JACK] = true;
-
-          current_step = DOCKING_PLUGGED;
-        }
-        else
-          current_step = DC_JACK_PLUGGED;
-      }
-      else
-        log(Warn, "Unexpected power event: %d", msg->event);
-      break;
-    case DOCKING_PLUGGED:
-      if (msg->event == kobuki_comms::PowerSystemEvent::PLUGGED_TO_DOCKBASE) {
-        log(Info, "Docking base %s, as expected", msg->event?"plugged":"unplugged");
-        under_test->device_val[Robot::PWR_DOCK]++;
-        current_step = DOCKING_UNPLUGGED;
-      }
-      else
-        log(Warn, "Unexpected power event: %d", msg->event);
-      break;
-    case DOCKING_UNPLUGGED:
-      if (msg->event == kobuki_comms::PowerSystemEvent::UNPLUGGED) {
-        log(Info, "Docking base %s, as expected", msg->event?"plugged":"unplugged");
-        under_test->device_val[Robot::PWR_DOCK]++;
-
-        if (under_test->device_val[Robot::PWR_DOCK] == 6) {
-          log(Info, "Adapter plugging evaluation completed");
-          under_test->device_ok[Robot::PWR_DOCK] = true;
-
-          current_step++;
-        }
-        else
-          current_step = DOCKING_PLUGGED;
-      }
-      else
-        log(Warn, "Unexpected power event: %d", msg->event);
-      break;
-    default:
-      // it's not time to evaluate power sources; it can be just an irrelevant event but
-      // also the tester can not be following the protocol or there's an error in the code
-      if ((msg->event != kobuki_comms::PowerSystemEvent::CHARGE_COMPLETED) &&
-          (msg->event != kobuki_comms::PowerSystemEvent::BATTERY_LOW)      &&
-          (msg->event != kobuki_comms::PowerSystemEvent::BATTERY_CRITICAL))
-      log(Warn, "Unexpected power event: %d", msg->event);
-      break;
+    return;
   }
 
-   /*
+//  TEST_DC_ADAPTER
+//  uint8 UNPLUGGED           = 0
+//  uint8 PLUGGED_TO_ADAPTER  = 1
+//  uint8 PLUGGED_TO_DOCKBASE = 2
+
+
+  Robot::Device dev = (current_step == TEST_DC_ADAPTER)?Robot::PWR_JACK:Robot::PWR_DOCK;
+  if (under_test->device_ok[dev] == true)
+    return;
+
+#define PTAE kobuki_comms::PowerSystemEvent::PLUGGED_TO_ADAPTER
+#define PTDE kobuki_comms::PowerSystemEvent::PLUGGED_TO_DOCKBASE
+
+  if (((((msg->event == PTAE) && (current_step == TEST_DC_ADAPTER)) ||
+        ((msg->event == PTDE) && (current_step == TEST_DOCKING_BASE))) &&
+        (under_test->device_val[dev] % 2 == 0)) ||
+      ((msg->event == kobuki_comms::PowerSystemEvent::UNPLUGGED) &&
+       (under_test->device_val[dev] % 2 == 1))) {
+    log(Info, "%s %s, as expected",
+        (dev == Robot::PWR_JACK)?"Adapter":"Docking base", msg->event?"plugged":"unplugged");
+    under_test->device_val[dev]++;
+
+    if (under_test->device_val[dev] >= 6) {
+      log(Info, "%s plugging evaluation completed",
+          (dev == Robot::PWR_JACK)?"Adapter":"Docking base");
+      under_test->device_ok[dev] = true;
+        current_step++;
+    }
+  }
+  else
+    log(Warn, "Unexpected power event: %d", msg->event);
+
+    /*
   if (((msg->event == kobuki_comms::PowerSystemEvent::PLUGGED_TO_ADAPTER) &&
        (under_test->power[0] % 2 == 0)) ||
       ((msg->event == kobuki_comms::PowerSystemEvent::UNPLUGGED) &&
@@ -463,8 +450,12 @@ void QNode::move(double v, double w, double t, bool blocking) {
   vel.angular.z = w;
   cmd_vel_pub.publish(vel);
   if (t > 0.0) {
-    if (blocking == true)
-      ros::Duration(t).sleep();
+    if (blocking == true) {
+      nbSleep(t);  // block this function but not the whole node!
+      vel.linear.x  = 0.0;
+      vel.angular.z = 0.0;
+      cmd_vel_pub.publish(vel);
+    }
     else {
       timer.stop();
       timer.setPeriod(ros::Duration(t));
@@ -533,8 +524,8 @@ bool QNode::testIMU(bool show_msg) {
     log(Info, "Gyroscope testing: place the robot with the check board right below the camera");
 //    log(Info, "Press first function button if so or third otherwise");
 
-    Q_EMIT requestMW(new QNodeRequest("Gyroscope test",
-              "Gyroscope testing: place the robot with the check board right below the camera"));
+    Q_EMIT requestMW(new QNodeRequest("Gyroscope testing",
+                                 "Place the robot with the check board right below the camera"));
   }
 
   std::string path;
@@ -544,6 +535,7 @@ bool QNode::testIMU(bool show_msg) {
   TestIMU  imuTester;
   if (imuTester.init(path) == false) {
     log(Error, "Gyroscope test initialization failed; aborting test");
+    Q_EMIT requestMW(new QNodeRequest());
     return false;
   }
 
@@ -553,14 +545,15 @@ bool QNode::testIMU(bool show_msg) {
   for (unsigned int i = 0; i < 2; i++) {
     for (unsigned int j = 0; j < 10; j++) {  // 10 attempts
       vo_yaw[i] = imuTester.getYaw();
-      if (isnan(vo_yaw[i]) == false)
+      if (isnan(vo_yaw[i]) == false) {
+        Q_EMIT requestMW(new QNodeRequest());
         break;
+      }
 
       Q_EMIT requestMW(new QNodeRequest("Gyroscope test",
            "Cannot recognize the check board; please place the robot right below the camera"));
 
-      ros::spinOnce();
-      ros::Duration(0.1).sleep();
+      nbSleep(0.1);
     }
 
     if (isnan(vo_yaw[i]) == true) {
@@ -568,19 +561,20 @@ bool QNode::testIMU(bool show_msg) {
       Q_EMIT requestMW(new QNodeRequest());
       return false;
     }
-
     log(Info, "Gyroscope test %d result: imu yaw = %.3f / vo yaw = %.3f / diff = %.3f", i + 1,
-               under_test->imu_data[4], vo_yaw[i],
+               under_test->imu_data[4],  vo_yaw[i],
                under_test->imu_data[4] - vo_yaw[i]);
 
-    under_test->imu_data[i]       = under_test->imu_data[4];
+    under_test->imu_data[i*2]     = under_test->imu_data[4];
     under_test->imu_data[i*2 + 1] = under_test->imu_data[4] - vo_yaw[i];
 
     if (i == 0) {
-      move(0.0, TEST_GYRO_W, (2.0*M_PI)/TEST_GYRO_W, true);  // 360 deg, blocking call
-      ros::spinOnce();
+      move(0.0, +TEST_GYRO_W, (2.0*M_PI)/TEST_GYRO_W, true);  // +360 deg, blocking call
+      move(0.0, -TEST_GYRO_W, (2.0*M_PI)/TEST_GYRO_W, true);  // -360 deg, blocking call
     }
+
     under_test->device_val[Robot::IMU_DEV]++;
+    ros::spinOnce();
   }
 
   if (abs(under_test->imu_data[1] - under_test->imu_data[3]) < 0.1) {
@@ -593,12 +587,55 @@ bool QNode::testIMU(bool show_msg) {
         under_test->imu_data[1], under_test->imu_data[3]);
 
   Q_EMIT requestMW(new QNodeRequest());
+  return true;
+}
+
+bool QNode::measureCharge(bool show_msg) {
+  if (show_msg == true) {
+    // This should be executed only once
+    log(Info, "Charge measurement: plug the adaptor to the robot and wait");
+    Q_EMIT requestMW(new QNodeRequest("Charge measurement",
+                                  "Plug the adaptor to the robot and wait"));
+  }
+
+  // Wait until charging starts (and a bit more) to take first measure...
+  for (int i = 0; i < 30*frequency && under_test->device_val[Robot::CHARGING] == 0; i++) {
+    ros::Duration(1.0/frequency).sleep();
+    ros::spinOnce();
+  }
+
+  Q_EMIT requestMW(new QNodeRequest());
+
+  if (under_test->device_val[Robot::CHARGING] == 0) {
+    log(Error, "Adaptor not plugged after 30 seconds; aborting charge measurement");
+    return false;
+  }
+
+  nbSleep(2.0);
+  uint8_t v1 = under_test->device_val[Robot::CHARGING];
+
+  // ...and (if timeout didn't happen) take the second after 10 seconds
+  nbSleep(10.0);
+  uint8_t v2 = under_test->device_val[Robot::CHARGING];
+
+  under_test->device_val[Robot::CHARGING] = v2 - v1;
+
+  if (under_test->device_val[Robot::CHARGING] > 5) {
+    log(Info, "Charge measurement: %.1f V in 10 seconds",
+        under_test->device_val[Robot::CHARGING]/10.0);
+    under_test->device_ok[Robot::CHARGING] = true;
+  }
+  else {
+    log(Warn, "Charge measurement: %.1f V in 10 seconds",
+        under_test->device_val[Robot::CHARGING]/10.0);
+  }
 
   return true;
 }
 
 bool QNode::saveResults() {
   log(Info, "Saving results for %s", under_test->serial.c_str());
+  under_test->saveToCSVFile(out_file);
 
   delete under_test;
   under_test = NULL;
@@ -613,6 +650,8 @@ bool QNode::init() {
   }
   ros::start(); // explicitly needed since our nodehandle is going out of scope.
   ros::NodeHandle nh;
+
+  nh.getParam("kobuki_factory_test/test_result_output_file", out_file);
 
   // Subscribe to kobuki sensors and publish to its actuators
   v_info_sub  = nh.subscribe("mobile_base/version_info",         10, &QNode::versionInfoCB, this);
@@ -640,8 +679,9 @@ bool QNode::init() {
 
   current_step = INITIALIZATION;
 //  current_step = BUTTON_0_PRESSED;
-//  current_step = DC_JACK_PLUGGED;
-  //current_step = EVAL_MOTORS_CURRENT;
+//  current_step = TEST_DC_ADAPTER;
+  current_step = TEST_MOTORS_COUNTERCW;
+  current_step = EVALUATION_COMPLETED;
 
   timer_active = false;
 
@@ -653,11 +693,11 @@ bool QNode::init() {
 }
 
 void QNode::run() {
-  ros::Rate loop_rate(10);
+  ros::Rate loop_rate(frequency);
   int count = 0;
   EvalStep previous_step = current_step;
 
-  while ( ros::ok() ) {
+  while (ros::ok() == true) {
     ros::spinOnce();
     loop_rate.sleep();
     ++count;
@@ -677,32 +717,17 @@ void QNode::run() {
       case INITIALIZATION:
         current_step++;
         continue;
-      case DC_JACK_PLUGGED:
+      case TEST_DC_ADAPTER:
         if (previous_step != current_step)
           log(Info, "Connect adapter to robot three times");
         break;
-      case DC_JACK_UNPLUGGED:
-      case DOCKING_PLUGGED:
+      case TEST_DOCKING_BASE:
         if (previous_step != current_step)
           log(Info, "Connect robot to docking base three times");
-        break;
-      case DOCKING_UNPLUGGED:
-        if (under_test->pwr_src_ok() == true) {
-     ///     current_step = BUTTON_0_PRESSED;
-        }
         break;
       case BUTTON_0_PRESSED:
         if (previous_step != current_step)
           log(Info, "Press the three function buttons sequentially");
-        break;
-      case BUTTON_0_RELEASED:
-      case BUTTON_1_PRESSED:
-      case BUTTON_1_RELEASED:
-      case BUTTON_2_PRESSED:
-      case BUTTON_2_RELEASED:
-        if (under_test->buttons_ok() == true) {
-//          current_step++;
-        }
         break;
       case TEST_LEDS:
         testLeds(previous_step != current_step);
@@ -754,15 +779,12 @@ void QNode::run() {
         move(+TEST_MOTORS_V, 0.0, TEST_MOTORS_D/TEST_MOTORS_V);
         break;
       case TEST_MOTORS_BACKWARD:
-      //      ros::Duration(0.25).sleep();
         move(-TEST_MOTORS_V, 0.0, TEST_MOTORS_D/TEST_MOTORS_V);
         break;
       case TEST_MOTORS_CLOCKWISE:
-      //      ros::Duration(0.25).sleep();
         move(0.0, -TEST_MOTORS_W, TEST_MOTORS_A/TEST_MOTORS_W);
         break;
       case TEST_MOTORS_COUNTERCW:
-      //      ros::Duration(0.25).sleep();
         move(0.0, +TEST_MOTORS_W, TEST_MOTORS_A/TEST_MOTORS_W);
         break;
       case EVAL_MOTORS_CURRENT:
@@ -773,25 +795,24 @@ void QNode::run() {
           log(Warn, "Motors current too high! (%d, %d)",
                under_test->device_val[Robot::MOTOR_L], under_test->device_val[Robot::MOTOR_R]);
 
-        current_step++;  // NOTA  puedo usar ++ aqui pero tengo que llamar a continue despues para evitar   previous_step = current_step;
-        continue;
+        current_step++;   // WARN: we can use ++ here only if I call continue instead
+        continue;         // of break to avoid previous_step = current_step assignment
       case MEASURE_GYRO_ERROR:
         testIMU(previous_step != current_step);
         current_step++;
         continue;
-//        if (testIMU(previous_step != current_step) == false) {
-//          current_step++;
-//          continue;
-//        }
-        break;
+      case MEASURE_CHARGING:
+        measureCharge(previous_step != current_step);
+        current_step++;  // important: if we not change state, next call
+        continue;        // to spinOnce will overwrite the measured value!
       case EVALUATION_COMPLETED:
-        log(Info, "Evaluation completed");
+        log(Info, "Evaluation completed. Overall result: %s", under_test->all_ok()?"PASS":"FAILED");
         saveResults();
-        current_step = INITIALIZATION;  // NOTA  puedo usar ++ aqui pero tengo que llamar a continue despues para evitar   previous_step = current_step;
+        current_step = INITIALIZATION;
         break;
       default:
         // Should not be here, unless I decide no to enumerate here every step  >>>  nothing special at this point; we must be evaluating a multi-step device
-        log(Warn, "Unknown evaluation step: %d", current_step);
+//        log(Warn, "Unknown evaluation step: %d", current_step);
            ////////////////////////move(0.0, 0.0);   // stop robot!
         break;
     }
@@ -813,7 +834,7 @@ void QNode::log(const LogLevel &level, const std::string &format, ...) {
 
   logging_model.insertRows(logging_model.rowCount(),1);
   std::stringstream logging_model_msg;
-  switch ( level ) {
+  switch (level) {
     case(Debug) : {
       ROS_DEBUG_STREAM(msg);
       logging_model_msg << "[DEBUG] [" << ros::Time::now() << "]: " << msg;
@@ -842,7 +863,8 @@ void QNode::log(const LogLevel &level, const std::string &format, ...) {
   }
   QVariant new_row(QString(logging_model_msg.str().c_str()));
   logging_model.setData(logging_model.index(logging_model.rowCount()-1),new_row);
-  Q_EMIT loggingUpdated(); // used to readjust the scrollbar
+  //Q_EMIT loggingUpdated(); // used to readjust the scrollbar
+  Q_EMIT addLogLine(QString(logging_model_msg.str().c_str()));
 }
 
 }  // namespace kobuki_factory_test

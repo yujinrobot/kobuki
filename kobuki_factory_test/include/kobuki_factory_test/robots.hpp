@@ -16,8 +16,10 @@
 ** Includes
 *****************************************************************************/
 
-#include <ros/ros.h>
+#include <iostream>
+#include <fstream>
 
+#include <ros/ros.h>
 
 /*****************************************************************************
 ** Namespaces
@@ -107,6 +109,9 @@ public:
   ~Robot() { };
 
   bool all_ok() {
+                                              device_ok[EXT_PWR] = true;
+                                                        device_ok[INPUT] = true;
+                                                                  device_ok[OUTPUT] = true;
     for (unsigned int i = 0; i < DEVICES_COUNT; i++) {
       if (device_ok[i] == false)
         return false;
@@ -123,17 +128,65 @@ public:
   bool cliffs_ok()  { return device_ok[CLIFF_L]   && device_ok[CLIFF_C]   && device_ok[CLIFF_R]; };
   bool pwr_src_ok() { return device_ok[PWR_JACK]  && device_ok[PWR_DOCK]; };
 
-  std::string version_nb() {
+  std::string version_nb(char separator = '/') {
     // Version number is stored as 0xhhhhffffssssssss
     //  - first 16 bits for hardware
     //  - next 16 bits for firmware
     //  - remaining 32 bits for software
     char str[64];
-    snprintf(str, 64, "%lld/%lld/%lld", (device_val[V_INFO] >> 48),
-                                        (device_val[V_INFO] >> 32) & 0xFFFF,
-                                        (device_val[V_INFO] & 0xFFFFFFFF));
+    snprintf(str, 64, "%lld%c%lld%c%lld", (device_val[V_INFO] >> 48),          separator,
+                                          (device_val[V_INFO] >> 32) & 0xFFFF, separator,
+                                          (device_val[V_INFO] & 0xFFFFFFFF));
     return std::string(str);
   };
+
+  bool saveToCSVFile(const std::string& path) {
+    std::ofstream os;
+    os.open(path.c_str(), std::ios::out | std::ios::app);
+    if (os.good() == false) {
+      ROS_ERROR("Unable to open %s for writing", path.c_str());
+      return false;
+    }
+
+    if (os.tellp() == 0) {
+      // Empty file; write header
+//      os << ",SN,DCJ,MOP,DST,VER,FW,HW,DOCK,BRU,S-Brush,,VAC,PSD,,,FIR,,,DIR,,,Forward,,Backward,,PE,,HALL,DOCK,CHR,G-Test,RESULT";
+      os << "SN,VER,FW,HW,JACK,DOCK,CHR,PSD-L,PSD-C,PSD-R,BMP-L,BMP-C,BMP-R,IRD-L,IRD-C,IRD-R,WD-L,WD-R,MOT-L,MOT-R,IMU-DIFF,IMU,BUT-1,BUT-2,BUT-3,LED-1,LED-2,SND,RESULT\n";
+    }
+
+    os << serial << "," << version_nb(',') << ","
+       << device_val[PWR_DOCK]  << "," << device_val[PWR_JACK]  << "," << device_val[CHARGING]  << ","
+       << device_val[CLIFF_L]   << "," << device_val[CLIFF_C]   << "," << device_val[CLIFF_R]   << ","
+       << device_val[BUMPER_L]  << "," << device_val[BUMPER_C]  << "," << device_val[BUMPER_R]  << ","
+       << device_val[IR_DOCK_L] << "," << device_val[IR_DOCK_C] << "," << device_val[IR_DOCK_R] << ","
+       << device_val[W_DROP_L]  << "," << device_val[W_DROP_R]  << ","
+       << device_val[MOTOR_L]   << "," << device_val[MOTOR_R]   << ","
+       << imu_data[1] - imu_data[3]                             << "," << device_ok[IMU_DEV]  << ","
+       << device_ok[BUTTON_0]   << "," << device_ok[BUTTON_1]   << "," << device_ok[BUTTON_2] << ","
+       << device_ok[LED_1]      << "," << device_ok[LED_2]      << "," << device_ok[SOUNDS]   << ","
+       << all_ok() << std::endl;
+
+    if (!all_ok())
+      os << serial << "," << device_ok[V_INFO] << "," << device_ok[V_INFO] << "," << device_ok[V_INFO] << ","
+         << device_ok[PWR_DOCK]  << "," << device_ok[PWR_JACK]  << "," << device_ok[CHARGING]  << ","
+         << device_ok[CLIFF_L]   << "," << device_ok[CLIFF_C]   << "," << device_ok[CLIFF_R]   << ","
+         << device_ok[BUMPER_L]  << "," << device_ok[BUMPER_C]  << "," << device_ok[BUMPER_R]  << ","
+         << device_ok[IR_DOCK_L] << "," << device_ok[IR_DOCK_C] << "," << device_ok[IR_DOCK_R] << ","
+         << device_ok[W_DROP_L]  << "," << device_ok[W_DROP_R]  << ","
+         << device_ok[MOTOR_L]   << "," << device_ok[MOTOR_R]   << ","
+         << imu_data[1] - imu_data[3]                           << "," << device_ok[IMU_DEV]  << ","
+         << device_ok[BUTTON_0]   << "," << device_ok[BUTTON_1] << "," << device_ok[BUTTON_2] << ","
+         << device_ok[LED_1]      << "," << device_ok[LED_2]    << "," << device_ok[SOUNDS]   << ","
+         << all_ok() << std::endl;
+
+    os.close();
+    return true;
+
+
+//    EXT_PWR,
+//    INPUT,
+//    OUTPUT,
+  }
 
   unsigned int seq_nb;
   std::string  serial;

@@ -54,7 +54,7 @@ public Q_SLOTS:
     ** Manual connections
     *******************************************/
     void updateLoggingView(); // no idea why this can't connect automatically
-    void showPopupMsg(const QString& title, const QString& text);
+    void viewLogLine(const QString& str);
     void qNodeRequest(QNodeRequest* request);
 
 private:
