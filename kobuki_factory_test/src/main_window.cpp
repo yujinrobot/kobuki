@@ -51,8 +51,10 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     /*********************
     ** Logging
     **********************/
-    ui.view_logging->setModel(qnode.loggingModel());
+  //  ui.view_logging->setModel(qnode.loggingModel());
     QObject::connect(&qnode, SIGNAL(loggingUpdated()), this, SLOT(updateLoggingView()));
+    QObject::connect(&qnode, SIGNAL(addLogLine(const QString&)),
+                       this,  SLOT(viewLogLine(const QString&)));
 
     /*********************
     ** Auto Start
@@ -123,7 +125,15 @@ void MainWindow::on_checkbox_use_environment_stateChanged(int state) {
  * the user can always see the latest log message.
  */
 void MainWindow::updateLoggingView() {
-        ui.view_logging->scrollToBottom();
+  //ui.view_logging->clear();
+
+  QStringList sl = qnode.loggingModel()->stringList();
+  for (int i = 0; i < qnode.loggingModel()->rowCount(); i++) {
+    ui.view_logging->addItem("ggg");
+    ui.view_logging->item(i)->setForeground(Qt::red);
+  }
+
+  ui.view_logging->scrollToBottom();
 }
 
 /**
@@ -131,12 +141,19 @@ void MainWindow::updateLoggingView() {
  * this will drop the cursor down to the last line in the QListview to ensure
  * the user can always see the latest log message.
  */
-void MainWindow::showPopupMsg(const QString& title, const QString& text) {
-  std::cout<<"      1111111111111111       \n";
-//  msg_box.setText(text);
-//  msg_box.setWindowTitle(title);
-//  msg_box.show();
-//  QMessageBox::information(this, title, text, QMessageBox::NoButton, QMessageBox::NoButton);
+void MainWindow::viewLogLine(const QString& str) {
+  QListWidgetItem* item = new QListWidgetItem(str);
+  if ((str.contains("[ERROR]")) || (str.contains("[FATAL]")))
+    item->setForeground(Qt::darkRed);
+  else if (str.contains("[WARN]"))
+    item->setForeground(Qt::darkYellow);
+  else if (str.contains("[INFO]"))
+    item->setForeground(Qt::black);
+  else if (str.contains("[DEBUG]"))
+    item->setForeground(Qt::darkGreen);
+
+  ui.view_logging->addItem(item);
+  ui.view_logging->scrollToBottom();
 }
 
 void MainWindow::qNodeRequest(QNodeRequest* request) {

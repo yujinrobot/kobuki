@@ -66,10 +66,8 @@ public:
 
   enum EvalStep {
     INITIALIZATION,
-    DC_JACK_PLUGGED,
-    DC_JACK_UNPLUGGED,
-    DOCKING_PLUGGED,
-    DOCKING_UNPLUGGED,
+    TEST_DC_ADAPTER,
+    TEST_DOCKING_BASE,
     BUTTON_0_PRESSED,
     BUTTON_0_RELEASED,
     BUTTON_1_PRESSED,
@@ -95,9 +93,8 @@ public:
     TEST_MOTORS_COUNTERCW,
     EVAL_MOTORS_CURRENT,
     MEASURE_GYRO_ERROR,
+    MEASURE_CHARGING,
     EVALUATION_COMPLETED,
-
-    MEASURE_CHARGING, //?
 
     SOMETHING_MORE,
 
@@ -120,22 +117,23 @@ public:
 
 Q_SIGNALS:
   void requestMW(QNodeRequest* request);
-  void showMessage(const QString& title, const QString& text);
   void loggingUpdated();
+  void addLogLine(const QString& str);
   void rosShutdown();
 
 private:
   int      init_argc;
   char**   init_argv;
 
-//  TestIMU  imuTester;
-
+  double   frequency;
   bool     timer_active;
   ros::Timer timer;
   EvalStep current_step;
 
   Robot *   under_test;
   RobotList  evaluated;
+
+  std::string out_file;
 
   /*********************
   ** Publishers
@@ -191,8 +189,19 @@ private:
   bool testIMU(bool show_msg);
   void testLeds(bool show_msg);
   void testSounds(bool show_msg);
+  bool measureCharge(bool show_msg);
+  void evalMotorsCurrent(bool show_msg);
   void move(double v, double w, double t = 0.0, bool blocking = false);
   bool saveResults();
+
+  void nbSleep(double t) {
+    // Non-blocking (but naively imprecise) sleep
+    for (int i = 0; i < int(t*frequency) && ros::ok(); i++) {
+      ros::Duration(1.0/frequency).sleep();
+      ros::spinOnce();
+    }
+    ros::Duration(t*frequency - int(t*frequency)).sleep();
+  }
 };
 
 }  // namespace kobuki_factory_test
