@@ -1,0 +1,22 @@
+<package>
+  <description brief="kobuki_factory_test">
+
+     kobuki_factory_test
+
+  </description>
+  <author>Jorge Santos</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/kobuki_factory_test</url>
+  <depend package="kobuki_comms"/>
+  <depend package="kobuki_node"/>
+  <depend package="sensor_msgs"/>
+  <depend package="qt_build"/>
+  <depend package="roscpp"/>
+  <depend package="tf"/>
+  
+  <!-- From CSlam stack, required for testing imu -->
+  <depend package="camera_calibration"/>
+
+  <rosdep name="libqt4-dev"/>
+</package>
