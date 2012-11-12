@@ -95,6 +95,7 @@ class Rotate():
             self._rate.sleep()
         if not rospy.is_shutdown():
             cmd = Twist()
-            twist.angular.z = 0.0
+            cmd.angular.z = 0.0
             self.cmd_vel_publisher.publish(cmd)
         self._running = False
+

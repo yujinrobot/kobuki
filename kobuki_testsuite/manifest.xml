@@ -12,7 +12,8 @@
   <depend package="kobuki_driver"/>
   <depend package="std_msgs"/>
   <depend package="sensor_msgs"/>
-
+  <depend package="geometry_msgs"/>
+  <depend package="python_orocos_kdl"/>
 </package>
 
 
