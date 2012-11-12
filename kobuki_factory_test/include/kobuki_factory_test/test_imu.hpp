@@ -1,3 +1,6 @@
+#include <numeric>
+#include <functional>
+
 #include <ros/ros.h>
 
 #include <camera_calibration/pose_estimator.hpp>
@@ -14,12 +17,16 @@ class TestIMU
 public:
   TestIMU() : cap(0) // Assume we use the first video input
   {
+    pose_estimator = NULL;
   }
 
   ~TestIMU()
   {
-    delete pose_estimator;
-    pose_estimator = NULL;
+    if (pose_estimator != NULL)
+    {
+      delete pose_estimator;
+      pose_estimator = NULL;
+    }
   }
 
   bool init(std::string& calib_file)
@@ -46,13 +53,6 @@ public:
       fs["Camera_Matrix"]           >> cameraMatrix;
       fs["Distortion_Coefficients"] >> distCoeffs;
 
-//    ROS_DEBUG("Camera calibration parameters:");
-//    ROS_DEBUG(" board_width :               %d", board_width);
-//    ROS_DEBUG(" board_height :              %d", board_height);
-//    ROS_DEBUG(" square_size :               %f", square_size);
-//    ROS_DEBUG(" Camera_Matrix :             %s", cameraMatrix);
-//    ROS_DEBUG(" Distortion_Coefficients :   %s", distCoeffs);
-
       // Set the properties of camera
       pose_estimator = new poseEstimator(board_width, board_height, square_size, cameraMatrix, distCoeffs);
 
@@ -61,17 +61,10 @@ public:
          << "\n board_width :               " << board_width
          << "\n board_height :              " << board_height
          << "\n square_size :               " << square_size
-         << "\n Camera_Matrix :             " << cameraMatrix
+         << "\n Camera_Matrix :\n"            << cameraMatrix
          << "\n Distortion_Coefficients :   " << distCoeffs;
 
       ROS_INFO("%s", ss.str().c_str());
-          /*
-      ROS_DEBUG_STREAM("Camera calibration parameters:\n"
-                    << " board_width :               %d" << board_width
-                    << " board_height :              %d" << board_height
-                    << " square_size :               %f" << square_size
-                    << " Camera_Matrix :             %s" << cameraMatrix
-                    << " Distortion_Coefficients :   %s" << distCoeffs);*/
     }
     catch (cv::Exception& e)
     {
@@ -84,7 +77,8 @@ public:
 
   double getYaw()
   {
-    double avg_yaw = 0.0;
+    std::vector<double> yaw(10, std::numeric_limits<double>::quiet_NaN());
+
     for (unsigned int i = 0; /* inf. loop */; i++)
     {
       // capture image
@@ -93,27 +87,33 @@ public:
       // estimation of pose
       if (pose_estimator->estimate(img) == true)
       {
-        double yaw = pose_estimator->getYawAngle();
-        if (i > 10)  // skip some estimations
-          avg_yaw += yaw;
+        if (i < 5)  // skip some estimations
+          continue;
 
-        if (i > 30)  // averate over 20 stimations
+        yaw[(i - 5)%yaw.size()] = pose_estimator->getYawAngle();
+
+        if (i >= 5 + yaw.size())  // vector should be full
         {
-          avg_yaw /= 20.0;
-          ROS_DEBUG("Pose estimated; yaw angle is %f", avg_yaw);
-          return avg_yaw;
+          if (stdd(yaw) < 0.01)
+          {
+            double avg_yaw = mean(yaw);
+            ROS_DEBUG("Pose estimated; yaw angle is %f (std. dev. is %f)", avg_yaw, stdd(yaw));
+            return avg_yaw;
+          }
+          else
+          {
+            // Show a warning but anyway take the latest value
+            ROS_WARN("Mean = %f; standard deviation = %f; near +pi/-pi?", mean(yaw), stdd(yaw));
+            return pose_estimator->getYawAngle();
+          }
         }
       }
-      else if (i > 10)
+      else if (i >= 5)
       {
         ROS_ERROR("Pose cannot be estimated. Please place the robot right under the camera");
         return std::numeric_limits<double>::quiet_NaN();
       }
     }
-
-      // wait for key
-//      char key_code = waitKey( 10 );
-  //    if( key_code == 'q' ) break;
   };
 
 private:
@@ -124,4 +124,15 @@ private:
 
   cv::VideoCapture cap;
   cv::Mat img;
+
+  double mean(const std::vector<double>& v) {
+    double t = std::accumulate(v.begin(), v.end(), 0.0);
+    return t / v.size();
+  }
+
+  double stdd(const std::vector<double>& v) {
+    double v_mean = mean(v);
+    double sq_sum = std::inner_product(v.begin(), v.end(), v.begin(), 0.0);
+    return std::sqrt(sq_sum/v.size() - v_mean*v_mean);
+  }
 };
