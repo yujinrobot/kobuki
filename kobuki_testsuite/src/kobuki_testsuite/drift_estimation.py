@@ -18,7 +18,7 @@ from std_msgs.msg import Float32 as ScanAngle
 # Classes
 ##############################################################################
 
-class ScanToAngle:
+class ScanToAngle(object):
     def __init__(self, scan_topic, scan_angle_topic):
         self.min_angle = -0.3
         self.max_angle = 0.3
@@ -64,3 +64,50 @@ class ScanToAngle:
                 self.scan_angle_publisher.publish(scan_angle)
         else:
             rospy.logerr("Please point me at a wall.")
+
+class DriftEstimation(object):
+    def __init__(self):
+        pass
+
+    def sync_timestamps(self, start_time=None):
+        if not start_time:
+            start_time = rospy.Time.now() + rospy.Duration(0.5)
+        while not rospy.is_shutdown():
+            rospy.sleep(0.3)
+            with self.lock:
+                if self.imu_time < start_time and self.has_gyro:
+                    rospy.loginfo("Still waiting for imu")
+                elif self.odom_time < start_time:
+                    rospy.loginfo("Still waiting for odom")
+                elif self.scan_time < start_time:
+                    rospy.loginfo("Still waiting for scan")
+                else:
+                    return (self.imu_angle, self.odom_angle, self.scan_angle,
+                            self.imu_time, self.odom_time, self.scan_time)
+        exit(0)
+
+    def align(self):
+        self.sync_timestamps()
+        rospy.loginfo("Aligning base with wall")
+        with self.lock:
+            angle = self.scan_angle
+        cmd = Twist()
+
+        while angle < -self.inital_wall_angle or angle > self.inital_wall_angle:
+            if rospy.is_shutdown():
+                exit(0)
+            if angle > 0:
+                cmd.angular.z = -0.3
+            else:
+                cmd.angular.z = 0.3
+            self.cmd_pub.publish(cmd)
+            rospy.sleep(0.05)
+            with self.lock:
+                angle = self.scan_angle
+
+def main():
+    rospy.init_node('drift_estimation')
+    robot = DriftEstimation()
+    for speed in (0.3, 0.7, 1.0, 1.5):
+        robot.align()
+
