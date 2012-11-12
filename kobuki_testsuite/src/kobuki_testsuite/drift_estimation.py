@@ -1,14 +1,28 @@
+#!/usr/bin/env python
+#       
+# License: BSD
+#   https://raw.github.com/yujinrobot/kobuki/master/kobuki_testsuite/LICENSE 
+#
+##############################################################################
+# Imports
+##############################################################################
+
 from math import *
 import roslib; roslib.load_manifest('kobuki_qtestsuite')
 import yaml
 import rospy
 from sensor_msgs.msg import LaserScan
+from std_msgs.msg import Float32 as ScanAngle
+
+##############################################################################
+# Classes
+##############################################################################
 
 class ScanToAngle:
-    def __init__(self, scan_topic):
+    def __init__(self, scan_topic, scan_angle_topic):
         self.min_angle = -0.3
         self.max_angle = 0.3
-        #self.pub = rospy.Publisher('scan_angle', ScanAngle)
+        self.scan_angle_publisher = rospy.Publisher(scan_angle_topic, ScanAngle)
         self.scan_subscriber = rospy.Subscriber(scan_topic, LaserScan, self.scan_callback)
 
     def init(self, min_angle, max_angle):
@@ -41,20 +55,12 @@ class ScanToAngle:
                 num += 1
             angle += d_angle
         if num > 0:
-            angle=atan2((-sum_x*sum_y+num*sum_xy)/(num*sum_xx-sum_x*sum_x), 1)
-            print("Scan Angle: %s"%str(angle))
-            #res = ScanAngle()
-            #res.header = msg.header
-            #res.scan_angle = angle
-            self.pub.publish(res)
+            denominator = num*sum_xx-sum_x*sum_x
+            if denominator != 0:
+                angle=atan2((-sum_x*sum_y+num*sum_xy)/(denominator), 1)
+                print("Scan Angle: %s"%str(angle))
+                scan_angle = ScanAngle()
+                scan_angle.data = angle
+                self.scan_angle_publisher.publish(scan_angle)
         else:
             rospy.logerr("Please point me at a wall.")
-
-def main():
-    rospy.init_node('scan_to_angle')
-    s = ScanToAngle('/scan')
-    rospy.spin()
-
-if __name__ == '__main__':
-    main()
-

@@ -1,3 +1,12 @@
+#!/usr/bin/env python
+#       
+# License: BSD
+#   https://raw.github.com/yujinrobot/kobuki/master/kobuki_testsuite/LICENSE 
+#
+##############################################################################
+# Imports
+##############################################################################
+
 import math
 import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
@@ -6,6 +15,10 @@ from nav_msgs.msg import Odometry
 
 # Local imports
 import utils
+
+##############################################################################
+# Classes
+##############################################################################
     
 '''
   Travels forward a set distance. 
