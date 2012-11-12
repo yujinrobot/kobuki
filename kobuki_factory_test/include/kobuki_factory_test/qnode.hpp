@@ -50,11 +50,21 @@ namespace kobuki_factory_test {
 
 class QNodeRequest : public QEvent {
 public:
-  QNodeRequest(const QString& title = "", const QString& text = "")
-      : QEvent(QEvent::User), title(title), text(text) { };
-  QString title;
-  QString text;
+QNodeRequest(const std::string& title = "", const std::string& format = "", ...)
+    : QEvent(QEvent::User), title(title.c_str()), text(format.c_str()) {
+  va_list arguments;
+  va_start(arguments, format);
+
+  char str[256];
+  vsnprintf(str, 256, format.c_str(), arguments);
+
+  text = (const char*)str;
 };
+
+QString title;
+QString text;
+};
+
 
 class QNode : public QThread {
   Q_OBJECT
@@ -94,9 +104,9 @@ public:
     EVAL_MOTORS_CURRENT,
     MEASURE_GYRO_ERROR,
     MEASURE_CHARGING,
+    TEST_DIGITAL_IO_PORTS,
+    TEST_ANALOG_INPUT_PORTS,
     EVALUATION_COMPLETED,
-
-    SOMETHING_MORE,
 
     EVALUATION_STEPS_COUNT
   };
@@ -189,15 +199,19 @@ private:
   bool testIMU(bool show_msg);
   void testLeds(bool show_msg);
   void testSounds(bool show_msg);
+  bool testAnalogIn(bool show_msg);
   bool measureCharge(bool show_msg);
+  void evalMotorsCurrent(bool show_msg);
   void move(double v, double w, double t = 0.0, bool blocking = false);
   bool saveResults();
 
   void nbSleep(double t) {
-    for (int i = 0; i < t*frequency; i++) {
+    // Non-blocking (but naively imprecise) sleep
+    for (int i = 0; i < int(t*frequency) && ros::ok(); i++) {
       ros::Duration(1.0/frequency).sleep();
       ros::spinOnce();
     }
+    ros::Duration(t*frequency - int(t*frequency)).sleep();
   }
 };
 
