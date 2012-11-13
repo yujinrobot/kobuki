@@ -12,7 +12,7 @@ import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
 from geometry_msgs.msg import Twist, Pose
 from nav_msgs.msg import Odometry
-
+from kobuki_comms.msg import CliffEvent
 # Local imports
 import utils
 
@@ -36,19 +36,20 @@ class TravelForward(object):
       @param topic names
       @type strings
     '''
-    def __init__(self, cmd_vel_topic, odom_topic):
+    def __init__(self, cmd_vel_topic, odom_topic, cliff_sensor_topic):
         self.odom_subscriber = rospy.Subscriber(odom_topic, Odometry, self.odometry_callback)
         self.cmd_vel_publisher = rospy.Publisher(cmd_vel_topic, Twist)
-        self._speed = 0.7
-        self._distance = 1.0
+        self.cliff_sensor_subscriber = rospy.Subscriber(cliff_sensor_topic, CliffEvent , self.cliff_sensor_callback)
+        self.speed = 0.7
+        self.distance = 1.0
         self._current_pose = Pose()
         self._starting_pose = Pose()
         self._stop = False
         self._running = False
     
     def init(self, speed, distance):
-        self._speed = speed
-        self._distance = distance
+        self.speed = speed
+        self.distance = distance
         
     def shutdown(self):
         self.stop()
@@ -72,7 +73,7 @@ class TravelForward(object):
         rate = rospy.Rate(10)
         self._current_speed = 0.0
         current_distance_sq = 0.0
-        distance_sq = self._distance*self._distance
+        distance_sq = self.distance*self.distance
         self._starting_pose = self._current_pose
         while not self._stop and not rospy.is_shutdown():
             if current_distance_sq > distance_sq:
@@ -82,8 +83,12 @@ class TravelForward(object):
                                    (self._current_pose.position.y - self._starting_pose.position.y)*(self._current_pose.position.y - self._starting_pose.position.y)
                 #current_distance_sq += 0.01 # uncomment this and comment above for debugging
                 print("Distance %s"%math.sqrt(current_distance_sq))
-                if self._current_speed < self._speed:
-                    self._current_speed += 0.01
+                if self.speed > 0:
+                    if self._current_speed < self.speed:
+                        self._current_speed += 0.01
+                else:
+                    if self._current_speed > self.speed:
+                        self._current_speed -= 0.01
                 cmd = Twist()
                 cmd.linear.x = self._current_speed
                 self.cmd_vel_publisher.publish(cmd)
@@ -98,5 +103,14 @@ class TravelForward(object):
     # Ros Callbacks
     ##########################################################################
 
+    def cliff_sensor_callback(self, data):
+        rospy.loginfo("Kobuki Testsuite: cliff event on sensor [%s]"%str(data.sensor))
+        if data.state == CliffEvent.CLIFF:
+            if not rospy.is_shutdown():
+                cmd = Twist()
+                cmd.linear.x = 0.0
+                self.cmd_vel_publisher.publish(cmd)
+            self.stop()
+    
     def odometry_callback(self, data):
         self._current_pose = data.pose.pose
