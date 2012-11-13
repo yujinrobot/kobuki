@@ -198,6 +198,12 @@ void KobukiNode::publishVersionInfo(const VersionInfo &version_info)
     msg.firmware = version_info.firmware;
     msg.hardware = version_info.hardware;
     msg.software = version_info.software;
+
+    msg.udid.resize(3);
+    msg.udid[0] = version_info.udid0;
+    msg.udid[1] = version_info.udid1;
+    msg.udid[2] = version_info.udid2;
+
     version_info_publisher.publish(msg);
   }
 }

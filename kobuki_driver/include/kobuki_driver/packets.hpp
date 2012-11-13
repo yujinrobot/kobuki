@@ -21,6 +21,7 @@
 #include "packets/dock_ir.hpp"
 #include "packets/firmware.hpp"
 #include "packets/hardware.hpp"
+#include "packets/unique_device_id.hpp"
 
 
 #endif /* KOBUKI_PACKETS_HPP_ */

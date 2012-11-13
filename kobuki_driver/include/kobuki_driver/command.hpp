@@ -67,7 +67,7 @@ public:
 
   enum VersionFlag
   {
-    HardwareVersion = 0x01, FirmwareVersion = 0x02 // Time = 0x04
+    HardwareVersion = 0x01, FirmwareVersion = 0x02/*, Time = 0x04*/, UniqueDeviceID = 0x08
   };
 
   /**

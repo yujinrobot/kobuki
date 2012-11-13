@@ -133,6 +133,7 @@ Command Command::GetVersionInfo()
   outgoing.data.request_flags = 0;
   outgoing.data.request_flags |= static_cast<uint16_t>(HardwareVersion);
   outgoing.data.request_flags |= static_cast<uint16_t>(FirmwareVersion);
+  outgoing.data.request_flags |= static_cast<uint16_t>(UniqueDeviceID);
   outgoing.data.command = Command::RequestExtra;
   return outgoing;
 }
