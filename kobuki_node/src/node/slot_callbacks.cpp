@@ -76,6 +76,7 @@ void KobukiNode::publishSensorState()
       state.buttons = data.buttons;
       state.charger = data.charger;
       state.battery = data.battery;
+      state.over_current = data.over_current;
 
       Cliff::Data cliff_data = kobuki.getCliffData();
       state.bottom = cliff_data.bottom;

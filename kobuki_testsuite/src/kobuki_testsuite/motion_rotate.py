@@ -40,8 +40,10 @@ class Rotate():
         twist.angular.y = 0
         twist.angular.z = 0
         self.twist = twist
+        
+        self._number_of_turns = -1 # continuous
 
-    def init(self, yaw_rate):
+    def init(self, yaw_rate, number_of_turns=-1):
         self._yaw_rate = yaw_rate
         self._max_rotate_count = self._cmd_vel_frequency*int(3.14/ self._yaw_rate)
 
