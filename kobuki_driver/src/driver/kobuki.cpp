@@ -125,7 +125,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   ecl::PushAndPop<unsigned char> etx(1);
   stx.push_back(0xaa);
   stx.push_back(0x55);
-  packet_finder.configure(sigslots_namespace, stx, etx, 1, 64, 1, true);
+  packet_finder.configure(sigslots_namespace, stx, etx, 1, 256, 1, true);
 
   sig_version_info.connect(sigslots_namespace + std::string("/version_info"));
   sig_stream_data.connect(sigslots_namespace + std::string("/stream_data"));
@@ -286,11 +286,17 @@ void Kobuki::spin()
             // the rest are only included on request
           case Header::Hardware:
             hardware.deserialise(data_buffer);
-            sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
+            //sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
             break;
           case Header::Firmware:
             firmware.deserialise(data_buffer);
-            sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
+            //sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
+            break;
+          case Header::UniqueDeviceID:
+            std::cout << "udid received" << std::endl;
+            unique_device_id.deserialise(data_buffer);
+            sig_version_info.emit( VersionInfo( firmware.data.version, hardware.data.version
+                , unique_device_id.data.udid0, unique_device_id.data.udid1, unique_device_id.data.udid2 ));
             break;
           default:
             std::stringstream ostream;

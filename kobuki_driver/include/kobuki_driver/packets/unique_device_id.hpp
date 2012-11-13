@@ -27,53 +27,90 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /**
- * @file /kobuki_driver/include/kobuki_driver/version.hpp
+ * @file /include/kobuki_driver/packets/unique_device_id.hpp
  *
- * @brief Version info for the kobuki driver.
- **/
-/*****************************************************************************
-** Ifdefs
-*****************************************************************************/
-
-#ifndef KOBUKI_VERSION_HPP_
-#define KOBUKI_VERSION_HPP_
-
-/*****************************************************************************
-** Includes
-*****************************************************************************/
-
-#include <string>
-#include <stdint.h>
-
-/*****************************************************************************
-** Namespaces
-*****************************************************************************/
-
-namespace kobuki {
-
-/*****************************************************************************
-** Interfaces
-*****************************************************************************/
-/**
- * Class holding version info for the kobuki driver.
+ * Module for handling of unique device id request packet payloads.
  */
-class VersionInfo {
+/*****************************************************************************
+** Preprocessor
+*****************************************************************************/
+
+#ifndef KOBUKI_UDID_DATA_HPP__
+#define KOBUKI_UDID_DATA_HPP__
+
+/*****************************************************************************
+** Include
+*****************************************************************************/
+
+#include "../packet_handler/payload_base.hpp"
+#include "../packet_handler/payload_headers.hpp"
+
+/*****************************************************************************
+** Namespace
+*****************************************************************************/
+
+namespace kobuki
+{
+
+/*****************************************************************************
+** Interface
+*****************************************************************************/
+
+class UniqueDeviceID : public packet_handler::payloadBase
+{
 public:
-  VersionInfo(const uint16_t &fw, const uint16_t &hw, const uint32_t udid0_, const uint32_t udid1_, const uint32_t udid2_ ) :
-    firmware(fw),
-    hardware(hw),
-    software(20120414),
-    udid0(udid0_),
-    udid1(udid1_),
-    udid2(udid2_)
-  {}
-  const uint16_t firmware;
-  const uint16_t hardware;
-  const uint32_t software;
-  const uint32_t udid0;
-  const uint32_t udid1;
-  const uint32_t udid2;
+  struct Data {
+    uint32_t udid0;
+    uint32_t udid1;
+    uint32_t udid2;
+  } data;
+
+  // methods
+  bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
+  {
+    if (!(byteStream.size() > 0))
+    {
+      printf("kobuki_node: kobuki_udid: serialise failed. empty byte stream.");
+      return false;
+    }
+
+    buildBytes(Header::UniqueDeviceID, byteStream);
+    buildBytes(data.udid0, byteStream);    
+    buildBytes(data.udid1, byteStream);    
+    buildBytes(data.udid2, byteStream);    
+    return true;
+  }
+
+  bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
+  {
+    if (!(byteStream.size() > 0))
+    {
+      printf("kobuki_node: kobuki_udid: deserialise failed. empty byte stream.");
+      return false;
+    }
+
+    unsigned char header_id;
+    buildVariable(header_id, byteStream);
+    buildVariable(data.udid0, byteStream);
+    buildVariable(data.udid1, byteStream);
+    buildVariable(data.udid2, byteStream);
+
+    //showMe();
+    return constrain();
+  }
+
+  bool constrain()
+  {
+    return true;
+  }
+
+  void showMe()
+  {
+    //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, acc[2], acc[1], acc[0] );
+  }
 };
 
 } // namespace kobuki
-#endif /* KOBUKI_VERSION_HPP_ */
+
+#endif /* KOBUKI_UDID_DATA_HPP__ */
+
