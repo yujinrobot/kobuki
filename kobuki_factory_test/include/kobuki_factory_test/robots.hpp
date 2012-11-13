@@ -102,7 +102,7 @@ public:
 
   Robot(unsigned int seq_nb) :
     seq_nb(seq_nb),
-    serial(to_string(seq_nb)), // TODO temporally, until we have a real serial number
+    serial("NOT PROVIDED"), // Given when flashing in the robot
     state(UNKNOWN),
     device_ok(DEVICES_COUNT, false),
     device_val(DEVICES_COUNT, std::numeric_limits<int64>::max()),
@@ -127,8 +127,6 @@ public:
 
   bool all_ok() {
                                               device_ok[EXT_PWR] = true;
-                                              //          device_ok[INPUT] = true;
-                                                //                  device_ok[OUTPUT] = true;
     for (unsigned int i = 0; i < DEVICES_COUNT; i++) {
       if (device_ok[i] == false)
         return false;

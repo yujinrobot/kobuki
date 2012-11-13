@@ -30,7 +30,7 @@ public:
 
   bool init(std::string& calib_file, unsigned int device)
   {
-    if (cap.open(device) == false)  // Use the first video input by default
+    if (cap.open(device) == false)
     {
       ROS_ERROR("Unable to open video input device %d", device);
       return false;

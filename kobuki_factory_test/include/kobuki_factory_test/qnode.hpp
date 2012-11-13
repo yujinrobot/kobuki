@@ -16,6 +16,8 @@
 ** Includes
 *****************************************************************************/
 
+#include <fstream>
+
 #include <ros/ros.h>
 
 #include <QEvent>
@@ -76,6 +78,7 @@ public:
 
   enum EvalStep {
     INITIALIZATION,
+    FLASH_SERIAL_NUMBER,
     TEST_DC_ADAPTER,
     TEST_DOCKING_BASE,
     BUTTON_0_PRESSED,
@@ -143,7 +146,8 @@ private:
   Robot *   under_test;
   RobotList  evaluated;
 
-  std::string out_file;
+  std::string out_file;  // csv output file path
+  std::string ftdi_path; // serial flashing program
 
   /*********************
   ** Publishers
@@ -196,12 +200,14 @@ private:
   /*********************
   ** Other methods
   **********************/
+  bool flashSN(bool show_msg);
   bool testIMU(bool show_msg);
   void testLeds(bool show_msg);
   void testSounds(bool show_msg);
   bool testAnalogIn(bool show_msg);
   bool measureCharge(bool show_msg);
   void evalMotorsCurrent(bool show_msg);
+  bool sysCmd(std::string cmd, std::string& out);
   void move(double v, double w, double t = 0.0, bool blocking = false);
   bool saveResults();
 
@@ -213,6 +219,9 @@ private:
     }
     ros::Duration(t*frequency - int(t*frequency)).sleep();
   }
+
+  bool exists(std::string& file) { std::ifstream fs(file.c_str()); return fs; }
+  bool exists(const char*  file) { std::ifstream fs(file);         return fs; }
 };
 
 }  // namespace kobuki_factory_test

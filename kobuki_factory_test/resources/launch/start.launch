@@ -1,5 +1,5 @@
 <launch>
-  <include file="$(find turtlebot_bringup)/launch/minimal.launch"/>
+<!--   <include file="$(find turtlebot_bringup)/launch/minimal.launch"/> -->
 
   <!-- Disable incoming velocity commands timeout to simplify the code -->
   <param name="mobile_base/cmd_vel_timeout" value="25.0"/>
@@ -8,5 +8,6 @@
     <param name="camera_device_index"     value="0"/>
     <param name="camera_calibration_file" value="$(find kobuki_factory_test)/resources/camera_calibration.xml"/>
     <param name="test_result_output_file" value="/home/jorge/test_result.csv"/>
+    <param name="ftdi_kobuki_path"        value="$(find kobuki_udev)/bin/ftdi_kobuki"/>
   </node>
 </launch>

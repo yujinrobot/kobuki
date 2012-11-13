@@ -44,7 +44,7 @@ namespace kobuki_factory_test {
 #define TEST_GYRO_W     (M_PI/3.0)
 #define TEST_GYRO_A     (2.0*M_PI)  // 360 deg, clockwise + counter cw.
 
-#define MOTOR_MAX_CURRENT         18
+#define MOTOR_MAX_CURRENT         24
 #define CLIFF_SENSOR_TESTS         2
 #define WHEEL_DROP_TESTS           2
 #define POWER_PLUG_TESTS           1
@@ -509,6 +509,77 @@ void QNode::move(double v, double w, double t, bool blocking) {
     }
   }
 }
+bool QNode::sysCmd(std::string cmd, std::string& out) {
+  std::string data;
+  FILE * stream;
+  char buffer[256];
+  cmd.append(" 2>&1");
+
+  stream = popen(cmd.c_str(), "r");
+  if (stream) {
+    while (!feof(stream))
+      if (fgets(buffer, 256, stream) != NULL)
+        data.append(buffer);
+    pclose(stream);
+    return true;
+  }
+
+  return false;
+}
+
+bool QNode::flashSN(bool show_msg) {
+  char port_file_name[128];
+
+  if (show_msg == true) {
+    for (int i = 0; i < 20; i++) {
+      sprintf(port_file_name, "/dev/ttyUSB%d", i);
+      if (exists(port_file_name) == false)
+        break;
+    }
+
+    // This should be executed only once
+    log(Info, "Connect USB cable to robot and wait while we flash the serial number on it");
+    Q_EMIT requestMW(new QNodeRequest("Flash serial number",
+              "Connect USB cable to robot and wait while we flash the serial number on it"));
+  }
+
+  // Wait until the USB is plugged (port_file_name file appears)
+  for (int i = 0; i < frequency && ! exists(port_file_name); i++) {
+    log(Debug, "Waiting for port %s...", port_file_name);
+    nbSleep(30.0/frequency);
+  }
+
+  if (exists(port_file_name) == false) {
+    log(Error, "Cannot detect USB serial port %s after 30 seconds; unable to flash serial number", port_file_name);
+    Q_EMIT requestMW(new QNodeRequest("Flash serial number",
+               "Cannot detect USB serial port %s after 30 seconds; unable to flash serial number", port_file_name));
+    return false;
+  }
+
+  if (exists(ftdi_path) == false) {
+    log(Error, "Cannot find %s; ensure that package kobuki_udev is installed", ftdi_path.c_str());
+    Q_EMIT requestMW(new QNodeRequest("Flash serial number",
+               "Cannot find %s; ensure that package kobuki_udev is installed", ftdi_path.c_str()));
+    return false;
+  }
+
+  log(Info, "Calling %s to flash serial number on robot...", ftdi_path.c_str());
+  Q_EMIT requestMW(new QNodeRequest("Flash serial number",
+            "Calling %s to flash serial number on robot...", ftdi_path.c_str()));
+
+  if (sysCmd("sudo " + ftdi_path, under_test->serial) == true) {
+    log(Info, "Serial number flashed: %s", under_test->serial.c_str());
+    Q_EMIT requestMW(new QNodeRequest("Flash serial number",
+              "Serial number flashed: %s", under_test->serial.c_str()));
+  }
+  else {
+    log(Error, "Serial number flashing failed");
+    Q_EMIT requestMW(new QNodeRequest("Flash serial number", "Serial number flashing failed"));
+    return false;
+  }
+
+  return true;
+}
 
 void QNode::testLeds(bool show_msg) {
   if (show_msg == true) {
@@ -572,7 +643,7 @@ bool QNode::testIMU(bool show_msg) {
   }
 
   std::string path;
-  unsigned int dev;
+  unsigned int dev = 0;    // Use the first video input by default
   ros::NodeHandle nh("~");
   nh.getParam("camera_device_index", (int&)dev);  // TODO control return = true!
   nh.getParam("camera_calibration_file", path);
@@ -645,7 +716,7 @@ bool QNode::measureCharge(bool show_msg) {
                                   "Plug the adaptor to the robot and wait %d seconds",
         (int)ceil(MEASURE_CHARGE_TIME)));
   }
-  ros::Time t1 = ros::Time::now();
+
   // Wait until charging starts (and a bit more) to take first measure...
   for (int i = 0; i < 40*frequency && under_test->device_val[Robot::CHARGING] == 0; i++)
     nbSleep(1.0/frequency);
@@ -776,7 +847,7 @@ bool QNode::init() {
   }
   ros::start(); // explicitly needed since our nodehandle is going out of scope.
   ros::NodeHandle nh;
-
+  nh.getParam("kobuki_factory_test/ftdi_kobuki_path",       ftdi_path);
   nh.getParam("kobuki_factory_test/test_result_output_file", out_file);
 
   // Subscribe to kobuki sensors and publish to its actuators
@@ -804,10 +875,6 @@ bool QNode::init() {
   start();
 
   current_step = INITIALIZATION;
-//  current_step = BUTTON_0_PRESSED;
-//  current_step = TEST_DC_ADAPTER;
-//  current_step = TEST_MOTORS_COUNTERCW;
-//  current_step = EVAL_MOTORS_CURRENT;
 
   timer_active = false;
 
@@ -845,6 +912,10 @@ void QNode::run() {
     // Here we perform the evaluation actions that cannot be driven through events
     switch (current_step) {
       case INITIALIZATION:
+        current_step++;
+        break;
+      case FLASH_SERIAL_NUMBER:
+        flashSN(step_changed);
         current_step++;
         break;
       case TEST_DC_ADAPTER:
