@@ -1,9 +1,22 @@
+#!/usr/bin/env python
+#       
+# License: BSD
+#   https://raw.github.com/yujinrobot/kobuki/master/kobuki_testsuite/LICENSE 
+#
+##############################################################################
+# Imports
+##############################################################################
+
 import roslib; roslib.load_manifest('kobuki_testsuite')
 import threading
 import rospy
 import math
 from geometry_msgs.msg import Twist
 from std_msgs.msg import String
+
+##############################################################################
+# Classes
+##############################################################################
 
 '''
     implements a rotating motion.

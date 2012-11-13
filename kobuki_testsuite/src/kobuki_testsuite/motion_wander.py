@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+#       
+# License: BSD
+#   https://raw.github.com/yujinrobot/kobuki/master/kobuki_testsuite/LICENSE 
+#
 ##############################################################################
 # Python Imports
 ##############################################################################
