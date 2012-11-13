@@ -50,7 +50,7 @@ class Rotate():
     def shutdown(self):
         self.stop()
         while self._running:
-            self.rate.sleep()
+            rospy.sleep(0.5)
         self.cmd_vel_publisher.unregister() #This one creates an error for some reason, probably because others already unregister.
         
     def stop(self):
