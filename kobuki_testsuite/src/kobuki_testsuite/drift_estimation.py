@@ -243,7 +243,7 @@ class DriftEstimation(object):
 
     def scan_callback(self, msg):
         with self.lock:
-            rospy.loginfo("Kobuki Testsuite: scan angle [%s]"%msg.scan_angle)
+            #rospy.loginfo("Kobuki Testsuite: scan angle [%s]"%msg.scan_angle)
             self._scan_angle = msg.scan_angle
             self._scan_time = msg.header.stamp
 
