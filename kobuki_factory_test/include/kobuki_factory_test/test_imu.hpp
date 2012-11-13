@@ -15,9 +15,8 @@
 class TestIMU
 {
 public:
-  TestIMU() : cap(0) // Assume we use the first video input
+  TestIMU() : pose_estimator(NULL)
   {
-    pose_estimator = NULL;
   }
 
   ~TestIMU()
@@ -29,11 +28,11 @@ public:
     }
   }
 
-  bool init(std::string& calib_file)
+  bool init(std::string& calib_file, unsigned int device)
   {
-    if (cap.isOpened() == false)
+    if (cap.open(device) == false)  // Use the first video input by default
     {
-      ROS_ERROR("Unable to open video input");
+      ROS_ERROR("Unable to open video input device %d", device);
       return false;
     }
 

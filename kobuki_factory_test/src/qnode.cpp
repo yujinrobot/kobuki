@@ -111,8 +111,13 @@ void QNode::sensorsCoreCB(const kobuki_comms::SensorState::ConstPtr& msg) {
 
   if (current_step == TEST_ANALOG_INPUT_PORTS) {
     for (unsigned int i = 0; i < msg->analog_input.size(); i++) {
-      under_test->analog_in[i][AI_MIN] = std::min(under_test->analog_in[i][AI_MIN], msg->analog_input[i]);
-      under_test->analog_in[i][AI_MAX] = std::max(under_test->analog_in[i][AI_MAX], msg->analog_input[i]);
+      under_test->analog_in[i][AI_INC] = msg->analog_input[i] - under_test->analog_in[i][AI_PRE];
+      under_test->analog_in[i][AI_PRE] = msg->analog_input[i];
+
+      under_test->analog_in[i][AI_MIN] =
+          std::min(under_test->analog_in[i][AI_MIN], (int16)msg->analog_input[i]);
+      under_test->analog_in[i][AI_MAX] =
+          std::max(under_test->analog_in[i][AI_MAX], (int16)msg->analog_input[i]);
     }
   }
 }
@@ -121,7 +126,8 @@ void QNode::dockBeaconCB(const kobuki_comms::DockInfraRed::ConstPtr& msg) {
   if ((under_test == NULL) || (under_test->ir_dock_ok() == true))
     return;
 
-  // Collect ir dock readings at any moment; TODO should we restrict it to an evaluation step?
+  // Collect ir dock readings at any moment;
+  // TODO should we restrict it to an evaluation step? and be more exigent?
   if (msg->data[0] > 0) {
     under_test->device_val[Robot::IR_DOCK_L] = msg->data[0];
     under_test->device_ok[Robot::IR_DOCK_L] = true;
@@ -158,7 +164,7 @@ void QNode::buttonEventCB(const kobuki_comms::ButtonEvent::ConstPtr& msg) {
 
   if (((current_step == TEST_LEDS) || (current_step == TEST_SOUNDS) ||
        (current_step == TEST_DIGITAL_IO_PORTS)) &&
-      (msg->state  == kobuki_comms::ButtonEvent::PRESSED)) {
+      (msg->state  == kobuki_comms::ButtonEvent::RELEASED)) {
     // We are currently evaluating a device that requires tester feedback
     // he must press the left button if test is ok or the right otherwise
     if ((msg->button == kobuki_comms::ButtonEvent::Button0) ||
@@ -180,7 +186,7 @@ void QNode::buttonEventCB(const kobuki_comms::ButtonEvent::ConstPtr& msg) {
       else if (msg->button == kobuki_comms::ButtonEvent::Button2)
         log(Warn, "%s didn't pass the test", (current_step == TEST_LEDS)?"LEDs":(current_step == TEST_SOUNDS)?"Sounds":"Digital I/O");  // TODO  should we cancel eval?
 
-      Q_EMIT requestMW(new QNodeRequest()); // hide user message  TODO veeeeeery crappy
+      Q_EMIT requestMW(new QNodeRequest()); // hide user message
       current_step++;
     }
 
@@ -443,6 +449,7 @@ void QNode::robotEventCB(const kobuki_comms::RobotStateEvent::ConstPtr& msg) {
 
     // Create a new robot object
     current_step = INITIALIZATION;
+
     under_test = new Robot(evaluated.size());
 
     // Resubscribe to version_info to get robot version number (it's a latched topic)
@@ -565,11 +572,13 @@ bool QNode::testIMU(bool show_msg) {
   }
 
   std::string path;
+  unsigned int dev;
   ros::NodeHandle nh("~");
+  nh.getParam("camera_device_index", (int&)dev);  // TODO control return = true!
   nh.getParam("camera_calibration_file", path);
 
   TestIMU imuTester;
-  if (imuTester.init(path) == false) {
+  if (imuTester.init(path, dev) == false) {
     log(Error, "Gyroscope test initialization failed; aborting test");
     Q_EMIT requestMW(new QNodeRequest());
     return false;
@@ -579,7 +588,7 @@ bool QNode::testIMU(bool show_msg) {
                       std::numeric_limits<double>::quiet_NaN() };
 
   for (unsigned int i = 0; i < 2; i++) {
-    for (unsigned int j = 0; j < 80 && ros::ok(); j++) { // around 40 seconds before timeout
+    for (unsigned int j = 0; j < 80 && ros::ok(); j++) { // around 30 seconds before timeout
       nbSleep(0.2);
       vo_yaw[i] = - imuTester.getYaw();  // We invert, as the camera is looking AT the robot
       if (isnan(vo_yaw[i]) == false) {
@@ -592,7 +601,7 @@ bool QNode::testIMU(bool show_msg) {
     }
 
     if (isnan(vo_yaw[i]) == true) {
-      log(Error, "Cannot recognize the check board after 50 attempts; gyroscope test aborted");
+      log(Error, "Cannot recognize the check board after 80 attempts; gyroscope test aborted");
       Q_EMIT requestMW(new QNodeRequest());
       return false;
     }
@@ -902,8 +911,6 @@ void QNode::run() {
       case LEFT_BUMPER_PRESSED:
         move(+TEST_BUMPERS_V, 0.0);
         break;
-///      case LEFT_BUMPER_RELEASED:
-////////        break;
       case PREPARE_MOTORS_TEST:
         if (step_changed == true) {
           Q_EMIT requestMW(new QNodeRequest("Motors current test",
@@ -927,8 +934,8 @@ void QNode::run() {
         break;
       case EVAL_MOTORS_CURRENT:
         evalMotorsCurrent(step_changed);
-        current_step++;   // WARN: we can use ++ here only if we call continue instead  TODO
-        break;         // of break to avoid previous_step = current_step assignment
+        current_step++;
+        break;
       case MEASURE_GYRO_ERROR:
         testIMU(step_changed);
         current_step++;
@@ -961,13 +968,9 @@ void QNode::run() {
         current_step = INITIALIZATION;
         break;
       default:
-        // Should not be here, unless I decide no to enumerate here every step  >>>  nothing special at this point; we must be evaluating a multi-step device
-//        log(Warn, "Unknown evaluation step: %d", current_step);
-           ////////////////////////move(0.0, 0.0);   // stop robot!
+        // Nothing special at this point; we must be evaluating a multi-step devicet!
         break;
     }
-
-  //  previous_step = current_step;
   }
   std::cout << "Ros shutdown, proceeding to close the gui." << std::endl;
   Q_EMIT rosShutdown(); // used to signal the gui for a shutdown (useful to roslaunch)

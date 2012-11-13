@@ -33,10 +33,13 @@ namespace kobuki_factory_test {
 
 #define AI_MIN  0
 #define AI_MAX  1
+#define AI_PRE  2
+#define AI_INC  3
 
-typedef long long int        int64;
-typedef unsigned short       uint16;
-typedef std::vector<uint16>  vuint16;
+typedef long long int       int64;
+typedef signed short        int16;
+typedef unsigned short      uint16;
+typedef std::vector<int16>  vint16;
 
 /*****************************************************************************
 ** Helper functions
@@ -104,7 +107,7 @@ public:
     device_ok(DEVICES_COUNT, false),
     device_val(DEVICES_COUNT, std::numeric_limits<int64>::max()),
     imu_data(5), // test 1, diff 1, test 2, diff 2, current value
-    analog_in(4, vuint16(2)) { // 4 x min/max voltages for analog ports
+    analog_in(4, vint16(4)) { // 4 x min/max/prev/inc voltages for analog ports
 
     for (unsigned int i = 0; i < DEVICES_COUNT; i++) {
       device_ok[i] = false;
@@ -112,8 +115,11 @@ public:
     }
 
     for (unsigned int i = 0; i < analog_in.size(); i++) {
-      analog_in[i][AI_MIN] = std::numeric_limits<uint16>::max();
-      analog_in[i][AI_MAX] = std::numeric_limits<uint16>::min();
+      analog_in[i][AI_MIN] = std::numeric_limits<int16>::max();
+      analog_in[i][AI_MAX] = std::numeric_limits<int16>::min();
+
+      analog_in[i][AI_PRE] = -1;
+      analog_in[i][AI_INC] =  0;
     }
   };
 
@@ -210,8 +216,8 @@ public:
   std::vector<int64> device_val;
 
   // Some special data that doesn't fit on device_val
-  std::vector<double>  imu_data;
-  std::vector<vuint16> analog_in;
+  std::vector<double> imu_data;
+  std::vector<vint16> analog_in;
 };
 
 class RobotList : public std::list<Robot*> {
