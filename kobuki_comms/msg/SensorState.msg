@@ -41,6 +41,7 @@ uint16[] bottom
 # Current Packet
 ###################
 uint8[] current
+uint8 over_current
 
 ###################
 # GP Input Packet
