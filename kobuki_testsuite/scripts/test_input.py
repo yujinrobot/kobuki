@@ -43,13 +43,13 @@ from math import degrees
 
 from sensor_msgs.msg import Imu
 from geometry_msgs.msg import Quaternion
-from kobuki_comms.msg import SensorState
-from kobuki_comms.msg import ButtonEvent
-from kobuki_comms.msg import BumperEvent
-from kobuki_comms.msg import WheelDropEvent
-from kobuki_comms.msg import CliffEvent
-from kobuki_comms.msg import PowerSystemEvent
-from kobuki_comms.msg import DigitalInputEvent
+from kobuki_msgs.msg import SensorState
+from kobuki_msgs.msg import ButtonEvent
+from kobuki_msgs.msg import BumperEvent
+from kobuki_msgs.msg import WheelDropEvent
+from kobuki_msgs.msg import CliffEvent
+from kobuki_msgs.msg import PowerSystemEvent
+from kobuki_msgs.msg import DigitalInputEvent
 
 def ImuCallback(data):
   quat = data.orientation

@@ -1,0 +1,19 @@
+/**
+  @mainpage
+  @htmlinclude manifest.html
+
+  @section References
+
+  See the .dox information in standard_comms/doxygen for more information.
+
+  @section usage Usage
+
+  @subsection Adding
+
+   - see if there's a strict data type you can use in std_msgs/std_srvs or standard_comms
+    - no point creating a new msg type with just a string variable when there is String.msg)
+   - is it possible to generalise the concept 
+    - e.g. goo board motor actuator -> generic actuator
+
+ **/
+

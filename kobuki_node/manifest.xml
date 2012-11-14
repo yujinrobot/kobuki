@@ -23,7 +23,7 @@
 
   <!--  Kobuki -->
   <depend package="kobuki_udev"/> <!-- 57-kobuki.rules -->
-  <depend package="kobuki_comms"/>
+  <depend package="kobuki_msgs"/>
   <depend package="kobuki_driver"/>
   <depend package="kobuki_keyop"/>
   

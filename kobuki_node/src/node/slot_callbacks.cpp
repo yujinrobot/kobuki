@@ -62,7 +62,7 @@ void KobukiNode::publishSensorState()
 {
   if ( ros::ok() ) {
     if (sensor_state_publisher.getNumSubscribers() > 0) {
-      kobuki_comms::SensorState state;
+      kobuki_msgs::SensorState state;
       CoreSensors::Data data = kobuki.getCoreSensorData();
       state.header.stamp = ros::Time::now();
       state.time_stamp = data.time_stamp; // firmware time stamp
@@ -167,7 +167,7 @@ void KobukiNode::publishDockIRData()
   {
     if (dock_ir_publisher.getNumSubscribers() > 0)
     {
-      kobuki_comms::DockInfraRed msg;
+      kobuki_msgs::DockInfraRed msg;
       DockIR::Data data = kobuki.getDockIRData();
       msg.header.frame_id = "dock_ir_link";
       msg.header.stamp = ros::Time::now();
@@ -194,7 +194,7 @@ void KobukiNode::publishVersionInfo(const VersionInfo &version_info)
 {
   if (ros::ok())
   {
-    kobuki_comms::VersionInfo msg;
+    kobuki_msgs::VersionInfo msg;
     msg.firmware = version_info.firmware;
     msg.hardware = version_info.hardware;
     msg.software = version_info.software;
@@ -216,16 +216,16 @@ void KobukiNode::publishButtonEvent(const ButtonEvent &event)
 {
   if (ros::ok())
   {
-    kobuki_comms::ButtonEvent msg;
+    kobuki_msgs::ButtonEvent msg;
     switch(event.state) {
-      case(ButtonEvent::Pressed) : { msg.state = kobuki_comms::ButtonEvent::PRESSED; break; }
-      case(ButtonEvent::Released) : { msg.state = kobuki_comms::ButtonEvent::RELEASED; break; }
+      case(ButtonEvent::Pressed) : { msg.state = kobuki_msgs::ButtonEvent::PRESSED; break; }
+      case(ButtonEvent::Released) : { msg.state = kobuki_msgs::ButtonEvent::RELEASED; break; }
       default: break;
     }
     switch(event.button) {
-      case(ButtonEvent::Button0) : { msg.button = kobuki_comms::ButtonEvent::Button0; break; }
-      case(ButtonEvent::Button1) : { msg.button = kobuki_comms::ButtonEvent::Button1; break; }
-      case(ButtonEvent::Button2) : { msg.button = kobuki_comms::ButtonEvent::Button2; break; }
+      case(ButtonEvent::Button0) : { msg.button = kobuki_msgs::ButtonEvent::Button0; break; }
+      case(ButtonEvent::Button1) : { msg.button = kobuki_msgs::ButtonEvent::Button1; break; }
+      case(ButtonEvent::Button2) : { msg.button = kobuki_msgs::ButtonEvent::Button2; break; }
       default: break;
     }
     button_event_publisher.publish(msg);
@@ -236,16 +236,16 @@ void KobukiNode::publishBumperEvent(const BumperEvent &event)
 {
   if (ros::ok())
   {
-    kobuki_comms::BumperEvent msg;
+    kobuki_msgs::BumperEvent msg;
     switch(event.state) {
-      case(BumperEvent::Pressed) : { msg.state = kobuki_comms::BumperEvent::PRESSED; break; }
-      case(BumperEvent::Released) : { msg.state = kobuki_comms::BumperEvent::RELEASED; break; }
+      case(BumperEvent::Pressed) : { msg.state = kobuki_msgs::BumperEvent::PRESSED; break; }
+      case(BumperEvent::Released) : { msg.state = kobuki_msgs::BumperEvent::RELEASED; break; }
       default: break;
     }
     switch(event.bumper) {
-      case(BumperEvent::Left) : { msg.bumper = kobuki_comms::BumperEvent::LEFT; break; }
-      case(BumperEvent::Center) : { msg.bumper = kobuki_comms::BumperEvent::CENTER; break; }
-      case(BumperEvent::Right) : { msg.bumper = kobuki_comms::BumperEvent::RIGHT; break; }
+      case(BumperEvent::Left) : { msg.bumper = kobuki_msgs::BumperEvent::LEFT; break; }
+      case(BumperEvent::Center) : { msg.bumper = kobuki_msgs::BumperEvent::CENTER; break; }
+      case(BumperEvent::Right) : { msg.bumper = kobuki_msgs::BumperEvent::RIGHT; break; }
       default: break;
     }
     bumper_event_publisher.publish(msg);
@@ -256,16 +256,16 @@ void KobukiNode::publishCliffEvent(const CliffEvent &event)
 {
   if (ros::ok())
   {
-    kobuki_comms::CliffEvent msg;
+    kobuki_msgs::CliffEvent msg;
     switch(event.state) {
-      case(CliffEvent::Floor) : { msg.state = kobuki_comms::CliffEvent::FLOOR; break; }
-      case(CliffEvent::Cliff) : { msg.state = kobuki_comms::CliffEvent::CLIFF; break; }
+      case(CliffEvent::Floor) : { msg.state = kobuki_msgs::CliffEvent::FLOOR; break; }
+      case(CliffEvent::Cliff) : { msg.state = kobuki_msgs::CliffEvent::CLIFF; break; }
       default: break;
     }
     switch(event.sensor) {
-      case(CliffEvent::Left)   : { msg.sensor = kobuki_comms::CliffEvent::LEFT;   break; }
-      case(CliffEvent::Center) : { msg.sensor = kobuki_comms::CliffEvent::CENTER; break; }
-      case(CliffEvent::Right)  : { msg.sensor = kobuki_comms::CliffEvent::RIGHT;  break; }
+      case(CliffEvent::Left)   : { msg.sensor = kobuki_msgs::CliffEvent::LEFT;   break; }
+      case(CliffEvent::Center) : { msg.sensor = kobuki_msgs::CliffEvent::CENTER; break; }
+      case(CliffEvent::Right)  : { msg.sensor = kobuki_msgs::CliffEvent::RIGHT;  break; }
       default: break;
     }
     msg.bottom = event.bottom;
@@ -277,15 +277,15 @@ void KobukiNode::publishWheelEvent(const WheelEvent &event)
 {
   if (ros::ok())
   {
-    kobuki_comms::WheelDropEvent msg;
+    kobuki_msgs::WheelDropEvent msg;
     switch(event.state) {
-      case(WheelEvent::Dropped) : { msg.state = kobuki_comms::WheelDropEvent::DROPPED; break; }
-      case(WheelEvent::Raised)  : { msg.state = kobuki_comms::WheelDropEvent::RAISED;  break; }
+      case(WheelEvent::Dropped) : { msg.state = kobuki_msgs::WheelDropEvent::DROPPED; break; }
+      case(WheelEvent::Raised)  : { msg.state = kobuki_msgs::WheelDropEvent::RAISED;  break; }
       default: break;
     }
     switch(event.wheel) {
-      case(WheelEvent::Left)  : { msg.wheel = kobuki_comms::WheelDropEvent::LEFT;  break; }
-      case(WheelEvent::Right) : { msg.wheel = kobuki_comms::WheelDropEvent::RIGHT; break; }
+      case(WheelEvent::Left)  : { msg.wheel = kobuki_msgs::WheelDropEvent::LEFT;  break; }
+      case(WheelEvent::Right) : { msg.wheel = kobuki_msgs::WheelDropEvent::RIGHT; break; }
       default: break;
     }
     wheel_event_publisher.publish(msg);
@@ -296,20 +296,20 @@ void KobukiNode::publishPowerEvent(const PowerEvent &event)
 {
   if (ros::ok())
   {
-    kobuki_comms::PowerSystemEvent msg;
+    kobuki_msgs::PowerSystemEvent msg;
     switch(event.event) {
       case(PowerEvent::Unplugged) :
-        { msg.event = kobuki_comms::PowerSystemEvent::UNPLUGGED; break; }
+        { msg.event = kobuki_msgs::PowerSystemEvent::UNPLUGGED; break; }
       case(PowerEvent::PluggedToAdapter) :
-        { msg.event = kobuki_comms::PowerSystemEvent::PLUGGED_TO_ADAPTER;  break; }
+        { msg.event = kobuki_msgs::PowerSystemEvent::PLUGGED_TO_ADAPTER;  break; }
       case(PowerEvent::PluggedToDockbase) :
-        { msg.event = kobuki_comms::PowerSystemEvent::PLUGGED_TO_DOCKBASE; break; }
+        { msg.event = kobuki_msgs::PowerSystemEvent::PLUGGED_TO_DOCKBASE; break; }
       case(PowerEvent::ChargeCompleted)  :
-        { msg.event = kobuki_comms::PowerSystemEvent::CHARGE_COMPLETED;  break; }
+        { msg.event = kobuki_msgs::PowerSystemEvent::CHARGE_COMPLETED;  break; }
       case(PowerEvent::BatteryLow) :
-        { msg.event = kobuki_comms::PowerSystemEvent::BATTERY_LOW; break; }
+        { msg.event = kobuki_msgs::PowerSystemEvent::BATTERY_LOW; break; }
       case(PowerEvent::BatteryCritical) :
-        { msg.event = kobuki_comms::PowerSystemEvent::BATTERY_CRITICAL;  break; }
+        { msg.event = kobuki_msgs::PowerSystemEvent::BATTERY_CRITICAL;  break; }
       default: break;
     }
     power_event_publisher.publish(msg);
@@ -320,7 +320,7 @@ void KobukiNode::publishInputEvent(const InputEvent &event)
 {
   if (ros::ok())
   {
-    kobuki_comms::DigitalInputEvent msg;
+    kobuki_msgs::DigitalInputEvent msg;
     for (unsigned int i = 0; i < msg.values.size(); i++)
       msg.values[i] = event.values[i];
     input_event_publisher.publish(msg);
@@ -331,10 +331,10 @@ void KobukiNode::publishRobotEvent(const RobotEvent &event)
 {
   if (ros::ok())
   {
-    kobuki_comms::RobotStateEvent msg;
+    kobuki_msgs::RobotStateEvent msg;
     switch(event.state) {
-      case(RobotEvent::Online)  : { msg.state = kobuki_comms::RobotStateEvent::ONLINE;  break; }
-      case(RobotEvent::Offline) : { msg.state = kobuki_comms::RobotStateEvent::OFFLINE; break; }
+      case(RobotEvent::Online)  : { msg.state = kobuki_msgs::RobotStateEvent::ONLINE;  break; }
+      case(RobotEvent::Offline) : { msg.state = kobuki_msgs::RobotStateEvent::OFFLINE; break; }
       default: break;
     }
 

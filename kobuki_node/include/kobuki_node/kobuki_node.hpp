@@ -56,19 +56,19 @@
 #include <sensor_msgs/JointState.h>
 #include <sensor_msgs/Imu.h>
 #include <ecl/sigslots.hpp>
-#include <kobuki_comms/ButtonEvent.h>
-#include <kobuki_comms/BumperEvent.h>
-#include <kobuki_comms/CliffEvent.h>
-#include <kobuki_comms/WheelDropEvent.h>
-#include <kobuki_comms/PowerSystemEvent.h>
-#include <kobuki_comms/DigitalInputEvent.h>
-#include <kobuki_comms/RobotStateEvent.h>
-#include <kobuki_comms/DigitalOutput.h>
-#include <kobuki_comms/Led.h>
-#include <kobuki_comms/SensorState.h>
-#include <kobuki_comms/DockInfraRed.h>
-#include <kobuki_comms/Sound.h>
-#include <kobuki_comms/VersionInfo.h>
+#include <kobuki_msgs/ButtonEvent.h>
+#include <kobuki_msgs/BumperEvent.h>
+#include <kobuki_msgs/CliffEvent.h>
+#include <kobuki_msgs/WheelDropEvent.h>
+#include <kobuki_msgs/PowerSystemEvent.h>
+#include <kobuki_msgs/DigitalInputEvent.h>
+#include <kobuki_msgs/RobotStateEvent.h>
+#include <kobuki_msgs/DigitalOutput.h>
+#include <kobuki_msgs/Led.h>
+#include <kobuki_msgs/SensorState.h>
+#include <kobuki_msgs/DockInfraRed.h>
+#include <kobuki_msgs/Sound.h>
+#include <kobuki_msgs/VersionInfo.h>
 #include <kobuki_driver/kobuki.hpp>
 #include "diagnostics.hpp"
 #include "odometry.hpp"
@@ -121,12 +121,12 @@ private:
   ** Ros Callbacks
   **********************/
   void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
-  void subscribeLed1Command(const kobuki_comms::LedConstPtr);
-  void subscribeLed2Command(const kobuki_comms::LedConstPtr);
-  void subscribeDigitalOutputCommand(const kobuki_comms::DigitalOutputConstPtr);
-  void subscribeExternalPowerCommand(const kobuki_comms::DigitalOutputConstPtr);
+  void subscribeLed1Command(const kobuki_msgs::LedConstPtr);
+  void subscribeLed2Command(const kobuki_msgs::LedConstPtr);
+  void subscribeDigitalOutputCommand(const kobuki_msgs::DigitalOutputConstPtr);
+  void subscribeExternalPowerCommand(const kobuki_msgs::DigitalOutputConstPtr);
   void subscribeResetOdometry(const std_msgs::EmptyConstPtr);
-  void subscribeSoundCommand(const kobuki_comms::SoundConstPtr);
+  void subscribeSoundCommand(const kobuki_msgs::SoundConstPtr);
   void enable(const std_msgs::StringConstPtr msg);
   void disable(const std_msgs::StringConstPtr msg);
 

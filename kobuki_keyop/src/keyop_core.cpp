@@ -219,7 +219,7 @@ void KeyOpCore::keyboardInputLoop() {
 /**
  * @brief Callback function for remote keyboard inputs subscriber.
  */
-void KeyOpCore::remoteKeyInputReceived(const kobuki_comms::KeyboardInput& key) {
+void KeyOpCore::remoteKeyInputReceived(const kobuki_msgs::KeyboardInput& key) {
 
 	processKeyboardInput(key.pressedKey);
 }
@@ -239,23 +239,23 @@ void KeyOpCore::processKeyboardInput(char c) {
      * esc-[-D) we can keep the parsing simple.
      */
 	switch(c) {
-	    case kobuki_comms::KeyboardInput::KeyCode_Left: {
+	    case kobuki_msgs::KeyboardInput::KeyCode_Left: {
 	    	incrementAngularVelocity();
 	    	break;
 	    }
-	    case kobuki_comms::KeyboardInput::KeyCode_Right: {
+	    case kobuki_msgs::KeyboardInput::KeyCode_Right: {
 	    	decrementAngularVelocity();
 	    	break;
 	    }
-	    case kobuki_comms::KeyboardInput::KeyCode_Up: {
+	    case kobuki_msgs::KeyboardInput::KeyCode_Up: {
 	    	incrementLinearVelocity();
 	    	break;
 	    }
-	    case kobuki_comms::KeyboardInput::KeyCode_Down: {
+	    case kobuki_msgs::KeyboardInput::KeyCode_Down: {
 	    	decrementLinearVelocity();
 	    	break;
 	    }
-	    case kobuki_comms::KeyboardInput::KeyCode_Space: {
+	    case kobuki_msgs::KeyboardInput::KeyCode_Space: {
 	    	resetVelocity();
 	    	break;
 	    }

@@ -17,7 +17,7 @@ import rospy
 from tf.transformations import euler_from_quaternion
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
-from kobuki_comms.msg import BumperEvent, CliffEvent
+from kobuki_msgs.msg import BumperEvent, CliffEvent
 
 ##############################################################################
 # Local imports

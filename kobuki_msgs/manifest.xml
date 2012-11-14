@@ -1,5 +1,5 @@
 <package>
-  <description brief="Kobuki message and service types">
+  <description brief="kobuki message and service types">
     <p>
       Custom messages and services for the Kobuki packages.
     </p> 
@@ -7,8 +7,10 @@
   <author>Daniel Stonier, 주영훈</author>
   <license>BSD</license>
   <review status="experimental" notes=""/>
-  <url>http://www.ros.org/wiki/kobuki_comms</url>
+  <url>http://www.ros.org/wiki/kobuki_msgs</url>
   <export>
     <cpp cflags="-I${prefix}/msg_gen/cpp/include -I${prefix}/srv_gen/cpp/include"/>
   </export>
 </package>
+
+

@@ -39,7 +39,7 @@ import sys
 import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
 
-from kobuki_comms.msg import SensorState
+from kobuki_msgs.msg import SensorState
 
 
 def SensorStateCallback(data):

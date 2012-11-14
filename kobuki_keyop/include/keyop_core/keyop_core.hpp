@@ -22,7 +22,7 @@
 #include <geometry_msgs/Twist.h>  // for velocity commands
 #include <geometry_msgs/TwistStamped.h>  // for velocity commands
 #include <std_msgs/String.h> // for enable/disable commands
-#include <kobuki_comms/KeyboardInput.h> // keycodes from remote teleops.
+#include <kobuki_msgs/KeyboardInput.h> // keycodes from remote teleops.
 
 /*****************************************************************************
 ** Namespaces
@@ -84,7 +84,7 @@ private:
 
 	void keyboardInputLoop();
 	void processKeyboardInput(char c);
-	void remoteKeyInputReceived(const kobuki_comms::KeyboardInput& key);
+	void remoteKeyInputReceived(const kobuki_msgs::KeyboardInput& key);
 	void restoreTerminal();
 	bool quit_requested;
         int key_file_descriptor;

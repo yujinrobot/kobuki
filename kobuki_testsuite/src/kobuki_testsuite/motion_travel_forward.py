@@ -12,7 +12,7 @@ import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
 from geometry_msgs.msg import Twist, Pose
 from nav_msgs.msg import Odometry
-from kobuki_comms.msg import CliffEvent
+from kobuki_msgs.msg import CliffEvent
 # Local imports
 import utils
 

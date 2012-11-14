@@ -35,7 +35,7 @@
 import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
 
-from kobuki_comms.msg import DigitalOutput
+from kobuki_msgs.msg import DigitalOutput
 
 rospy.init_node("test_digital_output")
 pub = rospy.Publisher('/mobile_base/commands/digital_output',DigitalOutput)
