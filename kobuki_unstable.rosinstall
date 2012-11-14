@@ -41,6 +41,11 @@
     local-name: kobuki_desktop
     version: master
 
+- igt:
+    uri: https://github.com/yujinrobot/kobuki_msgs.git
+    local-name: kobuki_msgs
+    version: master
+
 # Later move these to debs.
 
 - svn:
