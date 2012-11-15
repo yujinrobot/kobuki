@@ -200,7 +200,7 @@ void Kobuki::spin()
       }
       serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
       if( serial.open() ) {
-        sig_info.emit("device is conencted.");
+        sig_info.emit("device is connected.");
         is_connected = true;
         is_alive = true;
         event_manager.update(is_connected, is_alive);
@@ -293,7 +293,6 @@ void Kobuki::spin()
             //sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
             break;
           case Header::UniqueDeviceID:
-            std::cout << "udid received" << std::endl;
             unique_device_id.deserialise(data_buffer);
             sig_version_info.emit( VersionInfo( firmware.data.version, hardware.data.version
                 , unique_device_id.data.udid0, unique_device_id.data.udid1, unique_device_id.data.udid2 ));
