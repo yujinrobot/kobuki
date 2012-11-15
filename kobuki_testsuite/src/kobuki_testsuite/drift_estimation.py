@@ -23,7 +23,15 @@ from kobuki_testsuite.msg import ScanAngle
 def quat_to_angle(quat):
     rot = PyKDL.Rotation.Quaternion(quat.x, quat.y, quat.z, quat.w)
     return rot.GetRPY()[2]
-        
+
+def wrap_angle(angle):
+    if angle <= math.pi and angle >= -math.pi:
+        return angle
+    elif angle < 0.0:
+        return math.fmod(angle-math.pi,2.0*math.pi)+math.pi
+    else:
+        return math.fmod(angle+math.pi,2.0*math.pi)-math.pi;
+                
 ##############################################################################
 # Classes
 ##############################################################################
@@ -162,11 +170,11 @@ class DriftEstimation(object):
                 scan_angle = self._scan_angle
             if gyro_time > last_gyro_time:
                 last_gyro_time = gyro_time
-                if gyro_angle - self._centred_gyro_angle > self._max_angle:
+                if wrap_angle(gyro_angle - self._centred_gyro_angle) > self._max_angle:
                     if yaw_rate_cmd > 0: 
                         turn_count = turn_count + 1
                     yaw_rate_cmd = -self._abs_yaw_rate
-                elif gyro_angle - self._centred_gyro_angle < -self._max_angle:
+                elif wrap_angle(gyro_angle - self._centred_gyro_angle) < -self._max_angle:
                     yaw_rate_cmd = self._abs_yaw_rate
                 else:
                     yaw_rate_cmd = cmp(yaw_rate_cmd,0)*self._abs_yaw_rate
