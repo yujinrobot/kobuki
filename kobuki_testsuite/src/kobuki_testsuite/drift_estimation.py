@@ -40,25 +40,21 @@ class ScanToAngle(object):
     def __init__(self, scan_topic, scan_angle_topic):
         self.min_angle = -0.3
         self.max_angle = 0.3
+        self.lock = threading.Lock() # make sure we don't publish if the publisher is not there
         self._laser_scan_angle_publisher = rospy.Publisher(scan_angle_topic, ScanAngle)
         self.scan_subscriber = rospy.Subscriber(scan_topic, LaserScan, self.scan_callback)
-        self._publish = False
 
     def init(self, min_angle=-0.3, max_angle=0.3):
         self.min_angle = min_angle
         self.max_angle = max_angle
-        
-    def start(self):
-        self._publish = True
-        
-    def stop(self):
-        self._publish = False
-        
+
     def shutdown(self):
-        self._publish = False
         if not rospy.is_shutdown():
-            self._laser_scan_angle_publisher.unregister()
-            self.scan_subscriber.unregister()
+            with self.lock:
+                self.scan_subscriber.unregister()
+                self.scan_subscriber = None
+                self._laser_scan_angle_publisher.unregister()
+                self._laser_scan_angle_publisher = None
 
     def scan_callback(self, msg):
         angle = msg.angle_min
@@ -86,7 +82,9 @@ class ScanToAngle(object):
                 relay = ScanAngle()
                 relay.header = msg.header 
                 relay.scan_angle = angle
-                self._laser_scan_angle_publisher.publish(relay)
+                with self.lock:
+                    if self._laser_scan_angle_publisher:
+                        self._laser_scan_angle_publisher.publish(relay)
         else:
             rospy.logerr("Please point me at a wall.")
 
@@ -130,10 +128,15 @@ class DriftEstimation(object):
             self.rate.sleep()
         if not rospy.is_shutdown():
             self._gyro_scan_angle_publisher.unregister()
+            self._gyro_scan_angle_publisher = None
             self._laser_scan_angle_subscriber.unregister()
+            self._laser_scan_angle_subscriber = None
             self._error_scan_angle_publisher.unregister()
+            self._error_scan_angle_publisher = None
             self.gyro_subscriber.unregister()
+            self.gyro_subscriber = None
             self.cmd_vel_publisher.unregister()
+            self.cmd_vel_publisher = None
         
     def stop(self):
         self._stop = True
