@@ -49,11 +49,13 @@ class ScanToAngle(object):
         self.max_angle = max_angle
 
     def shutdown(self):
+        print "Killing off scan angle publisher"
         if not rospy.is_shutdown():
             with self.lock:
                 self.scan_subscriber.unregister()
                 self.scan_subscriber = None
                 self._laser_scan_angle_publisher.unregister()
+                del self._laser_scan_angle_publisher
                 self._laser_scan_angle_publisher = None
 
     def scan_callback(self, msg):
@@ -127,6 +129,7 @@ class DriftEstimation(object):
         while self._running:
             self.rate.sleep()
         if not rospy.is_shutdown():
+            print "Shutting down drift estimation"
             self._gyro_scan_angle_publisher.unregister()
             self._gyro_scan_angle_publisher = None
             self._laser_scan_angle_subscriber.unregister()
@@ -207,10 +210,15 @@ class DriftEstimation(object):
     def align(self):
         with self.lock:
             angle = self._scan_angle
+        no_data_count = 0
         count = 0
         epsilon = 0.05
         cmd = Twist()
-        while angle < 0 or angle > 0: #self._inital_wall_angle:
+        while True: #self._inital_wall_angle:
+            if angle == 0: # magic number, means we have no data yet
+                no_data_count += 1
+                if no_data_count == 40:
+                    return False
             if self._stop or rospy.is_shutdown():
                 return False
             elif count > 20:
@@ -230,6 +238,7 @@ class DriftEstimation(object):
             rospy.sleep(0.05)
             with self.lock:
                 angle = self._scan_angle
+        print "end of align"
 
     ##########################################################################
     # Ros Callbacks
