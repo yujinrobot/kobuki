@@ -40,25 +40,23 @@ class ScanToAngle(object):
     def __init__(self, scan_topic, scan_angle_topic):
         self.min_angle = -0.3
         self.max_angle = 0.3
+        self.lock = threading.Lock() # make sure we don't publish if the publisher is not there
         self._laser_scan_angle_publisher = rospy.Publisher(scan_angle_topic, ScanAngle)
         self.scan_subscriber = rospy.Subscriber(scan_topic, LaserScan, self.scan_callback)
-        self._publish = False
 
     def init(self, min_angle=-0.3, max_angle=0.3):
         self.min_angle = min_angle
         self.max_angle = max_angle
-        
-    def start(self):
-        self._publish = True
-        
-    def stop(self):
-        self._publish = False
-        
+
     def shutdown(self):
-        self._publish = False
+        print "Killing off scan angle publisher"
         if not rospy.is_shutdown():
-            self._laser_scan_angle_publisher.unregister()
-            self.scan_subscriber.unregister()
+            with self.lock:
+                self.scan_subscriber.unregister()
+                self.scan_subscriber = None
+                self._laser_scan_angle_publisher.unregister()
+                del self._laser_scan_angle_publisher
+                self._laser_scan_angle_publisher = None
 
     def scan_callback(self, msg):
         angle = msg.angle_min
@@ -86,7 +84,9 @@ class ScanToAngle(object):
                 relay = ScanAngle()
                 relay.header = msg.header 
                 relay.scan_angle = angle
-                self._laser_scan_angle_publisher.publish(relay)
+                with self.lock:
+                    if self._laser_scan_angle_publisher:
+                        self._laser_scan_angle_publisher.publish(relay)
         else:
             rospy.logerr("Please point me at a wall.")
 
@@ -129,11 +129,17 @@ class DriftEstimation(object):
         while self._running:
             self.rate.sleep()
         if not rospy.is_shutdown():
+            print "Shutting down drift estimation"
             self._gyro_scan_angle_publisher.unregister()
+            self._gyro_scan_angle_publisher = None
             self._laser_scan_angle_subscriber.unregister()
+            self._laser_scan_angle_subscriber = None
             self._error_scan_angle_publisher.unregister()
+            self._error_scan_angle_publisher = None
             self.gyro_subscriber.unregister()
+            self.gyro_subscriber = None
             self.cmd_vel_publisher.unregister()
+            self.cmd_vel_publisher = None
         
     def stop(self):
         self._stop = True
@@ -204,10 +210,15 @@ class DriftEstimation(object):
     def align(self):
         with self.lock:
             angle = self._scan_angle
+        no_data_count = 0
         count = 0
         epsilon = 0.05
         cmd = Twist()
-        while angle < 0 or angle > 0: #self._inital_wall_angle:
+        while True: #self._inital_wall_angle:
+            if angle == 0: # magic number, means we have no data yet
+                no_data_count += 1
+                if no_data_count == 40:
+                    return False
             if self._stop or rospy.is_shutdown():
                 return False
             elif count > 20:
@@ -227,6 +238,7 @@ class DriftEstimation(object):
             rospy.sleep(0.05)
             with self.lock:
                 angle = self._scan_angle
+        print "end of align"
 
     ##########################################################################
     # Ros Callbacks
