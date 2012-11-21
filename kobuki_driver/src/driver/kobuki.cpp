@@ -204,10 +204,8 @@ void Kobuki::spin()
       if( serial.open() ) {
         sig_info.emit("device is connected.");
         is_connected = true;
-        is_alive = true;
         event_manager.update(is_connected, is_alive);
         version_info_reminder = 10;
-        sendCommand(Command::GetVersionInfo());
       }
     }
 
