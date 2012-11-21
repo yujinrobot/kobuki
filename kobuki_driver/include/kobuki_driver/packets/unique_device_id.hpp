@@ -74,7 +74,9 @@ public:
       return false;
     }
 
+    unsigned char length = 12;
     buildBytes(Header::UniqueDeviceID, byteStream);
+    buildBytes(length, byteStream);
     buildBytes(data.udid0, byteStream);    
     buildBytes(data.udid1, byteStream);    
     buildBytes(data.udid2, byteStream);    
@@ -89,8 +91,9 @@ public:
       return false;
     }
 
-    unsigned char header_id;
+    unsigned char header_id, length;
     buildVariable(header_id, byteStream);
+    buildVariable(length, byteStream);
     buildVariable(data.udid0, byteStream);
     buildVariable(data.udid1, byteStream);
     buildVariable(data.udid2, byteStream);

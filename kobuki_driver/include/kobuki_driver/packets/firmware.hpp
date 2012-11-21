@@ -72,7 +72,9 @@ public:
       return false;
     }
 
+    unsigned char length = 2;
     buildBytes(Header::Firmware, byteStream);
+    buildBytes(length, byteStream);
     buildBytes(data.version, byteStream);
     return true;
   }
@@ -85,8 +87,9 @@ public:
       return false;
     }
 
-    unsigned char header_id;
+    unsigned char header_id, length;
     buildVariable(header_id, byteStream);
+    buildVariable(length, byteStream);
     buildVariable(data.version, byteStream);
 
     //showMe();

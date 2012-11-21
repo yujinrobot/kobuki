@@ -58,19 +58,21 @@ bool CoreSensors::serialise(ecl::PushAndPop<unsigned char> & byteStream)
     //ROS_WARN_STREAM("kobuki_node: kobuki_default: serialise failed. empty byte stream.");
     return false;
   }
+  unsigned char length = 15;
   buildBytes(Header::CoreSensors, byteStream);
-  buildBytes(data.time_stamp, byteStream);
-  buildBytes(data.bumper, byteStream);
-  buildBytes(data.wheel_drop, byteStream);
-  buildBytes(data.cliff, byteStream);
-  buildBytes(data.left_encoder, byteStream);
-  buildBytes(data.right_encoder, byteStream);
-  buildBytes(data.left_pwm, byteStream);
-  buildBytes(data.right_pwm, byteStream);
-  buildBytes(data.buttons, byteStream);
-  buildBytes(data.charger, byteStream);
-  buildBytes(data.battery, byteStream);
-  buildBytes(data.over_current, byteStream);
+  buildBytes(length, byteStream);
+  buildBytes(data.time_stamp, byteStream);	//2
+  buildBytes(data.bumper, byteStream);		//1
+  buildBytes(data.wheel_drop, byteStream);	//1
+  buildBytes(data.cliff, byteStream);		//1
+  buildBytes(data.left_encoder, byteStream);	//2
+  buildBytes(data.right_encoder, byteStream);	//2
+  buildBytes(data.left_pwm, byteStream);	//1
+  buildBytes(data.right_pwm, byteStream);	//1
+  buildBytes(data.buttons, byteStream);		//1
+  buildBytes(data.charger, byteStream);		//1
+  buildBytes(data.battery, byteStream);		//1
+  buildBytes(data.over_current, byteStream);	//1
 
   return true;
 }
@@ -82,8 +84,9 @@ bool CoreSensors::deserialise(ecl::PushAndPop<unsigned char> & byteStream)
     return false;
   }
 
-  unsigned char header_id;
+  unsigned char header_id, length;
   buildVariable(header_id, byteStream);
+  buildVariable(length, byteStream);
   buildVariable(data.time_stamp, byteStream);
   buildVariable(data.bumper, byteStream);
   buildVariable(data.wheel_drop, byteStream);
