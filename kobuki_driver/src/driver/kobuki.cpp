@@ -138,6 +138,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_info.connect(sigslots_namespace + std::string("/ros_info"));
   sig_warn.connect(sigslots_namespace + std::string("/ros_warn"));
   sig_error.connect(sigslots_namespace + std::string("/ros_error"));
+  sig_named.connect(sigslots_namespace + std::string("/ros_named"));
 
   diff_drive.init();
   gate_keeper.init(parameters.enable_gate_keeper);
@@ -232,7 +233,8 @@ void Kobuki::spin()
       std::ostringstream ostream;
       ostream << "kobuki_node : serial_read(" << n << ")"
         << ", packet_finder.numberOfDataToRead(" << packet_finder.numberOfDataToRead() << ")";
-      sig_debug.emit(ostream.str());
+      //sig_debug.emit(ostream.str());
+      sig_named.emit(log("debug", "serial", ostream.str()));
       // might be useful to send this to a topic if there is subscribers
 //        static unsigned char last_char(buf[0]);
 //        for( int i(0); i<n; i++ )
@@ -323,7 +325,8 @@ void Kobuki::spin()
               ostream << std::hex << std::setw(2) << byte << " " << std::dec;
             }
             ostream << "]";
-            sig_debug.emit(ostream.str());
+            //sig_debug.emit(ostream.str());
+            sig_named.emit(log("debug", "packet", ostream.str()));
             }
             break;
         }

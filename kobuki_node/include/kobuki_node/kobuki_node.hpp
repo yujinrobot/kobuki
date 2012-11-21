@@ -143,6 +143,7 @@ private:
   ecl::Slot<const InputEvent&>  slot_input_event;
   ecl::Slot<const RobotEvent&>  slot_robot_event;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
+  ecl::Slot<const std::vector<std::string>&> slot_named;
   ecl::Slot<Command::Buffer&> slot_raw_data_command;
   ecl::Slot<PacketFinder::BufferType&> slot_raw_data_stream;
 
@@ -168,6 +169,24 @@ private:
   void rosInfo(const std::string &msg) { ROS_INFO_STREAM("Kobuki : " << msg); }
   void rosWarn(const std::string &msg) { ROS_WARN_STREAM("Kobuki : " << msg); }
   void rosError(const std::string &msg) { ROS_ERROR_STREAM("Kobuki : " << msg); }
+  void rosNamed(const std::vector<std::string> &msgs) { 
+    if (msgs.size()==0) return;
+    if (msgs.size()==1) { ROS_INFO_STREAM("Kobuki : " << msgs[0]); }
+    if (msgs.size()==2) {
+      if      (msgs[0] == "debug") { ROS_DEBUG_STREAM("Kobuki : " << msgs[1]); }
+      else if (msgs[0] == "info" ) { ROS_INFO_STREAM ("Kobuki : " << msgs[1]); }
+      else if (msgs[0] == "warn" ) { ROS_WARN_STREAM ("Kobuki : " << msgs[1]); }
+      else if (msgs[0] == "error") { ROS_ERROR_STREAM("Kobuki : " << msgs[1]); }
+      else if (msgs[0] == "fatal") { ROS_FATAL_STREAM("Kobuki : " << msgs[1]); }
+    }
+    if (msgs.size()==3) {
+      if      (msgs[0] == "debug") { ROS_DEBUG_STREAM_NAMED(msgs[1], "Kobuki : " << msgs[2]); }
+      else if (msgs[0] == "info" ) { ROS_INFO_STREAM_NAMED (msgs[1], "Kobuki : " << msgs[2]); }
+      else if (msgs[0] == "warn" ) { ROS_WARN_STREAM_NAMED (msgs[1], "Kobuki : " << msgs[2]); }
+      else if (msgs[0] == "error") { ROS_ERROR_STREAM_NAMED(msgs[1], "Kobuki : " << msgs[2]); }
+      else if (msgs[0] == "fatal") { ROS_FATAL_STREAM_NAMED(msgs[1], "Kobuki : " << msgs[2]); }
+    }
+  }
   void publishRawDataCommand(Command::Buffer &buffer);
   void publishRawDataStream(PacketFinder::BufferType &buffer);
 
