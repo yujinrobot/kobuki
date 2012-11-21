@@ -191,6 +191,8 @@ private:
   PacketFinder::BufferType data_buffer;
   bool is_alive; // used as a flag set by the data stream watchdog
 
+  int version_info_reminder;
+
   /*********************
   ** Commands
   **********************/
