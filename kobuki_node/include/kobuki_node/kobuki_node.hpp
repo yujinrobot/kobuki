@@ -106,7 +106,7 @@ private:
   ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher, dock_ir_publisher;
   ros::Publisher button_event_publisher, input_event_publisher, robot_event_publisher;
   ros::Publisher bumper_event_publisher, cliff_event_publisher, wheel_event_publisher, power_event_publisher;
-  ros::Publisher raw_data_command_publisher;
+  ros::Publisher raw_data_command_publisher, raw_data_stream_publisher;
   ros::Publisher bumper_as_pc_publisher;
 
   ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber, external_power_command_subscriber;
@@ -144,6 +144,7 @@ private:
   ecl::Slot<const RobotEvent&>  slot_robot_event;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
   ecl::Slot<Command::Buffer&> slot_raw_data_command;
+  ecl::Slot<PacketFinder::BufferType&> slot_raw_data_stream;
 
   /*********************
    ** Slot Callbacks
@@ -168,6 +169,7 @@ private:
   void rosWarn(const std::string &msg) { ROS_WARN_STREAM("Kobuki : " << msg); }
   void rosError(const std::string &msg) { ROS_ERROR_STREAM("Kobuki : " << msg); }
   void publishRawDataCommand(Command::Buffer &buffer);
+  void publishRawDataStream(PacketFinder::BufferType &buffer);
 
   /*********************
   ** Diagnostics

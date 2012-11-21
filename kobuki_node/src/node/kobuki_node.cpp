@@ -73,7 +73,8 @@ KobukiNode::KobukiNode(std::string& node_name) :
     slot_info(&KobukiNode::rosInfo, *this),
     slot_warn(&KobukiNode::rosWarn, *this),
     slot_error(&KobukiNode::rosError, *this),
-    slot_raw_data_command(&KobukiNode::publishRawDataCommand, *this)
+    slot_raw_data_command(&KobukiNode::publishRawDataCommand, *this),
+    slot_raw_data_stream(&KobukiNode::publishRawDataStream, *this)
 {
   updater.setHardwareID("Kobuki");
   updater.add(battery_diagnostics);
@@ -121,6 +122,7 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   slot_warn.connect(name + std::string("/ros_warn"));
   slot_error.connect(name + std::string("/ros_error"));
   slot_raw_data_command.connect(name + std::string("/raw_data_command"));
+  slot_raw_data_stream.connect(name + std::string("/raw_data_stream"));
 
   /*********************
    ** Driver Parameters
@@ -327,6 +329,7 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   dock_ir_publisher = nh.advertise < kobuki_msgs::DockInfraRed > ("sensors/dock_ir", 100);
   imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("sensors/imu_data", 100);
   raw_data_command_publisher = nh.advertise< std_msgs::String > ("debug/raw_data_command", 100);
+  raw_data_stream_publisher = nh.advertise< std_msgs::String > ("debug/raw_data_stream", 100);
   bumper_as_pc_publisher = nh.advertise < pcl::PointCloud<pcl::PointXYZ> > ("sensors/bump_pc", 100);
 }
 

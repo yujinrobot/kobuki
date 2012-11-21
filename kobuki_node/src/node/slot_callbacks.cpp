@@ -357,4 +357,19 @@ void KobukiNode::publishRawDataCommand(Command::Buffer &buffer)
   }
 }
 
+void KobukiNode::publishRawDataStream(PacketFinder::BufferType &buffer)
+{
+  if ( raw_data_stream_publisher.getNumSubscribers() > 0 ) { // do not do string processing if there is no-one listening.
+    std::ostringstream ostream;
+    PacketFinder::BufferType::Formatter format;
+    ostream << format(buffer); // convert to an easily readable hex string.
+    std_msgs::String s;
+    s.data = ostream.str();
+    if (ros::ok())
+    {
+      raw_data_stream_publisher.publish(s);
+    }
+  }
+}
+
 } // namespace kobuki

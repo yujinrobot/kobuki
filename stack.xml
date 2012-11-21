@@ -18,4 +18,5 @@
   <depend stack="perception_pcl" /> <!-- pcl_ros -->
   <depend stack="robot_model"/> <!-- urdf -->
   <depend stack="xacro"/>
+  <depend stack="kobuki_msgs"/>
 </stack>

@@ -6,78 +6,49 @@
   <!-- Xacro properties -->
   <xacro:property name="M_SCALE" value="0.001"/>
 
-  <!-- Xacro macros -->
-  <xacro:macro name="wheel" params="name length radius off_x off_y off_z type">
-    <joint name="${name}_joint" type="${type}">
-      <parent link="base_link"/>
-      <child link="${name}_link"/>
-      <origin rpy="${-M_PI/2} 0 0" xyz="${off_x} ${off_y} ${off_z}"/>
-      <axis xyz="0 0 1"/>
-    </joint>
-    <link name="${name}_link">
-      <visual>
-        <geometry>
-          <cylinder length="${length}" radius="${radius}"/>
-        </geometry>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
-        <xacro:insert_block name="material_dark_grey"/>
-      </visual>
-      <collision>
-        <geometry>
-          <cylinder length="${length}" radius="${radius}"/>
-        </geometry>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
-        <xacro:insert_block name="material_dark_grey"/>      
-      </collision>      
-      <inertial>
-        <mass value="0.01" />
-        <origin xyz="0 0 0" />        
-        <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-                 iyy="0.001" iyz="0.0" 
-                 izz="0.001" />
-      </inertial>
-    </link>
-    <gazebo reference="${name}_link">
-      <material>Gazebo/Black</material>
-    </gazebo>   
-  </xacro:macro>
-
-  <!-- Kobuki -->	
-  <xacro:macro name="kobuki">	  
+  <!-- Kobuki --> 
+  <xacro:macro name="kobuki">   
     <link name="base_footprint">
       <visual>
-	      <origin xyz="0 0 0" rpy="0 0 0"/>
-	      <geometry>
-	        <box size="0.001 0.001 0.001"/>
-	      </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.001 0.001 0.001"/>
+        </geometry>
         <xacro:insert_block name="material_black" />
-	    </visual>
-	    <collision>
-	      <origin xyz="0 0 0.035" rpy="0 0 0"/>
-	      <geometry>
-	       <box size="0.001 0.001 0.001"/>
-	      </geometry>
-	    </collision>
-   </link>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0.035" rpy="0 0 0"/>
+        <geometry>
+         <box size="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+    </link>
    
-		<joint name="base_joint" type="fixed">
-			<origin xyz="0 0 0.017" rpy="0 0 0" />        
-			<parent link="base_footprint"/>
-			<child link="base_link" />
-		</joint>
-	  <link name="base_link">
-	    <visual>
-	      <geometry>
-	        <mesh filename="package://kobuki_description/meshes/kobuki.stl" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}"/>
-	   	  </geometry>
-        <origin xyz="0.0 0 0.043" rpy="${M_PI/2} 0 ${M_PI/2}"/>
-        <xacro:insert_block name="material_black" />
-	    </visual>
+    <joint name="base_bottom_joint" type="fixed">
+      <origin xyz="0 0 0.0102" rpy="0 0 0" />        
+      <parent link="base_footprint"/>
+      <child link="base_bottom_link" />
+    </joint>
+    <link name="base_bottom_link"/>
+    
+    <joint name="base_joint" type="fixed">
+      <origin xyz="0 0 0.0352" rpy="0 0 0" />        
+      <parent link="base_footprint"/>
+      <child link="base_link" />
+    </joint>
+    <link name="base_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://kobuki_description/meshes/base.dae" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}"/>
+        </geometry>
+        <origin xyz="0.0 0 0.02969" rpy="${M_PI/2} 0 ${M_PI/2}"/>
+        <xacro:insert_block name="material_black"/>
+      </visual>
       <collision>
         <geometry>
           <cylinder length="0.10938" radius="0.175615"/>
         </geometry>
-        <origin xyz="0.0 0.0 0.03469" rpy="0 0 0"/>
+        <origin xyz="0.0 0.0 0.02969" rpy="0 0 0"/>
       </collision>
       <inertial>
         <mass value="2.4"/> <!-- 2.4/2.6 kg for small/big battery pack -->
@@ -89,19 +60,64 @@
       <gazebo reference="base_link">
         <material>Gazebo/Black</material>
       </gazebo>
-	  </link>
-<!--     TODO: Needed? -->
-<!--     <gazebo reference="base_link"> -->
-<!--       <material>Gazebo/Black</material> -->
-<!--     </gazebo>         -->
-	  <xacro:wheel name="wheel_left"  length="0.0206" radius="0.0350" off_x="0.00"   off_y="${0.23/2}"  off_z="0.018"   
-                 type="continuous">	</xacro:wheel>
-	  <xacro:wheel name="wheel_right" length="0.0206" radius="0.0350" off_x="0.00"   off_y="-${0.23/2}" off_z="0.018"   
-                 type="continuous">	</xacro:wheel>  
-	  <xacro:wheel name="caster_front" length="0.0176" radius="0.0170" off_x="0.115"  off_y="0"          off_z="-0.0000"
-                 type="fixed">      </xacro:wheel>
-	  <xacro:wheel name="caster_back"  length="0.0176" radius="0.0170" off_x="-0.135" off_y="0"          off_z="0.0020"
-                 type="fixed">      </xacro:wheel>
+    </link>
+    <joint name="wheel_left_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="wheel_left_link"/>
+      <origin xyz="0.00 ${0.23/2} 0.00" rpy="${-M_PI/2} 0 0"/>
+      <axis xyz="0 0 1"/>
+    </joint>
+    <link name="wheel_left_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://kobuki_description/meshes/wheel.dae" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 ${M_PI/2} 0"/>
+        <xacro:insert_block name="material_black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder length="0.0206" radius="0.0352"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>      
+      <inertial>
+        <mass value="0.01" />
+        <origin xyz="0 0 0" />        
+        <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                 iyy="0.001" iyz="0.0" 
+                 izz="0.001" />
+      </inertial>
+    </link>
+  
+    <joint name="wheel_right_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="wheel_right_link"/>
+      <origin xyz="0.00 -${0.23/2} 0.00" rpy="${-M_PI/2} 0 0"/>
+      <axis xyz="0 0 1"/>
+    </joint>
+    <link name="wheel_right_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://kobuki_description/meshes/wheel.dae" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 ${M_PI/2} 0"/>
+        <xacro:insert_block name="material_black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder length="0.0206" radius="0.0350"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>      
+      <inertial>
+        <mass value="0.01" />
+        <origin xyz="0 0 0" />        
+        <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                 iyy="0.001" iyz="0.0" 
+                 izz="0.001" />
+      </inertial>
+    </link>
   
     <!-- Kobuki's sensors -->
     <!-- TODO: Check placement! -->

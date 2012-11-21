@@ -191,6 +191,8 @@ private:
   PacketFinder::BufferType data_buffer;
   bool is_alive; // used as a flag set by the data stream watchdog
 
+  int version_info_reminder;
+
   /*********************
   ** Commands
   **********************/
@@ -212,6 +214,7 @@ private:
   ecl::Signal<const VersionInfo&> sig_version_info;
   ecl::Signal<const std::string&> sig_debug, sig_info, sig_warn, sig_error;
   ecl::Signal<Command::Buffer&> sig_raw_data_command; // should be const, but pushnpop is not fully realised yet for const args in the formatters.
+  ecl::Signal<PacketFinder::BufferType&> sig_raw_data_stream; // should be const, but pushnpop is not fully realised yet for const args in the formatters.
 };
 
 } // namespace kobuki
