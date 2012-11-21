@@ -310,17 +310,21 @@ void Kobuki::spin()
           default:
             {
             std::stringstream ostream;
-            ostream << "unexpected sub-payload received [" << static_cast<unsigned int>(data_buffer[0]) << "] ";
+            unsigned int header_id = static_cast<unsigned int>(data_buffer.pop_front());
+            ostream << "unexpected sub-payload received [" << header_id << "]";
+            unsigned int length = static_cast<unsigned int>(data_buffer.pop_front());
+            ostream << "[" << length << "] ";
             ostream << "[";
             ostream << std::setfill('0') << std::uppercase; 
-            for (unsigned int i = 0; i < data_buffer.size(); ++i ) {
-              ostream << std::hex << std::setw(2) << static_cast<int>(data_buffer[i]) << " " << std::dec;
+            ostream << std::hex << std::setw(2) << header_id << " " << std::dec;
+            ostream << std::hex << std::setw(2) << length << " " << std::dec;
+            for (unsigned int i = 0; i < length; ++i ) {
+              unsigned int byte = static_cast<unsigned int>(data_buffer.pop_front());
+              ostream << std::hex << std::setw(2) << byte << " " << std::dec;
             }
             ostream << "]";
             sig_warn.emit(ostream.str());
             }
-
-            data_buffer.clear();
             break;
         }
       }
