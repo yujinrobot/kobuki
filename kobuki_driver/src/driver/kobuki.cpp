@@ -323,7 +323,7 @@ void Kobuki::spin()
               ostream << std::hex << std::setw(2) << byte << " " << std::dec;
             }
             ostream << "]";
-            sig_warn.emit(ostream.str());
+            sig_debug.emit(ostream.str());
             }
             break;
         }
