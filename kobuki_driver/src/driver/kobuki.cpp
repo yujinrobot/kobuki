@@ -124,11 +124,12 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   ecl::PushAndPop<unsigned char> etx(1);
   stx.push_back(0xaa);
   stx.push_back(0x55);
-  packet_finder.configure(sigslots_namespace, stx, etx, 1, 64, 1, true);
+  packet_finder.configure(sigslots_namespace, stx, etx, 1, 128, 1, true);
 
   sig_version_info.connect(sigslots_namespace + std::string("/version_info"));
   sig_stream_data.connect(sigslots_namespace + std::string("/stream_data"));
   sig_raw_data_command.connect(sigslots_namespace + std::string("/raw_data_command"));
+  sig_raw_data_stream.connect(sigslots_namespace + std::string("/raw_data_stream"));
   //sig_serial_timeout.connect(sigslots_namespace+std::string("/serial_timeout"));
 
   sig_debug.connect(sigslots_namespace + std::string("/ros_debug"));
@@ -171,6 +172,8 @@ void Kobuki::spin()
   ecl::Duration timeout(0.1);
   unsigned char buf[256];
 
+  PacketFinder::BufferType local_buffer;
+
   /*********************
    ** Simulation Params
    **********************/
@@ -200,6 +203,7 @@ void Kobuki::spin()
         sig_info.emit("device is conencted.");
         is_alive = true;
         is_connected = true;
+        sendCommand(Command::GetVersionInfo());
       }
     }
 
@@ -218,7 +222,8 @@ void Kobuki::spin()
     else
     {
       std::ostringstream ostream;
-      ostream << "kobuki_node : serial_read(" << n << ")";
+      ostream << "kobuki_node : serial_read(" << n << ")"
+        << ", packet_finder.numberOfDataToRead(" << packet_finder.numberOfDataToRead() << ")";
       sig_debug.emit(ostream.str());
       // might be useful to send this to a topic if there is subscribers
 //        static unsigned char last_char(buf[0]);
@@ -233,6 +238,8 @@ void Kobuki::spin()
     if (packet_finder.update(buf, n)) // this clears packet finder's buffer and transfers important bytes into it
     {
       packet_finder.getBuffer(data_buffer); // get a reference to packet finder's buffer.
+      local_buffer = data_buffer; //copy it to local_buffer, debugging purpose.
+      sig_raw_data_stream.emit(data_buffer);
 
 #if 0
       if( verbose )
@@ -287,14 +294,35 @@ void Kobuki::spin()
             sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
             break;
           default:
+            {
             std::stringstream ostream;
-            ostream << "unexpected sub-payload received [" << static_cast<unsigned int>(data_buffer[0]) << "]\n";
+            ostream << "unexpected sub-payload received [" << static_cast<unsigned int>(data_buffer[0]) << "] ";
             ostream << "[";
+            ostream << std::setfill('0') << std::uppercase; 
             for (unsigned int i = 0; i < data_buffer.size(); ++i ) {
-              ostream << std::hex << static_cast<int>(data_buffer[i]) << " " << std::dec;
+              ostream << std::hex << std::setw(2) << static_cast<int>(data_buffer[i]) << " " << std::dec;
             }
             ostream << "]";
-            sig_error.emit(ostream.str());
+            sig_warn.emit(ostream.str());
+            }
+            // temporal processing
+            int length = data_buffer[2];
+            for( unsigned int i = 0; i < (length*2+3); i++)
+              data_buffer.pop_front();
+            // temporal processing
+
+            {
+            std::stringstream ostream;
+            ostream << "full packet received [" << static_cast<unsigned int>(local_buffer[2]) << "] ";
+            ostream << "[";
+            ostream << std::setfill('0') << std::uppercase; 
+            for (unsigned int i = 0; i < local_buffer.size(); ++i ) {
+              ostream << std::hex << std::setw(2) << static_cast<int>(local_buffer[i]) << " " << std::dec;
+            }
+            ostream << "]";
+            sig_debug.emit(ostream.str());
+            }
+
             data_buffer.clear();
             break;
         }
