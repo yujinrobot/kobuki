@@ -178,37 +178,45 @@ bool Command::serialise(ecl::PushAndPop<unsigned char> & byteStream)
   }
   // need to be sure we don't pass through an emum to the Trans'd buildBytes functions.
   unsigned char cmd = static_cast<unsigned char>(data.command);
+  unsigned char length = 0;
   switch (data.command)
   {
     case BaseControl:
       buildBytes(cmd, byteStream);
+      buildBytes(length=4, byteStream);
       buildBytes(data.speed, byteStream);
       buildBytes(data.radius, byteStream);
       break;
     case Sound:
       buildBytes(cmd, byteStream);
+      buildBytes(length=3, byteStream);
       buildBytes(data.note, byteStream);
       buildBytes(data.duration, byteStream);
       break;
     case SoundSequence:
       buildBytes(cmd, byteStream);
+      buildBytes(length=1, byteStream);
       buildBytes(data.segment_name, byteStream);
       break;
     case RequestExtra:
       buildBytes(cmd, byteStream);
+      buildBytes(length=2, byteStream);
       buildBytes(data.request_flags, byteStream);
       break;
     case ChangeFrame:
       buildBytes(cmd, byteStream);
+      buildBytes(length=1, byteStream);
       buildBytes(data.frame_id, byteStream);
       break;
     case RequestEeprom:
       buildBytes(cmd, byteStream);
+      buildBytes(length=1, byteStream);
       buildBytes(data.frame_id, byteStream);
       break;
     case SetDigitalOut:
     { // this one controls led, external power sources, gp digitial output
       buildBytes(cmd, byteStream);
+      buildBytes(length=2, byteStream);
       buildBytes(data.gp_out, byteStream);
       break;
     }
