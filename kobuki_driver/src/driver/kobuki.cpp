@@ -319,23 +319,6 @@ void Kobuki::spin()
             ostream << "]";
             sig_warn.emit(ostream.str());
             }
-            // temporal processing
-            int length = data_buffer[2];
-            for( unsigned int i = 0; i < (length*2+3); i++)
-              data_buffer.pop_front();
-            // temporal processing
-
-            {
-            std::stringstream ostream;
-            ostream << "full packet received [" << static_cast<unsigned int>(local_buffer[2]) << "] ";
-            ostream << "[";
-            ostream << std::setfill('0') << std::uppercase; 
-            for (unsigned int i = 0; i < local_buffer.size(); ++i ) {
-              ostream << std::hex << std::setw(2) << static_cast<int>(local_buffer[i]) << " " << std::dec;
-            }
-            ostream << "]";
-            sig_debug.emit(ostream.str());
-            }
 
             data_buffer.clear();
             break;
