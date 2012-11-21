@@ -9,7 +9,10 @@
   <review status="experimental" notes=""/>
   <url>http://www.ros.org/wiki/kobuki_arm</url>
 
-  <!-- Ros -->
+  <!-- 
+    Bring these back in when we officially build 
+    Otherwise we can't make the deb.
+      
   <depend package="rospy"/>
   <depend package="roslib"/>
   <depend package="std_msgs"/>
@@ -17,6 +20,6 @@
   <depend package="dynamixel_msgs"/>
   <depend package="dynamixel_controllers"/>
 
-  <!-- System dependencies -->
   <rosdep name="wxpython"/>
+   -->
 </package>

@@ -40,7 +40,7 @@ import sys, select, termios, tty
 import time
 from datetime import datetime
 
-from kobuki_comms.msg import DigitalOutput
+from kobuki_msgs.msg import DigitalOutput
 
 def getKey():
     tty.setraw(sys.stdin.fileno())

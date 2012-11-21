@@ -1,0 +1,22 @@
+<package>
+  <description brief="Creates a remote keyboard operation node for kobukibot">
+
+     This relays commands from a keyboard to the kobukibot's core. 
+     
+  </description>
+  <author>Daniel Stonier</author>
+  <license>Yujin</license>
+  <review status="doc reviewed" notes=""/>
+  <url>http://ros.org/wiki/kobuki_keyop</url>
+
+  <!-- Ros -->
+  <depend package="geometry_msgs"/>
+  <depend package="std_srvs"/>
+  <depend package="std_msgs"/>
+  <depend package="roscpp"/>
+  <!-- Kobuki -->
+  <depend package="kobuki_msgs"/>
+  <!-- Ecl -->
+  <depend package="ecl_threads"/>
+  <depend package="ecl_time"/>
+</package>

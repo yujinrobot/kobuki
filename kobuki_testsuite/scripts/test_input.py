@@ -43,13 +43,13 @@ from math import degrees
 
 from sensor_msgs.msg import Imu
 from geometry_msgs.msg import Quaternion
-from kobuki_comms.msg import SensorState
-from kobuki_comms.msg import ButtonEvent
-from kobuki_comms.msg import BumperEvent
-from kobuki_comms.msg import WheelDropEvent
-from kobuki_comms.msg import CliffEvent
-from kobuki_comms.msg import PowerSystemEvent
-from kobuki_comms.msg import DigitalInputEvent
+from kobuki_msgs.msg import SensorState
+from kobuki_msgs.msg import ButtonEvent
+from kobuki_msgs.msg import BumperEvent
+from kobuki_msgs.msg import WheelDropEvent
+from kobuki_msgs.msg import CliffEvent
+from kobuki_msgs.msg import PowerSystemEvent
+from kobuki_msgs.msg import DigitalInputEvent
 
 def ImuCallback(data):
   quat = data.orientation
@@ -73,7 +73,7 @@ def DigitalInputEventCallback(data):
   global digitalS
   digitalS = data.values
 
-button0 = { ButtonEvent.F0:0, ButtonEvent.F1:1, ButtonEvent.F2:2, } 
+button0 = { ButtonEvent.Button0:0, ButtonEvent.Button1:1, ButtonEvent.Button2:2, } 
 button1 = { ButtonEvent.RELEASED:'Released', ButtonEvent.PRESSED:'Pressed ', }
 buttonS = [ 'Released',  'Released',  'Released', ] 
 
@@ -145,7 +145,7 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
       stdscr.addstr(7,3,str("Digital input: [%5s, %5s, %5s, %5s]"\
                        %(str(digitalS[0]), str(digitalS[1]), str(digitalS[2]), str(digitalS[3]))))
-      stdscr.addstr(8,3,str("Button: F0: %s F1: %s F2: %s"%(buttonS[0], buttonS[1], buttonS[2])))
+      stdscr.addstr(8,3,str("Button: B0: %s B1: %s B2: %s"%(buttonS[0], buttonS[1], buttonS[2])))
       stdscr.addstr(9,3,str("Bumper: Left: %s Center: %s Right: %s"%(bumperS[0], bumperS[1], bumperS[2])))
       stdscr.addstr(10,3,str("WheelDrop: Left: %s Right: %s"%(wheelS[0], wheelS[1])))
       stdscr.addstr(11,3,str("Cliff: Left: %s Center: %s Right: %s"%(cliffS[0], cliffS[1], cliffS[2])))

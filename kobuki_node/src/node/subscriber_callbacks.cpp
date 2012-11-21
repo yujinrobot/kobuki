@@ -67,31 +67,31 @@ void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg
 }
 
   
-void KobukiNode::subscribeLed1Command(const kobuki_comms::LedConstPtr msg)
+void KobukiNode::subscribeLed1Command(const kobuki_msgs::LedConstPtr msg)
 {
   switch( msg->value ) {
-  case kobuki_comms::Led::GREEN:  kobuki.setLed(Led1, Green ); break;
-  case kobuki_comms::Led::ORANGE: kobuki.setLed(Led1, Orange ); break; 
-  case kobuki_comms::Led::RED:    kobuki.setLed(Led1, Red ); break;
-  case kobuki_comms::Led::BLACK:  kobuki.setLed(Led1, Black ); break;
+  case kobuki_msgs::Led::GREEN:  kobuki.setLed(Led1, Green ); break;
+  case kobuki_msgs::Led::ORANGE: kobuki.setLed(Led1, Orange ); break; 
+  case kobuki_msgs::Led::RED:    kobuki.setLed(Led1, Red ); break;
+  case kobuki_msgs::Led::BLACK:  kobuki.setLed(Led1, Black ); break;
   default: ROS_WARN_STREAM("Kobuki : led 1 command value invalid."); break;
   }
   return;
 }
 
-void KobukiNode::subscribeLed2Command(const kobuki_comms::LedConstPtr msg)
+void KobukiNode::subscribeLed2Command(const kobuki_msgs::LedConstPtr msg)
 {
   switch( msg->value ) {
-  case kobuki_comms::Led::GREEN:  kobuki.setLed(Led2, Green ); break;
-  case kobuki_comms::Led::ORANGE: kobuki.setLed(Led2, Orange ); break;
-  case kobuki_comms::Led::RED:    kobuki.setLed(Led2, Red ); break;
-  case kobuki_comms::Led::BLACK:  kobuki.setLed(Led2, Black ); break;
+  case kobuki_msgs::Led::GREEN:  kobuki.setLed(Led2, Green ); break;
+  case kobuki_msgs::Led::ORANGE: kobuki.setLed(Led2, Orange ); break;
+  case kobuki_msgs::Led::RED:    kobuki.setLed(Led2, Red ); break;
+  case kobuki_msgs::Led::BLACK:  kobuki.setLed(Led2, Black ); break;
   default: ROS_WARN_STREAM("Kobuki : led 2 command value invalid."); break;
   }
   return;
 }
 
-void KobukiNode::subscribeDigitalOutputCommand(const kobuki_comms::DigitalOutputConstPtr msg)
+void KobukiNode::subscribeDigitalOutputCommand(const kobuki_msgs::DigitalOutputConstPtr msg)
 {
   DigitalOutput digital_output;
   for ( unsigned int i = 0; i < 4; ++i ) {
@@ -102,7 +102,7 @@ void KobukiNode::subscribeDigitalOutputCommand(const kobuki_comms::DigitalOutput
   return;
 }
 
-void KobukiNode::subscribeExternalPowerCommand(const kobuki_comms::DigitalOutputConstPtr msg)
+void KobukiNode::subscribeExternalPowerCommand(const kobuki_msgs::DigitalOutputConstPtr msg)
 {
   DigitalOutput digital_output;
   for ( unsigned int i = 0; i < 4; ++i ) {
@@ -116,33 +116,33 @@ void KobukiNode::subscribeExternalPowerCommand(const kobuki_comms::DigitalOutput
 /**
  * @brief Play a predefined sound (single sound or sound sequence)
  */
-void KobukiNode::subscribeSoundCommand(const kobuki_comms::SoundConstPtr msg)
+void KobukiNode::subscribeSoundCommand(const kobuki_msgs::SoundConstPtr msg)
 {
-  if ( msg->value == kobuki_comms::Sound::ON )
+  if ( msg->value == kobuki_msgs::Sound::ON )
   {
     kobuki.playSoundSequence(On);
   }
-  else if ( msg->value == kobuki_comms::Sound::OFF )
+  else if ( msg->value == kobuki_msgs::Sound::OFF )
   {
     kobuki.playSoundSequence(Off);
   }
-  else if ( msg->value == kobuki_comms::Sound::RECHARGE )
+  else if ( msg->value == kobuki_msgs::Sound::RECHARGE )
   {
     kobuki.playSoundSequence(Recharge);
   }
-  else if ( msg->value == kobuki_comms::Sound::BUTTON )
+  else if ( msg->value == kobuki_msgs::Sound::BUTTON )
   {
     kobuki.playSoundSequence(Button);
   }
-  else if ( msg->value == kobuki_comms::Sound::ERROR )
+  else if ( msg->value == kobuki_msgs::Sound::ERROR )
   {
     kobuki.playSoundSequence(Error);
   }
-  else if ( msg->value == kobuki_comms::Sound::CLEANINGSTART )
+  else if ( msg->value == kobuki_msgs::Sound::CLEANINGSTART )
   {
     kobuki.playSoundSequence(CleaningStart);
   }
-  else if ( msg->value == kobuki_comms::Sound::CLEANINGEND )
+  else if ( msg->value == kobuki_msgs::Sound::CLEANINGEND )
   {
     kobuki.playSoundSequence(CleaningEnd);
   }

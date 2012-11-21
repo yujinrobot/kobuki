@@ -38,8 +38,8 @@ import math
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Imu
-from kobuki_comms.msg import BumperEvent
-from kobuki_comms.msg import Sound
+from kobuki_msgs.msg import BumperEvent
+from kobuki_msgs.msg import Sound
 
 class Test_Translation:
 	# constructor

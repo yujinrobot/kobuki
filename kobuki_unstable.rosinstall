@@ -3,15 +3,16 @@
 # Basic ROS
 #   sudo apt-get install ros-fuerte-desktop-full
 #
-# For the robot
-#   sudo apt-get install ros-fuerte-control ros-fuerte-warehousewg
+# ROS packages commonly required
+#   sudo apt-get install ros-fuerte-multimaster-experimental ros-fuerte-joystick-drivers
 #
-# For suppporting libraries
-# sudo apt-get install ros-fuerte-ecl-tools ros-fuerte-ecl-lite ros-fuerte-ecl-core ros-fuerte-ecl-navigation ros-fuerte-zeroconf-implementations
+# ROS packages required to use OpenNI-compliant devices (both old and new methods)
+#   sudo apt-get install ros-fuerte-openni-kinect ros-fuerte-openni-camera ros-fuerte-openni-launch
 #
-# TODO
-# For desktop simulations and remote connections (update for Fuerte!)
-#   sudo apt-get install ros-electric-turtlebot-desktop 
+# Additional ROS packages required for turtlebot_apps
+#   sudo apt-get install ros-fuerte-warehousewg ros-fuerte-mjpeg-server ros-fuerte-rosbridge-suite
+#
+# TODO 
 # For our custom arm (update for Fuerte!)
 #   sudo apt-get install ros-fuerte-turtlebot-arm ros-fuerte-dynamixel-motor (not exisiting yet)
 #   in the meanwhile to allow compiling do:
@@ -36,8 +37,13 @@
     version: master
 
 - git:
-    uri: https://github.com/yujinrobot/kobuki_simulator.git
-    local-name: kobuki_simulator
+    uri: https://github.com/yujinrobot/kobuki_desktop.git
+    local-name: kobuki_desktop
+    version: master
+
+- git:
+    uri: https://github.com/yujinrobot/kobuki_msgs.git
+    local-name: kobuki_msgs
     version: master
 
 # Later move these to debs.
@@ -97,9 +103,9 @@
     uri: https://github.com/turtlebot/turtlebot_arm.git
     local-name: turtlebot_arm
 
-# Kobuki apps 
+# turtlebot apps 
 - git:
-    uri: https://github.com/yujinrobot/kobuki_apps.git
-    local-name: kobuki_apps
+    uri: https://github.com/turtlebot/turtlebot_apps.git
+    local-name: turtlebot_apps
     version: master
 

@@ -68,9 +68,9 @@ struct ButtonEvent {
     Pressed
   } state;
   enum Button {
-    F0,
-    F1,
-    F2
+    Button0,
+    Button1,
+    Button2
   } button;
 };
 
@@ -125,6 +125,14 @@ struct InputEvent {
   bool values[4]; /**< Digital on or off for pins 0-3 respectively. **/
 };
 
+struct RobotEvent {
+  enum State {
+    Offline,
+    Online,
+    Unknown  // at startup
+  } state;
+};
+
 /*****************************************************************************
 ** Interfaces
 *****************************************************************************/
@@ -139,15 +147,18 @@ public:
     last_state.charger    = 0;
     last_state.battery    = 0;
     last_digital_input    = 0;
+    last_robot_state      = RobotEvent::Unknown;
   }
 
   void init(const std::string &sigslots_namespace);
   void update(const CoreSensors::Data &new_state, const std::vector<uint16_t> &cliff_data);
   void update(const uint16_t &digital_input);
+  void update(bool is_plugged, bool is_alive);
 
 private:
   CoreSensors::Data last_state;
-  uint16_t  last_digital_input;
+  uint16_t          last_digital_input;
+  RobotEvent::State last_robot_state;
 
   ecl::Signal<const ButtonEvent&> sig_button_event;
   ecl::Signal<const BumperEvent&> sig_bumper_event;
@@ -155,6 +166,7 @@ private:
   ecl::Signal<const WheelEvent&>  sig_wheel_event;
   ecl::Signal<const PowerEvent&>  sig_power_event;
   ecl::Signal<const InputEvent&>  sig_input_event;
+  ecl::Signal<const RobotEvent&>  sig_robot_event;
 };
 
 

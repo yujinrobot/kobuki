@@ -14,17 +14,18 @@
   <depend package="geometry_msgs"/>
   <depend package="sensor_msgs"/>
   <depend package="nav_msgs"/>
-  <depend package="tf"/>
   <depend package="std_msgs"/>
+  <depend package="tf"/>
+  <!--<depend package="pcl"/>-->
+  <depend package="pcl_ros"/>
   <depend package="diagnostic_updater"/>
   <depend package="diagnostic_msgs"/>
 
-  <!-- Turtlebot --> 
-  <depend package="turtlebot_node"/> <!-- LaptopChargeStatus.msg -->
-
   <!--  Kobuki -->
-  <depend package="kobuki_comms"/>
+  <depend package="kobuki_udev"/> <!-- 57-kobuki.rules -->
+  <depend package="kobuki_msgs"/>
   <depend package="kobuki_driver"/>
+  <depend package="kobuki_keyop"/>
   
   <!-- Ecl -->
   <depend package="ecl_exceptions"/>

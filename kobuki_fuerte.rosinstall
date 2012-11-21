@@ -40,8 +40,8 @@
     version: fuerte
 
 - git:
-    uri: https://github.com/yujinrobot/kobuki_simulator.git
-    local-name: kobuki_simulator
+    uri: https://github.com/yujinrobot/kobuki_desktop.git
+    local-name: kobuki_desktop
     version: fuerte
 
 # Until the ecl 0.43.9 and zeroconf_implementations 0.1.5 debs are pushed

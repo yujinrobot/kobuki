@@ -66,6 +66,7 @@ public:
   static const unsigned char Eeprom = 15;
   static const unsigned char GpInput = 16;
 
+  static const unsigned char UniqueDeviceID = 19;
   static const unsigned char Reserved = 20;
 };
 

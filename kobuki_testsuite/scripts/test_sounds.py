@@ -35,7 +35,7 @@
 import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
 
-from kobuki_comms.msg import Sound
+from kobuki_msgs.msg import Sound
 
 sounds = [Sound.ON, Sound.OFF, Sound.RECHARGE, Sound.BUTTON, Sound.ERROR, Sound.CLEANINGSTART, Sound.CLEANINGEND]
 texts = ["On", "Off", "Recharge", "Button", "Error", "CleaningStart", "CleaningEnd"]
