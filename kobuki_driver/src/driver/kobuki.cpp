@@ -74,6 +74,7 @@ bool PacketFinder::checkSum()
 
 Kobuki::Kobuki() :
     shutdown_requested(false), is_enabled(false), is_connected(false), is_alive(false)
+    , version_info_reminder(0)
 {
 }
 
@@ -148,6 +149,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   /******************************************
    ** Get Version Info Commands
    *******************************************/
+  version_info_reminder = 10;
   sendCommand(Command::GetVersionInfo());
 
   thread.start(&Kobuki::spin, *this);
@@ -204,6 +206,7 @@ void Kobuki::spin()
         is_connected = true;
         is_alive = true;
         event_manager.update(is_connected, is_alive);
+        version_info_reminder = 10;
         sendCommand(Command::GetVersionInfo());
       }
     }
@@ -217,6 +220,8 @@ void Kobuki::spin()
       if (is_alive && ((ecl::TimeStamp() - last_signal_time) > timeout))
       {
         is_alive = false;
+        version_info_reminder = 10;
+        sig_debug.emit("timed out in waiting imcoming bytes.");
       }
       event_manager.update(is_connected, is_alive);
       continue;
@@ -296,6 +301,7 @@ void Kobuki::spin()
             unique_device_id.deserialise(data_buffer);
             sig_version_info.emit( VersionInfo( firmware.data.version, hardware.data.version
                 , unique_device_id.data.udid0, unique_device_id.data.udid1, unique_device_id.data.udid2 ));
+            version_info_reminder = 0;
             break;
           default:
             std::stringstream ostream;
@@ -316,6 +322,7 @@ void Kobuki::spin()
       last_signal_time.stamp();
       sig_stream_data.emit();
       sendBaseControlCommand(); // send the command packet to mainboard;
+      if( version_info_reminder/*--*/ > 0 ) sendCommand(Command::GetVersionInfo());
     }
     else
     {
