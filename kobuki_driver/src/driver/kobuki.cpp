@@ -175,8 +175,6 @@ void Kobuki::spin()
   ecl::Duration timeout(0.1);
   unsigned char buf[256];
 
-  PacketFinder::BufferType local_buffer;
-
   /*********************
    ** Simulation Params
    **********************/
@@ -246,8 +244,14 @@ void Kobuki::spin()
     if (packet_finder.update(buf, n)) // this clears packet finder's buffer and transfers important bytes into it
     {
       packet_finder.getBuffer(data_buffer); // get a reference to packet finder's buffer.
+      PacketFinder::BufferType local_buffer;
       local_buffer = data_buffer; //copy it to local_buffer, debugging purpose.
-      sig_raw_data_stream.emit(data_buffer);
+      sig_raw_data_stream.emit(local_buffer);
+
+//      boost::shared_ptr<PacketFinder::BufferType> ptr(new PacketFinder::BufferType(data_buffer));
+//      std::cout << "ptr         : " << ptr << " - " << (unsigned int*)&((*ptr)[0]) << std::endl;
+//      std::cout << "data_buffer : " << &data_buffer << " - " << (unsigned int*)&(data_buffer[0]) << std::endl;
+//      std::cout << "local_buffer: " << &local_buffer << " - " << (unsigned int*)&(local_buffer[0]) << std::endl;
 
 #if 0
       if( verbose )
@@ -264,11 +268,12 @@ void Kobuki::spin()
       data_buffer.pop_front();
       data_buffer.pop_front();
       data_buffer.pop_front();
-
       while (data_buffer.size() > 1/*size of etx*/)
       {
-        // std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
-        // std::cout << "remains: " << data_buffer.size() << " | ";
+        //std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
+        //std::cout << "remains: " << data_buffer.size() << " | ";
+        //std::cout << "local_buffer: " << local_buffer.size() << " | ";
+        //std::cout << std::endl;
         switch (data_buffer[0])
         {
           // these come with the streamed feedback
@@ -308,22 +313,28 @@ void Kobuki::spin()
             version_info_reminder = 0;
             break;
           default:
-            {
-            std::stringstream ostream;
-            unsigned int header_id = static_cast<unsigned int>(data_buffer.pop_front());
-            ostream << "unexpected sub-payload received [" << header_id << "]";
-            unsigned int length = static_cast<unsigned int>(data_buffer.pop_front());
-            ostream << "[" << length << "] ";
-            ostream << "[";
-            ostream << std::setfill('0') << std::uppercase; 
-            ostream << std::hex << std::setw(2) << header_id << " " << std::dec;
-            ostream << std::hex << std::setw(2) << length << " " << std::dec;
-            for (unsigned int i = 0; i < length; ++i ) {
-              unsigned int byte = static_cast<unsigned int>(data_buffer.pop_front());
-              ostream << std::hex << std::setw(2) << byte << " " << std::dec;
-            }
-            ostream << "]";
-            sig_debug.emit(ostream.str());
+            if (data_buffer.size() < 2 ) {
+              data_buffer.clear();
+            } else {
+              std::stringstream ostream;
+              unsigned int header_id = static_cast<unsigned int>(data_buffer.pop_front());
+              ostream << "unexpected sub-payload received [" << header_id << "]";
+              unsigned int length = static_cast<unsigned int>(data_buffer.pop_front());
+              ostream << "[" << length << "] ";
+              if (data_buffer.size() < length) {
+                length = data_buffer.size();
+                sig_error.emit("malformed sub-payload detected.");
+              }
+              ostream << "[";
+              ostream << std::setfill('0') << std::uppercase; 
+              ostream << std::hex << std::setw(2) << header_id << " " << std::dec;
+              ostream << std::hex << std::setw(2) << length << " " << std::dec;
+              for (unsigned int i = 0; i < length; ++i ) {
+                unsigned int byte = static_cast<unsigned int>(data_buffer.pop_front());
+                ostream << std::hex << std::setw(2) << byte << " " << std::dec;
+              }
+              ostream << "]";
+              sig_debug.emit(ostream.str());
             }
             break;
         }
