@@ -291,28 +291,31 @@ void Kobuki::spin()
             version_info_reminder = 0;
             break;
           default:
-            if (data_buffer.size() < 2 ) {
+            if (data_buffer.size() < 3 ) { /* minimum is 3, header_id, length, etx */
+              sig_error.emit("malformed subpayload detected.");
               data_buffer.clear();
             } else {
               std::stringstream ostream;
               unsigned int header_id = static_cast<unsigned int>(data_buffer.pop_front());
-              ostream << "unexpected sub-payload received [" << header_id << "]";
               unsigned int length = static_cast<unsigned int>(data_buffer.pop_front());
+              unsigned int remains = data_buffer.size();
+
+              ostream << "[" << header_id << "]";
               ostream << "[" << length << "] ";
-              if (data_buffer.size() < length) {
-                length = data_buffer.size();
-                sig_error.emit("malformed sub-payload detected.");
-              }
+
               ostream << "[";
               ostream << std::setfill('0') << std::uppercase; 
               ostream << std::hex << std::setw(2) << header_id << " " << std::dec;
               ostream << std::hex << std::setw(2) << length << " " << std::dec;
-              for (unsigned int i = 0; i < length; ++i ) {
+              for (unsigned int i = 0; i < remains; ++i ) {
                 unsigned int byte = static_cast<unsigned int>(data_buffer.pop_front());
                 ostream << std::hex << std::setw(2) << byte << " " << std::dec;
               }
               ostream << "]";
-              sig_debug.emit(ostream.str());
+
+              if (remains < length) sig_error.emit("malformed sub-payload detected. "  + ostream.str());
+              else                  sig_debug.emit("unexpected sub-payload received. " + ostream.str());
+              
             }
             break;
         }
