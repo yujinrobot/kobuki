@@ -232,13 +232,6 @@ void Kobuki::spin()
         << ", packet_finder.numberOfDataToRead(" << packet_finder.numberOfDataToRead() << ")";
       sig_debug.emit(ostream.str());
       // might be useful to send this to a topic if there is subscribers
-//        static unsigned char last_char(buf[0]);
-//        for( int i(0); i<n; i++ )
-//        {
-//          printf("%02x ", buf[i] );
-//          if( last_char == 0xaa && buf[i] == 0x55 ) printf("\n");
-//          last_char = buf[i];
-//        }
     }
 
     if (packet_finder.update(buf, n)) // this clears packet finder's buffer and transfers important bytes into it
@@ -248,26 +241,11 @@ void Kobuki::spin()
       local_buffer = data_buffer; //copy it to local_buffer, debugging purpose.
       sig_raw_data_stream.emit(local_buffer);
 
-//      boost::shared_ptr<PacketFinder::BufferType> ptr(new PacketFinder::BufferType(data_buffer));
-//      std::cout << "ptr         : " << ptr << " - " << (unsigned int*)&((*ptr)[0]) << std::endl;
-//      std::cout << "data_buffer : " << &data_buffer << " - " << (unsigned int*)&(data_buffer[0]) << std::endl;
-//      std::cout << "local_buffer: " << &local_buffer << " - " << (unsigned int*)&(local_buffer[0]) << std::endl;
-
-#if 0
-      if( verbose )
-      {
-        printf("Packet: ");
-        for( unsigned int i=0; i<data_buffer.size(); i++ )
-        {
-          printf("%02x ", data_buffer[i] );
-          if( i != 0 && ((i%5)==0) ) printf(" ");
-        }
-      }
-#endif
       // deserialise; first three bytes are not data.
       data_buffer.pop_front();
       data_buffer.pop_front();
       data_buffer.pop_front();
+
       while (data_buffer.size() > 1/*size of etx*/)
       {
         //std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
@@ -436,6 +414,7 @@ void Kobuki::sendBaseControlCommand()
   //std::cout << "speed: " << velocity_commands[0] << ", radius: " << velocity_commands[1] << std::endl;
   sendCommand(Command::SetVelocityControl(velocity_commands[0], velocity_commands[1]));
 }
+
 /**
  * @brief Send the prepared command to the serial port.
  *
