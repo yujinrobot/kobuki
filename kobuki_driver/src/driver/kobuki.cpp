@@ -75,8 +75,10 @@ bool PacketFinder::checkSum()
 Kobuki::Kobuki() :
     shutdown_requested(false)
     , is_enabled(false)
+    , is_connected(false)
     , is_alive(false)
     , dock_mode(false)
+    , version_info_reminder(0)
 {
 }
 
@@ -98,22 +100,42 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   {
     throw ecl::StandardException(LOC, ecl::ConfigurationError, "Kobuki's parameter settings did not validate.");
   }
+  this->parameters=parameters;
   protocol_version = parameters.protocol_version;
   std::string sigslots_namespace = parameters.sigslots_namespace;
   event_manager.init(sigslots_namespace);
 
+  //checking device
+  if( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
+      ecl::Sleep waiting(5); //for 5sec.
+      event_manager.update(is_connected, is_alive);
+      while( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
+        sig_info.emit("device is not exist. still waiting...");
+        waiting();
+      }
+  }
+  //try {
   serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
+  /*} catch (...){
+    std::cout << "exception raised." << std::endl;
+    throw; //kobuki_node will handle this
+    //exit(-1); //forcely exit here
+  }*/
+  is_connected = true;
+  is_alive = true;
+
   serial.block(4000); // blocks by default, but just to be clear!
   serial.clear();
   ecl::PushAndPop<unsigned char> stx(2, 0);
   ecl::PushAndPop<unsigned char> etx(1);
   stx.push_back(0xaa);
   stx.push_back(0x55);
-  packet_finder.configure(sigslots_namespace, stx, etx, 1, 64, 1, true);
+  packet_finder.configure(sigslots_namespace, stx, etx, 1, 256, 1, true);
 
   sig_version_info.connect(sigslots_namespace + std::string("/version_info"));
   sig_stream_data.connect(sigslots_namespace + std::string("/stream_data"));
   sig_raw_data_command.connect(sigslots_namespace + std::string("/raw_data_command"));
+  sig_raw_data_stream.connect(sigslots_namespace + std::string("/raw_data_stream"));
   //sig_serial_timeout.connect(sigslots_namespace+std::string("/serial_timeout"));
 
   sig_debug.connect(sigslots_namespace + std::string("/ros_debug"));
@@ -132,6 +154,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   /******************************************
    ** Get Version Info Commands
    *******************************************/
+  version_info_reminder = 10;
   sendCommand(Command::GetVersionInfo());
 
   thread.start(&Kobuki::spin, *this);
@@ -156,12 +179,43 @@ void Kobuki::spin()
   ecl::Duration timeout(0.1);
   unsigned char buf[256];
 
+  PacketFinder::BufferType local_buffer;
+
   /*********************
    ** Simulation Params
    **********************/
 
   while (!shutdown_requested)
   {
+    /*********************
+     ** Checking Connection
+     **********************/
+    if( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
+      sig_error.emit("device is not exist.");
+      is_connected = false;
+      is_alive = false;
+      event_manager.update(is_connected, is_alive);
+
+      if( serial.open() )
+      {
+        sig_info.emit("device is still open, closing it, and retry to open.");
+        serial.close();
+      }
+      //try_open();
+      ecl::Sleep waiting(5); //for 5sec.
+      while( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
+        sig_info.emit("device is not exist. still waiting...");
+        waiting();
+      }
+      serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
+      if( serial.open() ) {
+        sig_info.emit("device is connected.");
+        is_connected = true;
+        event_manager.update(is_connected, is_alive);
+        version_info_reminder = 10;
+      }
+    }
+
     /*********************
      ** Read Incoming
      **********************/
@@ -171,13 +225,17 @@ void Kobuki::spin()
       if (is_alive && ((ecl::TimeStamp() - last_signal_time) > timeout))
       {
         is_alive = false;
+        version_info_reminder = 10;
+        sig_debug.emit("timed out in waiting imcoming bytes.");
       }
+      event_manager.update(is_connected, is_alive);
       continue;
     }
     else
     {
       std::ostringstream ostream;
-      ostream << "kobuki_node : serial_read(" << n << ")";
+      ostream << "kobuki_node : serial_read(" << n << ")"
+        << ", packet_finder.numberOfDataToRead(" << packet_finder.numberOfDataToRead() << ")";
       sig_debug.emit(ostream.str());
       // might be useful to send this to a topic if there is subscribers
 //        static unsigned char last_char(buf[0]);
@@ -192,6 +250,8 @@ void Kobuki::spin()
     if (packet_finder.update(buf, n)) // this clears packet finder's buffer and transfers important bytes into it
     {
       packet_finder.getBuffer(data_buffer); // get a reference to packet finder's buffer.
+      local_buffer = data_buffer; //copy it to local_buffer, debugging purpose.
+      sig_raw_data_stream.emit(data_buffer);
 
 #if 0
       if( verbose )
@@ -239,29 +299,46 @@ void Kobuki::spin()
             // the rest are only included on request
           case Header::Hardware:
             hardware.deserialise(data_buffer);
-            sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
+            //sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
             break;
           case Header::Firmware:
             firmware.deserialise(data_buffer);
-            sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
+            //sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
+            break;
+          case Header::UniqueDeviceID:
+            unique_device_id.deserialise(data_buffer);
+            sig_version_info.emit( VersionInfo( firmware.data.version, hardware.data.version
+                , unique_device_id.data.udid0, unique_device_id.data.udid1, unique_device_id.data.udid2 ));
+            version_info_reminder = 0;
             break;
           default:
+            {
             std::stringstream ostream;
-            ostream << "unexpected sub-payload received [" << static_cast<unsigned int>(data_buffer[0]) << "]\n";
+            unsigned int header_id = static_cast<unsigned int>(data_buffer.pop_front());
+            ostream << "unexpected sub-payload received [" << header_id << "]";
+            unsigned int length = static_cast<unsigned int>(data_buffer.pop_front());
+            ostream << "[" << length << "] ";
             ostream << "[";
-            for (unsigned int i = 0; i < data_buffer.size(); ++i ) {
-              ostream << std::hex << static_cast<int>(data_buffer[i]) << " " << std::dec;
+            ostream << std::setfill('0') << std::uppercase; 
+            ostream << std::hex << std::setw(2) << header_id << " " << std::dec;
+            ostream << std::hex << std::setw(2) << length << " " << std::dec;
+            for (unsigned int i = 0; i < length; ++i ) {
+              unsigned int byte = static_cast<unsigned int>(data_buffer.pop_front());
+              ostream << std::hex << std::setw(2) << byte << " " << std::dec;
             }
             ostream << "]";
-            sig_error.emit(ostream.str());
-            data_buffer.clear();
+            sig_debug.emit(ostream.str());
+            }
             break;
         }
       }
+
       is_alive = true;
+      event_manager.update(is_connected, is_alive);
       last_signal_time.stamp();
       sig_stream_data.emit();
       sendBaseControlCommand(); // send the command packet to mainboard;
+      if( version_info_reminder/*--*/ > 0 ) sendCommand(Command::GetVersionInfo());
     }
     else
     {
@@ -269,6 +346,7 @@ void Kobuki::spin()
       if (is_alive && ((ecl::TimeStamp() - last_signal_time) > timeout))
       {
         is_alive = false;
+        // do not call here the event manager update, as it generates a spurious offline state
       }
     }
   }
@@ -328,6 +406,10 @@ void Kobuki::setDigitalOutput(const DigitalOutput &digital_output) {
   sendCommand(Command::SetDigitalOutput(digital_output, kobuki_command.data));
 }
 
+void Kobuki::setExternalPower(const DigitalOutput &digital_output) {
+  sendCommand(Command::SetExternalPower(digital_output, kobuki_command.data));
+}
+
 //void Kobuki::playSound(const enum Sounds &number)
 //{
 //  sendCommand(Command::PlaySound(number, kobuki_command.data));
@@ -368,6 +450,14 @@ void Kobuki::sendBaseControlCommand()
  */
 void Kobuki::sendCommand(Command command)
 {
+  if( !is_alive || !is_connected ) {
+    //need to do something
+    sig_debug.emit("device state is not ready yet.");
+    if( !is_alive     ) sig_debug.emit(" - device is not alive.");
+    if( !is_connected ) sig_debug.emit(" - device is not connected.");
+    //std::cout << is_enabled << ", " << is_alive << ", " << is_connected << std::endl;
+    return;
+  }
   command_mutex.lock();
   kobuki_command.resetBuffer(command_buffer);
 
@@ -381,6 +471,7 @@ void Kobuki::sendCommand(Command command)
     checksum ^= (command_buffer[i]);
 
   command_buffer.push_back(checksum);
+  //check_device();
   serial.write(&command_buffer[0], command_buffer.size());
 
   sig_raw_data_command.emit(command_buffer);

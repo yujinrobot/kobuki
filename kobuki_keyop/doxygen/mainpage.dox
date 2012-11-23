@@ -1,0 +1,48 @@
+/**
+\mainpage
+\htmlinclude manifest.html
+
+\section Overview
+
+Provides a keyboard teleoperation control to kobukibot. Just enables a simple
+increase velocity mechanism both linearly and angularly as well as power off 
+and power on functions.
+
+\section published Published Topics
+
+- <tt>kobuki_keyop/cmd_vel (geometry_msgs/Twist)</tt>
+
+Sends command velocities to the mobile base interface. 
+
+- <tt>kobuki_keyop/enable (std_msgs/String)</tt>
+- <tt>kobuki_keyop/disable (std_msgs/String)</tt>
+
+Send power-off and power-on commands to the robot core.
+
+\section Usage
+
+Use a launcher to fire up the keyop command as this will allow you to map the above
+topics to the appropriate namespace. e.g. there is a launcher in 
+kobuki_keyop/resources/launch/robot_core.launch for ycs' robot core:
+
+@code
+<launch>
+    <node pkg="kobuki_keyop" type="keyop" name="kobuki_keyop">
+        <remap from="kobuki_keyop/enable" to="/robot_core/enable"/>
+        <remap from="kobuki_keyop/disable" to="/robot_core/disable"/>
+        <remap from="kobuki_keyop/vel_cmd" to="/robot_core/cmd_vel"/>
+    </node>
+</launch>
+@endcode
+
+You may wish to change the remappings to suit the currently running robot. You can initiate with
+
+@code
+roslaunch kobuki_keyop robot_core.launch
+@endcode
+
+and use the arrow keys to navigation, with 'e', 'd' to enable
+or disable the motors and 'q' to quit.
+
+
+*/

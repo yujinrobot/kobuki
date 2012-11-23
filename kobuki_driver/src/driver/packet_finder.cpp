@@ -79,6 +79,7 @@ void PacketFinderBase::configure(const std::string &sigslots_namespace,
   state = waitingForStx;
 
   sig_warn.connect(sigslots_namespace + std::string("/ros_warn"));
+  sig_error.connect(sigslots_namespace + std::string("/ros_error"));
 
   //todo; exception
   // Problem1: size_length_field = 1, vairable_size_payload = false
@@ -196,7 +197,6 @@ bool PacketFinderBase::update(const unsigned char * incoming, unsigned int numbe
       {
         state = waitingForPayloadToEtx;
       }
-
       break;
 
     case waitingForPayloadToEtx:
@@ -204,7 +204,6 @@ bool PacketFinderBase::update(const unsigned char * incoming, unsigned int numbe
       {
         state = clearBuffer;
       }
-
       break;
 
     default:
@@ -212,7 +211,7 @@ bool PacketFinderBase::update(const unsigned char * incoming, unsigned int numbe
       break;
   }
   if ( found_packet ) {
-    return checkSum();
+    return checkSum();	//what happen if checksum is equal to false(== -1)?
   } else {
     return false;
   }
@@ -343,12 +342,27 @@ bool PacketFinderBase::waitForPayloadAndEtx(const unsigned char * incoming, unsi
   if ( size_payload > size_max_payload ) {
     state = clearBuffer;
     std::ostringstream ostream;
-    ostream << "abnormally sized payload retrieved, clearing [" << size_max_payload << "][" << size_payload << "][";
+    ostream << "abnormally sized payload retrieved, clearing [" << size_max_payload << "][" << size_payload << "]";
+
+    ostream << std::setfill('0') << std::uppercase; //declare once, use everytime
+//	ostream.fill('0') //call once, affects everytime
+//      ostream.width(2); //need to call everytime
+
+/*
+    ostream << "[";
     for (unsigned int i = 0; i < numberOfIncoming; ++i ) {
+      ostream.width(2); // need to declare evertime
       ostream << std::hex << static_cast<int>(*(incoming+i)) << " " << std::dec;
     }
-    std::cout << "]";
-    sig_warn.emit(ostream.str());
+    ostream << "\b]";
+*/
+    ostream << ", buffer: [" << std::setw(2) << buffer.size() << "][";
+    for (unsigned int i = 0; i < buffer.size(); ++i ) {
+      ostream << std::setw(2) << std::hex << static_cast<int>(buffer[i]) << " " << std::dec;
+    }
+    ostream << "\b]";
+
+    sig_error.emit(ostream.str());
     return false;
   }
   // check when we need to wait for etx

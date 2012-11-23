@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+
+<robot xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller" 
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:xacro="http://ros.org/wiki/xacro"
+       name="turtlebot_gazebo">
+
+<xacro:macro name="kobuki_sim">
+  <gazebo>
+    <controller:gazebo_ros_kobuki name="kobuki_controller" plugin="libgazebo_ros_kobuki.so">
+      <alwaysOn>true</alwaysOn>
+      <node_namespace>kobuki_node</node_namespace>
+      <left_wheel_joint>wheel_left_joint</left_wheel_joint>
+      <right_wheel_joint>wheel_right_joint</right_wheel_joint>
+      <wheel_separation>.230</wheel_separation>
+      <wheel_diameter>0.070</wheel_diameter>
+      <base_geom>base_footprint</base_geom>
+      <updateRate>40</updateRate>
+      <torque>1.0</torque>
+    </controller:gazebo_ros_kobuki>
+  </gazebo>
+  
+  <gazebo reference="wheel_left_link">
+    <mu1 value="10"/>
+    <mu2 value="10"/>
+    <kp value="100000000.0"/>
+    <kd value="10000.0"/>
+    <fdir value="1 0 0"/>
+  </gazebo>
+
+  <gazebo reference="wheel_right_link">
+    <mu1 value="10"/>
+    <mu2 value="10"/>
+    <kp value="100000000.0"/>
+    <kd value="10000.0"/>
+    <fdir value="1 0 0"/>
+  </gazebo>
+  
+  <gazebo reference="caster_front_link">
+    <mu1 value="0"/>
+    <mu2 value="0"/>
+    <kp value="100000000.0"/>
+    <kd value="10000.0"/>
+  </gazebo>
+  
+  <gazebo reference="caster_back_link">
+    <mu1 value="0"/>
+    <mu2 value="0"/>
+    <kp value="100000000.0"/>
+    <kd value="10000.0"/>
+  </gazebo>
+</xacro:macro>
+
+<xacro:macro name="kobuki_cliff_sensors">
+  <gazebo reference="cliff_sensor_left_link">
+    <sensor:ray name="cliff_sensor_left">
+      <alwaysActive>true</alwaysActive>
+      <rayCount>1</rayCount>
+      <rangeCount>1</rangeCount>
+      <resRange>0.1</resRange>
+
+      <minAngle>0</minAngle>
+      <maxAngle>0</maxAngle>
+
+      <minRange>0.01</minRange>
+      <maxRange>0.04</maxRange>
+      <displayRays>false</displayRays>
+    </sensor:ray>
+  </gazebo>
+
+  <gazebo reference="cliff_sensor_right_link">
+    <sensor:ray name="cliff_sensor_right">
+      <alwaysActive>true</alwaysActive>
+      <rayCount>1</rayCount>
+      <rangeCount>1</rangeCount>
+      <resRange>0.1</resRange>
+      <minAngle>0</minAngle>
+      <maxAngle>0</maxAngle>
+      <minRange>0.01</minRange>
+      <maxRange>0.04</maxRange>
+      <displayRays>false</displayRays>
+    </sensor:ray>
+  </gazebo>
+
+  <gazebo reference="cliff_sensor_front_link">
+    <sensor:ray name="cliff_sensor_front">
+      <alwaysActive>true</alwaysActive>
+      <rayCount>1</rayCount>
+      <rangeCount>1</rangeCount>
+      <resRange>0.1</resRange>
+      <minAngle>0</minAngle>
+      <maxAngle>0</maxAngle>
+      <minRange>0.01</minRange>
+      <maxRange>0.04</maxRange>
+      <displayRays>false</displayRays>
+    </sensor:ray>
+  </gazebo>
+</xacro:macro>
+
+<xacro:macro name="turtlebot_sim_imu">
+  <gazebo>
+    <controller:gazebo_ros_imu name="imu_controller" plugin="libgazebo_ros_imu.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>30</updateRate>
+      <bodyName>gyro_link</bodyName>
+      <topicName>imu/data</topicName>
+      <gaussianNoise>${0.0017*0.0017}</gaussianNoise>
+      <xyzOffsets>0 0 0</xyzOffsets> 
+      <rpyOffsets>0 0 0</rpyOffsets>
+      <interface:position name="gyro_link"/>
+    </controller:gazebo_ros_imu>
+  </gazebo>
+</xacro:macro>
+
+</robot>

@@ -2,7 +2,7 @@
 import roslib; roslib.load_manifest('kobuki_ros_node')
 import rospy
 
-from kobuki_comms.msg import SensorData
+from kobuki_msgs.msg import SensorData
 #from standard_comms.msg import Float32ArrayStamped #standard_comms are deprecated!
 from std_msgs.msg import Float64
 from std_msgs.msg import UInt8

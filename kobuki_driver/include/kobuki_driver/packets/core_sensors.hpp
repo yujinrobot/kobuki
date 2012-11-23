@@ -71,13 +71,14 @@ public:
     uint8_t buttons;
     uint8_t charger;
     uint8_t battery;
+    uint8_t over_current;
   } data;
 
   struct Flags {
     // buttons
-    static const uint8_t F0 = 0x01;
-    static const uint8_t F1 = 0x02;
-    static const uint8_t F2 = 0x04;
+    static const uint8_t Button0 = 0x01;
+    static const uint8_t Button1 = 0x02;
+    static const uint8_t Button2 = 0x04;
 
     // bumper
     static const uint8_t LeftBumper   = 0x04;
@@ -101,6 +102,11 @@ public:
     static const uint8_t Discharging  = 0x00;
     static const uint8_t Charged      = 0x02;
     static const uint8_t Charging     = 0x06;
+
+    // wheel drop sensor
+    static const uint8_t LeftWheel_OC    = 0x01;
+    static const uint8_t RightWheel_OC   = 0x02;
+
   };
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream);

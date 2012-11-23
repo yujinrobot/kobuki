@@ -49,6 +49,7 @@
  ** Includes
  *****************************************************************************/
 
+#include <iomanip>
 #include <ecl/containers.hpp>
 #include <ecl/sigslots.hpp>
 
@@ -124,7 +125,7 @@ protected:
 
   bool verbose;
 
-  ecl::Signal<const std::string&> sig_warn;
+  ecl::Signal<const std::string&> sig_warn, sig_error;
 
 public:
   PacketFinderBase(); /**< Default constructor. Use with configure(). **/

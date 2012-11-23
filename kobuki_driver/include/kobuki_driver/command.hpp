@@ -67,7 +67,7 @@ public:
 
   enum VersionFlag
   {
-    HardwareVersion = 0x01, FirmwareVersion = 0x02 // Time = 0x04
+    HardwareVersion = 0x01, FirmwareVersion = 0x02/*, Time = 0x04*/, UniqueDeviceID = 0x08
   };
 
   /**
@@ -119,6 +119,7 @@ public:
 
   static Command SetLedArray(const enum LedNumber &number, const enum LedColour &colour, Command::Data &current_data);
   static Command SetDigitalOutput(const DigitalOutput &digital_output, Command::Data &current_data);
+  static Command SetExternalPower(const DigitalOutput &digital_output, Command::Data &current_data);
   static Command PlaySoundSequence(const enum SoundSequences &number, Command::Data &current_data);
   static Command GetVersionInfo();
   static Command SetVelocityControl(const DiffDrive& diff_drive);

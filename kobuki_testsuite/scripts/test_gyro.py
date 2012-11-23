@@ -34,12 +34,10 @@
 #
 # Continuously print angle and angular velocity from Imu messages
 
-import sys
 
 import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
-
-roslib.load_manifest('kobuki_testsuite')
+import sys
 
 from tf.transformations import euler_from_quaternion
 from math import degrees
@@ -49,15 +47,17 @@ from geometry_msgs.msg import Quaternion
 
 
 def ImuCallback(data):
-	quat = data.orientation
-	q = [quat.x, quat.y, quat.z, quat.w]
-	roll, pitch, yaw = euler_from_quaternion(q)
-	sys.stdout.write("\r\x1b[KGyro angle: " + "{0:+.4f}".format(yaw) + " rad; "\
-					+ "{0:+.2f}".format(degrees(yaw)) + " deg"\
-					+ ", rate:  " + "{0:+.2f}".format(data.angular_velocity.z) + " rad/s; "\
-					+ "{0:+.2f}".format(degrees(data.angular_velocity.z)) + " deg/s")
-	sys.stdout.flush()
+  quat = data.orientation
+  q = [quat.x, quat.y, quat.z, quat.w]
+  roll, pitch, yaw = euler_from_quaternion(q)
+  sys.stdout.write("\r\033[1mGyro Angle\033[0m: [" + "{0:+.4f}".format(yaw) + " rad]  ["\
+                 + "{0: >+7.2f}".format(degrees(yaw)) + " deg]"\
+                 + "            \033[1mRate\033[0m: [" + "{0:+.4f}".format(data.angular_velocity.z) + " rad/s]  ["\
+                 + "{0: >+7.2f}".format(degrees(data.angular_velocity.z)) + " deg/s] ")
+  # http://docs.python.org/library/string.html#formatexamples
+  sys.stdout.flush()
 
 rospy.init_node("test_gyro")
 rospy.Subscriber("/mobile_base/sensors/imu_data", Imu, ImuCallback)
 rospy.spin()
+print '' # for clean output

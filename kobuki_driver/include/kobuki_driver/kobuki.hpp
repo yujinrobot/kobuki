@@ -113,7 +113,7 @@ public:
   *******************************************/
   ecl::Angle<double> getHeading() const;
   double getAngularVelocity() const;
-  VersionInfo versionInfo() const { return VersionInfo(firmware.data.version, hardware.data.version); }
+  VersionInfo versionInfo() const { return VersionInfo(firmware.data.version, hardware.data.version, unique_device_id.data.udid0, unique_device_id.data.udid1, unique_device_id.data.udid2); }
   Battery batteryStatus() const { return Battery(core_sensors.data.battery, core_sensors.data.charger); }
 
   /******************************************
@@ -147,6 +147,7 @@ public:
   void setBaseControl(const double &linear_velocity, const double &angular_velocity);
   void setLed(const enum LedNumber &number, const enum LedColour &colour);
   void setDigitalOutput(const DigitalOutput &digital_output);
+  void setExternalPower(const DigitalOutput &digital_output);
   void playSoundSequence(const enum SoundSequences &number);
 
 private:
@@ -161,6 +162,12 @@ private:
   **********************/
   DiffDrive diff_drive;
   bool is_enabled;
+
+  /*********************
+  ** Driver Paramters
+  **********************/
+  Parameters parameters;
+  bool is_connected;
 
   /*********************
   ** Gate Keeper / High Acceleration Smoother / Limiter
@@ -178,12 +185,15 @@ private:
   GpInput gp_input;
   Hardware hardware; // requestable
   Firmware firmware; // requestable
+  UniqueDeviceID unique_device_id;
 
   std::string protocol_version;
   ecl::Serial serial;
   PacketFinder packet_finder;
   PacketFinder::BufferType data_buffer;
   bool is_alive; // used as a flag set by the data stream watchdog
+
+  int version_info_reminder;
 
   /*********************
   ** Commands
@@ -212,6 +222,7 @@ private:
   ecl::Signal<const VersionInfo&> sig_version_info;
   ecl::Signal<const std::string&> sig_debug, sig_info, sig_warn, sig_error;
   ecl::Signal<Command::Buffer&> sig_raw_data_command; // should be const, but pushnpop is not fully realised yet for const args in the formatters.
+  ecl::Signal<PacketFinder::BufferType&> sig_raw_data_stream; // should be const, but pushnpop is not fully realised yet for const args in the formatters.
 };
 
 } // namespace kobuki

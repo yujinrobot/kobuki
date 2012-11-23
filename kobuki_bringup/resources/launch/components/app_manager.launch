@@ -1,7 +1,0 @@
-<launch>
-  <node pkg="app_manager" type="appmaster" name="appmaster" args="-p 11312"/>
-
-  <node pkg="app_manager" type="app_manager" name="app_manager" args="--applist $(find kobuki_bringup)/resources/apps" output="screen">
-    <rosparam command="load" file="$(find kobuki_bringup)/resources/yaml/app_manager.yaml" />
-  </node>
-</launch>

@@ -75,7 +75,9 @@ public:
       return false;
     }
 
+    unsigned char length = 7;
     buildBytes(Header::Inertia, byteStream);
+    buildBytes(length, byteStream);
     buildBytes(data.angle, byteStream);
     buildBytes(data.angle_rate, byteStream);
     buildBytes(data.acc[0], byteStream);
@@ -92,8 +94,9 @@ public:
       return false;
     }
 
-    unsigned char header_id;
+    unsigned char header_id, length;
     buildVariable(header_id, byteStream);
+    buildVariable(length, byteStream);
     buildVariable(data.angle, byteStream);
     buildVariable(data.angle_rate, byteStream);
     buildVariable(data.acc[0], byteStream);

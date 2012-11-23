@@ -35,7 +35,7 @@
 import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
 
-from kobuki_comms.msg import Led
+from kobuki_msgs.msg import Led
 
 colours = ["Black", "Green", "Orange", "Red"]
 

@@ -9,24 +9,14 @@
   <depend stack="common_msgs" /> <!-- nav_msgs, sensor_msgs, geometry_msgs, diagnostic_msgs -->
   <depend stack="control" /> <!-- control_msgs -->
   <depend stack="diagnostics" /> <!-- diagnostic_updater, diagnostic_aggregator -->
-  <depend stack="dynamixel_motor" /> <!-- dynamixel_msgs, dynamixel_controllers -->
   <depend stack="ecl_core" /> <!-- ecl_command_line, ecl_devices, ecl_streams, ecl_converters, ecl_time, ecl_geometry, ecl_sigslots, ecl_exceptions -->
   <depend stack="ecl_navigation" /> <!-- ecl_mobile_robot -->
   <depend stack="geometry" /> <!-- tf -->
-  <depend stack="map_store" /> <!-- map_store -->
-  <depend stack="navigation" /> <!-- robot_pose_ekf -->
   <depend stack="nodelet_core" /> <!-- nodelet -->
-  <depend stack="openni_kinect" /> <!-- openni_camera -->
-  <depend stack="robot_model" /> <!-- robot_state_publisher -->
-  <depend stack="robot_model_visualization" /> <!-- joint_state_publisher -->
   <depend stack="ros" /> <!-- roslib -->
   <depend stack="ros_comm" /> <!-- std_msgs, topic_tools, rospy, roscpp -->
-  <depend stack="simulator_gazebo" /> <!-- gazebo -->
-  <depend stack="turtlebot" /> <!-- turtlebot_node, pointcloud_to_laserscan --> 
-  <depend stack="turtlebot_apps" /> <!-- turtlebot_teleop, turtlebot_navigation -->
-  <depend stack="turtlebot_viz" /> <!-- turtlebot_interactive_markers -->
-  <depend stack="visualization" /> <!-- rviz -->
-  <depend stack="warehousewg" /> <!-- mongodb -->
-  <depend stack="zeroconf_implementations" /> <!-- zeroconf_avahi -->
-
+  <depend stack="perception_pcl" /> <!-- pcl_ros -->
+  <depend stack="robot_model"/> <!-- urdf -->
+  <depend stack="xacro"/>
+  <depend stack="kobuki_msgs"/>
 </stack>

@@ -79,7 +79,9 @@ public:
       return false;
     }
 
+    unsigned char length = 2 + 2*data.analog_input.size();
     buildBytes(Header::GpInput, byteStream);
+    buildBytes(length, byteStream);
     buildBytes(data.digital_input, byteStream);
     for (unsigned int i = 0; i < data.analog_input.size(); ++i)
     {
@@ -96,8 +98,9 @@ public:
       return false;
     }
 
-    unsigned char header_id;
+    unsigned char header_id, length;
     buildVariable(header_id, byteStream);
+    buildVariable(length, byteStream);
     buildVariable(data.digital_input, byteStream);
 
     //for (unsigned int i = 0; i < data.analog_input.size(); ++i)

@@ -39,7 +39,7 @@
 #include <float.h>
 #include <tf/tf.h>
 #include <ecl/streams/string_stream.hpp>
-#include <kobuki_comms/VersionInfo.h>
+#include <kobuki_msgs/VersionInfo.h>
 #include "kobuki_node/kobuki_node.hpp"
 
 /*****************************************************************************
@@ -68,20 +68,14 @@ KobukiNode::KobukiNode(std::string& node_name) :
     slot_wheel_event(&KobukiNode::publishWheelEvent, *this),
     slot_power_event(&KobukiNode::publishPowerEvent, *this),
     slot_input_event(&KobukiNode::publishInputEvent, *this),
+    slot_robot_event(&KobukiNode::publishRobotEvent, *this),
     slot_debug(&KobukiNode::rosDebug, *this),
     slot_info(&KobukiNode::rosInfo, *this),
     slot_warn(&KobukiNode::rosWarn, *this),
     slot_error(&KobukiNode::rosError, *this),
-    slot_raw_data_command(&KobukiNode::publishRawDataCommand, *this)
+    slot_raw_data_command(&KobukiNode::publishRawDataCommand, *this),
+    slot_raw_data_stream(&KobukiNode::publishRawDataStream, *this)
 {
-  joint_states.name.push_back("left_wheel_joint");
-  joint_states.name.push_back("right_wheel_joint");
-  joint_states.name.push_back("front_wheel_joint"); // front_castor_joint in create tbot
-  joint_states.name.push_back("rear_wheel_joint");  // back_castor_joint in create tbot
-  joint_states.position.resize(4,0.0);
-  joint_states.velocity.resize(4,0.0);
-  joint_states.effort.resize(4,0.0);
-
   updater.setHardwareID("Kobuki");
   updater.add(battery_diagnostics);
   updater.add(watchdog_diagnostics);
@@ -122,11 +116,13 @@ bool KobukiNode::init(ros::NodeHandle& nh)
   slot_wheel_event.connect(name + std::string("/wheel_event"));
   slot_power_event.connect(name + std::string("/power_event"));
   slot_input_event.connect(name + std::string("/input_event"));
+  slot_robot_event.connect(name + std::string("/robot_event"));
   slot_debug.connect(name + std::string("/ros_debug"));
   slot_info.connect(name + std::string("/ros_info"));
   slot_warn.connect(name + std::string("/ros_warn"));
   slot_error.connect(name + std::string("/ros_error"));
   slot_raw_data_command.connect(name + std::string("/raw_data_command"));
+  slot_raw_data_stream.connect(name + std::string("/raw_data_stream"));
 
   /*********************
    ** Driver Parameters
@@ -149,6 +145,35 @@ bool KobukiNode::init(ros::NodeHandle& nh)
     ROS_ERROR_STREAM("Kobuki : no protocol version given on the parameter server ('2.0')[" << name << "].");
     return false;
   }
+
+  /*********************
+   ** Joint States
+   **********************/
+  std::string robot_description, wheel_left_joint_name, wheel_right_joint_name;
+
+  nh.param("wheel_left_joint_name", wheel_left_joint_name, std::string("wheel_left_joint"));
+  nh.param("wheel_right_joint_name", wheel_right_joint_name, std::string("wheel_right_joint"));
+
+  // minimalistic check: are joint names present on robot description file?
+  if (!nh.getParam("/robot_description", robot_description))
+  {
+    ROS_WARN("Kobuki : no robot description given on the parameter server");
+  }
+  else
+  {
+    if (robot_description.find(wheel_left_joint_name) == std::string::npos) {
+      ROS_WARN("Kobuki : joint name %s not found on robot description", wheel_left_joint_name.c_str());
+    }
+
+    if (robot_description.find(wheel_right_joint_name) == std::string::npos) {
+      ROS_WARN("Kobuki : joint name %s not found on robot description", wheel_right_joint_name.c_str());
+    }
+  }
+  joint_states.name.push_back(wheel_left_joint_name);
+  joint_states.name.push_back(wheel_right_joint_name);
+  joint_states.position.resize(2,0.0);
+  joint_states.velocity.resize(2,0.0);
+  joint_states.effort.resize(2,0.0);
 
   /*********************
    ** Validation
@@ -208,6 +233,27 @@ bool KobukiNode::init(ros::NodeHandle& nh)
     }
     return false;
   }
+
+  /*********************
+   ** Config bumper pc
+   **********************/
+
+  // Bumpers pointcloud distance to base frame; should be something like the sum of robot_radius,
+  // footprint_padding and resolution local costmap parameters. This is a bit tricky parameter:
+  // if it's too low, costmap will ignore this pointcloud, but if it's too big, hit obstacles will
+  // be mapped too far from the robot and the navigation around them will probably fail.
+  nh.param("bumper_pc_radius", bumper_pc_radius, 0.24);
+  side_bump_x_coord = bumper_pc_radius*sin(0.34906585); // 20 degrees
+  side_bump_y_coord = bumper_pc_radius*cos(0.34906585);
+
+  bumper_pc.resize(3);
+  bumper_pc.header.frame_id = "/base_link";
+
+  // bumper "points" fix coordinates (the others depend on whether the bumper is hit/released)
+  bumper_pc[0].x = bumper_pc[1].y = bumper_pc[2].x = 0.0;   // +π/2, 0 and -π/2 from x-axis
+  bumper_pc[0].z = bumper_pc[1].z = bumper_pc[2].z = 0.015; // z: elevation from base frame
+
+  ROS_DEBUG("Bumpers as pointcloud configured at distance %f from base frame", bumper_pc_radius);
 
 //  ecl::SigSlotsManager<>::printStatistics();
 //  ecl::SigSlotsManager<const std::string&>::printStatistics();
@@ -271,17 +317,20 @@ void KobukiNode::advertiseTopics(ros::NodeHandle& nh)
   /*********************
   ** Kobuki Esoterics
   **********************/
-  version_info_publisher = nh.advertise < kobuki_comms::VersionInfo > ("version_info",  100, true); // latched publisher
-  button_event_publisher = nh.advertise < kobuki_comms::ButtonEvent > ("events/button", 100);
-  bumper_event_publisher = nh.advertise < kobuki_comms::BumperEvent > ("events/bumper", 100);
-  cliff_event_publisher  = nh.advertise < kobuki_comms::CliffEvent >  ("events/cliff",  100);
-  wheel_event_publisher  = nh.advertise < kobuki_comms::WheelDropEvent > ("events/wheel_drop", 100);
-  power_event_publisher  = nh.advertise < kobuki_comms::PowerSystemEvent > ("events/power_system", 100);
-  input_event_publisher  = nh.advertise < kobuki_comms::DigitalInputEvent > ("events/digital_input", 100);
-  sensor_state_publisher = nh.advertise < kobuki_comms::SensorState > ("sensors/core", 100);
-  dock_ir_publisher = nh.advertise < kobuki_comms::DockInfraRed > ("sensors/dock_ir", 100);
+  version_info_publisher = nh.advertise < kobuki_msgs::VersionInfo > ("version_info",  100, true); // latched publisher
+  button_event_publisher = nh.advertise < kobuki_msgs::ButtonEvent > ("events/button", 100);
+  bumper_event_publisher = nh.advertise < kobuki_msgs::BumperEvent > ("events/bumper", 100);
+  cliff_event_publisher  = nh.advertise < kobuki_msgs::CliffEvent >  ("events/cliff",  100);
+  wheel_event_publisher  = nh.advertise < kobuki_msgs::WheelDropEvent > ("events/wheel_drop", 100);
+  power_event_publisher  = nh.advertise < kobuki_msgs::PowerSystemEvent > ("events/power_system", 100);
+  input_event_publisher  = nh.advertise < kobuki_msgs::DigitalInputEvent > ("events/digital_input", 100);
+  robot_event_publisher  = nh.advertise < kobuki_msgs::RobotStateEvent > ("events/robot_state", 100, true); // also latched
+  sensor_state_publisher = nh.advertise < kobuki_msgs::SensorState > ("sensors/core", 100);
+  dock_ir_publisher = nh.advertise < kobuki_msgs::DockInfraRed > ("sensors/dock_ir", 100);
   imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("sensors/imu_data", 100);
   raw_data_command_publisher = nh.advertise< std_msgs::String > ("debug/raw_data_command", 100);
+  raw_data_stream_publisher = nh.advertise< std_msgs::String > ("debug/raw_data_stream", 100);
+  bumper_as_pc_publisher = nh.advertise < pcl::PointCloud<pcl::PointXYZ> > ("sensors/bump_pc", 100);
 }
 
 /**
@@ -294,6 +343,7 @@ void KobukiNode::subscribeTopics(ros::NodeHandle& nh)
   led1_command_subscriber =  nh.subscribe(std::string("commands/led1"), 10, &KobukiNode::subscribeLed1Command, this);
   led2_command_subscriber =  nh.subscribe(std::string("commands/led2"), 10, &KobukiNode::subscribeLed2Command, this);
   digital_output_command_subscriber =  nh.subscribe(std::string("commands/digital_output"), 10, &KobukiNode::subscribeDigitalOutputCommand, this);
+  external_power_command_subscriber =  nh.subscribe(std::string("commands/external_power"), 10, &KobukiNode::subscribeExternalPowerCommand, this);
   sound_command_subscriber =  nh.subscribe(std::string("commands/sound"), 10, &KobukiNode::subscribeSoundCommand, this);
   // A group enable/disable channel to listen to (these should get remapped to /enable in most cases).
   enable_subscriber = nh.subscribe("enable", 10, &KobukiNode::enable, this); // 10 is queue size

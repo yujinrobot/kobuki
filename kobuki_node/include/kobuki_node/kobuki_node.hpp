@@ -49,23 +49,26 @@
 #include <boost/shared_ptr.hpp>
 
 #include <ros/ros.h>
+#include <pcl/point_types.h>
+#include <pcl_ros/point_cloud.h>
 #include <std_msgs/Empty.h>
 #include <std_msgs/String.h>
 #include <sensor_msgs/JointState.h>
 #include <sensor_msgs/Imu.h>
 #include <ecl/sigslots.hpp>
-#include <kobuki_comms/ButtonEvent.h>
-#include <kobuki_comms/BumperEvent.h>
-#include <kobuki_comms/CliffEvent.h>
-#include <kobuki_comms/WheelDropEvent.h>
-#include <kobuki_comms/PowerSystemEvent.h>
-#include <kobuki_comms/DigitalInputEvent.h>
-#include <kobuki_comms/DigitalOutput.h>
-#include <kobuki_comms/Led.h>
-#include <kobuki_comms/SensorState.h>
-#include <kobuki_comms/DockInfraRed.h>
-#include <kobuki_comms/Sound.h>
-#include <kobuki_comms/VersionInfo.h>
+#include <kobuki_msgs/ButtonEvent.h>
+#include <kobuki_msgs/BumperEvent.h>
+#include <kobuki_msgs/CliffEvent.h>
+#include <kobuki_msgs/WheelDropEvent.h>
+#include <kobuki_msgs/PowerSystemEvent.h>
+#include <kobuki_msgs/DigitalInputEvent.h>
+#include <kobuki_msgs/RobotStateEvent.h>
+#include <kobuki_msgs/DigitalOutput.h>
+#include <kobuki_msgs/Led.h>
+#include <kobuki_msgs/SensorState.h>
+#include <kobuki_msgs/DockInfraRed.h>
+#include <kobuki_msgs/Sound.h>
+#include <kobuki_msgs/VersionInfo.h>
 #include <kobuki_driver/kobuki.hpp>
 #include "diagnostics.hpp"
 #include "odometry.hpp"
@@ -93,17 +96,20 @@ private:
   Kobuki kobuki;
   sensor_msgs::JointState joint_states;
   Odometry odometry;
+  double bumper_pc_radius, side_bump_x_coord, side_bump_y_coord;
+  pcl::PointCloud<pcl::PointXYZ> bumper_pc;
 
   /*********************
    ** Ros Comms
    **********************/
   ros::Publisher version_info_publisher;
   ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher, dock_ir_publisher;
-  ros::Publisher button_event_publisher, input_event_publisher;
+  ros::Publisher button_event_publisher, input_event_publisher, robot_event_publisher;
   ros::Publisher bumper_event_publisher, cliff_event_publisher, wheel_event_publisher, power_event_publisher;
-  ros::Publisher raw_data_command_publisher;
+  ros::Publisher raw_data_command_publisher, raw_data_stream_publisher;
+  ros::Publisher bumper_as_pc_publisher;
 
-  ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber;
+  ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber, external_power_command_subscriber;
   ros::Subscriber led1_command_subscriber, led2_command_subscriber, sound_command_subscriber;
   ros::Subscriber reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
@@ -116,11 +122,12 @@ private:
   ** Ros Callbacks
   **********************/
   void subscribeVelocityCommand(const geometry_msgs::TwistConstPtr);
-  void subscribeLed1Command(const kobuki_comms::LedConstPtr);
-  void subscribeLed2Command(const kobuki_comms::LedConstPtr);
-  void subscribeDigitalOutputCommand(const kobuki_comms::DigitalOutputConstPtr);
+  void subscribeLed1Command(const kobuki_msgs::LedConstPtr);
+  void subscribeLed2Command(const kobuki_msgs::LedConstPtr);
+  void subscribeDigitalOutputCommand(const kobuki_msgs::DigitalOutputConstPtr);
+  void subscribeExternalPowerCommand(const kobuki_msgs::DigitalOutputConstPtr);
   void subscribeResetOdometry(const std_msgs::EmptyConstPtr);
-  void subscribeSoundCommand(const kobuki_comms::SoundConstPtr);
+  void subscribeSoundCommand(const kobuki_msgs::SoundConstPtr);
   void enable(const std_msgs::StringConstPtr msg);
   void disable(const std_msgs::StringConstPtr msg);
   void doDock(const std_msgs::StringConstPtr msg);
@@ -137,8 +144,10 @@ private:
   ecl::Slot<const WheelEvent&>  slot_wheel_event;
   ecl::Slot<const PowerEvent&>  slot_power_event;
   ecl::Slot<const InputEvent&>  slot_input_event;
+  ecl::Slot<const RobotEvent&>  slot_robot_event;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
   ecl::Slot<Command::Buffer&> slot_raw_data_command;
+  ecl::Slot<PacketFinder::BufferType&> slot_raw_data_stream;
 
   /*********************
    ** Slot Callbacks
@@ -155,6 +164,7 @@ private:
   void publishWheelEvent(const WheelEvent &event);
   void publishPowerEvent(const PowerEvent &event);
   void publishInputEvent(const InputEvent &event);
+  void publishRobotEvent(const RobotEvent &event);
 
   // debugging
   void rosDebug(const std::string &msg) { ROS_DEBUG_STREAM("Kobuki : " << msg); }
@@ -162,6 +172,7 @@ private:
   void rosWarn(const std::string &msg) { ROS_WARN_STREAM("Kobuki : " << msg); }
   void rosError(const std::string &msg) { ROS_ERROR_STREAM("Kobuki : " << msg); }
   void publishRawDataCommand(Command::Buffer &buffer);
+  void publishRawDataStream(PacketFinder::BufferType &buffer);
 
   /*********************
   ** Diagnostics

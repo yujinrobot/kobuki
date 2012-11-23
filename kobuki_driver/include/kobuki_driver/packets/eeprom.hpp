@@ -76,7 +76,9 @@ public:
       return false;
     }
 
+    unsigned char length 1 + data.emp_eeprom.size();
     buildBytes(Header::Eeprom, byteStream);
+    buildBytes(length, byteStream);
     buildBytes(data.tmp_frame_id, byteStream);
     for (unsigned int i = 0; i < data.tmp_eeprom.size(); ++i)
     {
@@ -93,8 +95,9 @@ public:
       return false;
     }
 
-    unsigned char header_id;
+    unsigned char header_id, length;
     buildVariable(header_id, byteStream);
+    buildVariable(length, byteStream);
     buildVariable(data.tmp_frame_id, byteStream);
     for (unsigned int i = 0; i < data.tmp_eeprom.size(); ++i)
     {

@@ -72,7 +72,9 @@ public:
       return false;
     }
 
+    unsigned char length = 3;
     buildBytes(Header::DockInfraRed, byteStream);
+    buildBytes(length, byteStream);
     buildBytes(data.docking[0], byteStream);
     buildBytes(data.docking[1], byteStream);
     buildBytes(data.docking[2], byteStream);
@@ -87,8 +89,9 @@ public:
       return false;
     }
 
-    unsigned char header_id;
+    unsigned char header_id, length;
     buildVariable(header_id, byteStream);
+    buildVariable(length, byteStream);
     buildVariable(data.docking[0], byteStream);
     buildVariable(data.docking[1], byteStream);
     buildVariable(data.docking[2], byteStream);

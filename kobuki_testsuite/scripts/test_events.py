@@ -35,24 +35,24 @@
 import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
 
-from kobuki_comms.msg import ButtonEvent
-from kobuki_comms.msg import BumperEvent
-from kobuki_comms.msg import WheelDropEvent
-from kobuki_comms.msg import CliffEvent
-from kobuki_comms.msg import PowerSystemEvent
-from kobuki_comms.msg import DigitalInputEvent
+from kobuki_msgs.msg import ButtonEvent
+from kobuki_msgs.msg import BumperEvent
+from kobuki_msgs.msg import WheelDropEvent
+from kobuki_msgs.msg import CliffEvent
+from kobuki_msgs.msg import PowerSystemEvent
+from kobuki_msgs.msg import DigitalInputEvent
 
 def ButtonEventCallback(data):
     if ( data.state == ButtonEvent.RELEASED ) :
         state = "released"
     else:
         state = "pressed"  
-    if ( data.button == ButtonEvent.F0 ) :
-        button = "F0"
-    elif ( data.button == ButtonEvent.F1 ) :
-        button = "F1"
+    if ( data.button == ButtonEvent.Button0 ) :
+        button = "B0"
+    elif ( data.button == ButtonEvent.Button1 ) :
+        button = "B1"
     else:
-        button = "F2"
+        button = "B2"
     rospy.loginfo("Button %s was %s."%(button, state))
 
 def BumperEventCallback(data):

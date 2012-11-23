@@ -73,7 +73,9 @@ public:
       return false;
     }
 
+    unsigned char length = 6;
     buildBytes(Header::Cliff, byteStream);
+    buildBytes(length, byteStream);
     buildBytes(data.bottom[0], byteStream);
     buildBytes(data.bottom[1], byteStream);
     buildBytes(data.bottom[2], byteStream);
@@ -88,8 +90,9 @@ public:
       return false;
     }
 
-    unsigned char header_id;
+    unsigned char header_id, length;
     buildVariable(header_id, byteStream);
+    buildVariable(length, byteStream);
     buildVariable(data.bottom[0], byteStream);
     buildVariable(data.bottom[1], byteStream);
     buildVariable(data.bottom[2], byteStream);
