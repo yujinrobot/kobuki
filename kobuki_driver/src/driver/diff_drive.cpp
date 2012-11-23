@@ -58,7 +58,7 @@ DiffDrive::DiffDrive() :
   bias(0.23), //wheelbase, wheel_to_wheel, in [m]
   wheel_radius(0.035),
   imu_heading_offset(0),
-  tick_to_rad( 0.002436916871363930187454f)
+  tick_to_rad(0.002436916871363930187454f)
 {}
 
 void DiffDrive::init() {
@@ -151,7 +151,7 @@ void DiffDrive::velocityCommands(const double &vx, const double &wz) {
     radius = 0;
   } else if ( (std::abs(vx) < epsilon ) && ( wz > epsilon ) ) {
     radius = 1;
-  } else if ((std::abs(vx) < epsilon ) && ( wz < -1*epsilon ) ) {
+  } else if ( (std::abs(vx) < epsilon ) && ( wz < -1*epsilon ) ) {
     radius = -1;
   } else {
     radius = (short)(vx * 1000.0f / wz);

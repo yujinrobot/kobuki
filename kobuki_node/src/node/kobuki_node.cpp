@@ -299,6 +299,9 @@ void KobukiNode::subscribeTopics(ros::NodeHandle& nh)
   enable_subscriber = nh.subscribe("enable", 10, &KobukiNode::enable, this); // 10 is queue size
   disable_subscriber = nh.subscribe("disable", 10, &KobukiNode::disable, this);
   reset_odometry_subscriber = nh.subscribe("reset_odometry", 10, &KobukiNode::subscribeResetOdometry, this);
+
+  do_dock_subscriber = nh.subscribe("commands/do_dock", 10, &KobukiNode::doDock, this); // 10 is queue size
+  cancel_dock_subscriber = nh.subscribe("commands/cancel_dock", 10, &KobukiNode::cancelDock, this); // 10 is queue size
 }
 
 

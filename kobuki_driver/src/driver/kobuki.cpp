@@ -73,7 +73,10 @@ bool PacketFinder::checkSum()
  *****************************************************************************/
 
 Kobuki::Kobuki() :
-    shutdown_requested(false), is_enabled(false), is_alive(false)
+    shutdown_requested(false)
+    , is_enabled(false)
+    , is_alive(false)
+    , dock_mode(false)
 {
 }
 
@@ -303,10 +306,13 @@ void Kobuki::getWheelJointStates(double &wheel_left_angle, double &wheel_left_an
 {
   diff_drive.getWheelJointStates(wheel_left_angle, wheel_left_angle_rate, wheel_right_angle, wheel_right_angle_rate);
 }
+
 void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update, ecl::linear_algebra::Vector3d &pose_update_rates)
 {
   diff_drive.update(core_sensors.data.time_stamp, core_sensors.data.left_encoder, core_sensors.data.right_encoder,
                       pose_update, pose_update_rates);
+  if (dock_mode)
+    dock_drive.update(dock_ir.data.docking, pose_update, pose_update_rates);
 }
 
 /*****************************************************************************
@@ -339,9 +345,15 @@ void Kobuki::setBaseControl(const double &linear_velocity, const double &angular
 
 void Kobuki::sendBaseControlCommand()
 {
-  std::vector<short> velocity_commands = diff_drive.velocityCommands();
-  gate_keeper.confirm(velocity_commands[0], velocity_commands[1]);
-  //std::cout << "speed: " << velocity_commands[0] << ", radius: " << velocity_commands[1] << std::endl;
+  std::vector<short> velocity_commands;
+  if (dock_mode) {
+    velocity_commands = dock_drive.velocityCommands();
+    std::cout << "speed: " << velocity_commands[0] << ", radius: " << velocity_commands[1] << std::endl;
+  } else {
+    velocity_commands = diff_drive.velocityCommands();
+    gate_keeper.confirm(velocity_commands[0], velocity_commands[1]);
+    //std::cout << "speed: " << velocity_commands[0] << ", radius: " << velocity_commands[1] << std::endl;
+  }
   sendCommand(Command::SetVelocityControl(velocity_commands[0], velocity_commands[1]));
 }
 /**
@@ -373,6 +385,16 @@ void Kobuki::sendCommand(Command command)
 
   sig_raw_data_command.emit(command_buffer);
   command_mutex.unlock();
+}
+
+void Kobuki::doDock()
+{
+  dock_mode = true; 
+}
+
+void Kobuki::cancelDock()
+{
+  dock_mode = false; 
 }
 
 bool Kobuki::enable()

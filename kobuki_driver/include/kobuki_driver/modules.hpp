@@ -48,5 +48,6 @@
 #include "modules/diff_drive.hpp"
 #include "modules/sound.hpp"
 #include "modules/gate_keeper.hpp"
+#include "modules/dock_drive.hpp"
 
 #endif /* KOBUKI_MODULES_HPP_ */

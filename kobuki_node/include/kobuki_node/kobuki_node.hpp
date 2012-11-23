@@ -107,6 +107,7 @@ private:
   ros::Subscriber led1_command_subscriber, led2_command_subscriber, sound_command_subscriber;
   ros::Subscriber reset_odometry_subscriber;
   ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
+  ros::Subscriber do_dock_subscriber, cancel_dock_subscriber; // may eventually disappear
 
   void advertiseTopics(ros::NodeHandle& nh);
   void subscribeTopics(ros::NodeHandle& nh);
@@ -122,6 +123,8 @@ private:
   void subscribeSoundCommand(const kobuki_comms::SoundConstPtr);
   void enable(const std_msgs::StringConstPtr msg);
   void disable(const std_msgs::StringConstPtr msg);
+  void doDock(const std_msgs::StringConstPtr msg);
+  void cancelDock(const std_msgs::StringConstPtr msg);
 
   /*********************
    ** SigSlots
