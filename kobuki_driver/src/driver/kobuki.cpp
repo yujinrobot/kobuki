@@ -299,6 +299,7 @@ void Kobuki::spin()
               unsigned int header_id = static_cast<unsigned int>(data_buffer.pop_front());
               unsigned int length = static_cast<unsigned int>(data_buffer.pop_front());
               unsigned int remains = data_buffer.size();
+              unsigned int to_pop;
 
               ostream << "[" << header_id << "]";
               ostream << "[" << length << "] ";
@@ -307,7 +308,11 @@ void Kobuki::spin()
               ostream << std::setfill('0') << std::uppercase; 
               ostream << std::hex << std::setw(2) << header_id << " " << std::dec;
               ostream << std::hex << std::setw(2) << length << " " << std::dec;
-              for (unsigned int i = 0; i < remains; ++i ) {
+
+              if (remains < length) to_pop = remains; 
+              else                  to_pop = length;
+            
+              for (unsigned int i = 0; i < to_pop; i++ ) {
                 unsigned int byte = static_cast<unsigned int>(data_buffer.pop_front());
                 ostream << std::hex << std::setw(2) << byte << " " << std::dec;
               }
