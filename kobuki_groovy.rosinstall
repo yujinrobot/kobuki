@@ -18,7 +18,7 @@
 #   sudo apt-get install ros-groovy-openni-launch 
 #
 # Zeroconf (non catkin)
-#   sudo apt-get install ros-groovy-zeroconf-comms ros-groovy-zeroconf-avahi
+#   sudo apt-get install ros-groovy-zeroconf-msgs ros-groovy-zeroconf-avahi
 #
 # Kinect
 #   Latest openni-dev and ps-engine from http://userpages.uni-koblenz.de/~lsarnecki/deb/
@@ -32,7 +32,7 @@
 #
 # Turtlebot Apps
 #   sudo apt-get install ros-fuerte-joystick-drivers
-#   sudo apt-get install ros-fuerte-multimaster-experimental ros-groovy-warehousewg
+#   sudo apt-get install ros-fuerte-multimaster-experimental ros-groovy-warehouse-ros
 #
 # Gazebo
 #   sudo apt-get install libprotobuf-dev libprotoc-dev libtar-dev

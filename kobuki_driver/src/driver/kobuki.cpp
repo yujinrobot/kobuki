@@ -179,8 +179,6 @@ void Kobuki::spin()
   ecl::Duration timeout(0.1);
   unsigned char buf[256];
 
-  PacketFinder::BufferType local_buffer;
-
   /*********************
    ** Simulation Params
    **********************/
@@ -238,32 +236,15 @@ void Kobuki::spin()
         << ", packet_finder.numberOfDataToRead(" << packet_finder.numberOfDataToRead() << ")";
       sig_debug.emit(ostream.str());
       // might be useful to send this to a topic if there is subscribers
-//        static unsigned char last_char(buf[0]);
-//        for( int i(0); i<n; i++ )
-//        {
-//          printf("%02x ", buf[i] );
-//          if( last_char == 0xaa && buf[i] == 0x55 ) printf("\n");
-//          last_char = buf[i];
-//        }
     }
 
     if (packet_finder.update(buf, n)) // this clears packet finder's buffer and transfers important bytes into it
     {
       packet_finder.getBuffer(data_buffer); // get a reference to packet finder's buffer.
+      PacketFinder::BufferType local_buffer;
       local_buffer = data_buffer; //copy it to local_buffer, debugging purpose.
-      sig_raw_data_stream.emit(data_buffer);
+      sig_raw_data_stream.emit(local_buffer);
 
-#if 0
-      if( verbose )
-      {
-        printf("Packet: ");
-        for( unsigned int i=0; i<data_buffer.size(); i++ )
-        {
-          printf("%02x ", data_buffer[i] );
-          if( i != 0 && ((i%5)==0) ) printf(" ");
-        }
-      }
-#endif
       // deserialise; first three bytes are not data.
       data_buffer.pop_front();
       data_buffer.pop_front();
@@ -271,8 +252,10 @@ void Kobuki::spin()
 
       while (data_buffer.size() > 1/*size of etx*/)
       {
-        // std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
-        // std::cout << "remains: " << data_buffer.size() << " | ";
+        //std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
+        //std::cout << "remains: " << data_buffer.size() << " | ";
+        //std::cout << "local_buffer: " << local_buffer.size() << " | ";
+        //std::cout << std::endl;
         switch (data_buffer[0])
         {
           // these come with the streamed feedback
@@ -312,22 +295,36 @@ void Kobuki::spin()
             version_info_reminder = 0;
             break;
           default:
-            {
-            std::stringstream ostream;
-            unsigned int header_id = static_cast<unsigned int>(data_buffer.pop_front());
-            ostream << "unexpected sub-payload received [" << header_id << "]";
-            unsigned int length = static_cast<unsigned int>(data_buffer.pop_front());
-            ostream << "[" << length << "] ";
-            ostream << "[";
-            ostream << std::setfill('0') << std::uppercase; 
-            ostream << std::hex << std::setw(2) << header_id << " " << std::dec;
-            ostream << std::hex << std::setw(2) << length << " " << std::dec;
-            for (unsigned int i = 0; i < length; ++i ) {
-              unsigned int byte = static_cast<unsigned int>(data_buffer.pop_front());
-              ostream << std::hex << std::setw(2) << byte << " " << std::dec;
-            }
-            ostream << "]";
-            sig_debug.emit(ostream.str());
+            if (data_buffer.size() < 3 ) { /* minimum is 3, header_id, length, etx */
+              sig_error.emit("malformed subpayload detected.");
+              data_buffer.clear();
+            } else {
+              std::stringstream ostream;
+              unsigned int header_id = static_cast<unsigned int>(data_buffer.pop_front());
+              unsigned int length = static_cast<unsigned int>(data_buffer.pop_front());
+              unsigned int remains = data_buffer.size();
+              unsigned int to_pop;
+
+              ostream << "[" << header_id << "]";
+              ostream << "[" << length << "] ";
+
+              ostream << "[";
+              ostream << std::setfill('0') << std::uppercase; 
+              ostream << std::hex << std::setw(2) << header_id << " " << std::dec;
+              ostream << std::hex << std::setw(2) << length << " " << std::dec;
+
+              if (remains < length) to_pop = remains; 
+              else                  to_pop = length;
+            
+              for (unsigned int i = 0; i < to_pop; i++ ) {
+                unsigned int byte = static_cast<unsigned int>(data_buffer.pop_front());
+                ostream << std::hex << std::setw(2) << byte << " " << std::dec;
+              }
+              ostream << "]";
+
+              if (remains < length) sig_error.emit("malformed sub-payload detected. "  + ostream.str());
+              else                  sig_debug.emit("unexpected sub-payload received. " + ostream.str());
+              
             }
             break;
         }
@@ -438,6 +435,7 @@ void Kobuki::sendBaseControlCommand()
   }
   sendCommand(Command::SetVelocityControl(velocity_commands[0], velocity_commands[1]));
 }
+
 /**
  * @brief Send the prepared command to the serial port.
  *
