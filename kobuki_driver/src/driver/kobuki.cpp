@@ -77,8 +77,8 @@ Kobuki::Kobuki() :
     , is_enabled(false)
     , is_connected(false)
     , is_alive(false)
-    , dock_mode(false)
     , version_info_reminder(0)
+    , dock_mode(false)
 {
 }
 
