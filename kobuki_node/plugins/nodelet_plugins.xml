@@ -1,0 +1,8 @@
+<library path="lib/libkobuki_nodelet">
+  <class name="kobuki_node/KobukiNodelet" type="kobuki::KobukiNodelet" base_class_type="nodelet::Nodelet">
+    <description>
+      Nodelet version of the Kobuki node
+    </description>
+  </class>
+</library>
+

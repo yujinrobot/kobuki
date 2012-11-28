@@ -1,0 +1,18 @@
+<!--
+  The mobile platform base - nodelet version.
+  
+  We use this to move kobuki driver public topics/services out from their 
+  private namespace (maybe should do that in kobuki_node itself?)
+ -->
+<launch>
+  <arg name="base" value="kobuki"/>
+  <node pkg="nodelet" type="nodelet" name="kobuki_node"  args="manager"/>
+  <node pkg="nodelet" type="nodelet" name="kobuki_nodelet" args="load kobuki_node/KobukiNodelet kobuki_node">
+    <rosparam file="$(find turtlebot_bringup)/param/$(arg base)/base.yaml" command="load"/>
+    <remap from="kobuki_nodelet/odom" to="odom"/>
+    <remap from="kobuki_nodelet/cmd_vel" to="cmd_vel"/>
+    <remap from="kobuki_nodelet/enable" to="enable"/>
+    <remap from="kobuki_nodelet/disable" to="disable"/>
+    <remap from="kobuki_nodelet/joint_states" to="joint_states"/>
+  </node>
+</launch>

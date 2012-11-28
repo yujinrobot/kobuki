@@ -4,9 +4,9 @@
       ROS wrapper for the Kobuki driver
     </p>
   </description>
-  <author>Daniel Stonier, Jorge Santos Simon, 주영훈</author>
+  <author>Daniel Stonier, Jorge Santos Simon, 주영훈, Marcus Liebhardt</author>
   <license>BSD</license>
-  <review status="unreviewed" notes=""/>
+  <review status="unstable" notes=""/>
   <url>http://www.ros.org/wiki/kobuki_node</url>
   
   <!-- Ros -->
@@ -20,6 +20,7 @@
   <depend package="pcl_ros"/>
   <depend package="diagnostic_updater"/>
   <depend package="diagnostic_msgs"/>
+  <depend package="nodelet"/>
 
   <!--  Kobuki -->
   <depend package="kobuki_udev"/> <!-- 57-kobuki.rules -->
@@ -34,4 +35,8 @@
   
    <!--  For Tests -->
   <depend package="rospy"/>  
+  
+  <export>
+    <nodelet plugin="${prefix}/plugins/nodelet_plugins.xml" />
+  </export>
 </package>
