@@ -1,7 +1,12 @@
+== Firmware Changelog ==
+
+This documents the version changes to the kobuki itself (note - not this software package!).
 
 2012-11-24 v0.1.0 Young Hoon Ju <yhju@rnd.yujinrobot.com>
 
-    * Alternate serial access, flexible firmware protocol, startup button modes (random wandering and arduino support).
+    * Alternate serial access over the 25-pin port.
+    * Flexible firmware protocol for trouble-free updates
+    * Startup button modes - B0:random-wandering and B1:arduino-support
 
 2012-11-21 v0.0.2 Jae Yeong Lee <jakan2@rnd.yujinrobot.com>
 
