@@ -1,0 +1,8 @@
+
+2012-11-24 v0.1.0 Young Hoon Ju <yhju@rnd.yujinrobot.com>
+
+    * Alternate serial access, flexible firmware protocol, startup button modes (random wandering and arduino support).
+
+2012-11-21 v0.0.2 Jae Yeong Lee <jakan2@rnd.yujinrobot.com>
+
+    * First tested firmware frozen for the factory.
