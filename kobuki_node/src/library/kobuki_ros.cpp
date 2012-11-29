@@ -282,6 +282,11 @@ bool KobukiRos::spin()
       timed_out = false;
     }
 
+    if ( kobuki.isShutdown() ) {
+      ROS_ERROR_STREAM("Kobuki : driver shutdown; terminate kobuki node too [" << name << "].");
+      break;
+    }
+
     bool is_alive = kobuki.isAlive();
     if ( watchdog_diagnostics.isAlive() && !is_alive ) {
       ROS_ERROR_STREAM("Kobuki : timed out waiting for the serial data stream [" << name << "].");
