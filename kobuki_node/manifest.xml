@@ -32,6 +32,7 @@
   <depend package="ecl_exceptions"/>
   <depend package="ecl_sigslots"/>
   <depend package="ecl_streams"/>
+  <depend package="ecl_threads"/>
   
    <!--  For Tests -->
   <depend package="rospy"/>  

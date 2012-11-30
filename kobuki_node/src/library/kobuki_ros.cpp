@@ -270,20 +270,25 @@ bool KobukiRos::spin()
 
   while (ros::ok())
   {
-    if ( (kobuki.isEnabled() == true) && odometry.commandTimeout()) {
-      if ( !timed_out ) {
+    if ( (kobuki.isEnabled() == true) && odometry.commandTimeout())
+    {
+      if ( !timed_out )
+      {
         std_msgs::StringPtr msg;
         //disable(msg);
         kobuki.setBaseControl(0, 0);
         timed_out = true;
         ROS_WARN("Incoming velocity commands not received for more than %.2f seconds -> zero'ing velocity commands", odometry.timeout().toSec());
       }
-    } else {
+    }
+    else
+    {
       timed_out = false;
     }
 
     bool is_alive = kobuki.isAlive();
-    if ( watchdog_diagnostics.isAlive() && !is_alive ) {
+    if ( watchdog_diagnostics.isAlive() && !is_alive )
+    {
       ROS_ERROR_STREAM("Kobuki : timed out waiting for the serial data stream [" << name << "].");
     }
     watchdog_diagnostics.update(is_alive);
@@ -296,7 +301,6 @@ bool KobukiRos::spin()
     dinput_diagnostics.update(kobuki.getGpInputData().digital_input);
     ainput_diagnostics.update(kobuki.getGpInputData().analog_input);
     updater.update();
-    ros::spinOnce();
     loop_rate.sleep();
   }
 

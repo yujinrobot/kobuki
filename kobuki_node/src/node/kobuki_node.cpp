@@ -52,6 +52,7 @@ int main(int argc, char** argv)
   if (kobuki.init(nh))
   {
     kobuki.spin();
+    ros::spinOnce();
   }
   else
   {

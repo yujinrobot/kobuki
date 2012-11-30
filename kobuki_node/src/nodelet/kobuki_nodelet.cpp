@@ -38,6 +38,7 @@
 
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
+#include <ecl/threads/thread.hpp>
 #include "kobuki_node/kobuki_ros.hpp"
 
 
@@ -47,15 +48,32 @@ namespace kobuki
 class KobukiNodelet : public nodelet::Nodelet
 {
 public:
+  KobukiNodelet(){};
+  ~KobukiNodelet()
+  {
+    NODELET_DEBUG("Waiting for update thread to finish.");
+    update_thread_.join();
+  }
   virtual void onInit()
   {
-    NODELET_DEBUG("Initializing nodelet...");
+    NODELET_DEBUG("Initialising nodelet...");
     std::string nodelet_name = this->getName();
     kobuki_.reset(new KobukiRos(nodelet_name));
-    kobuki_->init(this->getPrivateNodeHandle());
+    if (kobuki_->init(this->getPrivateNodeHandle()))
+    {
+      NODELET_DEBUG("Kobuki initialised. Spinning up update thread ...");
+      update_thread_.start(&KobukiNodelet::spin, *this);
+    }
+    NODELET_DEBUG("Nodelet initialised.");
   }
 private:
+  void spin()
+  {
+    kobuki_->spin();
+  }
+
   boost::shared_ptr<KobukiRos> kobuki_;
+  ecl::Thread update_thread_;
 };
 
 } // namespace kobuki

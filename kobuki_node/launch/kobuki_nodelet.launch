@@ -6,13 +6,13 @@
  -->
 <launch>
   <arg name="base" value="kobuki"/>
-  <node pkg="nodelet" type="nodelet" name="kobuki_node"  args="manager"/>
-  <node pkg="nodelet" type="nodelet" name="kobuki_nodelet" args="load kobuki_node/KobukiNodelet kobuki_node">
+  <node pkg="nodelet" type="nodelet" name="kobuki_nodelet_manager"  args="manager"/>
+  <node pkg="nodelet" type="nodelet" name="kobuki_node" args="load kobuki_node/KobukiNodelet kobuki_manager">
     <rosparam file="$(find turtlebot_bringup)/param/$(arg base)/base.yaml" command="load"/>
-    <remap from="kobuki_nodelet/odom" to="odom"/>
-    <remap from="kobuki_nodelet/cmd_vel" to="cmd_vel"/>
-    <remap from="kobuki_nodelet/enable" to="enable"/>
-    <remap from="kobuki_nodelet/disable" to="disable"/>
-    <remap from="kobuki_nodelet/joint_states" to="joint_states"/>
+    <remap from="kobuki_node/odom" to="odom"/>
+    <remap from="kobuki_node/cmd_vel" to="cmd_vel"/>
+    <remap from="kobuki_node/enable" to="enable"/>
+    <remap from="kobuki_node/disable" to="disable"/>
+    <remap from="kobuki_node/joint_states" to="joint_states"/>
   </node>
 </launch>
