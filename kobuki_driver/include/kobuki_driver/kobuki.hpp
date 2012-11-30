@@ -103,9 +103,11 @@ public:
    **********************/
   void init(Parameters &parameters) throw (ecl::StandardException);
   bool isAlive() const { return is_alive; } /**< Whether the connection to the robot is alive and currently streaming. **/
+  bool isShutdown() const { return shutdown_requested; } /**< Whether the worker thread is alive or not. **/
   bool isEnabled() const { return is_enabled; } /**< Whether the motor power is enabled or disabled. **/
   bool enable(); /**< Enable power to the motors. **/
   bool disable(); /**< Disable power to the motors. **/
+  void shutdown() { shutdown_requested = true; } /**< Gently terminate the worker thread. **/
   void spin();
 
   /******************************************

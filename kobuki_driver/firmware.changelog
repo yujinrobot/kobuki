@@ -1,0 +1,19 @@
+== Firmware Changelog ==
+
+This documents the version changes to the kobuki itself (note - not this software package!).
+
+2012-11-24 v0.1.0 Jae Yeong Lee <jakan2@rnd.yujinrobot.com>
+
+    * Startup button modes - B0:random-wandering and B1:arduino-support
+
+2012-11-21 v0.0.2 Young Hoon Ju <younghoon.ju@rnd.yujinrobot.com>
+
+    * First tested firmware frozen for the factory
+    * Flexible firmware protocol for trouble-free updates
+    * Raw data stream of 3-axis gyro
+
+2012-11-14 v0.0.1 Young Hoon Ju <younghoon.ju@rnd.yujinrobot.com>
+
+    * First released version
+    * Alternate serial access over the 25-pin port
+    * Unique Device Indentifier

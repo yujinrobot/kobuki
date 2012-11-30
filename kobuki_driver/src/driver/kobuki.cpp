@@ -36,6 +36,7 @@
  ** Includes
  *****************************************************************************/
 
+#include <stdexcept>
 #include <ecl/math.hpp>
 #include <ecl/geometry/angle.hpp>
 #include <ecl/time/sleep.hpp>
@@ -282,7 +283,25 @@ void Kobuki::spin()
             break;
           case Header::Firmware:
             firmware.deserialise(data_buffer);
-            //sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
+            try
+            {
+              int version_match = firmware.check_version();
+              if (version_match < 0) {
+                sig_error.emit("Robot firmware is outdated. For details about how to upgrade the firmware " \
+                               "refer to http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware");
+                shutdown_requested = true;
+              }
+              if (version_match > 0) {
+                sig_error.emit("Driver version isn't not compatible with robot firmware. Please upgrade driver");
+                shutdown_requested = true;
+              }
+            }
+            catch (std::out_of_range& e)
+            {
+              // This can not happen, really
+              sig_error.emit(std::string("Invalid firmware version number: ").append(e.what()));
+              shutdown_requested = true;
+            }
             break;
           case Header::UniqueDeviceID:
             unique_device_id.deserialise(data_buffer);
@@ -305,13 +324,13 @@ void Kobuki::spin()
               ostream << "[" << length << "] ";
 
               ostream << "[";
-              ostream << std::setfill('0') << std::uppercase; 
+              ostream << std::setfill('0') << std::uppercase;
               ostream << std::hex << std::setw(2) << header_id << " " << std::dec;
               ostream << std::hex << std::setw(2) << length << " " << std::dec;
 
-              if (remains < length) to_pop = remains; 
+              if (remains < length) to_pop = remains;
               else                  to_pop = length;
-            
+
               for (unsigned int i = 0; i < to_pop; i++ ) {
                 unsigned int byte = static_cast<unsigned int>(data_buffer.pop_front());
                 ostream << std::hex << std::setw(2) << byte << " " << std::dec;
@@ -320,7 +339,7 @@ void Kobuki::spin()
 
               if (remains < length) sig_error.emit("malformed sub-payload detected. "  + ostream.str());
               else                  sig_debug.emit("unexpected sub-payload received. " + ostream.str());
-              
+
             }
             break;
         }
@@ -343,6 +362,7 @@ void Kobuki::spin()
       }
     }
   }
+  sig_error.emit("Driver worker thread shutdown!");
 }
 
 /*****************************************************************************

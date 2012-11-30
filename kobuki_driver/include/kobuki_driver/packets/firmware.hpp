@@ -46,6 +46,12 @@
 #include "../packet_handler/payload_headers.hpp"
 
 /*****************************************************************************
+** Constants
+*****************************************************************************/
+
+#define EXPECTED_FIRMWARE_VERSION  "10?"  // i.e. 1.0.WHATEVER
+
+/*****************************************************************************
 ** Namespace
 *****************************************************************************/
 
@@ -92,6 +98,11 @@ public:
     buildVariable(length, byteStream);
     buildVariable(data.version, byteStream);
 
+    // TODO firmware currently hardcoded version is 123, but of course we want 100;
+    // remove this horrible, dirty hack as soon as we upgrade the firmware to 101
+    if (data.version == 123)
+      data.version = 100;
+
     //showMe();
     return constrain();
   }
@@ -104,6 +115,15 @@ public:
   void showMe()
   {
     //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, acc[2], acc[1], acc[0] );
+  }
+
+  int check_version()
+  {
+    std::stringstream ss; ss << data.version;
+    std::string current_version(ss.str());
+    std::string expected_version(EXPECTED_FIRMWARE_VERSION);
+
+    return current_version.compare(0, 2, expected_version, 0, 2);
   }
 };
 
