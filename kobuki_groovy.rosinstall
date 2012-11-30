@@ -60,3 +60,8 @@
     local-name: kobuki_msgs
     version: master
 
+- git:
+    uri: https://github.com/yujinrobot/kobuki_controllers.git 
+    local-name: kobuki_controllers
+    version: master
+
