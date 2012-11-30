@@ -51,8 +51,13 @@ int main(int argc, char** argv)
   kobuki::KobukiRos kobuki(node_name);
   if (kobuki.init(nh))
   {
-    kobuki.spin();
-    ros::spinOnce();
+    ros::Rate spin_rate(10);
+    while (ros::ok())
+    {
+      kobuki.spin();
+      ros::spinOnce();
+      spin_rate.sleep();
+    }
   }
   else
   {

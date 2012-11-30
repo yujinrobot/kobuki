@@ -7,7 +7,7 @@
 <launch>
   <arg name="base" value="kobuki"/>
   <node pkg="nodelet" type="nodelet" name="kobuki_nodelet_manager"  args="manager"/>
-  <node pkg="nodelet" type="nodelet" name="kobuki_node" args="load kobuki_node/KobukiNodelet kobuki_manager">
+  <node pkg="nodelet" type="nodelet" name="kobuki_node" args="load kobuki_node/KobukiNodelet kobuki_nodelet_manager">
     <rosparam file="$(find turtlebot_bringup)/param/$(arg base)/base.yaml" command="load"/>
     <remap from="kobuki_node/odom" to="odom"/>
     <remap from="kobuki_node/cmd_vel" to="cmd_vel"/>

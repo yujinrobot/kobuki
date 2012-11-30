@@ -62,14 +62,20 @@ public:
     if (kobuki_->init(this->getPrivateNodeHandle()))
     {
       NODELET_DEBUG("Kobuki initialised. Spinning up update thread ...");
-      update_thread_.start(&KobukiNodelet::spin, *this);
+      update_thread_.start(&KobukiNodelet::update, *this);
     }
     NODELET_DEBUG("Nodelet initialised.");
   }
 private:
-  void spin()
+  void update()
   {
-    kobuki_->spin();
+    ros::Rate spin_rate(10);
+    while (ros::ok())
+    {
+      kobuki_->spin();
+      ros::spinOnce();
+      spin_rate.sleep();
+    }
   }
 
   boost::shared_ptr<KobukiRos> kobuki_;
