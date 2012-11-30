@@ -65,3 +65,9 @@
     local-name: kobuki_controllers
     version: master
 
+# OCL stacks
+- git:
+    uri: https://github.com/yujinrobot-ocl/open_control_library.git
+    local-name: open_control_library
+    version: master
+
