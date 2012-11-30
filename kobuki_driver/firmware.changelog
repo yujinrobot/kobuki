@@ -2,6 +2,8 @@
 
 This documents the version changes to the kobuki itself (note - not this software package!).
 
+NOTE: The factory version to be flashed in the robots is 0.0.2, but have renamed it to 1.0.0 (and so appears in the files server)
+
 2012-11-24 v0.1.0 Jae Yeong Lee <jakan2@rnd.yujinrobot.com>
 
     * Startup button modes - B0:random-wandering and B1:arduino-support
