@@ -187,7 +187,6 @@ private:
   Firmware firmware; // requestable
   UniqueDeviceID unique_device_id;
 
-  std::string protocol_version;
   ecl::Serial serial;
   PacketFinder packet_finder;
   PacketFinder::BufferType data_buffer;

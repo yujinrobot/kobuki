@@ -98,7 +98,6 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
     throw ecl::StandardException(LOC, ecl::ConfigurationError, "Kobuki's parameter settings did not validate.");
   }
   this->parameters = parameters;
-  protocol_version = parameters.protocol_version;
   std::string sigslots_namespace = parameters.sigslots_namespace;
   event_manager.init(sigslots_namespace);
 

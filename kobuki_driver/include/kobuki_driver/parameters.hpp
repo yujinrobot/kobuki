@@ -71,7 +71,6 @@ public:
   }
 
   std::string device_port;         /**< For the serial device, a port (e.g. "/dev/ttyUSB0") **/
-  std::string protocol_version;    /**< firmware version number (e.g. '2.0') **/
   std::string sigslots_namespace;  /**< this should match the kobuki-node namespace **/
   bool simulation;                 /**< whether to put the motors in loopback mode or not **/
   bool enable_gate_keeper;
@@ -88,11 +87,7 @@ public:
    */
   bool validate()
   {
-    if (protocol_version != "2.0")
-    {
-      error_msg = std::string("protocol_version must be '2.0' (") + protocol_version + std::string(")");
-      return false;
-    }
+    // not doing anything right now -  delete it, if we can find a use case ...
     return true;
   }
 
