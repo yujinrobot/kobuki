@@ -140,11 +140,6 @@ bool KobukiRos::init(ros::NodeHandle& nh)
     ROS_ERROR_STREAM("Kobuki : no device port given on the parameter server (e.g. /dev/ttyUSB0)[" << name << "].");
     return false;
   }
-  if (!nh.getParam("protocol_version", parameters.protocol_version))
-  {
-    ROS_ERROR_STREAM("Kobuki : no protocol version given on the parameter server ('2.0')[" << name << "].");
-    return false;
-  }
 
   /*********************
    ** Joint States
@@ -186,11 +181,14 @@ bool KobukiRos::init(ros::NodeHandle& nh)
   }
   else
   {
-    if ( parameters.simulation ) {
+    if (parameters.simulation)
+    {
       ROS_INFO("Kobuki : driver going into loopback (simulation) mode.");
-    } else {
-      ROS_INFO_STREAM("Kobuki : configured for connection on device_port " << parameters.device_port << " [" << name << "].");
-      ROS_INFO_STREAM("Kobuki : configured for firmware protocol_version " << parameters.protocol_version << " [" << name << "].");
+    }
+    else
+    {
+      ROS_INFO_STREAM("Kobuki : configured for connection on device_port "
+                      << parameters.device_port << " [" << name << "].");
       ROS_INFO_STREAM("Kobuki : driver running in normal (non-simulation) mode" << " [" << name << "].");
     }
   }
@@ -290,7 +288,7 @@ bool KobukiRos::update()
   {
     if ( !serial_timed_out_ )
     {
-      ROS_ERROR_STREAM("Kobuki : timed out while waiting for serial data stream [" << name << "].");
+      ROS_ERROR_STREAM("Kobuki : Timed out while waiting for serial data stream [" << name << "].");
       serial_timed_out_ = true;
     }
     else
