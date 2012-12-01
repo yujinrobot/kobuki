@@ -347,7 +347,7 @@ void KobukiRos::advertiseTopics(ros::NodeHandle& nh)
  */
 void KobukiRos::subscribeTopics(ros::NodeHandle& nh)
 {
-  velocity_command_subscriber = nh.subscribe(std::string("cmd_vel"), 10, &KobukiRos::subscribeVelocityCommand, this);
+  velocity_command_subscriber = nh.subscribe(std::string("commands/velocity"), 10, &KobukiRos::subscribeVelocityCommand, this);
   led1_command_subscriber =  nh.subscribe(std::string("commands/led1"), 10, &KobukiRos::subscribeLed1Command, this);
   led2_command_subscriber =  nh.subscribe(std::string("commands/led2"), 10, &KobukiRos::subscribeLed2Command, this);
   digital_output_command_subscriber =  nh.subscribe(std::string("commands/digital_output"), 10, &KobukiRos::subscribeDigitalOutputCommand, this);
