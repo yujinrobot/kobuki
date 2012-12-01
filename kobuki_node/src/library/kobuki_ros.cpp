@@ -227,7 +227,7 @@ bool KobukiRos::init(ros::NodeHandle& nh)
       default:
       {
         ROS_ERROR_STREAM("Kobuki : initialisation failed [" << name << "].");
-        ROS_ERROR_STREAM(e.what());
+        ROS_DEBUG_STREAM(e.what());
         break;
       }
     }
