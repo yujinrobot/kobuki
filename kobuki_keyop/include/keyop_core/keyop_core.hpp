@@ -1,3 +1,32 @@
+/*
+ * Copyright (c) 2012, Yujin Robot.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of Yujin Robot nor the names of its
+ *       contributors may be used to endorse or promote products derived from
+ *       this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
 /**
  * @file /include/teleop_core/keyop_core.hpp
  *
@@ -5,16 +34,17 @@
  *
  * @date 25/05/2010
  **/
+
 /*****************************************************************************
-** Ifdefs
-*****************************************************************************/
+ ** Ifdefs
+ *****************************************************************************/
 
 #ifndef KEYOP_CORE_NODE_HPP_
 #define KEYOP_CORE_NODE_HPP_
 
 /*****************************************************************************
-** Includes
-*****************************************************************************/
+ ** Includes
+ *****************************************************************************/
 
 #include <ros/ros.h>
 #include <termios.h> // for keyboard input
@@ -25,71 +55,73 @@
 #include <kobuki_msgs/KeyboardInput.h> // keycodes from remote teleops.
 
 /*****************************************************************************
-** Namespaces
-*****************************************************************************/
+ ** Namespaces
+ *****************************************************************************/
 
-namespace keyop_core {
+namespace keyop_core
+{
 
 /*****************************************************************************
-** Interface
-*****************************************************************************/
+ ** Interface
+ *****************************************************************************/
 /**
  * @brief Keyboard remote control for our robot core (mobile base).
  *
  */
-class KeyOpCore {
+class KeyOpCore
+{
 public:
-	/*********************
-	** C&D
-	**********************/
-	KeyOpCore();
-        ~KeyOpCore();
-	void init();
+  /*********************
+   ** C&D
+   **********************/
+  KeyOpCore();
+  ~KeyOpCore();
+  bool init();
 
-	/*********************
-	** Runtime
-	**********************/
-	void spin();
+  /*********************
+   ** Runtime
+   **********************/
+  void spin();
 
 private:
-	ros::Subscriber keyinput_subscriber;
-	ros::Publisher velocity_publisher;
-	ros::Publisher stamped_velocity_publisher;
-	ros::Publisher enable_publisher, disable_publisher;
-	ros::ServiceClient reset_odometry_client;
-	bool accept_incoming;
-	bool power_status;
-	geometry_msgs::TwistPtr cmd;
-	geometry_msgs::TwistStampedPtr cmd_stamped;
-	std_msgs::StringPtr power_cmd;
-	double linear_vel_step, linear_vel_max;
-	double angular_vel_step, angular_vel_max;
-	std::string name;
-        std::string mode;
+  ros::Subscriber keyinput_subscriber;
+  ros::Publisher velocity_publisher;
+  ros::Publisher stamped_velocity_publisher;
+  ros::Publisher enable_publisher, disable_publisher;
+  ros::ServiceClient reset_odometry_client;
+  bool accept_incoming;
+  bool power_status;
+  geometry_msgs::TwistPtr cmd;
+  geometry_msgs::TwistStampedPtr cmd_stamped;
+  std_msgs::StringPtr power_cmd;
+  double linear_vel_step, linear_vel_max;
+  double angular_vel_step, angular_vel_max;
+  std::string name;
+  std::string mode;
 
-	/*********************
-	** Commands
-	**********************/
-	void enable();
-	void disable();
-	void incrementLinearVelocity();
-	void decrementLinearVelocity();
-	void incrementAngularVelocity();
-	void decrementAngularVelocity();
-	void resetVelocity();
+  /*********************
+   ** Commands
+   **********************/
+  void enable();
+  void disable();
+  void incrementLinearVelocity();
+  void decrementLinearVelocity();
+  void incrementAngularVelocity();
+  void decrementAngularVelocity();
+  void resetVelocity();
 
-	/*********************
-	** Keylogging
-	**********************/
+  /*********************
+   ** Keylogging
+   **********************/
 
-	void keyboardInputLoop();
-	void processKeyboardInput(char c);
-	void remoteKeyInputReceived(const kobuki_msgs::KeyboardInput& key);
-	void restoreTerminal();
-	bool quit_requested;
-        int key_file_descriptor;
-        struct termios original_terminal_state;
-        ecl::Thread thread;
+  void keyboardInputLoop();
+  void processKeyboardInput(char c);
+  void remoteKeyInputReceived(const kobuki_msgs::KeyboardInput& key);
+  void restoreTerminal();
+  bool quit_requested;
+  int key_file_descriptor;
+  struct termios original_terminal_state;
+  ecl::Thread thread;
 };
 
 } // namespace keyop_core

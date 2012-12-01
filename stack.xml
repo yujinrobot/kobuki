@@ -19,4 +19,6 @@
   <depend stack="robot_model"/> <!-- urdf -->
   <depend stack="xacro"/>
   <depend stack="kobuki_msgs"/>
+  <depend stack="kobuki_controllers"/>
+  <depend stack="yujin_ocl"/>
 </stack>

@@ -5,16 +5,19 @@
   private namespace (maybe should do that in kobuki_node itself?)
  -->
 <launch>
-  <arg name="base" value="kobuki"/>
   <node pkg="nodelet" type="nodelet" name="kobuki_nodelet_manager"  args="manager"/>
   <node pkg="nodelet" type="nodelet" name="kobuki_node" args="load kobuki_node/KobukiNodelet kobuki_nodelet_manager">
-    <rosparam file="$(find turtlebot_bringup)/param/$(arg base)/base.yaml" command="load"/>
+    <rosparam file="$(find kobuki_node)/param/base.yaml" command="load"/>
     <remap from="kobuki_node/odom" to="odom"/>
     <remap from="kobuki_node/cmd_vel" to="cmd_vel"/>
     <remap from="kobuki_node/enable" to="enable"/>
     <remap from="kobuki_node/disable" to="disable"/>
     <remap from="kobuki_node/joint_states" to="joint_states"/>
   </node>
-  <node pkg="nodelet" type="nodelet" name="safety_controller" args="load kobuki_safety_controller/SafetyControllerNodelet kobuki_nodelet_manager">
+  <node pkg="nodelet" type="nodelet" name="kobuki_safety_controller" args="load kobuki_safety_controller/SafetyControllerNodelet kobuki_nodelet_manager">
+    <remap from="kobuki_safety_controller/cmd_vel" to="cmd_vel"/>
+    <remap from="kobuki_safety_controller/events/bumper" to="kobuki_node/events/bumper"/>
+    <remap from="kobuki_safety_controller/events/cliff" to="kobuki_node/events/cliff"/>
+    <remap from="kobuki_safety_controller/events/wheel_drop" to="kobuki_node/events/wheel_drop"/>
   </node>
 </launch>
