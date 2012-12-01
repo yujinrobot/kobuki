@@ -205,7 +205,7 @@ bool KobukiRos::init(ros::NodeHandle& nh)
     kobuki.init(parameters);
     ros::Duration(0.25).sleep(); // wait for some data to come in.
     if ( !kobuki.isAlive() ) {
-      ROS_ERROR_STREAM("Kobuki : no data stream, is kobuki turned on?");
+      ROS_ERROR_STREAM("Kobuki : no data stream, is Kobuki turned on?");
       // don't need to return false here - simply turning kobuki on while spin()'ing should resurrect the situation.
     }
     kobuki.enable();
@@ -290,7 +290,7 @@ bool KobukiRos::update()
   {
     if ( !serial_timed_out_ )
     {
-      ROS_ERROR_STREAM("Kobuki : timed out waiting for the serial data stream [" << name << "].");
+      ROS_ERROR_STREAM("Kobuki : timed out while waiting for serial data stream [" << name << "].");
       serial_timed_out_ = true;
     }
     else
