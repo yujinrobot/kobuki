@@ -38,7 +38,7 @@
  ** Includes
  *****************************************************************************/
 
-#include "../../include/kobuki_node/kobuki_node.hpp"
+#include "../../include/kobuki_node/kobuki_ros.hpp"
 
 /*****************************************************************************
  ** Namespaces
@@ -51,7 +51,7 @@ namespace kobuki
  ** Implementation
  *****************************************************************************/
 
-void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg)
+void KobukiRos::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg)
 {
   if (kobuki.isEnabled())
   {
@@ -67,7 +67,7 @@ void KobukiNode::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg
 }
 
   
-void KobukiNode::subscribeLed1Command(const kobuki_msgs::LedConstPtr msg)
+void KobukiRos::subscribeLed1Command(const kobuki_msgs::LedConstPtr msg)
 {
   switch( msg->value ) {
   case kobuki_msgs::Led::GREEN:  kobuki.setLed(Led1, Green ); break;
@@ -79,7 +79,7 @@ void KobukiNode::subscribeLed1Command(const kobuki_msgs::LedConstPtr msg)
   return;
 }
 
-void KobukiNode::subscribeLed2Command(const kobuki_msgs::LedConstPtr msg)
+void KobukiRos::subscribeLed2Command(const kobuki_msgs::LedConstPtr msg)
 {
   switch( msg->value ) {
   case kobuki_msgs::Led::GREEN:  kobuki.setLed(Led2, Green ); break;
@@ -91,7 +91,7 @@ void KobukiNode::subscribeLed2Command(const kobuki_msgs::LedConstPtr msg)
   return;
 }
 
-void KobukiNode::subscribeDigitalOutputCommand(const kobuki_msgs::DigitalOutputConstPtr msg)
+void KobukiRos::subscribeDigitalOutputCommand(const kobuki_msgs::DigitalOutputConstPtr msg)
 {
   DigitalOutput digital_output;
   for ( unsigned int i = 0; i < 4; ++i ) {
@@ -102,7 +102,7 @@ void KobukiNode::subscribeDigitalOutputCommand(const kobuki_msgs::DigitalOutputC
   return;
 }
 
-void KobukiNode::subscribeExternalPowerCommand(const kobuki_msgs::DigitalOutputConstPtr msg)
+void KobukiRos::subscribeExternalPowerCommand(const kobuki_msgs::DigitalOutputConstPtr msg)
 {
   DigitalOutput digital_output;
   for ( unsigned int i = 0; i < 4; ++i ) {
@@ -116,7 +116,7 @@ void KobukiNode::subscribeExternalPowerCommand(const kobuki_msgs::DigitalOutputC
 /**
  * @brief Play a predefined sound (single sound or sound sequence)
  */
-void KobukiNode::subscribeSoundCommand(const kobuki_msgs::SoundConstPtr msg)
+void KobukiRos::subscribeSoundCommand(const kobuki_msgs::SoundConstPtr msg)
 {
   if ( msg->value == kobuki_msgs::Sound::ON )
   {
@@ -156,7 +156,7 @@ void KobukiNode::subscribeSoundCommand(const kobuki_msgs::SoundConstPtr msg)
 /**
  * @brief Reset the odometry variables.
  */
-void KobukiNode::subscribeResetOdometry(const std_msgs::EmptyConstPtr /* msg */)
+void KobukiRos::subscribeResetOdometry(const std_msgs::EmptyConstPtr /* msg */)
 {
   ROS_INFO_STREAM("Mobile base : resetting the odometry [" << name << "].");
   joint_states.position[0] = 0.0; // wheel_left
@@ -168,14 +168,14 @@ void KobukiNode::subscribeResetOdometry(const std_msgs::EmptyConstPtr /* msg */)
   return;
 }
 
-void KobukiNode::enable(const std_msgs::StringConstPtr msg)
+void KobukiRos::enable(const std_msgs::StringConstPtr msg)
 {
   kobuki.enable();
   ROS_INFO_STREAM("Kobuki : enabled.");
   odometry.resetTimeout();
 }
 
-void KobukiNode::disable(const std_msgs::StringConstPtr msg)
+void KobukiRos::disable(const std_msgs::StringConstPtr msg)
 {
   kobuki.disable();
   ROS_INFO_STREAM("Kobuki : disabled.");

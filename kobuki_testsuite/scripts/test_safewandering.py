@@ -15,11 +15,8 @@ if __name__ == '__main__':
     wanderer = SafeWandering(cmdvel_topic,odom_topic, bump_topic, cliff_topic)
 
     rospy.loginfo("Starting to wander")
-    wanderer.start()
-    rospy.sleep(5)
-    rospy.loginfo("Slowing down")
-    wanderer.set_vels(0.1,-0.05,0.5)
-    rospy.sleep(5)
+    wanderer.init(0.1,-0.1, 1.65)
+    wanderer.execute()
     rospy.loginfo("Stopping wandering")
     wanderer.stop()
 

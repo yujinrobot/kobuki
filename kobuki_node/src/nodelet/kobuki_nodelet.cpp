@@ -27,35 +27,60 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /**
- * @file /kobuki_node/src/node/main.cpp
+ * @file /kobuki_node/src/nodelet/kobuki_nodelet.cpp
  *
- * @brief Main ros node.
+ * @brief Implementation for the ROS Kobuki nodelet
  **/
 
 /*****************************************************************************
-** Includes
-*****************************************************************************/
+ ** Includes
+ *****************************************************************************/
 
-#include <ros/ros.h>
-#include "../../include/kobuki_node/kobuki_node.hpp"
+#include <nodelet/nodelet.h>
+#include <pluginlib/class_list_macros.h>
+#include <ecl/threads/thread.hpp>
+#include "kobuki_node/kobuki_ros.hpp"
 
-/*****************************************************************************
-** Main
-*****************************************************************************/
 
-int main(int argc, char** argv)
+namespace kobuki
 {
-  ros::init(argc, argv, "kobuki");
-  ros::NodeHandle nh("~");
-  std::string node_name = ros::this_node::getName();
-  kobuki::KobukiNode kobuki_node(node_name);
-  if (kobuki_node.init(nh))
+
+class KobukiNodelet : public nodelet::Nodelet
+{
+public:
+  KobukiNodelet(){};
+  ~KobukiNodelet()
   {
-    kobuki_node.spin();
+    NODELET_DEBUG("Waiting for update thread to finish.");
+    update_thread_.join();
   }
-  else
+  virtual void onInit()
   {
-    ROS_ERROR_STREAM("Couldn't initialise kobuki_node.");
+    NODELET_DEBUG("Initialising nodelet...");
+    std::string nodelet_name = this->getName();
+    kobuki_.reset(new KobukiRos(nodelet_name));
+    if (kobuki_->init(this->getPrivateNodeHandle()))
+    {
+      NODELET_DEBUG("Kobuki initialised. Spinning up update thread ...");
+      update_thread_.start(&KobukiNodelet::update, *this);
+    }
+    NODELET_DEBUG("Nodelet initialised.");
   }
-  return(0);
-}
+private:
+  void update()
+  {
+    ros::Rate spin_rate(10);
+    while (ros::ok() && kobuki_->update())
+    {
+      ros::spinOnce();
+      spin_rate.sleep();
+    }
+  }
+
+  boost::shared_ptr<KobukiRos> kobuki_;
+  ecl::Thread update_thread_;
+};
+
+} // namespace kobuki
+
+PLUGINLIB_DECLARE_CLASS(kobuki_node, KobukiNodelet, kobuki::KobukiNodelet, nodelet::Nodelet);

@@ -1,6 +1,6 @@
 ##############################################################################
-# EXECUTABLES
+# NODELET
 ##############################################################################
 
-rosbuild_add_executable(kobuki_node kobuki_node.cpp)
-target_link_libraries(kobuki_node kobuki_ros)
+rosbuild_add_library(kobuki_nodelet kobuki_nodelet.cpp)
+target_link_libraries(kobuki_nodelet kobuki_ros)

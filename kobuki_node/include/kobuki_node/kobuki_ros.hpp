@@ -27,19 +27,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /**
- * @file /kobuki_node/include/kobuki_node/kobuki_node.hpp
+ * @file /kobuki_node/include/kobuki_node/kobuki_ros.hpp
  *
- * @brief Wraps the kobuki driver in a ROS node
+ * @brief Wraps the kobuki driver in a ROS-specific library
  *
- * @date 10/04/2012
+ * @date 27/11/2012
  **/
 
 /*****************************************************************************
  ** Ifdefs
  *****************************************************************************/
 
-#ifndef KOBUKI_NODE_HPP_
-#define KOBUKI_NODE_HPP_
+#ifndef KOBUKI_ROS_HPP_
+#define KOBUKI_ROS_HPP_
 
 /*****************************************************************************
  ** Includes
@@ -79,13 +79,13 @@
 
 namespace kobuki
 {
-class KobukiNode
+class KobukiRos
 {
 public:
-  KobukiNode(std::string& node_name);
-  ~KobukiNode();
+  KobukiRos(std::string& node_name);
+  ~KobukiRos();
   bool init(ros::NodeHandle& nh);
-  bool spin();
+  bool update();
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 private:
@@ -98,6 +98,8 @@ private:
   Odometry odometry;
   double bumper_pc_radius, side_bump_x_coord, side_bump_y_coord;
   pcl::PointCloud<pcl::PointXYZ> bumper_pc;
+  bool cmd_vel_timed_out_; // stops warning spam when cmd_vel flags as timed out more than once in a row
+  bool serial_timed_out_; // stops warning spam when serial connection timed out more than once in a row
 
   /*********************
    ** Ros Comms
@@ -194,4 +196,4 @@ private:
 
 } // namespace kobuki
 
-#endif /* KOBUKI_NODE_HPP_ */
+#endif /* KOBUKI_ROS_HPP_ */

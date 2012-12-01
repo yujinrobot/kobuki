@@ -38,7 +38,7 @@
 ** Includes
 *****************************************************************************/
 
-#include "kobuki_node/kobuki_node.hpp"
+#include "kobuki_node/kobuki_ros.hpp"
 
 /*****************************************************************************
  ** Namespaces
@@ -47,7 +47,7 @@
 namespace kobuki
 {
 
-void KobukiNode::processStreamData() {
+void KobukiRos::processStreamData() {
   publishWheelState();
   publishSensorState();
   publishDockIRData();
@@ -58,7 +58,7 @@ void KobukiNode::processStreamData() {
 ** Publish Sensor Stream Workers
 *****************************************************************************/
 
-void KobukiNode::publishSensorState()
+void KobukiRos::publishSensorState()
 {
   if ( ros::ok() ) {
     if (sensor_state_publisher.getNumSubscribers() > 0) {
@@ -111,7 +111,7 @@ void KobukiNode::publishSensorState()
   }
 }
 
-void KobukiNode::publishWheelState()
+void KobukiRos::publishWheelState()
 {
   ecl::Pose2D<double> pose_update;
   ecl::linear_algebra::Vector3d pose_update_rates;
@@ -128,7 +128,7 @@ void KobukiNode::publishWheelState()
   }
 }
 
-void KobukiNode::publishInertia()
+void KobukiRos::publishInertia()
 {
   if (ros::ok())
   {
@@ -161,7 +161,7 @@ void KobukiNode::publishInertia()
   }
 }
 
-void KobukiNode::publishDockIRData()
+void KobukiRos::publishDockIRData()
 {
   if (ros::ok())
   {
@@ -190,7 +190,7 @@ void KobukiNode::publishDockIRData()
  * The driver will only gather this data when initialising so it is
  * important that this publisher is latched.
  */
-void KobukiNode::publishVersionInfo(const VersionInfo &version_info)
+void KobukiRos::publishVersionInfo(const VersionInfo &version_info)
 {
   if (ros::ok())
   {
@@ -212,7 +212,7 @@ void KobukiNode::publishVersionInfo(const VersionInfo &version_info)
 ** Events
 *****************************************************************************/
 
-void KobukiNode::publishButtonEvent(const ButtonEvent &event)
+void KobukiRos::publishButtonEvent(const ButtonEvent &event)
 {
   if (ros::ok())
   {
@@ -232,7 +232,7 @@ void KobukiNode::publishButtonEvent(const ButtonEvent &event)
   }
 }
 
-void KobukiNode::publishBumperEvent(const BumperEvent &event)
+void KobukiRos::publishBumperEvent(const BumperEvent &event)
 {
   if (ros::ok())
   {
@@ -252,7 +252,7 @@ void KobukiNode::publishBumperEvent(const BumperEvent &event)
   }
 }
 
-void KobukiNode::publishCliffEvent(const CliffEvent &event)
+void KobukiRos::publishCliffEvent(const CliffEvent &event)
 {
   if (ros::ok())
   {
@@ -273,7 +273,7 @@ void KobukiNode::publishCliffEvent(const CliffEvent &event)
   }
 }
 
-void KobukiNode::publishWheelEvent(const WheelEvent &event)
+void KobukiRos::publishWheelEvent(const WheelEvent &event)
 {
   if (ros::ok())
   {
@@ -292,7 +292,7 @@ void KobukiNode::publishWheelEvent(const WheelEvent &event)
   }
 }
 
-void KobukiNode::publishPowerEvent(const PowerEvent &event)
+void KobukiRos::publishPowerEvent(const PowerEvent &event)
 {
   if (ros::ok())
   {
@@ -316,7 +316,7 @@ void KobukiNode::publishPowerEvent(const PowerEvent &event)
   }
 }
 
-void KobukiNode::publishInputEvent(const InputEvent &event)
+void KobukiRos::publishInputEvent(const InputEvent &event)
 {
   if (ros::ok())
   {
@@ -327,7 +327,7 @@ void KobukiNode::publishInputEvent(const InputEvent &event)
   }
 }
 
-void KobukiNode::publishRobotEvent(const RobotEvent &event)
+void KobukiRos::publishRobotEvent(const RobotEvent &event)
 {
   if (ros::ok())
   {
@@ -342,7 +342,7 @@ void KobukiNode::publishRobotEvent(const RobotEvent &event)
   }
 }
 
-void KobukiNode::publishRawDataCommand(Command::Buffer &buffer)
+void KobukiRos::publishRawDataCommand(Command::Buffer &buffer)
 {
   if ( raw_data_command_publisher.getNumSubscribers() > 0 ) { // do not do string processing if there is no-one listening.
     std::ostringstream ostream;
@@ -357,7 +357,7 @@ void KobukiNode::publishRawDataCommand(Command::Buffer &buffer)
   }
 }
 
-void KobukiNode::publishRawDataStream(PacketFinder::BufferType &buffer)
+void KobukiRos::publishRawDataStream(PacketFinder::BufferType &buffer)
 {
   if ( raw_data_stream_publisher.getNumSubscribers() > 0 ) { // do not do string processing if there is no-one listening.
     /*std::cout << "size: [" << buffer.size() << "], asize: [" << buffer.asize() << "]" << std::endl;
