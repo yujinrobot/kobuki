@@ -59,7 +59,7 @@ namespace kobuki
  * Make sure you call the init() method to fully define this node.
  */
 KobukiRos::KobukiRos(std::string& node_name) :
-    name(node_name),
+    name(node_name), cmd_vel_timed_out_(false), serial_timed_out_(false),
     slot_version_info(&KobukiRos::publishVersionInfo, *this),
     slot_stream_data(&KobukiRos::processStreamData, *this),
     slot_button_event(&KobukiRos::publishButtonEvent, *this),
@@ -263,37 +263,42 @@ bool KobukiRos::init(ros::NodeHandle& nh)
   return true;
 }
 
-bool KobukiRos::spin()
+bool KobukiRos::update()
 {
-  bool timed_out = false; // stops warning spam when vel_cmd flags as timed out more than once in a row
+  if ( kobuki.isShutdown() )
+  {
+    ROS_ERROR_STREAM("Kobuki : Driver has been shutdown. Stopping update loop. [" << name << "].");
+    return false;
+  }
 
   if ( (kobuki.isEnabled() == true) && odometry.commandTimeout())
   {
-    if ( !timed_out )
+    if ( !cmd_vel_timed_out_ )
     {
-      std_msgs::StringPtr msg;
-      //disable(msg);
       kobuki.setBaseControl(0, 0);
-      timed_out = true;
-      ROS_WARN("Incoming velocity commands not received for more than %.2f seconds -> zero'ing velocity commands", odometry.timeout().toSec());
+      cmd_vel_timed_out_ = true;
+      ROS_WARN("Kobuki : Incoming velocity commands not received for more than %.2f seconds -> zero'ing velocity commands", odometry.timeout().toSec());
     }
   }
   else
   {
-    timed_out = false;
-  }
-
-  if ( kobuki.isShutdown() )
-  {
-    ROS_ERROR_STREAM("Kobuki : driver shutdown; terminate kobuki node too [" << name << "].");
-    return false;
+    cmd_vel_timed_out_ = false;
   }
 
   bool is_alive = kobuki.isAlive();
   if ( watchdog_diagnostics.isAlive() && !is_alive )
   {
-    ROS_ERROR_STREAM("Kobuki : timed out waiting for the serial data stream [" << name << "].");
+    if ( !serial_timed_out_ )
+    {
+      ROS_ERROR_STREAM("Kobuki : timed out waiting for the serial data stream [" << name << "].");
+      serial_timed_out_ = true;
+    }
+    else
+    {
+      serial_timed_out_ = false;
+    }
   }
+
   watchdog_diagnostics.update(is_alive);
   battery_diagnostics.update(kobuki.batteryStatus());
   cliff_diagnostics.update(kobuki.getCoreSensorData().cliff, kobuki.getCliffData());

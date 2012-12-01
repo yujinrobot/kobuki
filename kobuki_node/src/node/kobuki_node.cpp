@@ -52,9 +52,8 @@ int main(int argc, char** argv)
   if (kobuki.init(nh))
   {
     ros::Rate spin_rate(10);
-    while (ros::ok())
+    while (ros::ok() && kobuki.update())
     {
-      kobuki.spin();
       ros::spinOnce();
       spin_rate.sleep();
     }

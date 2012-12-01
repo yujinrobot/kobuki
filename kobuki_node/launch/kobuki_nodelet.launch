@@ -15,4 +15,6 @@
     <remap from="kobuki_node/disable" to="disable"/>
     <remap from="kobuki_node/joint_states" to="joint_states"/>
   </node>
+  <node pkg="nodelet" type="nodelet" name="safety_controller" args="load kobuki_safety_controller/SafetyControllerNodelet kobuki_nodelet_manager">
+  </node>
 </launch>

@@ -85,7 +85,7 @@ public:
   KobukiRos(std::string& node_name);
   ~KobukiRos();
   bool init(ros::NodeHandle& nh);
-  bool spin();
+  bool update();
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 private:
@@ -98,6 +98,8 @@ private:
   Odometry odometry;
   double bumper_pc_radius, side_bump_x_coord, side_bump_y_coord;
   pcl::PointCloud<pcl::PointXYZ> bumper_pc;
+  bool cmd_vel_timed_out_; // stops warning spam when cmd_vel flags as timed out more than once in a row
+  bool serial_timed_out_; // stops warning spam when serial connection timed out more than once in a row
 
   /*********************
    ** Ros Comms

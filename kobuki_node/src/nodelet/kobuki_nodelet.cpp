@@ -70,9 +70,8 @@ private:
   void update()
   {
     ros::Rate spin_rate(10);
-    while (ros::ok())
+    while (ros::ok() && kobuki_->update())
     {
-      kobuki_->spin();
       ros::spinOnce();
       spin_rate.sleep();
     }
