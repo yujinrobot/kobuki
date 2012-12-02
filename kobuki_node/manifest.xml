@@ -31,7 +31,7 @@
   
   <!-- YOCS -->
   <depend package="cmd_vel_mux"/>
-  <depend package="ycs_velocity_smoother"/>
+  <depend package="yocs_velocity_smoother"/>
   
   <!-- Ecl -->
   <depend package="ecl_exceptions"/>
