@@ -5,7 +5,7 @@ analyzers:
     type: diagnostic_aggregator/GenericAnalyzer
     path: 'Power System'
     timeout: 5.0
-    contains: ['Battery', 'Laptop Battery']
+    contains: ['Battery']
     remove_prefix: mobile_base
   kobuki:
     type: diagnostic_aggregator/GenericAnalyzer
