@@ -10,7 +10,7 @@
   <url>http://ros.org/wiki/kobuki_safety_controller</url>
   
   <depend package="roscpp"/>
-  <depend package="ocl_controllers"/>
+  <depend package="yocs_controllers"/>
   <depend package="kobuki_msgs"/>
   <depend package="std_msgs"/>
   <depend package="geometry_msgs"/>
