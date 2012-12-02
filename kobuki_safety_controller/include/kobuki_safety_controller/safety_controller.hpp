@@ -52,7 +52,7 @@
 
 #include <string>
 #include <ros/ros.h>
-#include <ocl_controllers/default_controller.hpp>
+#include <yocs_controllers/default_controller.hpp>
 #include <std_msgs/Empty.h>
 #include <geometry_msgs/Twist.h>
 #include <kobuki_msgs/BumperEvent.h>
@@ -71,7 +71,7 @@ namespace kobuki
  * This controller can be enabled/disabled.
  * The safety states (bumper pressed etc.) can be reseted, what can be dangerous!
  */
-class SafetyController : public ocl::Controller
+class SafetyController : public yocs::Controller
 {
 public:
   SafetyController(ros::NodeHandle& nh, std::string& name) :
@@ -85,7 +85,7 @@ public:
   ~SafetyController(){};
 
   /**
-   * Set-up necessary publishers/subscribers and avariables
+   * Set-up necessary publishers/subscribers and variables
    * @return true, if successful
    */
   bool init()
@@ -194,7 +194,6 @@ void SafetyController::cliffEventCB(const kobuki_msgs::CliffEventConstPtr msg)
     cliff_detected_ = false;
   }
 };
-
 
 void SafetyController::bumperEventCB(const kobuki_msgs::BumperEventConstPtr msg)
 {

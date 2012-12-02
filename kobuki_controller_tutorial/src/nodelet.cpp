@@ -28,50 +28,56 @@
  */
 
 /**
- * @file /kobuki_safety_controller/src/nodelet.cpp
+ * @file /kobuki_controller_tutorial/src/nodelet.cpp
  *
- * @brief Implementation for Kobuki's safety controller nodelet
+ * @brief Nodelet implementation of the BumpBlinkController
  *
+ * @date Dec 2, 2012
+ * 
  * @author Marcus Liebhardt, Yujin Robot
- *
- * @date Nov 30, 2012
  **/
 
 /*****************************************************************************
- ** Includes
- *****************************************************************************/
+** Includes
+*****************************************************************************/
 
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
-#include <ecl/threads/thread.hpp>
-#include "kobuki_safety_controller/safety_controller.hpp"
+#include "kobuki_controller_tutorial/bump_blink_controller.hpp"
 
 
 namespace kobuki
 {
 
-class SafetyControllerNodelet : public nodelet::Nodelet
+/**
+ * @brief Nodelet-wrapper of the BumpBlinkController class
+ */
+class BumpBlinkControllerNodelet : public nodelet::Nodelet
 {
 public:
-  SafetyControllerNodelet(){};
-  ~SafetyControllerNodelet()
-  {
-    NODELET_DEBUG("Waiting for update thread to finish.");
-    update_thread_.join();
-  }
+  BumpBlinkControllerNodelet(){};
+  ~BumpBlinkControllerNodelet(){}
+
+  /**
+   * @brief Initialise the nodelet
+   *
+   * This function is called, when the nodelet manager loads the nodelet.
+   */
   virtual void onInit()
   {
     ros::NodeHandle nh = this->getPrivateNodeHandle();
+
     // resolve node(let) name
     std::string name = nh.getUnresolvedNamespace();
     int pos = name.find_last_of('/');
     name = name.substr(pos + 1);
+
     NODELET_INFO_STREAM("Initialising nodelet... [" << name << "]");
-    controller_.reset(new SafetyController(nh, name));
+    controller_.reset(new BumpBlinkController(nh, name));
+
+    // Initialises the controller
     if (controller_->init())
     {
-      NODELET_INFO_STREAM("Kobuki initialised. Spinning up update thread ... [" << name << "]");
-      update_thread_.start(&SafetyControllerNodelet::update, *this);
       NODELET_INFO_STREAM("Nodelet initialised. [" << name << "]");
     }
     else
@@ -80,22 +86,12 @@ public:
     }
   }
 private:
-  void update()
-  {
-    ros::Rate spin_rate(10);
-    while (ros::ok())
-    {
-      controller_->enable();
-      controller_->spin();
-      ros::spinOnce();
-      spin_rate.sleep();
-    }
-  }
-
-  boost::shared_ptr<SafetyController> controller_;
-  ecl::Thread update_thread_;
+  boost::shared_ptr<BumpBlinkController> controller_;
 };
 
 } // namespace kobuki
 
-PLUGINLIB_DECLARE_CLASS(kobuki_safety_controller, SafetyControllerNodelet, kobuki::SafetyControllerNodelet, nodelet::Nodelet);
+PLUGINLIB_DECLARE_CLASS(kobuki_controller_tutorial,
+                        BumpBlinkControllerNodelet,
+                        kobuki::BumpBlinkControllerNodelet,
+                        nodelet::Nodelet);
