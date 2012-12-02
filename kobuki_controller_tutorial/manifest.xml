@@ -1,0 +1,22 @@
+<package>
+  <description brief="kobuki_controller_tutorial">
+
+     kobuki_controller_tutorial
+
+  </description>
+  <author>Marcus Liebhardt</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/kobuki_controller_tutorial</url>
+  <depend package="roscpp"/>
+  <depend package="yocs_controllers"/>
+  <depend package="std_msgs"/>
+  <depend package="kobuki_msgs"/>
+  <depend package="nodelet"/>
+
+  <export>
+    <nodelet plugin="${prefix}/plugins/nodelet_plugins.xml" />
+  </export>
+</package>
+
+
