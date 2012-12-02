@@ -1,0 +1,21 @@
+<package>
+  <description brief="auto_docking">
+
+     automatic docking
+
+  </description>
+  <author>Younghun Ju</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/auto_docking</url>
+  
+  <depend package="roscpp"/>
+  <depend package="nodelet"/>
+  <depend package="ecl_threads"/>
+  
+  <export>
+    <nodelet plugin="${prefix}/plugins/nodelet_plugins.xml" />
+  </export>
+</package>
+
+
