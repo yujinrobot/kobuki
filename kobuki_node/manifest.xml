@@ -27,6 +27,11 @@
   <depend package="kobuki_msgs"/>
   <depend package="kobuki_driver"/>
   <depend package="kobuki_keyop"/>
+  <depend package="kobuki_safety_controller"/>
+  
+  <!-- OCL -->
+  <depend package="cmd_vel_mux"/>
+  <depend package="velocity_smoother"/>
   
   <!-- Ecl -->
   <depend package="ecl_exceptions"/>
