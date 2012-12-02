@@ -29,9 +29,9 @@
   <depend package="kobuki_keyop"/>
   <depend package="kobuki_safety_controller"/>
   
-  <!-- OCL -->
+  <!-- YOCS -->
   <depend package="cmd_vel_mux"/>
-  <depend package="velocity_smoother"/>
+  <depend package="ycs_velocity_smoother"/>
   
   <!-- Ecl -->
   <depend package="ecl_exceptions"/>
