@@ -1,0 +1,27 @@
+<package>
+  <description brief="kobuki_safety_controller">
+
+     kobuki_safety_controller
+
+  </description>
+  <author>Marcus Liebhardt</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/kobuki_safety_controller</url>
+  
+  <depend package="roscpp"/>
+  <depend package="ocl_controllers"/>
+  <depend package="kobuki_msgs"/>
+  <depend package="std_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="nodelet"/>
+  
+  <depend package="ecl_threads"/>
+  
+  <export>
+    <nodelet plugin="${prefix}/plugins/nodelet_plugins.xml" />
+  </export>
+  
+</package>
+
+

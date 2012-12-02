@@ -1,0 +1,8 @@
+<library path="lib/libkobuki_safety_controller_nodelet">
+  <class name="kobuki_safety_controller/SafetyControllerNodelet" type="kobuki::SafetyControllerNodelet" base_class_type="nodelet::Nodelet">
+    <description>
+      Nodelet for Kobuki's safety controller
+    </description>
+  </class>
+</library>
+
