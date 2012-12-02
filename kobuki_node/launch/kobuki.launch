@@ -1,0 +1,18 @@
+<!--
+  Standalone launcher for running a default kobuki with
+  safe reactive controller (bump/cliff reactive control) alongside.
+ -->
+<launch>
+  <node pkg="nodelet" type="nodelet" name="kobuki"  args="manager"/>
+  <node pkg="nodelet" type="nodelet" name="mobile_base" args="load kobuki_node/KobukiNodelet kobuki">
+    <rosparam file="$(find kobuki_node)/param/base.yaml" command="load"/>
+    <remap from="mobile_base/commands/velocity" to="cmd_vel"/>
+    <!-- 
+    <remap from="kobuki_node/odom" to="odom"/>
+    <remap from="kobuki_node/cmd_vel" to="cmd_vel"/>
+    <remap from="kobuki_node/enable" to="enable"/>
+    <remap from="kobuki_node/disable" to="disable"/>
+    <remap from="kobuki_node/joint_states" to="joint_states"/>
+     -->
+  </node>
+</launch>
