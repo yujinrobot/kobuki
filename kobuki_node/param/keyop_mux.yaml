@@ -12,10 +12,10 @@
 
 subscribers:
   - name:        "Safe reactive controller"
-    topic:       "velocity/safety_controller"
-    timeout:     0.1
+    topic:       "safety_controller"
+    timeout:     0.2
     priority:    10
   - name:        "Keyboard operation"
-    topic:       "velocity/keyop"
-    timeout:     0.1
+    topic:       "keyboard_teleop"
+    timeout:     0.2
     priority:    7
