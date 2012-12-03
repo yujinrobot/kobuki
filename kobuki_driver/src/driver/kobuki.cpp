@@ -384,10 +384,11 @@ void Kobuki::getWheelJointStates(double &wheel_left_angle, double &wheel_left_an
 
 void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update, ecl::linear_algebra::Vector3d &pose_update_rates)
 {
-  diff_drive.update(core_sensors.data.time_stamp, core_sensors.data.left_encoder, core_sensors.data.right_encoder,
-                      pose_update, pose_update_rates);
+  diff_drive.update(core_sensors.data.time_stamp, core_sensors.data.left_encoder, core_sensors.data.right_encoder
+                       , pose_update, pose_update_rates);
   if (dock_mode)
-    dock_drive.update(dock_ir.data.docking, pose_update, pose_update_rates);
+    dock_drive.update(dock_ir.data.docking, core_sensors.data.bumper, core_sensors.data.charger
+                       , pose_update, pose_update_rates);
 }
 
 /*****************************************************************************
@@ -425,7 +426,7 @@ void Kobuki::setBaseControl(const double &linear_velocity, const double &angular
 void Kobuki::sendBaseControlCommand()
 {
   std::vector<short> velocity_commands;
-  if (dock_mode) {
+  if (dock_mode && dock_drive.canRun()) {
     velocity_commands = dock_drive.velocityCommands();
     //std::cout << "speed: " << velocity_commands[0] << ", radius: " << velocity_commands[1] << std::endl;
   } else {
@@ -476,12 +477,13 @@ void Kobuki::sendCommand(Command command)
   command_mutex.unlock();
 }
 
-void Kobuki::doDock()
+void Kobuki::doDock(std::string msg)
 {
   dock_mode = true; 
+  dock_drive.mode_shift(msg);
 }
 
-void Kobuki::cancelDock()
+void Kobuki::cancelDock(std::string msg)
 {
   dock_mode = false; 
 }

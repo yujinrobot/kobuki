@@ -47,10 +47,20 @@ namespace kobuki {
 ** Implementation
 *****************************************************************************/
 DockDrive::DockDrive() :
-  vx(0.0), wz(0.0)
+  is_enabled(false), can_run(false) 
+  , vx(0.0), wz(0.0)
   , speed(0), radius(0)
   , bias(0.23) //wheelbase, wheel_to_wheel, in [m]
 {}
+
+
+void DockDrive::mode_shift(std::string mode)
+{
+  if (mode == "enable")  is_enabled = true;
+  if (mode == "disable") is_enabled = false;
+  if (mode == "run")  can_run = true;
+  if (mode == "stop") can_run = false;
+}
 
 
 /**
@@ -65,6 +75,8 @@ DockDrive::DockDrive() :
  * @param pose_update_rates
  */
 void DockDrive::update(std::vector<unsigned char> &signal
+                , unsigned char &bumper
+                , unsigned char &charger
                 , ecl::Pose2D<double> &pose_update  
                 , ecl::linear_algebra::Vector3d &pose_update_rates) {
   // pose_update and pose_update_rates for debugging
@@ -111,6 +123,41 @@ void DockDrive::update(std::vector<unsigned char> &signal
     << ", r: " << binary(signal_filt[0])
     << "]";
 
+  std::string far_signal  = "[FAR:  "; 
+  std::string near_signal = "[NEAR: ";
+  for (unsigned int i=0; i<3; i++) {
+    if (signal_filt[2-i]&FAR_LEFT   ) far_signal  += "L"; else far_signal  += "-";
+    if (signal_filt[2-i]&FAR_CENTER ) far_signal  += "C"; else far_signal  += "-";
+    if (signal_filt[2-i]&FAR_RIGHT  ) far_signal  += "R"; else far_signal  += "-";
+    if (signal_filt[2-i]&NEAR_LEFT  ) near_signal += "L"; else near_signal += "-";
+    if (signal_filt[2-i]&NEAR_CENTER) near_signal += "C"; else near_signal += "-";
+    if (signal_filt[2-i]&NEAR_RIGHT ) near_signal += "R"; else near_signal += "-";
+    far_signal  += " ";
+    near_signal += " ";
+  }
+  far_signal  += "]";
+  near_signal += "]";
+  std::cout << far_signal << near_signal;
+
+  //bumper
+  {
+  std::string out = "[";
+  if (bumper&4) out += "L"; else out += "-";
+  if (bumper&2) out += "C"; else out += "-";
+  if (bumper&1) out += "R"; else out += "-";
+  out += "]";
+  std::cout << out;
+  }
+
+  //charger
+  {
+  std::string out = "[";
+  if (charger) out += "ON"; else out += "  ";
+  out += "]";
+  std::cout << out;
+  }
+
+#if 1
   // just go forward
   vx = 0.1;
   wz = 0.0;
@@ -118,6 +165,7 @@ void DockDrive::update(std::vector<unsigned char> &signal
   std::cout << std::endl;
   velocityCommands(vx, wz);
   return;
+#endif
 
 #if 0   
   // do nothing
@@ -235,7 +283,6 @@ std::vector<short> DockDrive::velocityCommands() const {
   cmd[1] = radius;
   return cmd;
 }
-
 
 std::string DockDrive::binary(unsigned char number) const {
   std::string ret;

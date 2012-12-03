@@ -69,9 +69,13 @@ public:
     FAR_LEFT=16,
     FAR_RIGHT=32
   };
+
   DockDrive();
   void init();
+  void mode_shift(std::string mode);
   void update(std::vector<unsigned char> &signal /* dock_ir signal*/
+                , unsigned char &bumper
+                , unsigned char &charger
                 , ecl::Pose2D<double> &pose_update
                 , ecl::linear_algebra::Vector3d &pose_update_rates);
   void velocityCommands(const double &vx, const double &wz);
@@ -81,7 +85,14 @@ public:
   **********************/
   std::vector<short> velocityCommands() const;
 
+  /*********************
+  ** Mode Accessors
+  **********************/
+  bool canRun() const { return can_run; }
+  bool isEnabled() const { return is_enabled; }
+
 private:
+  bool is_enabled, can_run;
   double vx, wz;
   short speed, radius;
   double bias;
