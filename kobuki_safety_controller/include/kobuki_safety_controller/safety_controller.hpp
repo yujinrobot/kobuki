@@ -69,7 +69,7 @@ namespace kobuki
  * Kobuki is commanded to move back. In the latter case, Kobuki is stopped.
  *
  * This controller can be enabled/disabled.
- * The safety states (bumper pressed etc.) can be reseted, what can be dangerous!
+ * The safety states (bumper pressed etc.) can be reset. WARNING: Dangerous!
  */
 class SafetyController : public yocs::Controller
 {
