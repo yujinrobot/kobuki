@@ -83,11 +83,10 @@ private:
   void update()
   {
     ros::Rate spin_rate(10);
+    controller_->enable(); // enable the controller when loading the nodelet
     while (ros::ok())
     {
-      controller_->enable();
       controller_->spin();
-      ros::spinOnce();
       spin_rate.sleep();
     }
   }
@@ -98,4 +97,7 @@ private:
 
 } // namespace kobuki
 
-PLUGINLIB_DECLARE_CLASS(kobuki_safety_controller, SafetyControllerNodelet, kobuki::SafetyControllerNodelet, nodelet::Nodelet);
+PLUGINLIB_DECLARE_CLASS(kobuki_safety_controller,
+                        SafetyControllerNodelet,
+                        kobuki::SafetyControllerNodelet,
+                        nodelet::Nodelet);

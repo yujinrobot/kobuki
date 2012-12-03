@@ -161,11 +161,11 @@ void SafetyController::enableCB(const std_msgs::EmptyConstPtr msg)
 {
   if (this->enable())
   {
-    ROS_INFO_STREAM("Controller has been enabled. [" << name_ << "]");
+    NODELET_INFO_STREAM("Controller has been enabled. [" << name_ << "]");
   }
   else
   {
-    ROS_INFO_STREAM("Controller was already enabled. [" << name_ <<"]");
+    NODELET_INFO_STREAM("Controller was already enabled. [" << name_ <<"]");
   }
 };
 
@@ -173,11 +173,11 @@ void SafetyController::disableCB(const std_msgs::EmptyConstPtr msg)
 {
   if (this->disable())
   {
-    ROS_INFO_STREAM("Controller has been disabled. [" << name_ <<"]");
+    NODELET_INFO_STREAM("Controller has been disabled. [" << name_ <<"]");
   }
   else
   {
-    ROS_INFO_STREAM("Controller was already disabled. [" << name_ <<"]");
+    NODELET_INFO_STREAM("Controller was already disabled. [" << name_ <<"]");
   }
 };
 
@@ -185,12 +185,12 @@ void SafetyController::cliffEventCB(const kobuki_msgs::CliffEventConstPtr msg)
 {
   if (msg->state == kobuki_msgs::CliffEvent::CLIFF)
   {
-    ROS_DEBUG_STREAM("Cliff detected. Moving backwards. [" << name_ << "]");
+    NODELET_DEBUG_STREAM("Cliff detected. Moving backwards. [" << name_ << "]");
     cliff_detected_ = true;
   }
   else // kobuki_msgs::CliffEvent::FLOOR
   {
-    ROS_DEBUG_STREAM("Not detecting any cliffs. Resuming normal operation. [" << name_ << "]");
+    NODELET_DEBUG_STREAM("Not detecting any cliffs. Resuming normal operation. [" << name_ << "]");
     cliff_detected_ = false;
   }
 };
@@ -199,12 +199,12 @@ void SafetyController::bumperEventCB(const kobuki_msgs::BumperEventConstPtr msg)
 {
   if (msg->state == kobuki_msgs::BumperEvent::PRESSED)
   {
-    ROS_DEBUG_STREAM("Bumper pressed. Moving backwards. [" << name_ << "]");
+    NODELET_DEBUG_STREAM("Bumper pressed. Moving backwards. [" << name_ << "]");
     bumper_pressed_ = true;
   }
   else // kobuki_msgs::BumperEvent::RELEASED
   {
-    ROS_DEBUG_STREAM("No bumper pressed. Resuming normal operation. [" << name_ << "]");
+    NODELET_DEBUG_STREAM("No bumper pressed. Resuming normal operation. [" << name_ << "]");
     bumper_pressed_ = false;
   }
 };
@@ -216,12 +216,12 @@ void SafetyController::wheelEventCB(const kobuki_msgs::WheelDropEventConstPtr ms
     // need to keep track of both wheels separately
     if (msg->wheel == kobuki_msgs::WheelDropEvent::LEFT)
     {
-      ROS_DEBUG_STREAM("Left wheel dropped. [" << name_ << "]");
+      NODELET_DEBUG_STREAM("Left wheel dropped. [" << name_ << "]");
       wheel_left_dropped_ = true;
     }
     else // kobuki_msgs::WheelDropEvent::RIGHT
     {
-      ROS_DEBUG_STREAM("Right wheel dropped. [" << name_ << "]");
+      NODELET_DEBUG_STREAM("Right wheel dropped. [" << name_ << "]");
       wheel_right_dropped_ = true;
     }
   }
@@ -230,17 +230,17 @@ void SafetyController::wheelEventCB(const kobuki_msgs::WheelDropEventConstPtr ms
     // need to keep track of both wheels separately
     if (msg->wheel == kobuki_msgs::WheelDropEvent::LEFT)
     {
-      ROS_DEBUG_STREAM("Left wheel raised. [" << name_ << "]");
+      NODELET_DEBUG_STREAM("Left wheel raised. [" << name_ << "]");
       wheel_left_dropped_ = false;
     }
     else // kobuki_msgs::WheelDropEvent::RIGHT
     {
-      ROS_DEBUG_STREAM("Right wheel raised. [" << name_ << "]");
+      NODELET_DEBUG_STREAM("Right wheel raised. [" << name_ << "]");
       wheel_right_dropped_ = false;
     }
     if (!wheel_left_dropped_ && !wheel_right_dropped_)
     {
-      ROS_DEBUG_STREAM("Both wheels raised. Resuming normal operation. [" << name_ << "]");
+      NODELET_DEBUG_STREAM("Both wheels raised. Resuming normal operation. [" << name_ << "]");
     }
   }
 };
@@ -251,7 +251,7 @@ void SafetyController::resetSafetyStatesCB(const std_msgs::EmptyConstPtr msg)
   wheel_right_dropped_ = false;
   bumper_pressed_ = false;
   cliff_detected_ = false;
-  ROS_WARN_STREAM("All safety states have been reseted to false. [" << name_ << "]");
+  NODELET_WARN_STREAM("All safety states have been reset to false. [" << name_ << "]");
 }
 
 void SafetyController::spin()
