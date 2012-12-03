@@ -182,13 +182,13 @@ void KobukiRos::disable(const std_msgs::StringConstPtr msg)
   odometry.resetTimeout();
 }
 
-void KobukiNode::doDock(const std_msgs::StringConstPtr msg)
+void KobukiRos::doDock(const std_msgs::StringConstPtr msg)
 {
   kobuki.doDock();
   ROS_INFO_STREAM("Kobuki : docking drive enabled.");
 }
 
-void KobukiNode::cancelDock(const std_msgs::StringConstPtr msg)
+void KobukiRos::cancelDock(const std_msgs::StringConstPtr msg)
 {
   kobuki.cancelDock();
   ROS_INFO_STREAM("Kobuki : docking drive disabled.");
