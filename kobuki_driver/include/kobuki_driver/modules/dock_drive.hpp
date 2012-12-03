@@ -44,6 +44,7 @@
 *****************************************************************************/
 
 #include <iostream>
+#include <iomanip>
 #include <cmath>
 #include <vector>
 #include <ecl/mobile_robot.hpp>
@@ -70,7 +71,7 @@ public:
   };
   DockDrive();
   void init();
-  void update(std::vector<unsigned char> &dock_ir
+  void update(std::vector<unsigned char> &signal /* dock_ir signal*/
                 , ecl::Pose2D<double> &pose_update
                 , ecl::linear_algebra::Vector3d &pose_update_rates);
   void velocityCommands(const double &vx, const double &wz);
@@ -84,7 +85,9 @@ private:
   double vx, wz;
   short speed, radius;
   double bias;
-  std::vector<std::vector<unsigned char> > dock_ir_history;
+  std::vector<std::vector<unsigned char> > past_signals;
+
+  std::string binary(unsigned char number) const;
 };
 
 } // namespace kobuki

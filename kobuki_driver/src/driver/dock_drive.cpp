@@ -64,119 +64,146 @@ DockDrive::DockDrive() :
  * @param pose_update
  * @param pose_update_rates
  */
-void DockDrive::update(std::vector<unsigned char> &dock_ir
+void DockDrive::update(std::vector<unsigned char> &signal
                 , ecl::Pose2D<double> &pose_update  
                 , ecl::linear_algebra::Vector3d &pose_update_rates) {
   // pose_update and pose_update_rates for debugging
 
   // Do Something!!!
-  std::cout << "x: " << pose_update.x()
-    << ", y: " << pose_update.y()
-    << ", th: " << pose_update.heading() 
-    << std::endl;
-  std::vector<std::string> bin(3, "");
-  for( int i=0;i<3; i++){
-    unsigned int number = (unsigned int)dock_ir[i];
-  for( int j=0;j<6; j++){
-    //std::cout << number << std::endl;
-    if( ( number & 1 ) == 0 )
-      bin[i] += "0";
-    else
-      bin[i] += "1";
-    number = number >> 1;
-  } 
-  }
-  std::cout 
-    << "l: "   << (unsigned)dock_ir[2]
-    << ", c: " << (unsigned)dock_ir[1]
-    << ", r: " << (unsigned)dock_ir[0]   
+  // std::cout << "--------------------------------------------------------------------------------" << std::endl;
+  std::cout << std::fixed << std::setprecision(4) 
+    << "[x: "    << std::setw(7) << pose_update.x()
+    << ", y: "  << std::setw(7) << pose_update.y()
+    << ", th: " << std::setw(7) << pose_update.heading()
+    << "]";
+    /* 
     << std::endl;
   std::cout 
-    << "l: "   << bin[2]
-    << ", c: " << bin[1]
-    << ", r: " << bin[0]   
+    << "l: "   << (unsigned)signal[2]
+    << ", c: " << (unsigned)signal[1]
+    << ", r: " << (unsigned)signal[0]
     << std::endl;
-  std::cout << "--------------------------------------------------------------------------------" << std::endl;
+  std::cout 
+    << "l: "   << binary(signal[2])
+    << ", c: " << binary(signal[1])
+    << ", r: " << binary(signal[0])
+    << std::endl;*/
 
-//  dock_ir_history.push_back(dock_ir);
+  past_signals.push_back(signal);
+  while (past_signals.size() > 10) past_signals.erase( past_signals.begin() + past_signals.size() - 10) ;
+
+  std::vector<unsigned char> signal_filt(signal.size(), 0);
+
+  for ( unsigned int i=0; i<past_signals.size(); i++) {
+    if (signal_filt.size() != past_signals[i].size()) continue;
+    for (unsigned int j=0; j<signal_filt.size(); j++)
+      signal_filt[j] |= past_signals[i][j];
+  }
+
+  /*std::cout 
+    << " l: "  << (unsigned)signal_filt[2]
+    << ", c: " << (unsigned)signal_filt[1]
+    << ", r: " << (unsigned)signal_filt[0]; */
+
+  std::cout 
+    << "[l: "  << binary(signal_filt[2])
+    << ", c: " << binary(signal_filt[1])
+    << ", r: " << binary(signal_filt[0])
+    << "]";
+
+  // just go forward
+  vx = 0.1;
+  wz = 0.0;
+  std::cout << "[vx: " << vx << ", wz: " << wz << "]";
+  std::cout << std::endl;
+  velocityCommands(vx, wz);
+  return;
 
 #if 0   
   // do nothing
   vx = 0.0;
   wz = 0.0;
 #else
-  if (dock_ir[0]==0 && dock_ir[1]==0 && dock_ir[2]==0) {
+  if (signal[0]==0 && signal[1]==0 && signal[2]==0) {
     vx = 0.0; wz = 0.33;
+    std::cout << " vx: " << vx << ", wz: " << wz << std::endl;
     velocityCommands(vx, wz);
     return;
   } // if there are no sensor inputs
 
-  if ((dock_ir[0]!=0 && dock_ir[1]!=0)
-      || (dock_ir[1]!=0 && dock_ir[2]!=0)
-      || (dock_ir[2]!=0 && dock_ir[0]!=0)){
+  if ((signal[0]!=0 && signal[1]!=0)
+      || (signal[1]!=0 && signal[2]!=0)
+      || (signal[2]!=0 && signal[0]!=0)){
     std::cout << "it is weird cases. #001 - multiple signal sources" << std::endl;
     return; //without any update
   } // if there are multiple input (in case dock_ir signals from multiple sources, or by reflections)
   // do not consider it for now
-  if (dock_ir[1] != 0) {
-    if (dock_ir[1]&FAR_CENTER) { 
+  if (signal[1] != 0) {
+    if (signal[1]&FAR_CENTER) { 
       vx = 0.1; wz =  0.00; 
+      std::cout << " vx: " << vx << ", wz: " << wz << std::endl;
       velocityCommands(vx, wz);
       return; 
     } else {
-      if (dock_ir[1]&FAR_LEFT && dock_ir[1]&FAR_RIGHT ) { 
+      if (signal[1]&FAR_LEFT && signal[1]&FAR_RIGHT ) { 
         vx = 0.1; wz = 0.00; 
+        std::cout << " vx: " << vx << ", wz: " << wz << std::endl;
         velocityCommands(vx, wz);
         std::cout << "weird cases. #002" << std::endl; 
         return;
       }
-      if (dock_ir[1]&FAR_LEFT  ) { 
+      if (signal[1]&FAR_LEFT  ) { 
         vx = 0.1; wz = +0.3; 
+        std::cout << " vx: " << vx << ", wz: " << wz << std::endl;
         velocityCommands(vx, wz);
         return; 
       }
-      if (dock_ir[1]&FAR_RIGHT ) { 
+      if (signal[1]&FAR_RIGHT ) { 
         vx = 0.1; wz = -0.3; 
+        std::cout << " vx: " << vx << ", wz: " << wz << std::endl;
         velocityCommands(vx, wz);
         return; 
       }
     }
   }
-  if (dock_ir[0] != 0) {
-    if (dock_ir[0]&FAR_CENTER) { 
+  if (signal[0] != 0) {
+    if (signal[0]&FAR_CENTER) { 
       vx = 0.1; wz =  0.00; 
+      std::cout << " vx: " << vx << ", wz: " << wz << std::endl;
       velocityCommands(vx, wz);
       return; 
     } // most simplar case
     return;
   }
-  if (dock_ir[2] != 0) {
-    if (dock_ir[1]&FAR_CENTER) { 
+  if (signal[2] != 0) {
+    if (signal[1]&FAR_CENTER) { 
       vx = 0.1; wz =  0.00; 
+      std::cout << " vx: " << vx << ", wz: " << wz << std::endl;
       velocityCommands(vx, wz);
       return; 
     }
     return;
   } 
   /*
-    if (dock_ir[0] != 0) {
-      if (dock_ir[0]^FAR_CENTER) { vx = 0.1; wz =  0.00; }
-      if (dock_ir[0]^FAR_LEFT  ) { vx = 0.1; wz =  0.00; }
-      if (dock_ir[0]^FAR_RIGHT ) { vx = 0.1; wz =  0.00; }
+    if (signal[0] != 0) {
+      if (signal[0]^FAR_CENTER) { vx = 0.1; wz =  0.00; }
+      if (signal[0]^FAR_LEFT  ) { vx = 0.1; wz =  0.00; }
+      if (signal[0]^FAR_RIGHT ) { vx = 0.1; wz =  0.00; }
       return;
     }
-    if (dock_ir[2] != 0) {
-      if (dock_ir[2]^FAR_CENTER) { vx = 0.1; wz =  0.00; }
-      if (dock_ir[2]^FAR_LEFT  ) { vx = 0.1; wz =  0.00; }
-      if (dock_ir[2]^FAR_RIGHT ) { vx = 0.1; wz =  0.00; }
+    if (signal[2] != 0) {
+      if (signal[2]^FAR_CENTER) { vx = 0.1; wz =  0.00; }
+      if (signal[2]^FAR_LEFT  ) { vx = 0.1; wz =  0.00; }
+      if (signal[2]^FAR_RIGHT ) { vx = 0.1; wz =  0.00; }
       return;
     }
     std::cout << "never reachable here. #003" << std::endl;
     vx=0.0; wz=0.0;
   */
-  std::cout << "never reachable here. #002" << std::endl;
   vx=0.0; wz=0.0;
+  std::cout << " vx: " << vx << ", wz: " << wz << std::endl;
   velocityCommands(vx, wz);
+  std::cout << "never reachable here. #002" << std::endl;
   return;
 #endif
 
@@ -208,5 +235,17 @@ std::vector<short> DockDrive::velocityCommands() const {
   cmd[1] = radius;
   return cmd;
 }
+
+
+std::string DockDrive::binary(unsigned char number) const {
+  std::string ret;
+  for( unsigned int i=0;i<6; i++){
+    if (number&1) ret = "1" + ret;
+    else          ret = "0" + ret;
+    number = number >> 1;
+  }
+  return ret;
+}
+
 
 } // namespace kobuki

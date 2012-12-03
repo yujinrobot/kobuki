@@ -427,7 +427,7 @@ void Kobuki::sendBaseControlCommand()
   std::vector<short> velocity_commands;
   if (dock_mode) {
     velocity_commands = dock_drive.velocityCommands();
-    std::cout << "speed: " << velocity_commands[0] << ", radius: " << velocity_commands[1] << std::endl;
+    //std::cout << "speed: " << velocity_commands[0] << ", radius: " << velocity_commands[1] << std::endl;
   } else {
     velocity_commands = diff_drive.velocityCommands();
     gate_keeper.confirm(velocity_commands[0], velocity_commands[1]);
