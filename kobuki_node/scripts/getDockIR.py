@@ -52,12 +52,12 @@ class Converter(object):
       #ver3: [far]/[near] = [R|C|L]/[R|C|L] for each channel
       #ostr_top = ""; ostr_bot = ""
       top = ir>>3; bot =ir
-      ostr_top += " R" if top&1 else " ~" 
-      ostr_top += "|C" if top&2 else "|~" 
-      ostr_top += "|L" if top&4 else "|~" 
-      ostr_bot += " R" if bot&1 else " ~" 
-      ostr_bot += "|C" if bot&2 else "|~" 
-      ostr_bot += "|L" if bot&4 else "|~"
+      ostr_top += " L" if top&2 else " ~" # far left is 16
+      ostr_top += "|C" if top&1 else "|~" # far center is 8
+      ostr_top += "|R" if top&4 else "|~" # far right is 32
+      ostr_bot += " L" if bot&1 else " ~" # near left is 1
+      ostr_bot += "|C" if bot&2 else "|~" # near center is 2
+      ostr_bot += "|R" if bot&4 else "|~" # near right is 4
       ostr_top += " "; ostr_bot += " "
       ostr_bin += "{0:#08b}".format(ir)[2:] + " "
       #ostr_dec += "{0:3d}".format(ir) + " "
