@@ -40,7 +40,7 @@
 /*****************************************************************************
 ** Includes
 *****************************************************************************/
-
+// %Tag(FULLTEXT)%
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
 #include "kobuki_controller_tutorial/bump_blink_controller.hpp"
@@ -95,3 +95,4 @@ PLUGINLIB_DECLARE_CLASS(kobuki_controller_tutorial,
                         BumpBlinkControllerNodelet,
                         kobuki::BumpBlinkControllerNodelet,
                         nodelet::Nodelet);
+// %EndTag(FULLTEXT)%

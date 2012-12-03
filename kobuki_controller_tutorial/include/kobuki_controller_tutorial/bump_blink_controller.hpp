@@ -49,7 +49,7 @@
 /*****************************************************************************
 ** Includes
 *****************************************************************************/
-
+// %Tag(FULLTEXT)%
 #include <ros/ros.h>
 #include <std_msgs/Empty.h>
 #include <yocs_controllers/default_controller.hpp>
@@ -158,5 +158,5 @@ void BumpBlinkController::bumperEventCB(const kobuki_msgs::BumperEventConstPtr m
 };
 
 } // namespace kobuki
-
+// %EndTag(FULLTEXT)%
 #endif /* BUMP_BLINK_CONTROLLER_HPP_ */
