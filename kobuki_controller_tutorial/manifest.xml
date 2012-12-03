@@ -1,7 +1,7 @@
 <package>
   <description brief="kobuki_controller_tutorial">
 
-     kobuki_controller_tutorial
+     Code for the Kobuki controller tutorial
 
   </description>
   <author>Marcus Liebhardt</author>
