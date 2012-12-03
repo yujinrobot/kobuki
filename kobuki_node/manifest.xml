@@ -1,5 +1,5 @@
 <package>
-  <description brief="ROS node for Kobuki">
+  <description brief="ROS node(let) for Kobuki">
     <p>
       ROS wrapper for the Kobuki driver
     </p>

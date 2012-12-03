@@ -1,13 +1,13 @@
 <package>
-  <description brief="auto_docking">
+  <description brief="Automatic docking for Kobuki">
 
-     automatic docking
+     Users owning a docking station for Kobuki can use this tool to let Kobuki find its nest autonomously.
 
   </description>
   <author>Younghun Ju</author>
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
-  <url>http://ros.org/wiki/auto_docking</url>
+  <url>http://ros.org/wiki/kobuki_auto_docking</url>
   
   <depend package="roscpp"/>
   <depend package="nodelet"/>
