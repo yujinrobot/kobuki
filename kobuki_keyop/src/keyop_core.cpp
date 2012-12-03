@@ -56,28 +56,32 @@ namespace keyop_core
 /*****************************************************************************
  ** Implementation
  *****************************************************************************/
+
 /**
  * @brief Default constructor, needs initialisation.
  */
-KeyOpCore::KeyOpCore() : accept_incoming(true),
-                            power_status(false),
-                            cmd(new geometry_msgs::Twist()),
-                            cmd_stamped(new geometry_msgs::TwistStamped()),
-                            power_cmd(new std_msgs::String()),
-                            linear_vel_step(0.1),
-                            linear_vel_max(3.4),
-                            angular_vel_step(0.02),
-                            angular_vel_max(1.2),
-                            mode("full"),
-                            quit_requested(false),
-                            key_file_descriptor(0)
+KeyOpCore::KeyOpCore() : last_zero_vel_sent(true), // avoid zero-vel messages from the beginning
+                         accept_incoming(true),
+                         power_status(false),
+                         cmd(new geometry_msgs::Twist()),
+                         cmd_stamped(new geometry_msgs::TwistStamped()),
+                         power_cmd(new std_msgs::String()),
+                         linear_vel_step(0.1),
+                         linear_vel_max(3.4),
+                         angular_vel_step(0.02),
+                         angular_vel_max(1.2),
+                         mode("full"),
+                         quit_requested(false),
+                         key_file_descriptor(0)
 {
   tcgetattr(key_file_descriptor, &original_terminal_state); // get terminal properties
 }
+
 KeyOpCore::~KeyOpCore()
 {
   tcsetattr(key_file_descriptor, TCSANOW, &original_terminal_state);
 }
+
 /**
  * @brief Initialises the node.
  */
@@ -194,6 +198,7 @@ bool KeyOpCore::init()
 /*****************************************************************************
  ** Implementation [Spin]
  *****************************************************************************/
+
 /**
  * @brief Worker thread loop, mostly empty, but provides clean exit mechanisms.
  *
@@ -201,12 +206,10 @@ bool KeyOpCore::init()
  */
 void KeyOpCore::spin()
 {
-
   ros::Rate loop_rate(10);
 
   while (!quit_requested && ros::ok())
   {
-    velocity_publisher.publish(cmd);
     cmd_stamped->header.stamp = ros::Time::now();
     cmd_stamped->twist.linear.x = cmd->linear.x;
     cmd_stamped->twist.linear.y = cmd->linear.y;
@@ -214,7 +217,22 @@ void KeyOpCore::spin()
     cmd_stamped->twist.angular.x = cmd->angular.x;
     cmd_stamped->twist.angular.y = cmd->angular.y;
     cmd_stamped->twist.angular.z = cmd->angular.z;
-    stamped_velocity_publisher.publish(cmd_stamped);
+
+    // Avoid spamming robot with continuous zero-velocity messages
+    if ((cmd->linear.x  != 0.0) || (cmd->linear.y  != 0.0) || (cmd->linear.z  != 0.0) ||
+        (cmd->angular.x != 0.0) || (cmd->angular.y != 0.0) || (cmd->angular.z != 0.0))
+    {
+      velocity_publisher.publish(cmd);
+      stamped_velocity_publisher.publish(cmd_stamped);
+      last_zero_vel_sent = false;
+    }
+    else if (last_zero_vel_sent == false)
+    {
+      velocity_publisher.publish(cmd);
+      stamped_velocity_publisher.publish(cmd_stamped);
+      last_zero_vel_sent = true;
+    }
+
     accept_incoming = true;
     ros::spinOnce();
     loop_rate.sleep();
@@ -288,7 +306,6 @@ void KeyOpCore::remoteKeyInputReceived(const kobuki_msgs::KeyboardInput& key)
  */
 void KeyOpCore::processKeyboardInput(char c)
 {
-
   /*
    * Arrow keys are a bit special, they are escape characters - meaning they
    * trigger a sequence of keycodes. In this case, 'esc-[-Keycode_xxx'. We
@@ -375,6 +392,7 @@ void KeyOpCore::disable()
     ROS_WARN("KeyOp: motors are already powered down.");
   }
 }
+
 /**
  * @brief Reset/re-enable the navigation system.
  *

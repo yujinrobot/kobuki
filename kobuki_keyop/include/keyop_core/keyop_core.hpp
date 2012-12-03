@@ -89,6 +89,7 @@ private:
   ros::Publisher stamped_velocity_publisher;
   ros::Publisher enable_publisher, disable_publisher;
   ros::ServiceClient reset_odometry_client;
+  bool last_zero_vel_sent;
   bool accept_incoming;
   bool power_status;
   geometry_msgs::TwistPtr cmd;
