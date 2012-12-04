@@ -1,7 +1,7 @@
 <package>
-  <description brief="c++ driver library for kobuki">
+  <description brief="C++ driver library for Kobuki">
     <p>
-      Pure c++ driver library for Kobuki. This is for those who do not wish to use 
+      Pure C++ driver library for Kobuki. This is for those who do not wish to use 
       ROS on their systems.
     </p>
   </description>
