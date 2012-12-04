@@ -49,7 +49,6 @@ public:
 
 private:
   geometry_msgs::TransformStamped odom_trans;
-  nav_msgs::Odometry odom;
   ecl::Pose2D<double> pose;
   std::string odom_frame;
   std::string base_frame;
