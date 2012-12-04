@@ -56,7 +56,7 @@ public:
   SafetyControllerNodelet(){};
   ~SafetyControllerNodelet()
   {
-    NODELET_DEBUG("Waiting for update thread to finish.");
+    NODELET_DEBUG_STREAM("Waiting for update thread to finish.");
     update_thread_.join();
   }
   virtual void onInit()
