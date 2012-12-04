@@ -38,6 +38,13 @@
 #include "../../include/kobuki_driver/modules/dock_drive.hpp"
 
 /*****************************************************************************
+** Defines
+*****************************************************************************/
+
+#define stringfy(x) #x
+#define setState(x) state=x; state_str=stringfy(x)
+
+/*****************************************************************************
 ** Namespaces
 *****************************************************************************/
 
@@ -48,9 +55,11 @@ namespace kobuki {
 *****************************************************************************/
 DockDrive::DockDrive() :
   is_enabled(false), can_run(false) 
+  , state(IDLE), state_str("IDLE")
   , vx(0.0), wz(0.0)
   , speed(0), radius(0)
   , bias(0.23) //wheelbase, wheel_to_wheel, in [m]
+  , bump_remainder(0)
 {}
 
 
@@ -98,7 +107,7 @@ void DockDrive::update(std::vector<unsigned char> &signal
    * debug prints
    *************************/
   // pose_update and pose_update_rates for debugging
-  std::cout << std::fixed << std::setprecision(4) 
+  std::cout << std::fixed << std::setprecision(4)
     << "[x: "    << std::setw(7) << pose_update.x()
     << ", y: "  << std::setw(7) << pose_update.y()
     << ", th: " << std::setw(7) << pose_update.heading()
@@ -152,12 +161,65 @@ void DockDrive::update(std::vector<unsigned char> &signal
   /*************************
    * processing. algorithms; transforma to velocity command
    *************************/
-#if 1
+#if 0
   // just go forward
   vx = 0.1;
   wz = 0.0;
 
   std::cout << "[vx: " << vx << ", wz: " << wz << "]";
+  std::cout << td::endl;
+  velocityCommands(vx, wz);
+  return;
+#elif 1
+  do {  // a kind of hack
+    if ( bump_remainder-- > 0 ) {
+      setState(BUMPED);
+      vx = -0.05; wz = 0.0;
+      break;
+    }
+    if ( bumper || charger ) {
+      if( bumper && charger ) {
+        setState(BUMPED_DOCK);
+        bump_remainder = 0;
+        vx = -0.01; wz = 0.0;
+        break;
+      }
+      if ( bumper ) {
+        setState(BUMPED);
+        bump_remainder = 10;
+        vx = -0.05; wz = 0.0;
+        break;
+      }
+      if ( charger ) { // already docked in
+        vx = 0.0; wz = 0.0;
+        setState(DONE);
+        break;
+      }
+    }
+    else {
+      if ( (signal_filt[1]&FAR_CENTER) || (signal_filt[1]&NEAR_CENTER) )
+      {
+        setState(ALIGNED);
+        vx = 0.05; wz = 0.00;
+        break;
+      } else if ( signal_filt[1] || signal_filt[1]&NEAR_CENTER ) {
+        setState(SPIN);
+        vx = 0.00; wz = 0.10;
+        break;
+      } else {
+        setState(SPIN);
+        vx = 0.00; wz = 0.30;
+        break;
+      }
+    } /*else {
+      setState(IDLE);
+    }*/
+
+  } while(0);
+
+  //std::cout << std::fixed << std::setprecision(4)
+  std::cout << "[vx: " << std::setw(7) << vx << ", wz: " << std::setw(7) << wz << "]";
+  std::cout << "[S: " << state_str << "]";
   std::cout << std::endl;
   velocityCommands(vx, wz);
   return;

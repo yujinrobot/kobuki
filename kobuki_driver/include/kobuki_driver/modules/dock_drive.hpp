@@ -70,6 +70,20 @@ public:
     FAR_LEFT=16,
     FAR_RIGHT=32
   };
+  enum State {
+    IDLE,
+    LOST,
+    INSIDE_FIELD,
+    AWAY,
+    SPIN,
+    SPIRAL,
+    ALIGNED,
+    BUMPED,
+    BUMPED_DOCK,
+    RUN,
+    STOP,
+    DONE
+  };
 
   DockDrive();
   void init();
@@ -94,10 +108,13 @@ public:
 
 private:
   bool is_enabled, can_run;
+  State state;
+  std::string state_str;
   double vx, wz;
   short speed, radius;
   double bias;
   std::vector<std::vector<unsigned char> > past_signals;
+  int bump_remainder;
 
   std::string binary(unsigned char number) const;
 };
