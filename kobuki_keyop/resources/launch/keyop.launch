@@ -1,12 +1,12 @@
 <launch>
     <node pkg="kobuki_keyop" type="keyop" name="keyop" output="screen">
-        <remap from="keyop/enable"  to="/enable"/>
-        <remap from="keyop/disable" to="/disable"/>
-        <remap from="keyop/cmd_vel" to="/key_cmd_vel"/>
-        <remap from="keyop/mobile_robot/reset_odometry" to="/mobile_base/reset_odometry"/>
+        <remap from="keyop/enable"  to="mobile_base/enable"/>
+        <remap from="keyop/disable" to="mobile_base/disable"/>
+        <remap from="keyop/cmd_vel" to="key_cmd_vel"/>
+        <remap from="keyop/mobile_robot/reset_odometry" to="mobile_base/reset_odometry"/>
 
-        <param name="linear_vel_step"  value="0.05" type="double"/>
-        <param name="linear_vel_max"   value="1.5"  type="double"/>
+        <param name="linear_vel_step"  value="0.1" type="double"/>
+        <param name="linear_vel_max"   value="0.6"  type="double"/>
         <param name="angular_vel_step" value="0.33" type="double"/>
         <param name="angular_vel_max"  value="6.6"  type="double"/>
     </node>
