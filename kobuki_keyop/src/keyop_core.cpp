@@ -200,9 +200,9 @@ bool KeyOpCore::init()
  *****************************************************************************/
 
 /**
- * @brief Worker thread loop, mostly empty, but provides clean exit mechanisms.
+ * @brief Worker thread loop; sends current velocity command at a fixed rate.
  *
- * Process ros functions as well as aborting when requested.
+ * It also process ros functions as well as aborting when requested.
  */
 void KeyOpCore::spin()
 {
@@ -375,7 +375,6 @@ void KeyOpCore::processKeyboardInput(char c)
  */
 void KeyOpCore::disable()
 {
-
   cmd->linear.x = 0.0;
   cmd->angular.z = 0.0;
   velocity_publisher.publish(cmd);
@@ -402,7 +401,6 @@ void KeyOpCore::disable()
  */
 void KeyOpCore::enable()
 {
-
   accept_incoming = false;
 
   cmd->linear.x = 0.0;
@@ -433,7 +431,6 @@ void KeyOpCore::enable()
  */
 void KeyOpCore::incrementLinearVelocity()
 {
-
   if (power_status)
   {
     if (cmd->linear.x <= linear_vel_max)
@@ -441,7 +438,6 @@ void KeyOpCore::incrementLinearVelocity()
       cmd->linear.x += linear_vel_step;
     }
     ROS_INFO_STREAM("KeyOp: linear  velocity incremented [" << cmd->linear.x << "|" << cmd->angular.z << "]");
-    velocity_publisher.publish(cmd);
   }
   else
   {
@@ -454,7 +450,6 @@ void KeyOpCore::incrementLinearVelocity()
  */
 void KeyOpCore::decrementLinearVelocity()
 {
-
   if (power_status)
   {
     if (cmd->linear.x >= -linear_vel_max)
@@ -462,7 +457,6 @@ void KeyOpCore::decrementLinearVelocity()
       cmd->linear.x -= linear_vel_step;
     }
     ROS_INFO_STREAM("KeyOp: linear  velocity decremented [" << cmd->linear.x << "|" << cmd->angular.z << "]");
-    velocity_publisher.publish(cmd);
   }
   else
   {
@@ -475,7 +469,6 @@ void KeyOpCore::decrementLinearVelocity()
  */
 void KeyOpCore::incrementAngularVelocity()
 {
-
   if (power_status)
   {
     if (cmd->angular.z <= angular_vel_max)
@@ -483,7 +476,6 @@ void KeyOpCore::incrementAngularVelocity()
       cmd->angular.z += angular_vel_step;
     }
     ROS_INFO_STREAM("KeyOp: angular velocity incremented [" << cmd->linear.x << "|" << cmd->angular.z << "]");
-    velocity_publisher.publish(cmd);
   }
   else
   {
@@ -496,7 +488,6 @@ void KeyOpCore::incrementAngularVelocity()
  */
 void KeyOpCore::decrementAngularVelocity()
 {
-
   if (power_status)
   {
     if (cmd->angular.z >= -angular_vel_max)
@@ -504,7 +495,6 @@ void KeyOpCore::decrementAngularVelocity()
       cmd->angular.z -= angular_vel_step;
     }
     ROS_INFO_STREAM("KeyOp: angular velocity decremented [" << cmd->linear.x << "|" << cmd->angular.z << "]");
-    velocity_publisher.publish(cmd);
   }
   else
   {
@@ -519,7 +509,6 @@ void KeyOpCore::resetVelocity()
     cmd->angular.z = 0.0;
     cmd->linear.x = 0.0;
     ROS_INFO_STREAM("KeyOp: reset linear/angular velocities.");
-    velocity_publisher.publish(cmd);
   }
   else
   {
