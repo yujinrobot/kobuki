@@ -17,7 +17,7 @@
   <node pkg="nodelet" type="nodelet" name="keyop_vel_smoother" args="load yocs_velocity_smoother/VelocitySmootherNodelet kobuki">
     <rosparam file="$(find kobuki_keyop)/param/keyop_smoother.yaml" command="load"/>
 <!--     <remap from="keyop_vel_smoother/raw_cmd_vel" to="raw_cmd_vel"/> -->
-    <remap from="keyop_vel_smoother/odom" to="odom"/>
+    <remap from="keyop_vel_smoother/odometry" to="odom"/>
     <remap from="keyop_vel_smoother/smooth_cmd_vel" to="cmd_vel_mux/keyboard_teleop"/>
   </node>
   
