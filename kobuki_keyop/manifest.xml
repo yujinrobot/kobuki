@@ -20,4 +20,8 @@
   <depend package="ecl_threads"/>
   <depend package="ecl_time"/>
   <depend package="ecl_exceptions"/>
+  <!-- Velocity Smoothing -->
+  <depend package="cmd_vel_mux"/>
+  <depend package="yocs_velocity_smoother"/>
+
 </package>

@@ -28,10 +28,6 @@
   <depend package="kobuki_keyop"/>
   <depend package="kobuki_safety_controller"/>
   
-  <!-- YOCS -->
-  <depend package="cmd_vel_mux"/>
-  <depend package="yocs_velocity_smoother"/>
-  
   <!-- Ecl -->
   <depend package="ecl_exceptions"/>
   <depend package="ecl_sigslots"/>
