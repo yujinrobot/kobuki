@@ -23,7 +23,6 @@
   <depend package="nodelet"/>
 
   <!--  Kobuki -->
-  <depend package="kobuki_ftdi"/> <!-- 57-kobuki.rules -->
   <depend package="kobuki_msgs"/>
   <depend package="kobuki_driver"/>
   <depend package="kobuki_keyop"/>
