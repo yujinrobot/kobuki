@@ -18,4 +18,8 @@
   <depend stack="robot_model"/> <!-- urdf -->
   <depend stack="xacro"/>
   <depend stack="kobuki_msgs"/>
+  <!-- bump clouds -->
+  <depend stack="perception_pcl"/>
+  <!-- kobuki tutorials -->
+  <depend stack="yujin_ocs"/>
 </stack>
