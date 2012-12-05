@@ -53,10 +53,11 @@ namespace kobuki
 class SafetyControllerNodelet : public nodelet::Nodelet
 {
 public:
-  SafetyControllerNodelet(){};
+  SafetyControllerNodelet() : shutdown_requested_(false) { };
   ~SafetyControllerNodelet()
   {
     NODELET_DEBUG_STREAM("Waiting for update thread to finish.");
+    shutdown_requested_ = true;
     update_thread_.join();
   }
   virtual void onInit()
@@ -84,7 +85,7 @@ private:
   {
     ros::Rate spin_rate(10);
     controller_->enable(); // enable the controller when loading the nodelet
-    while (ros::ok())
+    while (! shutdown_requested_ && ros::ok())
     {
       controller_->spin();
       spin_rate.sleep();
@@ -93,6 +94,7 @@ private:
 
   boost::shared_ptr<SafetyController> controller_;
   ecl::Thread update_thread_;
+  bool shutdown_requested_;
 };
 
 } // namespace kobuki
