@@ -68,21 +68,28 @@ public:
     NEAR_RIGHT=4,
     FAR_CENTER=8,
     FAR_LEFT=16,
-    FAR_RIGHT=32
+    FAR_RIGHT=32,
+    NEAR = 7,
+    FAR = 56,
   };
   enum State {
     IDLE,
     LOST,
+    UNKNOWN,
     INSIDE_FIELD,
     AWAY,
+    SCAN,
     SPIN,
     SPIRAL,
     ALIGNED,
+    ALIGNED_FAR,
+    ALIGNED_NEAR,
     BUMPED,
     BUMPED_DOCK,
     RUN,
     STOP,
-    DONE
+    DOCKED_IN,
+    DONE,
   };
 
   DockDrive();
@@ -115,6 +122,7 @@ private:
   double bias;
   std::vector<std::vector<unsigned char> > past_signals;
   int bump_remainder;
+  int dock_stabilizer;
 
   std::string binary(unsigned char number) const;
 };

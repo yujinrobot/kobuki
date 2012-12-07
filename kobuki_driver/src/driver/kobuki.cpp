@@ -386,7 +386,7 @@ void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update, ecl::linear_algebr
 {
   diff_drive.update(core_sensors.data.time_stamp, core_sensors.data.left_encoder, core_sensors.data.right_encoder
                        , pose_update, pose_update_rates);
-  if (dock_mode)
+  if (dock_mode && dock_drive.isEnabled())
     dock_drive.update(dock_ir.data.docking, core_sensors.data.bumper, core_sensors.data.charger
                        , pose_update, pose_update_rates);
 }
