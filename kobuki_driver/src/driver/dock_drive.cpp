@@ -42,9 +42,9 @@
 *****************************************************************************/
 
 #define stringfy(x) #x
-#define setState(x) {state=x; state_str=stringfy(x);}
-#define setVel(v,w) {vx=x; wz=w;}
-#define setAll(x,v,w) { setState(x); setVel(v,w); }
+#define setState(x) {state=x;state_str=stringfy(x);}
+#define setVel(v,w) {vx=v;wz=w;}
+#define setStateVel(x,v,w) {setState(x);setVel(v,w);}
 
 /*****************************************************************************
 ** Namespaces
@@ -176,72 +176,63 @@ void DockDrive::update(std::vector<unsigned char> &signal
 #elif 1
   std::string debug_str = "";
   do {  // a kind of hack
-    if ( state==DONE ) setState(IDLE);
+    if ( state==DONE ) setState(IDLE); // when this function is called after final state 'DONE'.
     if ( state==DOCKED_IN ) {
       if (dock_stabilizer++ > 20 ) {
         is_enabled = false;
         can_run = false;
-        setState(DONE); vx = 0.0; wz = 0.0; break;
+        setStateVel(DONE, 0.0, 0.0); break;
       }
-      setState(DOCKED_IN); vx = 0.0; wz = 0.0; break;
+      setStateVel(DOCKED_IN, 0.0, 0.0); break;
     }
     if ( bump_remainder > 0 ) {
       bump_remainder--;
-      setState(BUMPED);
-      vx = -0.05; wz = 0.0;
-      break;
+      setStateVel(BUMPED, -0.05, 0.0); break;
     } else if (state == BUMPED) {
       setState(IDLE);
     }
     if ( bumper || charger ) {
       if( bumper && charger ) {
-        setState(BUMPED_DOCK);
         bump_remainder = 0;
-        vx = -0.01; wz = 0.0;
-        break;
+        setStateVel(BUMPED_DOCK, -0.01, 0.0); break;
       }
       if ( bumper ) {
-        setState(BUMPED);
         bump_remainder = 50;
-        vx = -0.05; wz = 0.0;
-        break;
+        setStateVel(BUMPED, -0.05, 0.0); break;
       }
       if ( charger ) { // already docked in
-        vx = 0.0; wz = 0.0;
-        setState(DOCKED_IN);
         dock_stabilizer = 0;
-        break;
+        setStateVel(DOCKED_IN, 0.0,0.0); break;
       }
     } else {
       if (state==SCAN || state==IDLE) {
         if ( (signal_filt[1]&FAR_CENTER) || (signal_filt[1]&NEAR_CENTER) ) {
-          setState(ALIGNED); vx = 0.05; wz = 0.00; break;
+          setStateVel(ALIGNED, 0.05, 0.00); break;
         } else if ( signal_filt[1] ) {
-          setState(SCAN);    vx = 0.00; wz = 0.10; break;
+          setStateVel(SCAN, 0.00, 0.10); break;
         } else {
-          setState(SCAN);    vx = 0.00; wz = 0.66; break;
+          setStateVel(SCAN, 0.00, 0.66); break;
         }
 
       } else if (state==ALIGNED || state==ALIGNED_FAR || state==ALIGNED_NEAR) {
         if ( signal_filt[1] ) {
-          if (signal_filt[1]&NEAR)
+          if ( signal_filt[1]&NEAR )
           {
-            if( ((signal_filt[1]&NEAR) == NEAR_CENTER) || ((signal_filt[1]&NEAR) == NEAR) ) { setState(ALIGNED_NEAR); vx = 0.05; wz = 0.00; debug_str = "AlignedNearCenter"; break; }
-            if(   signal_filt[1]&NEAR_LEFT  ) {                                               setState(ALIGNED_NEAR); vx = 0.05; wz = 0.1;  debug_str = "AlignedNearLeft"  ; break; }
-            if(   signal_filt[1]&NEAR_RIGHT ) {                                               setState(ALIGNED_NEAR); vx = 0.05; wz = -0.1; debug_str = "AlignedNearRight" ; break; }
+            if ( ((signal_filt[1]&NEAR) == NEAR_CENTER) || ((signal_filt[1]&NEAR) == NEAR) ) { setStateVel(ALIGNED_NEAR, 0.05,  0.0); debug_str = "AlignedNearCenter"; break; }
+            if (   signal_filt[1]&NEAR_LEFT  ) {                                               setStateVel(ALIGNED_NEAR, 0.05,  0.1); debug_str = "AlignedNearLeft"  ; break; }
+            if (   signal_filt[1]&NEAR_RIGHT ) {                                               setStateVel(ALIGNED_NEAR, 0.05, -0.1); debug_str = "AlignedNearRight" ; break; }
           }
-          if (signal_filt[1]&FAR)
+          if ( signal_filt[1]&FAR )
           {
-            if( ((signal_filt[1]&FAR) == FAR_CENTER) || ((signal_filt[1]&FAR) == FAR) ) { setState(ALIGNED_FAR);  vx = 0.1;  wz = 0.00; debug_str = "AlignedFarCenter"; break; }
-            if(   signal_filt[1]&FAR_LEFT ) {                                             setState(ALIGNED_FAR);  vx = 0.1;  wz = 0.3;  debug_str = "AlignedFarLeft"  ; break; }
-            if(   signal_filt[1]&FAR_RIGHT ) {                                            setState(ALIGNED_FAR);  vx = 0.1;  wz = -0.3; debug_str = "AlignedFarRight" ; break; }
-          } else {                                                                        setState(SCAN);         vx = 0.00; wz = 0.66; break; }
-        } else {                                                                          setState(SCAN);         vx = 0.00; wz = 0.66; break; }
-      } else {                                                                            setState(UNKNOWN);      vx = 0.00; wz = 0.00; break; }
-    } /*else {
-      setState(IDLE);
-    }*/
-
+            if ( ((signal_filt[1]&FAR) == FAR_CENTER) || ((signal_filt[1]&FAR) == FAR) ) { setStateVel(ALIGNED_FAR, 0.1,  0.0); debug_str = "AlignedFarCenter"; break; }
+            if (   signal_filt[1]&FAR_LEFT ) {                                             setStateVel(ALIGNED_FAR, 0.1,  0.3); debug_str = "AlignedFarLeft"  ; break; }
+            if (   signal_filt[1]&FAR_RIGHT ) {                                            setStateVel(ALIGNED_FAR, 0.1, -0.3); debug_str = "AlignedFarRight" ; break; }
+          }
+          setStateVel(SCAN, 0.00, 0.66); break;
+        }
+      } else { setStateVel(SCAN, 0.00, 0.66); break; }
+    }
+    setStateVel(UNKNOWN, 0.00, 0.00); break;
   } while(0);
 
   //std::cout << std::fixed << std::setprecision(4)
