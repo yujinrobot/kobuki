@@ -81,6 +81,8 @@ public:
     SCAN,
     SPIN,
     SPIRAL,
+    FIND_STREAM,
+    GET_STREAM,
     ALIGNED,
     ALIGNED_FAR,
     ALIGNED_NEAR,
@@ -117,12 +119,15 @@ private:
   bool is_enabled, can_run;
   State state;
   std::string state_str;
+  ecl::Pose2D<double> pose;
   double vx, wz;
   short speed, radius;
   double bias;
   std::vector<std::vector<unsigned char> > past_signals;
   int bump_remainder;
   int dock_stabilizer;
+  int dock_detector;
+  double rotated;
 
   std::string binary(unsigned char number) const;
 };
