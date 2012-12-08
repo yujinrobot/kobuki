@@ -40,10 +40,12 @@ import sys, select, termios, tty, os
 import time
 from datetime import datetime
 import types
+import commands
 
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
-from kobuki_msgs.msg import DigitalOutput, Led, Sound
+from kobuki_msgs.msg import DigitalOutput, Led, Sound, SensorState, DockInfraRed
+
 
 
 colorBindings = {
@@ -72,8 +74,11 @@ class Controller(object):
     rate = rospy.Rate(10)
     self.message = "Idle" 
     self.cmd_vel=Twist()
+    self.sensors = SensorState()
+    self.dock_ir = DockInfraRed()
+    self.state = "N/A"
+    self.percentage = 0.0
 
-    self.printFront()
     self.pub = {
       'enable':rospy.Publisher('/enable', String),
       'disable':rospy.Publisher('/disable', String),
@@ -85,6 +90,10 @@ class Controller(object):
       'led2':rospy.Publisher('/mobile_base/commands/led2',Led),
       'sound':rospy.Publisher('/mobile_base/commands/sound',Sound),
       'cmd_vel':rospy.Publisher('/cmd_vel',Twist),
+    }
+    self.sub = {
+      'core':rospy.Subscriber('/mobile_base/sensors/core', SensorState, self.sensorsCallback),
+      'dock_ir':rospy.Subscriber('/mobile_base/sensors/dock_ir', DockInfraRed, self.dockIRCallback),
     }
     self.keyBindings = {
       '1':(self.pub['do_dock'].publish,String('enable'),'enable'),
@@ -111,7 +120,10 @@ class Controller(object):
       'Q':(rospy.signal_shutdown,'user reuest','quit'),
     }
     rospy.Timer(rospy.Duration(0.1), self.keyopCallback)
-    '''  
+    rospy.Timer(rospy.Duration(1.0), self.batteryCallback)
+    rospy.Timer(rospy.Duration(1.0), self.stateCallback)
+    self.printFront()
+    '''
     # initial values
     external_power = DigitalOutput()
     external_power.values = [ True, True, True, True ]
@@ -166,9 +178,9 @@ class Controller(object):
     if key == '':
       #self.message = "non." #debug
       return
-    if ord(key) == 27: 
+    if ord(key) == 27:
       akey = self.getKey()
-      if len(akey) and ord(akey)==91: 
+      if len(akey) and ord(akey)==91:
         key = self.getKey()
         if key == 'A': self.message = 'Up Arrow'    ; self.cmd_vel.linear.x += 0.05
         if key == 'B': self.message = 'Down Arrow'  ; self.cmd_vel.linear.x -= 0.05
@@ -181,7 +193,7 @@ class Controller(object):
         v = self.keyBindings[key][1]
         m = self.keyBindings[key][2]
         if type(f) is types.InstanceType or type(f) is types.MethodType or type(f) is types.FunctionType : f(v)
-        else: 
+        else:
           print type(f)
         self.message = str(m)
       else:
@@ -218,9 +230,33 @@ class Controller(object):
     if not rospy.is_shutdown():
       self.pub['cmd_vel'].publish(self.cmd_vel)
 
+  def sensorsCallback(self, data):
+    if not rospy.is_shutdown():
+      self.sensors = data
+
+  def dockIRCallback(self, data):
+    if not rospy.is_shutdown():
+      self.dock_ir = data
+
+  def batteryCallback(self, event):
+    rem = float(commands.getoutput("grep \"^remaining capacity\" /proc/acpi/battery/BAT0/state | awk '{ print $3 }'"))
+    full = float(commands.getoutput("grep \"^last full capacity\" /proc/acpi/battery/BAT0/info | awk '{ print $4 }'"))
+    self.state = commands.getoutput("grep \"^charging state\" /proc/acpi/battery/BAT0/state | awk '{ print $3 }'")
+    self.percentage = float((rem/full) * 100.)
+
+  def stateCallback(self, event):
+    # do check
+    num =  self.sub['core'].get_num_connections()
+    if num  == 0:
+      self.messages = 'core is disconnected({0:d})'.format(num)
+    else:
+      self.messages = 'core is connected({0:d})'.format(num)
+    # do more handling and managing
+    # get_num_connections are not reliable yet.
+
   def resetVel(self, x):
     self.cmd_vel = Twist()
- 
+
   def printFront(self): 
     # statement
     print ""
@@ -237,8 +273,20 @@ class Controller(object):
     #print " [ On] [Off] [ On] [Off] | [Orange] [Orange] | [ On] [Off] [Off] [ On]"
 
   def printStatus(self):
-    sys.stdout.write('                                                                        \r')
-    sys.stdout.write('[ \033[1m' + self.message + '\033[0m ] ')
+    sys.stdout.write('                                                                                                               \r')
+    sys.stdout.write('[ \033[1m' + self.message + '\033[0m ]')
+    sys.stdout.write('[Laptop: ' + "{0:2.2f}".format(self.percentage) + '% - ' + self.state + ']')
+
+    if self.sensors.charger:
+      src_str = '(adaptor)' if self.sensors.charger&16 else '(dock)'
+    else:
+      src_str = ''
+
+    chg = self.sensors.charger&6
+    if chg==0: chg_str = 'discharging'
+    elif chg==2: chg_str = 'fully charged'
+    else: chg_str = 'charging'
+    sys.stdout.write('[Robot: ' + "{0:2.1f}".format(self.sensors.battery/10.) + 'V - ' + chg_str + src_str + ']')
     '''
     for idx in range(0,4):
         if ext_values[idx]:
@@ -259,6 +307,6 @@ class Controller(object):
 
 if __name__ == '__main__':
   try:
-    instance = Controller()  
+    instance = Controller()
     instance.spin()
   except rospy.ROSInterruptException: pass
