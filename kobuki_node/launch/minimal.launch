@@ -8,10 +8,5 @@
     <rosparam file="$(find kobuki_node)/param/base.yaml" command="load"/>
     <remap from="mobile_base/odom" to="odom"/>
     <remap from="mobile_base/joint_states" to="joint_states"/>
-    <!-- 
-    <remap from="mobile_base/cmd_vel" to="cmd_vel"/>
-    <remap from="mobile_base/enable" to="enable"/>
-    <remap from="mobile_base/disable" to="disable"/>
-     -->
   </node>
 </launch>

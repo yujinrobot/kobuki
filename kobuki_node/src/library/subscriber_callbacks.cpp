@@ -110,13 +110,14 @@ void KobukiRos::subscribeExternalPowerCommand(const kobuki_msgs::ExternalPowerCo
         (msg->source == kobuki_msgs::ExternalPower::PWR_12V5A) ||
         (msg->source == kobuki_msgs::ExternalPower::PWR_12V1_5A)))
   {
-    ROS_ERROR_STREAM("Power source " << (unsigned int)msg->source << " does not exist! [" << name << "].");
+    ROS_ERROR_STREAM("Kobuki : Power source " << (unsigned int)msg->source << " does not exist! [" << name << "].");
     return;
   }
   if (!((msg->state == kobuki_msgs::ExternalPower::OFF) ||
       (msg->state == kobuki_msgs::ExternalPower::ON)))
   {
-    ROS_ERROR_STREAM("Power source state " << (unsigned int)msg->state << " does not exist! [" << name << "].");
+    ROS_ERROR_STREAM("Kobuki : Power source state "
+        << (unsigned int)msg->state << " does not exist! [" << name << "].");
     return;
   }
 
@@ -128,12 +129,14 @@ void KobukiRos::subscribeExternalPowerCommand(const kobuki_msgs::ExternalPowerCo
       if (msg->state)
       {
         digital_output.values[i] = true; // turn source on
-        ROS_INFO_STREAM("Turning on external power source " << (unsigned int)msg->source << ". [" << name << "].");
+        ROS_INFO_STREAM("Kobuki : Turning on external power source "
+            << (unsigned int)msg->source << ". [" << name << "].");
       }
       else
       {
         digital_output.values[i] = false; // turn source off
-        ROS_INFO_STREAM("Turning off external power source " << (unsigned int)msg->source << ". [" << name << "].");
+        ROS_INFO_STREAM("Kobuki : Turning off external power source "
+            << (unsigned int)msg->source << ". [" << name << "].");
       }
       digital_output.mask[i] = true; // change source state
     }
@@ -182,7 +185,7 @@ void KobukiRos::subscribeSoundCommand(const kobuki_msgs::SoundConstPtr msg)
   }
   else
   {
-    ROS_WARN_STREAM("Kobuki: Invalid sound command! There is no sound stored for value '" << msg->value << "'.");
+    ROS_WARN_STREAM("Kobuki : Invalid sound command! There is no sound stored for value '" << msg->value << "'.");
   }
   return;
 }
@@ -192,7 +195,7 @@ void KobukiRos::subscribeSoundCommand(const kobuki_msgs::SoundConstPtr msg)
  */
 void KobukiRos::subscribeResetOdometry(const std_msgs::EmptyConstPtr /* msg */)
 {
-  ROS_INFO_STREAM("Mobile base : resetting the odometry [" << name << "].");
+  ROS_INFO_STREAM("Kobuki : Resetting the odometry. [" << name << "].");
   joint_states.position[0] = 0.0; // wheel_left
   joint_states.velocity[0] = 0.0;
   joint_states.position[1] = 0.0; // wheel_right
@@ -202,18 +205,25 @@ void KobukiRos::subscribeResetOdometry(const std_msgs::EmptyConstPtr /* msg */)
   return;
 }
 
-void KobukiRos::enable(const std_msgs::EmptyConstPtr msg)
+void KobukiRos::subscribeMotorPower(const kobuki_msgs::MotorPowerConstPtr msg)
 {
-  kobuki.enable();
-  ROS_INFO_STREAM("Kobuki : enabled.");
-  odometry.resetTimeout();
-}
-
-void KobukiRos::disable(const std_msgs::EmptyConstPtr msg)
-{
-  kobuki.disable();
-  ROS_INFO_STREAM("Kobuki : disabled.");
-  odometry.resetTimeout();
+  if (msg->state == kobuki_msgs::MotorPower::ON)
+  {
+    ROS_INFO_STREAM("Kobuki : Firing up the motors. [" << name << "]");
+    kobuki.enable();
+    odometry.resetTimeout();
+  }
+  else if (msg->state == kobuki_msgs::MotorPower::OFF)
+  {
+    kobuki.disable();
+    ROS_INFO_STREAM("Kobuki : Shutting down the motors. [" << name << "]");
+    odometry.resetTimeout();
+  }
+  else
+  {
+    ROS_ERROR_STREAM("Kobuki : Motor power command specifies unknown state '" << (unsigned int)msg->state
+                     << "'. [" << name << "]");
+  }
 }
 
 void KobukiRos::doDock(const std_msgs::StringConstPtr msg)

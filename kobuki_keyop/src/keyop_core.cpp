@@ -43,7 +43,7 @@
 #include <ecl/time.hpp>
 #include <ecl/exceptions.hpp>
 #include <std_srvs/Empty.h>
-
+#include <kobuki_msgs/MotorPower.h>
 #include "../include/keyop_core/keyop_core.hpp"
 
 /*****************************************************************************
@@ -63,14 +63,13 @@ namespace keyop_core
 KeyOpCore::KeyOpCore() : last_zero_vel_sent(true), // avoid zero-vel messages from the beginning
                          accept_incoming(true),
                          power_status(false),
+                         wait_for_connection_(true),
                          cmd(new geometry_msgs::Twist()),
                          cmd_stamped(new geometry_msgs::TwistStamped()),
-                         power_cmd(new std_msgs::String()),
                          linear_vel_step(0.1),
                          linear_vel_max(3.4),
                          angular_vel_step(0.02),
                          angular_vel_max(1.2),
-                         mode("full"),
                          quit_requested(false),
                          key_file_descriptor(0)
 {
@@ -98,7 +97,7 @@ bool KeyOpCore::init()
   nh.getParam("linear_vel_max", linear_vel_max);
   nh.getParam("angular_vel_step", angular_vel_step);
   nh.getParam("angular_vel_max", angular_vel_max);
-  nh.getParam("mode", mode);
+  nh.getParam("wait_for_connection", wait_for_connection_);
 
   ROS_INFO_STREAM("KeyOpCore : using linear  vel step [" << linear_vel_step << "].");
   ROS_INFO_STREAM("KeyOpCore : using linear  vel max  [" << linear_vel_max << "].");
@@ -113,12 +112,8 @@ bool KeyOpCore::init()
   /*********************
    ** Publishers
    **********************/
-  velocity_publisher = nh.advertise<geometry_msgs::Twist>("cmd_vel", 1);
-  stamped_velocity_publisher = nh.advertise<geometry_msgs::TwistStamped>("cmd_vel_stamped", 1);
-  enable_publisher = nh.advertise<std_msgs::String>("enable", 1);
-  disable_publisher = nh.advertise<std_msgs::String>("disable", 1);
-
-  power_cmd->data = "all";
+  velocity_publisher_ = nh.advertise<geometry_msgs::Twist>("cmd_vel", 1);
+  motor_power_publisher_ = nh.advertise<kobuki_msgs::MotorPower>("motor_power", 1);
 
   /*********************
    ** Velocities
@@ -130,19 +125,10 @@ bool KeyOpCore::init()
   cmd->angular.y = 0.0;
   cmd->angular.z = 0.0;
 
-  cmd_stamped->header.stamp = ros::Time::now();
-  cmd_stamped->header.frame_id = ros::this_node::getName(); //"kobuki_keyop";
-  cmd_stamped->twist.linear.x = 0.0;
-  cmd_stamped->twist.linear.y = 0.0;
-  cmd_stamped->twist.linear.z = 0.0;
-  cmd_stamped->twist.angular.x = 0.0;
-  cmd_stamped->twist.angular.y = 0.0;
-  cmd_stamped->twist.angular.z = 0.0;
-
   /*********************
    ** Wait for connection
    **********************/
-  if (mode == "simple")
+  if (!wait_for_connection_)
   {
     return true;
   }
@@ -151,7 +137,7 @@ bool KeyOpCore::init()
   bool connected = false;
   while (!connected)
   {
-    if (enable_publisher.getNumSubscribers() > 0)
+    if (motor_power_publisher_.getNumSubscribers() > 0)
     {
       connected = true;
       break;
@@ -163,7 +149,7 @@ bool KeyOpCore::init()
     }
     else
     {
-      ROS_WARN("KeyOp: could not connect, trying again after 500ms...");
+      ROS_WARN_STREAM("KeyOp: could not connect, trying again after 500ms...");
       try
       {
         millisleep(500);
@@ -184,7 +170,9 @@ bool KeyOpCore::init()
   }
   else
   {
-    enable_publisher.publish(power_cmd);
+    kobuki_msgs::MotorPower power_cmd;
+    power_cmd.state = kobuki_msgs::MotorPower::ON;
+    motor_power_publisher_.publish(power_cmd);
     ROS_INFO("KeyOp: connected.");
     power_status = true;
   }
@@ -209,29 +197,18 @@ void KeyOpCore::spin()
 
   while (!quit_requested && ros::ok())
   {
-    cmd_stamped->header.stamp = ros::Time::now();
-    cmd_stamped->twist.linear.x = cmd->linear.x;
-    cmd_stamped->twist.linear.y = cmd->linear.y;
-    cmd_stamped->twist.linear.z = cmd->linear.z;
-    cmd_stamped->twist.angular.x = cmd->angular.x;
-    cmd_stamped->twist.angular.y = cmd->angular.y;
-    cmd_stamped->twist.angular.z = cmd->angular.z;
-
     // Avoid spamming robot with continuous zero-velocity messages
     if ((cmd->linear.x  != 0.0) || (cmd->linear.y  != 0.0) || (cmd->linear.z  != 0.0) ||
         (cmd->angular.x != 0.0) || (cmd->angular.y != 0.0) || (cmd->angular.z != 0.0))
     {
-      velocity_publisher.publish(cmd);
-      stamped_velocity_publisher.publish(cmd_stamped);
+      velocity_publisher_.publish(cmd);
       last_zero_vel_sent = false;
     }
     else if (last_zero_vel_sent == false)
     {
-      velocity_publisher.publish(cmd);
-      stamped_velocity_publisher.publish(cmd_stamped);
+      velocity_publisher_.publish(cmd);
       last_zero_vel_sent = true;
     }
-
     accept_incoming = true;
     ros::spinOnce();
     loop_rate.sleep();
@@ -376,18 +353,20 @@ void KeyOpCore::disable()
 {
   cmd->linear.x = 0.0;
   cmd->angular.z = 0.0;
-  velocity_publisher.publish(cmd);
+  velocity_publisher_.publish(cmd);
   accept_incoming = false;
 
   if (power_status)
   {
-    disable_publisher.publish(power_cmd);
-    ROS_INFO("KeyOp: die, die, die (disabling power to the device subsystem).");
+    ROS_INFO("KeyOp: die, die, die (disabling power to the device's motor system).");
+    kobuki_msgs::MotorPower power_cmd;
+    power_cmd.state = kobuki_msgs::MotorPower::OFF;
+    motor_power_publisher_.publish(power_cmd);
     power_status = false;
   }
   else
   {
-    ROS_WARN("KeyOp: Device has already been powered down.");
+    ROS_WARN("KeyOp: Motor system has already been powered down.");
   }
 }
 
@@ -403,12 +382,14 @@ void KeyOpCore::enable()
 
   cmd->linear.x = 0.0;
   cmd->angular.z = 0.0;
-  velocity_publisher.publish(cmd);
+  velocity_publisher_.publish(cmd);
 
   if (!power_status)
   {
     ROS_INFO("KeyOp: Enabling power to the device subsystem.");
-    enable_publisher.publish(power_cmd);
+    kobuki_msgs::MotorPower power_cmd;
+    power_cmd.state = kobuki_msgs::MotorPower::ON;
+    motor_power_publisher_.publish(power_cmd);
     power_status = true;
   }
   else

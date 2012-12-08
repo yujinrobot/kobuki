@@ -172,7 +172,7 @@ void KobukiRos::publishDockIRData()
       DockIR::Data data = kobuki.getDockIRData();
 
       // Publish as shared pointer to leverage the nodelets' zero-copy pub/sub feature
-      kobuki_msgs::DockInfraRedPtr msg;
+      kobuki_msgs::DockInfraRedPtr msg(new kobuki_msgs::DockInfraRed);
 
       msg->header.frame_id = "dock_ir_link";
       msg->header.stamp = ros::Time::now();

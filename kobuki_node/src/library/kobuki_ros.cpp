@@ -353,10 +353,8 @@ void KobukiRos::subscribeTopics(ros::NodeHandle& nh)
   digital_output_command_subscriber =  nh.subscribe(std::string("commands/digital_output"), 10, &KobukiRos::subscribeDigitalOutputCommand, this);
   external_power_command_subscriber =  nh.subscribe(std::string("commands/external_power"), 10, &KobukiRos::subscribeExternalPowerCommand, this);
   sound_command_subscriber =  nh.subscribe(std::string("commands/sound"), 10, &KobukiRos::subscribeSoundCommand, this);
-  // A group enable/disable channel to listen to (these should get remapped to /enable in most cases).
-  enable_subscriber = nh.subscribe("enable", 10, &KobukiRos::enable, this); // 10 is queue size
-  disable_subscriber = nh.subscribe("disable", 10, &KobukiRos::disable, this);
-  reset_odometry_subscriber = nh.subscribe("reset_odometry", 10, &KobukiRos::subscribeResetOdometry, this);
+  reset_odometry_subscriber = nh.subscribe("commands/reset_odometry", 10, &KobukiRos::subscribeResetOdometry, this);
+  motor_power_subscriber = nh.subscribe("commands/motor_power", 10, &KobukiRos::subscribeMotorPower, this);
 }
 
 
