@@ -210,6 +210,18 @@ void KobukiRos::publishVersionInfo(const VersionInfo &version_info)
     msg->udid[1] = version_info.udid1;
     msg->udid[2] = version_info.udid2;
 
+    // Set available features mask depending on firmware and driver versions
+    if (msg->firmware > 10000)
+    {
+      msg->features |= kobuki_msgs::VersionInfo::SMOOTH_MOVE_START;
+      msg->features |= kobuki_msgs::VersionInfo::GYROSCOPE_3D_DATA;
+    }
+    if (msg->firmware > 10100)
+    {
+      // msg->features |= kobuki_msgs::VersionInfo::SOMETHING_JINCHA_FANCY;
+    }
+    // if (msg->firmware > ...
+
     version_info_publisher.publish(msg);
   }
 }
