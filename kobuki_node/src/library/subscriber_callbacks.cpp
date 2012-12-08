@@ -210,7 +210,7 @@ void KobukiRos::subscribeMotorPower(const kobuki_msgs::MotorPowerConstPtr msg)
   if (msg->state == kobuki_msgs::MotorPower::ON)
   {
     ROS_INFO_STREAM("Kobuki : Firing up the motors. [" << name << "]");
-    kobuki.disable();
+    kobuki.enable();
     odometry.resetTimeout();
   }
   else if (msg->state == kobuki_msgs::MotorPower::OFF)
