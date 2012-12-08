@@ -140,8 +140,8 @@ public:
   ** Soft Commands
   **********************/
   void resetOdometry();
-  void doDock();
-  void cancelDock();
+  void doDock(std::string msg);
+  void cancelDock(std::string msg);
 
   /*********************
   ** Hard Commands

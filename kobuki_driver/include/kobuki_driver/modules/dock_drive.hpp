@@ -44,6 +44,8 @@
 *****************************************************************************/
 
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 #include <cmath>
 #include <vector>
 #include <ecl/mobile_robot.hpp>
@@ -66,11 +68,38 @@ public:
     NEAR_RIGHT=4,
     FAR_CENTER=8,
     FAR_LEFT=16,
-    FAR_RIGHT=32
+    FAR_RIGHT=32,
+    NEAR = 7,
+    FAR = 56,
   };
+  enum State {
+    IDLE,
+    LOST,
+    UNKNOWN,
+    INSIDE_FIELD,
+    AWAY,
+    SCAN,
+    SPIN,
+    SPIRAL,
+    FIND_STREAM,
+    GET_STREAM,
+    ALIGNED,
+    ALIGNED_FAR,
+    ALIGNED_NEAR,
+    BUMPED,
+    BUMPED_DOCK,
+    RUN,
+    STOP,
+    DOCKED_IN,
+    DONE,
+  };
+
   DockDrive();
   void init();
-  void update(std::vector<unsigned char> &dock_ir
+  void mode_shift(std::string mode);
+  void update(std::vector<unsigned char> &signal /* dock_ir signal*/
+                , unsigned char &bumper
+                , unsigned char &charger
                 , ecl::Pose2D<double> &pose_update
                 , ecl::linear_algebra::Vector3d &pose_update_rates);
   void velocityCommands(const double &vx, const double &wz);
@@ -80,11 +109,27 @@ public:
   **********************/
   std::vector<short> velocityCommands() const;
 
+  /*********************
+  ** Mode Accessors
+  **********************/
+  bool canRun() const { return can_run; }
+  bool isEnabled() const { return is_enabled; }
+
 private:
+  bool is_enabled, can_run;
+  State state;
+  std::string state_str;
+  ecl::Pose2D<double> pose;
   double vx, wz;
   short speed, radius;
   double bias;
-  std::vector<std::vector<unsigned char> > dock_ir_history;
+  std::vector<std::vector<unsigned char> > past_signals;
+  int bump_remainder;
+  int dock_stabilizer;
+  int dock_detector;
+  double rotated;
+
+  std::string binary(unsigned char number) const;
 };
 
 } // namespace kobuki

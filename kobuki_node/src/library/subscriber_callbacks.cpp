@@ -184,13 +184,13 @@ void KobukiRos::disable(const std_msgs::StringConstPtr msg)
 
 void KobukiRos::doDock(const std_msgs::StringConstPtr msg)
 {
-  kobuki.doDock();
+  kobuki.doDock(msg->data);
   ROS_INFO_STREAM("Kobuki : docking drive enabled.");
 }
 
 void KobukiRos::cancelDock(const std_msgs::StringConstPtr msg)
 {
-  kobuki.cancelDock();
+  kobuki.cancelDock(msg->data);
   ROS_INFO_STREAM("Kobuki : docking drive disabled.");
 }
 
