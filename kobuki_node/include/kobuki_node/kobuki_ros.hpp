@@ -64,6 +64,7 @@
 #include <kobuki_msgs/ExternalPower.h>
 #include <kobuki_msgs/DockInfraRed.h>
 #include <kobuki_msgs/Led.h>
+#include <kobuki_msgs/MotorPower.h>
 #include <kobuki_msgs/PowerSystemEvent.h>
 #include <kobuki_msgs/RobotStateEvent.h>
 #include <kobuki_msgs/SensorState.h>
@@ -114,8 +115,7 @@ private:
 
   ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber, external_power_command_subscriber;
   ros::Subscriber led1_command_subscriber, led2_command_subscriber, sound_command_subscriber;
-  ros::Subscriber reset_odometry_subscriber;
-  ros::Subscriber enable_subscriber, disable_subscriber; // may eventually disappear
+  ros::Subscriber motor_power_subscriber, reset_odometry_subscriber;
 
   void advertiseTopics(ros::NodeHandle& nh);
   void subscribeTopics(ros::NodeHandle& nh);
@@ -130,8 +130,7 @@ private:
   void subscribeExternalPowerCommand(const kobuki_msgs::ExternalPowerConstPtr);
   void subscribeResetOdometry(const std_msgs::EmptyConstPtr);
   void subscribeSoundCommand(const kobuki_msgs::SoundConstPtr);
-  void enable(const std_msgs::EmptyConstPtr msg);
-  void disable(const std_msgs::EmptyConstPtr msg);
+  void subscribeMotorPower(const kobuki_msgs::MotorPowerConstPtr msg);
 
   /*********************
    ** SigSlots
