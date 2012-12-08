@@ -51,7 +51,6 @@
 #include <ecl/threads.hpp>
 #include <geometry_msgs/Twist.h>  // for velocity commands
 #include <geometry_msgs/TwistStamped.h>  // for velocity commands
-#include <std_msgs/String.h> // for enable/disable commands
 #include <kobuki_msgs/KeyboardInput.h> // keycodes from remote teleops.
 
 /*****************************************************************************
@@ -85,19 +84,17 @@ public:
 
 private:
   ros::Subscriber keyinput_subscriber;
-  ros::Publisher velocity_publisher;
-  ros::Publisher stamped_velocity_publisher;
-  ros::Publisher enable_publisher, disable_publisher;
+  ros::Publisher velocity_publisher_;
+  ros::Publisher motor_power_publisher_;
   bool last_zero_vel_sent;
   bool accept_incoming;
   bool power_status;
+  bool wait_for_connection_;
   geometry_msgs::TwistPtr cmd;
   geometry_msgs::TwistStampedPtr cmd_stamped;
-  std_msgs::StringPtr power_cmd;
   double linear_vel_step, linear_vel_max;
   double angular_vel_step, angular_vel_max;
   std::string name;
-  std::string mode;
 
   /*********************
    ** Commands
