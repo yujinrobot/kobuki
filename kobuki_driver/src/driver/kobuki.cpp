@@ -283,20 +283,38 @@ void Kobuki::spin()
             firmware.deserialise(data_buffer);
             try
             {
-              int version_match = firmware.check_version();
+              // Check firmware/driver compatibility; mayor version must be the same
+              int version_match = firmware.check_mayor_version();
               if (version_match < 0) {
-                sig_error.emit("Robot firmware is outdated. For details about how to upgrade the firmware " \
-                               "refer to http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware");
+                sig_error.emit("Robot firmware is outdated and needs to be upgraded. Consult how-to on: " \
+                               "http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware");
+                sig_error.emit("Robot version is " + firmware.flashed_version()
+                         + "; current version is " + firmware.current_version());
                 shutdown_requested = true;
               }
-              if (version_match > 0) {
+              else if (version_match > 0) {
                 sig_error.emit("Driver version isn't not compatible with robot firmware. Please upgrade driver");
                 shutdown_requested = true;
+              }
+              else
+              {
+                // And minor version don't need to, but just make a sugestion
+                version_match = firmware.check_minor_version();
+                if (version_match < 0) {
+                  sig_warn.emit("Robot firmware is outdated; we suggest you to upgrade it " \
+                                "to benefit from the latest features. Consult how-to on: "  \
+                                "http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware");
+                  sig_warn.emit("Robot version is " + firmware.flashed_version()
+                          + "; current version is " + firmware.current_version());
+                }
+                else if (version_match > 0) {
+                  // Driver version is outdated; maybe we should also suggest to upgrade it, but this is not a typical case
+                }
               }
             }
             catch (std::out_of_range& e)
             {
-              // This can not happen, really
+              // Wrong version hardcoded on firmware; lowest value is 10000
               sig_error.emit(std::string("Invalid firmware version number: ").append(e.what()));
               shutdown_requested = true;
             }

@@ -49,7 +49,7 @@
 ** Constants
 *****************************************************************************/
 
-#define EXPECTED_FIRMWARE_VERSION  "10?"  // i.e. 1.0.WHATEVER
+#define CURRENT_FIRMWARE_VERSION  10000   // i.e. 1.0.0; patch number is ignored
 
 /*****************************************************************************
 ** Namespace
@@ -98,10 +98,10 @@ public:
     buildVariable(length, byteStream);
     buildVariable(data.version, byteStream);
 
-    // TODO firmware currently hardcoded version is 123, but of course we want 100;
+    // TODO firmware currently hardcoded version is 123, but we want 10000 (1.0.0);
     // remove this horrible, dirty hack as soon as we upgrade the firmware to 101
     if (data.version == 123)
-      data.version = 100;
+      data.version = 10000;
 
     //showMe();
     return constrain();
@@ -109,7 +109,7 @@ public:
 
   bool constrain()
   {
-    return true;
+    return (data.version >= 10000);  // lowest version is 1.0.0
   }
 
   void showMe()
@@ -117,13 +117,52 @@ public:
     //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, acc[2], acc[1], acc[0] );
   }
 
-  int check_version()
-  {
-    std::stringstream ss; ss << data.version;
-    std::string current_version(ss.str());
-    std::string expected_version(EXPECTED_FIRMWARE_VERSION);
+  std::string flashed_version() { return toString(data.version); }
+  std::string current_version() { return toString(CURRENT_FIRMWARE_VERSION); }
 
-    return current_version.compare(0, 2, expected_version, 0, 2);
+  std::string toString(uint16_t version_number)
+  {
+    // Convert a short unsigned into a string of type <mayor>.<minor>.<patch>
+    std::stringstream ss;
+    ss << version_number;
+    std::string version(ss.str());
+    ss.str("");
+    ss << version.substr(0, 1) << '.' << version.substr(1, 2) << '.' << version.substr(3, 2);
+    version = ss.str();
+    std::size_t pos = version.find(".0");
+    while (pos != std::string::npos)
+    {
+      if (version[pos + 2] != '.')
+        version.erase(pos + 1, 1);
+
+      pos = version.find(".0", pos + 2);
+    }
+
+    return version;
+  }
+
+  int check_mayor_version()
+  {
+    // Return a negative value if firmware's mayor version is older than that of the driver,
+    // 0 if both are the same, and a positive value if firmware's mayor version is newer
+    std::stringstream ss; ss << data.version;
+    std::string flashed_version(ss.str());
+    ss.str(""); ss << CURRENT_FIRMWARE_VERSION;
+    std::string current_version(ss.str());
+
+    return flashed_version.compare(0, 1, current_version, 0, 1);
+  }
+
+  int check_minor_version()
+  {
+    // Return a negative value if firmware's minor version is older than that of the driver,
+    // 0 if both are the same, and a positive value if firmware's minor version is newer
+    std::stringstream ss; ss << data.version;
+    std::string flashed_version(ss.str());
+    ss.str(""); ss << CURRENT_FIRMWARE_VERSION;
+    std::string current_version(ss.str());
+
+    return flashed_version.compare(1, 2, current_version, 1, 2);
   }
 };
 
