@@ -117,7 +117,6 @@ bool KeyOpCore::init()
   stamped_velocity_publisher = nh.advertise<geometry_msgs::TwistStamped>("cmd_vel_stamped", 1);
   enable_publisher = nh.advertise<std_msgs::String>("enable", 1);
   disable_publisher = nh.advertise<std_msgs::String>("disable", 1);
-  reset_odometry_client = nh.serviceClient<std_srvs::Empty>("reset_odometry");
 
   power_cmd->data = "all";
 
@@ -388,7 +387,7 @@ void KeyOpCore::disable()
   }
   else
   {
-    ROS_WARN("KeyOp: motors are already powered down.");
+    ROS_WARN("KeyOp: Device has already been powered down.");
   }
 }
 
@@ -396,7 +395,6 @@ void KeyOpCore::disable()
  * @brief Reset/re-enable the navigation system.
  *
  * - resets the command velocities.
- * - resets the odometry.
  * - reenable power if not enabled.
  */
 void KeyOpCore::enable()
@@ -407,22 +405,15 @@ void KeyOpCore::enable()
   cmd->angular.z = 0.0;
   velocity_publisher.publish(cmd);
 
-  std_srvs::Empty odometry;
-  if (!reset_odometry_client.call(odometry))
-  {
-    ROS_WARN("KeyOp: could not contact the mobile base model to reset the odometry.");
-    ROS_WARN_STREAM("KeyOp: " << ros::names::resolve("reset_odometry"));
-  }
-
   if (!power_status)
   {
+    ROS_INFO("KeyOp: Enabling power to the device subsystem.");
     enable_publisher.publish(power_cmd);
-    ROS_INFO("KeyOp: resetting odometry and enabling power to the device subsystem.");
     power_status = true;
   }
   else
   {
-    ROS_INFO("KeyOp: resetting commands and odometry (mobile_base).");
+    ROS_WARN("KeyOp: Device has already been powered up.");
   }
 }
 
