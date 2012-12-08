@@ -101,38 +101,11 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   {
     throw ecl::StandardException(LOC, ecl::ConfigurationError, "Kobuki's parameter settings did not validate.");
   }
-  this->parameters=parameters;
-  protocol_version = parameters.protocol_version;
+  this->parameters = parameters;
   std::string sigslots_namespace = parameters.sigslots_namespace;
   event_manager.init(sigslots_namespace);
 
-  //checking device
-  if( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
-      ecl::Sleep waiting(5); //for 5sec.
-      event_manager.update(is_connected, is_alive);
-      while( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
-        sig_info.emit("device is not exist. still waiting...");
-        waiting();
-      }
-  }
-  //try {
-  serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
-  /*} catch (...){
-    std::cout << "exception raised." << std::endl;
-    throw; //kobuki_node will handle this
-    //exit(-1); //forcely exit here
-  }*/
-  is_connected = true;
-  is_alive = true;
-
-  serial.block(4000); // blocks by default, but just to be clear!
-  serial.clear();
-  ecl::PushAndPop<unsigned char> stx(2, 0);
-  ecl::PushAndPop<unsigned char> etx(1);
-  stx.push_back(0xaa);
-  stx.push_back(0x55);
-  packet_finder.configure(sigslots_namespace, stx, etx, 1, 256, 1, true);
-
+  // connect signals
   sig_version_info.connect(sigslots_namespace + std::string("/version_info"));
   sig_stream_data.connect(sigslots_namespace + std::string("/stream_data"));
   sig_raw_data_command.connect(sigslots_namespace + std::string("/raw_data_command"));
@@ -143,6 +116,31 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_info.connect(sigslots_namespace + std::string("/ros_info"));
   sig_warn.connect(sigslots_namespace + std::string("/ros_warn"));
   sig_error.connect(sigslots_namespace + std::string("/ros_error"));
+
+  //checking device
+  if (access(parameters.device_port.c_str(), F_OK) == -1)
+  {
+    ecl::Sleep waiting(5); //for 5sec.
+    event_manager.update(is_connected, is_alive);
+    while (access(parameters.device_port.c_str(), F_OK) == -1)
+    {
+      sig_info.emit("Device does not exist. Waiting...");
+      waiting();
+    }
+  }
+
+  serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
+
+  is_connected = true;
+  is_alive = true;
+
+  serial.block(4000); // blocks by default, but just to be clear!
+  serial.clear();
+  ecl::PushAndPop<unsigned char> stx(2, 0);
+  ecl::PushAndPop<unsigned char> etx(1);
+  stx.push_back(0xaa);
+  stx.push_back(0x55);
+  packet_finder.configure(sigslots_namespace, stx, etx, 1, 256, 1, true);
 
   diff_drive.init();
   gate_keeper.init(parameters.enable_gate_keeper);
@@ -190,20 +188,20 @@ void Kobuki::spin()
      ** Checking Connection
      **********************/
     if( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
-      sig_error.emit("device is not exist.");
+      sig_error.emit("Device does not exist.");
       is_connected = false;
       is_alive = false;
       event_manager.update(is_connected, is_alive);
 
       if( serial.open() )
       {
-        sig_info.emit("device is still open, closing it, and retry to open.");
+        sig_info.emit("Device is still open, closing it and will try to open it again.");
         serial.close();
       }
       //try_open();
       ecl::Sleep waiting(5); //for 5sec.
       while( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
-        sig_info.emit("device is not exist. still waiting...");
+        sig_info.emit("Device does not exist. Still waiting...");
         waiting();
       }
       serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
@@ -225,7 +223,7 @@ void Kobuki::spin()
       {
         is_alive = false;
         version_info_reminder = 10;
-        sig_debug.emit("timed out in waiting imcoming bytes.");
+        sig_debug.emit("Timed out while waiting for incoming bytes.");
       }
       event_manager.update(is_connected, is_alive);
       continue;
@@ -289,20 +287,38 @@ void Kobuki::spin()
             firmware.deserialise(data_buffer);
             try
             {
-              int version_match = firmware.check_version();
+              // Check firmware/driver compatibility; mayor version must be the same
+              int version_match = firmware.check_mayor_version();
               if (version_match < 0) {
-                sig_error.emit("Robot firmware is outdated. For details about how to upgrade the firmware " \
-                               "refer to http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware");
+                sig_error.emit("Robot firmware is outdated and needs to be upgraded. Consult how-to on: " \
+                               "http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware");
+                sig_error.emit("Robot version is " + firmware.flashed_version()
+                         + "; current version is " + firmware.current_version());
                 shutdown_requested = true;
               }
-              if (version_match > 0) {
+              else if (version_match > 0) {
                 sig_error.emit("Driver version isn't not compatible with robot firmware. Please upgrade driver");
                 shutdown_requested = true;
+              }
+              else
+              {
+                // And minor version don't need to, but just make a sugestion
+                version_match = firmware.check_minor_version();
+                if (version_match < 0) {
+                  sig_warn.emit("Robot firmware is outdated; we suggest you to upgrade it " \
+                                "to benefit from the latest features. Consult how-to on: "  \
+                                "http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware");
+                  sig_warn.emit("Robot version is " + firmware.flashed_version()
+                          + "; current version is " + firmware.current_version());
+                }
+                else if (version_match > 0) {
+                  // Driver version is outdated; maybe we should also suggest to upgrade it, but this is not a typical case
+                }
               }
             }
             catch (std::out_of_range& e)
             {
-              // This can not happen, really
+              // Wrong version hardcoded on firmware; lowest value is 10000
               sig_error.emit(std::string("Invalid firmware version number: ").append(e.what()));
               shutdown_requested = true;
             }
@@ -471,9 +487,9 @@ void Kobuki::sendCommand(Command command)
 {
   if( !is_alive || !is_connected ) {
     //need to do something
-    sig_debug.emit("device state is not ready yet.");
-    if( !is_alive     ) sig_debug.emit(" - device is not alive.");
-    if( !is_connected ) sig_debug.emit(" - device is not connected.");
+    sig_debug.emit("Device state is not ready yet.");
+    if( !is_alive     ) sig_debug.emit(" - Device is not alive.");
+    if( !is_connected ) sig_debug.emit(" - Device is not connected.");
     //std::cout << is_enabled << ", " << is_alive << ", " << is_connected << std::endl;
     return;
   }

@@ -1,0 +1,31 @@
+<package>
+  <description brief="A controller ensuring the safe operation of Kobuki">
+
+    The SafetyController keeps track of bumper, cliff and wheel drop events. In case of the first two,
+    Kobuki is commanded to move back. In the latter case, Kobuki is stopped.
+    
+    This controller can be enabled/disabled.
+    The safety states (bumper pressed etc.) can be reset. WARNING: Dangerous!
+
+  </description>
+  <author>Marcus Liebhardt</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/kobuki_safety_controller</url>
+  
+  <depend package="roscpp"/>
+  <depend package="yocs_controllers"/>
+  <depend package="kobuki_msgs"/>
+  <depend package="std_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="nodelet"/>
+  
+  <depend package="ecl_threads"/>
+  
+  <export>
+    <nodelet plugin="${prefix}/plugins/nodelet_plugins.xml" />
+  </export>
+  
+</package>
+
+

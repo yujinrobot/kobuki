@@ -15,8 +15,11 @@
   <depend stack="nodelet_core" /> <!-- nodelet -->
   <depend stack="ros" /> <!-- roslib -->
   <depend stack="ros_comm" /> <!-- std_msgs, topic_tools, rospy, roscpp -->
-  <depend stack="perception_pcl" /> <!-- pcl_ros -->
   <depend stack="robot_model"/> <!-- urdf -->
   <depend stack="xacro"/>
   <depend stack="kobuki_msgs"/>
+  <!-- bump clouds -->
+  <depend stack="perception_pcl"/>
+  <!-- kobuki tutorials -->
+  <depend stack="yujin_ocs"/>
 </stack>

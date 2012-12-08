@@ -60,19 +60,6 @@ void Odometry::init(ros::NodeHandle& nh, const std::string& name) {
 
   odom_trans.header.frame_id = odom_frame;
   odom_trans.child_frame_id = base_frame;
-  odom.header.frame_id = odom_frame;
-  odom.child_frame_id = base_frame;
-
-  // Pose covariance (required by robot_pose_ekf) TODO: publish realistic values
-  // Odometry yaw covariance must be much bigger than the covariance provided
-  // by the imu, as the later takes much better measures
-  odom.pose.covariance[0]  = 0.1;
-  odom.pose.covariance[7]  = 0.1;
-  odom.pose.covariance[35] = 0.2;
-
-  odom.pose.covariance[14] = DBL_MAX; // set a very large covariance on unused
-  odom.pose.covariance[21] = DBL_MAX; // dimensions (z, pitch and roll); this
-  odom.pose.covariance[28] = DBL_MAX; // is a requirement of robot_pose_ekf
 
   pose.setIdentity();
 
@@ -117,20 +104,37 @@ void Odometry::publishTransform(const geometry_msgs::Quaternion &odom_quat)
 }
 
 void Odometry::publishOdometry(const geometry_msgs::Quaternion &odom_quat,
-                             const ecl::linear_algebra::Vector3d &pose_update_rates)
+                               const ecl::linear_algebra::Vector3d &pose_update_rates)
 {
-  odom.header.stamp = ros::Time::now();
+  // Publish as shared pointer to leverage the nodelets' zero-copy pub/sub feature
+  nav_msgs::OdometryPtr odom(new nav_msgs::Odometry);
+
+  // Header
+  odom->header.stamp = ros::Time::now();
+  odom->header.frame_id = odom_frame;
+  odom->child_frame_id = base_frame;
 
   // Position
-  odom.pose.pose.position.x = pose.x();
-  odom.pose.pose.position.y = pose.y();
-  odom.pose.pose.position.z = 0.0;
-  odom.pose.pose.orientation = odom_quat;
+  odom->pose.pose.position.x = pose.x();
+  odom->pose.pose.position.y = pose.y();
+  odom->pose.pose.position.z = 0.0;
+  odom->pose.pose.orientation = odom_quat;
 
   // Velocity
-  odom.twist.twist.linear.x = pose_update_rates[0];
-  odom.twist.twist.linear.y = pose_update_rates[1];
-  odom.twist.twist.angular.z = pose_update_rates[2];
+  odom->twist.twist.linear.x = pose_update_rates[0];
+  odom->twist.twist.linear.y = pose_update_rates[1];
+  odom->twist.twist.angular.z = pose_update_rates[2];
+
+  // Pose covariance (required by robot_pose_ekf) TODO: publish realistic values
+  // Odometry yaw covariance must be much bigger than the covariance provided
+  // by the imu, as the later takes much better measures
+  odom->pose.covariance[0]  = 0.1;
+  odom->pose.covariance[7]  = 0.1;
+  odom->pose.covariance[35] = 0.2;
+
+  odom->pose.covariance[14] = DBL_MAX; // set a very large covariance on unused
+  odom->pose.covariance[21] = DBL_MAX; // dimensions (z, pitch and roll); this
+  odom->pose.covariance[28] = DBL_MAX; // is a requirement of robot_pose_ekf
 
   odom_publisher.publish(odom);
 }

@@ -1,7 +1,7 @@
 <package>
-  <description brief="Creates a remote keyboard operation node for kobukibot">
+  <description brief="Keyboard teleoperation for Kobuki">
 
-     This relays commands from a keyboard to the kobukibot's core. 
+     This relays commands from a keyboard to Kobuki. 
      
   </description>
   <author>Daniel Stonier</author>
@@ -19,4 +19,9 @@
   <!-- Ecl -->
   <depend package="ecl_threads"/>
   <depend package="ecl_time"/>
+  <depend package="ecl_exceptions"/>
+  <!-- Velocity Smoothing -->
+  <depend package="cmd_vel_mux"/>
+  <depend package="yocs_velocity_smoother"/>
+
 </package>

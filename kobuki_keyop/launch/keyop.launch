@@ -1,0 +1,17 @@
+<!--
+  Raw keyop configuration for working with the default kobuki launcher (minimal.launch). 
+ -->
+<launch>
+
+  <node pkg="kobuki_keyop" type="keyop" name="keyop" output="screen">
+    <remap from="keyop/enable" to="mobile_base/enable"/>
+    <remap from="keyop/disable" to="mobile_base/disable"/>
+    <remap from="keyop/cmd_vel" to="mobile_base/commands/velocity"/>
+    <remap from="keyop/mobile_robot/reset_odometry" to="mobile_base/reset_odometry"/>
+    <param name="linear_vel_step"  value="0.05" type="double"/>
+    <param name="linear_vel_max"   value="1.5"  type="double"/>
+    <param name="angular_vel_step" value="0.33" type="double"/>
+    <param name="angular_vel_max"  value="6.6"  type="double"/>
+    <!--param name="mode"             value="simple" type="string"/-->
+  </node>
+</launch>

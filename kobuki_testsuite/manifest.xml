@@ -1,7 +1,7 @@
 <package>
-  <description brief="kobuki_testsuite">
+  <description brief="A test suite for Kobuki">
 
-     Kobuki test suite package provides scripts to thoroughly test kobuki hardware
+     This package provides tools to thoroughly test Kobuki's hardware.
 
   </description>
   <author>Jorge Santos</author>

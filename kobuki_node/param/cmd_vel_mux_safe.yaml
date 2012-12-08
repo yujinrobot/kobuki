@@ -1,0 +1,23 @@
+# Created on: Oct 29, 2012
+#     Author: jorge
+# Configuration for subscribers to cmd_vel sources. This file is provided just as an example.
+# Typically automatic controllers, as ROS navigation stack should have the minimum priority
+#
+# Individual subscriber configuration:
+#   name:           Source name
+#   topic:          The topic that provides cmd_vel messages
+#   timeout:        Time in seconds without incoming messages to consider this topic inactive
+#   priority:       Priority: an UNIQUE unsigned integer from 0 (lowest) to MAX_INT 
+#   short_desc:     Short description (optional)
+
+subscribers:
+  - name:        "Default input"
+    topic:       "cmd_vel"
+    timeout:     0.2
+    priority:    0
+    short_desc:  "Default velocity topic; controllers unaware that we are multiplexing cmd_vel will come here"
+  - name:        "Safety Controller"
+    topic:       "cmd_vel_safety"
+    timeout:     0.2
+    priority:    10
+    short_desc:  "Kobuki's safety controller"

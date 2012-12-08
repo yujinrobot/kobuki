@@ -1,0 +1,8 @@
+<library path="lib/libautodocking_nodelet">
+  <class name="auto_docking/AutoDockingNodelet" type="AutoDockingNodelet" base_class_type="nodelet::Nodelet">
+    <description>
+      Nodelet version of the auto docking controller
+    </description>
+  </class>
+</library>
+

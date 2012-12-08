@@ -59,16 +59,17 @@
 #include <kobuki_msgs/ButtonEvent.h>
 #include <kobuki_msgs/BumperEvent.h>
 #include <kobuki_msgs/CliffEvent.h>
-#include <kobuki_msgs/WheelDropEvent.h>
-#include <kobuki_msgs/PowerSystemEvent.h>
-#include <kobuki_msgs/DigitalInputEvent.h>
-#include <kobuki_msgs/RobotStateEvent.h>
 #include <kobuki_msgs/DigitalOutput.h>
-#include <kobuki_msgs/Led.h>
-#include <kobuki_msgs/SensorState.h>
+#include <kobuki_msgs/DigitalInputEvent.h>
+#include <kobuki_msgs/ExternalPower.h>
 #include <kobuki_msgs/DockInfraRed.h>
+#include <kobuki_msgs/Led.h>
+#include <kobuki_msgs/PowerSystemEvent.h>
+#include <kobuki_msgs/RobotStateEvent.h>
+#include <kobuki_msgs/SensorState.h>
 #include <kobuki_msgs/Sound.h>
 #include <kobuki_msgs/VersionInfo.h>
+#include <kobuki_msgs/WheelDropEvent.h>
 #include <kobuki_driver/kobuki.hpp>
 #include "diagnostics.hpp"
 #include "odometry.hpp"
@@ -127,11 +128,11 @@ private:
   void subscribeLed1Command(const kobuki_msgs::LedConstPtr);
   void subscribeLed2Command(const kobuki_msgs::LedConstPtr);
   void subscribeDigitalOutputCommand(const kobuki_msgs::DigitalOutputConstPtr);
-  void subscribeExternalPowerCommand(const kobuki_msgs::DigitalOutputConstPtr);
+  void subscribeExternalPowerCommand(const kobuki_msgs::ExternalPowerConstPtr);
   void subscribeResetOdometry(const std_msgs::EmptyConstPtr);
   void subscribeSoundCommand(const kobuki_msgs::SoundConstPtr);
-  void enable(const std_msgs::StringConstPtr msg);
-  void disable(const std_msgs::StringConstPtr msg);
+  void enable(const std_msgs::EmptyConstPtr msg);
+  void disable(const std_msgs::EmptyConstPtr msg);
   void doDock(const std_msgs::StringConstPtr msg);
   void cancelDock(const std_msgs::StringConstPtr msg);
 
