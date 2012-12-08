@@ -102,12 +102,46 @@ void KobukiRos::subscribeDigitalOutputCommand(const kobuki_msgs::DigitalOutputCo
   return;
 }
 
-void KobukiRos::subscribeExternalPowerCommand(const kobuki_msgs::DigitalOutputConstPtr msg)
+void KobukiRos::subscribeExternalPowerCommand(const kobuki_msgs::ExternalPowerConstPtr msg)
 {
+  // Validate message
+  if (!((msg->source == kobuki_msgs::ExternalPower::PWR_3_3V1A) ||
+        (msg->source == kobuki_msgs::ExternalPower::PWR_5V1A) ||
+        (msg->source == kobuki_msgs::ExternalPower::PWR_12V5A) ||
+        (msg->source == kobuki_msgs::ExternalPower::PWR_12V1_5A)))
+  {
+    ROS_ERROR_STREAM("Power source " << (unsigned int)msg->source << " does not exist! [" << name << "].");
+    return;
+  }
+  if (!((msg->state == kobuki_msgs::ExternalPower::OFF) ||
+      (msg->state == kobuki_msgs::ExternalPower::ON)))
+  {
+    ROS_ERROR_STREAM("Power source state " << (unsigned int)msg->state << " does not exist! [" << name << "].");
+    return;
+  }
+
   DigitalOutput digital_output;
-  for ( unsigned int i = 0; i < 4; ++i ) {
-    digital_output.values[i] = msg->values[i];
-    digital_output.mask[i] = msg->mask[i];
+  for ( unsigned int i = 0; i < 4; ++i )
+  {
+    if (i == msg->source)
+    {
+      if (msg->state)
+      {
+        digital_output.values[i] = true; // turn source on
+        ROS_INFO_STREAM("Turning on external power source " << (unsigned int)msg->source << ". [" << name << "].");
+      }
+      else
+      {
+        digital_output.values[i] = false; // turn source off
+        ROS_INFO_STREAM("Turning off external power source " << (unsigned int)msg->source << ". [" << name << "].");
+      }
+      digital_output.mask[i] = true; // change source state
+    }
+    else
+    {
+      digital_output.values[i] = false; // values doesn't matter here, since mask is set false, what means ignoring
+      digital_output.mask[i] = false;
+    }
   }
   kobuki.setExternalPower(digital_output);
   return;
@@ -168,14 +202,14 @@ void KobukiRos::subscribeResetOdometry(const std_msgs::EmptyConstPtr /* msg */)
   return;
 }
 
-void KobukiRos::enable(const std_msgs::StringConstPtr msg)
+void KobukiRos::enable(const std_msgs::EmptyConstPtr msg)
 {
   kobuki.enable();
   ROS_INFO_STREAM("Kobuki : enabled.");
   odometry.resetTimeout();
 }
 
-void KobukiRos::disable(const std_msgs::StringConstPtr msg)
+void KobukiRos::disable(const std_msgs::EmptyConstPtr msg)
 {
   kobuki.disable();
   ROS_INFO_STREAM("Kobuki : disabled.");
