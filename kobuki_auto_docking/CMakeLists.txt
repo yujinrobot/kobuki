@@ -32,4 +32,6 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #rosbuild_add_executable(example examples/example.cpp)
 #target_link_libraries(example ${PROJECT_NAME})
 
+rosbuild_add_library(kobuki_auto_docking_ros src/auto_docking_ros.cpp)
 rosbuild_add_library(kobuki_auto_docking_nodelet src/nodelet.cpp)
+target_link_libraries(kobuki_auto_docking_nodelet kobuki_auto_docking_ros)

@@ -18,6 +18,8 @@
 ** Includes
 *****************************************************************************/
 
+namespace kobuki
+{
 
 class AutoDocking
 {
@@ -48,4 +50,5 @@ private:
   double target_direction;
 };
 
+} //namespace kobuki
 #endif /* AUTO_DOCKING_HPP_ */

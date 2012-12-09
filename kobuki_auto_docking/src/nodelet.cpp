@@ -39,7 +39,7 @@
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
 #include <ecl/threads/thread.hpp>
-#include "auto_docking/auto_docking_ros.hpp"
+#include "kobuki_auto_docking/auto_docking_ros.hpp"
 
 namespace kobuki
 {

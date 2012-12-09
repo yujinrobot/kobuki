@@ -26,7 +26,8 @@
 #include <ecl/geometry/pose2d.hpp>
 #include "auto_docking.hpp"
 
-namespace kobuki {
+namespace kobuki 
+{
 
 class AutoDockingROS
 {
@@ -34,51 +35,23 @@ public:
   AutoDockingROS();
   ~AutoDockingROS();
 
-  bool init(ros::NodeHandle& nh)
-  {
-    core_sensors_ = nh.subscribe("/mobile_base/sensors/core", 10, &AutoDockingROS::coreCb, this);
-    dock_ir_ = nh.subscribe("/mobile_base/sensors/dock_ir", 10, &AutoDockingROS::irCb, this);
-    odom_ = nh.subscribe("/odom", 10, &AutoDockingROS::odomCb, this);
-    //odom_.subscribe("some_topic");
-    //ir_.subscribe("some_topic", AutoDockingROS::ir_cb);
-    //velocity_commander_.publish("some_topic");
-    return dock_.init();
-  };
+  bool init(ros::NodeHandle& nh);
 
   /*
    * optional, use if needed
    */
-  void spin()
-  {
-    //msg.data = dock_.target_direction_;
-    //velocity_commander_.publish(msg);
-    dock_.auto_dock();
-  };
+  void spin();
 
 private:
+  bool shutdown_requested;
   AutoDocking dock_;
   ros::Subscriber odom_, dock_ir_, core_sensors_;
   ros::Publisher velocity_commander_;
 
   //ecl::Pose2D odom_;
-
-  void odomCb(const nav_msgs::OdometryPtr msg)
-  {
-    //std::cout << *msg << std::endl;
-    //odom_ = data; 
-    ;
-    //dock_.update(odom_);
-  };
-
-  void coreCb(const kobuki_msgs::SensorStatePtr msg)
-  {
-    ;
-  };
-
-  void irCb(const kobuki_msgs::DockInfraRedPtr msg)
-  {
-    ;
-  };
+  void odomCb(const nav_msgs::OdometryPtr msg);
+  void coreCb(const kobuki_msgs::SensorStatePtr msg);
+  void irCb(const kobuki_msgs::DockInfraRedPtr msg);
 
 };
 
