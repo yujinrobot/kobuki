@@ -60,7 +60,7 @@ class Hardware : public packet_handler::payloadBase
 {
 public:
   struct Data {
-    uint16_t version;
+    uint32_t version;
   } data;
 
   // methods
@@ -72,7 +72,7 @@ public:
       return false;
     }
 
-    unsigned char length = 2;
+    unsigned char length = 4;
     buildBytes(Header::Hardware, byteStream);
     buildBytes(length, byteStream);
     buildBytes(data.version, byteStream);
@@ -87,10 +87,24 @@ public:
       return false;
     }
 
-    unsigned char header_id, length;
+    unsigned char header_id = 0, length = 0;
     buildVariable(header_id, byteStream);
     buildVariable(length, byteStream);
-    buildVariable(data.version, byteStream);
+
+    // TODO First 3 firmware versions coded version number on 2 bytes, so we need convert manually to our new
+    // 4 bytes system; remove this horrible, dirty hack as soon as we upgrade the firmware to 1.1.2 or 1.2.0
+    if (length == 2)
+    {
+      uint16_t old_style_version = 0;
+      buildVariable(old_style_version, byteStream);
+
+      if (old_style_version == 104)
+        data.version = 0x00010004;//65540; // 1.0.4
+    }
+    else
+    {
+      buildVariable(data.version, byteStream);
+    }
 
     //showMe();
     return constrain();

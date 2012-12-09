@@ -201,9 +201,9 @@ void KobukiRos::publishVersionInfo(const VersionInfo &version_info)
   {
     kobuki_msgs::VersionInfoPtr msg(new kobuki_msgs::VersionInfo);
 
-    msg->firmware = version_info.firmware;
-    msg->hardware = version_info.hardware;
-    msg->software = version_info.software;
+    msg->firmware = VersionInfo::toString(version_info.firmware);
+    msg->hardware = VersionInfo::toString(version_info.hardware);
+    msg->software = "STILL NOT IMPLEMENTED"; //VersionInfo::toString(version_info.software);
 
     msg->udid.resize(3);
     msg->udid[0] = version_info.udid0;
@@ -211,12 +211,12 @@ void KobukiRos::publishVersionInfo(const VersionInfo &version_info)
     msg->udid[2] = version_info.udid2;
 
     // Set available features mask depending on firmware and driver versions
-    if (msg->firmware > 10000)
+    if (version_info.firmware > 65536)  // 1.0.0
     {
       msg->features |= kobuki_msgs::VersionInfo::SMOOTH_MOVE_START;
       msg->features |= kobuki_msgs::VersionInfo::GYROSCOPE_3D_DATA;
     }
-    if (msg->firmware > 10100)
+    if (version_info.firmware > 65792)  // 1.1.0
     {
       // msg->features |= kobuki_msgs::VersionInfo::SOMETHING_JINCHA_FANCY;
     }
