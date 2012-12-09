@@ -45,7 +45,7 @@
 class AutoDockingNodelet : public nodelet::Nodelet
 {
 public:
-  AutoDockingNodelet(){};
+  AutoDockingNodelet(){;}
   ~AutoDockingNodelet()
   {
     NODELET_DEBUG("Waiting for update thread to finish.");
@@ -55,8 +55,8 @@ public:
   {
     NODELET_DEBUG("Initialising nodelet...");
     std::string nodelet_name = this->getName();
-    auto_docking_.reset(new AutoDockingROS(nodelet_name));
-    if (kobuki_->init(this->getPrivateNodeHandle()))
+    //auto_dock_.reset(new AutoDockingROS(nodelet_name));
+    if (auto_dock_->init(this->getPrivateNodeHandle()))
     {
       NODELET_DEBUG("Auto docking initialised. Spinning up update thread ...");
       update_thread_.start(&AutoDockingNodelet::update, *this);
@@ -69,13 +69,13 @@ private:
     ros::Rate spin_rate(10);
     while (ros::ok())
     {
-      auto_docking_->spin();
+      auto_dock_->spin();
       ros::spinOnce();
       spin_rate.sleep();
     }
   }
 
-  boost::shared_ptr<AutoDockingROS> auto_docking_;
+  boost::shared_ptr<AutoDockingROS> auto_dock_;
   ecl::Thread update_thread_;
 };
 

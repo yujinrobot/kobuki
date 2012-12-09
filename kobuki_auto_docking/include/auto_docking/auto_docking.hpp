@@ -25,17 +25,16 @@ public:
   AutoDocking(){};
   ~AutoDocking(){};
 
+  bool init() {return true;}
   void auto_dock()
   {
     int i = 0;
-    if (ir_left)
+    if (ir_left_)
     {
-      turn_left = true;
       i = -1;
     }
-    else if (ir_right)
+    else if (ir_right_)
     {
-      turn_right = true;
       i = 1;
     }
 

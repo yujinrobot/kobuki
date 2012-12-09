@@ -19,19 +19,22 @@
 *****************************************************************************/
 
 #include <ros/ros.h>
+#include <nav_msgs/Odometry.h>
+#include <kobuki_msgs/DockInfraRed.h>
 #include "auto_docking.hpp"
 
 class AutoDockingROS
 {
 public:
-  AutoDockingROS(){};
-  ~AutoDockingROS(){};
+  AutoDockingROS();
+  ~AutoDockingROS();
 
-  void init()
+  bool init(ros::NodeHandle& nh)
   {
     //odom_.subscribe("some_topic");
     //ir_.subscribe("some_topic", AutoDockingROS::ir_cb);
     //velocity_commander_.publish("some_topic");
+    return dock_.init();
   };
 
   /*
@@ -39,29 +42,28 @@ public:
    */
   void spin()
   {
-    msg.data = dock_.target_direction_;
-    velocity_commander_.publish(msg);
+    //msg.data = dock_.target_direction_;
+    //velocity_commander_.publish(msg);
     dock_.auto_dock();
   };
 
 private:
   AutoDocking dock_;
-  ros::Subscriber odom_, ir_;
+  ros::Subscriber odom_, dock_ir_, core_sensor_;
   ros::Publisher velocity_commander_;
 
-  magic_odom_variable odom_;
+  //ecl::Pose2D odom_;
 
-  void odom_callback(data)
+  void odom_callback(const nav_msgs::OdometryPtr &msg)
   {
-    odom_ = data;
+    //odom_ = data; 
+    ;
+    //dock_.update(odom_);
   };
 
-  void ir_cb(data)
+  void ir_cb(const kobuki_msgs::DockInfraRedPtr &msg)
   {
-    if (data == x)
-    {
-      dock_.ir_left_ = true;
-    }
+    ;
   };
 
 };
