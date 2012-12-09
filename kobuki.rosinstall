@@ -6,40 +6,21 @@
 #   sudo apt-get install python-rosdep python-rosinstall python-rospkg
 #
 # Basic ROS
-#   sudo apt-get install ros-groovy-ros-comm 
+#   sudo apt-get install ros-groovy-ros ros-groovy-ros-comm 
 #
-# General Catkinized stacks
-#   sudo apt-get install ros-groovy-geometry-msgs ros-groovy-sensor-msgs ros-groovy-nav-msgs ros-groovy-tf ros-groovy-pcl ros-groovy-pcl-ros
+# General Catkin stacks
+#   sudo apt-get install ros-groovy-ros ros-groovy-ros-comm ros-groovy-roscpp ros-groovy-rospy
+#   sudo apt-get install ros-groovy-geometry-msgs ros-groovy-sensor-msgs ros-groovy-nav-msgs ros-groovy-tf ros-groovy-rviz
 #   sudo apt-get install ros-groovy-nodelet ros-groovy-robot-state-publisher ros-groovy-diagnostic-msgs ros-groovy-dynamic-reconfigure
 #
-# General non catkin stacks
-#   sudo apt-get install ros-groovy-diagnostics ros-groovy-xacro ros-groovy-visualization-common ros-groovy-navigation ros-groovy-bullet
-#   sudo apt-get install ros-groovy-ecl-tools ros-groovy-ecl-lite ros-groovy-ecl-core ros-groovy-ecl-navigation
-#   sudo apt-get install ros-groovy-openni-launch 
-#
-# Zeroconf (non catkin)
-#   sudo apt-get install ros-groovy-zeroconf-msgs ros-groovy-zeroconf-avahi
-#
-# Kinect
-#   Latest openni-dev and ps-engine from http://userpages.uni-koblenz.de/~lsarnecki/deb/
-#   sudo apt-get install ros-groovy-image-transport-plugins ros-fuerte-openni-camera
-#
-# Arm
-#   sudo apt-get install ros-groovy-dynamixel-motor 
-#
-# Vizualisation
-#   sudo apt-get install ros-groovy-rviz ros-groovy-robot-model-visualization
-#
-# Turtlebot Apps
-#   sudo apt-get install ros-fuerte-joystick-drivers
-#   sudo apt-get install ros-fuerte-multimaster-experimental ros-groovy-warehouse-ros
+# ECL
+#   sudo apt-get install ros-groovy-ecl-threads ros-groovy-ecl-devices ros-groovy-ecl-streams ros-groovy-ecl-mobile-robot ros-groovy-ecl-sigslots 
 #
 # Gazebo
 #   sudo apt-get install libprotobuf-dev libprotoc-dev libtar-dev
 #
 ##############################################################################
 # Official ros stacks
-
 - other:
     local-name: /opt/ros/groovy/share/ros
 - other:
@@ -65,9 +46,9 @@
     local-name: kobuki_controllers
     version: master
 
-# OCL stacks
+# Yujin ocs stacks
 - git:
-    uri: https://github.com/yujinrobot-ocl/open_control_library.git
-    local-name: open_control_library
+    uri: https://github.com/yujinrobot/yujin_ocs.git
+    local-name: yujin_ocs
     version: master
 
