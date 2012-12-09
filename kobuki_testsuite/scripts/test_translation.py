@@ -76,7 +76,7 @@ class Test_Translation:
 		self.twist.angular.z = 0
 
 	def _init_pubsub(self):
-		self.cmd_vel_pub = rospy.Publisher("/cmd_vel", Twist)
+		self.cmd_vel_pub = rospy.Publisher("/mobile_base/commands/velocity", Twist)
 		self.odom_sub = rospy.Subscriber("/odom", Odometry, self.OdomInfoCallback)
 		self.bumper_event_sub = rospy.Subscriber("/mobile_base/events/bumper", BumperEvent, self.BumperEventCallback)
 		self.imu_sub = rospy.Subscriber("mobile_base/sensors/imu_data", Imu, self.ImuInfoCallback)

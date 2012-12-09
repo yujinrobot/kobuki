@@ -6,7 +6,7 @@ from kobuki_testsuite import SafeWandering
 
 if __name__ == '__main__':
 
-    cmdvel_topic = '/cmd_vel'
+    cmdvel_topic = '/mobile_base/commands/velocity'
     odom_topic =  '/odom'
     bump_topic = '/mobile_base/events/bumper'
     cliff_topic = '/mobile_base/events/cliff'
