@@ -1,12 +1,15 @@
+kobuki stack
 
-This stack is to support development of Yujin's **IClebo Kobuki** research development platform.
+The kobuki stack consists the C++ driver for communicating with [iClebo Kobuki](http:/kobuki.yujinrobot.com) and a wrapper for [ROS](http://www.ros.org).
 
-## kobuki_driver
+![Kobuki Logo](http://kobuki.yujinrobot.com/files/cache/3e02b571192eb6f4ea15e3ad52419cd3.png)
 
-This software is for standalone use - users will gain access to a library and its api.
+ROS
 
-## Rest
+Check out the [ROS wiki entry for Kobuki](http://www.ros.org/wiki/kobuk)i for more information about how to use Kobuki with ROS.
 
-Turtlebot support is enabled to meet the requirements of [Ros REP #119](http://www.ros.org/reps/rep-0119.html).
-Check out http://www.ros.org/wiki/kobuki for more information about how to use Kobuki with ROS.
+TurtleBot
+
+The Kobuki software is designed to meet the requirements of [ROS REP #119](http://www.ros.org/reps/rep-0119.html) to support [TurtleBot](http://turtlebot.com).
+
 
