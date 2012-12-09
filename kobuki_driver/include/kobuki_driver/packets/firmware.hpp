@@ -49,7 +49,9 @@
 ** Constants
 *****************************************************************************/
 
-#define CURRENT_FIRMWARE_VERSION  10000   // i.e. 1.0.0; patch number is ignored
+#define CURRENT_FIRMWARE_MAYOR_VERSION  1
+#define CURRENT_FIRMWARE_MINOR_VERSION  1
+// patch number is ignored; don't need to be updated
 
 /*****************************************************************************
 ** Namespace
@@ -66,7 +68,7 @@ class Firmware : public packet_handler::payloadBase
 {
 public:
   struct Data {
-    uint16_t version;
+    uint32_t version;
   } data;
 
   // methods
@@ -78,7 +80,7 @@ public:
       return false;
     }
 
-    unsigned char length = 2;
+    unsigned char length = 4;
     buildBytes(Header::Firmware, byteStream);
     buildBytes(length, byteStream);
     buildBytes(data.version, byteStream);
@@ -93,15 +95,28 @@ public:
       return false;
     }
 
-    unsigned char header_id, length;
+    unsigned char header_id = 0, length = 0;
     buildVariable(header_id, byteStream);
     buildVariable(length, byteStream);
-    buildVariable(data.version, byteStream);
 
-    // TODO firmware currently hardcoded version is 123, but we want 10000 (1.0.0);
-    // remove this horrible, dirty hack as soon as we upgrade the firmware to 101
-    if (data.version == 123)
-      data.version = 10000;
+    // TODO First 3 firmware versions coded version number on 2 bytes, so we need convert manually to our new
+    // 4 bytes system; remove this horrible, dirty hack as soon as we upgrade the firmware to 1.1.2 or 1.2.0
+    if (length == 2)
+    {
+      uint16_t old_style_version = 0;
+      buildVariable(old_style_version, byteStream);
+
+      if (old_style_version == 123)
+        data.version = 65536; // 1.0.0
+      else if (old_style_version == 10100)
+        data.version = 65792; // 1.1.0
+      else if (old_style_version == 10101)
+        data.version = 65793; // 1.1.1
+    }
+    else
+    {
+      buildVariable(data.version, byteStream);
+    }
 
     //showMe();
     return constrain();
@@ -109,7 +124,7 @@ public:
 
   bool constrain()
   {
-    return (data.version >= 10000);  // lowest version is 1.0.0
+    return true;
   }
 
   void showMe()
@@ -117,52 +132,28 @@ public:
     //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, acc[2], acc[1], acc[0] );
   }
 
-  std::string flashed_version() { return toString(data.version); }
-  std::string current_version() { return toString(CURRENT_FIRMWARE_VERSION); }
-
-  std::string toString(uint16_t version_number)
+  std::string current_version()
   {
-    // Convert a short unsigned into a string of type <mayor>.<minor>.<patch>
     std::stringstream ss;
-    ss << version_number;
-    std::string version(ss.str());
-    ss.str("");
-    ss << version.substr(0, 1) << '.' << version.substr(1, 2) << '.' << version.substr(3, 2);
-    version = ss.str();
-    std::size_t pos = version.find(".0");
-    while (pos != std::string::npos)
-    {
-      if (version[pos + 2] != '.')
-        version.erase(pos + 1, 1);
+    ss << CURRENT_FIRMWARE_MAYOR_VERSION << "." << CURRENT_FIRMWARE_MINOR_VERSION << ".x";
 
-      pos = version.find(".0", pos + 2);
-    }
-
-    return version;
+    return std::string(ss.str());
   }
 
   int check_mayor_version()
   {
     // Return a negative value if firmware's mayor version is older than that of the driver,
     // 0 if both are the same, and a positive value if firmware's mayor version is newer
-    std::stringstream ss; ss << data.version;
-    std::string flashed_version(ss.str());
-    ss.str(""); ss << CURRENT_FIRMWARE_VERSION;
-    std::string current_version(ss.str());
-
-    return flashed_version.compare(0, 1, current_version, 0, 1);
+    uint32_t flashed_version = ((data.version & 0x00FF0000) >> 16);
+    return flashed_version - CURRENT_FIRMWARE_MAYOR_VERSION;
   }
 
   int check_minor_version()
   {
     // Return a negative value if firmware's minor version is older than that of the driver,
     // 0 if both are the same, and a positive value if firmware's minor version is newer
-    std::stringstream ss; ss << data.version;
-    std::string flashed_version(ss.str());
-    ss.str(""); ss << CURRENT_FIRMWARE_VERSION;
-    std::string current_version(ss.str());
-
-    return flashed_version.compare(1, 2, current_version, 1, 2);
+    uint32_t flashed_version = ((data.version & 0x0000FF00) >> 8);
+    return flashed_version - CURRENT_FIRMWARE_MINOR_VERSION;
   }
 };
 

@@ -59,20 +59,29 @@ namespace kobuki {
  */
 class VersionInfo {
 public:
-  VersionInfo(const uint16_t &fw, const uint16_t &hw, const uint32_t udid0_, const uint32_t udid1_, const uint32_t udid2_ ) :
+  VersionInfo(const uint32_t &fw, const uint32_t &hw, const uint32_t udid0_, const uint32_t udid1_, const uint32_t udid2_ ) :
     firmware(fw),
     hardware(hw),
-    software(20120414),
+    software(0),
     udid0(udid0_),
     udid1(udid1_),
     udid2(udid2_)
   {}
-  const uint16_t firmware;
-  const uint16_t hardware;
+  const uint32_t firmware;
+  const uint32_t hardware;
   const uint32_t software;
   const uint32_t udid0;
   const uint32_t udid1;
   const uint32_t udid2;
+
+  static std::string toString(uint32_t version)
+  {
+    // Convert an unsigned int into a string of type <mayor>.<minor>.<patch>; first byte is ignored
+    std::stringstream ss;
+    ss << ((version & 0x00FF0000) >> 16) << "." << ((version & 0x0000FF00) >>  8) << "." << (version & 0x000000FF);
+
+    return std::string(ss.str());
+  }
 };
 
 } // namespace kobuki
