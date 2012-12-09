@@ -39,7 +39,7 @@ public:
     }
 
     target_direction_ = i;
-  };
+  }
 
 private:
   double magic_;

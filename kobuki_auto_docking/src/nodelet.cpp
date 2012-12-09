@@ -41,6 +41,8 @@
 #include <ecl/threads/thread.hpp>
 #include "auto_docking/auto_docking_ros.hpp"
 
+namespace kobuki
+{
 
 class AutoDockingNodelet : public nodelet::Nodelet
 {
@@ -53,14 +55,17 @@ public:
   }
   virtual void onInit()
   {
+    std::cout << "xx" << std::endl;
     NODELET_DEBUG("Initialising nodelet...");
-    std::string nodelet_name = this->getName();
-    //auto_dock_.reset(new AutoDockingROS(nodelet_name));
+    //std::string nodelet_name = this->getName();
+    auto_dock_.reset(new AutoDockingROS());
+    std::cout << "xx" << std::endl;
     if (auto_dock_->init(this->getPrivateNodeHandle()))
     {
       NODELET_DEBUG("Auto docking initialised. Spinning up update thread ...");
       update_thread_.start(&AutoDockingNodelet::update, *this);
     }
+    std::cout << "xx" << std::endl;
     NODELET_DEBUG("Nodelet initialised.");
   }
 private:
@@ -70,13 +75,15 @@ private:
     while (ros::ok())
     {
       auto_dock_->spin();
-      ros::spinOnce();
+      //ros::spinOnce();
       spin_rate.sleep();
     }
   }
 
   boost::shared_ptr<AutoDockingROS> auto_dock_;
+  //AutoDockingROS auto_dock_;
   ecl::Thread update_thread_;
 };
 
-PLUGINLIB_DECLARE_CLASS(auto_docking, AutoDockingNodelet, AutoDockingNodelet, nodelet::Nodelet);
+} //namespace kobuki
+PLUGINLIB_DECLARE_CLASS(kobuki_auto_docking, AutoDockingNodelet, kobuki::AutoDockingNodelet, nodelet::Nodelet);
