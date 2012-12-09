@@ -11,7 +11,9 @@
 
   <!-- 
     Bring these back in when we officially build 
-    Otherwise we can't make the deb.
+    Otherwise we can't make the deb. Reintroduce 
+    stack dependancy 'control' for 'control_msgs' 
+    if we need it.
       
   <depend package="rospy"/>
   <depend package="roslib"/>
