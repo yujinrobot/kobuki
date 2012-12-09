@@ -32,7 +32,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-# Puts the robot into rotation for 10 seconds. The simplest motors test.
+# Puts the robot into continual rotation - useful for aging/battery tests.
 
 import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
@@ -47,9 +47,4 @@ if __name__ == '__main__':
     cmdvel_topic = '/mobile_base/commands/velocity'
     log_topic = '/log'
     rotator = RotateTest(cmdvel_topic,log_topic)
-
-    rospy.loginfo("Start to rotate")
     rotator.start()
-    rospy.sleep(10)
-    rospy.loginfo("Stop rotating")
-    rotator.stop()
