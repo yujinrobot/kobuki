@@ -44,7 +44,7 @@ import commands
 
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
-from kobuki_msgs.msg import DigitalOutput, Led, Sound, SensorState, DockInfraRed
+from kobuki_msgs.msg import DigitalOutput, Led, Sound, SensorState, DockInfraRed, ExternalPower
 
 
 
@@ -76,6 +76,8 @@ class Controller(object):
     self.cmd_vel=Twist()
     self.sensors = SensorState()
     self.dock_ir = DockInfraRed()
+
+    self.bat_name = self.getBatteryName()
     self.state = "N/A"
     self.percentage = 0.0
 
@@ -84,7 +86,7 @@ class Controller(object):
       'disable':rospy.Publisher('/disable', String),
       'do_dock':rospy.Publisher('/mobile_base/commands/do_dock', String),
       'cancel_dock':rospy.Publisher('/mobile_base/commands/cancel_dock', String),
-      'external_power':rospy.Publisher('/mobile_base/commands/external_power',DigitalOutput),
+      'external_power':rospy.Publisher('/mobile_base/commands/external_power',ExternalPower),
       'digital_output':rospy.Publisher('/mobile_base/commands/digital_output',DigitalOutput),
       'led1':rospy.Publisher('/mobile_base/commands/led1',Led),
       'led2':rospy.Publisher('/mobile_base/commands/led2',Led),
@@ -120,8 +122,9 @@ class Controller(object):
       'Q':(rospy.signal_shutdown,'user reuest','quit'),
     }
     rospy.Timer(rospy.Duration(0.1), self.keyopCallback)
-    rospy.Timer(rospy.Duration(1.0), self.batteryCallback)
-    rospy.Timer(rospy.Duration(1.0), self.stateCallback)
+    if len(self.bat_name) > 0:
+      rospy.Timer(rospy.Duration(1.0), self.batteryCallback)
+    rospy.Timer(rospy.Duration(1.0), self.stateCallback) # to check status of rostopics
     self.printFront()
     '''
     # initial values
@@ -239,9 +242,9 @@ class Controller(object):
       self.dock_ir = data
 
   def batteryCallback(self, event):
-    rem = float(commands.getoutput("grep \"^remaining capacity\" /proc/acpi/battery/BAT0/state | awk '{ print $3 }'"))
-    full = float(commands.getoutput("grep \"^last full capacity\" /proc/acpi/battery/BAT0/info | awk '{ print $4 }'"))
-    self.state = commands.getoutput("grep \"^charging state\" /proc/acpi/battery/BAT0/state | awk '{ print $3 }'")
+    rem = float(commands.getoutput("grep \"^remaining capacity\" /proc/acpi/battery/" + self.bat_name + "/state | awk '{ print $3 }'"))
+    full = float(commands.getoutput("grep \"^last full capacity\" /proc/acpi/battery/" + self.bat_name + "/info | awk '{ print $4 }'"))
+    self.state = commands.getoutput("grep \"^charging state\" /proc/acpi/battery/" + self.bat_name + "/state | awk '{ print $3 }'")
     self.percentage = float((rem/full) * 100.)
 
   def stateCallback(self, event):
@@ -275,12 +278,13 @@ class Controller(object):
   def printStatus(self):
     sys.stdout.write('                                                                                                               \r')
     sys.stdout.write('[ \033[1m' + self.message + '\033[0m ]')
-    sys.stdout.write('[Laptop: ' + "{0:2.2f}".format(self.percentage) + '% - ' + self.state + ']')
 
+    if len(self.bat_name) > 0:
+      sys.stdout.write('[Laptop: ' + "{0:2.2f}".format(self.percentage) + '% - ' + self.state + ']')
+
+    src_str = ''
     if self.sensors.charger:
       src_str = '(adaptor)' if self.sensors.charger&16 else '(dock)'
-    else:
-      src_str = ''
 
     chg = self.sensors.charger&6
     if chg==0: chg_str = 'discharging'
@@ -304,6 +308,16 @@ class Controller(object):
     '''
     sys.stdout.write('\r')
     sys.stdout.flush()
+
+  def getBatteryName(self):
+    PATH = '/proc/acpi/battery'
+    bat_name = ''
+    if os.path.exists(PATH):
+      bat = os.walk(PATH).next()
+      if len(bat[1]) > 0:
+        bat_name = bat[1][0]
+    return bat_name
+
 
 if __name__ == '__main__':
   try:
