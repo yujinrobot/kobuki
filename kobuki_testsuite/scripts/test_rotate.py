@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
     rospy.init_node('test_rotate')
 
-    cmdvel_topic = '/cmd_vel'
+    cmdvel_topic = '/mobile_base/commands/velocity'
     log_topic = '/log'
     rotator = RotateTest(cmdvel_topic,log_topic)
 
