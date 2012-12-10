@@ -108,9 +108,9 @@ public:
 
       if (old_style_version == 123)
         data.version = 65536; // 1.0.0
-      else if (old_style_version == 10100)
+      else if ((old_style_version == 10100) || (old_style_version == 110))
         data.version = 65792; // 1.1.0
-      else if (old_style_version == 10101)
+      else if ((old_style_version == 10101) || (old_style_version == 111))
         data.version = 65793; // 1.1.1
     }
     else
