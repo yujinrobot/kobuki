@@ -31,7 +31,9 @@
 #include <kobuki_msgs/DockInfraRed.h>
 #include <kobuki_msgs/MotorPower.h>
 
-//#include <sstream>
+
+#include <sstream>
+#include <vector>
 #include <ecl/geometry/pose2d.hpp>
 #include "auto_docking.hpp"
 
@@ -51,36 +53,24 @@ public:
   ~AutoDockingROS();
 
   bool init(ros::NodeHandle& nh);
-
-  /*
-   * optional, use if needed
-   */
   void spin();
 
 private:
-  bool shutdown_requested;
-  ros::NodeHandle nh_;
   AutoDocking dock_;
-  ros::Subscriber odom_, dock_ir_, core_sensors_, do_dock_, cancel_dock_, debug_;
+
+  bool shutdown_requested_;
+  ros::Subscriber do_dock_, cancel_dock_, debug_;
   ros::Publisher velocity_commander_, motor_power_enabler_, debug_jabber_;
 
-//  message_filters::Subscriber<kobuki_msgs::DockInfraRed> ir_sub_;
-//  message_filters::Subscriber<kobuki_msgs::SensorState> core_sub_;
   boost::shared_ptr<message_filters::Subscriber<nav_msgs::Odometry> > odom_sub_;
   boost::shared_ptr<message_filters::Subscriber<kobuki_msgs::DockInfraRed> > ir_sub_;
   boost::shared_ptr<message_filters::Subscriber<kobuki_msgs::SensorState> > core_sub_;
   boost::shared_ptr<message_filters::Synchronizer<SyncPolicy> > sync_;
-  //boost::shared_ptr<message_filters::TimeSynchronizer<kobuki_msgs::SensorState, kobuki_msgs::DockInfraRed> > sync_;
 
   //ecl::Pose2D odom_;
-  void odomCb(const nav_msgs::OdometryPtr msg);
-  void coreCb(const kobuki_msgs::SensorStatePtr msg);
-  void irCb(const kobuki_msgs::DockInfraRedPtr msg);
-
-  void doCb(const std_msgs::StringPtr msg);
-  void cancelCb(const std_msgs::StringPtr msg);
-  void debugCb(const std_msgs::StringPtr msg);
-
+  void doCb(const std_msgs::StringConstPtr& msg);
+  void cancelCb(const std_msgs::StringConstPtr& msg);
+  void debugCb(const std_msgs::StringConstPtr& msg);
   void syncCb(const nav_msgs::OdometryConstPtr& odom,
               const kobuki_msgs::SensorStateConstPtr& core,
                const kobuki_msgs::DockInfraRedConstPtr& ir);

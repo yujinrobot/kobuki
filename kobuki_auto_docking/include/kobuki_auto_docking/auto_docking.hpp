@@ -17,6 +17,8 @@
 /*****************************************************************************
 ** Includes
 *****************************************************************************/
+#include <ecl/geometry/pose2d.hpp>
+#include <string>
 
 namespace kobuki
 {
@@ -28,6 +30,8 @@ public:
   ~AutoDocking();
 
   bool init();
+  void enable(std::string msg);
+  void disable(std::string msg);
   void auto_dock();
 
 private:

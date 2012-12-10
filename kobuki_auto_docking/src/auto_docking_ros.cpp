@@ -17,12 +17,12 @@ namespace kobuki
 {
 
 AutoDockingROS::AutoDockingROS()
-  : shutdown_requested(false)
+  : shutdown_requested_(false)
 {;}
 
 AutoDockingROS::~AutoDockingROS()
 {
-  shutdown_requested = true;
+  shutdown_requested_ = true;
 }
 
 bool AutoDockingROS::init(ros::NodeHandle& nh)
@@ -31,37 +31,24 @@ bool AutoDockingROS::init(ros::NodeHandle& nh)
   motor_power_enabler_ = nh.advertise<kobuki_msgs::MotorPower>("/mobile_base/commands/motor_power", 10);
   velocity_commander_ = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 10);
 
-  odom_ = nh.subscribe("/odom", 10, &AutoDockingROS::odomCb, this);
-  core_sensors_ = nh.subscribe("/mobile_base/sensors/core", 10, &AutoDockingROS::coreCb, this);
-  dock_ir_ = nh.subscribe("/mobile_base/sensors/dock_ir", 10, &AutoDockingROS::irCb, this);
+  do_dock_ = nh.subscribe("/dock_drive/commands/do_dock", 10, &AutoDockingROS::doCb, this);
+  cancel_dock_ = nh.subscribe("/dock_drive/commands/cancel_dock", 10, &AutoDockingROS::cancelCb, this);
+  debug_ = nh.subscribe("/dock_drive/commands/debug", 10, &AutoDockingROS::debugCb, this);
 
-  //core_sub_.subscribe(nh_, "/mobile_base/sensors/core", 10);
-  //ir_sub_.subscribe(nh_, "/mobile_base/sensors/dock_ir", 10);
-  //sync_.reset(new message_filters::Synchronizer<SyncPolicy>(SyncPolicy(10), core_sub_, ir_sub_));
   odom_sub_.reset(new message_filters::Subscriber<nav_msgs::Odometry>(nh, "/odom", 10));
   core_sub_.reset(new message_filters::Subscriber<kobuki_msgs::SensorState>(nh, "/mobile_base/sensors/core", 10));
   ir_sub_.reset(new message_filters::Subscriber<kobuki_msgs::DockInfraRed>(nh, "/mobile_base/sensors/dock_ir", 10));
   sync_.reset(new message_filters::Synchronizer<SyncPolicy>(SyncPolicy(10), *odom_sub_, *core_sub_, *ir_sub_));
   sync_->registerCallback(boost::bind(&AutoDockingROS::syncCb, *this, _1, _2, _3));
 
-  //odom_.subscribe("some_topic");
-  //ir_.subscribe("some_topic", AutoDockingROS::ir_cb);
-  //velocity_commander_.publish("some_topic");
   return dock_.init();
 }
 
-/*
- * optional, use if needed
- */
 void AutoDockingROS::spin()
 {
   return;
 
-  while(!shutdown_requested){;}
-
-  //msg.data = dock_.target_direction_;
-  //velocity_commander_.publish(msg);
-  //dock_.auto_dock();
+  while(!shutdown_requested_){;}
 }
 
 void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
@@ -74,11 +61,17 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
   std::cout << "---2---" << std::endl << core << std::endl;
   std::cout << "---3---" << std::endl << ir << std::endl;
 
+
+  //update
+  //dock_.update(odom, ir, core);
+
+
   //
   geometry_msgs::TwistPtr msg(new geometry_msgs::Twist);
   msg->linear.x = 0.0;
   msg->angular.z = 0.0;
   velocity_commander_.publish(msg);
+
 
   //
   std::ostringstream oss;
@@ -86,29 +79,31 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
   std_msgs::StringPtr debug_log(new std_msgs::String);
   debug_log->data = oss.str();
   debug_jabber_.publish(debug_log);
+
   return;
-
-//  dock_.update(odom, ir, core);
-}
-void AutoDockingROS::odomCb(const nav_msgs::OdometryPtr msg)
-{
-  static int n = 0;
-  ROS_INFO_STREAM("odomCb: " << __func__ << "(" << n++ << ")");
-  //odom_ = data; 
-  //dock_.update(odom_);
 }
 
-void AutoDockingROS::coreCb(const kobuki_msgs::SensorStatePtr msg)
+void AutoDockingROS::doCb(const std_msgs::StringConstPtr& msg)
 {
-  static int n = 0;
-  ROS_INFO_STREAM("coreCb: " << __func__ << "(" << n++ << ")");
+  dock_.enable(msg->data);
+
+  kobuki_msgs::MotorPowerPtr power_cmd(new kobuki_msgs::MotorPower);
+  power_cmd->state = kobuki_msgs::MotorPower::ON;
+  motor_power_enabler_.publish(power_cmd);
 }
 
-void AutoDockingROS::irCb(const kobuki_msgs::DockInfraRedPtr msg)
+void AutoDockingROS::cancelCb(const std_msgs::StringConstPtr& msg)
 {
-  static int n = 0;
-  ROS_INFO_STREAM("irCb: " << __func__ << "(" << n++ << ")");
+  dock_.disable(msg->data);
+
+  kobuki_msgs::MotorPowerPtr power_cmd(new kobuki_msgs::MotorPower);
+  power_cmd->state = kobuki_msgs::MotorPower::OFF;
+  motor_power_enabler_.publish(power_cmd);
+}
+
+void AutoDockingROS::debugCb(const std_msgs::StringConstPtr& msg)
+{
+  dock_.enable(msg->data);
 }
 
 } //namespace kobuki
-

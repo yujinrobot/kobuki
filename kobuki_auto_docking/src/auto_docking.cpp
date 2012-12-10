@@ -27,6 +27,16 @@ bool AutoDocking::init()
   return true;
 }
 
+void AutoDocking::enable(std::string msg) 
+{
+  return;
+}
+
+void AutoDocking::disable(std::string msg) 
+{
+  return;
+}
+
 void AutoDocking::auto_dock()
 {
   int i = 0;
