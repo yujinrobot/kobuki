@@ -19,21 +19,30 @@
 *****************************************************************************/
 
 #include <ros/ros.h>
+
 #include <message_filters/subscriber.h>
 #include <message_filters/time_synchronizer.h>
 #include <message_filters/synchronizer.h>
 #include <message_filters/sync_policies/approximate_time.h>
+
 #include <std_msgs/String.h>
 #include <nav_msgs/Odometry.h>
 #include <kobuki_msgs/SensorState.h>
 #include <kobuki_msgs/DockInfraRed.h>
+#include <kobuki_msgs/MotorPower.h>
+
+//#include <sstream>
 #include <ecl/geometry/pose2d.hpp>
 #include "auto_docking.hpp"
 
 namespace kobuki 
 {
 
-typedef message_filters::sync_policies::ApproximateTime<kobuki_msgs::SensorState, kobuki_msgs::DockInfraRed> SyncPolicy;
+typedef message_filters::sync_policies::ApproximateTime<
+  nav_msgs::Odometry,
+  kobuki_msgs::SensorState,
+  kobuki_msgs::DockInfraRed
+> SyncPolicy;
 
 class AutoDockingROS
 {
@@ -53,10 +62,11 @@ private:
   ros::NodeHandle nh_;
   AutoDocking dock_;
   ros::Subscriber odom_, dock_ir_, core_sensors_, do_dock_, cancel_dock_, debug_;
-  ros::Publisher velocity_commander_, motor_power_enabler_;
+  ros::Publisher velocity_commander_, motor_power_enabler_, debug_jabber_;
 
 //  message_filters::Subscriber<kobuki_msgs::DockInfraRed> ir_sub_;
 //  message_filters::Subscriber<kobuki_msgs::SensorState> core_sub_;
+  boost::shared_ptr<message_filters::Subscriber<nav_msgs::Odometry> > odom_sub_;
   boost::shared_ptr<message_filters::Subscriber<kobuki_msgs::DockInfraRed> > ir_sub_;
   boost::shared_ptr<message_filters::Subscriber<kobuki_msgs::SensorState> > core_sub_;
   boost::shared_ptr<message_filters::Synchronizer<SyncPolicy> > sync_;
@@ -71,7 +81,9 @@ private:
   void cancelCb(const std_msgs::StringPtr msg);
   void debugCb(const std_msgs::StringPtr msg);
 
-  void syncCb(const kobuki_msgs::SensorStateConstPtr& core, const kobuki_msgs::DockInfraRedConstPtr& ir);
+  void syncCb(const nav_msgs::OdometryConstPtr& odom,
+              const kobuki_msgs::SensorStateConstPtr& core,
+               const kobuki_msgs::DockInfraRedConstPtr& ir);
 };
 
 } //namespace kobuki
