@@ -95,13 +95,15 @@ public:
   };
 
   DockDrive();
-  void init();
+  bool init(){ return true; }
+  void enable(std::string msg){ mode_shift(msg); }
+  void disable(std::string msg){ mode_shift(msg); }
   void mode_shift(std::string mode);
-  void update(std::vector<unsigned char> &signal /* dock_ir signal*/
-                , unsigned char &bumper
-                , unsigned char &charger
-                , ecl::Pose2D<double> &pose_update
-                , ecl::linear_algebra::Vector3d &pose_update_rates);
+  void update(const std::vector<unsigned char> &signal /* dock_ir signal*/
+                , const unsigned char &bumper
+                , const unsigned char &charger
+                , const ecl::Pose2D<double> &pose_update
+                , const ecl::linear_algebra::Vector3d &pose_update_rates);
   void velocityCommands(const double &vx, const double &wz);
 
   /*********************

@@ -90,11 +90,11 @@ void DockDrive::mode_shift(std::string mode)
  * @param pose_update
  * @param pose_update_rates
  */
-void DockDrive::update(std::vector<unsigned char> &signal
-                , unsigned char &bumper
-                , unsigned char &charger
-                , ecl::Pose2D<double> &pose_update  
-                , ecl::linear_algebra::Vector3d &pose_update_rates) {
+void DockDrive::update(const std::vector<unsigned char> &signal
+                , const unsigned char &bumper
+                , const unsigned char &charger
+                , const ecl::Pose2D<double> &pose_update
+                , const ecl::linear_algebra::Vector3d &pose_update_rates) {
   /*************************
    * pre processing
    *************************/

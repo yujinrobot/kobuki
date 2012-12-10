@@ -69,7 +69,7 @@ class Controller(object):
 
   def __init__(self):
     #rospy initial setup
-    rospy.init_node("test_output")
+    rospy.init_node("dock_drive_control")
     rospy.on_shutdown(self.clearing)
     rate = rospy.Rate(10)
     self.message = "Idle" 

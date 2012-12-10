@@ -36,6 +36,7 @@
 #include <vector>
 #include <ecl/geometry/pose2d.hpp>
 #include "auto_docking.hpp"
+#include "dock_drive.hpp"
 
 namespace kobuki 
 {
@@ -56,9 +57,12 @@ public:
   void spin();
 
 private:
-  AutoDocking dock_;
+//  AutoDocking dock_;
+  DockDrive dock_;
 
   bool shutdown_requested_;
+  //ecl::Pose2D<double> pose;
+
   ros::Subscriber do_dock_, cancel_dock_, debug_;
   ros::Publisher velocity_commander_, motor_power_enabler_, debug_jabber_;
 
@@ -67,7 +71,7 @@ private:
   boost::shared_ptr<message_filters::Subscriber<kobuki_msgs::SensorState> > core_sub_;
   boost::shared_ptr<message_filters::Synchronizer<SyncPolicy> > sync_;
 
-  //ecl::Pose2D odom_;
+
   void doCb(const std_msgs::StringConstPtr& msg);
   void cancelCb(const std_msgs::StringConstPtr& msg);
   void debugCb(const std_msgs::StringConstPtr& msg);
