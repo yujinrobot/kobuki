@@ -116,7 +116,6 @@ private:
   ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber, external_power_command_subscriber;
   ros::Subscriber led1_command_subscriber, led2_command_subscriber, sound_command_subscriber;
   ros::Subscriber motor_power_subscriber, reset_odometry_subscriber;
-  ros::Subscriber do_dock_subscriber, cancel_dock_subscriber; 
 
   void advertiseTopics(ros::NodeHandle& nh);
   void subscribeTopics(ros::NodeHandle& nh);
@@ -132,8 +131,6 @@ private:
   void subscribeResetOdometry(const std_msgs::EmptyConstPtr);
   void subscribeSoundCommand(const kobuki_msgs::SoundConstPtr);
   void subscribeMotorPower(const kobuki_msgs::MotorPowerConstPtr msg);
-  void doDock(const std_msgs::StringConstPtr msg);
-  void cancelDock(const std_msgs::StringConstPtr msg);
 
   /*********************
    ** SigSlots

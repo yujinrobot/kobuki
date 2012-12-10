@@ -93,9 +93,9 @@ private:
   unsigned short last_tick_left, last_tick_right;
   double last_rad_left, last_rad_right;
 
-  int16_t v, w;
-  int16_t radius;
-  int16_t speed;
+  short v, w;
+  short radius;
+  short speed;
   double bias; //wheelbase, wheel_to_wheel, in [m]
   double wheel_radius;
   int imu_heading_offset;

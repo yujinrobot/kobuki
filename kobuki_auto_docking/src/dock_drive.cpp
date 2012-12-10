@@ -35,7 +35,7 @@
 ** Includes
 *****************************************************************************/
 
-#include "../../include/kobuki_driver/modules/dock_drive.hpp"
+#include "kobuki_auto_docking/dock_drive.hpp"
 
 /*****************************************************************************
 ** Defines
