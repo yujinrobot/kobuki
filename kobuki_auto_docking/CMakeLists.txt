@@ -15,7 +15,7 @@ set(CMAKE_VERBOSE_MAKEFILE true)
 rosbuild_init()
 
 #set the default path for built executables to the "bin" directory
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+#set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 #set the default path for built libraries to the "lib" directory
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
@@ -33,5 +33,6 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #target_link_libraries(example ${PROJECT_NAME})
 
 rosbuild_add_library(kobuki_auto_docking_ros src/auto_docking_ros.cpp)
+rosbuild_add_library(kobuki_auto_docking_ros src/auto_docking.cpp)
 rosbuild_add_library(kobuki_auto_docking_nodelet src/nodelet.cpp)
 target_link_libraries(kobuki_auto_docking_nodelet kobuki_auto_docking_ros)

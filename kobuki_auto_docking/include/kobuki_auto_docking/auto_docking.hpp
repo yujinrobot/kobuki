@@ -24,24 +24,11 @@ namespace kobuki
 class AutoDocking
 {
 public:
-  AutoDocking(){};
-  ~AutoDocking(){};
+  AutoDocking();
+  ~AutoDocking();
 
-  bool init() {return true;}
-  void auto_dock()
-  {
-    int i = 0;
-    if (ir_left_)
-    {
-      i = -1;
-    }
-    else if (ir_right_)
-    {
-      i = 1;
-    }
-
-    target_direction_ = i;
-  }
+  bool init();
+  void auto_dock();
 
 private:
   double magic_;

@@ -19,6 +19,7 @@ namespace kobuki
 AutoDockingROS::AutoDockingROS()
   : shutdown_requested(false)
 {;}
+
 AutoDockingROS::~AutoDockingROS()
 {
   shutdown_requested = true;
@@ -33,7 +34,7 @@ bool AutoDockingROS::init(ros::NodeHandle& nh)
   //ir_.subscribe("some_topic", AutoDockingROS::ir_cb);
   //velocity_commander_.publish("some_topic");
   return dock_.init();
-};
+}
 
 /*
  * optional, use if needed
@@ -43,25 +44,24 @@ void AutoDockingROS::spin()
   //msg.data = dock_.target_direction_;
   //velocity_commander_.publish(msg);
   dock_.auto_dock();
-};
+}
 
 void AutoDockingROS::odomCb(const nav_msgs::OdometryPtr msg)
 {
-  //std::cout << *msg << std::endl;
   //odom_ = data; 
   ;
   //dock_.update(odom_);
-};
+}
 
 void AutoDockingROS::coreCb(const kobuki_msgs::SensorStatePtr msg)
 {
   ;
-};
+}
 
-void irCb(const kobuki_msgs::DockInfraRedPtr msg)
+void AutoDockingROS::irCb(const kobuki_msgs::DockInfraRedPtr msg)
 {
   ;
-};
+}
 
 } //namespace kobuki
 
