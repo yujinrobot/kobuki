@@ -57,38 +57,29 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
                             const kobuki_msgs::SensorStateConstPtr& core,
                             const kobuki_msgs::DockInfraRedConstPtr& ir)
 {
-  /*static int n = 0;
-  ROS_INFO_STREAM("syncCb: " << __func__ << "(" << n++ << ")");
-  std::cout << "---1---" << std::endl << odom << std::endl;
-  std::cout << "---2---" << std::endl << core << std::endl;
-  std::cout << "---3---" << std::endl << ir << std::endl;
-  */
-
-  //update
-  ecl::Pose2D<double> pose_update, pose; //dummy
-  ecl::linear_algebra::Vector3d pose_update_rates; //dummy
-
-  double r, p, y;
+  //conversions
   KDL::Rotation rot;
   tf::quaternionMsgToKDL( odom->pose.pose.orientation, rot );
+
+  double r, p, y;
   rot.GetRPY(r, p, y);
+
+  ecl::Pose2D<double> pose;
   pose.x(odom->pose.pose.position.x);
   pose.y(odom->pose.pose.position.y);
   pose.heading(y);
 
+  //process and run
   if (self->dock_.isEnabled()) {
-    self->dock_.update(ir->data, core->bumper, core->charger,
-                      pose);
-                      //pose_update, pose_update_rates);
+    //update
+    self->dock_.update(ir->data, core->bumper, core->charger, pose);
 
-    //
-  //  std::ostringstream oss;
-//    oss << "blah blah blah";
+    //debug stream
     std_msgs::StringPtr debug_log(new std_msgs::String);
-    debug_log->data = self->dock_.getDebugStream(); //oss.str();
+    debug_log->data = self->dock_.getDebugStream();
     debug_jabber_.publish(debug_log);
 
-    //
+    //publish velocity
     if (self->dock_.canRun()) {
       geometry_msgs::TwistPtr cmd_vel(new geometry_msgs::Twist);
       cmd_vel->linear.x = self->dock_.getVX();

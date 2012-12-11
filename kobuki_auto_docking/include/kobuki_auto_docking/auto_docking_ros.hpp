@@ -60,11 +60,10 @@ public:
 
 private:
   AutoDockingROS* self;
-//  AutoDocking dock_;
+  //AutoDocking dock_;
   DockDrive dock_;
 
   bool shutdown_requested_;
-  //ecl::Pose2D<double> pose;
 
   ros::Subscriber do_dock_, cancel_dock_, debug_;
   ros::Publisher velocity_commander_, motor_power_enabler_, debug_jabber_;

@@ -121,7 +121,6 @@ public:
   /*********************
   ** Command Accessors
   **********************/
-  std::vector<short> velocityCommands() const;
   double getVX() const { return vx; }
   double getWZ() const { return wz; }
 
@@ -141,8 +140,6 @@ private:
   std::string state_str;
   ecl::Pose2D<double> pose;
   double vx, wz;
-  short speed, radius;
-  double bias;
   std::vector<std::vector<unsigned char> > past_signals;
   int bump_remainder;
   int dock_stabilizer;
