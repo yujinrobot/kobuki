@@ -172,7 +172,6 @@ private:
   void rosWarn(const std::string &msg) { ROS_WARN_STREAM("Kobuki : " << msg); }
   void rosError(const std::string &msg) { ROS_ERROR_STREAM("Kobuki : " << msg); }
 
-  std::vector<PacketFinder::BufferType> command_buffer_stack, stream_buffer_stack;
   void publishRawDataCommand(Command::Buffer &buffer);
   void publishRawDataStream(PacketFinder::BufferType &buffer);
 
