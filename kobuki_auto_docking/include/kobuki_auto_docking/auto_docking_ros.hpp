@@ -35,6 +35,8 @@
 #include <sstream>
 #include <vector>
 #include <ecl/geometry/pose2d.hpp>
+#include <kdl/frames.hpp>
+#include <kdl_conversions/kdl_msg.h>
 #include "auto_docking.hpp"
 #include "dock_drive.hpp"
 
@@ -57,6 +59,7 @@ public:
   void spin();
 
 private:
+  AutoDockingROS* self;
 //  AutoDocking dock_;
   DockDrive dock_;
 

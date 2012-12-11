@@ -18,7 +18,9 @@ namespace kobuki
 
 AutoDockingROS::AutoDockingROS()
   : shutdown_requested_(false)
-{;}
+{
+  self = this;
+}
 
 AutoDockingROS::~AutoDockingROS()
 {
@@ -29,7 +31,7 @@ bool AutoDockingROS::init(ros::NodeHandle& nh)
 {
   debug_jabber_ = nh.advertise<std_msgs::String>("/dock_drive/debug", 10);
   motor_power_enabler_ = nh.advertise<kobuki_msgs::MotorPower>("/mobile_base/commands/motor_power", 10);
-  velocity_commander_ = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 10);
+  velocity_commander_ = nh.advertise<geometry_msgs::Twist>("/mobile_base/commands/velocity", 10);
 
   do_dock_ = nh.subscribe("/dock_drive/commands/do_dock", 10, &AutoDockingROS::doCb, this);
   cancel_dock_ = nh.subscribe("/dock_drive/commands/cancel_dock", 10, &AutoDockingROS::cancelCb, this);
@@ -55,36 +57,45 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
                             const kobuki_msgs::SensorStateConstPtr& core,
                             const kobuki_msgs::DockInfraRedConstPtr& ir)
 {
-  static int n = 0;
+  /*static int n = 0;
   ROS_INFO_STREAM("syncCb: " << __func__ << "(" << n++ << ")");
   std::cout << "---1---" << std::endl << odom << std::endl;
   std::cout << "---2---" << std::endl << core << std::endl;
   std::cout << "---3---" << std::endl << ir << std::endl;
-
+  */
 
   //update
-  ecl::Pose2D<double> pose_update; //dummy
+  ecl::Pose2D<double> pose_update, pose; //dummy
   ecl::linear_algebra::Vector3d pose_update_rates; //dummy
 
-  if (dock_.isEnabled())
-    dock_.update(ir->data, core->bumper, core->charger,
-                      pose_update, pose_update_rates);
+  double r, p, y;
+  KDL::Rotation rot;
+  tf::quaternionMsgToKDL( odom->pose.pose.orientation, rot );
+  rot.GetRPY(r, p, y);
+  pose.x(odom->pose.pose.position.x);
+  pose.y(odom->pose.pose.position.y);
+  pose.heading(y);
 
+  if (self->dock_.isEnabled()) {
+    self->dock_.update(ir->data, core->bumper, core->charger,
+                      pose);
+                      //pose_update, pose_update_rates);
 
-  //
-  geometry_msgs::TwistPtr msg(new geometry_msgs::Twist);
-  msg->linear.x = 0.0;
-  msg->angular.z = 0.0;
-  velocity_commander_.publish(msg);
+    //
+    std::ostringstream oss;
+    oss << "blah blah blah";
+    std_msgs::StringPtr debug_log(new std_msgs::String);
+    debug_log->data = oss.str();
+    debug_jabber_.publish(debug_log);
 
-
-  //
-  std::ostringstream oss;
-  oss << "blah blah blah";
-  std_msgs::StringPtr debug_log(new std_msgs::String);
-  debug_log->data = oss.str();
-  debug_jabber_.publish(debug_log);
-
+    //
+    if (self->dock_.canRun()) {
+      geometry_msgs::TwistPtr cmd_vel(new geometry_msgs::Twist);
+      cmd_vel->linear.x = self->dock_.getVX();
+      cmd_vel->angular.z = self->dock_.getWZ();
+      velocity_commander_.publish(cmd_vel);
+    }
+  }
   return;
 }
 

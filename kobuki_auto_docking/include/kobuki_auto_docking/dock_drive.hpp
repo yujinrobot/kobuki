@@ -102,6 +102,10 @@ public:
   void update(const std::vector<unsigned char> &signal /* dock_ir signal*/
                 , const unsigned char &bumper
                 , const unsigned char &charger
+                , const ecl::Pose2D<double> &pose);
+  void update(const std::vector<unsigned char> &signal /* dock_ir signal*/
+                , const unsigned char &bumper
+                , const unsigned char &charger
                 , const ecl::Pose2D<double> &pose_update
                 , const ecl::linear_algebra::Vector3d &pose_update_rates);
   void velocityCommands(const double &vx, const double &wz);
@@ -110,12 +114,14 @@ public:
   ** Command Accessors
   **********************/
   std::vector<short> velocityCommands() const;
+  double getVX() const { return vx; }
+  double getWZ() const { return wz; }
 
   /*********************
   ** Mode Accessors
   **********************/
-  bool canRun() const { return can_run; }
   bool isEnabled() const { return is_enabled; }
+  bool canRun() const { return can_run; }
 
 private:
   bool is_enabled, can_run;

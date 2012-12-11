@@ -69,13 +69,32 @@ DockDrive::DockDrive() :
   pose.setIdentity();
 }
 
-
 void DockDrive::mode_shift(std::string mode)
 {
   if (mode == "enable")  { is_enabled = true;  can_run = false; }
   if (mode == "disable") { is_enabled = false; can_run = false; }
   if (mode == "run")  can_run = true;
   if (mode == "stop") can_run = false;
+  std::cout << __func__ << ": " << mode << "[" << is_enabled << "][" << can_run << "]" << std::endl;
+}
+
+void DockDrive::update(const std::vector<unsigned char> &signal
+                , const unsigned char &bumper
+                , const unsigned char &charger
+                , const ecl::Pose2D<double> &pose) {
+  static ecl::Pose2D<double> pose_priv;
+  ecl::Pose2D<double> pose_diff, pose_update;
+
+  pose_diff.x( pose.x() - pose_priv.x() );
+  pose_diff.y( pose.y() - pose_priv.y() );
+  pose_diff.heading( pose.heading() - pose_priv.heading() );
+  pose_update.x( std::sqrt(pose_diff.x()*pose_diff.x() + pose_diff.y()*pose_diff.y()) );
+  pose_update.heading( pose_diff.heading() );
+  //std::cout << pose_diff << "=" << pose << "-" << pose_priv << " | " << pose_update << std::endl;
+  pose_priv = pose;
+
+  ecl::linear_algebra::Vector3d pose_update_rates; //dummy
+  update( signal, bumper, charger, pose_update, pose_update_rates );
 }
 
 
@@ -311,6 +330,7 @@ void DockDrive::update(const std::vector<unsigned char> &signal
   std::cout << "[" << debug_str << "]";
   std::cout << std::endl;
   velocityCommands(vx, wz);
+  this->vx = vx; this->wz = wz;
   return;
 #elif 0
   if (signal[0]==0 && signal[1]==0 && signal[2]==0) {
