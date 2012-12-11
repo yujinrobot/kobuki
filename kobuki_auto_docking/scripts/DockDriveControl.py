@@ -44,7 +44,7 @@ import commands
 
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
-from kobuki_msgs.msg import DigitalOutput, Led, Sound, SensorState, DockInfraRed, ExternalPower
+from kobuki_msgs.msg import DigitalOutput, Led, Sound, SensorState, DockInfraRed, ExternalPower, MotorPower
 
 
 
@@ -82,16 +82,17 @@ class Controller(object):
     self.percentage = 0.0
 
     self.pub = {
-      'enable':rospy.Publisher('/enable', String),
-      'disable':rospy.Publisher('/disable', String),
-      'do_dock':rospy.Publisher('/mobile_base/commands/do_dock', String),
-      'cancel_dock':rospy.Publisher('/mobile_base/commands/cancel_dock', String),
+#      'enable':rospy.Publisher('/enable', String),
+#      'disable':rospy.Publisher('/disable', String),
+      'motor_power':rospy.Publisher('/mobile_base/commands/motor_power',MotorPower),
+      'do_dock':rospy.Publisher('/dock_drive/commands/do_dock', String),
+      'cancel_dock':rospy.Publisher('/dock_drive/commands/cancel_dock', String),
       'external_power':rospy.Publisher('/mobile_base/commands/external_power',ExternalPower),
       'digital_output':rospy.Publisher('/mobile_base/commands/digital_output',DigitalOutput),
       'led1':rospy.Publisher('/mobile_base/commands/led1',Led),
       'led2':rospy.Publisher('/mobile_base/commands/led2',Led),
       'sound':rospy.Publisher('/mobile_base/commands/sound',Sound),
-      'cmd_vel':rospy.Publisher('/cmd_vel',Twist),
+      'cmd_vel':rospy.Publisher('/mobile_base/commands/velocity',Twist),
     }
     self.sub = {
       'core':rospy.Subscriber('/mobile_base/sensors/core', SensorState, self.sensorsCallback),
@@ -108,8 +109,8 @@ class Controller(object):
       '8':'eight',
       '9':'nine',
       '0':'null',
-      'e':(self.pub['enable'].publish,String('all'),'enabled'),
-      'r':(self.pub['disable'].publish,String('all'),'disabled'),
+      'e':(self.pub['motor_power'].publish,MotorPower(MotorPower.ON),'enabled'),
+      'r':(self.pub['motor_power'].publish,MotorPower(MotorPower.OFF),'disabled'),
       ' ':(self.resetVel,'','resetted'),
       'a':(self.pub['sound'].publish,Sound(Sound.ON),'sound.on'),
       's':(self.pub['sound'].publish,Sound(Sound.OFF),'sound.off'),
