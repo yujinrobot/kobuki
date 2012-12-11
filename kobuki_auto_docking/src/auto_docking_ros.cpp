@@ -82,10 +82,10 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
                       //pose_update, pose_update_rates);
 
     //
-    std::ostringstream oss;
-    oss << "blah blah blah";
+  //  std::ostringstream oss;
+//    oss << "blah blah blah";
     std_msgs::StringPtr debug_log(new std_msgs::String);
-    debug_log->data = oss.str();
+    debug_log->data = self->dock_.getDebugStream(); //oss.str();
     debug_jabber_.publish(debug_log);
 
     //
@@ -102,7 +102,7 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
 void AutoDockingROS::doCb(const std_msgs::StringConstPtr& msg)
 {
   dock_.enable(msg->data);
-  ROS_INFO_STREAM("dock_drive : auto docking enabled.");
+  ROS_DEBUG_STREAM("dock_drive : auto docking enabled.");
 
   kobuki_msgs::MotorPowerPtr power_cmd(new kobuki_msgs::MotorPower);
   power_cmd->state = kobuki_msgs::MotorPower::ON;
@@ -112,7 +112,7 @@ void AutoDockingROS::doCb(const std_msgs::StringConstPtr& msg)
 void AutoDockingROS::cancelCb(const std_msgs::StringConstPtr& msg)
 {
   dock_.disable(msg->data);
-  ROS_INFO_STREAM("dock_drive : auto docking disabled.");
+  ROS_DEBUG_STREAM("dock_drive : auto docking disabled.");
 
   kobuki_msgs::MotorPowerPtr power_cmd(new kobuki_msgs::MotorPower);
   power_cmd->state = kobuki_msgs::MotorPower::OFF;

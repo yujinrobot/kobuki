@@ -95,19 +95,27 @@ public:
   };
 
   DockDrive();
+  ~DockDrive();
+
   bool init(){ return true; }
-  void enable(std::string msg){ mode_shift(msg); }
-  void disable(std::string msg){ mode_shift(msg); }
-  void mode_shift(std::string mode);
+  bool isEnabled() const { return is_enabled; }
+  bool canRun() const { return can_run; }
+
+  void enable(std::string msg){ modeShift(msg); }
+  void disable(std::string msg){ modeShift(msg); }
+  void modeShift(std::string mode);
+
   void update(const std::vector<unsigned char> &signal /* dock_ir signal*/
                 , const unsigned char &bumper
                 , const unsigned char &charger
                 , const ecl::Pose2D<double> &pose);
+
   void update(const std::vector<unsigned char> &signal /* dock_ir signal*/
                 , const unsigned char &bumper
                 , const unsigned char &charger
                 , const ecl::Pose2D<double> &pose_update
                 , const ecl::linear_algebra::Vector3d &pose_update_rates);
+
   void velocityCommands(const double &vx, const double &wz);
 
   /*********************
@@ -120,11 +128,15 @@ public:
   /*********************
   ** Mode Accessors
   **********************/
-  bool isEnabled() const { return is_enabled; }
-  bool canRun() const { return can_run; }
+
+  //debugging
+  std::string getDebugStream() { return debug_output; } //stream.str(); }
+  //std::string getDebugStream() { return debug_stream.str(); }
+  //std::ostringstream debug_stream;
 
 private:
   bool is_enabled, can_run;
+
   State state;
   std::string state_str;
   ecl::Pose2D<double> pose;
@@ -138,6 +150,8 @@ private:
   double rotated;
 
   std::string binary(unsigned char number) const;
+
+  std::string debug_output;
 };
 
 } // namespace kobuki

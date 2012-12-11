@@ -69,13 +69,15 @@ DockDrive::DockDrive() :
   pose.setIdentity();
 }
 
-void DockDrive::mode_shift(std::string mode)
+DockDrive::~DockDrive(){;}
+
+
+void DockDrive::modeShift(std::string mode)
 {
   if (mode == "enable")  { is_enabled = true;  can_run = false; }
   if (mode == "disable") { is_enabled = false; can_run = false; }
   if (mode == "run")  can_run = true;
   if (mode == "stop") can_run = false;
-  std::cout << __func__ << ": " << mode << "[" << is_enabled << "][" << can_run << "]" << std::endl;
 }
 
 void DockDrive::update(const std::vector<unsigned char> &signal
@@ -137,10 +139,11 @@ void DockDrive::update(const std::vector<unsigned char> &signal
   /*************************
    * debug prints
    *************************/
+  std::ostringstream debug_stream;
   // pose
-  std::cout << pose;
+  debug_stream << pose;
   // pose_update and pose_update_rates for debugging
-  std::cout << std::fixed << std::setprecision(4)
+  debug_stream << std::fixed << std::setprecision(4)
     << "[x: "    << std::setw(7) << pose_update.x()
     << ", y: "  << std::setw(7) << pose_update.y()
     << ", th: " << std::setw(7) << pose_update.heading()
@@ -148,7 +151,7 @@ void DockDrive::update(const std::vector<unsigned char> &signal
 
   //dock_ir signal
   /*
-  std::cout 
+  debug_stream 
     << "[l: "  << binary(signal_filt[2])
     << ", c: " << binary(signal_filt[1])
     << ", r: " << binary(signal_filt[0])
@@ -168,7 +171,7 @@ void DockDrive::update(const std::vector<unsigned char> &signal
   }
   far_signal  += "]";
   near_signal += "]";
-  std::cout << far_signal << near_signal;
+  debug_stream << far_signal << near_signal;
 
   //bumper
   {
@@ -177,7 +180,7 @@ void DockDrive::update(const std::vector<unsigned char> &signal
   if (bumper&2) out += "C"; else out += "-";
   if (bumper&1) out += "R"; else out += "-";
   out += "]";
-  std::cout << out;
+  debug_stream << out;
   }
 
   //charger
@@ -187,7 +190,7 @@ void DockDrive::update(const std::vector<unsigned char> &signal
   oss << "(";
   if (charger) oss << "ON"; else oss << "  ";
   oss << ")]";
-  std::cout << oss.str();
+  debug_stream << oss.str();
   }
 
 
@@ -199,8 +202,8 @@ void DockDrive::update(const std::vector<unsigned char> &signal
   vx = 0.1;
   wz = 0.0;
 
-  std::cout << "[vx: " << vx << ", wz: " << wz << "]";
-  std::cout << td::endl;
+  debug_stream << "[vx: " << vx << ", wz: " << wz << "]";
+  debug_stream << td::endl;
   velocityCommands(vx, wz);
   return;
 #elif 1
@@ -324,11 +327,15 @@ void DockDrive::update(const std::vector<unsigned char> &signal
     setStateVel(UNKNOWN, 0.00, 0.00); break;
   } while(0);
 
-  //std::cout << std::fixed << std::setprecision(4)
-  std::cout << "[vx: " << std::setw(7) << vx << ", wz: " << std::setw(7) << wz << "]";
-  std::cout << "[S: " << state_str << "]";
-  std::cout << "[" << debug_str << "]";
-  std::cout << std::endl;
+  //debug_stream << std::fixed << std::setprecision(4)
+  debug_stream << "[vx: " << std::setw(7) << vx << ", wz: " << std::setw(7) << wz << "]";
+  debug_stream << "[S: " << state_str << "]";
+  debug_stream << "[" << debug_str << "]";
+  //debug_stream << std::endl;
+  debug_output = debug_stream.str();
+
+  //std::cout << debug_output << std::endl;;
+
   velocityCommands(vx, wz);
   this->vx = vx; this->wz = wz;
   return;
