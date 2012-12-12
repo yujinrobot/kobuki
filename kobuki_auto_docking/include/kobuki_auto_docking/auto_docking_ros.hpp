@@ -37,7 +37,6 @@
 #include <ecl/geometry/pose2d.hpp>
 #include <kdl/frames.hpp>
 #include <kdl_conversions/kdl_msg.h>
-#include "auto_docking.hpp"
 #include "dock_drive.hpp"
 
 namespace kobuki 
@@ -60,7 +59,6 @@ public:
 
 private:
   AutoDockingROS* self;
-  //AutoDocking dock_;
   DockDrive dock_;
 
   bool shutdown_requested_;
