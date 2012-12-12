@@ -56,13 +56,17 @@ public:
   virtual void onInit()
   {
     NODELET_DEBUG("Initialising nodelet...");
-    //std::string nodelet_name = this->getName();
-    auto_dock_.reset(new AutoDockingROS());
-    if (auto_dock_->init(this->getPrivateNodeHandle()))
+    std::string nodelet_name = this->getName();
+    //auto_dock_.reset(new AutoDockingROS());
+    auto_dock_.reset(new AutoDockingROS(nodelet_name));
+    //auto_dock_.reset(new AutoDockingROS(this->getPrivateNodeHandle()));
+    //auto_dock_.reset(new AutoDockingROS(this->getPrivateNodeHandle(), nodelet_name));
+    auto_dock_->init(this->getPrivateNodeHandle());
+    /*if (auto_dock_->init(this->getPrivateNodeHandle()))
     {
       NODELET_DEBUG("Auto docking initialised. Spinning up update thread ...");
       update_thread_.start(&AutoDockingNodelet::update, *this);
-    }
+    }*/
     NODELET_DEBUG("Nodelet initialised.");
   }
 private:
@@ -72,7 +76,6 @@ private:
     while (ros::ok())
     {
       auto_dock_->spin();
-      //ros::spinOnce();
       spin_rate.sleep();
     }
   }

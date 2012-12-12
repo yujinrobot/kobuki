@@ -19,6 +19,8 @@
 *****************************************************************************/
 
 #include <ros/ros.h>
+#include <actionlib/server/simple_action_server.h>
+#include <kobuki_auto_docking/AutoDockingAction.h>
 
 #include <message_filters/subscriber.h>
 #include <message_filters/time_synchronizer.h>
@@ -32,12 +34,12 @@
 #include <kobuki_msgs/DockInfraRed.h>
 #include <kobuki_msgs/MotorPower.h>
 
-
 #include <sstream>
 #include <vector>
 #include <ecl/geometry/pose2d.hpp>
 #include <kdl/frames.hpp>
 #include <kdl_conversions/kdl_msg.h>
+
 #include "dock_drive.hpp"
 
 namespace kobuki 
@@ -52,7 +54,10 @@ typedef message_filters::sync_policies::ApproximateTime<
 class AutoDockingROS
 {
 public:
-  AutoDockingROS();
+//  AutoDockingROS();
+  AutoDockingROS(std::string name);
+//  AutoDockingROS(ros::NodeHandle& nh);
+//  AutoDockingROS(ros::NodeHandle& nh, std::string name);
   ~AutoDockingROS();
 
   bool init(ros::NodeHandle& nh);
@@ -62,7 +67,14 @@ private:
   AutoDockingROS* self;
   DockDrive dock_;
 
+  std::string name_;
   bool shutdown_requested_;
+
+  ros::NodeHandle nh_;
+  actionlib::SimpleActionServer<kobuki_auto_docking::AutoDockingAction> as_;
+
+  kobuki_auto_docking::AutoDockingFeedback feedback_;
+  kobuki_auto_docking::AutoDockingResult result_;
 
   ros::Subscriber do_dock_, cancel_dock_, debug_;
   ros::Publisher velocity_commander_, motor_power_enabler_, debug_jabber_;
@@ -72,13 +84,13 @@ private:
   boost::shared_ptr<message_filters::Subscriber<kobuki_msgs::SensorState> > core_sub_;
   boost::shared_ptr<message_filters::Synchronizer<SyncPolicy> > sync_;
 
-
+  void execCb(const kobuki_auto_docking::AutoDockingGoalConstPtr& goal);
+  void syncCb(const nav_msgs::OdometryConstPtr& odom,
+              const kobuki_msgs::SensorStateConstPtr& core,
+              const kobuki_msgs::DockInfraRedConstPtr& ir);
   void doCb(const std_msgs::EmptyConstPtr& msg);
   void cancelCb(const std_msgs::EmptyConstPtr& msg);
   void debugCb(const std_msgs::StringConstPtr& msg);
-  void syncCb(const nav_msgs::OdometryConstPtr& odom,
-              const kobuki_msgs::SensorStateConstPtr& core,
-               const kobuki_msgs::DockInfraRedConstPtr& ir);
 };
 
 } //namespace kobuki

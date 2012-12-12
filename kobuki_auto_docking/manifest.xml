@@ -12,6 +12,7 @@
   <depend package="roscpp"/>
   <depend package="nodelet"/>
   <depend package="message_filters"/>
+  <depend package="actionlib"/>
   <depend package="kdl_conversions"/>
 
   <depend package="actionlib_msgs"/>

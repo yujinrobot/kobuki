@@ -101,9 +101,9 @@ public:
   bool isEnabled() const { return is_enabled; }
   bool canRun() const { return can_run; }
 
-  void enable(std::string msg){ modeShift(msg); }
-  void disable(std::string msg){ modeShift(msg); }
-  void modeShift(std::string mode);
+  void enable() { modeShift("enable"); }
+  void disable() { modeShift("disable"); }
+  void modeShift(const std::string& mode);
 
   void update(const std::vector<unsigned char> &signal /* dock_ir signal*/
                 , const unsigned char &bumper

@@ -16,10 +16,17 @@
 namespace kobuki 
 {
 
-AutoDockingROS::AutoDockingROS()
-  : shutdown_requested_(false)
+//AutoDockingROS::AutoDockingROS()
+AutoDockingROS::AutoDockingROS(std::string name)
+//AutoDockingROS::AutoDockingROS(ros::NodeHandle& nh)
+//AutoDockingROS::AutoDockingROS(ros::NodeHandle& nh, std::string name)
+  : name_(name)
+  , shutdown_requested_(false)
+  , as_(nh_, name_+"_action", boost::bind(&AutoDockingROS::execCb, this, _1), false)
 {
   self = this;
+
+  as_.start();
 }
 
 AutoDockingROS::~AutoDockingROS()
@@ -41,7 +48,7 @@ bool AutoDockingROS::init(ros::NodeHandle& nh)
   core_sub_.reset(new message_filters::Subscriber<kobuki_msgs::SensorState>(nh, "/mobile_base/sensors/core", 10));
   ir_sub_.reset(new message_filters::Subscriber<kobuki_msgs::DockInfraRed>(nh, "/mobile_base/sensors/dock_ir", 10));
   sync_.reset(new message_filters::Synchronizer<SyncPolicy>(SyncPolicy(10), *odom_sub_, *core_sub_, *ir_sub_));
-  sync_->registerCallback(boost::bind(&AutoDockingROS::syncCb, *this, _1, _2, _3));
+  sync_->registerCallback(boost::bind(&AutoDockingROS::syncCb, this, _1, _2, _3));
 
   return dock_.init();
 }
@@ -51,6 +58,26 @@ void AutoDockingROS::spin()
   return;
 
   while(!shutdown_requested_){;}
+}
+
+void AutoDockingROS::execCb(const kobuki_auto_docking::AutoDockingGoalConstPtr& goal)
+{
+  ROS_INFO_STREAM( "[" << name_ << "]: Goal received: " << goal->goal );
+  //bool 	success = false;
+
+  int i=0;
+  while ( i<5/*dock_.isEnabled()*/ ) {
+    //if( logEnable() )
+    feedback_.feedback = i++;
+    as_.publishFeedback(feedback_);
+    ROS_INFO_STREAM( "[" << name_ << "]: Feedback sent: " << feedback_.feedback );
+  }
+
+  result_.result = 0;
+  as_.setSucceeded(result_);
+  ROS_INFO_STREAM( "[" << name_ << "]: Result sent: " << result_.result );
+  //bool 	success = false;
+  return;
 }
 
 void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
@@ -92,7 +119,7 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
 
 void AutoDockingROS::doCb(const std_msgs::EmptyConstPtr& msg)
 {
-  dock_.enable("enable");
+  dock_.enable();
   ROS_DEBUG_STREAM("dock_drive : auto docking enabled.");
 
   kobuki_msgs::MotorPowerPtr power_cmd(new kobuki_msgs::MotorPower);
@@ -102,7 +129,7 @@ void AutoDockingROS::doCb(const std_msgs::EmptyConstPtr& msg)
 
 void AutoDockingROS::cancelCb(const std_msgs::EmptyConstPtr& msg)
 {
-  dock_.disable("disable");
+  dock_.disable();
   ROS_DEBUG_STREAM("dock_drive : auto docking disabled.");
 
   kobuki_msgs::MotorPowerPtr power_cmd(new kobuki_msgs::MotorPower);
@@ -112,7 +139,7 @@ void AutoDockingROS::cancelCb(const std_msgs::EmptyConstPtr& msg)
 
 void AutoDockingROS::debugCb(const std_msgs::StringConstPtr& msg)
 {
-  dock_.enable(msg->data);
+  dock_.modeShift(msg->data);
 }
 
 } //namespace kobuki
