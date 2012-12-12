@@ -14,6 +14,7 @@
   <depend package="message_filters"/>
   <depend package="kdl_conversions"/>
 
+  <depend package="actionlib_msgs"/>
   <depend package="std_msgs"/>
   <depend package="nav_msgs"/>  
   <depend package="geometry_msgs"/>
