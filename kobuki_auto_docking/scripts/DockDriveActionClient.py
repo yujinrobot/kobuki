@@ -39,24 +39,34 @@ import rospy
 
 import actionlib
 import kobuki_auto_docking.msg 
+from actionlib_msgs.msg import GoalStatus
 
 def doneCb(status, goal):
   print ' * Done'
-  print status
-  print goal
+  if status == GoalStatus.PENDING   : print '    - PENDING   '
+  if status == GoalStatus.ACTIVE    : print '    - ACTIVE    '
+  if status == GoalStatus.PREEMPTED : print '    - PREEMPTED '
+  if status == GoalStatus.SUCCEEDED : print '    - SUCCEEDED '
+  if status == GoalStatus.ABORTED   : print '    - ABORTED   '
+  if status == GoalStatus.REJECTED  : print '    - REJECTED  '
+  if status == GoalStatus.PREEMPTING: print '    - PREEMPTING'
+  if status == GoalStatus.RECALLING : print '    - RECALLING '
+  if status == GoalStatus.RECALLED  : print '    - RECALLED  '
+  if status == GoalStatus.LOST      : print '    - LOST      '
+  print '    -', goal
 
 def activeCb():
-  print ' * Gone active'
+  print ' * Gone Active'
 
 def feedbackCb(feedback):
-  print ' * Feddback:', feedback
+  print ' * Feedback:', feedback
 
 def dock_drive_client():
   client = actionlib.SimpleActionClient('dock_drive_action', kobuki_auto_docking.msg.AutoDockingAction)
 
   client.wait_for_server()
 
-  goal = kobuki_auto_docking.msg.AutoDockingGoal(goal=1);
+  goal = kobuki_auto_docking.msg.AutoDockingGoal(goal=5);
 
   client.send_goal(goal, doneCb, activeCb, feedbackCb)
 

@@ -67,12 +67,14 @@ private:
   AutoDockingROS* self;
   DockDrive dock_;
 
+  int i;  //temporal, action server mockup
   std::string name_;
   bool shutdown_requested_;
 
   ros::NodeHandle nh_;
   actionlib::SimpleActionServer<kobuki_auto_docking::AutoDockingAction> as_;
 
+  kobuki_auto_docking::AutoDockingGoal goal_;
   kobuki_auto_docking::AutoDockingFeedback feedback_;
   kobuki_auto_docking::AutoDockingResult result_;
 
@@ -84,7 +86,12 @@ private:
   boost::shared_ptr<message_filters::Subscriber<kobuki_msgs::SensorState> > core_sub_;
   boost::shared_ptr<message_filters::Synchronizer<SyncPolicy> > sync_;
 
+
+  void goalCb();
+  void preemptCb();
   void execCb(const kobuki_auto_docking::AutoDockingGoalConstPtr& goal);
+
+
   void syncCb(const nav_msgs::OdometryConstPtr& odom,
               const kobuki_msgs::SensorStateConstPtr& core,
               const kobuki_msgs::DockInfraRedConstPtr& ir);

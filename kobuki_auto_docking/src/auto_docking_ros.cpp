@@ -22,9 +22,13 @@ AutoDockingROS::AutoDockingROS(std::string name)
 //AutoDockingROS::AutoDockingROS(ros::NodeHandle& nh, std::string name)
   : name_(name)
   , shutdown_requested_(false)
-  , as_(nh_, name_+"_action", boost::bind(&AutoDockingROS::execCb, this, _1), false)
+  , as_(nh_, name_+"_action", false)
+  //, as_(nh_, name_+"_action", boost::bind(&AutoDockingROS::execCb, this, _1), false)
 {
   self = this;
+
+  as_.registerGoalCallback(boost::bind(&AutoDockingROS::goalCb, this));
+  as_.registerPreemptCallback(boost::bind(&AutoDockingROS::preemptCb, this));
 
   as_.start();
 }
@@ -58,6 +62,19 @@ void AutoDockingROS::spin()
   return;
 
   while(!shutdown_requested_){;}
+}
+
+void AutoDockingROS::goalCb()
+{
+  i=0;
+  goal_ = *(as_.acceptNewGoal());
+  ROS_INFO_STREAM("[" << name_ << "] Goal received: " << goal_.goal );
+}
+
+void AutoDockingROS::preemptCb()
+{
+  ROS_INFO_STREAM("[" << name_ << "] Preempt");
+  as_.setPreempted();
 }
 
 void AutoDockingROS::execCb(const kobuki_auto_docking::AutoDockingGoalConstPtr& goal)
@@ -114,6 +131,22 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
       velocity_commander_.publish(cmd_vel);
     }
   }
+
+
+  //action server mock up
+  do {
+    if( as_.isActive() ) {
+      if ( i > goal_.goal ) {
+        result_.result = i;
+        as_.setSucceeded(result_);
+        break;
+      }
+      //ROS_INFO_STREAM("[" << name_ << "] ");
+      feedback_.feedback = ++i;
+      as_.publishFeedback(feedback_);
+    }
+  } while(0);
+
   return;
 }
 
