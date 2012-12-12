@@ -42,7 +42,7 @@ from datetime import datetime
 import types
 import commands
 
-from std_msgs.msg import String
+from std_msgs.msg import String, Empty
 from geometry_msgs.msg import Twist
 from kobuki_msgs.msg import DigitalOutput, Led, Sound, SensorState, DockInfraRed, ExternalPower, MotorPower
 
@@ -85,8 +85,9 @@ class Controller(object):
 #      'enable':rospy.Publisher('/enable', String),
 #      'disable':rospy.Publisher('/disable', String),
       'motor_power':rospy.Publisher('/mobile_base/commands/motor_power',MotorPower),
-      'do_dock':rospy.Publisher('/dock_drive/commands/do_dock', String),
-      'cancel_dock':rospy.Publisher('/dock_drive/commands/cancel_dock', String),
+      'do_dock':rospy.Publisher('/dock_drive/commands/do_dock', Empty),
+      'cancel_dock':rospy.Publisher('/dock_drive/commands/cancel_dock', Empty),
+      'debug':rospy.Publisher('/dock_drive/debug/mode_shift', String),
       'external_power':rospy.Publisher('/mobile_base/commands/external_power',ExternalPower),
       'digital_output':rospy.Publisher('/mobile_base/commands/digital_output',DigitalOutput),
       'led1':rospy.Publisher('/mobile_base/commands/led1',Led),
@@ -99,10 +100,10 @@ class Controller(object):
       'dock_ir':rospy.Subscriber('/mobile_base/sensors/dock_ir', DockInfraRed, self.dockIRCallback),
     }
     self.keyBindings = {
-      '1':(self.pub['do_dock'].publish,String('enable'),'enable'),
-      '2':(self.pub['do_dock'].publish,String('run')   ,'run'),
-      '3':(self.pub['do_dock'].publish,String('stop')  ,'stop'),
-      '4':(self.pub['cancel_dock'].publish,String('disable')  ,'disable'),
+      '1':(self.pub['do_dock'].publish,Empty(),'do_dock'),
+      '2':(self.pub['debug'].publish,String('run')   ,'run'),
+      '3':(self.pub['debug'].publish,String('stop')  ,'stop'),
+      '4':(self.pub['cancel_dock'].publish, Empty()  ,'cancel_dock'),
       '5':5,
       '6':6,
       '7':7,

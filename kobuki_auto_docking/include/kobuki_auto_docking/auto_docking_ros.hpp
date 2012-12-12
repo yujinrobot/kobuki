@@ -26,6 +26,7 @@
 #include <message_filters/sync_policies/approximate_time.h>
 
 #include <std_msgs/String.h>
+#include <std_msgs/Empty.h>
 #include <nav_msgs/Odometry.h>
 #include <kobuki_msgs/SensorState.h>
 #include <kobuki_msgs/DockInfraRed.h>
@@ -72,8 +73,8 @@ private:
   boost::shared_ptr<message_filters::Synchronizer<SyncPolicy> > sync_;
 
 
-  void doCb(const std_msgs::StringConstPtr& msg);
-  void cancelCb(const std_msgs::StringConstPtr& msg);
+  void doCb(const std_msgs::EmptyConstPtr& msg);
+  void cancelCb(const std_msgs::EmptyConstPtr& msg);
   void debugCb(const std_msgs::StringConstPtr& msg);
   void syncCb(const nav_msgs::OdometryConstPtr& odom,
               const kobuki_msgs::SensorStateConstPtr& core,

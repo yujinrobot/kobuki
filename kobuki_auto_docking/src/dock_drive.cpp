@@ -72,7 +72,7 @@ DockDrive::~DockDrive(){;}
 
 void DockDrive::modeShift(std::string mode)
 {
-  if (mode == "enable")  { is_enabled = true;  can_run = false; }
+  if (mode == "enable")  { is_enabled = true;  can_run = true; }
   if (mode == "disable") { is_enabled = false; can_run = false; }
   if (mode == "run")  can_run = true;
   if (mode == "stop") can_run = false;

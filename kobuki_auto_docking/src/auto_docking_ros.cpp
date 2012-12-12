@@ -29,13 +29,13 @@ AutoDockingROS::~AutoDockingROS()
 
 bool AutoDockingROS::init(ros::NodeHandle& nh)
 {
-  debug_jabber_ = nh.advertise<std_msgs::String>("/dock_drive/debug", 10);
   motor_power_enabler_ = nh.advertise<kobuki_msgs::MotorPower>("/mobile_base/commands/motor_power", 10);
   velocity_commander_ = nh.advertise<geometry_msgs::Twist>("/mobile_base/commands/velocity", 10);
+  debug_jabber_ = nh.advertise<std_msgs::String>("/dock_drive/debug/feedback", 10);
 
   do_dock_ = nh.subscribe("/dock_drive/commands/do_dock", 10, &AutoDockingROS::doCb, this);
   cancel_dock_ = nh.subscribe("/dock_drive/commands/cancel_dock", 10, &AutoDockingROS::cancelCb, this);
-  debug_ = nh.subscribe("/dock_drive/commands/debug", 10, &AutoDockingROS::debugCb, this);
+  debug_ = nh.subscribe("/dock_drive/debug/mode_shift", 10, &AutoDockingROS::debugCb, this);
 
   odom_sub_.reset(new message_filters::Subscriber<nav_msgs::Odometry>(nh, "/odom", 10));
   core_sub_.reset(new message_filters::Subscriber<kobuki_msgs::SensorState>(nh, "/mobile_base/sensors/core", 10));
@@ -90,9 +90,9 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
   return;
 }
 
-void AutoDockingROS::doCb(const std_msgs::StringConstPtr& msg)
+void AutoDockingROS::doCb(const std_msgs::EmptyConstPtr& msg)
 {
-  dock_.enable(msg->data);
+  dock_.enable("enable");
   ROS_DEBUG_STREAM("dock_drive : auto docking enabled.");
 
   kobuki_msgs::MotorPowerPtr power_cmd(new kobuki_msgs::MotorPower);
@@ -100,9 +100,9 @@ void AutoDockingROS::doCb(const std_msgs::StringConstPtr& msg)
   motor_power_enabler_.publish(power_cmd);
 }
 
-void AutoDockingROS::cancelCb(const std_msgs::StringConstPtr& msg)
+void AutoDockingROS::cancelCb(const std_msgs::EmptyConstPtr& msg)
 {
-  dock_.disable(msg->data);
+  dock_.disable("disable");
   ROS_DEBUG_STREAM("dock_drive : auto docking disabled.");
 
   kobuki_msgs::MotorPowerPtr power_cmd(new kobuki_msgs::MotorPower);
