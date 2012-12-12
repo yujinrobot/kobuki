@@ -127,6 +127,9 @@ public:
   /*********************
   ** Mode Accessors
   **********************/
+  State getState() const { return state; }
+  std::string getStateStr() const { return state_str; }
+  std::string getDebugStr() const { return debug_str; }
 
   //debugging
   std::string getDebugStream() { return debug_output; } //stream.str(); }
@@ -137,7 +140,7 @@ private:
   bool is_enabled, can_run;
 
   State state;
-  std::string state_str;
+  std::string state_str, debug_str;
   ecl::Pose2D<double> pose;
   double vx, wz;
   std::vector<std::vector<unsigned char> > past_signals;

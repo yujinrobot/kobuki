@@ -41,44 +41,46 @@ import actionlib
 import kobuki_auto_docking.msg 
 from actionlib_msgs.msg import GoalStatus
 
-def doneCb(status, goal):
-  print ' * Done'
-  if status == GoalStatus.PENDING   : print '    - PENDING   '
-  if status == GoalStatus.ACTIVE    : print '    - ACTIVE    '
-  if status == GoalStatus.PREEMPTED : print '    - PREEMPTED '
-  if status == GoalStatus.SUCCEEDED : print '    - SUCCEEDED '
-  if status == GoalStatus.ABORTED   : print '    - ABORTED   '
-  if status == GoalStatus.REJECTED  : print '    - REJECTED  '
-  if status == GoalStatus.PREEMPTING: print '    - PREEMPTING'
-  if status == GoalStatus.RECALLING : print '    - RECALLING '
-  if status == GoalStatus.RECALLED  : print '    - RECALLED  '
-  if status == GoalStatus.LOST      : print '    - LOST      '
-  print '    -', goal
+def doneCb(status, result):
+  if 0: print ''
+  elif status == GoalStatus.PENDING   : state='PENDING'
+  elif status == GoalStatus.ACTIVE    : state='ACTIVE'
+  elif status == GoalStatus.PREEMPTED : state='PREEMPTED'
+  elif status == GoalStatus.SUCCEEDED : state='SUCCEEDED'
+  elif status == GoalStatus.ABORTED   : state='ABORTED'
+  elif status == GoalStatus.REJECTED  : state='REJECTED'
+  elif status == GoalStatus.PREEMPTING: state='PREEMPTING'
+  elif status == GoalStatus.RECALLING : state='RECALLING'
+  elif status == GoalStatus.RECALLED  : state='RECALLED'
+  elif status == GoalStatus.LOST      : state='LOST'
+  print 'Result - [AS:' + state + ']: ' + result.text
 
 def activeCb():
-  print ' * Gone Active'
+  if 0: print 'Action server went active.'
 
 def feedbackCb(feedback):
-  print ' * Feedback:', feedback
+  print 'Feedback: [DD:' + feedback.state + ']: ' + feedback.text
 
 def dock_drive_client():
+  # add timeout setting
   client = actionlib.SimpleActionClient('dock_drive_action', kobuki_auto_docking.msg.AutoDockingAction)
+  while not client.wait_for_server(rospy.Duration(5.0)):
+    if rospy.is_shutdown(): return
+    print 'Action server is not connected yet. still waiting...'
 
-  client.wait_for_server()
-
-  goal = kobuki_auto_docking.msg.AutoDockingGoal(goal=5);
-
+  goal = kobuki_auto_docking.msg.AutoDockingGoal();
   client.send_goal(goal, doneCb, activeCb, feedbackCb)
-
+  print 'Goal: Sent.'
   client.wait_for_result()
 
+  #print '    - status:', client.get_goal_status_text()
   return client.get_result()
 
 if __name__ == '__main__':
   try:
     rospy.init_node('dock_drive_client_py')
-    result = dock_drive_client()
-    print ''
-    print "Result: ", result
+    dock_drive_client()
+    #print ''
+    #print "Result: ", result
   except rospy.ROSInterruptException: 
     print "program interrupted before completion"

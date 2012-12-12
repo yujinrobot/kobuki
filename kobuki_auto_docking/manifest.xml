@@ -10,6 +10,7 @@
   <url>http://ros.org/wiki/kobuki_auto_docking</url>
   
   <depend package="roscpp"/>
+  <depend package="rospy"/>
   <depend package="nodelet"/>
   <depend package="message_filters"/>
   <depend package="actionlib"/>

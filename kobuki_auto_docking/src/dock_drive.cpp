@@ -195,7 +195,8 @@ void DockDrive::update(const std::vector<unsigned char> &signal
   /*************************
    * processing. algorithms; transforma to velocity command
    *************************/
-  std::string debug_str = "";
+  //std::string debug_str = "";
+  debug_str = "";
   do {  // a kind of hack
     if ( state==DONE ) setState(IDLE); // when this function is called after final state 'DONE'.
     if ( state==DOCKED_IN ) {

@@ -23,13 +23,11 @@ AutoDockingROS::AutoDockingROS(std::string name)
   : name_(name)
   , shutdown_requested_(false)
   , as_(nh_, name_+"_action", false)
-  //, as_(nh_, name_+"_action", boost::bind(&AutoDockingROS::execCb, this, _1), false)
 {
   self = this;
 
   as_.registerGoalCallback(boost::bind(&AutoDockingROS::goalCb, this));
   as_.registerPreemptCallback(boost::bind(&AutoDockingROS::preemptCb, this));
-
   as_.start();
 }
 
@@ -66,35 +64,23 @@ void AutoDockingROS::spin()
 
 void AutoDockingROS::goalCb()
 {
-  i=0;
-  goal_ = *(as_.acceptNewGoal());
-  ROS_INFO_STREAM("[" << name_ << "] Goal received: " << goal_.goal );
+  if (dock_.isEnabled() || as_.isActive()) {
+    goal_ = *(as_.acceptNewGoal());
+    result_.text = "Rejected: dock_drive is already enabled.";
+    as_.setAborted( result_, "Rejected: dock_drive is already enabled." );
+    ROS_INFO_STREAM("[" << name_ << "] Goal received but rejected.");
+  } else {
+    goal_ = *(as_.acceptNewGoal());
+    toggleMotor(true);
+    dock_.enable();
+    ROS_INFO_STREAM("[" << name_ << "] Goal received and accepted.");
+  }
 }
 
 void AutoDockingROS::preemptCb()
 {
-  ROS_INFO_STREAM("[" << name_ << "] Preempt");
+  ROS_INFO_STREAM("[" << name_ << "] Preempt.");
   as_.setPreempted();
-}
-
-void AutoDockingROS::execCb(const kobuki_auto_docking::AutoDockingGoalConstPtr& goal)
-{
-  ROS_INFO_STREAM( "[" << name_ << "]: Goal received: " << goal->goal );
-  //bool 	success = false;
-
-  int i=0;
-  while ( i<5/*dock_.isEnabled()*/ ) {
-    //if( logEnable() )
-    feedback_.feedback = i++;
-    as_.publishFeedback(feedback_);
-    ROS_INFO_STREAM( "[" << name_ << "]: Feedback sent: " << feedback_.feedback );
-  }
-
-  result_.result = 0;
-  as_.setSucceeded(result_);
-  ROS_INFO_STREAM( "[" << name_ << "]: Result sent: " << result_.result );
-  //bool 	success = false;
-  return;
 }
 
 void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
@@ -134,45 +120,46 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
 
 
   //action server mock up
-  do {
-    if( as_.isActive() ) {
-      if ( i > goal_.goal ) {
-        result_.result = i;
+  if( as_.isActive() ) {
+    if ( dock_.getState() == dock_.DONE ) {
+        result_.text = "Arrived on docking station successfully.";
         as_.setSucceeded(result_);
-        break;
-      }
-      //ROS_INFO_STREAM("[" << name_ << "] ");
-      feedback_.feedback = ++i;
+        ROS_INFO_STREAM( "[" << name_ << "]: Result sent. Arrived on docking station successfully.");
+    } else {
+      feedback_.state = dock_.getStateStr();
+      feedback_.text = dock_.getDebugStr();
       as_.publishFeedback(feedback_);
+      ROS_INFO_STREAM( "[" << name_ << "]: Feedback sent.");
     }
-  } while(0);
-
+  }
   return;
 }
 
 void AutoDockingROS::doCb(const std_msgs::EmptyConstPtr& msg)
 {
+  toggleMotor(true);
   dock_.enable();
   ROS_DEBUG_STREAM("dock_drive : auto docking enabled.");
-
-  kobuki_msgs::MotorPowerPtr power_cmd(new kobuki_msgs::MotorPower);
-  power_cmd->state = kobuki_msgs::MotorPower::ON;
-  motor_power_enabler_.publish(power_cmd);
 }
 
 void AutoDockingROS::cancelCb(const std_msgs::EmptyConstPtr& msg)
 {
+  toggleMotor(false);
   dock_.disable();
   ROS_DEBUG_STREAM("dock_drive : auto docking disabled.");
-
-  kobuki_msgs::MotorPowerPtr power_cmd(new kobuki_msgs::MotorPower);
-  power_cmd->state = kobuki_msgs::MotorPower::OFF;
-  motor_power_enabler_.publish(power_cmd);
 }
 
 void AutoDockingROS::debugCb(const std_msgs::StringConstPtr& msg)
 {
   dock_.modeShift(msg->data);
+}
+
+void AutoDockingROS::toggleMotor(const bool& on_off)
+{
+  kobuki_msgs::MotorPowerPtr power_cmd(new kobuki_msgs::MotorPower);
+  if (on_off) power_cmd->state = kobuki_msgs::MotorPower::ON;
+  else        power_cmd->state = kobuki_msgs::MotorPower::OFF;
+  motor_power_enabler_.publish(power_cmd);
 }
 
 } //namespace kobuki

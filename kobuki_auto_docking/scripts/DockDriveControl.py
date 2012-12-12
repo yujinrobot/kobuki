@@ -34,7 +34,7 @@
 
 # Author: Younghun Ju <yhju@yujinrobot.com> <yhju83@gmail.com>
 
-import roslib; roslib.load_manifest('kobuki_testsuite')
+import roslib; roslib.load_manifest('kobuki_auto_docking')
 import rospy
 import sys, select, termios, tty, os
 import time

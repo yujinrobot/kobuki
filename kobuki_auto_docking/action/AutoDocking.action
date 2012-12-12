@@ -1,9 +1,8 @@
 #goal
-int32 goal
 ---
 #result
-int32 result
+string text
 ---
 #feedback
-int32 feedback
-
+string state
+string text

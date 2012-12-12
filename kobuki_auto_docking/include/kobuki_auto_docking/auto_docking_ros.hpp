@@ -67,7 +67,6 @@ private:
   AutoDockingROS* self;
   DockDrive dock_;
 
-  int i;  //temporal, action server mockup
   std::string name_;
   bool shutdown_requested_;
 
@@ -86,11 +85,8 @@ private:
   boost::shared_ptr<message_filters::Subscriber<kobuki_msgs::SensorState> > core_sub_;
   boost::shared_ptr<message_filters::Synchronizer<SyncPolicy> > sync_;
 
-
   void goalCb();
   void preemptCb();
-  void execCb(const kobuki_auto_docking::AutoDockingGoalConstPtr& goal);
-
 
   void syncCb(const nav_msgs::OdometryConstPtr& odom,
               const kobuki_msgs::SensorStateConstPtr& core,
@@ -98,6 +94,8 @@ private:
   void doCb(const std_msgs::EmptyConstPtr& msg);
   void cancelCb(const std_msgs::EmptyConstPtr& msg);
   void debugCb(const std_msgs::StringConstPtr& msg);
+
+  void toggleMotor(const bool& on_off);
 };
 
 } //namespace kobuki
