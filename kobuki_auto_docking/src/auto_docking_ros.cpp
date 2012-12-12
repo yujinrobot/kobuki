@@ -66,18 +66,18 @@ void AutoDockingROS::goalCb()
     goal_ = *(as_.acceptNewGoal());
     result_.text = "Rejected: dock_drive is already enabled.";
     as_.setAborted( result_, "Rejected: dock_drive is already enabled." );
-    ROS_INFO_STREAM("[" << name_ << "] Goal received but rejected.");
+    ROS_DEBUG_STREAM("[" << name_ << "] Goal received but rejected.");
   } else {
     goal_ = *(as_.acceptNewGoal());
     toggleMotor(true);
     dock_.enable();
-    ROS_INFO_STREAM("[" << name_ << "] Goal received and accepted.");
+    ROS_DEBUG_STREAM("[" << name_ << "] Goal received and accepted.");
   }
 }
 
 void AutoDockingROS::preemptCb()
 {
-  ROS_INFO_STREAM("[" << name_ << "] Preempt.");
+  ROS_DEBUG_STREAM("[" << name_ << "] Preempt.");
   as_.setPreempted();
 }
 
@@ -121,12 +121,12 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
     if ( dock_.getState() == dock_.DONE ) {
         result_.text = "Arrived on docking station successfully.";
         as_.setSucceeded(result_);
-        ROS_INFO_STREAM( "[" << name_ << "]: Result sent. Arrived on docking station successfully.");
+        ROS_DEBUG_STREAM( "[" << name_ << "]: Result sent. Arrived on docking station successfully.");
     } else {
       feedback_.state = dock_.getStateStr();
       feedback_.text = dock_.getDebugStr();
       as_.publishFeedback(feedback_);
-      ROS_INFO_STREAM( "[" << name_ << "]: Feedback sent.");
+      ROS_DEBUG_STREAM( "[" << name_ << "]: Feedback sent.");
     }
   }
   return;
