@@ -28,7 +28,6 @@
 #include <message_filters/sync_policies/approximate_time.h>
 
 #include <std_msgs/String.h>
-#include <std_msgs/Empty.h>
 #include <nav_msgs/Odometry.h>
 #include <kobuki_msgs/SensorState.h>
 #include <kobuki_msgs/DockInfraRed.h>
@@ -77,7 +76,7 @@ private:
   kobuki_msgs::AutoDockingFeedback feedback_;
   kobuki_msgs::AutoDockingResult result_;
 
-  ros::Subscriber do_dock_, cancel_dock_, debug_;
+  ros::Subscriber debug_;
   ros::Publisher velocity_commander_, motor_power_enabler_, debug_jabber_;
 
   boost::shared_ptr<message_filters::Subscriber<nav_msgs::Odometry> > odom_sub_;
@@ -91,8 +90,6 @@ private:
   void syncCb(const nav_msgs::OdometryConstPtr& odom,
               const kobuki_msgs::SensorStateConstPtr& core,
               const kobuki_msgs::DockInfraRedConstPtr& ir);
-  void doCb(const std_msgs::EmptyConstPtr& msg);
-  void cancelCb(const std_msgs::EmptyConstPtr& msg);
   void debugCb(const std_msgs::StringConstPtr& msg);
 
   void toggleMotor(const bool& on_off);

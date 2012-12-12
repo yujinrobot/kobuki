@@ -42,8 +42,6 @@ bool AutoDockingROS::init(ros::NodeHandle& nh)
   velocity_commander_ = nh.advertise<geometry_msgs::Twist>("velocity", 10);
   debug_jabber_ = nh.advertise<std_msgs::String>("debug/feedback", 10);
 
-  do_dock_ = nh.subscribe("commands/do_dock", 10, &AutoDockingROS::doCb, this);
-  cancel_dock_ = nh.subscribe("commands/cancel_dock", 10, &AutoDockingROS::cancelCb, this);
   debug_ = nh.subscribe("debug/mode_shift", 10, &AutoDockingROS::debugCb, this);
 
   odom_sub_.reset(new message_filters::Subscriber<nav_msgs::Odometry>(nh, "odom", 10));
@@ -118,7 +116,6 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
     }
   }
 
-
   //action server mock up
   if( as_.isActive() ) {
     if ( dock_.getState() == dock_.DONE ) {
@@ -133,20 +130,6 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
     }
   }
   return;
-}
-
-void AutoDockingROS::doCb(const std_msgs::EmptyConstPtr& msg)
-{
-  toggleMotor(true);
-  dock_.enable();
-  ROS_DEBUG_STREAM("dock_drive : auto docking enabled.");
-}
-
-void AutoDockingROS::cancelCb(const std_msgs::EmptyConstPtr& msg)
-{
-  toggleMotor(false);
-  dock_.disable();
-  ROS_DEBUG_STREAM("dock_drive : auto docking disabled.");
 }
 
 void AutoDockingROS::debugCb(const std_msgs::StringConstPtr& msg)

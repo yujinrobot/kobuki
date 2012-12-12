@@ -85,8 +85,8 @@ class Controller(object):
 #      'enable':rospy.Publisher('/enable', String),
 #      'disable':rospy.Publisher('/disable', String),
       'motor_power':rospy.Publisher('/mobile_base/commands/motor_power',MotorPower),
-      'do_dock':rospy.Publisher('/dock_drive/commands/do_dock', Empty),
-      'cancel_dock':rospy.Publisher('/dock_drive/commands/cancel_dock', Empty),
+#      'do_dock':rospy.Publisher('/dock_drive/commands/do_dock', Empty),
+#      'cancel_dock':rospy.Publisher('/dock_drive/commands/cancel_dock', Empty),
       'debug':rospy.Publisher('/dock_drive/debug/mode_shift', String),
       'external_power':rospy.Publisher('/mobile_base/commands/external_power',ExternalPower),
       'digital_output':rospy.Publisher('/mobile_base/commands/digital_output',DigitalOutput),
@@ -100,10 +100,10 @@ class Controller(object):
       'dock_ir':rospy.Subscriber('/mobile_base/sensors/dock_ir', DockInfraRed, self.dockIRCallback),
     }
     self.keyBindings = {
-      '1':(self.pub['do_dock'].publish,Empty(),'do_dock'),
+      '1':(self.pub['debug'].publish,String('enable')   ,'enable'),
       '2':(self.pub['debug'].publish,String('run')   ,'run'),
       '3':(self.pub['debug'].publish,String('stop')  ,'stop'),
-      '4':(self.pub['cancel_dock'].publish, Empty()  ,'cancel_dock'),
+      '4':(self.pub['debug'].publish,String('disable')   ,'disable'),
       '5':5,
       '6':6,
       '7':7,
