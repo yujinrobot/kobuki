@@ -38,17 +38,17 @@ AutoDockingROS::~AutoDockingROS()
 
 bool AutoDockingROS::init(ros::NodeHandle& nh)
 {
-  motor_power_enabler_ = nh.advertise<kobuki_msgs::MotorPower>("/mobile_base/commands/motor_power", 10);
-  velocity_commander_ = nh.advertise<geometry_msgs::Twist>("/mobile_base/commands/velocity", 10);
-  debug_jabber_ = nh.advertise<std_msgs::String>("/dock_drive/debug/feedback", 10);
+  motor_power_enabler_ = nh.advertise<kobuki_msgs::MotorPower>("motor_power", 10);
+  velocity_commander_ = nh.advertise<geometry_msgs::Twist>("velocity", 10);
+  debug_jabber_ = nh.advertise<std_msgs::String>("debug/feedback", 10);
 
-  do_dock_ = nh.subscribe("/dock_drive/commands/do_dock", 10, &AutoDockingROS::doCb, this);
-  cancel_dock_ = nh.subscribe("/dock_drive/commands/cancel_dock", 10, &AutoDockingROS::cancelCb, this);
-  debug_ = nh.subscribe("/dock_drive/debug/mode_shift", 10, &AutoDockingROS::debugCb, this);
+  do_dock_ = nh.subscribe("commands/do_dock", 10, &AutoDockingROS::doCb, this);
+  cancel_dock_ = nh.subscribe("commands/cancel_dock", 10, &AutoDockingROS::cancelCb, this);
+  debug_ = nh.subscribe("debug/mode_shift", 10, &AutoDockingROS::debugCb, this);
 
-  odom_sub_.reset(new message_filters::Subscriber<nav_msgs::Odometry>(nh, "/odom", 10));
-  core_sub_.reset(new message_filters::Subscriber<kobuki_msgs::SensorState>(nh, "/mobile_base/sensors/core", 10));
-  ir_sub_.reset(new message_filters::Subscriber<kobuki_msgs::DockInfraRed>(nh, "/mobile_base/sensors/dock_ir", 10));
+  odom_sub_.reset(new message_filters::Subscriber<nav_msgs::Odometry>(nh, "odom", 10));
+  core_sub_.reset(new message_filters::Subscriber<kobuki_msgs::SensorState>(nh, "core", 10));
+  ir_sub_.reset(new message_filters::Subscriber<kobuki_msgs::DockInfraRed>(nh, "dock_ir", 10));
   sync_.reset(new message_filters::Synchronizer<SyncPolicy>(SyncPolicy(10), *odom_sub_, *core_sub_, *ir_sub_));
   sync_->registerCallback(boost::bind(&AutoDockingROS::syncCb, this, _1, _2, _3));
 
