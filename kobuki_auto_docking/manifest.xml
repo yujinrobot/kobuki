@@ -16,11 +16,11 @@
   <depend package="actionlib"/>
   <depend package="kdl_conversions"/>
 
-  <depend package="actionlib_msgs"/>
   <depend package="std_msgs"/>
   <depend package="nav_msgs"/>  
   <depend package="geometry_msgs"/>
   <depend package="kobuki_msgs"/>  
+  <depend package="actionlib_msgs"/>
 
   <depend package="ecl_threads"/>
   <depend package="ecl_geometry"/>

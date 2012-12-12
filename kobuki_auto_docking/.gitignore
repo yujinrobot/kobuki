@@ -1,6 +1,3 @@
 bin
 build
 lib
-msg
-msg_gen
-src/kobuki_auto_docking

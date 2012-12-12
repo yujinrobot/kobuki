@@ -20,7 +20,7 @@
 
 #include <ros/ros.h>
 #include <actionlib/server/simple_action_server.h>
-#include <kobuki_auto_docking/AutoDockingAction.h>
+#include <kobuki_msgs/AutoDockingAction.h>
 
 #include <message_filters/subscriber.h>
 #include <message_filters/time_synchronizer.h>
@@ -71,11 +71,11 @@ private:
   bool shutdown_requested_;
 
   ros::NodeHandle nh_;
-  actionlib::SimpleActionServer<kobuki_auto_docking::AutoDockingAction> as_;
+  actionlib::SimpleActionServer<kobuki_msgs::AutoDockingAction> as_;
 
-  kobuki_auto_docking::AutoDockingGoal goal_;
-  kobuki_auto_docking::AutoDockingFeedback feedback_;
-  kobuki_auto_docking::AutoDockingResult result_;
+  kobuki_msgs::AutoDockingGoal goal_;
+  kobuki_msgs::AutoDockingFeedback feedback_;
+  kobuki_msgs::AutoDockingResult result_;
 
   ros::Subscriber do_dock_, cancel_dock_, debug_;
   ros::Publisher velocity_commander_, motor_power_enabler_, debug_jabber_;

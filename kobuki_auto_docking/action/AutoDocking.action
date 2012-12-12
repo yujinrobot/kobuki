@@ -1,8 +1,0 @@
-#goal
----
-#result
-string text
----
-#feedback
-string state
-string text

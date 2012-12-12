@@ -38,7 +38,7 @@ import roslib; roslib.load_manifest('kobuki_auto_docking')
 import rospy
 
 import actionlib
-import kobuki_auto_docking.msg 
+from kobuki_msgs.msg import AutoDockingAction, AutoDockingGoal
 from actionlib_msgs.msg import GoalStatus
 
 def doneCb(status, result):
@@ -63,12 +63,12 @@ def feedbackCb(feedback):
 
 def dock_drive_client():
   # add timeout setting
-  client = actionlib.SimpleActionClient('dock_drive_action', kobuki_auto_docking.msg.AutoDockingAction)
+  client = actionlib.SimpleActionClient('dock_drive_action', AutoDockingAction)
   while not client.wait_for_server(rospy.Duration(5.0)):
     if rospy.is_shutdown(): return
     print 'Action server is not connected yet. still waiting...'
 
-  goal = kobuki_auto_docking.msg.AutoDockingGoal();
+  goal = AutoDockingGoal();
   client.send_goal(goal, doneCb, activeCb, feedbackCb)
   print 'Goal: Sent.'
   client.wait_for_result()
