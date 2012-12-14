@@ -71,6 +71,7 @@ def dock_drive_client():
   goal = AutoDockingGoal();
   client.send_goal(goal, doneCb, activeCb, feedbackCb)
   print 'Goal: Sent.'
+  rospy.on_shutdown(client.cancel_goal)
   client.wait_for_result()
 
   #print '    - status:', client.get_goal_status_text()
@@ -78,7 +79,7 @@ def dock_drive_client():
 
 if __name__ == '__main__':
   try:
-    rospy.init_node('dock_drive_client_py')
+    rospy.init_node('dock_drive_client_py', anonymous=True)
     dock_drive_client()
     #print ''
     #print "Result: ", result
