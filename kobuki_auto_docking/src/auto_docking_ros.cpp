@@ -34,6 +34,12 @@ AutoDockingROS::AutoDockingROS(std::string name)
 AutoDockingROS::~AutoDockingROS()
 {
   shutdown_requested_ = true;
+  if (as_.isActive()) {
+    result_.text = "Aborted: Shutdown requested.";
+    as_.setAborted( result_, result_.text );
+  }
+  dock_.disable();
+  toggleMotor(false);
 }
 
 bool AutoDockingROS::init(ros::NodeHandle& nh)
@@ -62,43 +68,54 @@ void AutoDockingROS::spin()
 
 void AutoDockingROS::goalCb()
 {
-  if (dock_.isEnabled() || as_.isActive()) {
+  if (dock_.isEnabled()) {
     goal_ = *(as_.acceptNewGoal());
     result_.text = "Rejected: dock_drive is already enabled.";
-    as_.setAborted( result_, "Rejected: dock_drive is already enabled." );
-    ROS_INFO_STREAM("[" << name_ << "] Goal received but rejected.");
+    as_.setAborted( result_, result_.text );
+    ROS_INFO_STREAM("[" << name_ << "] New goal received but rejected.");
   } else {
     goal_ = *(as_.acceptNewGoal());
     toggleMotor(true);
     dock_.enable();
-    ROS_INFO_STREAM("[" << name_ << "] Goal received and accepted.");
+    ROS_INFO_STREAM("[" << name_ << "] New goal received and accepted.");
   }
 }
 
 void AutoDockingROS::preemptCb()
 {
-  ROS_INFO_STREAM("[" << name_ << "] Preempt.");
-  as_.setPreempted();
+  //ROS_DEBUG_STREAM("[" << name_ << "] Preempt requested.");
+  dock_.disable();
+  if (as_.isNewGoalAvailable()) {
+    result_.text = "Preempted: New goal received.";
+    as_.setPreempted( result_, result_.text );
+    ROS_INFO_STREAM("[" << name_ << "] " << result_.text );
+  } else {
+    result_.text = "Cancelled: Cancel requested.";
+    as_.setPreempted( result_, result_.text );
+    ROS_INFO_STREAM("[" << name_ << "] " << result_.text );
+    dock_.disable();
+    toggleMotor(false);
+  }
 }
 
 void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
                             const kobuki_msgs::SensorStateConstPtr& core,
                             const kobuki_msgs::DockInfraRedConstPtr& ir)
 {
-  //conversions
-  KDL::Rotation rot;
-  tf::quaternionMsgToKDL( odom->pose.pose.orientation, rot );
-
-  double r, p, y;
-  rot.GetRPY(r, p, y);
-
-  ecl::Pose2D<double> pose;
-  pose.x(odom->pose.pose.position.x);
-  pose.y(odom->pose.pose.position.y);
-  pose.heading(y);
-
   //process and run
   if (self->dock_.isEnabled()) {
+    //conversions
+    KDL::Rotation rot;
+    tf::quaternionMsgToKDL( odom->pose.pose.orientation, rot );
+
+    double r, p, y;
+    rot.GetRPY(r, p, y);
+
+    ecl::Pose2D<double> pose;
+    pose.x(odom->pose.pose.position.x);
+    pose.y(odom->pose.pose.position.y);
+    pose.heading(y);
+
     //update
     self->dock_.update(ir->data, core->bumper, core->charger, pose);
 
@@ -119,14 +136,24 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
   //action server mock up
   if( as_.isActive() ) {
     if ( dock_.getState() == dock_.DONE ) {
-        result_.text = "Arrived on docking station successfully.";
-        as_.setSucceeded(result_);
-        ROS_INFO_STREAM( "[" << name_ << "]: Result sent. Arrived on docking station successfully.");
+      result_.text = "Arrived on docking station successfully.";
+      as_.setSucceeded(result_);
+      ROS_INFO_STREAM( "[" << name_ << "]: Arrived on docking station successfully.");
+      ROS_DEBUG_STREAM( "[" << name_ << "]: Result sent.");
+      dock_.disable();
+      toggleMotor(false);
+    } else if ( !dock_.isEnabled() ) { //Action Server is activated, but DockDrive is not enabled, or disabled unexpectedly
+      ROS_ERROR_STREAM("[" << name_ << "] Unintended Case: ActionService is active, but DockDrive is not enabled..");
+      result_.text = "Aborted: dock_drive is disabled unexpectedly.";
+      as_.setAborted( result_, "Aborted: dock_drive is disabled unexpectedly." );
+      ROS_INFO_STREAM("[" << name_ << "] Goal aborted.");
+      dock_.disable();
+      toggleMotor(false);
     } else {
       feedback_.state = dock_.getStateStr();
       feedback_.text = dock_.getDebugStr();
       as_.publishFeedback(feedback_);
-      ROS_INFO_STREAM( "[" << name_ << "]: Feedback sent.");
+      ROS_DEBUG_STREAM( "[" << name_ << "]: Feedback sent.");
     }
   }
   return;

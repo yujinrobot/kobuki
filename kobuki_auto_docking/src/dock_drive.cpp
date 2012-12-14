@@ -83,13 +83,12 @@ void DockDrive::update(const std::vector<unsigned char> &signal
                 , const unsigned char &charger
                 , const ecl::Pose2D<double> &pose) {
   static ecl::Pose2D<double> pose_priv;
-  ecl::Pose2D<double> pose_diff, pose_update;
+  ecl::Pose2D<double> pose_update;
 
-  pose_diff.x( pose.x() - pose_priv.x() );
-  pose_diff.y( pose.y() - pose_priv.y() );
-  pose_diff.heading( pose.heading() - pose_priv.heading() );
-  pose_update.x( std::sqrt(pose_diff.x()*pose_diff.x() + pose_diff.y()*pose_diff.y()) );
-  pose_update.heading( pose_diff.heading() );
+  double dx = pose.x() - pose_priv.x();
+  double dy = pose.y() - pose_priv.y();
+  pose_update.x( std::sqrt( dx*dx + dy*dy ) );
+  pose_update.heading( pose.heading() - pose_priv.heading() );
   //std::cout << pose_diff << "=" << pose << "-" << pose_priv << " | " << pose_update << std::endl;
   pose_priv = pose;
 
@@ -237,7 +236,7 @@ void DockDrive::update(const std::vector<unsigned char> &signal
       if ( state==SCAN ) {
         rotated += pose_update.heading()/(2.0*M_PI);
         std::ostringstream oss;
-        oss << "[rotated: " << std::fixed << std::setprecision(2) << std::setw(4) << rotated << "]";
+        oss << "rotated: " << std::fixed << std::setprecision(2) << std::setw(4) << rotated;
         debug_str = oss.str();
         if( std::abs(rotated) > 1.6 ) {
           setStateVel(FIND_STREAM, 0.0, 0.0); break;
