@@ -85,20 +85,20 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
                             const kobuki_msgs::SensorStateConstPtr& core,
                             const kobuki_msgs::DockInfraRedConstPtr& ir)
 {
-  //conversions
-  KDL::Rotation rot;
-  tf::quaternionMsgToKDL( odom->pose.pose.orientation, rot );
-
-  double r, p, y;
-  rot.GetRPY(r, p, y);
-
-  ecl::Pose2D<double> pose;
-  pose.x(odom->pose.pose.position.x);
-  pose.y(odom->pose.pose.position.y);
-  pose.heading(y);
-
   //process and run
   if (self->dock_.isEnabled()) {
+    //conversions
+    KDL::Rotation rot;
+    tf::quaternionMsgToKDL( odom->pose.pose.orientation, rot );
+
+    double r, p, y;
+    rot.GetRPY(r, p, y);
+
+    ecl::Pose2D<double> pose;
+    pose.x(odom->pose.pose.position.x);
+    pose.y(odom->pose.pose.position.y);
+    pose.heading(y);
+
     //update
     self->dock_.update(ir->data, core->bumper, core->charger, pose);
 
