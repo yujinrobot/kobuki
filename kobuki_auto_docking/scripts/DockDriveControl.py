@@ -72,7 +72,8 @@ class Controller(object):
     rospy.init_node("dock_drive_control")
     rospy.on_shutdown(self.clearing)
     rate = rospy.Rate(10)
-    self.message = "Idle" 
+    self.message = "Idle"
+    self.publish_cmd_vel=False
     self.cmd_vel=Twist()
     self.sensors = SensorState()
     self.dock_ir = DockInfraRed()
@@ -100,18 +101,20 @@ class Controller(object):
       'dock_ir':rospy.Subscriber('/mobile_base/sensors/dock_ir', DockInfraRed, self.dockIRCallback),
     }
     self.keyBindings = {
-      '1':(self.pub['debug'].publish,String('enable')   ,'enable'),
-      '2':(self.pub['debug'].publish,String('run')   ,'run'),
-      '3':(self.pub['debug'].publish,String('stop')  ,'stop'),
-      '4':(self.pub['debug'].publish,String('disable')   ,'disable'),
+      '1':(self.pub['debug'].publish, String('enable') ,'enable'),
+      '2':(self.pub['debug'].publish, String('run') ,'run'),
+      '3':(self.pub['debug'].publish, String('stop') ,'stop'),
+      '4':(self.pub['debug'].publish, String('disable'),'disable'),
       '5':5,
       '6':6,
       '7':7,
       '8':'eight',
       '9':'nine',
       '0':'null',
-      'e':(self.pub['motor_power'].publish,MotorPower(MotorPower.ON),'enabled'),
-      'r':(self.pub['motor_power'].publish,MotorPower(MotorPower.OFF),'disabled'),
+#      'e':(self.pub['motor_power'].publish,MotorPower(MotorPower.ON),'enabled'),
+#      'r':(self.pub['motor_power'].publish,MotorPower(MotorPower.OFF),'disabled'),
+      'e':(self.toggleMotor,True,'enabled'),
+      'r':(self.toggleMotor,False,'disabled'),
       ' ':(self.resetVel,'','resetted'),
       'a':(self.pub['sound'].publish,Sound(Sound.ON),'sound.on'),
       's':(self.pub['sound'].publish,Sound(Sound.OFF),'sound.off'),
@@ -187,10 +190,11 @@ class Controller(object):
       akey = self.getKey()
       if len(akey) and ord(akey)==91:
         key = self.getKey()
-        if key == 'A': self.message = 'Up Arrow'    ; self.cmd_vel.linear.x += 0.05
-        if key == 'B': self.message = 'Down Arrow'  ; self.cmd_vel.linear.x -= 0.05
-        if key == 'C': self.message = 'Right Arrow' ; self.cmd_vel.angular.z -= 0.33
-        if key == 'D': self.message = 'Left Arrow'  ; self.cmd_vel.angular.z += 0.33
+        if self.publish_cmd_vel:
+          if key == 'A': self.message = 'Up Arrow'    ; self.cmd_vel.linear.x += 0.05
+          if key == 'B': self.message = 'Down Arrow'  ; self.cmd_vel.linear.x -= 0.05
+          if key == 'C': self.message = 'Right Arrow' ; self.cmd_vel.angular.z -= 0.33
+          if key == 'D': self.message = 'Left Arrow'  ; self.cmd_vel.angular.z += 0.33
         return
     if key in self.keyBindings.keys():
       if type(self.keyBindings[key]) is types.TupleType:
@@ -231,9 +235,19 @@ class Controller(object):
     sys.stdout.flush()
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
 
+  def toggleMotor(self, on_off):
+    if on_off:
+      self.pub['motor_power'].publish(MotorPower(MotorPower.ON))
+      self.publish_cmd_vel = True
+    else:
+      self.pub['motor_power'].publish(MotorPower(MotorPower.OFF))
+      self.publish_cmd_vel = False
+      self.cmd_vel = Twist()
+
   def keyopCallback(self, event):
     if not rospy.is_shutdown():
-      self.pub['cmd_vel'].publish(self.cmd_vel)
+      if self.publish_cmd_vel:
+        self.pub['cmd_vel'].publish(self.cmd_vel)
 
   def sensorsCallback(self, data):
     if not rospy.is_shutdown():
