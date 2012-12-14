@@ -2,6 +2,9 @@
 
 This documents the version changes to the kobuki itself (note - not this software package!).
 
+2012-12-13 v1.1.3 Jae Young Lee <jakan2@rnd.yujinrobot.com>
+   * Decrease vibrations when moving at low velocity
+
 2012-12-09 v1.1.2 Jae Young Lee <jakan2@rnd.yujinrobot.com>
    * Disabling firmware safety controller
    * New firmware version structure
