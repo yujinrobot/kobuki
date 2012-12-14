@@ -6,4 +6,4 @@ if [ $# -lt 1 ]; then
   exit 1
 fi
 
-rosrun map_server map_saver -f $1 map:=/kobuki/map
+rosrun map_server map_saver -f $1 map:=/map
