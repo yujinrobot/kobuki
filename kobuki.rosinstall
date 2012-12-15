@@ -5,16 +5,15 @@
 # Latest build tools
 #   sudo apt-get install python-rosdep python-rosinstall python-rospkg
 #
-# Basic ROS
-#   sudo apt-get install ros-groovy-ros ros-groovy-ros-comm 
+# Basic Kobuki
 #
-# General Catkin stacks
-#   sudo apt-get install ros-groovy-ros ros-groovy-ros-comm ros-groovy-roscpp ros-groovy-rospy
+#   sudo apt-get install ros-groovy-ros ros-groovy-ros-comm ros-groovy-common-msgs 
+#   sudo apt-get install ros-groovy-geometry ros-groovy-diagnostics ros-groovy-perception-pcl 
+#   sudo apt-get install ros-groovy-nodelet-core ros-groovy-robot-model ros-groovy-xacro
+#
+# Desktop Stacks (Needs checking)
 #   sudo apt-get install ros-groovy-geometry-msgs ros-groovy-sensor-msgs ros-groovy-nav-msgs ros-groovy-tf ros-groovy-rviz
-#   sudo apt-get install ros-groovy-nodelet ros-groovy-robot-state-publisher ros-groovy-diagnostic-msgs ros-groovy-dynamic-reconfigure
-#
-# ECL
-#   sudo apt-get install ros-groovy-ecl-threads ros-groovy-ecl-devices ros-groovy-ecl-streams ros-groovy-ecl-mobile-robot ros-groovy-ecl-sigslots 
+#   sudo apt-get install ros-groovy-nodelet ros-groovy-robot-state-publisher ros-groovy-dynamic-reconfigure
 #
 # Gazebo
 #   sudo apt-get install libprotobuf-dev libprotoc-dev libtar-dev
