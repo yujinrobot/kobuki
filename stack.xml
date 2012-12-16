@@ -25,5 +25,5 @@
   <!-- kobuki docking -->
   <!-- <depend stack="common_msgs" /> --> <!-- actionlib_msgs -->
   <depend stack="actionlib"/>
-  <depend stack="kdl_conversions"/> <!-- should be rtt-geometry in fuerte? -->
+  <depend stack="geometry"/> <!-- kdl_conversions -->
 </stack>
