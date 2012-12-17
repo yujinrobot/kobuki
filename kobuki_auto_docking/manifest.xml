@@ -24,7 +24,7 @@
 
   <depend package="ecl_threads"/>
   <depend package="ecl_geometry"/>
-  <depend package="ecl_mobile_robot"/>
+  <depend package="ecl_linear_algebra"/>
 
   <export>
     <nodelet plugin="${prefix}/plugins/nodelet_plugins.xml" />

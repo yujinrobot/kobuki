@@ -48,7 +48,8 @@
 #include <iomanip>
 #include <cmath>
 #include <vector>
-#include <ecl/mobile_robot.hpp>
+#include <ecl/geometry/pose2d.hpp>
+#include <ecl/linear_algebra.hpp>
 
 /*****************************************************************************
 ** Namespaces
