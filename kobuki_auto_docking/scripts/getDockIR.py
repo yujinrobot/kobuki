@@ -13,6 +13,8 @@ class Converter(object):
     rospy.init_node("dock_ir_intepreter", anonymous=True)
     self.sub_dock_ir = rospy.Subscriber("/mobile_base/sensors/dock_ir", DockInfraRed, self.DockIRCallback)
     self.sub_core    = rospy.Subscriber("/mobile_base/sensors/core" , SensorState, self.SensorStateCallback)
+    self.window = rospy.get_param('~window',10)
+    self.oneline = rospy.get_param('~oneline',False)
     self.stack = []
     self.bumper = 0
     self.charger = 0
@@ -28,13 +30,17 @@ class Converter(object):
     array.reverse()
     #v2 filtering
     self.stack.append(array)
-    while len(self.stack) > 10:
+    while len(self.stack) > self.window:
       del self.stack[0]
-    print 
-    print "window: ", len(self.stack), "charger: ", self.charger, "[ON]" if self.charger else "[  ]", "bumper: ["\
-      , "L" if self.bumper&4 else "~"\
-      , "C" if self.bumper&2 else "~"\
-      , "R" if self.bumper&1 else "~", "]"
+    if not self.oneline: print 
+    head = "window: {0:d}/{1:d} ".format(len(self.stack),self.window)
+    head += "charger: {0:d} ".format(self.charger)
+    head += "[ON] " if self.charger else "[  ] "
+    head += "bumper: ["
+    head += "L" if self.bumper&4 else "~"
+    head += "C" if self.bumper&2 else "~"
+    head += "R" if self.bumper&1 else "~"
+    head += "]"
 
     array = [0,0,0]
     for i in range(len(self.stack)):
@@ -42,6 +48,7 @@ class Converter(object):
         array[j] |= self.stack[i][j]
 
 
+    delimiter = " " if self.oneline else "\n"
     ostr = ""
     ostr_top = "[far ] "; ostr_bot = "[near] "; ostr_bin="[bin ] "; ostr_dec="[dec ] "
     for ir in array:
@@ -61,7 +68,7 @@ class Converter(object):
       ostr_top += " "; ostr_bot += " "
       ostr_bin += "{0:#08b}".format(ir)[2:] + " "
       #ostr_dec += "{0:3d}".format(ir) + " "
-    ostr = ostr_top + "\n\r" + ostr_bot + "\n" + ostr_bin# + "\n" + ostr_dec
+    ostr = head + delimiter + ostr_top + delimiter + ostr_bot + delimiter + ostr_bin# + "\n" + ostr_dec
       #verN: average
       #verN: 
     print ostr
