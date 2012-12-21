@@ -7,13 +7,13 @@
 #
 # Basic Kobuki
 #
-#   sudo apt-get install ros-groovy-ros ros-groovy-ros-comm ros-groovy-common-msgs 
-#   sudo apt-get install ros-groovy-geometry ros-groovy-diagnostics ros-groovy-perception-pcl 
-#   sudo apt-get install ros-groovy-nodelet-core ros-groovy-robot-model ros-groovy-xacro
+#   sudo apt-get install ros-fuerte-ros ros-fuerte-ros-comm ros-fuerte-common-msgs 
+#   sudo apt-get install ros-fuerte-geometry ros-fuerte-diagnostics ros-fuerte-perception-pcl 
+#   sudo apt-get install ros-fuerte-nodelet-core ros-fuerte-robot-model ros-fuerte-xacro
 #
 # Desktop Stacks (Needs checking)
-#   sudo apt-get install ros-groovy-geometry-msgs ros-groovy-sensor-msgs ros-groovy-nav-msgs ros-groovy-tf ros-groovy-rviz
-#   sudo apt-get install ros-groovy-nodelet ros-groovy-robot-state-publisher ros-groovy-dynamic-reconfigure
+#   sudo apt-get install ros-fuerte-geometry-msgs ros-fuerte-sensor-msgs ros-fuerte-nav-msgs ros-fuerte-tf ros-fuerte-rviz
+#   sudo apt-get install ros-fuerte-nodelet ros-fuerte-robot-state-publisher ros-fuerte-dynamic-reconfigure
 #
 # Gazebo
 #   sudo apt-get install libprotobuf-dev libprotoc-dev libtar-dev
@@ -21,47 +21,33 @@
 ##############################################################################
 # Official ros stacks
 - other:
-    local-name: /opt/ros/groovy/share/ros
+    local-name: /opt/ros/fuerte/share/ros
 - other:
-    local-name: /opt/ros/groovy/share
+    local-name: /opt/ros/fuerte/share
 - other:
-    local-name: /opt/ros/groovy/stacks
+    local-name: /opt/ros/fuerte/stacks
 - setup-file:
-    local-name: /opt/ros/groovy/setup.sh
+    local-name: /opt/ros/fuerte/setup.sh
 
 # Kobuki stacks
 - git:
     uri: https://github.com/yujinrobot/kobuki.git
     local-name: kobuki
-    version: master
+    version: fuerte
 
 - git:
     uri: https://github.com/yujinrobot/kobuki_msgs.git 
     local-name: kobuki_msgs
-    version: master
+    version: fuerte
 
 - git:
     uri: https://github.com/yujinrobot/kobuki_desktop.git 
     local-name: kobuki_desktop
-    version: master
+    version: fuerte
 
 # Yujin ocs stacks
 - git:
     uri: https://github.com/yujinrobot/yujin_ocs.git
     local-name: yujin_ocs
-    version: master
-
-# ECL
-- svn:
-    uri: http://embedded-control-library.googlecode.com/svn/trunk/ecl_tools
-    local-name: ecl_tools
-- svn:
-    uri: http://embedded-control-library.googlecode.com/svn/trunk/ecl_lite
-    local-name: ecl_lite
-- svn:
-    uri: http://embedded-control-library.googlecode.com/svn/trunk/ecl_core
-    local-name: ecl_core
-- svn:
-    uri: http://embedded-control-library.googlecode.com/svn/trunk/ecl_navigation
-    local-name: ecl_navigation
+    version: fuerte
 
