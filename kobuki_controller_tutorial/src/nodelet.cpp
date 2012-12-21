@@ -91,8 +91,6 @@ private:
 
 } // namespace kobuki
 
-PLUGINLIB_DECLARE_CLASS(kobuki_controller_tutorial,
-                        BumpBlinkControllerNodelet,
-                        kobuki::BumpBlinkControllerNodelet,
-                        nodelet::Nodelet);
+PLUGINLIB_EXPORT_CLASS(kobuki::BumpBlinkControllerNodelet,
+                       nodelet::Nodelet);
 // %EndTag(FULLTEXT)%
