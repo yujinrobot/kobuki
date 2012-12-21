@@ -99,7 +99,5 @@ private:
 
 } // namespace kobuki
 
-PLUGINLIB_DECLARE_CLASS(kobuki_safety_controller,
-                        SafetyControllerNodelet,
-                        kobuki::SafetyControllerNodelet,
+PLUGINLIB_EXPORT_CLASS(kobuki::SafetyControllerNodelet,
                         nodelet::Nodelet);
