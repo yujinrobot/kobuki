@@ -23,16 +23,19 @@
         </geometry>
       </collision>
     </link>
-   
-    <joint name="base_bottom_joint" type="fixed">
-      <origin xyz="0 0 0.0102" rpy="0 0 0" />        
-      <parent link="base_footprint"/>
-      <child link="base_bottom_link" />
-    </joint>
-    <link name="base_bottom_link"/>
-    
+     <!--
+       Base link is set at the bottom of the base mould.
+       This is done to be compatible with the way base link
+       was configured for turtlebot 1. Refer to
+       
+       https://github.com/turtlebot/turtlebot/issues/40
+       
+       To put the base link at the more oft used wheel
+       axis, set the z-distance from the base_footprint
+       to 0.352.
+      -->
     <joint name="base_joint" type="fixed">
-      <origin xyz="0 0 0.0352" rpy="0 0 0" />        
+      <origin xyz="0 0 0.0102" rpy="0 0 0" />        
       <parent link="base_footprint"/>
       <child link="base_link" />
     </joint>
@@ -41,14 +44,14 @@
         <geometry>
           <mesh filename="package://kobuki_description/meshes/base.dae" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}"/>
         </geometry>
-        <origin xyz="0.0 0 0.02969" rpy="${M_PI/2} 0 ${M_PI/2}"/>
+        <origin xyz="0.0 0 0.05469" rpy="${M_PI/2} 0 ${M_PI/2}"/>
         <xacro:insert_block name="material_black"/>
       </visual>
       <collision>
         <geometry>
           <cylinder length="0.10938" radius="0.175615"/>
         </geometry>
-        <origin xyz="0.0 0.0 0.02969" rpy="0 0 0"/>
+        <origin xyz="0.0 0.0 0.05469" rpy="0 0 0"/>
       </collision>
       <inertial>
         <mass value="2.4"/> <!-- 2.4/2.6 kg for small/big battery pack -->
@@ -64,7 +67,7 @@
     <joint name="wheel_left_joint" type="continuous">
       <parent link="base_link"/>
       <child link="wheel_left_link"/>
-      <origin xyz="0.00 ${0.23/2} 0.00" rpy="${-M_PI/2} 0 0"/>
+      <origin xyz="0.00 ${0.23/2} 0.0250" rpy="${-M_PI/2} 0 0"/>
       <axis xyz="0 0 1"/>
     </joint>
     <link name="wheel_left_link">
@@ -93,7 +96,7 @@
     <joint name="wheel_right_joint" type="continuous">
       <parent link="base_link"/>
       <child link="wheel_right_link"/>
-      <origin xyz="0.00 -${0.23/2} 0.00" rpy="${-M_PI/2} 0 0"/>
+      <origin xyz="0.00 -${0.23/2} 0.0250" rpy="${-M_PI/2} 0 0"/>
       <axis xyz="0 0 1"/>
     </joint>
     <link name="wheel_right_link">
@@ -168,7 +171,7 @@
     </link>
     
     <joint name="cliff_sensor_front_joint" type="fixed">
-      <origin xyz="0.07 -0.14 0.028" rpy="0 ${M_PI/2} 0" />        
+      <origin xyz="0.18 0.00 0.028" rpy="0 ${M_PI/2} 0" />        
       <parent link="base_link"/>
       <child link="cliff_sensor_front_link" />
     </joint>
