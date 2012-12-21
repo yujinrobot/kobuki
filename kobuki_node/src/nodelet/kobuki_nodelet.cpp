@@ -87,4 +87,4 @@ private:
 
 } // namespace kobuki
 
-PLUGINLIB_DECLARE_CLASS(kobuki_node, KobukiNodelet, kobuki::KobukiNodelet, nodelet::Nodelet);
+PLUGINLIB_EXPORT_CLASS(kobuki::KobukiNodelet, nodelet::Nodelet);
