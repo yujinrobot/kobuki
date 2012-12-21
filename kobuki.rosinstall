@@ -45,9 +45,3 @@
     local-name: kobuki_desktop
     version: fuerte
 
-# Yujin ocs stacks
-- git:
-    uri: https://github.com/yujinrobot/yujin_ocs.git
-    local-name: yujin_ocs
-    version: fuerte
-

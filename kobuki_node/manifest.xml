@@ -26,7 +26,6 @@
   <depend package="kobuki_msgs"/>
   <depend package="kobuki_driver"/>
   <depend package="kobuki_keyop"/>
-  <depend package="kobuki_safety_controller"/>
   
   <!-- Ecl -->
   <depend package="ecl_exceptions"/>

@@ -20,8 +20,6 @@
   <depend stack="kobuki_msgs"/>
   <!-- bump clouds -->
   <depend stack="perception_pcl"/>
-  <!-- kobuki tutorials -->
-  <depend stack="yujin_ocs"/>
   <!-- kobuki docking -->
   <!-- <depend stack="common_msgs" /> --> <!-- actionlib_msgs -->
   <depend stack="actionlib"/>
