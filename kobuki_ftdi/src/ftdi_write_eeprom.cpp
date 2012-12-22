@@ -55,7 +55,7 @@ int main(int argc, char **argv)
   /*********************
    ** Parse Command Line
    **********************/
-  ecl::CmdLine cmd_line("This is used to read an eeprom on an ftdi device.", ' ', "0.1");
+  ecl::CmdLine cmd_line("This is used to write 'kobuki' on an ftdi device.", ' ', "0.1");
   ecl::ValueArg<std::string> serial_arg(
       "s", "serial", "Identify the device via the old serial id (if there are multiple attached) ['unspecified'].", false,
       "unspecified", "string");

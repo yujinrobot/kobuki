@@ -86,4 +86,4 @@ private:
 };
 
 } //namespace kobuki
-PLUGINLIB_DECLARE_CLASS(kobuki_auto_docking, AutoDockingNodelet, kobuki::AutoDockingNodelet, nodelet::Nodelet);
+PLUGINLIB_EXPORT_CLASS(kobuki::AutoDockingNodelet, nodelet::Nodelet);
