@@ -22,8 +22,8 @@
     <remap from="keyop_vel_smoother/smooth_cmd_vel" to="cmd_vel_mux/keyboard_teleop"/>
   </node>
   <node pkg="nodelet" type="nodelet" name="cmd_vel_mux" args="load cmd_vel_mux/CmdVelMuxNodelet kobuki">
-    <param name="subscribers_cfg_file" value="$(find kobuki_node)/param/webop_mux.yaml"/>
-    <remap from="cmd_vel_mux/mux_cmd_vel" to="mobile_base/commands/velocity"/>
+    <param name="yaml_cfg_file" value="$(find kobuki_node)/param/webop_mux.yaml"/>
+    <remap from="cmd_vel_mux/output" to="mobile_base/commands/velocity"/>
   </node>
   <node pkg="nodelet" type="nodelet" name="kobuki_safety_controller" args="load kobuki_safety_controller/SafetyControllerNodelet kobuki">
     <remap from="kobuki_safety_controller/cmd_vel" to="cmd_vel_mux/safety_controller"/>

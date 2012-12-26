@@ -291,7 +291,7 @@ void Kobuki::spin()
               if (version_match < 0) {
                 sig_error.emit("Robot firmware is outdated and needs to be upgraded. Consult how-to on: " \
                                "http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware");
-                sig_warn.emit("Robot version is " + VersionInfo::toString(firmware.data.version)
+                sig_warn.emit("version info - " + VersionInfo::toString(firmware.data.version)
                         + "; current version is " + firmware.current_version());
                 shutdown_requested = true;
               }
@@ -307,7 +307,7 @@ void Kobuki::spin()
                   sig_warn.emit("Robot firmware is outdated; we suggest you to upgrade it " \
                                 "to benefit from the latest features. Consult how-to on: "  \
                                 "http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware");
-                  sig_warn.emit("Robot version is " + VersionInfo::toString(firmware.data.version)
+                  sig_warn.emit("version info - " + VersionInfo::toString(firmware.data.version)
                           + "; current version is " + firmware.current_version());
                 }
                 else if (version_match > 0) {
@@ -326,7 +326,7 @@ void Kobuki::spin()
             unique_device_id.deserialise(data_buffer);
             sig_version_info.emit( VersionInfo( firmware.data.version, hardware.data.version
                 , unique_device_id.data.udid0, unique_device_id.data.udid1, unique_device_id.data.udid2 ));
-            sig_info.emit("Robot version. Hardware: " + VersionInfo::toString(hardware.data.version)
+            sig_info.emit("version info - Hardware: " + VersionInfo::toString(hardware.data.version)
                                      + ". Firmware: " + VersionInfo::toString(firmware.data.version));
             version_info_reminder = 0;
             break;

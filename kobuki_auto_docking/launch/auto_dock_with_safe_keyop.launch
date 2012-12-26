@@ -3,7 +3,7 @@
  -->
 <launch>
   <node pkg="nodelet" type="nodelet" name="cmd_vel_mux" args="load cmd_vel_mux/CmdVelMuxNodelet kobuki">
-    <param name="subscribers_cfg_file" value="$(find kobuki_auto_docking)/param/cmd_vel_mux.yaml"/>
+    <param name="yaml_cfg_file" value="$(find kobuki_auto_docking)/param/cmd_vel_mux.yaml"/>
     <remap from="cmd_vel_mux/mux_cmd_vel" to="mobile_base/commands/velocity"/>
   </node>
 
