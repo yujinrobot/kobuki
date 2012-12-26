@@ -51,23 +51,22 @@ public:
   KobukiNodelet(){};
   ~KobukiNodelet()
   {
-    NODELET_DEBUG_STREAM("Waiting for update thread to finish.");
+    NODELET_DEBUG_STREAM("Kobuki : waiting for update thread to finish.");
     update_thread_.join();
   }
   virtual void onInit()
   {
-    NODELET_DEBUG_STREAM("Initialising nodelet...");
+    NODELET_DEBUG_STREAM("Kobuki : initialising nodelet...");
     std::string nodelet_name = this->getName();
     kobuki_.reset(new KobukiRos(nodelet_name));
     if (kobuki_->init(this->getPrivateNodeHandle()))
     {
-      NODELET_INFO_STREAM("Kobuki initialised. Spinning up update thread ...");
       update_thread_.start(&KobukiNodelet::update, *this);
-      NODELET_INFO_STREAM("Nodelet initialised.");
+      NODELET_INFO_STREAM("Kobuki : initialised.");
     }
     else
     {
-      NODELET_ERROR_STREAM("Could not initialise Kobuki nodelet! Please restart.");
+      NODELET_ERROR_STREAM("Kobuki : could not initialise! Please restart.");
     }
   }
 private:
