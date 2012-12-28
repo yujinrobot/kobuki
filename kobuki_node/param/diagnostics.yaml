@@ -11,7 +11,7 @@ analyzers:
     type: diagnostic_aggregator/GenericAnalyzer
     path: 'Kobuki'
     timeout: 5.0
-    contains: ['Watchdog']
+    contains: ['Watchdog', 'Motor State']
     remove_prefix: mobile_base
   sensors: 
     type: diagnostic_aggregator/GenericAnalyzer
