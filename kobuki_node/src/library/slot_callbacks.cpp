@@ -52,6 +52,7 @@ void KobukiRos::processStreamData() {
   publishSensorState();
   publishDockIRData();
   publishInertia();
+  publishRawInertia();
 }
 
 /*****************************************************************************
@@ -159,6 +160,37 @@ void KobukiRos::publishInertia()
       msg->angular_velocity_covariance[8] = 0.005;
 
       imu_data_publisher.publish(msg);
+    }
+  }
+}
+
+void KobukiRos::publishRawInertia()
+{
+  if ( ros::ok() && (raw_imu_data_publisher.getNumSubscribers() > 0) )
+  {
+    // Publish as shared pointer to leverage the nodelets' zero-copy pub/sub feature
+    sensor_msgs::ImuPtr msg(new sensor_msgs::Imu);
+    ThreeAxisGyro::Data data = kobuki.getRawInertiaData();
+
+    ros::Time now = ros::Time::now();
+    ros::Duration interval(0.01); //Time interval between each sensor reading.
+    const double digit_to_dps = 0.00875; //digit to deg/s ratio, comes from datasheet of 3d gyro.
+    unsigned int length = data.followed_data_length/3;
+    for( unsigned int i=0; i<length; i++) {
+      // Each sensor reading has id, that circulate 0 to 255.
+      //msg->header.frame_id = std::string("gyro_link_" + boost::lexical_cast<std::string>((unsigned int)data.frame_id+i));
+      msg->header.frame_id = "gyro_link";
+
+      // Update rate of 3d gyro sensor is 100 Hz, but robot's update rate is 50 Hz.
+      // So, here is some compensation.
+      msg->header.stamp = now - interval * (length-i-1);
+
+      // Sensing axis of 3d gyro is not match with robot. It is rotated 90 degree counter clock-wise about z-axis.
+      msg->angular_velocity.x = angles::from_degrees( -digit_to_dps * (short)data.data[i*3+1] );
+      msg->angular_velocity.y = angles::from_degrees(  digit_to_dps * (short)data.data[i*3+0] );
+      msg->angular_velocity.z = angles::from_degrees(  digit_to_dps * (short)data.data[i*3+2] );
+
+      raw_imu_data_publisher.publish(msg);
     }
   }
 }
