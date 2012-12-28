@@ -187,6 +187,7 @@ private:
   WallSensorTask   bumper_diagnostics;
   WheelDropTask     wheel_diagnostics;
   MotorCurrentTask  motor_diagnostics;
+  MotorStateTask    state_diagnostics;
   GyroSensorTask     gyro_diagnostics;
   DigitalInputTask dinput_diagnostics;
   AnalogInputTask  ainput_diagnostics;
