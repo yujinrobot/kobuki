@@ -63,6 +63,7 @@ public:
   // Service Payloads
   static const unsigned char Hardware = 10;
   static const unsigned char Firmware = 11;
+  static const unsigned char ThreeAxisGyro = 13;
   static const unsigned char Eeprom = 15;
   static const unsigned char GpInput = 16;
 

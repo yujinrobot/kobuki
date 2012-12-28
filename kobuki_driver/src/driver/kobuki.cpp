@@ -277,7 +277,10 @@ void Kobuki::spin()
             gp_input.deserialise(data_buffer);
             event_manager.update(gp_input.data.digital_input);
             break;
-            // the rest are only included on request
+          case Header::ThreeAxisGyro:
+            three_axis_gyro.deserialise(data_buffer);
+            break;
+          // the rest are only included on request
           case Header::Hardware:
             hardware.deserialise(data_buffer);
             //sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));

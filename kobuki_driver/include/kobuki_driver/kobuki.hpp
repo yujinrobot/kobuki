@@ -127,6 +127,7 @@ public:
   Current::Data getCurrentData() const { return current.data; }
   Inertia::Data getInertiaData() const { return inertia.data; }
   GpInput::Data getGpInputData() const { return gp_input.data; }
+  ThreeAxisGyro::Data getRawInertiaData() const { return three_axis_gyro.data; }
 
   /*********************
   ** Feedback
@@ -186,6 +187,7 @@ private:
   Hardware hardware; // requestable
   Firmware firmware; // requestable
   UniqueDeviceID unique_device_id;
+  ThreeAxisGyro three_axis_gyro;
 
   ecl::Serial serial;
   PacketFinder packet_finder;
