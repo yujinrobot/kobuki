@@ -135,6 +135,16 @@ void MotorCurrentTask::run(diagnostic_updater::DiagnosticStatusWrapper &stat) {
   stat.addf("Right", "%d", values[1]);
 }
 
+void MotorStateTask::run(diagnostic_updater::DiagnosticStatusWrapper &stat) {
+  if ( state == true ) {
+    stat.summary(diagnostic_msgs::DiagnosticStatus::OK, "Motors Enabled");
+  } else {
+    stat.summary(diagnostic_msgs::DiagnosticStatus::WARN, "Motors Disabled");
+  }
+
+  stat.addf("State", "%d", int(state));
+}
+
 void GyroSensorTask::run(diagnostic_updater::DiagnosticStatusWrapper &stat) {
   // Raw data angles are in hundredths of degree
   stat.summaryf(diagnostic_msgs::DiagnosticStatus::OK, "Heading: %.2f degrees", heading/100.0);

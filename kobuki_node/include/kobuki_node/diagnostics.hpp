@@ -117,6 +117,19 @@ private:
 };
 
 /**
+ * Diagnostic checking the on/off state of the motors
+ */
+class MotorStateTask : public diagnostic_updater::DiagnosticTask {
+public:
+  MotorStateTask() : DiagnosticTask("Motor State") {}
+  void run(diagnostic_updater::DiagnosticStatusWrapper &stat);
+  void update(bool new_state) { state = new_state; };
+
+private:
+  bool state;
+};
+
+/**
  * Diagnostic checking the gyro sensor status.
  */
 class GyroSensorTask : public diagnostic_updater::DiagnosticTask {

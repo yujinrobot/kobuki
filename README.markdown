@@ -7,7 +7,7 @@ The kobuki stack consists the C++ driver for communicating with [iClebo Kobuki](
 
 ROS
 
-Check out the [ROS wiki entry for Kobuki](http://www.ros.org/wiki/kobuk) for more information about how to use Kobuki with ROS.
+Check out the [ROS wiki entry for Kobuki](http://www.ros.org/wiki/kobuki) for more information about how to use Kobuki with ROS.
 
 TurtleBot
 
