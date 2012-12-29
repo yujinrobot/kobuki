@@ -63,17 +63,17 @@ void BatteryTask::run(diagnostic_updater::DiagnosticStatusWrapper &stat) {
   }
   switch ( status.charging_state ) {
     case ( Battery::Charged ) : {
-      stat.add("Charging State", "Charged");
+      stat.add("Charging State", "Trickle Charging"); // i.e. fully charged
       stat.add("Current (A)", 3.14); // TODO: what's the real value for our charger?
       break;
     }
     case ( Battery::Charging ) : {
-      stat.add("Charging State", "Charging");
+      stat.add("Charging State", "Full Charging");
       stat.add("Current (A)", 3.14); // TODO: what's the real value for our charger?
       break;
     }
     case ( Battery::Discharging ) : {
-      stat.add("Charging State", "Discharging");
+      stat.add("Charging State", "Not Charging");
       stat.add("Current (A)", 0.0);
       break;
     }
