@@ -83,6 +83,7 @@ KobukiRos::KobukiRos(std::string& node_name) :
   updater.add(cliff_diagnostics);
   updater.add(wheel_diagnostics);
   updater.add(motor_diagnostics);
+  updater.add(state_diagnostics);
   updater.add(gyro_diagnostics);
   updater.add(dinput_diagnostics);
   updater.add(ainput_diagnostics);
@@ -303,6 +304,7 @@ bool KobukiRos::update()
   bumper_diagnostics.update(kobuki.getCoreSensorData().bumper);
   wheel_diagnostics.update(kobuki.getCoreSensorData().wheel_drop);
   motor_diagnostics.update(kobuki.getCurrentData().current);
+  state_diagnostics.update(kobuki.isEnabled());
   gyro_diagnostics.update(kobuki.getInertiaData().angle);
   dinput_diagnostics.update(kobuki.getGpInputData().digital_input);
   ainput_diagnostics.update(kobuki.getGpInputData().analog_input);
