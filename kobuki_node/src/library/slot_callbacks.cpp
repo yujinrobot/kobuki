@@ -173,8 +173,8 @@ void KobukiRos::publishRawInertia()
     ThreeAxisGyro::Data data = kobuki.getRawInertiaData();
 
     ros::Time now = ros::Time::now();
-    ros::Duration interval(0.01); //Time interval between each sensor reading.
-    const double digit_to_dps = 0.00875; //digit to deg/s ratio, comes from datasheet of 3d gyro.
+    ros::Duration interval(0.01); // Time interval between each sensor reading.
+    const double digit_to_dps = 0.00875; // digit to deg/s ratio, comes from datasheet of 3d gyro[L3G4200D].
     unsigned int length = data.followed_data_length/3;
     for( unsigned int i=0; i<length; i++) {
       // Each sensor reading has id, that circulate 0 to 255.
@@ -185,7 +185,7 @@ void KobukiRos::publishRawInertia()
       // So, here is some compensation.
       msg->header.stamp = now - interval * (length-i-1);
 
-      // Sensing axis of 3d gyro is not match with robot. It is rotated 90 degree counter clock-wise about z-axis.
+      // Sensing axis of 3d gyro is not match with robot. It is rotated 90 degree counterclockwise about z-axis.
       msg->angular_velocity.x = angles::from_degrees( -digit_to_dps * (short)data.data[i*3+1] );
       msg->angular_velocity.y = angles::from_degrees(  digit_to_dps * (short)data.data[i*3+0] );
       msg->angular_velocity.z = angles::from_degrees(  digit_to_dps * (short)data.data[i*3+2] );
