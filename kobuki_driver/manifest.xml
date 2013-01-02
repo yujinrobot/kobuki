@@ -5,7 +5,7 @@
       ROS on their systems.
     </p>
   </description>
-  <author>Daniel Stonier, Jorge Santos Simon, 주영훈</author>
+  <author>Daniel Stonier, Jorge Santos Simon, Younghoon Ju</author>
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/kobuki_driver</url>
