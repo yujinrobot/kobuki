@@ -1,6 +1,10 @@
 /**
- * @file /kobuki_driver/include/kobuki_driver/packets/packets.hpp
+ * @file include/kobuki_driver/packets.hpp
  *
+ * @brief Packets convenience header.
+ *
+ * License: BSD
+ *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE
  **/
 /*****************************************************************************
 ** Ifdefs

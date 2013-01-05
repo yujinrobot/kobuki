@@ -1,8 +1,11 @@
 /**
- * @file /kobuki_driver/src/driver/command.cpp
+ * @file src/driver/command.cpp
  *
  * @brief Implementation of the command packets.
- **/
+ *
+ * License: BSD
+ *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE
+**/
 
 /*****************************************************************************
 ** Includes
@@ -65,6 +68,9 @@ Command Command::SetLedArray(const enum LedNumber &number, const enum LedColour 
  *
  * They set the last 4 bits on the data.gp_out variable.
  *
+ * @todo could use far better documentation here/example here.
+ *
+ * @param digital_output : mask and value to send
  * @param current_data : need to store settings as the gp_output command is a combo command
  * @return Command : the command to send down the wire.
  */
@@ -93,6 +99,9 @@ Command Command::SetDigitalOutput(const DigitalOutput &digital_output, Command::
  *
  * They set the second 4 bits(0x00f0) on the data.gp_out variable.
  *
+ * @todo could use far better documentation here/example here.
+ *
+ * @param digital_output : mask and value to send
  * @param current_data : need to store settings as the gp_output command is a combo command
  * @return Command : the command to send down the wire.
  */

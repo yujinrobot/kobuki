@@ -9,6 +9,7 @@ Todo: This section should provide a basic overview of what the kobuki driver is,
 
 - @ref koInstallationLinuxGuide "Installation (Linux)"
 - @ref koInstallationWindowsGuide "Installation (Windows)"
+- @ref koInstallationAppleGuide "Installation (Apple)"
 - @ref koGettingStartedGuide "Getting Started"
 - @ref koSigslotsGuide "Kobuki Sigslots"
 - @ref koFtdiGuide "Ftdi Serial Device"
