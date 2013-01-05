@@ -71,7 +71,9 @@ public:
   };
 
   /**
-   * Data structure containing data for commands. It is important to keep this
+   * @brief Data structure containing data for commands.
+   *
+   * It is important to keep this
    * state as it will have to retain knowledge of the last known command in
    * some instances - e.g. for gp_out commands, quite often the incoming command
    * is only to set the output for a single led while keeping the rest of the current
