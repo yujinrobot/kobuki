@@ -1,7 +1,7 @@
 /**
  * @file include/kobuki_driver/packets/firmware.hpp
  *
- * Module for handling of firmware version request packet payloads.
+ * @brief Firmware version request packet payloads.
  *
  * License: BSD
  *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE

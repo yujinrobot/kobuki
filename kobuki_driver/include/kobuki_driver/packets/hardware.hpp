@@ -1,7 +1,7 @@
 /**
  * @file /include/kobuki_driver/packets/hardware.hpp
  *
- * Module for handling of hardware version request packet payloads.
+ * @brief Hardware version request packet payloads.
  *
  * License: BSD
  *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE

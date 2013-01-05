@@ -1,7 +1,7 @@
 /**
  * @file /include/kobuki_driver/packets/inertia.hpp
  *
- * Module for handling of inertia packet payloads.
+ * @brief Inertia packet payloads.
  *
  * License: BSD
  *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE

@@ -1,7 +1,7 @@
 /**
  * @file /include/kobuki_driver/packets/eeprom.hpp
  *
- * Module for handling of eeprom packet payloads.
+ * @brief Eeprom packet payloads.
  *
  * Not currently using this yet.
  *

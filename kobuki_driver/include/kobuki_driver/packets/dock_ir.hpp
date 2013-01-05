@@ -1,7 +1,7 @@
 /**
  * @file kobuki_driver/packets/dock_ir.hpp
  *
- * Module for handling of docking infrared sensor packet payloads.
+ * @brief Docking infrared sensor packet payloads.
  *
  * License: BSD
  *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE

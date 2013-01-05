@@ -1,7 +1,7 @@
 /**
  * @file include/kobuki_driver/packets/current.hpp
  *
- * Module for handling of current level packet payloads.
+ * @brief Current level packet payloads.
  *
  * License: BSD
  *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE

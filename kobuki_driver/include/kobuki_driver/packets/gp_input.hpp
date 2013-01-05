@@ -1,7 +1,7 @@
 /**
  * @file include/kobuki_driver/packets/gp_input.hpp
  *
- * Module for handling of gpio data commands.
+ * @brief gpio data command packets.
  *
  * License: BSD
  *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE

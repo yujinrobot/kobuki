@@ -1,7 +1,7 @@
 /**
  * @file /include/kobuki_driver/packets/three_axis_gyro.hpp
  *
- * Module for handling of three_axis_gyro packet payloads.
+ * @brief Module for handling of three_axis_gyro packet payloads.
  *
  * License: BSD
  *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE

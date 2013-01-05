@@ -1,7 +1,7 @@
 /**
  * @file include/kobuki_driver/packets/core_sensors.hpp
  *
- * Module for handling of core sensor packet payloads.
+ * @brief Core sensor packet payloads.
  *
  * License: BSD
  *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE

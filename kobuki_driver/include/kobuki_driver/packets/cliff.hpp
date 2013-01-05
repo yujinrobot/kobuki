@@ -1,7 +1,7 @@
 /**
  * @file /include/kobuki_driver/packets/cliff.hpp
  *
- * Module for handling of cliff sensor packet payloads.
+ * @brief Cliff sensor packet payloads.
  *
  * License: BSD
  *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE

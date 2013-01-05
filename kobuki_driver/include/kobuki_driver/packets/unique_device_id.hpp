@@ -1,7 +1,7 @@
 /**
  * @file /include/kobuki_driver/packets/unique_device_id.hpp
  *
- * Module for handling of unique device id request packet payloads.
+ * @brief Module for handling of unique device id request packet payloads.
  *
  * License: BSD
  *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE

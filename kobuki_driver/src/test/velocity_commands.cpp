@@ -1,4 +1,15 @@
+/**
+ * @file /kobuki_driver/src/test/velocity_commands.cpp
+ *
+ * @brief Unit test for velocity command inputs.
+ *
+ * License: BSD
+ *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE
+ **/
 
+/*****************************************************************************
+** Includes
+*****************************************************************************/
 
 #include <iostream>
 #include <cstdio>
