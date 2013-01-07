@@ -1,7 +1,8 @@
 /**
  * @file /kobuki_driver/include/kobuki_driver/modules/gate_keeper.hpp
- *
- * @brief Simple module for the diff drive odometry.
+ * @author Younghun Ju <younghoon.ju@rnd.yujinrobot.com> <yhju83@gmail.com>
+ * @brief Simple module for the velocity smoothing.
+ * @date March 2012
  *
  * License: BSD
  *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE

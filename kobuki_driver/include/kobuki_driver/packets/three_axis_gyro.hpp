@@ -1,6 +1,7 @@
 /**
  * @file /include/kobuki_driver/packets/three_axis_gyro.hpp
- *
+ * @author Younghun Ju <younghoon.ju@rnd.yujinrobot.com> <yhju83@gmail.com>
+ * @date December 2012
  * @brief Module for handling of three_axis_gyro packet payloads.
  *
  * License: BSD

@@ -1,10 +1,7 @@
 /**
- * @file include/kobuki_driver/packet_handler/packet_finder.hpp
+ * @file include/kobuki_driver/packet_handler/payload_base.hpp
  *
- * Originally from the yujin control system suite (where it also has some
- * unit tests).
- *
- * Currently quite rough, could possibly be made general.
+ * @brief Base class for payloads.
  *
  * License: BSD
  *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE
@@ -35,7 +32,7 @@ namespace packet_handler
  *****************************************************************************/
 /**
  * @brief
- * Provides simple packet finder which may be consist of stx, etx, payload, ...
+ * Provides base class for payloads.
  *
  */
 class payloadBase

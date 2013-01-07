@@ -1,6 +1,8 @@
 /**
  * @file include/kobuki_driver/packet_handler/packet_finder.hpp
  *
+ * @brief Simple packet finder
+ *
  * Originally from the yujin control system suite (where it also has some
  * unit tests).
  *
@@ -56,13 +58,13 @@ namespace kobuki
  * @endcode
  *
  *
- * @todo;
- * (1) getting buffer from this class
- * (2) simple construction of this class
- * (3) device abstraction
- * (4) extend-able packet structures
- * (5) ros처럼 파일에서 스크립트읽고 auto-generation된 코드를 사용할 수 있으면 편하다.
- * (6) packetFinder to ros converter
+ * @todo
+ * (1) getting buffer from this class<br>
+ * (2) simple construction of this class<br>
+ * (3) device abstraction<br>
+ * (4) extend-able packet structures<br>
+ * (5) ros처럼 파일에서 스크립트읽고 auto-generation된 코드를 사용할 수 있으면 편하다.<br>
+ * (6) packetFinder to ros converter<br>
  * (7) evaluate it (valgrind)
  *
  */
