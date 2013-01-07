@@ -2,11 +2,96 @@
 
 @page enSigslotsGuide Sigslots
 
-Todo: This section should introduce the sigslots concept, usage details, kobuki sigslots api and tutorial examples.
-
 @section sigslotsIntro Introduction
 
- - This is a list item
- - another list item.
+Sigslots are the primary way to handle events emitted by the kobuki driver (c.f. with the usual 
+function callbacks with void function pointers as arguments). Rather than repeating here a 
+verbose explanation of what they are and how they work, the best option is to go straight to the
+official documentation - <a href="http://ros.org/wiki/ecl_sigslots">ecl_sigslots</a>.
+
+@section sigslotReference Kobuki Driver Sigslot Reference
+
+The kobuki driver establishes the following signals : 
+
+- void : /mobile_base/stream_data : informs when a new data packet has arrived from the kobuki
+- std::string : /mobile_base/ros_debug : relay debug messages
+- std::string : /mobile_base/ros_info : relay info messages
+- std::string : /mobile_base/ros_warn : relay warning messages
+- std::string : /mobile_base/ros_error : relay error messages
+- kobuki::ButtonEvent : /mobile_base/button_event : receive an event when a button state changes
+- kobuki::BumperEvent : /mobile_base/bumper_event : receive an event when the bumper state changes
+- kobuki::CliffEvent : /mobile_base/cliff_event : receive an event when a cliff sensor state changes
+- kobuki::WheelEvent: /mobile_base/wheel_event : receive an event when the wheel state (in/out) changes
+- kobuki::PowerEvent : /mobile_base/power_event : receive an event when the power/charging state changes
+- kobuki::InputEvent : /mobile_base/input_event : receive an event when the gpio state changes
+- kobuki::RobotEvent : /mobile_base/robot_event : receive an event when the robot state changes
+- kobuki::VersionInfo : /mobile_base/version_info : receive version info strings on this signal
+
+It does not establish any slots.
+
+@section exampleSigSlots Example Usage
+
+This needs to be carefully done - illustrate how to get the core sensor data stream and then break it up.
+Highlight the difference between these and the other xxxEvents - they are convenience handles 
+for when state changes (could do this yourself parsing hte sensor state, but kobuki saves you the trouble).
+
+@code
+
+slot_cliff_event.connect(name + std::string("/cliff_event"));
+@endcode
+
+@section Troubleshooting
+
+While debugging, you may often accidentally leave sigslots dangling, typos for the connection 
+name are a common cause. For this, there is an introspection method available which you can
+use to quickly print the currently sigslot connections (dangling or otherwise).
+
+A code snippet:
+
+@code
+  Kobuki kobuki
+  Parameters parameters;
+  // configure parameters here 
+  kobuki.init(parameters);
+  // make some sigslot connections here
+  kobuki.printSigSlotConnections();
+@endcode
+
+Depending on your sigslot connection configuration, you should see something like the following,
+
+@code
+========== Void ==========
+Topics
+  Name: /mobile_base/stream_data
+    # Subscribers: 1
+    # Publishers : 1
+========= String =========
+Topics
+  Name: /mobile_base/ros_debug
+    # Subscribers: 1
+    # Publishers : 1
+  Name: /mobile_base/ros_error
+    # Subscribers: 1
+    # Publishers : 2
+  Name: /mobile_base/ros_info
+    # Subscribers: 1
+    # Publishers : 1
+  Name: /mobile_base/ros_warn
+    # Subscribers: 1
+    # Publishers : 2
+====== Button Event ======
+Topics
+  Name: /mobile_base/button_event
+    # Subscribers: 1
+    # Publishers : 1
+====== Bumper Event ======
+Topics
+  Name: /mobile_base/bumper_event
+    # Subscribers: 1
+    # Publishers : 1
+...
+@endcode
+
+This uses the sigslots manager to retrieve the information. A full example of its use can be found in the ecl_sigslot sources: <a href="http://ros.org/doc/groovy/api/ecl_sigslots/html/sigslots__manager_8cpp_source.html">example cpp program</a>. 
 
 **/

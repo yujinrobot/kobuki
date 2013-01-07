@@ -496,4 +496,38 @@ bool Kobuki::disable()
   return true;
 }
 
+/**
+ * @brief Print a list of all relevant sigslot connections.
+ *
+ * This includes both the kobuki driver signals as well as externally
+ * connected slots. Useful for when you need to check if any of your
+ * connections are dangling (often happens when you typo
+ * the name of the sigslots connection).
+ */
+void Kobuki::printSigSlotConnections() const {
+
+  std::cout << "========== Void ==========" << std::endl;
+  ecl::SigSlotsManager<>::printStatistics();
+  std::cout << "========= String =========" << std::endl;
+  ecl::SigSlotsManager<const std::string&>::printStatistics();
+  std::cout << "====== Button Event ======" << std::endl;
+  ecl::SigSlotsManager<const ButtonEvent&>::printStatistics();
+  std::cout << "====== Bumper Event ======" << std::endl;
+  ecl::SigSlotsManager<const BumperEvent&>::printStatistics();
+  std::cout << "====== Cliff Event =======" << std::endl;
+  ecl::SigSlotsManager<const CliffEvent&>::printStatistics();
+  std::cout << "====== Wheel Event =======" << std::endl;
+  ecl::SigSlotsManager<const WheelEvent&>::printStatistics();
+  std::cout << "====== Power Event =======" << std::endl;
+  ecl::SigSlotsManager<const PowerEvent&>::printStatistics();
+  std::cout << "====== Input Event =======" << std::endl;
+  ecl::SigSlotsManager<const InputEvent&>::printStatistics();
+  std::cout << "====== Robot Event =======" << std::endl;
+  ecl::SigSlotsManager<const RobotEvent&>::printStatistics();
+  std::cout << "====== VersionInfo =======" << std::endl;
+  ecl::SigSlotsManager<const VersionInfo&>::printStatistics();
+  std::cout << "===== Command Buffer =====" << std::endl;
+  ecl::SigSlotsManager<const Command::Buffer&>::printStatistics();
+}
+
 } // namespace kobuki

@@ -126,6 +126,11 @@ public:
   void setExternalPower(const DigitalOutput &digital_output);
   void playSoundSequence(const enum SoundSequences &number);
 
+  /*********************
+  ** Debugging
+  **********************/
+  void printSigSlotConnections() const;
+
 private:
   /*********************
   ** Thread

@@ -254,11 +254,7 @@ bool KobukiRos::init(ros::NodeHandle& nh)
 
   ROS_DEBUG("Bumpers as pointcloud configured at distance %f from base frame", bumper_pc_radius);
 
-//  ecl::SigSlotsManager<>::printStatistics();
-//  ecl::SigSlotsManager<const std::string&>::printStatistics();
-//  ecl::SigSlotsManager<const VersionInfo&>::printStatistics();
-//  ecl::SigSlotsManager<const ButtonEvent&>::printStatistics();
-
+  // kobuki.printSigSlotConnections();
   return true;
 }
 

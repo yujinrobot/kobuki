@@ -35,7 +35,7 @@ We have a simple implementation in the guides below and a more detailed implemen
 - @ref enInstallationWindowsGuide "Installation (Windows)"
 - @ref enInstallationAppleGuide "Installation (Apple)"
 - @ref enGettingStartedGuide "Getting Started"
-- @ref enSigslotsGuide "Kobuki Sigslots"
+- @ref enSigslotsGuide "Sigslots"
 - @ref enFtdiGuide "Ftdi Serial Device"
 - @ref enSimpleExample "Simple Control Loop Example"
 - @ref enEmbeddedBoardTutorial "Embedded Board Tutorial"
