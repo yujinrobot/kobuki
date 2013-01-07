@@ -7,16 +7,16 @@ The kobuki driver is a simple c++ library that allows interfacing to the kobuki 
 
 @subsection who Target Users
 
-Before diving into the documentation here, a quick pointer to where you need to focus. Note that if you're using
-  reference platform built on top of kobuki you do not usually need to know the internals of the driver.
+This documentation is targeted for users creating a custom robot on top of kobuki using either posix/win32 or 
+an apple operating system. If that is you, you are in the right place - proceed to the guides below.
+If you're interested in developing a driver for a custom unsupported platform (e.g. vxworks) then you'll want 
+to check the serial protocol reference in the @ref enAppendixGuide "appendix".
+
+Alternatively, if you're using a <i>kobuki reference platform</i>, check one of the links below. 
  
-- <b>Kobuki Implementations</b>
- - <i>Posix/Win Robot</i> : you're in the right place, follow the guides below.
- - <i>Alternate Driver</i> : if you want to create a driver for an unsupported platform (e.g. vxworks), check the serial protocol reference in the @ref enAppendixGuide "appendix".
-- <b>Kobuki Platforms</b>
- - <i>Turtlebot</i> : refer to the documentation for <a href="http://ros.org/wiki/turtlebot">turtlebot</a>.
- - <i>Ros on Kobuki</i> : refer to the documentation for the <a href="http://ros.org/wiki/kobuki">kobuki node</a>.
- - <i>Other</i> : if you would like your platform listed here, contact the maintainers of this project.
+- <i>Turtlebot</i> : refer to the documentation for <a href="http://ros.org/wiki/turtlebot">turtlebot</a>.
+- <i>Ros on Kobuki</i> : refer to the documentation for the <a href="http://ros.org/wiki/kobuki">kobuki node</a>.
+- <i>Other</i> : if you would like your platform listed here, contact the maintainers of this project.
 
 @subsection design Design
 
