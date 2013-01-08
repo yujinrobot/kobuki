@@ -151,7 +151,7 @@ private:
   bool is_connected;
 
   /*********************
-  ** Gate Keeper / High Acceleration Smoother / Limiter
+  ** Acceleration Limiter
   **********************/
   AccelerationLimiter acceleration_limiter;
 
@@ -166,7 +166,7 @@ private:
   GpInput gp_input;
   Hardware hardware; // requestable
   Firmware firmware; // requestable
-  UniqueDeviceID unique_device_id;
+  UniqueDeviceID unique_device_id; // requestable
   ThreeAxisGyro three_axis_gyro;
 
   ecl::Serial serial;
