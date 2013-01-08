@@ -37,27 +37,30 @@ class Parameters
 {
 public:
   Parameters() :
+    device_port("/dev/kobuki"),
+    sigslots_namespace("/kobuki"),
     simulation(false),
-    enable_gate_keeper(true),
+    enable_acceleration_limiter(true),
     battery_capacity(Battery::capacity),
     battery_low(Battery::low),
     battery_dangerous(Battery::dangerous)
   {
-  }
+  } /**< @brief Default constructor. **/
 
-  std::string device_port;         /**< For the serial device, a port (e.g. "/dev/ttyUSB0") **/
-  std::string sigslots_namespace;  /**< this should match the kobuki-node namespace **/
-  bool simulation;                 /**< whether to put the motors in loopback mode or not **/
-  bool enable_gate_keeper;
-  double battery_capacity;         /**< Capacity voltage of the battery **/
-  double battery_low;              /**< Low level warning for battery level. **/
-  double battery_dangerous;        /**< Battery in imminent danger of running out. **/
+  std::string device_port;         /**< @brief The serial device port name [/dev/kobuki] **/
+  std::string sigslots_namespace;  /**< @brief The first part of a sigslot connection namespace ["/kobuki"] **/
+  bool simulation;                 /**< @brief Whether to put the motors in loopback mode or not [false] **/
+  bool enable_acceleration_limiter;/**< @brief Enable or disable the acceleration limiter [true] **/
+  double battery_capacity;         /**< @brief Capacity voltage of the battery [16.5V] **/ /* defaults defined in battery.cpp */
+  double battery_low;              /**< @brief Threshold for battery level warnings [14.0V] **/  /* defaults defined in battery.cpp */
+  double battery_dangerous;        /**< @brief Threshold for battery level in danger of depletion [13.2V] **/  /* defaults defined in battery.cpp */
 
 
   /**
-   * @brief This is a very rough validator for input configurations.
+   * @brief A validator to ensure the user has supplied correct/sensible parameter values.
    *
    * This validates the current parameters and if invalid, puts an error string in error_msg.
+   *
    * @return bool : true if valid, false otherwise.
    */
   bool validate()
@@ -66,7 +69,7 @@ public:
     return true;
   }
 
-  std::string error_msg;
+  std::string error_msg; /**< @brief Provides error messages when parameter validation fails (internal purposes only) **/
 };
 
 } // namespace kobuki

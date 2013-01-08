@@ -16,27 +16,27 @@ namespace for each is separated into two parts - the first is the namespace spec
 the sigslots_namespace variable in the kobuki::Parameter strucutre. The second
 uniquely identifies the signal itself. 
 
-The following represent the available signals when namespaced under "/mobile_robot". 
+The following represent the available signals when namespaced under "/kobuki" (default). 
 
-- void : /mobile_base/stream_data : informs when a new data packet has arrived from the kobuki
-- std::string : /mobile_base/ros_debug : relay debug messages
-- std::string : /mobile_base/ros_info : relay info messages
-- std::string : /mobile_base/ros_warn : relay warning messages
-- std::string : /mobile_base/ros_error : relay error messages
-- kobuki::ButtonEvent : /mobile_base/button_event : receive an event when a button state changes
-- kobuki::BumperEvent : /mobile_base/bumper_event : receive an event when the bumper state changes
-- kobuki::CliffEvent : /mobile_base/cliff_event : receive an event when a cliff sensor state changes
-- kobuki::WheelEvent: /mobile_base/wheel_event : receive an event when the wheel state (in/out) changes
-- kobuki::PowerEvent : /mobile_base/power_event : receive an event when the power/charging state changes
-- kobuki::InputEvent : /mobile_base/input_event : receive an event when the gpio state changes
-- kobuki::RobotEvent : /mobile_base/robot_event : receive an event when the robot state changes
-- kobuki::VersionInfo : /mobile_base/version_info : receive version info strings on this signal
+- void : /kobuki/stream_data : informs when a new data packet has arrived from the kobuki
+- std::string : /kobuki/ros_debug : relay debug messages
+- std::string : /kobuki/ros_info : relay info messages
+- std::string : /kobuki/ros_warn : relay warning messages
+- std::string : /kobuki/ros_error : relay error messages
+- kobuki::ButtonEvent : /kobuki/button_event : receive an event when a button state changes
+- kobuki::BumperEvent : /kobuki/bumper_event : receive an event when the bumper state changes
+- kobuki::CliffEvent : /kobuki/cliff_event : receive an event when a cliff sensor state changes
+- kobuki::WheelEvent: /kobuki/wheel_event : receive an event when the wheel state (in/out) changes
+- kobuki::PowerEvent : /kobuki/power_event : receive an event when the power/charging state changes
+- kobuki::InputEvent : /kobuki/input_event : receive an event when the gpio state changes
+- kobuki::RobotEvent : /kobuki/robot_event : receive an event when the robot state changes
+- kobuki::VersionInfo : /kobuki/version_info : receive version info strings on this signal
 
 It does not establish any slots.
 
 @section exampleSigSlots Usage
 
-The <i>/mobile_base/stream_data</i> is the most important slot. The kobuki sends a single long data packet
+The <i>/kobuki/stream_data</i> is the most important slot. The kobuki sends a single long data packet
 periodically and when this is received, it emits a signal informing you that it has arrived and is
 ready to be processed. At this point, you can quiz the kobuki driver for the state (
 @ref kobuki::Kobuki::getCoreSensorData) which returns a @ref kobuki::CoreSensors::Data structure
@@ -59,10 +59,10 @@ public:
       slot_stream_data(&KobukiManager::processStreamData, *this) // establish the callback
   {
     kobuki::Parameters parameters;
-    parameters.sigslots_namespace = "/mobile_base"; // configure the first part of the sigslot namespace
+    parameters.sigslots_namespace = "/kobuki"; // configure the first part of the sigslot namespace
     parameters.device_port = "/dev/kobuki";         // the serial port to connect to (windows COM1..)
     kobuki.init(parameters);
-    slot_stream_data.connect("/mobile_base/stream_data");
+    slot_stream_data.connect("/kobuki/stream_data");
   }
 
   void spin() {
@@ -128,31 +128,31 @@ Depending on your sigslot connection configuration, you should see something lik
 @code
 ========== Void ==========
 Topics
-  Name: /mobile_base/stream_data
+  Name: /kobuki/stream_data
     # Subscribers: 1
     # Publishers : 1
 ========= String =========
 Topics
-  Name: /mobile_base/ros_debug
+  Name: /kobuki/ros_debug
     # Subscribers: 1
     # Publishers : 1
-  Name: /mobile_base/ros_error
+  Name: /kobuki/ros_error
     # Subscribers: 1
     # Publishers : 2
-  Name: /mobile_base/ros_info
+  Name: /kobuki/ros_info
     # Subscribers: 1
     # Publishers : 1
-  Name: /mobile_base/ros_warn
+  Name: /kobuki/ros_warn
     # Subscribers: 1
     # Publishers : 2
 ====== Button Event ======
 Topics
-  Name: /mobile_base/button_event
+  Name: /kobuki/button_event
     # Subscribers: 1
     # Publishers : 1
 ====== Bumper Event ======
 Topics
-  Name: /mobile_base/bumper_event
+  Name: /kobuki/bumper_event
     # Subscribers: 1
     # Publishers : 1
 ...

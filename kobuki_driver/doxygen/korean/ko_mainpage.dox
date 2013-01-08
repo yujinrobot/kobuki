@@ -10,12 +10,10 @@ Todo: This section should provide a basic overview of what the kobuki driver is,
 - @ref koInstallationLinuxGuide "Installation (Linux)"
 - @ref koInstallationWindowsGuide "Installation (Windows)"
 - @ref koInstallationAppleGuide "Installation (Apple)"
+- @ref koFtdiGuide "Ftdi Serial Device"
 - @ref koGettingStartedGuide "Getting Started"
 - @ref koSigslotsGuide "Sigslots"
-- @ref koFtdiGuide "Ftdi Serial Device"
 - @ref koSimpleExample "Simple Control Loop Example"
 - @ref koEmbeddedBoardTutorial "Embedded Board Tutorial"
 - @ref koAppendixGuide "Appendix"
-
-
 */

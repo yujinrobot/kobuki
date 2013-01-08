@@ -116,7 +116,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   packet_finder.configure(sigslots_namespace, stx, etx, 1, 256, 1, true);
 
   diff_drive.init();
-  gate_keeper.init(parameters.enable_gate_keeper);
+  acceleration_limiter.init(parameters.enable_acceleration_limiter);
 
   // in case the user changed these from the defaults
   Battery::capacity = parameters.battery_capacity;
@@ -396,6 +396,17 @@ void Kobuki::getWheelJointStates(double &wheel_left_angle, double &wheel_left_an
   diff_drive.getWheelJointStates(wheel_left_angle, wheel_left_angle_rate, wheel_right_angle, wheel_right_angle_rate);
 }
 
+/**
+ * @brief Use the current sensor data (encoders and gyro) to calculate an update for the odometry.
+ *
+ * This fuses current sensor data with the last updated odometry state to produce the new
+ * odometry state. This will be usually done in the slot callback to the stream_data signal.
+ *
+ * It is important that this is called every time a data packet is received from the robot.
+ *
+ * @param pose_update : return the pose updates in this variable.
+ * @param pose_update_rates : return the pose update rates in this variable.
+ */
 void Kobuki::updateOdometry(ecl::Pose2D<double> &pose_update, ecl::linear_algebra::Vector3d &pose_update_rates)
 {
   diff_drive.update(core_sensors.data.time_stamp, core_sensors.data.left_encoder, core_sensors.data.right_encoder,
@@ -437,7 +448,7 @@ void Kobuki::setBaseControl(const double &linear_velocity, const double &angular
 void Kobuki::sendBaseControlCommand()
 {
   std::vector<short> velocity_commands = diff_drive.velocityCommands();
-  gate_keeper.confirm(velocity_commands[0], velocity_commands[1]);
+  acceleration_limiter.confirm(velocity_commands[0], velocity_commands[1]);
   //std::cout << "speed: " << velocity_commands[0] << ", radius: " << velocity_commands[1] << std::endl;
   sendCommand(Command::SetVelocityControl(velocity_commands[0], velocity_commands[1]));
 }

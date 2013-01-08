@@ -1,5 +1,5 @@
 /**
- * @file /kobuki_driver/include/kobuki_driver/modules/gate_keeper.hpp
+ * @file /kobuki_driver/include/kobuki_driver/modules/acceleration_limiter.hpp
  *
  * @brief Simple module for the diff drive odometry.
  *
@@ -10,8 +10,8 @@
 ** Ifdefs
 *****************************************************************************/
 
-#ifndef KOBUKI_GATE_KEEPER_HPP_
-#define KOBUKI_GATE_KEEPER_HPP_
+#ifndef KOBUKI_ACCELERATION_LIMITER_HPP_
+#define KOBUKI_ACCELERATION_LIMITER_HPP_
 
 /*****************************************************************************
 ** Includes
@@ -30,14 +30,35 @@ namespace kobuki {
 ** Interfaces
 *****************************************************************************/
 
-class GateKeeper {
+/**
+ * @brief An acceleration limiter for the kobuki.
+ *
+ * This class will check incoming velocity commands and limit them if
+ * the change since the last incoming command is great.
+ *
+ * Right now, this hasn't got any configurable parameters for the user -
+ * that might be an option to provide for users in the future. Ideally
+ *
+ * - User can disable this and do their own velocity smoothing outside.
+ * - User can enable this with defaults (fairly high accelerations)
+ * - (Later) User can enable this reconfigure a parameter to suit.
+ */
+class AccelerationLimiter {
 public:
-  GateKeeper() :
+  AccelerationLimiter() :
     is_enabled(true),
     last_speed(0), 
     last_timestamp(ecl::TimeStamp())
   {}
-  void init(bool enable_gate_keeper){ is_enabled = enable_gate_keeper; }
+  void init(bool enable_acceleration_limiter){ is_enabled = enable_acceleration_limiter; }
+  /**
+   * @brief Limits the input velocity commands if gatekeeper is enabled.
+   *
+   * What is the limit?
+   *
+   * @param speed : ..
+   * @param radius : ..
+   */
   void confirm(short &speed, short &radius) // or smoother, limiter, etc
   {
     if( is_enabled )
@@ -58,7 +79,7 @@ public:
 
       if( std::abs(acceleration) > 20.0 ) // 20mm/s^2 ?
       { 
-        if( std::abs(speed - last_speed) > 8 ) 
+        if( std::abs(speed - last_speed) > 8 ) // this might have been experimentally determined, possibly becoming incorrect if the kobuki update rate changes.
         {
           speed = last_speed + 8 * (short)(acceleration / std::abs(acceleration));
         }
@@ -89,4 +110,4 @@ private:
 
 } // namespace kobuki
 
-#endif /* KOBUKI_GATE_KEEPER_HPP_ */
+#endif /* KOBUKI_ACCELERATION_LIMITER__HPP_ */

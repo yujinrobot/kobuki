@@ -153,7 +153,7 @@ private:
   /*********************
   ** Gate Keeper / High Acceleration Smoother / Limiter
   **********************/
-  GateKeeper gate_keeper;
+  AccelerationLimiter acceleration_limiter;
 
   /*********************
   ** Packet Handling
