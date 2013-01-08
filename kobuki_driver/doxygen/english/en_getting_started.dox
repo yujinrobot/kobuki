@@ -15,7 +15,7 @@ is passed to the kobuki instance via the @ref kobuki::Kobuki::init "kobuki::Kobu
 parameters to be configured have sane defaults. The only one that requires frequent configuration is 
 typically the serial @ref kobuki::Parameters::device_port "device_port". Note that on some systems you 
 can configure a rule (refer to the @ref enFtdiGuide "ftdi serial device guide") for the device port, 
-otherwise you will require one of the usual COM1 or /dev/ttyUSB0 values for 
+otherwise you will require one of the usual COM1 or /dev/ttyUSB0 values.
 
 @code
 #include <iostream>

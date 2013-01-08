@@ -1,7 +1,8 @@
 /**
  * @file /include/kobuki_driver/packets/unique_device_id.hpp
- *
+ * @author Younghun Ju <younghoon.ju@rnd.yujinrobot.com> <yhju83@gmail.com>
  * @brief Module for handling of unique device id request packet payloads.
+ * @date November 2012
  *
  * License: BSD
  *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE

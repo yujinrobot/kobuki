@@ -1,7 +1,7 @@
 /**
  * @file /kobuki_driver/include/kobuki_driver/modules/acceleration_limiter.hpp
  *
- * @brief Simple module for the diff drive odometry.
+ * @brief Simple module for the velocity smoothing.
  *
  * License: BSD
  *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE
