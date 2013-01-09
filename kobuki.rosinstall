@@ -15,6 +15,7 @@
 #   sudo apt-get install ros-groovy-nodelet ros-groovy-robot-state-publisher ros-groovy-dynamic-reconfigure
 #
 # Gazebo
+#   sudo apt-get install ros-groovy-simulator-gazebo
 #   sudo apt-get install libprotobuf-dev libprotoc-dev libtar-dev
 #
 ##############################################################################
