@@ -28,3 +28,6 @@ target_link_libraries(reset_device usb)
 
 rosbuild_add_executable(overwrite_serial_number overwrite_serial_number.cpp)
 target_link_libraries(overwrite_serial_number usb ftdi)
+
+rosbuild_add_executable(unflasher unflasher.cpp)
+target_link_libraries(unflasher usb ftdi)
