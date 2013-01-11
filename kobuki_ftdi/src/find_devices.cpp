@@ -1,37 +1,28 @@
+/**
+ * @file src/find_devices.cpp
+ *
+ * @brief Detect the presence of FTDI devices.
+ *
+ * If any FTDI device is detected this program will exit with 0.
+ * Or not, exit with -1.
+ *
+ * find_devices does not need to run with root privileges.
+ *
+ * <b>License:</b> BSD https://raw.github.com/yujinrobot/kobuki/master/kobuki_node/LICENSE
+ *
+ **/
 #include <iostream>
-#include <vector>
-#include <usb.h>
 
-std::vector<struct usb_device *> find_devices(uint16_t vendor, uint16_t product)
-{
-  struct usb_bus *bus;
-  struct usb_device *dev;
-  struct usb_bus *busses;
-  std::vector<struct usb_device *> ret_vec;
-
-  usb_init();
-  usb_find_busses();
-  usb_find_devices();
-  busses = usb_get_busses();
-
-  for (bus = busses; bus; bus = bus->next)
-    for (dev = bus->devices; dev; dev = dev->next)
-      if ((dev->descriptor.idVendor == vendor) && (dev->descriptor.idProduct == product))
-        ret_vec.push_back(dev);
-
-  return ret_vec;
-}
+#include "kobuki_ftdi/scanner.hpp"
 
 int main(int argc, char** argv)
 {
-  std::vector<struct usb_device *> devices;
-
-  devices = find_devices(0x0403,0x6001);
-  if (devices.empty()) {
+  FTDI_Scanner scanner;
+  int no_devices = scanner.scan();
+  if (no_devices < 0) {
     std::cout << "not found!!!" << std::endl;
     return -1;
   }
-
-  std::cout << devices.size() << " device(s) found." << std::endl;
+  std::cout << no_devices << " device(s) found." << std::endl;
   return 0;
 }

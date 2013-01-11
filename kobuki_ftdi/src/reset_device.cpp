@@ -1,49 +1,27 @@
+/**
+ * @file src/reset_device.cpp
+ *
+ * @brief Reset the all FTDI devices connected to load it again as standard tty device. After the flashing serial number.
+ *
+ * <b>License:</b> BSD https://raw.github.com/yujinrobot/kobuki/master/kobuki_node/LICENSE
+ *
+ **/
 #include <iostream>
-#include <usb.h>
 
-static struct usb_device *find_devices(uint16_t vendor, uint16_t product)
-{
-  struct usb_bus *bus;
-  struct usb_device *dev;
-  struct usb_bus *busses;
-
-  usb_init();
-  usb_find_busses();
-  usb_find_devices();
-  busses = usb_get_busses();
-
-  for (bus = busses; bus; bus = bus->next)
-    for (dev = bus->devices; dev; dev = dev->next)
-      if ((dev->descriptor.idVendor == vendor) && (dev->descriptor.idProduct == product))
-        return dev;
-
-  return NULL;
-}
+#include "kobuki_ftdi/scanner.hpp"
 
 int main(int argc, char** argv)
 {
-  std::cout << "hello world." << std::endl;
+  int ret_val;
+  FTDI_Scanner scanner;
 
-  struct usb_device *dev;
-  dev = find_devices(0x0403,0x6001);
-
-  if( dev == NULL ) {
-    std::cout << "there are no devices to reset." << std::endl;
-    return -1;
-  }
-  std::cout << "found!!!" << std::endl;
-
-  usb_dev_handle *h = usb_open(dev);
-  if( h < 0 ) {
-    std::cout << "failed to open usb device. do it again with sudo." << std::endl;
+  if ( scanner.scan() < 0 ) {
+    std::cerr << "Failed to find devices to reset." << std::endl;
     return -1;
   }
 
-  int ret_val = usb_reset( h );
-  if( ret_val < 0 ) {
-    std::cout << ret_val << ": something is going wrong." << std::endl;
-    return -1;
-  }
-
-  return 0;
+  ret_val = scanner.reset();
+  if ( ret_val < 0 && ret_val != -19 )
+    std::cerr << "Failed to reeset devices." << std::endl;
+  return ret_val;
 }

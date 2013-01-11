@@ -1,76 +1,51 @@
+/**
+ * @file src/get_serial_number.cpp
+ *
+ * @brief Print serial number of all the FTDI devices connected. With name of manufacture and product.
+ *
+ * It will not hurt any current connection.
+ *
+ * <b>License:</b> BSD https://raw.github.com/yujinrobot/kobuki/master/kobuki_node/LICENSE
+ *
+*/
 #include <iostream>
-#include <vector>
-#include <usb.h>
 
-std::vector<struct usb_device *> find_devices(uint16_t vendor, uint16_t product)
-{
-  struct usb_bus *bus;
-  struct usb_device *dev;
-  struct usb_bus *busses;
-  std::vector<struct usb_device *> ret_vec;
-
-  usb_init();
-  usb_find_busses();
-  usb_find_devices();
-  busses = usb_get_busses();
-
-  for (bus = busses; bus; bus = bus->next)
-    for (dev = bus->devices; dev; dev = dev->next)
-      if ((dev->descriptor.idVendor == vendor) && (dev->descriptor.idProduct == product))
-        ret_vec.push_back(dev);
-
-  return ret_vec;
-}
+#include "kobuki_ftdi/scanner.hpp"
 
 int main(int argc, char** argv)
 {
-  std::vector<struct usb_device *> devices;
+  int ret_val;
+  FTDI_Scanner scanner;
 
-  devices = find_devices(0x0403,0x6001);
-  if (devices.empty()) {
-    std::cout << "not found!!!" << std::endl;
+  ret_val = scanner.scan();
+  if (ret_val <= 0) {
+    std::cout << "FTDI device not found!!!" << std::endl;
     return -1;
   }
-  std::cout << devices.size() << " device(s) found." << std::endl;
 
-  int ret_val=0;
-  for( unsigned int i=0; i<devices.size(); i++ ) 
+  unsigned int no_devices = (unsigned int)ret_val;
+  std::cout << no_devices << " device(s) found." << std::endl;
+
+  std::string serial_number, manufacturer, product;
+  for( unsigned int i=0; i<no_devices; i++ )
   {
+    ret_val = scanner.get_serial_id(i, serial_number);
+    if (ret_val < 0) break;
+
+    ret_val = scanner.get_manufacturer(i, manufacturer);
+    if (ret_val < 0) break;
+
+    ret_val = scanner.get_product(i, product);
+    if (ret_val < 0) break;
+
     std::cout << std::endl;
-    std::cout << "Device #" << i  << std::endl;
+    std::cout << "Device #" << i << std::endl;
+    std::cout << "  Manufacturer : " << manufacturer << std::endl;
+    std::cout << "  Product      : " << product << std::endl;
+    std::cout << "  Serial Number: " << serial_number << std::endl;
+    ret_val = 0;
+  }
 
-    struct usb_device *dev = devices[i];
-    usb_dev_handle *h = usb_open(dev);
-    if( h < 0 ) {
-      std::cerr << "failed to open usb device." << std::endl;
-      std::cerr << "do with sudo." << std::endl;
-    }
-  
-    char buff[128];
-    int n;
-    n = usb_get_string_simple(h, dev->descriptor.iManufacturer, buff, 128);
-    if (n < 0) {
-      std::cerr << "something is going wrong. do it again with sudo." << std::endl;
-      ret_val = -1;
-      continue;
-    }
-    std::cout << "  Manufacturer : " << std::string(buff) << std::endl;
-  
-    n = usb_get_string_simple(h, dev->descriptor.iProduct, buff, 128);
-    if (n < 0) {
-      std::cerr << "something is going wrong. do it again with sudo." << std::endl;
-      ret_val = -1;
-      continue;
-    }
-    std::cout << "  Product      : " << std::string(buff) << std::endl;
-
-    n = usb_get_string_simple(h, dev->descriptor.iSerialNumber, buff, 128);
-    if (n < 0) { 
-      std::cerr << "something is going wrong. do it again with sudo." << std::endl;
-      ret_val = -1;
-      continue;
-    }
-    std::cout << "  Serial Number: " << std::string(buff) << std::endl;
-  } 
+  if (ret_val < 0) std::cerr << "Something went wrong. Did you run with sudo." << std::endl;
   return ret_val;
-}  
+}
