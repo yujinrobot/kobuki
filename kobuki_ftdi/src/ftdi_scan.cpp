@@ -30,6 +30,9 @@
  * @file src/ftdi_scan.cpp
  *
  * @brief Scan existing ftdi chips and print out their serial id strings.
+ *
+ * <b>License:</b> BSD https://raw.github.com/yujinrobot/kobuki/master/kobuki_node/LICENSE
+ *
  **/
 
 /*****************************************************************************

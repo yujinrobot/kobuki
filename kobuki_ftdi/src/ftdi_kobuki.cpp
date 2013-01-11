@@ -35,8 +35,9 @@
  * Note that it makes an eeprom.backup binary for you just in case things
  * go wrong - when this happens, simply call:
  *
- * ./ftdi_write_eeprom -f eeprom.backup
- *
+ * @code
+ * $ sudo ./bin/ftdi_write_eeprom -f eeprom.backup
+ * @endcode
  * to restore.
  *
  * What does this program actually do?
@@ -47,6 +48,9 @@
  * - converts the serial, manufacture and product strings
  * - builds the eeprom binary from this
  * - flashes the eeprom binary to the device
+ *
+ * <b>License:</b> BSD https://raw.github.com/yujinrobot/kobuki/master/kobuki_node/LICENSE
+ *
  **/
 
 /*****************************************************************************

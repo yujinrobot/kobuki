@@ -32,6 +32,9 @@
  * @brief Reads an eeprom binary saved as a file and write this to the chip.
  * Use this to rewrite good eeprom binaries (or our saved eeproms/eeprom.original)
  * when you've mangled one.
+ *
+ * <b>License:</b> BSD https://raw.github.com/yujinrobot/kobuki/master/kobuki_node/LICENSE
+ *
  **/
 
 /*****************************************************************************
