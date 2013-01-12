@@ -28,22 +28,15 @@ namespace kobuki {
 
 class Header {
 public:
+  enum PayloadType {
   // Streamed payloads
-  static const unsigned char CoreSensors = 1;
-  static const unsigned char DockInfraRed = 3;
-  static const unsigned char Inertia = 4;
-  static const unsigned char Cliff = 5;
-  static const unsigned char Current = 6;
+  CoreSensors = 1, DockInfraRed = 3, Inertia = 4, Cliff = 5, Current = 6,
 
   // Service Payloads
-  static const unsigned char Hardware = 10;
-  static const unsigned char Firmware = 11;
-  static const unsigned char ThreeAxisGyro = 13;
-  static const unsigned char Eeprom = 15;
-  static const unsigned char GpInput = 16;
+  Hardware = 10, Firmware = 11, ThreeAxisGyro = 13, Eeprom = 15, GpInput = 16,
 
-  static const unsigned char UniqueDeviceID = 19;
-  static const unsigned char Reserved = 20;
+  UniqueDeviceID = 19, Reserved = 20
+  };
 };
 
 } // namespace kobuki
