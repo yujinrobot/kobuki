@@ -9,6 +9,7 @@
 #   sudo apt-get install ros-groovy-ros ros-groovy-ros-comm ros-groovy-common-msgs 
 #   sudo apt-get install ros-groovy-geometry ros-groovy-diagnostics ros-groovy-perception-pcl 
 #   sudo apt-get install ros-groovy-nodelet-core ros-groovy-robot-model ros-groovy-xacro
+#   sudo apt-get install ros-groovy-actionlib
 #
 # Desktop Stacks (Needs checking)
 #   sudo apt-get install ros-groovy-geometry-msgs ros-groovy-sensor-msgs ros-groovy-nav-msgs ros-groovy-tf ros-groovy-rviz
