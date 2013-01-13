@@ -12,7 +12,8 @@
 #   sudo apt-get install ros-groovy-actionlib
 #
 # Desktop Stacks (Needs checking)
-#   sudo apt-get install ros-groovy-geometry-msgs ros-groovy-sensor-msgs ros-groovy-nav-msgs ros-groovy-tf ros-groovy-rviz
+#   sudo apt-get install ros-groovy-geometry-msgs ros-groovy-sensor-msgs ros-groovy-nav-msgs 
+#   sudo apt-get install ros-groovy-tf ros-groovy-rviz ros-groovy-qt-gui-core
 #   sudo apt-get install ros-groovy-nodelet ros-groovy-robot-state-publisher ros-groovy-dynamic-reconfigure
 #
 # Gazebo
