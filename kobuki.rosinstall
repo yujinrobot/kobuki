@@ -6,10 +6,13 @@
 #   sudo apt-get install python-rosdep python-rosinstall python-rospkg
 #
 # Basic Kobuki
-#   sudo apt-get install ros-groovy-ros ros-groovy-ros-comm ros-groovy-common-msgs 
-#   sudo apt-get install ros-groovy-geometry ros-groovy-diagnostics ros-groovy-perception-pcl 
+#   sudo apt-get install ros-groovy-ros ros-groovy-ros-comm ros-groovy-common-msgs
+#   sudo apt-get install ros-groovy-geometry ros-groovy-diagnostics ros-groovy-perception-pcl
 #   sudo apt-get install ros-groovy-nodelet-core ros-groovy-robot-model ros-groovy-xacro
-#   sudo apt-get install ros-groovy-actionlib 
+#   sudo apt-get install ros-groovy-ecl-license ros-groovy-ecl-build ros-groovy-ecl-streams
+#   sudo apt-get install ros-groovy-ecl-threads ros-groovy-ecl-devices ros-groovy-ecl-mobile-robot
+#   sudo apt-get install ros-groovy-ecl-command-line ros-groovy-ecl-sigslots
+#   sudo apt-get install ros-groovy-actionlib
 #
 # Desktop Stacks (Needs checking)
 #   sudo apt-get install ros-groovy-geometry-msgs ros-groovy-sensor-msgs ros-groovy-nav-msgs 
