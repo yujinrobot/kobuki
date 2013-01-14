@@ -10,3 +10,6 @@ target_link_libraries(demo_initialisation kobuki)
 
 rosbuild_add_executable(demo_sigslots sigslots.cpp)
 target_link_libraries(demo_sigslots kobuki)
+
+rosbuild_add_executable(demo_simple_loop simple_loop.cpp)
+target_link_libraries(demo_simple_loop kobuki)
