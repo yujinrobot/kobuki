@@ -12,14 +12,18 @@
 
 #include <ecl/time.hpp>
 #include <ecl/sigslots.hpp>
+#include <ecl/geometry/pose2d.hpp>
+#include <ecl/linear_algebra.hpp>
 #include "kobuki_driver/kobuki.hpp"
+
+/*****************************************************************************
+** Classes
+*****************************************************************************/
 
 class KobukiManager {
 public:
   KobukiManager() :
-    x(0.0), y(0.0), th(0.0),
     dx(0.0), dth(0.0),
-    vx(0.0), wz(0.0),
     slot_stream_data(&KobukiManager::processStreamData, *this) // establish the callback
   {
     kobuki::Parameters parameters;
@@ -31,37 +35,31 @@ public:
   }
 
   void processStreamData() {
-    kobuki::CoreSensors::Data data = kobuki.getCoreSensorData();
-    std::cout << "Encoders [" <<  data.left_encoder << "," << data.right_encoder << "]" << std::endl;
+    ecl::Pose2D<double> pose_update;
+    ecl::linear_algebra::Vector3d pose_update_rates;
+    kobuki.updateOdometry(pose_update, pose_update_rates);
+    dx += pose_update.x();
+    dth += pose_update.heading();
 
-    updateOdometry(data.left_encoder, data.right_encoder);
     processMotion();
-    commandMotion();
-  }
-
-  void updateOdometry(double left, double right) {
-    ;
   }
 
   void processMotion() {
-    if (dx > 1.0 && dth > 3.141592) { dx=0.0; dth=0.0; vx=0.3, wz=0.0; return; }
-    else if (dx >1.0) { vx=0.0, wz=0.3; return; }
-    else { vx=0.3, wz=0.0; return; }
-  }
-
-  void commandMotion() {
-    kobuki.setBaseControl(vx, wz);
+    if (dx > 1.0 && dth > 3.141592) { dx=0.0; dth=0.0; kobuki.setBaseControl(0.3, 0.0); return; }
+    else if (dx > 1.0) { kobuki.setBaseControl(0.0, 0.3); return; }
+    else { kobuki.setBaseControl(0.3, 0.0); return; }
   }
 
 private:
-  double x, y, th;
   double dx, dth;
-  double vx, wz;
-
   kobuki::Kobuki kobuki;
   ecl::Slot<> slot_stream_data;
 };
 
+
+/*****************************************************************************
+** Main
+*****************************************************************************/
 
 int main(int arcc, char** argv)
 {
