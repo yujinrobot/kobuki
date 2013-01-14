@@ -29,8 +29,10 @@ public:
     kobuki::Parameters parameters;
     parameters.sigslots_namespace = "/mobile_base"; // configure the first part of the sigslot namespace
     parameters.device_port = "/dev/kobuki";         // the serial port to connect to (windows COM1..)
+    parameters.enable_acceleration_limiter = false;
     // configure other parameters here
     kobuki.init(parameters);
+    kobuki.enable();
     slot_stream_data.connect("/mobile_base/stream_data");
   }
 
@@ -40,13 +42,13 @@ public:
     kobuki.updateOdometry(pose_update, pose_update_rates);
     dx += pose_update.x();
     dth += pose_update.heading();
-
+    //std::cout << dx << ", " << dth << std::endl;
     processMotion();
   }
 
   void processMotion() {
-    if (dx > 1.0 && dth > 3.141592) { dx=0.0; dth=0.0; kobuki.setBaseControl(0.3, 0.0); return; }
-    else if (dx > 1.0) { kobuki.setBaseControl(0.0, 0.3); return; }
+    if (dx > 1.0 && dth > 3.141592/2.0) { dx=0.0; dth=0.0; kobuki.setBaseControl(0.0, 0.0); return; }
+    else if (dx > 1.0) { kobuki.setBaseControl(0.0, 1.66); return; }
     else { kobuki.setBaseControl(0.3, 0.0); return; }
   }
 
@@ -64,12 +66,13 @@ private:
 int main(int arcc, char** argv)
 {
   std::cout << "life is not a simple loop." << std::endl;
+  KobukiManager kobuki_manager;
 
   bool shutdown_req = false;
   ecl::Sleep sleep(1);
   while (!shutdown_req){
     sleep();
-    std::cout << "l" << std::endl;
+    //std::cout << "l" << std::endl;
     // do motion control
   }
   return 0;
