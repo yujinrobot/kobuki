@@ -4,7 +4,7 @@
       ROS wrapper for the Kobuki driver
     </p>
   </description>
-  <author>Daniel Stonier, Jorge Santos Simon, 주영훈, Marcus Liebhardt</author>
+  <author>Daniel Stonier, Jorge Santos Simon, Younghoon Ju, Marcus Liebhardt</author>
   <license>BSD</license>
   <review status="unstable" notes=""/>
   <url>http://www.ros.org/wiki/kobuki_node</url>
