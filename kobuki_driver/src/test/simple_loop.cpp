@@ -3,7 +3,7 @@
   *
   * @brief Example/test program with simple loop.
   *
-  * It provides simple example of how interact with kobuki.
+  * It provides simple example of how interact with kobuki by using c++ without ROS.
  **/
 
 /*****************************************************************************
@@ -38,26 +38,31 @@ public:
   }
   ~KobukiManager() {
     kobuki.setBaseControl(0,0);
+    kobuki.disable();
   }
 
   void processStreamData() {
     ecl::Pose2D<double> pose_update;
     ecl::linear_algebra::Vector3d pose_update_rates;
     kobuki.updateOdometry(pose_update, pose_update_rates);
+    pose *= pose_update;
     dx += pose_update.x();
     dth += pose_update.heading();
     //std::cout << dx << ", " << dth << std::endl;
+    //std::cout << kobuki.getHeading() << ", " << pose.heading() << std::endl;
+    std::cout << "[" << pose.x() << ", " << pose.y() << ", " << pose.heading() << "]" << std::endl;
     processMotion();
   }
 
   void processMotion() {
-    if (dx >= 1.0 && dth >= 3.141592/2.0) { dx=0.0; dth=0.0; kobuki.setBaseControl(0.0, 0.0); return; }
-    else if (dx >= 1.0) { kobuki.setBaseControl(0.0, 1.66); return; }
+    if (dx >= 1.0 && dth >= ecl::pi/2.0) { dx=0.0; dth=0.0; kobuki.setBaseControl(0.0, 0.0); return; }
+    else if (dx >= 1.0) { kobuki.setBaseControl(0.0, 3.3); return; }
     else { kobuki.setBaseControl(0.3, 0.0); return; }
   }
 
 private:
   double dx, dth;
+  ecl::Pose2D<double> pose;
   kobuki::Kobuki kobuki;
   ecl::Slot<> slot_stream_data;
 };
@@ -75,11 +80,11 @@ void signalHandler(int signum) {
 ** Main
 *****************************************************************************/
 
-int main(int arcc, char** argv)
+int main(int argc, char** argv)
 {
   signal(SIGINT, signalHandler);
 
-  std::cout << "life is not a simple loop.." << std::endl;
+  std::cout << "life is not a simple loop." << std::endl;
   KobukiManager kobuki_manager;
 
   while (!shutdown_req);
