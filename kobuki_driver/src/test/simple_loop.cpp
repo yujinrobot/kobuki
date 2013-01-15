@@ -10,6 +10,7 @@
  * Includes
  ****************************************************************************/
 
+#include <csignal>
 #include <ecl/time.hpp>
 #include <ecl/sigslots.hpp>
 #include <ecl/geometry/pose2d.hpp>
@@ -35,6 +36,9 @@ public:
     kobuki.enable();
     slot_stream_data.connect("/mobile_base/stream_data");
   }
+  ~KobukiManager() {
+    kobuki.setBaseControl(0,0);
+  }
 
   void processStreamData() {
     ecl::Pose2D<double> pose_update;
@@ -47,8 +51,8 @@ public:
   }
 
   void processMotion() {
-    if (dx > 1.0 && dth > 3.141592/2.0) { dx=0.0; dth=0.0; kobuki.setBaseControl(0.0, 0.0); return; }
-    else if (dx > 1.0) { kobuki.setBaseControl(0.0, 1.66); return; }
+    if (dx >= 1.0 && dth >= 3.141592/2.0) { dx=0.0; dth=0.0; kobuki.setBaseControl(0.0, 0.0); return; }
+    else if (dx >= 1.0) { kobuki.setBaseControl(0.0, 1.66); return; }
     else { kobuki.setBaseControl(0.3, 0.0); return; }
   }
 
@@ -58,6 +62,14 @@ private:
   ecl::Slot<> slot_stream_data;
 };
 
+/*****************************************************************************
+** Signal Handler
+*****************************************************************************/
+
+volatile bool shutdown_req = false;
+void signalHandler(int signum) {
+  shutdown_req = true;
+}
 
 /*****************************************************************************
 ** Main
@@ -65,15 +77,11 @@ private:
 
 int main(int arcc, char** argv)
 {
-  std::cout << "life is not a simple loop." << std::endl;
+  signal(SIGINT, signalHandler);
+
+  std::cout << "life is not a simple loop.." << std::endl;
   KobukiManager kobuki_manager;
 
-  bool shutdown_req = false;
-  ecl::Sleep sleep(1);
-  while (!shutdown_req){
-    sleep();
-    //std::cout << "l" << std::endl;
-    // do motion control
-  }
+  while (!shutdown_req);
   return 0;
 }
