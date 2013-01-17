@@ -13,3 +13,6 @@ target_link_libraries(demo_sigslots kobuki)
 
 rosbuild_add_executable(demo_simple_loop simple_loop.cpp)
 target_link_libraries(demo_simple_loop kobuki)
+
+rosbuild_add_executable(version_info version_info.cpp)
+target_link_libraries(version_info kobuki)
