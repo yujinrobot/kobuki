@@ -28,13 +28,13 @@ public:
     slot_stream_data(&KobukiManager::processStreamData, *this) // establish the callback
   {
     kobuki::Parameters parameters;
-    parameters.sigslots_namespace = "/mobile_base"; // configure the first part of the sigslot namespace
-    parameters.device_port = "/dev/kobuki";         // the serial port to connect to (windows COM1..)
+    parameters.sigslots_namespace = "/kobuki"; // configure the first part of the sigslot namespace
+    parameters.device_port = "/dev/kobuki";    // the serial port to connect to (windows COM1..)
     parameters.enable_acceleration_limiter = false;
     // configure other parameters here
     kobuki.init(parameters);
     kobuki.enable();
-    slot_stream_data.connect("/mobile_base/stream_data");
+    slot_stream_data.connect("/kobuki/stream_data");
   }
   ~KobukiManager() {
     kobuki.setBaseControl(0,0);
@@ -50,7 +50,7 @@ public:
     dth += pose_update.heading();
     //std::cout << dx << ", " << dth << std::endl;
     //std::cout << kobuki.getHeading() << ", " << pose.heading() << std::endl;
-    std::cout << "[" << pose.x() << ", " << pose.y() << ", " << pose.heading() << "]" << std::endl;
+    //std::cout << "[" << pose.x() << ", " << pose.y() << ", " << pose.heading() << "]" << std::endl;
     processMotion();
   }
 
@@ -58,6 +58,10 @@ public:
     if (dx >= 1.0 && dth >= ecl::pi/2.0) { dx=0.0; dth=0.0; kobuki.setBaseControl(0.0, 0.0); return; }
     else if (dx >= 1.0) { kobuki.setBaseControl(0.0, 3.3); return; }
     else { kobuki.setBaseControl(0.3, 0.0); return; }
+  }
+
+  ecl::Pose2D<double> getPose() {
+    return pose;
   }
 
 private:
@@ -71,7 +75,7 @@ private:
 ** Signal Handler
 *****************************************************************************/
 
-volatile bool shutdown_req = false;
+bool shutdown_req = false;
 void signalHandler(int signum) {
   shutdown_req = true;
 }
@@ -84,9 +88,15 @@ int main(int argc, char** argv)
 {
   signal(SIGINT, signalHandler);
 
-  std::cout << "life is not a simple loop." << std::endl;
+  std::cout << "Demo : Example of simple control loop." << std::endl;
   KobukiManager kobuki_manager;
 
-  while (!shutdown_req);
+  ecl::Sleep sleep(1);
+  ecl::Pose2D<double> pose;
+  while (!shutdown_req){
+    sleep();
+    pose = kobuki_manager.getPose();
+    std::cout << "current pose: [" << pose.x() << ", " << pose.y() << ", " << pose.heading() << "]" << std::endl;
+  }
   return 0;
 }
