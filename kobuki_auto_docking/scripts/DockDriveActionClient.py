@@ -32,7 +32,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-# Author: Younghun Ju <yhju@yujinrobot.com> <yhju83@gmail.com>
+# Author: Younghun Ju <younghoon.hju@rnd.yujinrobot.com> <yhju83@gmail.com>
 
 import roslib; roslib.load_manifest('kobuki_auto_docking')
 import rospy
@@ -53,13 +53,15 @@ def doneCb(status, result):
   elif status == GoalStatus.RECALLING : state='RECALLING'
   elif status == GoalStatus.RECALLED  : state='RECALLED'
   elif status == GoalStatus.LOST      : state='LOST'
-  print 'Result - [AS:' + state + ']: ' + result.text
+  # Print state of action server
+  print 'Result - [ActionServer: ' + state + ']: ' + result.text
 
 def activeCb():
   if 0: print 'Action server went active.'
 
 def feedbackCb(feedback):
-  print 'Feedback: [DD:' + feedback.state + ']: ' + feedback.text
+  # Print state of dock_drive module (or node.)
+  print 'Feedback: [DockDrive: ' + feedback.state + ']: ' + feedback.text
 
 def dock_drive_client():
   # add timeout setting
