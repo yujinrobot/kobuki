@@ -1,0 +1,8 @@
+<library path="lib/libkobuki_bumper2pc_nodelet">
+  <class name="kobuki_bumper2pc/Bumper2PcNodelet" type="kobuki_bumper2pc::Bumper2PcNodelet" base_class_type="nodelet::Nodelet">
+    <description>
+      Implementation for the bumper/cliff to pointcloud relay as a nodelet.
+    </description>
+  </class>
+</library>
+

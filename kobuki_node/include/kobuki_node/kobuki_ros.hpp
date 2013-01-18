@@ -50,8 +50,6 @@
 
 #include <ros/ros.h>
 #include <angles/angles.h>
-#include <pcl/point_types.h>
-#include <pcl_ros/point_cloud.h>
 #include <std_msgs/Empty.h>
 #include <std_msgs/String.h>
 #include <sensor_msgs/JointState.h>
@@ -99,8 +97,6 @@ private:
   Kobuki kobuki;
   sensor_msgs::JointState joint_states;
   Odometry odometry;
-  double bumper_pc_radius, side_bump_x_coord, side_bump_y_coord;
-  pcl::PointCloud<pcl::PointXYZ> bumper_pc;
   bool cmd_vel_timed_out_; // stops warning spam when cmd_vel flags as timed out more than once in a row
   bool serial_timed_out_; // stops warning spam when serial connection timed out more than once in a row
 
@@ -112,7 +108,6 @@ private:
   ros::Publisher button_event_publisher, input_event_publisher, robot_event_publisher;
   ros::Publisher bumper_event_publisher, cliff_event_publisher, wheel_event_publisher, power_event_publisher;
   ros::Publisher raw_data_command_publisher, raw_data_stream_publisher;
-  ros::Publisher bumper_as_pc_publisher;
 
   ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber, external_power_command_subscriber;
   ros::Subscriber led1_command_subscriber, led2_command_subscriber, sound_command_subscriber;

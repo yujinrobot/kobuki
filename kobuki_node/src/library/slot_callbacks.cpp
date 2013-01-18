@@ -93,22 +93,6 @@ void KobukiRos::publishSensorState()
 
       sensor_state_publisher.publish(state);
     }
-
-    if (bumper_as_pc_publisher.getNumSubscribers() > 0) {
-      uint8_t bumper = kobuki.getCoreSensorData().bumper;
-      bumper_pc.header.stamp = ros::Time::now();
-
-      // Republish bumper readings as pointcloud so navistack can use them for poor-man navigation
-      bumper_pc[1].x = (bumper & CoreSensors::Flags::CenterBumper) ? +  bumper_pc_radius : FLT_MAX;
-
-      bumper_pc[0].x = (bumper & CoreSensors::Flags::LeftBumper)   ? + side_bump_x_coord : FLT_MAX;
-      bumper_pc[2].x = (bumper & CoreSensors::Flags::RightBumper)  ? + side_bump_x_coord : FLT_MAX;
-
-      bumper_pc[0].y = (bumper & CoreSensors::Flags::LeftBumper)   ? + side_bump_y_coord : FLT_MAX;
-      bumper_pc[2].y = (bumper & CoreSensors::Flags::RightBumper)  ? - side_bump_y_coord : FLT_MAX;
-
-      bumper_as_pc_publisher.publish(bumper_pc);
-    }
   }
 }
 

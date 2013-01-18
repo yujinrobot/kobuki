@@ -17,8 +17,6 @@
   <depend package="std_msgs"/>
   <depend package="tf"/>
   <depend package="angles"/>
-  <!--<depend package="pcl"/>-->
-  <depend package="pcl_ros"/>
   <depend package="diagnostic_updater"/>
   <depend package="diagnostic_msgs"/>
   <depend package="nodelet"/>

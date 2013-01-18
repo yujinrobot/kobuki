@@ -233,27 +233,6 @@ bool KobukiRos::init(ros::NodeHandle& nh)
     return false;
   }
 
-  /*********************
-   ** Config bumper pc
-   **********************/
-
-  // Bumpers pointcloud distance to base frame; should be something like the sum of robot_radius,
-  // footprint_padding and resolution local costmap parameters. This is a bit tricky parameter:
-  // if it's too low, costmap will ignore this pointcloud, but if it's too big, hit obstacles will
-  // be mapped too far from the robot and the navigation around them will probably fail.
-  nh.param("bumper_pc_radius", bumper_pc_radius, 0.24);
-  side_bump_x_coord = bumper_pc_radius*sin(0.34906585); // 20 degrees
-  side_bump_y_coord = bumper_pc_radius*cos(0.34906585);
-
-  bumper_pc.resize(3);
-  bumper_pc.header.frame_id = "/base_link";
-
-  // bumper "points" fix coordinates (the others depend on whether the bumper is hit/released)
-  bumper_pc[0].x = bumper_pc[1].y = bumper_pc[2].x = 0.0;   // +π/2, 0 and -π/2 from x-axis
-  bumper_pc[0].z = bumper_pc[1].z = bumper_pc[2].z = 0.015; // z: elevation from base frame
-
-  ROS_DEBUG("Bumpers as pointcloud configured at distance %f from base frame", bumper_pc_radius);
-
   // kobuki.printSigSlotConnections();
   return true;
 }
@@ -337,7 +316,6 @@ void KobukiRos::advertiseTopics(ros::NodeHandle& nh)
   raw_imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("sensors/imu_data_raw", 100);
   raw_data_command_publisher = nh.advertise< std_msgs::String > ("debug/raw_data_command", 100);
   raw_data_stream_publisher = nh.advertise< std_msgs::String > ("debug/raw_data_stream", 100);
-  bumper_as_pc_publisher = nh.advertise < pcl::PointCloud<pcl::PointXYZ> > ("sensors/bump_pc", 100);
 }
 
 /**
