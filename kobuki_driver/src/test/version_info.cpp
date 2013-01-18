@@ -10,8 +10,6 @@
  * Includes
  ****************************************************************************/
 
-#include <string>
-#include <ecl/sigslots.hpp>
 #include "kobuki_driver/kobuki.hpp"
 
 /*****************************************************************************
@@ -27,11 +25,11 @@ public:
     kobuki::Parameters parameters;
     parameters.sigslots_namespace = "/kobuki"; // configure the first part of the sigslot namespace
     parameters.device_port = "/dev/kobuki";    // the serial port to connect to (windows COM1..)
-    // configure other parameters here
     kobuki.init(parameters);
     kobuki.enable();
     slot_version_info.connect("/kobuki/version_info");
   }
+
   ~KobukiManager() {
     kobuki.disable();
   }
@@ -40,9 +38,7 @@ public:
     hardware = kobuki::VersionInfo::toString(version_info.hardware);
     firmware = kobuki::VersionInfo::toString(version_info.firmware);
     software = kobuki::VersionInfo::toString(version_info.software);
-    std::stringstream oss;
-    oss << version_info.udid0 << "-" << version_info.udid1 << "-" << version_info.udid2;
-    udid = oss.str();
+    udid = kobuki::VersionInfo::toString(version_info.udid0, version_info.udid1, version_info.udid2);
     acquired = true;
   }
 
@@ -69,10 +65,10 @@ int main(int argc, char** argv)
   KobukiManager kobuki_manager;
 
   while (!kobuki_manager.isAcquired());
-  std::cout << " - Hardware version: " << kobuki_manager.getHardwareVersion() << std::endl;
-  std::cout << " - Firmware version: " << kobuki_manager.getFirmwareVersion() << std::endl;
-  std::cout << " - Software version: " << kobuki_manager.getSoftwareVersion() << std::endl;
-  std::cout << " - Unique Device ID: " << kobuki_manager.getUDID() << std::endl;
+  std::cout << " * Hardware Version: " << kobuki_manager.getHardwareVersion() << std::endl;
+  std::cout << " * Firmware Version: " << kobuki_manager.getFirmwareVersion() << std::endl;
+  std::cout << " * Software Version: " << kobuki_manager.getSoftwareVersion() << std::endl;
+  std::cout << " * Unique Device ID: " << kobuki_manager.getUDID() << std::endl;
 
   return 0;
 }
