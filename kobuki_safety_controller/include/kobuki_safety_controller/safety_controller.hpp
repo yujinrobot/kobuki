@@ -66,7 +66,9 @@ namespace kobuki
  * @ brief Keeps track of safety-related events and commands Kobuki to move accordingly
  *
  * The SafetyController keeps track of bumper, cliff and wheel drop events. In case of the first two,
- * Kobuki is commanded to move back. In the latter case, Kobuki is stopped.
+ * Kobuki is commanded to move back. In the latter case, Kobuki is stopped. All commands stop when the
+ * event condition disappears. In the case of lateral bump/cliff, robot also spins a bit, what makes
+ * easier to escape from the risk.
  *
  * This controller can be enabled/disabled.
  * The safety states (bumper pressed etc.) can be reset. WARNING: Dangerous!
@@ -78,10 +80,14 @@ public:
     Controller(),
     nh_(nh),
     name_(name),
-    bumper_pressed_(false),
-    cliff_detected_(false),
     wheel_left_dropped_(false),
-    wheel_right_dropped_(false){};
+    wheel_right_dropped_(false),
+    bumper_left_pressed_(false),
+    bumper_center_pressed_(false),
+    bumper_right_pressed_(false),
+    cliff_left_detected_(false),
+    cliff_center_detected_(false),
+    cliff_right_detected_(false){};
   ~SafetyController(){};
 
   /**
@@ -112,7 +118,10 @@ private:
   ros::Subscriber bumper_event_subscriber_, cliff_event_subscriber_, wheel_event_subscriber_;
   ros::Subscriber reset_safety_states_subscriber_;
   ros::Publisher controller_state_publisher_, velocity_command_publisher_;
-  bool bumper_pressed_, cliff_detected_, wheel_left_dropped_, wheel_right_dropped_;
+  bool wheel_left_dropped_, wheel_right_dropped_;
+  bool bumper_left_pressed_, bumper_center_pressed_, bumper_right_pressed_;
+  bool cliff_left_detected_, cliff_center_detected_, cliff_right_detected_;
+
   geometry_msgs::TwistPtr msg_; // velocity command
 
   /**
@@ -186,12 +195,22 @@ void SafetyController::cliffEventCB(const kobuki_msgs::CliffEventConstPtr msg)
   if (msg->state == kobuki_msgs::CliffEvent::CLIFF)
   {
     ROS_DEBUG_STREAM("Cliff detected. Moving backwards. [" << name_ << "]");
-    cliff_detected_ = true;
+    switch (msg->sensor)
+    {
+      case kobuki_msgs::CliffEvent::LEFT:    cliff_left_detected_   = true;  break;
+      case kobuki_msgs::CliffEvent::CENTER:  cliff_center_detected_ = true;  break;
+      case kobuki_msgs::CliffEvent::RIGHT:   cliff_right_detected_  = true;  break;
+    }
   }
   else // kobuki_msgs::CliffEvent::FLOOR
   {
     ROS_DEBUG_STREAM("Not detecting any cliffs. Resuming normal operation. [" << name_ << "]");
-    cliff_detected_ = false;
+    switch (msg->sensor)
+    {
+      case kobuki_msgs::CliffEvent::LEFT:    cliff_left_detected_   = false; break;
+      case kobuki_msgs::CliffEvent::CENTER:  cliff_center_detected_ = false; break;
+      case kobuki_msgs::CliffEvent::RIGHT:   cliff_right_detected_  = false; break;
+    }
   }
 };
 
@@ -200,12 +219,22 @@ void SafetyController::bumperEventCB(const kobuki_msgs::BumperEventConstPtr msg)
   if (msg->state == kobuki_msgs::BumperEvent::PRESSED)
   {
     ROS_DEBUG_STREAM("Bumper pressed. Moving backwards. [" << name_ << "]");
-    bumper_pressed_ = true;
+    switch (msg->bumper)
+    {
+      case kobuki_msgs::BumperEvent::LEFT:    bumper_left_pressed_   = true;  break;
+      case kobuki_msgs::BumperEvent::CENTER:  bumper_center_pressed_ = true;  break;
+      case kobuki_msgs::BumperEvent::RIGHT:   bumper_right_pressed_  = true;  break;
+    }
   }
   else // kobuki_msgs::BumperEvent::RELEASED
   {
     ROS_DEBUG_STREAM("No bumper pressed. Resuming normal operation. [" << name_ << "]");
-    bumper_pressed_ = false;
+    switch (msg->bumper)
+    {
+      case kobuki_msgs::BumperEvent::LEFT:    bumper_left_pressed_   = false; break;
+      case kobuki_msgs::BumperEvent::CENTER:  bumper_center_pressed_ = false; break;
+      case kobuki_msgs::BumperEvent::RIGHT:   bumper_right_pressed_  = false; break;
+    }
   }
 };
 
@@ -247,10 +276,14 @@ void SafetyController::wheelEventCB(const kobuki_msgs::WheelDropEventConstPtr ms
 
 void SafetyController::resetSafetyStatesCB(const std_msgs::EmptyConstPtr msg)
 {
-  wheel_left_dropped_ = false;
-  wheel_right_dropped_ = false;
-  bumper_pressed_ = false;
-  cliff_detected_ = false;
+  wheel_left_dropped_    = false;
+  wheel_right_dropped_   = false;
+  bumper_left_pressed_   = false;
+  bumper_center_pressed_ = false;
+  bumper_right_pressed_  = false;
+  cliff_left_detected_   = false;
+  cliff_center_detected_ = false;
+  cliff_right_detected_  = false;
   ROS_WARN_STREAM("All safety states have been reset to false. [" << name_ << "]");
 }
 
@@ -269,7 +302,7 @@ void SafetyController::spin()
       msg_->angular.z = 0.0;
       velocity_command_publisher_.publish(msg_);
     }
-    else if (bumper_pressed_ || cliff_detected_)
+    else if (bumper_center_pressed_ || cliff_center_detected_)
     {
       msg_.reset(new geometry_msgs::Twist());
       msg_->linear.x = -0.1;
@@ -278,6 +311,30 @@ void SafetyController::spin()
       msg_->angular.x = 0.0;
       msg_->angular.y = 0.0;
       msg_->angular.z = 0.0;
+      velocity_command_publisher_.publish(msg_);
+    }
+    else if (bumper_left_pressed_ || cliff_left_detected_)
+    {
+      // left bump/cliff; also spin a bit to the right to make escape easier
+      msg_.reset(new geometry_msgs::Twist());
+      msg_->linear.x = -0.1;
+      msg_->linear.y = 0.0;
+      msg_->linear.z = 0.0;
+      msg_->angular.x = 0.0;
+      msg_->angular.y = 0.0;
+      msg_->angular.z = -0.4;
+      velocity_command_publisher_.publish(msg_);
+    }
+    else if (bumper_right_pressed_ || cliff_right_detected_)
+    {
+      // right bump/cliff; also spin a bit to the left to make escape easier
+      msg_.reset(new geometry_msgs::Twist());
+      msg_->linear.x = -0.1;
+      msg_->linear.y = 0.0;
+      msg_->linear.z = 0.0;
+      msg_->angular.x = 0.0;
+      msg_->angular.y = 0.0;
+      msg_->angular.z = 0.4;
       velocity_command_publisher_.publish(msg_);
     }
   }
