@@ -49,12 +49,19 @@ public:
   const uint32_t udid1;
   const uint32_t udid2;
 
-  static std::string toString(uint32_t version)
+  static std::string toString(const uint32_t &version)
   {
     // Convert an unsigned int into a string of type <mayor>.<minor>.<patch>; first byte is ignored
     std::stringstream ss;
     ss << ((version & 0x00FF0000) >> 16) << "." << ((version & 0x0000FF00) >>  8) << "." << (version & 0x000000FF);
+    return std::string(ss.str());
+  }
 
+  static std::string toString(const uint32_t &udid0, const uint32_t &udid1, const uint32_t &udid2)
+  {
+    // Convert three udid unsigned integers into a string of type <udid0>-<udid1>-<udid2>
+    std::stringstream ss;
+    ss << udid0 << "-" << udid1 << "-" << udid2;
     return std::string(ss.str());
   }
 };
