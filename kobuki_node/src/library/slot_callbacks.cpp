@@ -31,7 +31,6 @@
  *
  * @brief All the slot callbacks for interrupts from the kobuki driver.
  *
- * @date Apr 10, 2012
  **/
 
 /*****************************************************************************

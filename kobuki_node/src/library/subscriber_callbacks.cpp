@@ -31,7 +31,6 @@
  *
  * @brief Subscriber callbacks for kobuki node.
  *
- * @date 14/04/2012
  **/
 
 /*****************************************************************************
@@ -66,7 +65,7 @@ void KobukiRos::subscribeVelocityCommand(const geometry_msgs::TwistConstPtr msg)
   return;
 }
 
-  
+
 void KobukiRos::subscribeLed1Command(const kobuki_msgs::LedConstPtr msg)
 {
   switch( msg->value ) {

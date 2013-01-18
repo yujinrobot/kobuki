@@ -31,7 +31,6 @@
  *
  * @brief Wraps the kobuki driver in a ROS-specific library
  *
- * @date 27/11/2012
  **/
 
 /*****************************************************************************
