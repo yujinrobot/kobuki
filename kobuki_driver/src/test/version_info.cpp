@@ -53,7 +53,7 @@ public:
   std::string& getUDID() { return udid; }
 
 private:
-  bool acquired;
+  volatile bool acquired;
   kobuki::Kobuki kobuki;
   std::string hardware, firmware, software, udid;
   ecl::Slot<const kobuki::VersionInfo&> slot_version_info;
