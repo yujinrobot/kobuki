@@ -106,7 +106,7 @@ int main(int argc, char** argv)
 
 @section Explanation
 
-This simple control loop program process kobuki's stream data to retrive how far moved from last stream, and accumulate it to get current pose(position and direction). And control the robot to following simple squre path where each side is 1.0 meter.
+This simple control loop program process kobuki's stream data to retrive how far moved from last stream, and accumulate it to get current pose(position and orientation). And control the robot to following the simple squre path where each side is 1.0 meter.
 
 @subsection includes Includes
 
@@ -196,7 +196,7 @@ we can get accumulated pose from odoemtry.
   }
 @endcode
 
-processMotion() determines next base command to the robot. These commands will makes robot to follow squre path at the last, by running below routinal conditions:
+processMotion() determines next base command to the robot. These commands will makes robot to follow squre path at the last, by running below commands repeatedly:
 
 @arg go forward 1.0 meter
 @arg rotate counter-clockwise in 90 degree
