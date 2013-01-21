@@ -119,12 +119,12 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
     //update
     self->dock_.update(ir->data, core->bumper, core->charger, pose);
 
-    //debug stream
+    //publish debug stream
     std_msgs::StringPtr debug_log(new std_msgs::String);
     debug_log->data = self->dock_.getDebugStream();
     debug_jabber_.publish(debug_log);
 
-    //publish velocity
+    //publish command velocity
     if (self->dock_.canRun()) {
       geometry_msgs::TwistPtr cmd_vel(new geometry_msgs::Twist);
       cmd_vel->linear.x = self->dock_.getVX();
@@ -133,7 +133,7 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
     }
   }
 
-  //action server mock up
+  //action server execution
   if( as_.isActive() ) {
     if ( dock_.getState() == dock_.DONE ) {
       result_.text = "Arrived on docking station successfully.";
