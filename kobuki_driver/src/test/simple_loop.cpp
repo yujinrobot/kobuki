@@ -25,19 +25,19 @@ class KobukiManager {
 public:
   KobukiManager() :
     dx(0.0), dth(0.0),
-    slot_stream_data(&KobukiManager::processStreamData, *this) // establish the callback
+    slot_stream_data(&KobukiManager::processStreamData, *this)
   {
     kobuki::Parameters parameters;
-    parameters.sigslots_namespace = "/kobuki"; // configure the first part of the sigslot namespace
-    parameters.device_port = "/dev/kobuki";    // the serial port to connect to (windows COM1..)
+    parameters.sigslots_namespace = "/kobuki";
+    parameters.device_port = "/dev/kobuki";
     parameters.enable_acceleration_limiter = false;
-    // configure other parameters here
     kobuki.init(parameters);
     kobuki.enable();
     slot_stream_data.connect("/kobuki/stream_data");
   }
+
   ~KobukiManager() {
-    kobuki.setBaseControl(0,0);
+    kobuki.setBaseControl(0,0); //linear_velocity, angular_velocity in (m/s), (rad/s)
     kobuki.disable();
   }
 
