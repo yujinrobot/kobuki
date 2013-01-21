@@ -13,29 +13,56 @@ The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using pre
 <table>
 <tr align="center"><th>Name</th><td>Header 0</td><td>Header 1</td><td>Length</td><td>Payload</td><td>Checksum</td>
 <tr align="center"><th>Size</th><td>1 Byte</td><td>1 Byte</td><td>1 Byte</td><td>N Byte(s)</td><td>1 Byte</td>
-<tr align="center"><th align="center">Description</th><td width="100">0xAA<br>(fixed)</td><td width="100">0x55<br>(fixed)</td><td width="100">Size of payload in byte(s)</td><td width="100">Descrive below</td><td width="100">XOR'ed value of every bytes of entire packet</td>
+<tr align="center"><th align="center">Description</th><td width="100">0xAA<br>(fixed)</td><td width="100">0x55<br>(fixed)</td><td width="100">Size of payload in byte(s)</td><td width="100">Described below</td><td width="100">XOR'ed value of every bytes of entire packet</td>
 </table>
 
 
-@section enPayload Sturucture of Payload
+@subsection enHeader Header
 
-Payload is a group of sub payload
+Two bytes of header 0 and hader 1 is fixed value for headings in every bytestreams, commands and feedback data. Headers are used to detect the start of bytestream.
+
+@subsection enLength Length
+
+Length indicated the length of following payload. It's size is 1 by default. Length can be used to distinguish each bytestream.
+
 
 @subsection enPayload Payload
+
+Payload is a consist of several sub-payloads. Payload contains actual data of bytestream.
+
+
+@subsubsection enStructureOfPayload Structure Of Payload
+<!--@par <b>Structure of Payload</b>-->
 @par
 <table>
 <tr align="center"><th>Payload</th><td colspan="5">Payload</td></tr>
-<tr align="center"><th>Sub-Payloads</th><td>Sub-Payload 1</td><td>Sub-Payload 2</td><td>Sub-Payload 3</td><td>Sub-Payload ...</td><td>Sub-Payload N</td></tr>
+<tr align="center"><th>Sub-Payloads</th><td>Sub-Payload 1</td><td>Sub-Payload 2</td><td>Sub-Payload 3</td><td>...</td><td>Sub-Payload N</td></tr>
 </table>
 
-@subsection enSubPayloads Sub-Payloads
+@subsubsection enStructureOfSubPayloads Structure Of Sub-Payloads
+<!--@par<b>Stucture of Sub-Payloads</b>-->
 @par
 <table>
 <tr align="center"><th>Name</th><td>Header</td><td>Length</td><td>Data</td>
 <tr align="center"><th>Size</th><td>1 Byte</td><td>1 Byte</td><td>N Byte(s)</td>
-<tr align="center"><th align="center">Description</th><td width="100">Predefined Identifier</td><td width="100">Size of data in byte(s)</td><td width="100">Descrive below</td>
+<tr align="center"><th align="center">Description</th><td width="100">Predefined Identifier</td><td width="100">Size of data in byte(s)</td><td width="100">Described below</td>
 </table>
 
+@subsection enChecksum Checksum
+
+Checksum is XOR'ed value of entire bytestream. Checksum process ensure the integrity of bytestreams.
+
+
+@section enCommandPackets Command Packets
+
+@subsection enCommandIdentifier Command Identifier
+
+<table>
+<tr><th>Value</th><th>Description</th></tr>
+<tr><td align="center">1</td><td>Base Control</td></tr>
+</table>
+
+@section enSandbox Sandbox
 
 @par
 	Some commentary to accompany
