@@ -2,6 +2,8 @@
 
 @page enAppendixGuide Appendix
 
+@tableofcontents
+
 @section enProtocolSpecification Protocol Specification
 
 @section enOverview Overview
@@ -58,25 +60,25 @@ Checksum is XOR'ed value of entire bytestream. Checksum process ensure the integ
 @subsection enCommandIdentifier Command Identifier
 
 <table>
-<tr><th>Value</th><th>Description</th></tr>
-<tr><td align="center">1</td><td>Base Control</td></tr>
-<tr><td align="center">2</td><td>Reserved</td></tr>
-<tr><td align="center">3</td><td>Sound</td></tr>
-<tr><td align="center">4</td><td>Sound Sequence</td></tr>
-<tr><td align="center">5</td><td>Reserved</td></tr>
-<tr><td align="center">6</td><td>Reserved</td></tr>
-<tr><td align="center">7</td><td>Reserved</td></tr>
-<tr><td align="center">8</td><td>Set Power</td></tr>
-<tr><td align="center">9</td><td>Request Extra</td></tr>
-<tr><td align="center">10</td><td>Chagne Frame</td></tr>
-<tr><td align="center">11</td><td>Request EEPROM</td></tr>
-<tr><td align="center">12</td><td>General Purpose Output</td></tr>
+<tr><th>ID</th><th>Name</th><th>Description</th></tr>
+<tr><td align="center">1</td><td>Base Control</td><td></td></tr>
+<tr><td align="center">2</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">3</td><td>Sound</td><td></td></tr>
+<tr><td align="center">4</td><td>Sound Sequence</td><td></td></tr>
+<tr><td align="center">5</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">6</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">7</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">8</td><td>Set Power</td><td></td></tr>
+<tr><td align="center">9</td><td>Request Extra</td><td></td></tr>
+<tr><td align="center">10</td><td>Chagne Frame</td><td></td></tr>
+<tr><td align="center">11</td><td>Request EEPROM</td><td></td></tr>
+<tr><td align="center">12</td><td>General Purpose Output</td><td></td></tr>
 </table>
 
 @subsection enBaseControl Base Control
 
 <table>
-<tr><td></td><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
 <tr><th rowspan="2">Data</th><td>Speed</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
@@ -84,18 +86,38 @@ Checksum is XOR'ed value of entire bytestream. Checksum process ensure the integ
 
 </table>
 
-@section enSandbox Sandbox
+@section enFeedbackPackets Feedback Packets
 
-@par
-	Some commentary to accompany
-	the first list in the <a href="http://www.stack.nl/~dimitri/doxygen/docblocks.html">Special
-	Documentation Blocks</a> section of
-	the Doxygen manual:
-
-Hmm.. Tables..
+@subsection enFeedbackIdentifier Feedback Identifier
 
 <table>
-<tr><td></td><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>ID</th><th>Name</th><th>Description</th></tr>
+<tr><td align="center">1</td><td>Basic Sensor Data</td><td></td></tr>
+<tr><td align="center">2</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">3</td><td>Docking IR</td><td></td></tr>
+<tr><td align="center">4</td><td>Inertial Sensor</td><td></td></tr>
+<tr><td align="center">5</td><td>Cliff</td><td></td></tr>
+<tr><td align="center">6</td><td>Current</td><td></td></tr>
+<tr><td align="center">7</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">8</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">9</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">10</td><td>Hardware Version</td><td></td></tr>
+<tr><td align="center">11</td><td>Firmware Version</td><td></td></tr>
+<tr><td align="center">12</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">13</td><td>Raw data of 3-axis gyro</td><td></td></tr>
+<tr><td align="center">14</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">15</td><td>EEPROM</td><td></td></tr>
+<tr><td align="center">16</td><td>Genera lPurpose Input</td><td></td></tr>
+<tr><td align="center">17</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">18</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">19</td><td>Unique Device IDentifier</td><td></td></tr>
+<tr><td align="center">20</td><td align="center"><i>Reserved</i></td><td></td></tr>
+</table>
+
+@subsection enBasicSensorData Basic Sensor Data
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Feedback Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">15</td><td>0x0F</td><td>Fixed</td></tr>
 <tr><th rowspan="12">Data</th><td>Time Stamp</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
@@ -111,6 +133,20 @@ Hmm.. Tables..
 <tr><td>Battery</td><td align="center">1</td><td align="center"></td><td></td><td>In 0.1V</td></tr>
 <tr><td>Over Current</td><td align="center">1</td><td align="center"></td><td></td><td>In 20mA/LSB</td></tr>
 </table>
+
+
+
+
+@section enSandbox Sandbox
+
+@par
+	Some commentary to accompany
+	the first list in the <a href="http://www.stack.nl/~dimitri/doxygen/docblocks.html">Special
+	Documentation Blocks</a> section of
+	the Doxygen manual:
+
+Hmm.. Tables..
+
 
 
 
