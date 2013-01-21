@@ -13,7 +13,7 @@ The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using pre
 <table>
 <tr align="center"><th>Name</th><td>Header 0</td><td>Header 1</td><td>Length</td><td>Payload</td><td>Checksum</td>
 <tr align="center"><th>Size</th><td>1 Byte</td><td>1 Byte</td><td>1 Byte</td><td>N Byte(s)</td><td>1 Byte</td>
-<tr align="center"><th align="center">Description</th><td width="100">0xAA<br>(fixed)</td><td width="100">0x55<br>(fixed)</td><td width="100">Size of payload in byte(s)</td><td width="100">Described below</td><td width="100">XOR'ed value of every bytes of entire packet</td>
+<tr align="center"><th align="center">Description</th><td width="100">0xAA<br>(Fixed)</td><td width="100">0x55<br>(Fixed)</td><td width="100">Size of payload in bytes</td><td width="100">Described below</td><td width="100">XOR'ed value of every bytes of entire packet</td>
 </table>
 
 
@@ -23,7 +23,7 @@ Two bytes of header 0 and hader 1 is fixed value for headings in every bytestrea
 
 @subsection enLength Length
 
-Length indicated the length of following payload. It's size is 1 by default. Length can be used to distinguish each bytestream.
+Length indicated the length of following payload. It's size is 1 by default. Length can be used to distinguish each bytestream. Minimum value of this byte is 3.
 
 
 @subsection enPayload Payload
@@ -60,6 +60,28 @@ Checksum is XOR'ed value of entire bytestream. Checksum process ensure the integ
 <table>
 <tr><th>Value</th><th>Description</th></tr>
 <tr><td align="center">1</td><td>Base Control</td></tr>
+<tr><td align="center">2</td><td>Reserved</td></tr>
+<tr><td align="center">3</td><td>Sound</td></tr>
+<tr><td align="center">4</td><td>Sound Sequence</td></tr>
+<tr><td align="center">5</td><td>Reserved</td></tr>
+<tr><td align="center">6</td><td>Reserved</td></tr>
+<tr><td align="center">7</td><td>Reserved</td></tr>
+<tr><td align="center">8</td><td>Set Power</td></tr>
+<tr><td align="center">9</td><td>Request Extra</td></tr>
+<tr><td align="center">10</td><td>Chagne Frame</td></tr>
+<tr><td align="center">11</td><td>Request EEPROM</td></tr>
+<tr><td align="center">12</td><td>General Purpose Output</td></tr>
+</table>
+
+@subsection enBaseControl Base Control
+
+<table>
+<tr><td></td><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
+<tr><th rowspan="2">Data</th><td>Speed</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Radius</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+
 </table>
 
 @section enSandbox Sandbox
@@ -73,21 +95,21 @@ Checksum is XOR'ed value of entire bytestream. Checksum process ensure the integ
 Hmm.. Tables..
 
 <table>
-<tr><th>Name</th><th>Size</th><th>Value</th><th>Value in Hex</th><th>Description</th></tr>
-<tr><td>Packet ID</td><td align="center">1</td><td>1</td><td>0x01</td><td>Fixed</td></tr>
-<tr><td>Packet Legnth</td><td align="center">1</td><td>15</td><td>0x0F</td><td>Fixed</td></tr>
-<tr><td>Time Stamp</td><td align="center">2</td><td></td><td></td><td></td></tr>
-<tr><td>Bump</td><td align="center">1</td><td></td><td></td><td></td></tr>
-<tr><td>Wheel Drop</td><td align="center">1</td><td></td><td></td><td></td></tr>
-<tr><td>Cliff</td><td align="center">1</td><td></td><td></td><td></td></tr>
-<tr><td>Encoer[0]</td><td align="center">2</td><td></td><td></td><td></td></tr>
-<tr><td>Encoer[1]</td><td align="center">2</td><td></td><td></td><td></td></tr>
-<tr><td>PWM[0]</td><td align="center">1</td><td></td><td></td><td></td></tr>
-<tr><td>PWM[1]</td><td align="center">1</td><td></td><td></td><td></td></tr>
-<tr><td>Button</td><td align="center">1</td><td></td><td></td><td></td></tr>
-<tr><td>Charger</td><td align="center">1</td><td></td><td></td><td></td></tr>
-<tr><td>Battery</td><td align="center">1</td><td></td><td></td><td>In 0.1V</td></tr>
-<tr><td>Over Current</td><td align="center">1</td><td></td><td></td><td>In 20mA/LSB</td></tr>
+<tr><td></td><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Feedback Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">15</td><td>0x0F</td><td>Fixed</td></tr>
+<tr><th rowspan="12">Data</th><td>Time Stamp</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Bump</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Wheel Drop</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Cliff</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Encoer[0]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Encoer[1]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>PWM[0]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>PWM[1]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Button</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Charger</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Battery</td><td align="center">1</td><td align="center"></td><td></td><td>In 0.1V</td></tr>
+<tr><td>Over Current</td><td align="center">1</td><td align="center"></td><td></td><td>In 20mA/LSB</td></tr>
 </table>
 
 
