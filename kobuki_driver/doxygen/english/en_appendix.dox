@@ -1,14 +1,14 @@
 /**
 
-@page enAppendixGuide Appendix
+@page enAppendixGuide Appendix : Protocol Specification
 
 @tableofcontents
 
-@section enProtocolSpecification Protocol Specification
+<!--@section enProtocolSpecification Protocol Specification-->
 
 @section enOverview Overview
 
-The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using predefined protocol. In general, the driver sends the commands to the robot and the robot sends some feedback data or sensor readings. These commands and feedback data are converted into a bytestream for communication via serial communication. The protocol specifies that rules and forms of bytestreams.
+The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using predefined protocol. In general, the driver sends the commands to the robot and the robot sends some feedback data or sensor readings. These commands and feedback data are converted into a bytestream for communication via serial interface. The protocol specifies that rules and forms of bytestreams.
 
 @section enBytestream Structure of Bytestream
 
@@ -54,6 +54,20 @@ Payload is a consist of several sub-payloads. Payload contains actual data of by
 
 Checksum is XOR'ed value of entire bytestream. Checksum process ensure the integrity of bytestreams.
 
+@section enDataTypes Data Types
+
+<table>
+<tr align="center"><th>Name</th><th>Description</th><th>Byte Length</th><th>Bit Length</th><th>Data Range</th></tr>
+<tr align="center"><td>Unsigned Byte</td><td>8-bit unsigned integer</td><td>1</td><td>8</td><td>0~255</td></tr>
+<tr align="center"><td>Unsigned Short</td><td>16-bit unsigned integer</td><td>2</td><td>16</td><td>0~65,535</td></tr>
+<tr align="center"><td>Unsigned Int</td><td>32-bit unsigned integer</td><td>4</td><td>32</td><td>0~4,294,967,295</td></tr>
+</table>
+
+@subsection enSerderialization Serial-Deserialization
+
+Each data types are serialized and deserialized by `<a href="http://en.wikipedia.org/wiki/Least_significant_byte">LSB</a>-First Order`. It means Least Significant Bytes will comes first on the bytestreams. 
+
+Here are example code to handle it on kobuki_deriver, @ref packet_handler::payloadBase::buildVariable(T & V, ecl::PushAndPop<unsigned char> & buffer) "buildVariable()" and @ref packet_handler::payloadBase::buildBytes(const T & V, ecl::PushAndPop<unsigned char> & buffer) "buildBytes()".
 
 @section enCommandPackets Command Packets
 
@@ -62,12 +76,12 @@ Checksum is XOR'ed value of entire bytestream. Checksum process ensure the integ
 <table>
 <tr><th>ID</th><th>Name</th><th>Description</th></tr>
 <tr><td align="center">1</td><td>Base Control</td><td></td></tr>
-<tr><td align="center">2</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">2</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">3</td><td>Sound</td><td></td></tr>
 <tr><td align="center">4</td><td>Sound Sequence</td><td></td></tr>
-<tr><td align="center">5</td><td align="center"><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">6</td><td align="center"><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">7</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">5</td><td><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">6</td><td><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">7</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">8</td><td>Set Power</td><td></td></tr>
 <tr><td align="center">9</td><td>Request Extra</td><td></td></tr>
 <tr><td align="center">10</td><td>Chagne Frame</td><td></td></tr>
@@ -93,25 +107,25 @@ Checksum is XOR'ed value of entire bytestream. Checksum process ensure the integ
 <table>
 <tr><th>ID</th><th>Name</th><th>Description</th></tr>
 <tr><td align="center">1</td><td>Basic Sensor Data</td><td></td></tr>
-<tr><td align="center">2</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">2</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">3</td><td>Docking IR</td><td></td></tr>
 <tr><td align="center">4</td><td>Inertial Sensor</td><td></td></tr>
 <tr><td align="center">5</td><td>Cliff</td><td></td></tr>
 <tr><td align="center">6</td><td>Current</td><td></td></tr>
-<tr><td align="center">7</td><td align="center"><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">8</td><td align="center"><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">9</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">7</td><td><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">8</td><td><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">9</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">10</td><td>Hardware Version</td><td></td></tr>
 <tr><td align="center">11</td><td>Firmware Version</td><td></td></tr>
-<tr><td align="center">12</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">12</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">13</td><td>Raw data of 3-axis gyro</td><td></td></tr>
-<tr><td align="center">14</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">14</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">15</td><td>EEPROM</td><td></td></tr>
 <tr><td align="center">16</td><td>Genera lPurpose Input</td><td></td></tr>
-<tr><td align="center">17</td><td align="center"><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">18</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">17</td><td><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">18</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">19</td><td>Unique Device IDentifier</td><td></td></tr>
-<tr><td align="center">20</td><td align="center"><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">20</td><td><i>Reserved</i></td><td></td></tr>
 </table>
 
 @subsection enBasicSensorData Basic Sensor Data
@@ -124,8 +138,8 @@ Checksum is XOR'ed value of entire bytestream. Checksum process ensure the integ
 <tr><td>Bump</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Wheel Drop</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Cliff</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Encoer[0]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Encoer[1]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Encoder[0]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Encoder[1]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>PWM[0]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>PWM[1]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Button</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
