@@ -4,6 +4,64 @@
 
 @section enProtocolSpecification Protocol Specification
 
+@section enOverview Overview
+
+The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using predefined protocol. In general, the driver sends the commands to the robot and the robot sends some feedback data or sensor readings. These commands and feedback data are converted into a bytestream for communication via serial communication. The protocol specifies that rules and forms of bytestreams.
+
+@section enBytestream Structure of Bytestream
+
+<table>
+<tr align="center"><th>Name</th><td>Header 0</td><td>Header 1</td><td>Length</td><td>Payload</td><td>Checksum</td>
+<tr align="center"><th>Size</th><td>1 Byte</td><td>1 Byte</td><td>1 Byte</td><td>N Byte(s)</td><td>1 Byte</td>
+<tr align="center"><th align="center">Description</th><td width="100">0xAA<br>(fixed)</td><td width="100">0x55<br>(fixed)</td><td width="100">Size of payload in byte(s)</td><td width="100">Descrive below</td><td width="100">XOR'ed value of every bytes of entire packet</td>
+</table>
+
+
+@section enPayload Sturucture of Payload
+
+Payload is a group of sub payload
+
+@subsection enPayload Payload
+@par
+<table>
+<tr align="center"><th>Payload</th><td colspan="5">Payload</td></tr>
+<tr align="center"><th>Sub-Payloads</th><td>Sub-Payload 1</td><td>Sub-Payload 2</td><td>Sub-Payload 3</td><td>Sub-Payload ...</td><td>Sub-Payload N</td></tr>
+</table>
+
+@subsection enSubPayloads Sub-Payloads
+@par
+<table>
+<tr align="center"><th>Name</th><td>Header</td><td>Length</td><td>Data</td>
+<tr align="center"><th>Size</th><td>1 Byte</td><td>1 Byte</td><td>N Byte(s)</td>
+<tr align="center"><th align="center">Description</th><td width="100">Predefined Identifier</td><td width="100">Size of data in byte(s)</td><td width="100">Descrive below</td>
+</table>
+
+
+@par
+	Some commentary to accompany
+	the first list in the <a href="http://www.stack.nl/~dimitri/doxygen/docblocks.html">Special
+	Documentation Blocks</a> section of
+	the Doxygen manual:
+
+Hmm.. Tables..
+
+<table>
+<tr><th>Name</th><th>Size</th><th>Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><td>Packet ID</td><td align="center">1</td><td>1</td><td>0x01</td><td>Fixed</td></tr>
+<tr><td>Packet Legnth</td><td align="center">1</td><td>15</td><td>0x0F</td><td>Fixed</td></tr>
+<tr><td>Time Stamp</td><td align="center">2</td><td></td><td></td><td></td></tr>
+<tr><td>Bump</td><td align="center">1</td><td></td><td></td><td></td></tr>
+<tr><td>Wheel Drop</td><td align="center">1</td><td></td><td></td><td></td></tr>
+<tr><td>Cliff</td><td align="center">1</td><td></td><td></td><td></td></tr>
+<tr><td>Encoer[0]</td><td align="center">2</td><td></td><td></td><td></td></tr>
+<tr><td>Encoer[1]</td><td align="center">2</td><td></td><td></td><td></td></tr>
+<tr><td>PWM[0]</td><td align="center">1</td><td></td><td></td><td></td></tr>
+<tr><td>PWM[1]</td><td align="center">1</td><td></td><td></td><td></td></tr>
+<tr><td>Button</td><td align="center">1</td><td></td><td></td><td></td></tr>
+<tr><td>Charger</td><td align="center">1</td><td></td><td></td><td></td></tr>
+<tr><td>Battery</td><td align="center">1</td><td></td><td></td><td>In 0.1V</td></tr>
+<tr><td>Over Current</td><td align="center">1</td><td></td><td></td><td>In 20mA/LSB</td></tr>
+</table>
 
 
 
