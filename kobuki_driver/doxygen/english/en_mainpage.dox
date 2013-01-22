@@ -10,7 +10,7 @@ The kobuki driver is a simple c++ library that allows interfacing to the kobuki 
 This documentation is targeted for users creating a custom robot on top of kobuki using either posix/win32 or 
 an apple operating system. If that is you, you are in the right place - proceed to the guides below.
 If you're interested in developing a driver for a custom unsupported platform (e.g. vxworks) then you'll want 
-to check the serial protocol reference in the @ref enAppendixGuide "appendix".
+to check the serial protocol reference in the @ref enAppendixGuideProtocol "appendix".
 
 Alternatively, if you're using a <i>kobuki reference platform</i>, check one of the links below. 
  

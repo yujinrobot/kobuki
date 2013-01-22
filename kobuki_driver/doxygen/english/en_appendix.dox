@@ -2,13 +2,24 @@
 
 @page enAppendixGuideProtocol Appendix : Protocol Specification
 
+<!--
 @tableofcontents
 
-<!--@section enProtocolSpecification Protocol Specification-->
+@section enProtocolSpecification Protocol Specification
+-->
+
+<!-----------------------------
+         Overview
+------------------------------->
 
 @section enOverview Overview
 
 The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using predefined protocol. In general, the driver sends the commands to the robot and the robot sends some feedback data or sensor readings. These commands and feedback data are converted into a bytestream for communication via serial interface. The protocol specifies that rules and forms of bytestreams.
+
+
+<!-----------------------------
+     Structure of Bytestream
+------------------------------->
 
 @section enBytestream Structure of Bytestream
 
@@ -17,7 +28,6 @@ The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using pre
 <tr align="center"><th>Size</th><td>1 Byte</td><td>1 Byte</td><td>1 Byte</td><td>N Byte(s)</td><td>1 Byte</td>
 <tr align="center"><th align="center">Description</th><td width="100">0xAA<br>(Fixed)</td><td width="100">0x55<br>(Fixed)</td><td width="100">Size of payload in bytes</td><td width="100">Described below</td><td width="100">XOR'ed value of every bytes of entire packet</td>
 </table>
-
 
 @subsection enHeader Header
 
@@ -57,6 +67,10 @@ Sub-payload can be devided into three parts, Header, Length and Data.
 @subsection enChecksum Checksum
 
 Checksum is XOR'ed value of entire bytestream. Checksum process ensure the integrity of bytestreams.
+
+<!-----------------------------
+          Data Types
+------------------------------->
 
 @section enDataTypes Data Types
 
@@ -103,6 +117,8 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 
 @subsection enBaseControl Base Control
 
+Control wheel motors to moving robot.
+
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
@@ -123,6 +139,8 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 
 @subsection enSoundSequence Sound Sequence
 
+Play predefined sounds by its index.
+
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
@@ -131,6 +149,9 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 </table>
 
 @subsection enSetPower Set Power
+
+Control the external powers; 3.3V, 5V, 12V1A, 12V5A.
+It is identical role with external power part of General Purpose Output.
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
@@ -141,6 +162,10 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 
 @subsection enRequestExtra Request Extra
 
+Request extra data from robot. Especially version info of kobuki; Hardware Version, Firmware Version and Unique Deivce IDentifier
+
+UDID is unique to device. so can be used to identify on multiple robots.
+
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">9</td><td>0x09</td><td>Fixed</td></tr>
@@ -150,11 +175,15 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 
 @subsection enGeneralPurposeOutput General Purpose Output
 
+This command play multiple roles. it controls LED's, digital outputs and external powers.
+
+To using it carefully set the bit fields.
+
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">12</td><td>0x0C</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
-<tr><th>Data</th><td>Digital Output Flags</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><th>Data</th><td>Digital Output Flags</td><td align="center">2</td><td align="center"></td><td></td><td>0x0001 for digital output ch. 0<br>0x0002 for digital output ch. 1<br>0x0004 for digital output ch. 2<br>0x0008 for digital output ch. 3<br><br>0x0010 for external power 3.3V ch.<br>0x0020 for external power 5V ch.<br>0x0040 for external power 12V1A ch.<br>0x0080 for external power 12V5A ch.<br><br>0x0100 for red colour of LED1<br>0x0200 for green colour of LED1<br>0x0400 for red colour of LED2<br>0x0800 for green colour of LED2<br></td></tr>
 </table>
 
 <!-----------------------------
@@ -191,6 +220,8 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 
 @subsection enBasicSensorData Basic Sensor Data
 
+Basic core sensor data. Robot will sends this data periodically from power on.
+
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Feedback Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
@@ -212,6 +243,8 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 
 @subsection enDockingIR Docking IR
 
+Docking IR signals from the docking station.
+
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
@@ -223,18 +256,22 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 
 @subsection enInertialSensorData Inertial Sensor Data
 
+Inertial sensor data. Only 1 axis gyro data only available.
+
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">7</td><td>0x07</td><td>Fixed</td></tr>
 <tr><th rowspan="5">Data</th><td>angle</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>angle rate</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>acc[0]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>acc[1]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>acc[2]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>acc[0]</td><td align="center">1</td><td align="center"></td><td></td><td>Unused</td></tr>
+<tr><td>acc[1]</td><td align="center">1</td><td align="center"></td><td></td><td>Unused</td></tr>
+<tr><td>acc[2]</td><td align="center">1</td><td align="center"></td><td></td><td>Unused</td></tr>
 </table>
 
 @subsection enCliffSensorData Cliff Sensor Data
+
+PSD sensor data reading from bottom.
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
@@ -247,6 +284,8 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 
 @subsection enCurrent Current
 
+Current sensor readings of wheel motors.
+
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">6</td><td>0x06</td><td>Fixed</td></tr>
@@ -256,6 +295,8 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 </table>
 
 @subsection enHardwareVersion Hardware Version
+
+Hardware version info in triplet form; "<major>.<minor>.<patch>"
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
@@ -269,6 +310,8 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 
 @subsection enFirmwareVersion Firmware Version
 
+Firmware version info in triplet form; "<major>.<minor>.<patch>"
+
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">11</td><td>0x0B</td><td>Fixed</td></tr>
@@ -280,6 +323,8 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 </table>
 
 @subsection enRawDataOf3DGyro Raw Data Of 3D Gyro
+
+Raw data of 3D gyro. Due to difference of acquisition rate and update rate, 2-3 data will be arrived at once.
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
@@ -324,6 +369,12 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 	the first list in the <a href="http://www.stack.nl/~dimitri/doxygen/docblocks.html">Special
 	Documentation Blocks</a> section of
 	the Doxygen manual:
+
+@note blah
+blah
+
+@warning blah
+blah
 
 Hmm.. Tables..
 
