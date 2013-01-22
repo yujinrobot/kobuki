@@ -105,8 +105,118 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
 <tr><th rowspan="2">Data</th><td>Speed</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Radius</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-
 </table>
+
+@subsection enDockingIR Docking IR
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
+<tr><th rowspan="3">Data</th><td>docking[0]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>docking[1]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>docking[1]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+</table>
+
+@subsection enInertialSensorData Inertial Sensor Data
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">7</td><td>0x07</td><td>Fixed</td></tr>
+<tr><th rowspan="5">Data</th><td>angle</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>angle rate</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>acc[0]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>acc[1]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>acc[2]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+</table>
+
+@subsection enCliffSensorData Cliff Sensor Data
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">5</td><td>0x05</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">6</td><td>0x06</td><td>Fixed</td></tr>
+<tr><th rowspan="3">Data</th><td>bottom[0]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>bottom[1]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>bottom[2]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+</table>
+
+@subsection enCurrent Current
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">6</td><td>0x06</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
+<tr><th rowspan="2">Data</th><td>current[0]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>current[1]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+</table>
+
+@subsection enHardwareVersion Hardware Version
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">10</td><td>0x0A</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
+<tr><th rowspan="4">Data</th><td>patch</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>minor</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>major</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>not used</td><td align="center">1</td><td align="center">0</td><td>0x00</td><td>Fixed</td></tr>
+</table>
+
+@subsection enFirmwareVersion Firmware Version
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">11</td><td>0x0B</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
+<tr><th rowspan="4">Data</th><td>patch</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>minor</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>major</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>not used</td><td align="center">1</td><td align="center">0</td><td>0x00</td><td>Fixed</td></tr>
+</table>
+
+@subsection enRawDataOf3DGyro Raw Data Of 3D Gyro
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">13</td><td>0x0D</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2+2*N</td><td></td><td></td></tr>
+<tr><th rowspan="3">Data</th><td>frame id</td><td align="center">1</td><td align="center"></td><td></td><td>Circulate from 0 to 255</td></tr>
+<tr><td>followed data length</td><td align="center">1</td><td align="center">N</td><td></td><td>redundant for now</td></tr>
+<tr><td>raw gyro data</td><td align="center">2*N</td><td align="center"></td><td></td><td></td></tr>
+</table>
+
+@subsection enGeneralPurposeInput General Purpose Input
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
+<tr><th rowspan="8">Data</th><td>digital input</td><td align="center">2</td><td align="center"></td><td></td><td>bit field</td></tr>
+<tr><td>analog input ch.0</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>analog input ch.1</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>analog input ch.2</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>analog input ch.3</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Unused</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Unused</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Unused</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+</table>
+
+@subsection enUniqueDeviceIDentifier Unique Device IDentifier
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">19</td><td>0x13</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">12</td><td>0x0C</td><td>Fixed</td></tr>
+<tr><th rowspan="4">Data</th><td>UDID</td><td align="center">4</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>UDID</td><td align="center">4</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>UDID2</td><td align="center">4</td><td align="center"></td><td></td><td></td></tr>
+</table>
+
+<!-----------------------------
+         Feedback Packets
+------------------------------->
 
 @section enFeedbackPackets Feedback Packets
 
