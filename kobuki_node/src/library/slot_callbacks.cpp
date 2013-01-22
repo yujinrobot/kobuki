@@ -166,6 +166,7 @@ void KobukiRos::publishRawInertia()
 
       // Update rate of 3d gyro sensor is 100 Hz, but robot's update rate is 50 Hz.
       // So, here is some compensation.
+      // See also https://github.com/yujinrobot/kobuki/issues/216
       msg->header.stamp = now - interval * (length-i-1);
 
       // Sensing axis of 3d gyro is not match with robot. It is rotated 90 degree counterclockwise about z-axis.
