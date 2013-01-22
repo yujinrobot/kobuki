@@ -1,6 +1,6 @@
 /**
 
-@page enAppendixGuide Appendix : Protocol Specification
+@page enAppendixGuideProtocol Appendix : Protocol Specification
 
 @tableofcontents
 
@@ -27,14 +27,15 @@ Two bytes of header 0 and hader 1 is fixed value for headings in every bytestrea
 
 Length indicated the length of following payload. It's size is 1 by default. Length can be used to distinguish each bytestream. Minimum value of this byte is 3.
 
-
 @subsection enPayload Payload
 
-Payload is a consist of several sub-payloads. Payload contains actual data of bytestream.
-
+Payload contains actual data of bytestream.
 
 @subsubsection enStructureOfPayload Structure Of Payload
 <!--@par <b>Structure of Payload</b>-->
+
+Payload is a consist of several sub-payloads.
+
 @par
 <table>
 <tr align="center"><th>Payload</th><td colspan="5">Payload</td></tr>
@@ -43,6 +44,9 @@ Payload is a consist of several sub-payloads. Payload contains actual data of by
 
 @subsubsection enStructureOfSubPayloads Structure Of Sub-Payloads
 <!--@par<b>Stucture of Sub-Payloads</b>-->
+
+Sub-payload can be devided into three parts, Header, Length and Data.
+
 @par
 <table>
 <tr align="center"><th>Name</th><td>Header</td><td>Length</td><td>Data</td>
@@ -56,16 +60,20 @@ Checksum is XOR'ed value of entire bytestream. Checksum process ensure the integ
 
 @section enDataTypes Data Types
 
+Data field in Sub-payload is a mixture of below three data types; byte, short and int.
+
 <table>
-<tr align="center"><th>Name</th><th>Description</th><th>Byte Length</th><th>Bit Length</th><th>Data Range</th></tr>
-<tr align="center"><td>Unsigned Byte</td><td>8-bit unsigned integer</td><td>1</td><td>8</td><td>0~255</td></tr>
-<tr align="center"><td>Unsigned Short</td><td>16-bit unsigned integer</td><td>2</td><td>16</td><td>0~65,535</td></tr>
-<tr align="center"><td>Unsigned Int</td><td>32-bit unsigned integer</td><td>4</td><td>32</td><td>0~4,294,967,295</td></tr>
+<tr align="center"><th>Name</th><th>Description</th><th>Byte Length</th><th>Bit Length</th><th>Data Range</th><th colspan="2">C/C++ Identifier</th></tr>
+<tr align="center"><td>Unsigned Byte</td><td>8-bit unsigned integer</td><td>1</td><td>8</td><td>0~255</td><td>unsigend char</td><td>uint8_t</td></tr>
+<tr align="center"><td>Unsigned Short</td><td>16-bit unsigned integer</td><td>2</td><td>16</td><td>0~65,535</td><td>unsigend short</td><td>uint16_t</td></tr>
+<tr align="center"><td>Unsigned Int</td><td>32-bit unsigned integer</td><td>4</td><td>32</td><td>0~4,294,967,295</td><td>unsigend int</td><td>uint32_t</td>	</tr>
 </table>
 
-@subsection enSerderialization Serial-Deserialization
+@subsection enSerderialization SerDeserialization
 
-Each data types are serialized and deserialized by `<a href="http://en.wikipedia.org/wiki/Least_significant_byte">LSB</a>-First Order`. It means Least Significant Bytes will comes first on the bytestreams. 
+<a href="http://en.wikipedia.org/wiki/Serialization">Serialization</a> is the process of convering a data sturcture into a bytestream.
+
+Each data types are serialized and deserialized by `<a href="http://en.wikipedia.org/wiki/Least_significant_byte">LSB</a>-First Order`. It means Least Significant Bytes will comes first on the bytestream.
 
 Here are example code to handle it on kobuki_deriver, @ref packet_handler::payloadBase::buildVariable(T & V, ecl::PushAndPop<unsigned char> & buffer) "buildVariable()" and @ref packet_handler::payloadBase::buildBytes(const T & V, ecl::PushAndPop<unsigned char> & buffer) "buildBytes()".
 
@@ -77,15 +85,15 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 <tr><th>ID</th><th>Name</th><th>Description</th></tr>
 <tr><td align="center">1</td><td>Base Control</td><td></td></tr>
 <tr><td align="center">2</td><td><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">3</td><td>Sound</td><td></td></tr>
+<tr><td align="center">3</td><td>Reserved</td><td></td></tr>
 <tr><td align="center">4</td><td>Sound Sequence</td><td></td></tr>
 <tr><td align="center">5</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">6</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">7</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">8</td><td>Set Power</td><td></td></tr>
 <tr><td align="center">9</td><td>Request Extra</td><td></td></tr>
-<tr><td align="center">10</td><td>Chagne Frame</td><td></td></tr>
-<tr><td align="center">11</td><td>Request EEPROM</td><td></td></tr>
+<tr><td align="center">10</td><td>Reserved</td><td></td></tr>
+<tr><td align="center">11</td><td>Reserved</td><td></td></tr>
 <tr><td align="center">12</td><td>General Purpose Output</td><td></td></tr>
 </table>
 
@@ -105,27 +113,27 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 @subsection enFeedbackIdentifier Feedback Identifier
 
 <table>
-<tr><th>ID</th><th>Name</th><th>Description</th></tr>
-<tr><td align="center">1</td><td>Basic Sensor Data</td><td></td></tr>
-<tr><td align="center">2</td><td><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">3</td><td>Docking IR</td><td></td></tr>
-<tr><td align="center">4</td><td>Inertial Sensor</td><td></td></tr>
-<tr><td align="center">5</td><td>Cliff</td><td></td></tr>
-<tr><td align="center">6</td><td>Current</td><td></td></tr>
-<tr><td align="center">7</td><td><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">8</td><td><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">9</td><td><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">10</td><td>Hardware Version</td><td></td></tr>
-<tr><td align="center">11</td><td>Firmware Version</td><td></td></tr>
-<tr><td align="center">12</td><td><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">13</td><td>Raw data of 3-axis gyro</td><td></td></tr>
-<tr><td align="center">14</td><td><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">15</td><td>EEPROM</td><td></td></tr>
-<tr><td align="center">16</td><td>Genera lPurpose Input</td><td></td></tr>
-<tr><td align="center">17</td><td><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">18</td><td><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">19</td><td>Unique Device IDentifier</td><td></td></tr>
-<tr><td align="center">20</td><td><i>Reserved</i></td><td></td></tr>
+<tr><th>ID</th><th>Name</th><th>Description</th><th>Default</th></tr>
+<tr><td align="center">1</td><td>Basic Sensor Data</td><td></td><td>V</td></tr>
+<tr><td align="center">2</td><td><i>Reserved</i></td><td></td><td></td></tr>
+<tr><td align="center">3</td><td>Docking IR</td><td></td><td>V</td></tr>
+<tr><td align="center">4</td><td>Inertial Sensor</td><td></td><td>V</td></tr>
+<tr><td align="center">5</td><td>Cliff</td><td></td><td>V</td></tr>
+<tr><td align="center">6</td><td>Current</td><td></td><td>V</td></tr>
+<tr><td align="center">7</td><td><i>Reserved</i></td><td></td><td></td></tr>
+<tr><td align="center">8</td><td><i>Reserved</i></td><td></td><td></td></tr>
+<tr><td align="center">9</td><td><i>Reserved</i></td><td></td><td></td></tr>
+<tr><td align="center">10</td><td>Hardware Version</td><td></td><td></td></tr>
+<tr><td align="center">11</td><td>Firmware Version</td><td></td><td></td></tr>
+<tr><td align="center">12</td><td><i>Reserved</i></td><td></td><td></td></tr>
+<tr><td align="center">13</td><td>Raw data of 3-axis gyro</td><td></td><td>V</td></tr>
+<tr><td align="center">14</td><td><i>Reserved</i></td><td></td><td></td></tr>
+<tr><td align="center">15</td><td>Reserved</td><td></td><td></td></tr>
+<tr><td align="center">16</td><td>General Purpose Input</td><td></td><td>V</td></tr>
+<tr><td align="center">17</td><td><i>Reserved</i></td><td></td><td></td></tr>
+<tr><td align="center">18</td><td><i>Reserved</i></td><td></td><td></td></tr>
+<tr><td align="center">19</td><td>Unique Device IDentifier</td><td></td><td></td></tr>
+<tr><td align="center">20</td><td><i>Reserved</i></td><td></td><td></td></tr>
 </table>
 
 @subsection enBasicSensorData Basic Sensor Data
@@ -138,18 +146,15 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 <tr><td>Bump</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Wheel Drop</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Cliff</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Encoder[0]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Encoder[1]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>PWM[0]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>PWM[1]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Left Encoder</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Right Encoder</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Left PWM</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Right PWM</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Button</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Charger</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Battery</td><td align="center">1</td><td align="center"></td><td></td><td>In 0.1V</td></tr>
 <tr><td>Over Current</td><td align="center">1</td><td align="center"></td><td></td><td>In 20mA/LSB</td></tr>
 </table>
-
-
-
 
 @section enSandbox Sandbox
 

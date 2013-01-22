@@ -39,6 +39,6 @@ We have a simple implementation in the guides below and a more detailed implemen
 - @ref enSigslotsGuide "Sigslots"
 - @ref enSimpleExample "Simple Control Loop Example"
 - @ref enEmbeddedBoardTutorial "Embedded Board Tutorial"
-- @ref enAppendixGuide "Appendix"
+- @ref enAppendixGuideProtocol "Appendix : Protocol Specification"
 
 */
