@@ -121,6 +121,42 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 <tr><td>duration</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 </table>
 
+@subsection enSoundSequence Sound Sequence
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
+<tr><th>Data</th><td>sequence number</td><td align="center">1</td><td align="center"></td><td></td><td>0 for ON sound<br>1 for OFF sound<br>2 for RECHARGE sound<br>3 for BUTTON sound<br>4 for ERROR sound<br>5 for CLEANINGSTART sound<br>6 for CLEANINGEND sound</td></tr>
+</table>
+
+@subsection enSetPower Set Power
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">8</td><td>0x08</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
+<tr><th>Data</th><td>power control flags</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+</table>
+
+@subsection enRequestExtra Request Extra
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">9</td><td>0x09</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
+<tr><th>Data</th><td>reqeust flags</td><td align="center">2</td><td align="center"></td><td></td><td>0x01 for Hardware Version<br>0x02 for Firmware Version<br>0x08 for Unique Device ID</td></tr>
+</table>
+
+@subsection enGeneralPurposeOutput General Purpose Output
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">12</td><td>0x0C</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
+<tr><th>Data</th><td>Digital Output Flags</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+</table>
+
 <!-----------------------------
          Feedback Packets
 ------------------------------->
