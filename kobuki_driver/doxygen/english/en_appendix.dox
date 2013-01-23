@@ -87,7 +87,7 @@ return cs ? false : true;
 </table>
 
 Minimum length of payload is 3; Payload with a sub-payload, that has only 1 byte data.
-And theoretical minimum length of entire packet(bytestream) is 7. 
+And theoretical minimum length of entire packet(bytestream) is 7.
 
 <!-----------------------------
           Data Types
@@ -324,7 +324,7 @@ Inertial sensor data. Only 1 axis gyro data only available.
 
 @subsection enCliffSensorData Cliff Sensor Data
 
-PSD sensor data readings, that facing floor. 
+PSD sensor data readings, that facing floor.
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
@@ -388,16 +388,39 @@ This packet will be sent on request.
 
 Raw data of 3D gyro. Due to difference of acquisition rate and update rate, 2-3 data will be arrived at once.
 
+digit to deg/s ratio, comes from datasheet of 3d gyro[L3G4200D].
+
+@warning
+describe Time compensation ...
+
+<br>
+
+@warning
+Sensing axis of 3d gyro is not match with robot. It is rotated 90 degree counterclockwise about z-axis.
+So, below conversion will needed.
+@code
+const double digit_to_dps = 0.00875;
+angular_velocity.x =  -digit_to_dps * (short)raw_gyro_data.y;
+angular_velocity.y =   digit_to_dps * (short)raw_gyro_data.x;
+angular_velocity.z =   digit_to_dps * (short)raw_gyro_data.z;
+@endcode
+
+
 <table>
 <tr><th></th><th colspan="2">Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td colspan="2">Identifier</td><td align="center">1</td><td align="center">13</td><td>0x0D</td><td>Fixed</td></tr>
-<tr><th>Length</th><td colspan="2">Legnth of Data</td><td align="center">1</td><td align="center">2+2*N</td><td></td><td></td></tr>
-<tr><th rowspan="5">Data</th><td colspan="2">Frame id</td><td align="center">1</td><td align="center"></td><td></td><td>Circulate from 0 to 255</td></tr>
-<tr><td colspan="2">Followed data length</td><td align="center">1</td><td align="center">N</td><td></td><td>redundant for now</td></tr>
-<tr><td rowspan="3">Raw gyro data 0</td><td>x-axis</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>y-axis</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>z-axis</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><th>Length</th><td colspan="2">Legnth of Data</td><td align="center">1</td><td align="center">2+6N</td><td></td><td></td></tr>
+<tr><th rowspan="9">Data</th><td colspan="2">Frame id</td><td align="center">1</td><td align="center"></td><td></td><td>Circulate from 0 to 255</td></tr>
+<tr><td colspan="2">Followed data length</td><td align="center">1</td><td align="center">3N</td><td></td><td>redundant for now</td></tr>
+<tr><td rowspan="3">Raw gyro data 0</td><td>x-axis</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="7">in 0.00875 deg/s</td></tr>
+<tr><td>y-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr><td>z-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr><td colspan="5" align="center">:<br>:</td></tr>
+<tr><td rowspan="3">Raw gyro data N-1</td><td>x-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr><td>y-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr><td>z-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
 </table>
+
 
 @subsection enGeneralPurposeInput General Purpose Input
 
