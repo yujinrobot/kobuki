@@ -26,16 +26,16 @@ The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using pre
 <table>
 <tr align="center"><th>Name</th><td>Header 0</td><td>Header 1</td><td>Length</td><td>Payload</td><td>Checksum</td>
 <tr align="center"><th>Size</th><td>1 Byte</td><td>1 Byte</td><td>1 Byte</td><td>N Byte(s)</td><td>1 Byte</td>
-<tr align="center"><th align="center">Description</th><td width="100">0xAA<br>(Fixed)</td><td width="100">0x55<br>(Fixed)</td><td width="100">Size of payload in bytes</td><td width="100">Described below</td><td width="100">XOR'ed value of every bytes of bytesream except headerss</td>
+<tr align="center"><th align="center">Description</th><td width="100">0xAA<br>(Fixed)</td><td width="100">0x55<br>(Fixed)</td><td width="100">Size of payload in bytes</td><td width="100">Described below</td><td width="100">XOR'ed value of every bytes of bytesream except headers</td>
 </table>
 
 @subsection enHeader Header
 
-Two bytes of header 0 and hader 1 is fixed value for headings in every bytestreams, commands and feedback data. Headers are used to detect the start of bytestream.
+Two bytes of headers, header 0 and hader 1, are fixed value for both bytestreams, commands and feedback data. This headers are used to detect the starting point of bytestream.
 
 @subsection enLength Length
 
-Length indicated the length of following payload. It's size is 1 by default. Length can be used to distinguish each bytestream. Minimum value of this byte is 3.
+Length indicated the length of following bytes that one bytestream hold. Defulat size of this field is 1 byte. Length can be used to distinguish each bytestreams. Minimum value of this byte is 3.
 
 @subsection enPayload Payload
 
@@ -64,8 +64,6 @@ Sub-payload can be devided into three parts, Header, Length and Data.
 <tr align="center"><th align="center">Description</th><td width="100">Predefined Identifier</td><td width="100">Size of data in byte(s)</td><td width="100">Described below</td>
 </table>
 
-Minimul length of payload is 3; Payload with a sub-payload, that has only 1 byte data.
-
 @subsection enChecksum Checksum
 
 Checksum is XOR'ed value of entire bytestream except headers. Checksum process ensure the integrity of bytestreams.
@@ -88,7 +86,8 @@ return cs ? false : true;
 <tr align="center"><td>Header 0</td><td>Header 1</td><td>Sub-Payload 0</td><td>Sub-Payload 1</td><td>Sub-Payload 2</td><td>...</td><td>Sub-Payload N-1</td></tr>
 </table>
 
-
+Minimum length of payload is 3; Payload with a sub-payload, that has only 1 byte data.
+And theoretical minimum length of entire packet(bytestream) is 7. 
 
 <!-----------------------------
           Data Types
@@ -111,7 +110,7 @@ Data field in Sub-payload is a mixture of below three data types; byte, short an
 <table>
 <tr><td>0xDD</td><td>0xCC</td><td>0xBB</td><td>0xAA</td></tr>
 </table>
-So, 0xDD will arrive first in bytestream."
+So, 0xDD will arrive first in bytestream.
 
 Here are template functions to handle it on kobuki_deriver, @ref packet_handler::payloadBase::buildVariable(T & V, ecl::PushAndPop<unsigned char> & buffer) "buildVariable()" and @ref packet_handler::payloadBase::buildBytes(const T & V, ecl::PushAndPop<unsigned char> & buffer) "buildBytes()".
 
@@ -142,14 +141,14 @@ Here are template functions to handle it on kobuki_deriver, @ref packet_handler:
 
 @subsection enBaseControl Base Control
 
-Control wheel motors to moving robot.
+Control wheel motors to moving robot. Robot will follow the arc, which radius is <b>&lt;Radius&gt;</b> mm, with <b>&lt;Velocity&gt;</b> mm/s.
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
-<tr><th rowspan="2">Data</th><td>Speed</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Radius</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><th rowspan="2">Data</th><td>Speed</td><td align="center">2</td><td align="center"></td><td></td><td>in mm/s</td></tr>
+<tr><td>Radius</td><td align="center">2</td><td align="center"></td><td></td><td>in mm</td></tr>
 </table>
 
 @subsection enSound Sound
@@ -197,7 +196,7 @@ This command is implemtned on the kobuki with firmware, but not implemented yet 
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">8</td><td>0x08</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
-<tr><th>Data</th><td>Power control flags</td><td align="center">2</td><td align="center"></td><td></td><td>0x01 for external power 3.3V ch.<br>0x02 for external power 5V ch.<br>0x04 for external power 12V1A ch.<br>0x08 for external power 12V5A ch.</td></tr>
+<tr><th>Data</th><td>Power control flags</td><td align="center">2</td><td align="center"></td><td></td><td>0x01 for external power 3.3V ch.<br>0x02 for external power 5V ch.<br>0x04 for external power 12V1A ch.<br>0x08 for external power 12V5A ch.<br>(mutually exclusive)</td></tr>
 </table>
 
 @subsection enRequestExtra Request Extra
@@ -268,12 +267,12 @@ Basic core sensor data. Robot will sends this data periodically from power on.
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Feedback Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">15</td><td>0x0F</td><td>Fixed</td></tr>
-<tr><th rowspan="12">Data</th><td>Time Stamp</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Bump</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Wheel Drop</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Cliff</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Left Encoder</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Right Encoder</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><th rowspan="12">Data</th><td>Time Stamp</td><td align="center">2</td><td align="center"></td><td></td><td>in milliseconds<br>circulate from 0 to 65535</td></tr>
+<tr><td>Bump</td><td align="center">1</td><td align="center"></td><td></td><td>0x01 for right bumper<br>0x02 for central bumper<br>0x04 for left bumper</td></td></tr>
+<tr><td>Wheel Drop</td><td align="center">1</td><td align="center"></td><td></td><td>0x01 for right wheel<br>0x02 for left wheel</td></td></tr>
+<tr><td>Cliff</td><td align="center">1</td><td align="center"></td><td></td><td>0x01 for right cliff sensor<br>0x02 for central cliff sensor<br>0x04 for left cliff sensor</td></tr>
+<tr><td>Left Encoder</td><td align="center">2</td><td align="center"></td><td></td><td>in ticks</td></tr>
+<tr><td>Right Encoder</td><td align="center">2</td><td align="center"></td><td></td><td>in ticks</td></tr>
 <tr><td>Left PWM</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Right PWM</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Button</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
@@ -281,6 +280,14 @@ Basic core sensor data. Robot will sends this data periodically from power on.
 <tr><td>Battery</td><td align="center">1</td><td align="center"></td><td></td><td>In 0.1V<br>Typically 16.7V when fully charged</td></tr>
 <tr><td>Over Current</td><td align="center">1</td><td align="center"></td><td></td><td>0x01 for left wheel<br>0x02 for right wheel</td></tr>
 </table>
+
+@subsubsection enKobukiParameters Kobuki Parameters
+
+<!-- TODO -->
+* wheelbase(bias)
+* encoder ratio/gear ratio
+** ticks_to_millimeter
+** ticks_to_radian
 
 
 @subsection enDockingIR Docking IR
@@ -342,7 +349,7 @@ Current sensor readings of wheel motors.
 
 @subsection enHardwareVersion Hardware Version
 
-Hardware version info in triplet form; "<major>.<minor>.<patch>"
+Hardware version info in triplet form; &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;
 
 @note
 This packet will be sent on request.
@@ -360,7 +367,7 @@ This packet will be sent on request.
 
 @subsection enFirmwareVersion Firmware Version
 
-Firmware version info in triplet form; "<major>.<minor>.<patch>"
+Firmware version info in triplet form; &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;
 
 @note
 This packet will be sent on request.
@@ -382,12 +389,14 @@ This packet will be sent on request.
 Raw data of 3D gyro. Due to difference of acquisition rate and update rate, 2-3 data will be arrived at once.
 
 <table>
-<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
-<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">13</td><td>0x0D</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2+2*N</td><td></td><td></td></tr>
-<tr><th rowspan="3">Data</th><td>Frame id</td><td align="center">1</td><td align="center"></td><td></td><td>Circulate from 0 to 255</td></tr>
-<tr><td>Followed data length</td><td align="center">1</td><td align="center">N</td><td></td><td>redundant for now</td></tr>
-<tr><td>Raw gyro data</td><td align="center">2*N</td><td align="center"></td><td></td><td></td></tr>
+<tr><th></th><th colspan="2">Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td colspan="2">Identifier</td><td align="center">1</td><td align="center">13</td><td>0x0D</td><td>Fixed</td></tr>
+<tr><th>Length</th><td colspan="2">Legnth of Data</td><td align="center">1</td><td align="center">2+2*N</td><td></td><td></td></tr>
+<tr><th rowspan="5">Data</th><td colspan="2">Frame id</td><td align="center">1</td><td align="center"></td><td></td><td>Circulate from 0 to 255</td></tr>
+<tr><td colspan="2">Followed data length</td><td align="center">1</td><td align="center">N</td><td></td><td>redundant for now</td></tr>
+<tr><td rowspan="3">Raw gyro data 0</td><td>x-axis</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>y-axis</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>z-axis</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
 </table>
 
 @subsection enGeneralPurposeInput General Purpose Input
@@ -396,11 +405,11 @@ Raw data of 3D gyro. Due to difference of acquisition rate and update rate, 2-3 
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
-<tr><th rowspan="8">Data</th><td>Digital Input</td><td align="center">2</td><td align="center"></td><td></td><td>bit field</td></tr>
-<tr><td>Analog Input Ch.0</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Analog Input Ch.1</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Analog Input Ch.2</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Analog Input Ch.3</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><th rowspan="8">Data</th><td>Digital Input</td><td align="center">2</td><td align="center"></td><td></td><td>bit field<br>0x01 for digital input ch. 0<br>0x02 for digital input ch. 1<br>0x04 for digital input ch. 2<br>0x08 for input output ch. 3</td></tr>
+<tr><td>Analog Input Ch.0</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="4">in LSB<br>12-bit ADC<br>0~4095(2^12-1)<br>0~3.3V</td></tr>
+<tr><td>Analog Input Ch.1</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr><td>Analog Input Ch.2</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr><td>Analog Input Ch.3</td><td align="center">2</td><td align="center"></td><td></td></tr>
 <tr><td>Unused</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Unused</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Unused</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
@@ -409,7 +418,7 @@ Raw data of 3D gyro. Due to difference of acquisition rate and update rate, 2-3 
 @subsection enUniqueDeviceIDentifier Unique Device IDentifier(UDID)
 
 Contains Unique Device IDentifier of robot. This value is unique for all robot in the world.
-It can be represented by triplet form: "<UDID0>-<UDID1>-<UDID2>"
+It can be represented by triplet form: &lt;UDID0&gt;-&lt;UDID1&gt;-&lt;UDID2&gt;
 
 @note
 This packet will be sent on request.
