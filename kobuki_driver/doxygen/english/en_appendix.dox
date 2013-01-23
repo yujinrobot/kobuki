@@ -26,7 +26,7 @@ The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using pre
 <table>
 <tr align="center"><th>Name</th><td>Header 0</td><td>Header 1</td><td>Length</td><td>Payload</td><td>Checksum</td>
 <tr align="center"><th>Size</th><td>1 Byte</td><td>1 Byte</td><td>1 Byte</td><td>N Byte(s)</td><td>1 Byte</td>
-<tr align="center"><th align="center">Description</th><td width="100">0xAA<br>(Fixed)</td><td width="100">0x55<br>(Fixed)</td><td width="100">Size of payload in bytes</td><td width="100">Described below</td><td width="100">XOR'ed value of every bytes of entire packet</td>
+<tr align="center"><th align="center">Description</th><td width="100">0xAA<br>(Fixed)</td><td width="100">0x55<br>(Fixed)</td><td width="100">Size of payload in bytes</td><td width="100">Described below</td><td width="100">XOR'ed value of every bytes of bytesream except headerss</td>
 </table>
 
 @subsection enHeader Header
@@ -48,8 +48,8 @@ Payload is a consist of several sub-payloads.
 
 @par
 <table>
-<tr align="center"><th>Payload</th><td colspan="5">Payload</td></tr>
-<tr align="center"><th>Sub-Payloads</th><td>Sub-Payload 1</td><td>Sub-Payload 2</td><td>Sub-Payload 3</td><td>...</td><td>Sub-Payload N</td></tr>
+<tr align="center"><!--th>Payload</th--><td colspan="5">Payload</td></tr>
+<tr align="center"><!--th>Sub-Payloads</th--><td>Sub-Payload 0</td><td>Sub-Payload 1</td><td>Sub-Payload 2</td><td>...</td><td>Sub-Payload N-1</td></tr>
 </table>
 
 @subsubsection enStructureOfSubPayloads Structure Of Sub-Payloads
@@ -64,9 +64,31 @@ Sub-payload can be devided into three parts, Header, Length and Data.
 <tr align="center"><th align="center">Description</th><td width="100">Predefined Identifier</td><td width="100">Size of data in byte(s)</td><td width="100">Described below</td>
 </table>
 
+Minimul length of payload is 3; Payload with a sub-payload, that has only 1 byte data.
+
 @subsection enChecksum Checksum
 
-Checksum is XOR'ed value of entire bytestream. Checksum process ensure the integrity of bytestreams.
+Checksum is XOR'ed value of entire bytestream except headers. Checksum process ensure the integrity of bytestreams.
+
+Here is simple code snippet for it.
+@code
+unsigned int packet_size(buffer.size());
+unsigned char cs(0);
+for (unsigned int i = 2; i < packet_size; i++)
+{
+  cs ^= buffer[i];
+}
+return cs ? false : true;
+@endcode
+
+@subsection enEntireBytestream Entire Bytestream
+
+<table>
+<tr align="center"><td colspan="2">Headers</td><td rowspan="2">Length</td><td colspan="5">Payload</td><td rowspan="2">Checksum</td></tr>
+<tr align="center"><td>Header 0</td><td>Header 1</td><td>Sub-Payload 0</td><td>Sub-Payload 1</td><td>Sub-Payload 2</td><td>...</td><td>Sub-Payload N-1</td></tr>
+</table>
+
+
 
 <!-----------------------------
           Data Types
@@ -75,7 +97,6 @@ Checksum is XOR'ed value of entire bytestream. Checksum process ensure the integ
 @section enDataTypes Data Types
 
 Data field in Sub-payload is a mixture of below three data types; byte, short and int.
-
 <table>
 <tr align="center"><th>Name</th><th>Description</th><th>Byte Length</th><th>Bit Length</th><th>Data Range</th><th colspan="2">C/C++ Identifier</th></tr>
 <tr align="center"><td>Unsigned Byte</td><td>8-bit unsigned integer</td><td>1</td><td>8</td><td>0~255</td><td>unsigend char</td><td>uint8_t</td></tr>
@@ -83,13 +104,17 @@ Data field in Sub-payload is a mixture of below three data types; byte, short an
 <tr align="center"><td>Unsigned Int</td><td>32-bit unsigned integer</td><td>4</td><td>32</td><td>0~4,294,967,295</td><td>unsigend int</td><td>uint32_t</td>	</tr>
 </table>
 
-@subsection enSerderialization SerDeserialization
+@subsection enSerializationDerialization Serialization-Deserialization
+<!--or encodigns?-->
 
-<a href="http://en.wikipedia.org/wiki/Serialization">Serialization</a> is the process of convering a data sturcture into a bytestream.
+<a href="http://en.wikipedia.org/wiki/Serialization">Serialization</a> is the process of convering a data sturcture into a bytestream. Deserialization is reversal process. Each data types are serialized and deserialized by `<a href="http://en.wikipedia.org/wiki/Least_significant_byte">LSB</a>-First Order`. It means Least Significant Bytes will comes first on the bytestream. For example, The integer number 2,864,434,397(0xAABBCCDD) can be serialized <!-- or encoded?--> into:
+<table>
+<tr><td>0xDD</td><td>0xCC</td><td>0xBB</td><td>0xAA</td></tr>
+</table>
+So, 0xDD will arrive first in bytestream."
 
-Each data types are serialized and deserialized by `<a href="http://en.wikipedia.org/wiki/Least_significant_byte">LSB</a>-First Order`. It means Least Significant Bytes will comes first on the bytestream.
+Here are template functions to handle it on kobuki_deriver, @ref packet_handler::payloadBase::buildVariable(T & V, ecl::PushAndPop<unsigned char> & buffer) "buildVariable()" and @ref packet_handler::payloadBase::buildBytes(const T & V, ecl::PushAndPop<unsigned char> & buffer) "buildBytes()".
 
-Here are example code to handle it on kobuki_deriver, @ref packet_handler::payloadBase::buildVariable(T & V, ecl::PushAndPop<unsigned char> & buffer) "buildVariable()" and @ref packet_handler::payloadBase::buildBytes(const T & V, ecl::PushAndPop<unsigned char> & buffer) "buildBytes()".
 
 <!-----------------------------
          Command Packets
@@ -103,7 +128,7 @@ Here are example code to handle it on kobuki_deriver, @ref packet_handler::paylo
 <tr><th>ID</th><th>Name</th><th>Description</th></tr>
 <tr><td align="center">1</td><td>Base Control</td><td></td></tr>
 <tr><td align="center">2</td><td><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">3</td><td>Reserved</td><td></td></tr>
+<tr><td align="center">3</td><td>Sound</td><td></td></tr>
 <tr><td align="center">4</td><td>Sound Sequence</td><td></td></tr>
 <tr><td align="center">5</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">6</td><td><i>Reserved</i></td><td></td></tr>
@@ -129,12 +154,17 @@ Control wheel motors to moving robot.
 
 @subsection enSound Sound
 
+Play custom sounds with note and duration.
+
+@warning
+This command is implemtned on the kobuki with firmware, but not implemented yet on driver software(kobuki_driver).
+
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
-<tr><th rowspan="2">Data</th><td>note</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>duration</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><th rowspan="2">Data</th><td>note</td><td align="center">2</td><td align="center"></td><td></td><td>72~22017 in Hz</td></tr>
+<tr><td>duration</td><td align="center">1</td><td align="center"></td><td></td><td>in mili-seconds</td></tr>
 </table>
 
 @subsection enSoundSequence Sound Sequence
@@ -148,16 +178,26 @@ Play predefined sounds by its index.
 <tr><th>Data</th><td>sequence number</td><td align="center">1</td><td align="center"></td><td></td><td>0 for ON sound<br>1 for OFF sound<br>2 for RECHARGE sound<br>3 for BUTTON sound<br>4 for ERROR sound<br>5 for CLEANINGSTART sound<br>6 for CLEANINGEND sound</td></tr>
 </table>
 
+
+
+
+
+
+
+
 @subsection enSetPower Set Power
 
 Control the external powers; 3.3V, 5V, 12V1A, 12V5A.
 It is identical role with external power part of General Purpose Output.
 
+@warning
+This command is implemtned on the kobuki with firmware, but not implemented yet on driver software(kobuki_driver).
+
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">8</td><td>0x08</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
-<tr><th>Data</th><td>power control flags</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><th>Data</th><td>Power control flags</td><td align="center">2</td><td align="center"></td><td></td><td>0x01 for external power 3.3V ch.<br>0x02 for external power 5V ch.<br>0x04 for external power 12V1A ch.<br>0x08 for external power 12V5A ch.</td></tr>
 </table>
 
 @subsection enRequestExtra Request Extra
@@ -170,7 +210,7 @@ UDID is unique to device. so can be used to identify on multiple robots.
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">9</td><td>0x09</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
-<tr><th>Data</th><td>reqeust flags</td><td align="center">2</td><td align="center"></td><td></td><td>0x01 for Hardware Version<br>0x02 for Firmware Version<br>0x08 for Unique Device ID</td></tr>
+<tr><th>Data</th><td>Reqeust flags</td><td align="center">2</td><td align="center"></td><td></td><td>0x01 for Hardware Version<br>0x02 for Firmware Version<br>0x08 for Unique Device ID</td></tr>
 </table>
 
 @subsection enGeneralPurposeOutput General Purpose Output
@@ -194,6 +234,8 @@ To using it carefully set the bit fields.
 
 @subsection enFeedbackIdentifier Feedback Identifier
 
+Kobuki sends below default feedbacks periodically in 50 Hz, when it powered on.
+
 <table>
 <tr><th>ID</th><th>Name</th><th>Description</th><th>Default</th></tr>
 <tr><td align="center">1</td><td>Basic Sensor Data</td><td></td><td>V</td></tr>
@@ -205,8 +247,8 @@ To using it carefully set the bit fields.
 <tr><td align="center">7</td><td><i>Reserved</i></td><td></td><td></td></tr>
 <tr><td align="center">8</td><td><i>Reserved</i></td><td></td><td></td></tr>
 <tr><td align="center">9</td><td><i>Reserved</i></td><td></td><td></td></tr>
-<tr><td align="center">10</td><td>Hardware Version</td><td></td><td></td></tr>
-<tr><td align="center">11</td><td>Firmware Version</td><td></td><td></td></tr>
+<tr><td align="center">10</td><td>Hardware Version</td><td></td><td>On Request</td></tr>
+<tr><td align="center">11</td><td>Firmware Version</td><td></td><td>On Request</td></tr>
 <tr><td align="center">12</td><td><i>Reserved</i></td><td></td><td></td></tr>
 <tr><td align="center">13</td><td>Raw data of 3-axis gyro</td><td></td><td>V</td></tr>
 <tr><td align="center">14</td><td><i>Reserved</i></td><td></td><td></td></tr>
@@ -214,7 +256,7 @@ To using it carefully set the bit fields.
 <tr><td align="center">16</td><td>General Purpose Input</td><td></td><td>V</td></tr>
 <tr><td align="center">17</td><td><i>Reserved</i></td><td></td><td></td></tr>
 <tr><td align="center">18</td><td><i>Reserved</i></td><td></td><td></td></tr>
-<tr><td align="center">19</td><td>Unique Device IDentifier</td><td></td><td></td></tr>
+<tr><td align="center">19</td><td>Unique Device IDentifier</td><td></td><td>On Request</td></tr>
 <tr><td align="center">20</td><td><i>Reserved</i></td><td></td><td></td></tr>
 </table>
 
@@ -235,9 +277,9 @@ Basic core sensor data. Robot will sends this data periodically from power on.
 <tr><td>Left PWM</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Right PWM</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Button</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Charger</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Battery</td><td align="center">1</td><td align="center"></td><td></td><td>In 0.1V</td></tr>
-<tr><td>Over Current</td><td align="center">1</td><td align="center"></td><td></td><td>In 20mA/LSB</td></tr>
+<tr><td>Charger</td><td align="center">1</td><td align="center"></td><td></td><td>0 for DISCHARGING state<br>2 for DOCKING_CHARGED state<br>6 for DOCKING_CHARGING state<br>18 for ADAPTER_CHARGED state<br>22 for ADAPTER_CHARGING state</td></tr>
+<tr><td>Battery</td><td align="center">1</td><td align="center"></td><td></td><td>In 0.1V<br>Typically 16.7V when fully charged</td></tr>
+<tr><td>Over Current</td><td align="center">1</td><td align="center"></td><td></td><td>0x01 for left wheel<br>0x02 for right wheel</td></tr>
 </table>
 
 
@@ -249,10 +291,14 @@ Docking IR signals from the docking station.
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
-<tr><th rowspan="3">Data</th><td>docking[0]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>docking[1]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>docking[1]</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr height="40"><th rowspan="3">Data</th><td>Right Signal</td><td align="center">1</td><td align="center"></td><td></td><td rowspan="3">0x01 for NEAR_LEFT state<br>0x02 for NEAR_CENTER state<br>0x04 for NEAR_RIGHT state<br>0x08 for FAR_CENTER state<br>ox10 for FAR_LEFT state<br>0x20 for FAR_RIGHT state</td></tr>
+<tr height="40"><td>Central Signal</td><td align="center">1</td><td align="center"></td><td></td></tr>
+<tr height="40"><td>Left Signal</td><td align="center">1</td><td align="center"></td><td></td></tr>
 </table>
+
+Kobuki's docking station has 3 <a href="http://en.wikipedia.org/wiki/Infrared">IR</a> emitters. The emitted IR lights cover three regions in front of the docking station: left, central and right, each divided in two sub-fields: near and far. Each beam encodes this information, so the robot knows at any moment in which region and sub-field he is. Also, as regions and fields are independently identified, they can be overlap on its borders.
+@image html dock_ir_fields.png "Docking IR Fields"
+
 
 @subsection enInertialSensorData Inertial Sensor Data
 
@@ -262,16 +308,16 @@ Inertial sensor data. Only 1 axis gyro data only available.
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">7</td><td>0x07</td><td>Fixed</td></tr>
-<tr><th rowspan="5">Data</th><td>angle</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>angle rate</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>acc[0]</td><td align="center">1</td><td align="center"></td><td></td><td>Unused</td></tr>
-<tr><td>acc[1]</td><td align="center">1</td><td align="center"></td><td></td><td>Unused</td></tr>
-<tr><td>acc[2]</td><td align="center">1</td><td align="center"></td><td></td><td>Unused</td></tr>
+<tr><th rowspan="5">Data</th><td>Angle</td><td align="center">2</td><td align="center"></td><td></td><td>Factory Calibrated</td></tr>
+<tr><td>Angle Rate</td><td align="center">2</td><td align="center"></td><td></td><td>Factory Calibrated</td></tr>
+<tr><td>Unused</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Unused</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Unused</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 </table>
 
 @subsection enCliffSensorData Cliff Sensor Data
 
-PSD sensor data reading from bottom.
+PSD sensor data readings, that facing floor. 
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
@@ -290,36 +336,45 @@ Current sensor readings of wheel motors.
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">6</td><td>0x06</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
-<tr><th rowspan="2">Data</th><td>current[0]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>current[1]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><th rowspan="2">Data</th><td>Left Motor</td><td align="center">2</td><td align="center"></td><td></td><td>in 10mA</td></tr>
+<tr><td>Right Motor</td><td align="center">2</td><td align="center"></td><td></td><td>in 10mA</td></tr>
 </table>
 
 @subsection enHardwareVersion Hardware Version
 
 Hardware version info in triplet form; "<major>.<minor>.<patch>"
 
+@note
+This packet will be sent on request.
+@sa @ref enRequestExtra
+
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">10</td><td>0x0A</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
-<tr><th rowspan="4">Data</th><td>patch</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>minor</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>major</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>not used</td><td align="center">1</td><td align="center">0</td><td>0x00</td><td>Fixed</td></tr>
+<tr><th rowspan="4">Data</th><td>Patch</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Minor</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Major</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Unused</td><td align="center">1</td><td align="center">0</td><td>0x00</td><td>Fixed</td></tr>
 </table>
 
 @subsection enFirmwareVersion Firmware Version
 
 Firmware version info in triplet form; "<major>.<minor>.<patch>"
 
+@note
+This packet will be sent on request.
+@sa @ref enRequestExtra
+
+
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">11</td><td>0x0B</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
-<tr><th rowspan="4">Data</th><td>patch</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>minor</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>major</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>not used</td><td align="center">1</td><td align="center">0</td><td>0x00</td><td>Fixed</td></tr>
+<tr><th rowspan="4">Data</th><td>Patch</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Minor</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Major</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Unused</td><td align="center">1</td><td align="center">0</td><td>0x00</td><td>Fixed</td></tr>
 </table>
 
 @subsection enRawDataOf3DGyro Raw Data Of 3D Gyro
@@ -330,9 +385,9 @@ Raw data of 3D gyro. Due to difference of acquisition rate and update rate, 2-3 
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">13</td><td>0x0D</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2+2*N</td><td></td><td></td></tr>
-<tr><th rowspan="3">Data</th><td>frame id</td><td align="center">1</td><td align="center"></td><td></td><td>Circulate from 0 to 255</td></tr>
-<tr><td>followed data length</td><td align="center">1</td><td align="center">N</td><td></td><td>redundant for now</td></tr>
-<tr><td>raw gyro data</td><td align="center">2*N</td><td align="center"></td><td></td><td></td></tr>
+<tr><th rowspan="3">Data</th><td>Frame id</td><td align="center">1</td><td align="center"></td><td></td><td>Circulate from 0 to 255</td></tr>
+<tr><td>Followed data length</td><td align="center">1</td><td align="center">N</td><td></td><td>redundant for now</td></tr>
+<tr><td>Raw gyro data</td><td align="center">2*N</td><td align="center"></td><td></td><td></td></tr>
 </table>
 
 @subsection enGeneralPurposeInput General Purpose Input
@@ -341,25 +396,32 @@ Raw data of 3D gyro. Due to difference of acquisition rate and update rate, 2-3 
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
-<tr><th rowspan="8">Data</th><td>digital input</td><td align="center">2</td><td align="center"></td><td></td><td>bit field</td></tr>
-<tr><td>analog input ch.0</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>analog input ch.1</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>analog input ch.2</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>analog input ch.3</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><th rowspan="8">Data</th><td>Digital Input</td><td align="center">2</td><td align="center"></td><td></td><td>bit field</td></tr>
+<tr><td>Analog Input Ch.0</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Analog Input Ch.1</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Analog Input Ch.2</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Analog Input Ch.3</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Unused</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Unused</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Unused</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
 </table>
 
-@subsection enUniqueDeviceIDentifier Unique Device IDentifier
+@subsection enUniqueDeviceIDentifier Unique Device IDentifier(UDID)
+
+Contains Unique Device IDentifier of robot. This value is unique for all robot in the world.
+It can be represented by triplet form: "<UDID0>-<UDID1>-<UDID2>"
+
+@note
+This packet will be sent on request.
+@sa @ref enRequestExtra
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">19</td><td>0x13</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">12</td><td>0x0C</td><td>Fixed</td></tr>
-<tr><th rowspan="4">Data</th><td>udid0</td><td align="center">4</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>udid1</td><td align="center">4</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>udid2</td><td align="center">4</td><td align="center"></td><td></td><td></td></tr>
+<tr><th rowspan="4">Data</th><td>UDID0</td><td align="center">4</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>UDID1</td><td align="center">4</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>UDID2</td><td align="center">4</td><td align="center"></td><td></td><td></td></tr>
 </table>
 
 @section enSandbox Sandbox
@@ -378,6 +440,9 @@ blah
 
 Hmm.. Tables..
 
+<div markdown="1">
+This is *true* markdown text.
+</div>
 
 
 
