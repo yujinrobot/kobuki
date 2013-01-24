@@ -140,14 +140,14 @@ void DiffDrive::velocityCommands(const double &vx, const double &wz) {
 }
 
 void DiffDrive::velocityCommands(const short &cmd_speed, const short &cmd_radius) {
-  speed = cmd_speed; //in mm/s
-  radius = cmd_radius; //in mm/s
+  speed = cmd_speed;   // In mm/s
+  radius = cmd_radius; // In mm
 }
 
 std::vector<short> DiffDrive::velocityCommands() const {
   std::vector<short> cmd(2);
-  cmd[0] = speed;
-  cmd[1] = radius;
+  cmd[0] = speed;  // In mm/s
+  cmd[1] = radius; // In mm
   return cmd;
 }
 
