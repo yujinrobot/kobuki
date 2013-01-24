@@ -312,26 +312,26 @@ This command has multiple roles. It controls LEDs, digital outputs and external 
 Kobuki sends below default feedbacks periodically in 50 Hz, when it powered on.
 
 <table>
-<tr><th>ID</th><th>Name</th><th>Description</th><th>Default</th></tr>
-<tr><td align="center">1</td><td>Basic Sensor Data</td><td></td><td>V</td></tr>
+<tr><th>ID</th><th>Name</th><th>Description</th><th>Availability</th></tr>
+<tr><td align="center">1</td><td>Basic Sensor Data</td><td>Basic core sensor data</td><td>By default</td></tr>
 <tr><td align="center">2</td><td><i>Reserved</i></td><td></td><td></td></tr>
-<tr><td align="center">3</td><td>Docking IR</td><td></td><td>V</td></tr>
-<tr><td align="center">4</td><td>Inertial Sensor</td><td></td><td>V</td></tr>
-<tr><td align="center">5</td><td>Cliff</td><td></td><td>V</td></tr>
-<tr><td align="center">6</td><td>Current</td><td></td><td>V</td></tr>
+<tr><td align="center">3</td><td>Docking IR</td><td>Signals from docking station</td><td>By default</td></tr>
+<tr><td align="center">4</td><td>Inertial Sensor</td><td>Gyro data both angle and angular velocity</td><td>By default</td></tr>
+<tr><td align="center">5</td><td>Cliff</td><td>PSD data facing floor</td><td>By default</td></tr>
+<tr><td align="center">6</td><td>Current</td><td>Current of wheel motors</td><td>By default</td></tr>
 <tr><td align="center">7</td><td><i>Reserved</i></td><td></td><td></td></tr>
 <tr><td align="center">8</td><td><i>Reserved</i></td><td></td><td></td></tr>
 <tr><td align="center">9</td><td><i>Reserved</i></td><td></td><td></td></tr>
-<tr><td align="center">10</td><td>Hardware Version</td><td></td><td>On Request</td></tr>
-<tr><td align="center">11</td><td>Firmware Version</td><td></td><td>On Request</td></tr>
+<tr><td align="center">10</td><td>Hardware Version</td><td>Version number of kobuki hardware</td><td>On request</td></tr>
+<tr><td align="center">11</td><td>Firmware Version</td><td>Version number of kobuki firmware</td><td>On request</td></tr>
 <tr><td align="center">12</td><td><i>Reserved</i></td><td></td><td></td></tr>
-<tr><td align="center">13</td><td>Raw data of 3-axis gyro</td><td></td><td>V</td></tr>
+<tr><td align="center">13</td><td>Raw data of 3-axis gyro</td><td>Raw ADC data of digital 3-axis gyro</td><td>By default</td></tr>
 <tr><td align="center">14</td><td><i>Reserved</i></td><td></td><td></td></tr>
 <tr><td align="center">15</td><td>Reserved</td><td></td><td></td></tr>
-<tr><td align="center">16</td><td>General Purpose Input</td><td></td><td>V</td></tr>
+<tr><td align="center">16</td><td>General Purpose Input</td><td>Inputs from 25-pin expansion port</td><td>By default</td></tr>
 <tr><td align="center">17</td><td><i>Reserved</i></td><td></td><td></td></tr>
 <tr><td align="center">18</td><td><i>Reserved</i></td><td></td><td></td></tr>
-<tr><td align="center">19</td><td>Unique Device IDentifier(UDID)</td><td></td><td>On Request</td></tr>
+<tr><td align="center">19</td><td>Unique Device IDentifier(UDID)</td><td>Unique number to identify robot</td><td>On request</td></tr>
 <tr><td align="center">20</td><td><i>Reserved</i></td><td></td><td></td></tr>
 </table>
 
@@ -348,42 +348,48 @@ Basic core sensor data. Robot will sends this data periodically from power on.
 <tr><th>Header</th><td>Feedback Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">15</td><td>0x0F</td><td>Fixed</td></tr>
 <tr><th rowspan="12">Data</th><td>Time Stamp</td><td align="center">2</td><td align="center"></td><td></td><td>in milliseconds<br>circulate from 0 to 65535</td></tr>
-<tr><td>Bump</td><td align="center">1</td><td align="center"></td><td></td><td>0x01 for right bumper<br>0x02 for central bumper<br>0x04 for left bumper</td></td></tr>
-<tr><td>Wheel Drop</td><td align="center">1</td><td align="center"></td><td></td><td>0x01 for right wheel<br>0x02 for left wheel</td></td></tr>
-<tr><td>Cliff</td><td align="center">1</td><td align="center"></td><td></td><td>0x01 for right cliff sensor<br>0x02 for central cliff sensor<br>0x04 for left cliff sensor</td></tr>
-<tr><td>Left Encoder</td><td align="center">2</td><td align="center"></td><td></td><td>in ticks</td></tr>
-<tr><td>Right Encoder</td><td align="center">2</td><td align="center"></td><td></td><td>in ticks</td></tr>
-<tr><td>Left PWM</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Right PWM</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Button</td><td align="center">1</td><td align="center"></td><td></td><td>0x01 for Button 0<br>0x02 for Button 1<br>0x04 for Button 2</td></tr>
+<tr><td>Bump</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when bumper is pressed<br>0x01 for right bumper<br>0x02 for central bumper<br>0x04 for left bumper</td></td></tr>
+<tr><td>Wheel Drop</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when wheel is dropped<br>0x01 for right wheel<br>0x02 for left wheel</td></td></tr>
+<tr><td>Cliff</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when cliff is detected<br>0x01 for right cliff sensor<br>0x02 for central cliff sensor<br>0x04 for left cliff sensor</td></tr>
+<tr><td>Left Encoder</td><td align="center">2</td><td align="center"></td><td></td><td>Encoder data of left wheel in ticks</td></tr>
+<tr><td>Right Encoder</td><td align="center">2</td><td align="center"></td><td></td><td>Encoder data of right wheel in ticks</td></tr>
+<tr><td>Left PWM</td><td align="center">1</td><td align="center"></td><td>PWM value that applied to left wheel motor</td><td></td></tr>
+<tr><td>Right PWM</td><td align="center">1</td><td align="center"></td><td>PWM value that applied to right wheel motor</td><td></td></tr>
+<tr><td>Button</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when button is pressed<br>0x01 for Button 0<br>0x02 for Button 1<br>0x04 for Button 2</td></tr>
 <tr><td>Charger</td><td align="center">1</td><td align="center"></td><td></td><td>0 for DISCHARGING state<br>2 for DOCKING_CHARGED state<br>6 for DOCKING_CHARGING state<br>18 for ADAPTER_CHARGED state<br>22 for ADAPTER_CHARGING state</td></tr>
-<tr><td>Battery</td><td align="center">1</td><td align="center"></td><td></td><td>In 0.1V<br>Typically 16.7V when fully charged</td></tr>
-<tr><td>Over Current</td><td align="center">1</td><td align="center"></td><td></td><td>0x01 for left wheel<br>0x02 for right wheel</td></tr>
+<tr><td>Battery</td><td align="center">1</td><td align="center"></td><td></td><td>Voltage of battery in 0.1 V<br>Typically 16.7 V when fully charged</td></tr>
+<tr><td>Over Current</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when over current is detected<br>0x01 for left wheel<br>0x02 for right wheel</td></tr>
 </table>
 
-<!--- Kobuki Parameters --->
+@note
+This sub-payload will be sent by default.
+
+<br>
+
+<!--
+<!--- Kobuki Parameters ---
 @subsubsection enKobukiParameters Kobuki Parameters
 
-<!-- TODO -->
+<!-- TODO --
 - wheelbase(bias)
 - encoder ratio/gear ratio
    -# ticks_to_millimeter
    -# ticks_to_radian
 
 <br>
-
+-->
 
 <!--- Docking IR --->
 
 @subsection enDockingIR Docking IR
 
-Docking IR signals from the docking station.
+Signals from the docking station.
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
-<tr height="40"><th rowspan="3">Data</th><td>Right Signal</td><td align="center">1</td><td align="center"></td><td></td><td rowspan="3">0x01 for NEAR_LEFT state<br>0x02 for NEAR_CENTER state<br>0x04 for NEAR_RIGHT state<br>0x08 for FAR_CENTER state<br>ox10 for FAR_LEFT state<br>0x20 for FAR_RIGHT state</td></tr>
+<tr height="40"><th rowspan="3">Data</th><td>Right Signal</td><td align="center">1</td><td align="center"></td><td></td><td rowspan="3">Flag will be setted when signal is detected<br>0x01 for NEAR_LEFT state<br>0x02 for NEAR_CENTER state<br>0x04 for NEAR_RIGHT state<br>0x08 for FAR_CENTER state<br>ox10 for FAR_LEFT state<br>0x20 for FAR_RIGHT state</td></tr>
 <tr height="40"><td>Central Signal</td><td align="center">1</td><td align="center"></td><td></td></tr>
 <tr height="40"><td>Left Signal</td><td align="center">1</td><td align="center"></td><td></td></tr>
 </table>
@@ -404,12 +410,15 @@ Inertial sensor data. Only 1 axis gyro data only available.
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">7</td><td>0x07</td><td>Fixed</td></tr>
-<tr><th rowspan="5">Data</th><td>Angle</td><td align="center">2</td><td align="center"></td><td></td><td>Factory Calibrated</td></tr>
-<tr><td>Angle Rate</td><td align="center">2</td><td align="center"></td><td></td><td>Factory Calibrated</td></tr>
+<tr><th rowspan="5">Data</th><td>Angle</td><td align="center">2</td><td align="center"></td><td></td><td>Factory calibrated</td></tr>
+<tr><td>Angle Rate</td><td align="center">2</td><td align="center"></td><td></td><td>Factory calibrated</td></tr>
 <tr><td>Unused</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Unused</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Unused</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 </table>
+
+@note
+This sub-payload will be sent by default.
 
 <br>
 
@@ -418,11 +427,11 @@ Inertial sensor data. Only 1 axis gyro data only available.
 
 @subsection enCliffSensorData Cliff Sensor Data
 
-<a href="http://en.wikipedia.org/wiki/Position_sensitive_device">PSD</a> data readings, that facing floor. This sub-payload provides ADC reading of PSD[GP2Y0A51SK0F].
+This sub-payload provides <a href="http://en.wikipedia.org/wiki/Analog-to-digital_converter">ADC</a> data of <a href="http://en.wikipedia.org/wiki/Position_sensitive_device">PSD</a>, which is facing the floor. <!-- part name is GP2Y0A51SK0F -->
 
-The ADC value is related with distance between sensor and floor surface. See the <a href="http://www.beck-elektronik.de/fileadmin/templates/beck_folder/opto/sensor/sharp/analog-gp2y0a51sk0f.pdf">datasheet</a> for more detailed information.
+This value is related with distance between sensor and floor surface. See the <a href="http://www.beck-elektronik.de/fileadmin/templates/beck_folder/opto/sensor/sharp/analog-gp2y0a51sk0f.pdf">datasheet</a> for more detailed information.
 
-This ADC value is processed  from the kobuki to the boolean values, which is available in the Cliff field of @ref enBasicSensorData .
+This data also available in the Cliff field of @ref enBasicSensorData , as a boolean type, processed on the kobuki.
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
@@ -432,6 +441,9 @@ This ADC value is processed  from the kobuki to the boolean values, which is ava
 <tr><td>Central cliff sensor</td><td align="center">2</td><td align="center"></td><td></td></tr>
 <tr><td>Left cliff sensor</td><td align="center">2</td><td align="center"></td><td></td></tr>
 </table>
+
+@note
+This sub-payload will be sent by default.
 
 @sa @ref enBasicSensorData
 
@@ -450,6 +462,9 @@ Current sensor readings of wheel motors.
 <tr><th rowspan="2">Data</th><td>Left Motor</td><td align="center">2</td><td align="center"></td><td></td><td>in 10mA</td></tr>
 <tr><td>Right Motor</td><td align="center">2</td><td align="center"></td><td></td><td>in 10mA</td></tr>
 </table>
+
+@note
+This sub-payload will be sent by default.
 
 <br>
 
@@ -556,7 +571,7 @@ angular_velocity.z =   digit_to_dps * (short)raw_gyro_data.z;
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
-<tr><th rowspan="8">Data</th><td>Digital Input</td><td align="center">2</td><td align="center"></td><td></td><td>bit field<br>0x01 for digital input ch. 0<br>0x02 for digital input ch. 1<br>0x04 for digital input ch. 2<br>0x08 for input output ch. 3</td></tr>
+<tr><th rowspan="8">Data</th><td>Digital Input</td><td align="center">2</td><td align="center"></td><td></td><td>Flag will be setted, when high voltage is applied<br>0x01 for digital input ch. 0<br>0x02 for digital input ch. 1<br>0x04 for digital input ch. 2<br>0x08 for input output ch. 3</td></tr>
 <tr><td>Analog Input Ch.0</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="4">12-bit ADC output of each channel<br>Data range: 0 ~ 4095(2^12-1)<br>Conversion voltage range: 0 ~ 3.3 V</td></tr>
 <tr><td>Analog Input Ch.1</td><td align="center">2</td><td align="center"></td><td></td></tr>
 <tr><td>Analog Input Ch.2</td><td align="center">2</td><td align="center"></td><td></td></tr>
