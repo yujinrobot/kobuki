@@ -2,9 +2,7 @@
 
 @page enAppendixGuide Appendix : Protocol Specification
 
-<!--
 @tableofcontents
--->
 
 <!-----------------------------
          Overview
@@ -12,7 +10,7 @@
 
 @section enOverview Overview
 
-The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using predefined protocol. In general, the driver sends the commands to the robot and the robot sends some feedback data or sensor readings. These commands and feedback data are converted into a bytestream for communication via serial interface. The protocol specifies that rules and forms of bytestreams.
+The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using predefined protocol. In general, the driver sends the commands to the robot and the robot sends some feedback data or sensor readings. These commands and feedback data are converted into bytestreams for communication via serial interface. The protocol specifies that rules and forms of bytestreams.
 
 
 <!-----------------------------
@@ -21,9 +19,11 @@ The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using pre
 
 @section enBytestream Structure of Bytestream
 
+A bytestream can be devided into 4 fields, Headers, Length, Payload and Checksum.
+
 <table>
 <tr align="center"><th>Name</th><td>Header 0</td><td>Header 1</td><td>Length</td><td>Payload</td><td>Checksum</td>
-<tr align="center"><th>Size</th><td>1 Byte</td><td>1 Byte</td><td>1 Byte</td><td>N Byte(s)</td><td>1 Byte</td>
+<tr align="center"><th>Size</th><td>1 Byte</td><td>1 Byte</td><td>1 Byte</td><td>N Bytes</td><td>1 Byte</td>
 <tr align="center"><th align="center">Description</th><td width="100">0xAA<br>(Fixed)</td><td width="100">0x55<br>(Fixed)</td><td width="100">Size of payload in bytes</td><td width="100">Described below</td><td width="100">XOR'ed value of every bytes of bytesream except headers</td>
 </table>
 
@@ -41,7 +41,7 @@ Two bytes of headers, header 0 and hader 1, are fixed value for both bytestreams
 
 @subsection enLength Length
 
-Length indicated the length of following bytes that one bytestream hold. Defulat size of this field is 1 byte. Length can be used to distinguish each bytestreams. Minimum value of this byte is 3.
+Length indicated the length of following bytes that one bytestream hold. Defulat size of this field is 1 byte. Length can be used to distinguish each bytestreams. Minimum value of this field is 3.
 
 <br>
 
@@ -54,9 +54,11 @@ Payload contains actual data of bytestream.
 <br>
 
 <!--- Structure Of Payload --->
+@par
 @subsubsection enStructureOfPayload Structure Of Payload
 <!--@par <b>Structure of Payload</b>-->
 
+@par
 Payload is a consist of several sub-payloads.
 
 @par
@@ -72,6 +74,7 @@ Payload is a consist of several sub-payloads.
 <!--- Structure Of Sub-Payloads --->
 @subsubsection enStructureOfSubPayloads Structure Of Sub-Payloads
 
+@par
 Sub-payload can be devided into three parts, Header, Length and Data.
 
 @par
@@ -112,8 +115,11 @@ return cs ? false : true;
 <tr align="center"><td>Header 0</td><td>Header 1</td><td>Sub-Payload 0</td><td>Sub-Payload 1</td><td>Sub-Payload 2</td><td>...</td><td>Sub-Payload N-1</td></tr>
 </table>
 
+Above table shows the structure of entire bytestream.
+
 Minimum length of payload is 3; Payload with a sub-payload, that has only 1 byte data.
-And theoretical minimum length of entire packet(bytestream) is 7.
+
+Theoretical minimum length of entire packet(bytestream) is 7.
 
 <br>
 
@@ -171,8 +177,8 @@ Here are template functions to handle it on kobuki_deriver, @ref packet_handler:
 <tr><td align="center">7</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">8</td><td>Set Power</td><td>Control external powers</td></tr>
 <tr><td align="center">9</td><td>Request Extra</td><td>Request extra informations</td></tr>
-<tr><td align="center">10</td><td>Reserved</td><td></td></tr>
-<tr><td align="center">11</td><td>Reserved</td><td></td></tr>
+<tr><td align="center">10</td><td><i>Reserved</i></td><td></td></tr>
+<tr><td align="center">11</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">12</td><td>General Purpose Output</td><td>Control general purpose outputs</td></tr>
 </table>
 
@@ -249,13 +255,15 @@ It is identical role with external power part of General Purpose Output.
 @warning
 This command is implemtned on the kobuki with firmware, but not implemented yet on driver software(kobuki_driver).
 
+@sa @ref enGeneralPurposeOutput
+
 <br>
 
 
 <!--- Request Extra --->
 @subsection enRequestExtra Request Extra
 
-Request extra data from robot. Especially version info of kobuki; Hardware Version, Firmware Version and Unique Deivce IDentifier
+Request extra data from robot. Especially version info of kobuki; Hardware Version, Firmware Version and Unique Deivce IDentifier(UDID)
 
 UDID is unique to device. so can be used to identify on multiple robots.
 
@@ -266,15 +274,17 @@ UDID is unique to device. so can be used to identify on multiple robots.
 <tr><th>Data</th><td>Reqeust flags</td><td align="center">2</td><td align="center"></td><td></td><td>0x01 for Hardware Version<br>0x02 for Firmware Version<br>0x08 for Unique Device ID</td></tr>
 </table>
 
+@sa @ref enHardwareVersion @ref enFirmwareVersion,  @ref enUniqueDeviceIDentifier
+
 <br>
 
 
 <!--- General Purpose Output --->
 @subsection enGeneralPurposeOutput General Purpose Output
 
-This command play multiple roles. it controls LED's, digital outputs and external powers.
+This command has multiple roles. It controls LEDs, digital outputs and external powers.
 
-To using it carefully set the bit fields.
+<!--To using it carefully set the bit fields.-->
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
@@ -282,6 +292,8 @@ To using it carefully set the bit fields.
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
 <tr><th>Data</th><td>Digital Output Flags</td><td align="center">2</td><td align="center"></td><td></td><td>0x0001 for digital output ch. 0<br>0x0002 for digital output ch. 1<br>0x0004 for digital output ch. 2<br>0x0008 for digital output ch. 3<br><br>0x0010 for external power 3.3V ch.<br>0x0020 for external power 5V ch.<br>0x0040 for external power 12V1A ch.<br>0x0080 for external power 12V5A ch.<br><br>0x0100 for red colour of LED1<br>0x0200 for green colour of LED1<br>0x0400 for red colour of LED2<br>0x0800 for green colour of LED2<br></td></tr>
 </table>
+
+@sa @ref enSetPower
 
 <br>
 
@@ -353,10 +365,10 @@ Basic core sensor data. Robot will sends this data periodically from power on.
 @subsubsection enKobukiParameters Kobuki Parameters
 
 <!-- TODO -->
-* wheelbase(bias)
-* encoder ratio/gear ratio
-** ticks_to_millimeter
-** ticks_to_radian
+- wheelbase(bias)
+- encoder ratio/gear ratio
+   -# ticks_to_millimeter
+   -# ticks_to_radian
 
 <br>
 
@@ -406,17 +418,19 @@ Inertial sensor data. Only 1 axis gyro data only available.
 
 @subsection enCliffSensorData Cliff Sensor Data
 
-<a href="http://en.wikipedia.org/wiki/Position_sensitive_device">PSD</a> data readings, that facing floor. This sub-payload provides ADC reading of PSD[GP2Y0A51SK0F]. 
+<a href="http://en.wikipedia.org/wiki/Position_sensitive_device">PSD</a> data readings, that facing floor. This sub-payload provides ADC reading of PSD[GP2Y0A51SK0F].
 
-Cliff field in @ref enBasicSensorData is processed boolean value from the kobuki. 
+The ADC value is related with distance between sensor and floor surface. See the <a href="http://www.beck-elektronik.de/fileadmin/templates/beck_folder/opto/sensor/sharp/analog-gp2y0a51sk0f.pdf">datasheet</a> for more detailed information.
+
+This ADC value is processed  from the kobuki to the boolean values, which is available in the Cliff field of @ref enBasicSensorData .
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">5</td><td>0x05</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">6</td><td>0x06</td><td>Fixed</td></tr>
-<tr><th rowspan="3">Data</th><td>Right cliff sensor</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="3">ADC output of each PSD<br>Data range: 0 ~ 4095<br>Distance range: 2 ~ 15 cm<br>Distant is non-linear<br>See the datasheet for more information</td></tr>
-<tr><td>Central cliff PSD</td><td align="center">2</td><td align="center"></td><td></td></tr>
-<tr><td>Left cliff PSD</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr><th rowspan="3">Data</th><td>Right cliff sensor</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="3">ADC output of each PSD<br>Data range: 0 ~ 4095<br>Distance range: 2 ~ 15 cm<br>Distance is non-linear</td></tr>
+<tr><td>Central cliff sensor</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr><td>Left cliff sensor</td><td align="center">2</td><td align="center"></td><td></td></tr>
 </table>
 
 @sa @ref enBasicSensorData
@@ -490,7 +504,7 @@ This sub-payload will be sent on request.
 
 @subsection enRawDataOf3DGyro Raw Data Of 3D Gyro
 
-Raw ADC data of 3D gyro; <a href="http://www.st.com/internet/analog/product/250373.jsp">L3G4200D</a> 
+Raw ADC data of digital 3D gyro; <a href="http://www.st.com/internet/analog/product/250373.jsp">L3G4200D</a>
 
 Due to difference of acquisition rate and update rate, 2-3 data will be arrived at once.
 
@@ -500,8 +514,8 @@ Digit to deg/s ratio is 0.00875, it comes from <a href="http://www.st.com/intern
 <tr><th></th><th colspan="2">Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td colspan="2">Identifier</td><td align="center">1</td><td align="center">13</td><td>0x0D</td><td>Fixed</td></tr>
 <tr><th>Length</th><td colspan="2">Legnth of Data</td><td align="center">1</td><td align="center">2+6N</td><td></td><td></td></tr>
-<tr><th rowspan="9">Data</th><td colspan="2">Frame id</td><td align="center">1</td><td align="center"></td><td></td><td>Circulate from 0 to 255</td></tr>
-<tr><td colspan="2">Followed data length</td><td align="center">1</td><td align="center">3N</td><td></td><td>redundant for now</td></tr>
+<tr><th rowspan="9">Data</th><td colspan="2">Frame id</td><td align="center">1</td><td align="center"></td><td></td><td>Framed id of 'Raw gyro data 0'<br>Every sensor readings can identified by framed id<br>, It circulate from 0 to 255</td></tr>
+<tr><td colspan="2">Followed data length</td><td align="center">1</td><td align="center">3N</td><td></td><td><!--Redundant for now--></td></tr>
 <tr><td rowspan="3">Raw gyro data 0</td><td>x-axis</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="7">ADC output of each-axis in 0.00875 deg/s</td></tr>
 <tr><td>y-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
 <tr><td>z-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
@@ -513,6 +527,8 @@ Digit to deg/s ratio is 0.00875, it comes from <a href="http://www.st.com/intern
 
 @note
 This sub-payload will be sent by default.
+
+<br>
 
 @warning
 describe Time compensation ...
