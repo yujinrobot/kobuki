@@ -193,7 +193,7 @@ Control wheel motors to moving robot. Robot will follow the arc, which radius is
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
 <tr><th rowspan="2">Data</th><td>Speed</td><td align="center">2</td><td align="center"></td><td></td><td>in mm/s</td></tr>
 <tr><td>Radius</td><td align="center">2</td><td align="center"></td><td></td><td>in mm</td></tr>
 </table>
@@ -209,7 +209,7 @@ Play custom sounds with note and duration.
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
 <tr><th rowspan="2">Data</th><td>note</td><td align="center">2</td><td align="center"></td><td></td><td>72~22017 in Hz</td></tr>
 <tr><td>duration</td><td align="center">1</td><td align="center"></td><td></td><td>in mili-seconds</td></tr>
 </table>
@@ -229,7 +229,7 @@ Play predefined sounds by its index.
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
 <tr><th>Data</th><td>sequence number</td><td align="center">1</td><td align="center"></td><td></td><td>0 for ON sound<br>1 for OFF sound<br>2 for RECHARGE sound<br>3 for BUTTON sound<br>4 for ERROR sound<br>5 for CLEANINGSTART sound<br>6 for CLEANINGEND sound</td></tr>
 </table>
 
@@ -248,8 +248,8 @@ It is identical role with external power part of General Purpose Output.
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">8</td><td>0x08</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
-<tr><th>Data</th><td>Power control flags</td><td align="center">2</td><td align="center"></td><td></td><td>0x01 for external power 3.3V ch.<br>0x02 for external power 5V ch.<br>0x04 for external power 12V1A ch.<br>0x08 for external power 12V5A ch.<br>(mutually exclusive)</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
+<tr><th>Data</th><td>Power control flags</td><td align="center">2</td><td align="center"></td><td></td><td>Set the flags to turn on external powers<br>0x01 for external power 3.3V ch.<br>0x02 for external power 5V ch.<br>0x04 for external power 12V1A ch.<br>0x08 for external power 12V5A ch.</td></tr>
 </table>
 
 @warning
@@ -270,8 +270,8 @@ UDID is unique to device. so can be used to identify on multiple robots.
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">9</td><td>0x09</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
-<tr><th>Data</th><td>Reqeust flags</td><td align="center">2</td><td align="center"></td><td></td><td>0x01 for Hardware Version<br>0x02 for Firmware Version<br>0x08 for Unique Device ID</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
+<tr><th>Data</th><td>Reqeust flags</td><td align="center">2</td><td align="center"></td><td></td><td>Set the flags to request extra data<br>0x01 for Hardware Version<br>0x02 for Firmware Version<br>0x08 for Unique Device ID</td></tr>
 </table>
 
 @sa @ref enHardwareVersion @ref enFirmwareVersion,  @ref enUniqueDeviceIDentifier
@@ -289,8 +289,8 @@ This command has multiple roles. It controls LEDs, digital outputs and external 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">12</td><td>0x0C</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
-<tr><th>Data</th><td>Digital Output Flags</td><td align="center">2</td><td align="center"></td><td></td><td>0x0001 for digital output ch. 0<br>0x0002 for digital output ch. 1<br>0x0004 for digital output ch. 2<br>0x0008 for digital output ch. 3<br><br>0x0010 for external power 3.3V ch.<br>0x0020 for external power 5V ch.<br>0x0040 for external power 12V1A ch.<br>0x0080 for external power 12V5A ch.<br><br>0x0100 for red colour of LED1<br>0x0200 for green colour of LED1<br>0x0400 for red colour of LED2<br>0x0800 for green colour of LED2<br></td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
+<tr><th>Data</th><td>Digital Output Flags</td><td align="center">2</td><td align="center"></td><td></td><td>Set the flags to set high on output pins of expansion port<br>0x0001 for digital output ch. 0<br>0x0002 for digital output ch. 1<br>0x0004 for digital output ch. 2<br>0x0008 for digital output ch. 3<br><br>Set the flags to turn on external powers<br>0x0010 for external power 3.3V ch.<br>0x0020 for external power 5V ch.<br>0x0040 for external power 12V1A ch.<br>0x0080 for external power 12V5A ch.<br><br>Set the flags to turn on LEDs<br>0x0100 for red colour of LED1<br>0x0200 for green colour of LED1<br>0x0400 for red colour of LED2<br>0x0800 for green colour of LED2<br></td></tr>
 </table>
 
 @sa @ref enSetPower
@@ -341,12 +341,12 @@ Kobuki sends below default feedbacks periodically in 50 Hz, when it powered on.
 <!--- Basic Sensor Data --->
 @subsection enBasicSensorData Basic Sensor Data
 
-Basic core sensor data. Robot will sends this data periodically from power on.
+Basic core sensor data. <!--Robot will sends this data periodically from power on.-->
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Feedback Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">15</td><td>0x0F</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">15</td><td>0x0F</td><td>Fixed</td></tr>
 <tr><th rowspan="12">Data</th><td>Time Stamp</td><td align="center">2</td><td align="center"></td><td></td><td>in milliseconds<br>circulate from 0 to 65535</td></tr>
 <tr><td>Bump</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when bumper is pressed<br>0x01 for right bumper<br>0x02 for central bumper<br>0x04 for left bumper</td></td></tr>
 <tr><td>Wheel Drop</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when wheel is dropped<br>0x01 for right wheel<br>0x02 for left wheel</td></td></tr>
@@ -388,7 +388,7 @@ Signals from the docking station.
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
 <tr height="40"><th rowspan="3">Data</th><td>Right Signal</td><td align="center">1</td><td align="center"></td><td></td><td rowspan="3">Flag will be setted when signal is detected<br>0x01 for NEAR_LEFT state<br>0x02 for NEAR_CENTER state<br>0x04 for NEAR_RIGHT state<br>0x08 for FAR_CENTER state<br>ox10 for FAR_LEFT state<br>0x20 for FAR_RIGHT state</td></tr>
 <tr height="40"><td>Central Signal</td><td align="center">1</td><td align="center"></td><td></td></tr>
 <tr height="40"><td>Left Signal</td><td align="center">1</td><td align="center"></td><td></td></tr>
@@ -409,7 +409,7 @@ Inertial sensor data. Only 1 axis gyro data only available.
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">7</td><td>0x07</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">7</td><td>0x07</td><td>Fixed</td></tr>
 <tr><th rowspan="5">Data</th><td>Angle</td><td align="center">2</td><td align="center"></td><td></td><td>Factory calibrated</td></tr>
 <tr><td>Angle Rate</td><td align="center">2</td><td align="center"></td><td></td><td>Factory calibrated</td></tr>
 <tr><td>Unused</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
@@ -436,7 +436,7 @@ This data also available in the Cliff field of @ref enBasicSensorData , as a boo
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">5</td><td>0x05</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">6</td><td>0x06</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">6</td><td>0x06</td><td>Fixed</td></tr>
 <tr><th rowspan="3">Data</th><td>Right cliff sensor</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="3">ADC output of each PSD<br>Data range: 0 ~ 4095<br>Distance range: 2 ~ 15 cm<br>Distance is non-linear</td></tr>
 <tr><td>Central cliff sensor</td><td align="center">2</td><td align="center"></td><td></td></tr>
 <tr><td>Left cliff sensor</td><td align="center">2</td><td align="center"></td><td></td></tr>
@@ -458,7 +458,7 @@ Current sensor readings of wheel motors.
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">6</td><td>0x06</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
 <tr><th rowspan="2">Data</th><td>Left Motor</td><td align="center">2</td><td align="center"></td><td></td><td>in 10mA</td></tr>
 <tr><td>Right Motor</td><td align="center">2</td><td align="center"></td><td></td><td>in 10mA</td></tr>
 </table>
@@ -478,7 +478,7 @@ Hardware version info in triplet form; &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">10</td><td>0x0A</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
 <tr><th rowspan="4">Data</th><td>Patch</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Minor</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Major</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
@@ -501,7 +501,7 @@ Firmware version info in triplet form; &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">11</td><td>0x0B</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
 <tr><th rowspan="4">Data</th><td>Patch</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Minor</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Major</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
@@ -528,7 +528,7 @@ Digit to deg/s ratio is 0.00875, it comes from <a href="http://www.st.com/intern
 <table>
 <tr><th></th><th colspan="2">Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td colspan="2">Identifier</td><td align="center">1</td><td align="center">13</td><td>0x0D</td><td>Fixed</td></tr>
-<tr><th>Length</th><td colspan="2">Legnth of Data</td><td align="center">1</td><td align="center">2+6N</td><td></td><td></td></tr>
+<tr><th>Length</th><td colspan="2">Size of data field</td><td align="center">1</td><td align="center">2+6N</td><td></td><td></td></tr>
 <tr><th rowspan="9">Data</th><td colspan="2">Frame id</td><td align="center">1</td><td align="center"></td><td></td><td>Framed id of 'Raw gyro data 0'<br>Every sensor readings can identified by framed id<br>, It circulate from 0 to 255</td></tr>
 <tr><td colspan="2">Followed data length</td><td align="center">1</td><td align="center">3N</td><td></td><td><!--Redundant for now--></td></tr>
 <tr><td rowspan="3">Raw gyro data 0</td><td>x-axis</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="7">ADC output of each-axis in 0.00875 deg/s</td></tr>
@@ -570,7 +570,7 @@ angular_velocity.z =   digit_to_dps * (short)raw_gyro_data.z;
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
 <tr><th rowspan="8">Data</th><td>Digital Input</td><td align="center">2</td><td align="center"></td><td></td><td>Flag will be setted, when high voltage is applied<br>0x01 for digital input ch. 0<br>0x02 for digital input ch. 1<br>0x04 for digital input ch. 2<br>0x08 for input output ch. 3</td></tr>
 <tr><td>Analog Input Ch.0</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="4">12-bit ADC output of each channel<br>Data range: 0 ~ 4095(2^12-1)<br>Conversion voltage range: 0 ~ 3.3 V</td></tr>
 <tr><td>Analog Input Ch.1</td><td align="center">2</td><td align="center"></td><td></td></tr>
@@ -596,7 +596,7 @@ It can be represented by triplet form: &lt;UDID0&gt;-&lt;UDID1&gt;-&lt;UDID2&gt;
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">19</td><td>0x13</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">12</td><td>0x0C</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">12</td><td>0x0C</td><td>Fixed</td></tr>
 <tr><th rowspan="4">Data</th><td>UDID0</td><td align="center">4</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>UDID1</td><td align="center">4</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>UDID2</td><td align="center">4</td><td align="center"></td><td></td><td></td></tr>
