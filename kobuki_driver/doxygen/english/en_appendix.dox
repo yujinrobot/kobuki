@@ -1,11 +1,9 @@
 /**
 
-@page enAppendixGuideProtocol Appendix : Protocol Specification
+@page enAppendixGuide Appendix : Protocol Specification
 
 <!--
 @tableofcontents
-
-@section enProtocolSpecification Protocol Specification
 -->
 
 <!-----------------------------
@@ -29,18 +27,33 @@ The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using pre
 <tr align="center"><th align="center">Description</th><td width="100">0xAA<br>(Fixed)</td><td width="100">0x55<br>(Fixed)</td><td width="100">Size of payload in bytes</td><td width="100">Described below</td><td width="100">XOR'ed value of every bytes of bytesream except headers</td>
 </table>
 
+<br>
+
+<!--- Header --->
+
 @subsection enHeader Header
 
 Two bytes of headers, header 0 and hader 1, are fixed value for both bytestreams, commands and feedback data. This headers are used to detect the starting point of bytestream.
+
+<br>
+
+<!--- Length --->
 
 @subsection enLength Length
 
 Length indicated the length of following bytes that one bytestream hold. Defulat size of this field is 1 byte. Length can be used to distinguish each bytestreams. Minimum value of this byte is 3.
 
+<br>
+
+<!--- Payload --->
+
 @subsection enPayload Payload
 
 Payload contains actual data of bytestream.
 
+<br>
+
+<!--- Structure Of Payload --->
 @subsubsection enStructureOfPayload Structure Of Payload
 <!--@par <b>Structure of Payload</b>-->
 
@@ -52,8 +65,12 @@ Payload is a consist of several sub-payloads.
 <tr align="center"><!--th>Sub-Payloads</th--><td>Sub-Payload 0</td><td>Sub-Payload 1</td><td>Sub-Payload 2</td><td>...</td><td>Sub-Payload N-1</td></tr>
 </table>
 
+<br>
+
+
+
+<!--- Structure Of Sub-Payloads --->
 @subsubsection enStructureOfSubPayloads Structure Of Sub-Payloads
-<!--@par<b>Stucture of Sub-Payloads</b>-->
 
 Sub-payload can be devided into three parts, Header, Length and Data.
 
@@ -64,6 +81,11 @@ Sub-payload can be devided into three parts, Header, Length and Data.
 <tr align="center"><th align="center">Description</th><td width="100">Predefined Identifier</td><td width="100">Size of data in byte(s)</td><td width="100">Described below</td>
 </table>
 
+<br>
+
+
+
+<!--- Checksum --->
 @subsection enChecksum Checksum
 
 Checksum is XOR'ed value of entire bytestream except headers. Checksum process ensure the integrity of bytestreams.
@@ -79,6 +101,10 @@ for (unsigned int i = 2; i < packet_size; i++)
 return cs ? false : true;
 @endcode
 
+<br>
+
+
+<!--- Entire Bytestream --->
 @subsection enEntireBytestream Entire Bytestream
 
 <table>
@@ -88,6 +114,9 @@ return cs ? false : true;
 
 Minimum length of payload is 3; Payload with a sub-payload, that has only 1 byte data.
 And theoretical minimum length of entire packet(bytestream) is 7.
+
+<br>
+
 
 <!-----------------------------
           Data Types
@@ -103,6 +132,10 @@ Data field in Sub-payload is a mixture of below three data types; byte, short an
 <tr align="center"><td>Unsigned Int</td><td>32-bit unsigned integer</td><td>4</td><td>32</td><td>0~4,294,967,295</td><td>unsigend int</td><td>uint32_t</td>	</tr>
 </table>
 
+<br>
+
+
+<!--- Serialization-Deserialization --->
 @subsection enSerializationDerialization Serialization-Deserialization
 <!--or encodigns?-->
 
@@ -114,6 +147,8 @@ So, 0xDD will arrive first in bytestream.
 
 Here are template functions to handle it on kobuki_deriver, @ref packet_handler::payloadBase::buildVariable(T & V, ecl::PushAndPop<unsigned char> & buffer) "buildVariable()" and @ref packet_handler::payloadBase::buildBytes(const T & V, ecl::PushAndPop<unsigned char> & buffer) "buildBytes()".
 
+<br>
+
 
 <!-----------------------------
          Command Packets
@@ -121,24 +156,30 @@ Here are template functions to handle it on kobuki_deriver, @ref packet_handler:
 
 @section enCommandPackets Command Packets
 
+
+<!--- Command Identifier --->
 @subsection enCommandIdentifier Command Identifier
 
 <table>
 <tr><th>ID</th><th>Name</th><th>Description</th></tr>
-<tr><td align="center">1</td><td>Base Control</td><td></td></tr>
+<tr><td align="center">1</td><td>Base Control</td><td>Control wheel motors</td></tr>
 <tr><td align="center">2</td><td><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">3</td><td>Sound</td><td></td></tr>
-<tr><td align="center">4</td><td>Sound Sequence</td><td></td></tr>
+<tr><td align="center">3</td><td>Sound</td><td>Play custom sounds</td></tr>
+<tr><td align="center">4</td><td>Sound Sequence</td><td>Play predefined sounds</td></tr>
 <tr><td align="center">5</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">6</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">7</td><td><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">8</td><td>Set Power</td><td></td></tr>
-<tr><td align="center">9</td><td>Request Extra</td><td></td></tr>
+<tr><td align="center">8</td><td>Set Power</td><td>Control external powers</td></tr>
+<tr><td align="center">9</td><td>Request Extra</td><td>Request extra informations</td></tr>
 <tr><td align="center">10</td><td>Reserved</td><td></td></tr>
 <tr><td align="center">11</td><td>Reserved</td><td></td></tr>
-<tr><td align="center">12</td><td>General Purpose Output</td><td></td></tr>
+<tr><td align="center">12</td><td>General Purpose Output</td><td>Control general purpose outputs</td></tr>
 </table>
 
+<br>
+
+
+<!--- Base Control --->
 @subsection enBaseControl Base Control
 
 Control wheel motors to moving robot. Robot will follow the arc, which radius is <b>&lt;Radius&gt;</b> mm, with <b>&lt;Velocity&gt;</b> mm/s.
@@ -151,12 +192,13 @@ Control wheel motors to moving robot. Robot will follow the arc, which radius is
 <tr><td>Radius</td><td align="center">2</td><td align="center"></td><td></td><td>in mm</td></tr>
 </table>
 
+<br>
+
+
+<!--- Sound --->
 @subsection enSound Sound
 
 Play custom sounds with note and duration.
-
-@warning
-This command is implemtned on the kobuki with firmware, but not implemented yet on driver software(kobuki_driver).
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
@@ -166,6 +208,14 @@ This command is implemtned on the kobuki with firmware, but not implemented yet 
 <tr><td>duration</td><td align="center">1</td><td align="center"></td><td></td><td>in mili-seconds</td></tr>
 </table>
 
+@warning
+This command is implemtned on the kobuki with firmware, but not implemented yet on driver software(kobuki_driver).
+
+<br>
+
+
+
+<!--- Sound Sequence --->
 @subsection enSoundSequence Sound Sequence
 
 Play predefined sounds by its index.
@@ -177,20 +227,17 @@ Play predefined sounds by its index.
 <tr><th>Data</th><td>sequence number</td><td align="center">1</td><td align="center"></td><td></td><td>0 for ON sound<br>1 for OFF sound<br>2 for RECHARGE sound<br>3 for BUTTON sound<br>4 for ERROR sound<br>5 for CLEANINGSTART sound<br>6 for CLEANINGEND sound</td></tr>
 </table>
 
+<br>
 
 
 
 
 
-
-
+<!--- Set Power --->
 @subsection enSetPower Set Power
 
 Control the external powers; 3.3V, 5V, 12V1A, 12V5A.
 It is identical role with external power part of General Purpose Output.
-
-@warning
-This command is implemtned on the kobuki with firmware, but not implemented yet on driver software(kobuki_driver).
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
@@ -199,6 +246,13 @@ This command is implemtned on the kobuki with firmware, but not implemented yet 
 <tr><th>Data</th><td>Power control flags</td><td align="center">2</td><td align="center"></td><td></td><td>0x01 for external power 3.3V ch.<br>0x02 for external power 5V ch.<br>0x04 for external power 12V1A ch.<br>0x08 for external power 12V5A ch.<br>(mutually exclusive)</td></tr>
 </table>
 
+@warning
+This command is implemtned on the kobuki with firmware, but not implemented yet on driver software(kobuki_driver).
+
+<br>
+
+
+<!--- Request Extra --->
 @subsection enRequestExtra Request Extra
 
 Request extra data from robot. Especially version info of kobuki; Hardware Version, Firmware Version and Unique Deivce IDentifier
@@ -212,6 +266,10 @@ UDID is unique to device. so can be used to identify on multiple robots.
 <tr><th>Data</th><td>Reqeust flags</td><td align="center">2</td><td align="center"></td><td></td><td>0x01 for Hardware Version<br>0x02 for Firmware Version<br>0x08 for Unique Device ID</td></tr>
 </table>
 
+<br>
+
+
+<!--- General Purpose Output --->
 @subsection enGeneralPurposeOutput General Purpose Output
 
 This command play multiple roles. it controls LED's, digital outputs and external powers.
@@ -225,11 +283,17 @@ To using it carefully set the bit fields.
 <tr><th>Data</th><td>Digital Output Flags</td><td align="center">2</td><td align="center"></td><td></td><td>0x0001 for digital output ch. 0<br>0x0002 for digital output ch. 1<br>0x0004 for digital output ch. 2<br>0x0008 for digital output ch. 3<br><br>0x0010 for external power 3.3V ch.<br>0x0020 for external power 5V ch.<br>0x0040 for external power 12V1A ch.<br>0x0080 for external power 12V5A ch.<br><br>0x0100 for red colour of LED1<br>0x0200 for green colour of LED1<br>0x0400 for red colour of LED2<br>0x0800 for green colour of LED2<br></td></tr>
 </table>
 
+<br>
+
+
 <!-----------------------------
          Feedback Packets
 ------------------------------->
 
 @section enFeedbackPackets Feedback Packets
+
+
+<!--- Feedback Identifier --->
 
 @subsection enFeedbackIdentifier Feedback Identifier
 
@@ -255,10 +319,14 @@ Kobuki sends below default feedbacks periodically in 50 Hz, when it powered on.
 <tr><td align="center">16</td><td>General Purpose Input</td><td></td><td>V</td></tr>
 <tr><td align="center">17</td><td><i>Reserved</i></td><td></td><td></td></tr>
 <tr><td align="center">18</td><td><i>Reserved</i></td><td></td><td></td></tr>
-<tr><td align="center">19</td><td>Unique Device IDentifier</td><td></td><td>On Request</td></tr>
+<tr><td align="center">19</td><td>Unique Device IDentifier(UDID)</td><td></td><td>On Request</td></tr>
 <tr><td align="center">20</td><td><i>Reserved</i></td><td></td><td></td></tr>
 </table>
 
+<br>
+
+
+<!--- Basic Sensor Data --->
 @subsection enBasicSensorData Basic Sensor Data
 
 Basic core sensor data. Robot will sends this data periodically from power on.
@@ -275,12 +343,13 @@ Basic core sensor data. Robot will sends this data periodically from power on.
 <tr><td>Right Encoder</td><td align="center">2</td><td align="center"></td><td></td><td>in ticks</td></tr>
 <tr><td>Left PWM</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Right PWM</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>Button</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+<tr><td>Button</td><td align="center">1</td><td align="center"></td><td></td><td>0x01 for Button 0<br>0x02 for Button 1<br>0x04 for Button 2</td></tr>
 <tr><td>Charger</td><td align="center">1</td><td align="center"></td><td></td><td>0 for DISCHARGING state<br>2 for DOCKING_CHARGED state<br>6 for DOCKING_CHARGING state<br>18 for ADAPTER_CHARGED state<br>22 for ADAPTER_CHARGING state</td></tr>
 <tr><td>Battery</td><td align="center">1</td><td align="center"></td><td></td><td>In 0.1V<br>Typically 16.7V when fully charged</td></tr>
 <tr><td>Over Current</td><td align="center">1</td><td align="center"></td><td></td><td>0x01 for left wheel<br>0x02 for right wheel</td></tr>
 </table>
 
+<!--- Kobuki Parameters --->
 @subsubsection enKobukiParameters Kobuki Parameters
 
 <!-- TODO -->
@@ -289,6 +358,10 @@ Basic core sensor data. Robot will sends this data periodically from power on.
 ** ticks_to_millimeter
 ** ticks_to_radian
 
+<br>
+
+
+<!--- Docking IR --->
 
 @subsection enDockingIR Docking IR
 
@@ -306,6 +379,10 @@ Docking IR signals from the docking station.
 Kobuki's docking station has 3 <a href="http://en.wikipedia.org/wiki/Infrared">IR</a> emitters. The emitted IR lights cover three regions in front of the docking station: left, central and right, each divided in two sub-fields: near and far. Each beam encodes this information, so the robot knows at any moment in which region and sub-field he is. Also, as regions and fields are independently identified, they can be overlap on its borders.
 @image html dock_ir_fields.png "Docking IR Fields"
 
+<br>
+
+
+<!--- Inertial Sensor Data --->
 
 @subsection enInertialSensorData Inertial Sensor Data
 
@@ -322,18 +399,31 @@ Inertial sensor data. Only 1 axis gyro data only available.
 <tr><td>Unused</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 </table>
 
+<br>
+
+
+<!--- Cliff Sensor Data --->
+
 @subsection enCliffSensorData Cliff Sensor Data
 
-PSD sensor data readings, that facing floor.
+<a href="http://en.wikipedia.org/wiki/Position_sensitive_device">PSD</a> data readings, that facing floor. This sub-payload provides ADC reading of PSD[GP2Y0A51SK0F]. 
+
+Cliff field in @ref enBasicSensorData is processed boolean value from the kobuki. 
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">5</td><td>0x05</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">6</td><td>0x06</td><td>Fixed</td></tr>
-<tr><th rowspan="3">Data</th><td>bottom[0]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>bottom[1]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
-<tr><td>bottom[2]</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
+<tr><th rowspan="3">Data</th><td>Right cliff sensor</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="3">ADC output of each PSD<br>Data range: 0 ~ 4095<br>Distance range: 2 ~ 15 cm<br>Distant is non-linear<br>See the datasheet for more information</td></tr>
+<tr><td>Central cliff PSD</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr><td>Left cliff PSD</td><td align="center">2</td><td align="center"></td><td></td></tr>
 </table>
+
+@sa @ref enBasicSensorData
+
+<br>
+
+<!--- Current --->
 
 @subsection enCurrent Current
 
@@ -347,13 +437,14 @@ Current sensor readings of wheel motors.
 <tr><td>Right Motor</td><td align="center">2</td><td align="center"></td><td></td><td>in 10mA</td></tr>
 </table>
 
+<br>
+
+
+<!--- Hardware Version --->
+
 @subsection enHardwareVersion Hardware Version
 
 Hardware version info in triplet form; &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;
-
-@note
-This packet will be sent on request.
-@sa @ref enRequestExtra
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
@@ -365,14 +456,18 @@ This packet will be sent on request.
 <tr><td>Unused</td><td align="center">1</td><td align="center">0</td><td>0x00</td><td>Fixed</td></tr>
 </table>
 
+@note
+This sub-payload will be sent on request.
+@sa @ref enRequestExtra
+
+<br>
+
+
+<!--- Firmware Version --->
+
 @subsection enFirmwareVersion Firmware Version
 
 Firmware version info in triplet form; &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;
-
-@note
-This packet will be sent on request.
-@sa @ref enRequestExtra
-
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
@@ -384,11 +479,40 @@ This packet will be sent on request.
 <tr><td>Unused</td><td align="center">1</td><td align="center">0</td><td>0x00</td><td>Fixed</td></tr>
 </table>
 
+@note
+This sub-payload will be sent on request.
+@sa @ref enRequestExtra
+
+<br>
+
+
+<!--- Raw Data Of 3D Gyro --->
+
 @subsection enRawDataOf3DGyro Raw Data Of 3D Gyro
 
-Raw data of 3D gyro. Due to difference of acquisition rate and update rate, 2-3 data will be arrived at once.
+Raw ADC data of 3D gyro; <a href="http://www.st.com/internet/analog/product/250373.jsp">L3G4200D</a> 
 
-digit to deg/s ratio, comes from datasheet of 3d gyro[L3G4200D].
+Due to difference of acquisition rate and update rate, 2-3 data will be arrived at once.
+
+Digit to deg/s ratio is 0.00875, it comes from <a href="http://www.st.com/internet/com/TECHNICAL_RESOURCES/TECHNICAL_LITERATURE/DATASHEET/CD00265057.pdf">datasheet</a> of 3d gyro.
+
+<table>
+<tr><th></th><th colspan="2">Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td colspan="2">Identifier</td><td align="center">1</td><td align="center">13</td><td>0x0D</td><td>Fixed</td></tr>
+<tr><th>Length</th><td colspan="2">Legnth of Data</td><td align="center">1</td><td align="center">2+6N</td><td></td><td></td></tr>
+<tr><th rowspan="9">Data</th><td colspan="2">Frame id</td><td align="center">1</td><td align="center"></td><td></td><td>Circulate from 0 to 255</td></tr>
+<tr><td colspan="2">Followed data length</td><td align="center">1</td><td align="center">3N</td><td></td><td>redundant for now</td></tr>
+<tr><td rowspan="3">Raw gyro data 0</td><td>x-axis</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="7">ADC output of each-axis in 0.00875 deg/s</td></tr>
+<tr><td>y-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr><td>z-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr><td colspan="5" align="center">:<br>:</td></tr>
+<tr><td rowspan="3">Raw gyro data N-1</td><td>x-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr><td>y-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr><td>z-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
+</table>
+
+@note
+This sub-payload will be sent by default.
 
 @warning
 describe Time compensation ...
@@ -405,22 +529,10 @@ angular_velocity.y =   digit_to_dps * (short)raw_gyro_data.x;
 angular_velocity.z =   digit_to_dps * (short)raw_gyro_data.z;
 @endcode
 
+<br>
 
-<table>
-<tr><th></th><th colspan="2">Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
-<tr><th>Header</th><td colspan="2">Identifier</td><td align="center">1</td><td align="center">13</td><td>0x0D</td><td>Fixed</td></tr>
-<tr><th>Length</th><td colspan="2">Legnth of Data</td><td align="center">1</td><td align="center">2+6N</td><td></td><td></td></tr>
-<tr><th rowspan="9">Data</th><td colspan="2">Frame id</td><td align="center">1</td><td align="center"></td><td></td><td>Circulate from 0 to 255</td></tr>
-<tr><td colspan="2">Followed data length</td><td align="center">1</td><td align="center">3N</td><td></td><td>redundant for now</td></tr>
-<tr><td rowspan="3">Raw gyro data 0</td><td>x-axis</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="7">in 0.00875 deg/s</td></tr>
-<tr><td>y-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
-<tr><td>z-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
-<tr><td colspan="5" align="center">:<br>:</td></tr>
-<tr><td rowspan="3">Raw gyro data N-1</td><td>x-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
-<tr><td>y-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
-<tr><td>z-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
-</table>
 
+<!--- General Purpose Input --->
 
 @subsection enGeneralPurposeInput General Purpose Input
 
@@ -429,7 +541,7 @@ angular_velocity.z =   digit_to_dps * (short)raw_gyro_data.z;
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Legnth of Data</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
 <tr><th rowspan="8">Data</th><td>Digital Input</td><td align="center">2</td><td align="center"></td><td></td><td>bit field<br>0x01 for digital input ch. 0<br>0x02 for digital input ch. 1<br>0x04 for digital input ch. 2<br>0x08 for input output ch. 3</td></tr>
-<tr><td>Analog Input Ch.0</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="4">in LSB<br>12-bit ADC<br>0~4095(2^12-1)<br>0~3.3V</td></tr>
+<tr><td>Analog Input Ch.0</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="4">12-bit ADC output of each channel<br>Data range: 0 ~ 4095(2^12-1)<br>Conversion voltage range: 0 ~ 3.3 V</td></tr>
 <tr><td>Analog Input Ch.1</td><td align="center">2</td><td align="center"></td><td></td></tr>
 <tr><td>Analog Input Ch.2</td><td align="center">2</td><td align="center"></td><td></td></tr>
 <tr><td>Analog Input Ch.3</td><td align="center">2</td><td align="center"></td><td></td></tr>
@@ -438,14 +550,17 @@ angular_velocity.z =   digit_to_dps * (short)raw_gyro_data.z;
 <tr><td>Unused</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
 </table>
 
+@note
+This sub-payload will be sent by default.
+
+<br>
+
+<!--- Unique Device IDentifier(UDID) --->
+
 @subsection enUniqueDeviceIDentifier Unique Device IDentifier(UDID)
 
 Contains Unique Device IDentifier of robot. This value is unique for all robot in the world.
 It can be represented by triplet form: &lt;UDID0&gt;-&lt;UDID1&gt;-&lt;UDID2&gt;
-
-@note
-This packet will be sent on request.
-@sa @ref enRequestExtra
 
 <table>
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
@@ -456,26 +571,11 @@ This packet will be sent on request.
 <tr><td>UDID2</td><td align="center">4</td><td align="center"></td><td></td><td></td></tr>
 </table>
 
-@section enSandbox Sandbox
+@note
+This sub-payload will be sent on request.
+@sa @ref enRequestExtra
 
-@par
-	Some commentary to accompany
-	the first list in the <a href="http://www.stack.nl/~dimitri/doxygen/docblocks.html">Special
-	Documentation Blocks</a> section of
-	the Doxygen manual:
-
-@note blah
-blah
-
-@warning blah
-blah
-
-Hmm.. Tables..
-
-<div markdown="1">
-This is *true* markdown text.
-</div>
-
+<br>
 
 
 **/
