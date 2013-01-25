@@ -15,6 +15,7 @@
   <!-- Ecl -->
   <depend package="ecl_command_line"/>
 
+  <rosdep name="libusb-dev"/>
   <rosdep name="libftdi-dev"/>
   <rosdep name="ftdi-eeprom"/>
 </package>
