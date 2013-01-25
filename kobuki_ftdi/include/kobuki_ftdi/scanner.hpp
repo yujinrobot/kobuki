@@ -43,6 +43,7 @@
 #include <vector>
 #include <map>
 #include <usb.h>
+#include <stdint.h>
 
 /*****************************************************************************
  ** Definition
