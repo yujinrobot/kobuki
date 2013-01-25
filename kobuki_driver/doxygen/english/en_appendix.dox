@@ -210,8 +210,8 @@ Play custom sounds with note and duration.
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
-<tr><th rowspan="2">Data</th><td>note</td><td align="center">2</td><td align="center"></td><td></td><td>72~22017 in Hz</td></tr>
-<tr><td>duration</td><td align="center">1</td><td align="center"></td><td></td><td>in mili-seconds</td></tr>
+<tr><th rowspan="2">Data</th><td>Note</td><td align="center">2</td><td align="center"></td><td></td><td>Frequency of sound in Hz<br>72~22017 Hz</td></tr>
+<tr><td>Duration</td><td align="center">1</td><td align="center"></td><td></td><td>Duration of playing note in mili-seconds</td></tr>
 </table>
 
 @warning
@@ -230,7 +230,7 @@ Play predefined sounds by its index.
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
-<tr><th>Data</th><td>sequence number</td><td align="center">1</td><td align="center"></td><td></td><td>0 for ON sound<br>1 for OFF sound<br>2 for RECHARGE sound<br>3 for BUTTON sound<br>4 for ERROR sound<br>5 for CLEANINGSTART sound<br>6 for CLEANINGEND sound</td></tr>
+<tr><th>Data</th><td>Sequence number</td><td align="center">1</td><td align="center"></td><td></td><td>0 for ON sound<br>1 for OFF sound<br>2 for RECHARGE sound<br>3 for BUTTON sound<br>4 for ERROR sound<br>5 for CLEANINGSTART sound<br>6 for CLEANINGEND sound</td></tr>
 </table>
 
 <br>
@@ -290,7 +290,7 @@ This command has multiple roles. It controls LEDs, digital outputs and external 
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">12</td><td>0x0C</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
-<tr><th>Data</th><td>Digital Output Flags</td><td align="center">2</td><td align="center"></td><td></td><td>Set the flags to set high on output pins of expansion port<br>0x0001 for digital output ch. 0<br>0x0002 for digital output ch. 1<br>0x0004 for digital output ch. 2<br>0x0008 for digital output ch. 3<br><br>Set the flags to turn on external powers<br>0x0010 for external power 3.3V ch.<br>0x0020 for external power 5V ch.<br>0x0040 for external power 12V1A ch.<br>0x0080 for external power 12V5A ch.<br><br>Set the flags to turn on LEDs<br>0x0100 for red colour of LED1<br>0x0200 for green colour of LED1<br>0x0400 for red colour of LED2<br>0x0800 for green colour of LED2<br></td></tr>
+<tr><th>Data</th><td>Digital output flags</td><td align="center">2</td><td align="center"></td><td></td><td>Set the flags to set high on output pins of expansion port<br>0x0001 for digital output ch. 0<br>0x0002 for digital output ch. 1<br>0x0004 for digital output ch. 2<br>0x0008 for digital output ch. 3<br><br>Set the flags to turn on external powers<br>0x0010 for external power 3.3V ch.<br>0x0020 for external power 5V ch.<br>0x0040 for external power 12V1A ch.<br>0x0080 for external power 12V5A ch.<br><br>Set the flags to turn on LEDs<br>0x0100 for red colour of LED1<br>0x0200 for green colour of LED1<br>0x0400 for red colour of LED2<br>0x0800 for green colour of LED2<br></td></tr>
 </table>
 
 @sa @ref enSetPower
@@ -347,18 +347,18 @@ Basic core sensor data. <!--Robot will sends this data periodically from power o
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Feedback Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">15</td><td>0x0F</td><td>Fixed</td></tr>
-<tr><th rowspan="12">Data</th><td>Time Stamp</td><td align="center">2</td><td align="center"></td><td></td><td>Timestamp generated internally in milliseconds<br>It circulates from 0 to 65535</td></tr>
-<tr><td>Bump</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when bumper is pressed<br>0x01 for right bumper<br>0x02 for central bumper<br>0x04 for left bumper</td></td></tr>
-<tr><td>Wheel Drop</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when wheel is dropped<br>0x01 for right wheel<br>0x02 for left wheel</td></td></tr>
+<tr><th rowspan="12">Data</th><td>Timestamp</td><td align="center">2</td><td align="center"></td><td></td><td>Timestamp generated internally in milliseconds<br>It circulates from 0 to 65535</td></tr>
+<tr><td>Bumper</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when bumper is pressed<br>0x01 for right bumper<br>0x02 for central bumper<br>0x04 for left bumper</td></td></tr>
+<tr><td>Wheel drop</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when wheel is dropped<br>0x01 for right wheel<br>0x02 for left wheel</td></td></tr>
 <tr><td>Cliff</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when cliff is detected<br>0x01 for right cliff sensor<br>0x02 for central cliff sensor<br>0x04 for left cliff sensor</td></tr>
-<tr height="30"><td>Left Encoder</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="2">Accumulated encoder data of left and right wheels in ticks<br>Increments of this value means forward direction<br>It circulates from 0 to 65535</td></tr>
-<tr height="30"><td>Right Encoder</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr height="30"><td>Left encoder</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="2">Accumulated encoder data of left and right wheels in ticks<br>Increments of this value means forward direction<br>It circulates from 0 to 65535</td></tr>
+<tr height="30"><td>Right encoder</td><td align="center">2</td><td align="center"></td><td></td></tr>
 <tr height="30"><td>Left PWM</td><td align="center">1</td><td align="center"></td><td></td><td rowspan="2">PWM value that applied to left and right wheel motor<br>This data should be converted signed type to represent correctly<br>Negative sign indicated backward direction</td></tr>
 <tr height="30"><td>Right PWM</td><td align="center">1</td><td align="center"></td><td></td></tr>
 <tr><td>Button</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when button is pressed<br>0x01 for Button 0<br>0x02 for Button 1<br>0x04 for Button 2</td></tr>
 <tr><td>Charger</td><td align="center">1</td><td align="center"></td><td></td><td>0 for DISCHARGING state<br>2 for DOCKING_CHARGED state<br>6 for DOCKING_CHARGING state<br>18 for ADAPTER_CHARGED state<br>22 for ADAPTER_CHARGING state</td></tr>
 <tr><td>Battery</td><td align="center">1</td><td align="center"></td><td></td><td>Voltage of battery in 0.1 V<br>Typically 16.7 V when fully charged</td></tr>
-<tr><td>Over Current</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when over current is detected<br>0x01 for left wheel<br>0x02 for right wheel</td></tr>
+<tr><td>Over current flags</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when over current is detected<br>0x01 for left wheel<br>0x02 for right wheel</td></tr>
 </table>
 
 @note
@@ -389,9 +389,9 @@ Signals from the docking station.
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
-<tr height="40"><th rowspan="3">Data</th><td>Right Signal</td><td align="center">1</td><td align="center"></td><td></td><td rowspan="3">Flag will be setted when signal is detected<br>0x01 for NEAR_LEFT state<br>0x02 for NEAR_CENTER state<br>0x04 for NEAR_RIGHT state<br>0x08 for FAR_CENTER state<br>ox10 for FAR_LEFT state<br>0x20 for FAR_RIGHT state</td></tr>
-<tr height="40"><td>Central Signal</td><td align="center">1</td><td align="center"></td><td></td></tr>
-<tr height="40"><td>Left Signal</td><td align="center">1</td><td align="center"></td><td></td></tr>
+<tr height="40"><th rowspan="3">Data</th><td>Right signal</td><td align="center">1</td><td align="center"></td><td></td><td rowspan="3">Flag will be setted when signal is detected<br>0x01 for NEAR_LEFT state<br>0x02 for NEAR_CENTER state<br>0x04 for NEAR_RIGHT state<br>0x08 for FAR_CENTER state<br>ox10 for FAR_LEFT state<br>0x20 for FAR_RIGHT state</td></tr>
+<tr height="40"><td>Central signal</td><td align="center">1</td><td align="center"></td><td></td></tr>
+<tr height="40"><td>Left signal</td><td align="center">1</td><td align="center"></td><td></td></tr>
 </table>
 
 Kobuki's docking station has 3 <a href="http://en.wikipedia.org/wiki/Infrared">IR</a> emitters. The emitted IR lights cover three regions in front of the docking station: left, central and right, each divided in two sub-fields: near and far. Each beam encodes this information, so the robot knows at any moment in which region and sub-field he is. Also, as regions and fields are independently identified, they can be overlap on its borders.
@@ -411,7 +411,7 @@ Inertial sensor data. Only 1 axis gyro data only available.
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">4</td><td>0x04</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">7</td><td>0x07</td><td>Fixed</td></tr>
 <tr><th rowspan="5">Data</th><td>Angle</td><td align="center">2</td><td align="center"></td><td></td><td>Factory calibrated</td></tr>
-<tr><td>Angle Rate</td><td align="center">2</td><td align="center"></td><td></td><td>Factory calibrated</td></tr>
+<tr><td>Angle rate</td><td align="center">2</td><td align="center"></td><td></td><td>Factory calibrated</td></tr>
 <tr><td>Unused</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Unused</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Unused</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
@@ -459,8 +459,8 @@ Current sensor readings of wheel motors.
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">6</td><td>0x06</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
-<tr><th rowspan="2">Data</th><td>Left Motor</td><td align="center">2</td><td align="center"></td><td></td><td>in 10mA</td></tr>
-<tr><td>Right Motor</td><td align="center">2</td><td align="center"></td><td></td><td>in 10mA</td></tr>
+<tr><th rowspan="2">Data</th><td>Left motor</td><td align="center">2</td><td align="center"></td><td></td><td>in 10mA</td></tr>
+<tr><td>Right motor</td><td align="center">2</td><td align="center"></td><td></td><td>in 10mA</td></tr>
 </table>
 
 @note
@@ -571,11 +571,11 @@ angular_velocity.z =   digit_to_dps * (short)raw_gyro_data.z;
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
-<tr><th rowspan="8">Data</th><td>Digital Input</td><td align="center">2</td><td align="center"></td><td></td><td>Flag will be setted, when high voltage is applied<br>0x01 for digital input ch. 0<br>0x02 for digital input ch. 1<br>0x04 for digital input ch. 2<br>0x08 for input output ch. 3</td></tr>
-<tr><td>Analog Input Ch.0</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="4">12-bit ADC output of each channel<br>Data range: 0 ~ 4095(2^12-1)<br>Conversion voltage range: 0 ~ 3.3 V</td></tr>
-<tr><td>Analog Input Ch.1</td><td align="center">2</td><td align="center"></td><td></td></tr>
-<tr><td>Analog Input Ch.2</td><td align="center">2</td><td align="center"></td><td></td></tr>
-<tr><td>Analog Input Ch.3</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr><th rowspan="8">Data</th><td>Digital input</td><td align="center">2</td><td align="center"></td><td></td><td>Flag will be setted, when high voltage is applied<br>0x01 for digital input ch. 0<br>0x02 for digital input ch. 1<br>0x04 for digital input ch. 2<br>0x08 for input output ch. 3</td></tr>
+<tr><td>Analog input ch.0</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="4">12-bit ADC output of each channel<br>Data range: 0 ~ 4095(2^12-1)<br>Conversion voltage range: 0 ~ 3.3 V</td></tr>
+<tr><td>Analog input ch.1</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr><td>Analog input ch.2</td><td align="center">2</td><td align="center"></td><td></td></tr>
+<tr><td>Analog input ch.3</td><td align="center">2</td><td align="center"></td><td></td></tr>
 <tr><td>Unused</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Unused</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
 <tr><td>Unused</td><td align="center">2</td><td align="center"></td><td></td><td></td></tr>
