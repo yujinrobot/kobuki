@@ -10,6 +10,6 @@ Kobuki has `USB to serial converter` internally, <a href="http://www.ftdichip.co
 
 @section ftdiDetailedInformation Detailed Infomartion
 
-More detailed desciptions can be found in the <a href="http://ros.org/doc/groovy/api/kobuki_ftdi/html/">code api</a> of <a href="http://www.ros.org/wiki/kobuki_driver">kobuki_driver</a>.
+More detailed desciptions can be found in the <a href="http://ros.org/doc/groovy/api/kobuki_ftdi/html/">code api</a> of <a href="http://www.ros.org/wiki/kobuki_ftdi">kobuki_ftdi</a>.
 
 **/
