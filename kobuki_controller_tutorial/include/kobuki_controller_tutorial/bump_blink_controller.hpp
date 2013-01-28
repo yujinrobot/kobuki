@@ -34,8 +34,6 @@
  *
  * A simple nodelet-based controller for Kobuki, which makes one of Kobuki's LEDs blink, when a bumper is pressed.
  *
- * @date Dec 2, 2012
- * 
  * @author Marcus Liebhardt, Yujin Robot
  **/
 

@@ -5,7 +5,6 @@
  *
  * File comment
  *
- * @date Nov 30, 2012
  **/
 /*****************************************************************************
 ** Includes
@@ -13,7 +12,7 @@
 
 #include "kobuki_auto_docking/auto_docking_ros.hpp"
 
-namespace kobuki 
+namespace kobuki
 {
 
 //AutoDockingROS::AutoDockingROS()

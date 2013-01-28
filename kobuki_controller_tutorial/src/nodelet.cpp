@@ -32,8 +32,6 @@
  *
  * @brief Nodelet implementation of the BumpBlinkController
  *
- * @date Dec 2, 2012
- * 
  * @author Marcus Liebhardt, Yujin Robot
  **/
 

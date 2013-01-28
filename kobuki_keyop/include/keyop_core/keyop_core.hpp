@@ -32,7 +32,6 @@
  *
  * @brief The controlling node for remote operations on robot_core.
  *
- * @date 25/05/2010
  **/
 
 /*****************************************************************************

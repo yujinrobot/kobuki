@@ -37,8 +37,6 @@
  *
  * @author Jorge Santos, Yujin Robot
  *
- * @date Jan 17, 2013
- *
  **/
 
 #ifndef _KOBUKI_BUMPER2PC_HPP_

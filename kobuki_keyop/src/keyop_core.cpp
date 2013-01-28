@@ -32,7 +32,6 @@
  *
  * @brief Creates a node for remote controlling parts of robot_core.
  *
- * @date 24/05/2010
  **/
 
 /*****************************************************************************
