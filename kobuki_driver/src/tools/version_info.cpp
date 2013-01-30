@@ -10,6 +10,9 @@
  * Includes
  ****************************************************************************/
 
+#include <string>
+#include <ecl/time.hpp>
+#include <ecl/sigslots.hpp>
 #include "kobuki_driver/kobuki.hpp"
 
 /*****************************************************************************
