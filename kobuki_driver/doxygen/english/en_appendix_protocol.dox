@@ -215,7 +215,7 @@ Play custom sounds with note and duration.
 </table>
 
 @warning
-This command is implemtned on the kobuki with firmware, but not implemented yet on driver software(kobuki_driver).
+This command is implemented on the kobuki with firmware, but not implemented yet on driver software(kobuki_driver).
 
 <br>
 
@@ -253,7 +253,7 @@ It is identical role with external power part of General Purpose Output.
 </table>
 
 @warning
-This command is implemtned on the kobuki with firmware, but not implemented yet on driver software(kobuki_driver).
+This command is implemented on the kobuki with firmware, but not implemented yet on driver software(kobuki_driver).
 
 @sa @ref enGeneralPurposeOutput
 
