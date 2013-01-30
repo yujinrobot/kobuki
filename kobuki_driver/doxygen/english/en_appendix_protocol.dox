@@ -41,7 +41,7 @@ Two bytes of headers, header 0 and hader 1, are fixed value for both bytestreams
 
 @subsection enLength Length
 
-Length indicated the length of following bytes that one bytestream hold. Defulat size of this field is 1 byte. Length can be used to distinguish each bytestreams. Minimum value of this field is 3.
+Length indicated the length of following bytes that single bytestream hold. Default size of this field is 1 byte. Length can be used to distinguish each bytestreams. Minimum value of this field is 3.
 
 <br>
 
