@@ -9,7 +9,7 @@
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/kobuki_driver</url>
-  
+
   <!--  Ecl -->
   <depend package="ecl_mobile_robot"/>
   <depend package="ecl_converters"/>
@@ -17,7 +17,8 @@
   <depend package="ecl_geometry"/>
   <depend package="ecl_sigslots"/>
   <depend package="ecl_time"/>
-  
+  <depend package="ecl_command_line"/>
+
   <export>
     <cpp cflags="-I${prefix}/include" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lkobuki"/>
   </export>

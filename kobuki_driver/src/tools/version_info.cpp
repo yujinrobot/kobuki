@@ -13,6 +13,7 @@
 #include <string>
 #include <ecl/time.hpp>
 #include <ecl/sigslots.hpp>
+#include <ecl/command_line.hpp>
 #include "kobuki_driver/kobuki.hpp"
 
 /*****************************************************************************
@@ -21,13 +22,13 @@
 
 class KobukiManager {
 public:
-  KobukiManager() :
+  KobukiManager(const std::string &device_port) :
     acquired(false),
     slot_version_info(&KobukiManager::processVersionInfo, *this) // establish the callback
   {
     kobuki::Parameters parameters;
     parameters.sigslots_namespace = "/kobuki"; // configure the first part of the sigslot namespace
-    parameters.device_port = "/dev/kobuki";    // the serial port to connect to (windows COM1..)
+    parameters.device_port = device_port;    // the serial port to connect to (windows COM1..)
     kobuki.init(parameters);
     kobuki.enable();
     slot_version_info.connect("/kobuki/version_info");
@@ -64,8 +65,14 @@ private:
 
 int main(int argc, char** argv)
 {
+  ecl::CmdLine cmd_line("version_info program", ' ', "0.2");
+  ecl::UnlabeledValueArg<std::string> device_port("device_port", "Path to device file of serial port to open, connected to the kobuki", false, "/dev/kobuki", "string");
+  cmd_line.add(device_port);
+  cmd_line.parse(argc, argv);
+  //std::cout << "device_port: " << device_port.getValue() << std::endl;
+
   std::cout << "Version Info:" << std::endl;
-  KobukiManager kobuki_manager;
+  KobukiManager kobuki_manager(device_port.getValue());
 
   while (!kobuki_manager.isAcquired());
   std::cout << " * Hardware Version: " << kobuki_manager.getHardwareVersion() << std::endl;
