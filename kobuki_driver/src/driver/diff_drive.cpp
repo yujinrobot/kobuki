@@ -124,13 +124,14 @@ void DiffDrive::velocityCommands(const double &vx, const double &wz) {
   // wz: in rad/s
   const double epsilon = 0.0001;
   if ( std::abs(wz) < epsilon ) {
-    radius = 0;
+    radius = 0; // straight
   } else if ( (std::abs(vx) < epsilon ) && ( wz > epsilon ) ) {
-    radius = 1;
+    radius = 1; // in place ccw turn
   } else if ( (std::abs(vx) < epsilon ) && ( wz < -1*epsilon ) ) {
-    radius = -1;
+    radius = -1; // in place cw turn
   } else {
     radius = (short)(vx * 1000.0f / wz);
+    // what happen, if resulatant radius from this block is -1, 0, or 1.
   }
   if ( vx < 0.0 ) {
     speed = (short)(1000.0f * std::min(vx + bias * wz / 2.0f, vx - bias * wz / 2.0f));
