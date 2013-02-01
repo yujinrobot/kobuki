@@ -84,11 +84,13 @@ public:
           speed = last_speed + 8 * (short)(acceleration / std::abs(acceleration));
         }
       }
+      /*
       if( radius == 0 && std::abs(speed) > 0 ) {
         radius = last_radius;
       } else { 
         last_radius = radius;
       }
+      */
  //     oss << "[" << speed << ", " << radius << "]";
  //     std::cout << oss.str() << std::endl;
 
