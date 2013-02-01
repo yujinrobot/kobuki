@@ -19,7 +19,7 @@ The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using pre
 
 @section enBytestream Structure of Bytestream
 
-A bytestream can be devided into 4 fields, Headers, Length, Payload and Checksum.
+A bytestream can be devided into 4 fields; Headers, Length, Payload and Checksum.
 
 <table>
 <tr align="center"><th>Name</th><td>Header 0</td><td>Header 1</td><td>Length</td><td>Payload</td><td>Checksum</td>
