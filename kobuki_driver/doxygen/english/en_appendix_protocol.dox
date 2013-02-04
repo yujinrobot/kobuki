@@ -210,7 +210,7 @@ Play custom sounds with note and duration.
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
-<tr><th rowspan="2">Data</th><td>Note</td><td align="center">2</td><td align="center"></td><td></td><td>Frequency of sound in Hz<br>72~22017 Hz</td></tr>
+<tr><th rowspan="2">Data</th><td>Note</td><td align="center">2</td><td align="center"></td><td></td><td><!--1/(f*a)-->\f$\mbox{1/}(f \cdotp a)\f$, where \f$f\f$ is frequency of sound in Hz, and \f$a\f$ is 0.00000275</td></tr>
 <tr><td>Duration</td><td align="center">1</td><td align="center"></td><td></td><td>Duration of playing note in mili-seconds</td></tr>
 </table>
 
