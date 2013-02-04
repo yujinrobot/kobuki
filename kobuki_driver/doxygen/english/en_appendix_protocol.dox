@@ -19,7 +19,7 @@ The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using pre
 
 @section enBytestream Structure of Bytestream
 
-A bytestream can be devided into 4 fields, Headers, Length, Payload and Checksum.
+A bytestream can be devided into 4 fields; Headers, Length, Payload and Checksum.
 
 <table>
 <tr align="center"><th>Name</th><td>Header 0</td><td>Header 1</td><td>Length</td><td>Payload</td><td>Checksum</td>
@@ -145,7 +145,7 @@ Data field in Sub-payload is a mixture of below three data types; byte, short an
 @subsection enSerializationDerialization Serialization-Deserialization
 <!--or encodigns?-->
 
-<a href="http://en.wikipedia.org/wiki/Serialization">Serialization</a> is the process of convering a data sturcture into a bytestream. Deserialization is reversal process. Each data types are serialized and deserialized by `<a href="http://en.wikipedia.org/wiki/Least_significant_byte">LSB</a>-First Order`. It means Least Significant Bytes will comes first on the bytestream. For example, The integer number 2,864,434,397(0xAABBCCDD) can be serialized <!-- or encoded?--> into:
+<a href="http://en.wikipedia.org/wiki/Serialization">Serialization</a> is the process of converting a data sturcture into a bytestream. Deserialization is reversal process. Each data types are serialized and deserialized by `<a href="http://en.wikipedia.org/wiki/Least_significant_byte">LSB</a>-First Order`. It means Least Significant Bytes will comes first on the bytestream. For example, The integer number 2,864,434,397(0xAABBCCDD) can be serialized <!-- or encoded?--> into:
 <table>
 <tr><td>0xDD</td><td>0xCC</td><td>0xBB</td><td>0xAA</td></tr>
 </table>
