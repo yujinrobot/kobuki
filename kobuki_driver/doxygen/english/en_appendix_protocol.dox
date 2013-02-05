@@ -19,7 +19,7 @@ The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using pre
 
 @section enBytestream Structure of Bytestream
 
-A bytestream can be devided into 4 fields, Headers, Length, Payload and Checksum.
+A bytestream can be devided into 4 fields; Headers, Length, Payload and Checksum.
 
 <table>
 <tr align="center"><th>Name</th><td>Header 0</td><td>Header 1</td><td>Length</td><td>Payload</td><td>Checksum</td>
@@ -145,7 +145,7 @@ Data field in Sub-payload is a mixture of below three data types; byte, short an
 @subsection enSerializationDerialization Serialization-Deserialization
 <!--or encodigns?-->
 
-<a href="http://en.wikipedia.org/wiki/Serialization">Serialization</a> is the process of convering a data sturcture into a bytestream. Deserialization is reversal process. Each data types are serialized and deserialized by `<a href="http://en.wikipedia.org/wiki/Least_significant_byte">LSB</a>-First Order`. It means Least Significant Bytes will comes first on the bytestream. For example, The integer number 2,864,434,397(0xAABBCCDD) can be serialized <!-- or encoded?--> into:
+<a href="http://en.wikipedia.org/wiki/Serialization">Serialization</a> is the process of converting a data sturcture into a bytestream. Deserialization is reversal process. Each data types are serialized and deserialized by `<a href="http://en.wikipedia.org/wiki/Least_significant_byte">LSB</a>-First Order`. It means Least Significant Bytes will comes first on the bytestream. For example, The integer number 2,864,434,397(0xAABBCCDD) can be serialized <!-- or encoded?--> into:
 <table>
 <tr><td>0xDD</td><td>0xCC</td><td>0xBB</td><td>0xAA</td></tr>
 </table>
@@ -210,7 +210,7 @@ Play custom sounds with note and duration.
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
-<tr><th rowspan="2">Data</th><td>Note</td><td align="center">2</td><td align="center"></td><td></td><td>Frequency of sound in Hz<br>72~22017 Hz</td></tr>
+<tr><th rowspan="2">Data</th><td>Note</td><td align="center">2</td><td align="center"></td><td></td><td><!--1/(f*a)-->\f$\mbox{1/}(f \cdotp a)\f$, where \f$f\f$ is frequency of sound in Hz, and \f$a\f$ is 0.00000275</td></tr>
 <tr><td>Duration</td><td align="center">1</td><td align="center"></td><td></td><td>Duration of playing note in mili-seconds</td></tr>
 </table>
 
@@ -529,7 +529,7 @@ Digit to deg/s ratio is 0.00875, it comes from <a href="http://www.st.com/intern
 <tr><th></th><th colspan="2">Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td colspan="2">Identifier</td><td align="center">1</td><td align="center">13</td><td>0x0D</td><td>Fixed</td></tr>
 <tr><th>Length</th><td colspan="2">Size of data field</td><td align="center">1</td><td align="center">2+6N</td><td></td><td></td></tr>
-<tr><th rowspan="9">Data</th><td colspan="2">Frame id</td><td align="center">1</td><td align="center"></td><td></td><td>Framed id of 'Raw gyro data 0'<br>Every sensor readings can identified by framed id<br>, It circulate from 0 to 255</td></tr>
+<tr><th rowspan="9">Data</th><td colspan="2">Frame id</td><td align="center">1</td><td align="center"></td><td></td><td>Frame id of 'Raw gyro data 0'<br>Every sensor readings can identified by frame id<br>, It circulate from 0 to 255</td></tr>
 <tr><td colspan="2">Followed data length</td><td align="center">1</td><td align="center">3N</td><td></td><td><!--Redundant for now--></td></tr>
 <tr><td rowspan="3">Raw gyro data 0</td><td>x-axis</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="7">ADC output of each-axis in 0.00875 deg/s</td></tr>
 <tr><td>y-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>

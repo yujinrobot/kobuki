@@ -1,9 +1,8 @@
 /**                                                                           !
-  * @file /kobuki_driver/src/test/simple_loop.cpp
+  * @file /kobuki_driver/src/tools/version_info.cpp
   *
-  * @brief Example/test program with simple loop.
+  * @brief Tools/utility program to retriving version info. of kobuki.
   *
-  * It provides simple example of how interact with kobuki by using c++ without ROS.
  **/
 
 /*****************************************************************************
