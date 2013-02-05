@@ -529,7 +529,7 @@ Digit to deg/s ratio is 0.00875, it comes from <a href="http://www.st.com/intern
 <tr><th></th><th colspan="2">Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td colspan="2">Identifier</td><td align="center">1</td><td align="center">13</td><td>0x0D</td><td>Fixed</td></tr>
 <tr><th>Length</th><td colspan="2">Size of data field</td><td align="center">1</td><td align="center">2+6N</td><td></td><td></td></tr>
-<tr><th rowspan="9">Data</th><td colspan="2">Frame id</td><td align="center">1</td><td align="center"></td><td></td><td>Framed id of 'Raw gyro data 0'<br>Every sensor readings can identified by framed id<br>, It circulate from 0 to 255</td></tr>
+<tr><th rowspan="9">Data</th><td colspan="2">Frame id</td><td align="center">1</td><td align="center"></td><td></td><td>Frame id of 'Raw gyro data 0'<br>Every sensor readings can identified by frame id<br>, It circulate from 0 to 255</td></tr>
 <tr><td colspan="2">Followed data length</td><td align="center">1</td><td align="center">3N</td><td></td><td><!--Redundant for now--></td></tr>
 <tr><td rowspan="3">Raw gyro data 0</td><td>x-axis</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="7">ADC output of each-axis in 0.00875 deg/s</td></tr>
 <tr><td>y-axis</td><td align="center">2</td><td align="center"></td><td></td></tr>
