@@ -18,7 +18,7 @@
 *****************************************************************************/
 
 #include <stdint.h>
-#include <boost/shared_ptr.hpp>
+
 #include <ecl/mobile_robot.hpp>
 
 /*****************************************************************************
@@ -34,8 +34,7 @@ namespace kobuki {
 class DiffDrive {
 public:
   DiffDrive();
-  void init();
-  boost::shared_ptr<ecl::DifferentialDrive::Kinematics> kinematics() { return diff_drive_kinematics; }
+  const ecl::DifferentialDrive::Kinematics& kinematics() { return diff_drive_kinematics; }
   void update(const uint16_t &time_stamp,
               const uint16_t &left_encoder,
               const uint16_t &right_encoder,
@@ -75,7 +74,7 @@ private:
   int imu_heading_offset;
   const double tick_to_rad;
 
-  boost::shared_ptr<ecl::DifferentialDrive::Kinematics> diff_drive_kinematics;
+  ecl::DifferentialDrive::Kinematics diff_drive_kinematics;
 
 };
 

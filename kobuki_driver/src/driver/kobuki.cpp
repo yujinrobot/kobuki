@@ -114,8 +114,6 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   stx.push_back(0xaa);
   stx.push_back(0x55);
   packet_finder.configure(sigslots_namespace, stx, etx, 1, 256, 1, true);
-
-  diff_drive.init();
   acceleration_limiter.init(parameters.enable_acceleration_limiter);
 
   // in case the user changed these from the defaults

@@ -34,12 +34,9 @@ DiffDrive::DiffDrive() :
   bias(0.23), //wheelbase, wheel_to_wheel, in [m]
   wheel_radius(0.035),
   imu_heading_offset(0),
-  tick_to_rad(0.002436916871363930187454f)
+  tick_to_rad(0.002436916871363930187454f),
+  diff_drive_kinematics(bias, wheel_radius)
 {}
-
-void DiffDrive::init() {
-  diff_drive_kinematics.reset(new ecl::DifferentialDrive::Kinematics(bias, wheel_radius));
-}
 
 /**
  * @brief Updates the odometry from firmware stamps and encoders.
@@ -86,7 +83,7 @@ void DiffDrive::update(const uint16_t &time_stamp,
   last_rad_right += tick_to_rad * right_diff_ticks;
 
   // TODO this line and the last statements are really ugly; refactor, put in another place
-  pose_update = diff_drive_kinematics->forward(tick_to_rad * left_diff_ticks, tick_to_rad * right_diff_ticks);
+  pose_update = diff_drive_kinematics.forward(tick_to_rad * left_diff_ticks, tick_to_rad * right_diff_ticks);
 
   if (curr_timestamp != last_timestamp)
   {
