@@ -1,0 +1,30 @@
+<package>
+  <name>kobuki</name>
+  <version>0.2.0</version>
+  <description>
+    Software for Kobuki, Yujin Robot's mobile research base.
+  </description>
+  <author email="stonier@rnd.yujinrobot.com">Daniel Stonier</author>
+  <author email="younghoon.ju@rnd.yujinrobot.com">Younghoon Ju</author>
+  <author email="jorge@rnd.yujinrobot.com">Jorge Santos Simon</author>
+  <author email="marcus.liebhardt@rnd.yujinrobot.com">Marcus Liebhardt</author>
+  <maintainer email="stonier@rnd.yujinrobot.com">Daniel Stonier</maintainer>
+  <license>BSD</license>
+  <url>http://ros.org/wiki/kobuki</url>
+
+  <run_depend>kobuki_arm</run_depend>
+  <run_depend>kobuki_auto_docking</run_depend>
+  <run_depend>kobuki_bumper2pc</run_depend>
+  <run_depend>kobuki_controller_tutorial</run_depend>
+  <run_depend>kobuki_description</run_depend>
+  <run_depend>kobuki_driver</run_depend><!--
+  <run_depend>kobuki_ftdi</run_depend>
+  <run_depend>kobuki_keyop</run_depend>
+  <run_depend>kobuki_node</run_depend>
+  <run_depend>kobuki_safety_controller</run_depend>
+  <run_depend>kobuki_testsuit</run_depend>-->
+
+  <export>
+    <metapackage/>
+  </export>
+</package>

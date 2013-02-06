@@ -1,0 +1,28 @@
+<package>
+  <name>kobuki_udev</name>
+  <version>0.3.0</version>
+  <description>
+	    Utilities for flashing and enabling Kobuki's USB connection.
+	    This package contains tools for flashing the Kobuki's FTDI chip (usually done at the factory).
+	    The special firmware for the FTDI chip (USB to serial converter) enables it to appear as 
+	    /dev/kobuki on the user's PC. 
+  </description>
+  <author email="younghoon.ju@yujinrobot.com">Younghun Ju</author>
+  <maintainer email="younghoon.ju@yujinrobot.com">Younghun Ju</maintainer>
+  <license>BSD</license>
+  <url>http://ros.org/wiki/kobuki_udev</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>ecl_command_line</build_depend>
+
+  <build_depend>libusb-dev</build_depend>
+  <build_depend>libftdi-dev</build_depend>
+  <build_depend>ftdi-eeprom</build_depend>
+
+  <run_depend>ecl_command_line</run_depend>
+
+  <run_depend>libusb-dev</run_depend>
+  <run_depend>libftdi-dev</run_depend>
+  <run_depend>ftdi-eeprom</run_depend>
+</package>

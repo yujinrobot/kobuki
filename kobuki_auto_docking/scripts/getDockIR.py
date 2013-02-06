@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#AUTHOR: Younghun Ju <yhju@yujinrobot.comm>, <yhju83@gmail.com>
+#########AUTHOR: Younghun Ju <yhju@yujinrobot.comm>, <yhju83@gmail.com>
 
 import roslib; roslib.load_manifest('kobuki_node')
 import rospy

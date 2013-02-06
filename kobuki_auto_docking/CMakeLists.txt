@@ -1,39 +1,41 @@
-cmake_minimum_required(VERSION 2.4.6)
-include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
+cmake_minimum_required(VERSION 2.8.3)
+project(kobuki_auto_docking)
+find_package(catkin REQUIRED COMPONENTS roscpp rospy nodelet message_filters actionlib kdl_conversions
+                                        ecl_threads ecl_geometry ecl_linear_algebra kobuki_msgs)
 
-# Verbosity is useful - helps Eclipse to find paths also!
-set(CMAKE_VERBOSE_MAKEFILE true)
+catkin_package(
+   INCLUDE_DIRS include
+   LIBRARIES kobuki_auto_docking_ros kobuki_auto_docking_nodelet
+   CATKIN_DEPENDS roscpp rospy nodelet message_filters actionlib kdl_conversions
+                  ecl_threads ecl_geometry ecl_linear_algebra kobuki_msgs
+)
 
-# Set the build type.  Options are:
-#  Coverage       : w/ debug symbols, w/o optimization, w/ code-coverage
-#  Debug          : w/ debug symbols, w/o optimization
-#  Release        : w/o debug symbols, w/ optimization
-#  RelWithDebInfo : w/ debug symbols, w/ optimization
-#  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
-#set(ROS_BUILD_TYPE RelWithDebInfo)
+include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
+include_directories(include)
 
-rosbuild_init()
+add_library(kobuki_auto_docking_ros src/auto_docking_ros.cpp src/dock_drive.cpp src/nodelet.cpp)
+add_library(kobuki_auto_docking_nodelet src/nodelet.cpp)
 
-#set the default path for built executables to the "bin" directory
-#set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-#set the default path for built libraries to the "lib" directory
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
-
-#uncomment if you have defined messages
-#rosbuild_genmsg()
-#uncomment if you have defined services
-#rosbuild_gensrv()
-
-#common commands for building c++ executables and libraries
-#rosbuild_add_library(${PROJECT_NAME} src/example.cpp)
-#target_link_libraries(${PROJECT_NAME} another_library)
-#rosbuild_add_boost_directories()
-#rosbuild_link_boost(${PROJECT_NAME} thread)
-#rosbuild_add_executable(example examples/example.cpp)
-#target_link_libraries(example ${PROJECT_NAME})
-
-rosbuild_add_library(kobuki_auto_docking_ros src/auto_docking_ros.cpp)
-rosbuild_add_library(kobuki_auto_docking_ros src/dock_drive.cpp)
-
-rosbuild_add_library(kobuki_auto_docking_nodelet src/nodelet.cpp)
+target_link_libraries(kobuki_auto_docking_nodelet ${catkin_LIBRARIES})
 target_link_libraries(kobuki_auto_docking_nodelet kobuki_auto_docking_ros)
+
+install(TARGETS kobuki_auto_docking_ros kobuki_auto_docking_nodelet
+        DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+)
+install(DIRECTORY include/${PROJECT_NAME}/
+        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+)
+install(DIRECTORY plugins
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+install(DIRECTORY launch
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+install(DIRECTORY param
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+install(PROGRAMS scripts/DockDriveActionClient.py
+                 scripts/DockDriveControl.py
+                 scripts/getDockIR.py
+        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)

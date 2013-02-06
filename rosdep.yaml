@@ -1,9 +1,0 @@
-unison:
-  ubuntu: unison unison-gtk
-  gentoo: net-misc/unison
-libftdi-dev:
-  ubuntu: libftdi-dev
-  gentoo: dev-embedded/libftdi
-ftdi-eeprom:
-  ubuntu: ftdi-eeprom
-  gentoo: dev-embedded/ftdi_eeprom

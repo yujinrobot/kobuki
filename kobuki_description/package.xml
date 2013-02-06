@@ -1,0 +1,24 @@
+<package>
+  <name>kobuki_description</name>
+  <version>0.3.0</version>
+  <description>
+      Description of the Kobuki model.
+      Provides the model description of Kobuki for simulation and visualisation. The files in this 
+      package are parsed and used by a variety of other components. Most users will not interact directly
+      with this package.
+  </description>
+  <author email="stonier@yujinrobot.com">Daniel Stonier</author>
+  <author email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</author>
+  <author email="younghoon.ju@yujinrobot.com">Younghun Ju</author>
+  <maintainer email="younghoon.ju@yujinrobot.com">Younghun Ju</maintainer>
+  <license>BSD</license>
+  <url>http://ros.org/wiki/kobuki_description</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>urdf</build_depend>
+  <build_depend>xacro</build_depend>
+
+  <run_depend>urdf</run_depend>
+  <run_depend>xacro</run_depend>
+</package>

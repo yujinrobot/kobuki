@@ -1,0 +1,52 @@
+<package>
+  <name>kobuki_auto_docking</name>
+  <version>0.3.0</version>
+  <description>
+	    Automatic docking for Kobuki:
+	    Users owning a docking station for Kobuki can use this tool to let Kobuki find its nest autonomously.
+  </description>
+  <author email="younghoon.ju@yujinrobot.com">Younghun Ju</author>
+  <maintainer email="younghoon.ju@yujinrobot.com">Younghun Ju</maintainer>
+  <license>BSD</license>
+  <url>http://ros.org/wiki/kobuki_auto_docking</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>nodelet</build_depend>
+  <build_depend>message_filters</build_depend>
+  <build_depend>actionlib</build_depend>
+  <build_depend>kdl_conversions</build_depend>
+  
+  <build_depend>std_msgs</build_depend>
+  <build_depend>nav_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>actionlib_msgs</build_depend>
+  <build_depend>kobuki_msgs</build_depend>
+
+  <build_depend>ecl_threads</build_depend>
+  <build_depend>ecl_geometry</build_depend>
+  <build_depend>ecl_linear_algebra</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>nodelet</run_depend>
+  <run_depend>message_filters</run_depend>
+  <run_depend>actionlib</run_depend>
+  <run_depend>kdl_conversions</run_depend>
+  
+  <run_depend>std_msgs</run_depend>
+  <run_depend>nav_msgs</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>actionlib_msgs</run_depend>
+  <run_depend>kobuki_msgs</run_depend>
+
+  <run_depend>ecl_threads</run_depend>
+  <run_depend>ecl_geometry</run_depend>
+  <run_depend>ecl_linear_algebra</run_depend>
+  
+  <export>
+    <nodelet plugin="${prefix}/plugins/nodelet_plugins.xml"/>
+  </export>
+</package>

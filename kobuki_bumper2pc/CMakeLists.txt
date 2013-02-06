@@ -1,29 +1,28 @@
-##############################################################################
-# CMake
-##############################################################################
+cmake_minimum_required(VERSION 2.8.3)
+project(kobuki_bumper2pc)
+find_package(catkin REQUIRED COMPONENTS roscpp nodelet pcl_ros kobuki_msgs)
 
-cmake_minimum_required(VERSION 2.4.6)
-set(CMAKE_VERBOSE_MAKEFILE TRUE) # useful for eclipse indexing
+catkin_package(
+   INCLUDE_DIRS include
+   LIBRARIES kobuki_bumper2pc_nodelet
+   CATKIN_DEPENDS roscpp nodelet pcl_ros kobuki_msgs
+)
 
-##############################################################################
-# Ros
-##############################################################################
+include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
+include_directories(include)
 
-include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
+add_library(kobuki_bumper2pc_nodelet src/kobuki_bumper2pc.cpp)
+target_link_libraries(kobuki_bumper2pc_nodelet ${catkin_LIBRARIES})
 
-# Set the build type.  Options are:
-#  Coverage       : w/ debug symbols, w/o optimization, w/ code-coverage
-#  Debug          : w/ debug symbols, w/o optimization
-#  Release        : w/o debug symbols, w/ optimization
-#  RelWithDebInfo : w/ debug symbols, w/ optimization
-#  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
-#set(ROS_BUILD_TYPE RelWithDebInfo)
-
-rosbuild_init()
-
-##############################################################################
-# Nodelet
-##############################################################################
-
-rosbuild_add_library(kobuki_bumper2pc_nodelet src/kobuki_bumper2pc.cpp)
-set_target_properties(kobuki_bumper2pc_nodelet PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
+install(TARGETS kobuki_bumper2pc_nodelet
+        DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+)
+install(DIRECTORY include/${PROJECT_NAME}/
+        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+)
+install(DIRECTORY plugins
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+install(DIRECTORY launch
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)

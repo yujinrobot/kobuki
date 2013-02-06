@@ -4,4 +4,19 @@
 
 Todo: this section will describe the installation process for linux.
 
+Target audience: linux people who want to compile kobuki driver, but not use ros
+
+Howto: show them how to catkin compile kobuki driver (maybe use a whitelist to 
+only compile up to kobuki driver and not the node and other ros specific packages)
+Don't forget the install step and CMAKE_INSTALL_PREFIX!
+
+Rosinstall: we need a rosinstall file with only catkin, ecl, yujin_ocs, kobuki_msgs and kobuki
+
+Instructions: they need to install (somehow), wstool, rospkg(?), catkin-pkg(?) either by apt-get or pip
+(probably provide both instructions)
+
+When you test the above, call dan to show you how to compile.
+
+CROSS COMPILING - let's only add this later upon request. Maybe we can put a comment here to ask on 
+kobuki-users@yujinrobot.com if they're interested.
 **/

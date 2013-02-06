@@ -1,45 +1,32 @@
-##############################################################################
-# Cmake
-##############################################################################
+cmake_minimum_required(VERSION 2.8.3)
+project(kobuki_udev)
+find_package(catkin REQUIRED COMPONENTS ecl_command_line)
 
-cmake_minimum_required(VERSION 2.8.0)
+# pkg-config packages
+find_package(PkgConfig)
+pkg_search_module(REQUIRED libusb-dev)
+pkg_search_module(REQUIRED libftdi-dev)
+pkg_search_module(REQUIRED ftdi-eeprom)
 
-# Verbosity is useful - helps eclipse find paths also!
-set(CMAKE_VERBOSE_MAKEFILE true)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+catkin_package(
+   INCLUDE_DIRS include
+   LIBRARIES kobuki_ros kobuki_nodelet
+   CATKIN_DEPENDS ecl_command_line
+   DEPENDS libusb-dev libftdi-dev ftdi-eeprom
+)
 
-##############################################################################
-# Ros
-##############################################################################
-
-include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
-
-##############################################################################
-# Init - the order of the preceding commands is important!
-##############################################################################
-
-rosbuild_init()
-
-##############################################################################
-# Build
-##############################################################################
-
-# You should keep this commented for svn as ros (ycs) build options are 
-# set globally. It is however, useful when debugging/testing for a single 
-# package. The default option if no global ros configuration is set, is 
-# RelWithDebInfo.
-# 
-# Options are:
-#  Coverage       : w/ debug symbols, w/o optimization, w/ code-coverage
-#  Debug          : w/ debug symbols, w/o optimization
-#  Release        : w/o debug symbols, w/ optimization
-#  RelWithDebInfo : w/ debug symbols, w/ optimization
-#  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
-# set(ROS_BUILD_TYPE RelWithDebInfo) 
-
-##############################################################################
-# Actual project configuration
-##############################################################################
+include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
+include_directories(include)
 
 add_subdirectory(src)
 
+install(DIRECTORY bluetooth
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+install(DIRECTORY eeproms
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+install(PROGRAMS scripts/turtlebot_config
+                 scripts/UNUSED
+        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)

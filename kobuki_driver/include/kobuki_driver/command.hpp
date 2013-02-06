@@ -114,8 +114,8 @@ public:
   bool deserialise(ecl::PushAndPop<unsigned char> & byteStream) { return true; } /**< Unused **/
 
 private:
-  static const unsigned char header0 = 0xaa;
-  static const unsigned char header1 = 0x55;
+  static const unsigned char header0;
+  static const unsigned char header1;
 
 };
 

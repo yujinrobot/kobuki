@@ -1,5 +1,5 @@
 ##############################################################################
-# INCLUDES
+# SOURCES
 ##############################################################################
 
 file(GLOB SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
@@ -8,8 +8,9 @@ file(GLOB SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 # LIBRARY
 ##############################################################################
 
-find_package(PCL)
-include_directories(${PCL_INCLUDE_DIRS})
+add_library(kobuki_ros ${SOURCES})
+target_link_libraries(kobuki_ros ${catkin_LIBRARIES})
 
-rosbuild_add_library(kobuki_ros ${SOURCES})
-target_link_libraries(kobuki_ros ${PCL_LIBRARIES})
+install(TARGETS kobuki_ros
+        DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+)

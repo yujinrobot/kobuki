@@ -1,0 +1,46 @@
+<package>
+  <name>kobuki_keyop</name>
+  <version>0.3.0</version>
+  <description>
+    Keyboard teleoperation for Kobuki: relays commands from a keyboard to Kobuki.
+  </description>
+  <author email="stonier@yujinrobot.com">Daniel Stonier</author>
+  <maintainer email="stonier@yujinrobot.com">Daniel Stonier</maintainer>
+  <license>BSD</license>
+  <url>http://ros.org/wiki/kobuki_keyop</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- Ros -->
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>std_srvs</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>roscpp</build_depend>
+
+  <!-- Ecl -->
+  <build_depend>ecl_exceptions</build_depend>
+  <build_depend>ecl_threads</build_depend>
+  <build_depend>ecl_time</build_depend>
+
+  <!-- Kobuki -->
+  <build_depend>kobuki_msgs</build_depend>
+
+
+  <!-- Ros -->
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>std_srvs</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>roscpp</run_depend>
+
+  <!-- Ecl -->
+  <run_depend>ecl_exceptions</run_depend>
+  <run_depend>ecl_threads</run_depend>
+  <run_depend>ecl_time</run_depend>
+
+  <!-- Kobuki -->
+  <run_depend>kobuki_msgs</run_depend>
+  
+  <!-- Yujin ocs -->
+  <run_depend>cmd_vel_mux</run_depend>
+  <run_depend>yocs_velocity_smoother</run_depend>
+</package>
