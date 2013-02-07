@@ -1,22 +1,131 @@
 /**
 
-@page enInstallationLinuxGuide Instllation - Linux
+@page enInstallationLinuxGuide Installation - Linux
 
-Todo: this section will describe the installation process for linux.
+@section Overview
 
-Target audience: linux people who want to compile kobuki driver, but not use ros
+This section describes the installation process for Linux.
 
-Howto: show them how to catkin compile kobuki driver (maybe use a whitelist to 
-only compile up to kobuki driver and not the node and other ros specific packages)
-Don't forget the install step and CMAKE_INSTALL_PREFIX!
+@subsection who Target audience
 
-Rosinstall: we need a rosinstall file with only catkin, ecl, yujin_ocs, kobuki_msgs and kobuki
+Linux people who want to compile Kobuki driver, but not use ros
 
-Instructions: they need to install (somehow), wstool, rospkg(?), catkin-pkg(?) either by apt-get or pip
-(probably provide both instructions)
 
-When you test the above, call dan to show you how to compile.
+@section Procedure 
 
-CROSS COMPILING - let's only add this later upon request. Maybe we can put a comment here to ask on 
-kobuki-users@yujinrobot.com if they're interested.
+@subsection prereq Prerequirements
+
+Starting with version 0.3.0, the Kobuki driver is a catkin package, so first of all you need to install catkin dependencies:
+
+- <i>CMake</i>      - A cross-platform, open-source build system.
+- <i>Python</i>     - Python is a general-purpose, interpreted high-level programming language.
+- <i>catkin_pkg</i> - A Python runtime library for catkin.
+- <i>empy</i>       - A Python template library.
+- <i>nose</i>       - A Python testing framework.
+
+You can resolve these dependencies on Ubuntu with this command:
+
+@code
+  sudo apt-get install cmake python-catkin-pkg python-empy python-nose python-setuptools build-essential
+@endcode
+
+If you are <b>not</b> on Ubuntu you can install Python packages from <a href="http://pypi.python.org/pypi">PyPi</a> via pip. 
+
+Refer to the <a href="http://ros.org/doc/groovy/api/catkin/html/">Catkin documentation</a> for more details.
+
+@subsection catkin Catkin workspace 
+
+Next we must prepare a catkin workspace. Here we explain the manual way, completely independent from ROS tools (apart from catkin itself):
+
+@code
+  # Create a workspace directory tree somewhere in you file system
+  mkdir ~/kobuki_ws
+  cd ~/kobuki_ws
+  mkdir build
+  mkdir src
+  cd src
+  # Clone catkin repository
+  git clone https://github.com/ros/catkin.git
+  # These instructions have been tested with catkin version 0.5.63, so we suggest to use that version
+  cd catkin ; git checkout 0.5.63 ; cd ..
+  # We need this file on src directory
+  cp catkin/cmake/toplevel.cmake CMakeLists.txt
+@endcode
+
+@subsection download Download Kobuki driver 
+
+If all went fine, we can proceed with the Kobuki driver and the <a href="http://www.ros.org/wiki/ecl/">ECL libraries</a>
+it depends on. ECL in turn depends on <a href="http://eigen.tuxfamily.org/">Eigen libraries</a>, so we install them:
+
+@code
+  sudo apt-get install libeigen3-dev 
+@endcode
+
+Download the code:
+
+@code
+  cd ~/kobuki_ws/src
+  # Clone kobuki repository and checkout the latest tested tag
+  git clone https://github.com/yujinrobot/kobuki.git
+  cd kobuki         ; git checkout 0.3.0;  cd ..
+  # Clone required ecl repositories and checkout the latest tested tags
+  git clone https://github.com/stonier/ecl_core.git
+  cd ecl_core       ; git checkout 0.50.3; cd ..
+  git clone https://github.com/stonier/ecl_lite.git
+  cd ecl_lite       ; git checkout 0.50.3; cd ..
+  git clone https://github.com/stonier/ecl_tools.git
+  cd ecl_tools      ; git checkout 0.50.2; cd ..
+  git clone https://github.com/stonier/ecl_navigation.git
+  cd ecl_navigation ; git checkout 0.50.1; cd ..
+@endcode
+
+@subsection config Configure and compile Kobuki driver 
+
+We are ready to configure our workspace. Note that we pass a white list to cmake to avoid compiling all but the Kobuki
+driver and its required packages. The tricky command just reads the white list file, replaces line breaks by semicolons
+and adds double quotes to the list to avoid problems with white spaces and tabs. Note also that we change the installed
+software location to <i>../install</i> (the default is <i>/usr/local</i>). Feel free to change it to wherever you want.
+
+\warning White list packages parsing is sensitive, so be careful if for any reason you need to modify this file. Do
+         not add extra characters other than package names, spaces, tabs and line breaks. It also must be exhaustive,
+         including all upstream dependencies.
+
+@code
+  cd ~/kobuki_ws/build
+  KOBUKI_DRIVER_LOCATION=../install
+  KOBUKI_DRIVER_PACKAGES="`sed -n -e ":a" -e "$ s/\n/;/gp;N;b a" ../src/kobuki/kobuki_driver/catkin_whitelist`"
+  cmake ../src -DCATKIN_WHITELIST_PACKAGES=$KOBUKI_DRIVER_PACKAGES -DCMAKE_INSTALL_PREFIX=$KOBUKI_DRIVER_LOCATION
+@endcode
+
+If all went well, you are ready to compile and install
+
+@code
+  cd ~/kobuki_ws/build
+  make
+  # Optional step, if you want to install the binaries, headers and extra files to KOBUKI_DRIVER_LOCATION
+  make install 
+@endcode
+
+@subsection test Testing your installation
+
+Assuming you executed <i>make install</i>, you can test your installation by executing some of the demo and test
+programs provided with Kobuki driver. Unless you specified a Linux standard installation path, as <i>/usr</i> or
+<i>/usr/local</i>, for the <i>KOBUKI_DRIVER_LOCATION</i>, you must point your <i>LD_LIBRARY_PATH</i> variable to
+the installed libraries. For example, if you type the following commands, the robot should move making squares:
+
+@code
+  export LD_LIBRARY_PATH=$KOBUKI_DRIVER_LOCATION/lib
+  $KOBUKI_DRIVER_LOCATION/lib/kobuki_driver/demo_kobuki_simple_loop
+@endcode
+
+
+@section crossc Cross compiling
+
+We still have not prepared proper cross-compiling documentation, but we will be happy to help you meanwhile.
+
+@section support Additional support
+
+Do not hesitate to ask on <a href="mailto:kobuki-users@yujinrobot.com">Kobuki users list</a> if you need additional
+support.
+
 **/
