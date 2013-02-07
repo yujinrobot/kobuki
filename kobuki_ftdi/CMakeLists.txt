@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(kobuki_udev)
+project(kobuki_ftdi)
 find_package(catkin REQUIRED COMPONENTS ecl_command_line)
 
 # pkg-config packages

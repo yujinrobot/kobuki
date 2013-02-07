@@ -1,5 +1,5 @@
 <package>
-  <name>kobuki_udev</name>
+  <name>kobuki_ftdi</name>
   <version>0.3.0</version>
   <description>
 	    Utilities for flashing and enabling Kobuki's USB connection.
@@ -10,7 +10,7 @@
   <author email="younghoon.ju@yujinrobot.com">Younghun Ju</author>
   <maintainer email="younghoon.ju@yujinrobot.com">Younghun Ju</maintainer>
   <license>BSD</license>
-  <url>http://ros.org/wiki/kobuki_udev</url>
+  <url>http://ros.org/wiki/kobuki_ftdi</url>
 
   <buildtool_depend>catkin</buildtool_depend>
 
