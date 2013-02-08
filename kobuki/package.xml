@@ -1,6 +1,6 @@
 <package>
   <name>kobuki</name>
-  <version>0.2.0</version>
+  <version>0.3.1</version>
   <description>
     Software for Kobuki, Yujin Robot's mobile research base.
   </description>
