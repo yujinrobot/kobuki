@@ -27,6 +27,17 @@ install(DIRECTORY eeproms
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 install(PROGRAMS scripts/turtlebot_config
-                 scripts/UNUSED
+                 scripts/create_udev_rules
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+
+install(FILES 57-kobuki.rules
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
+# This is not technically correct way of doing things
+
+install(FILES 57-kobuki.rules
+        DESTINATION /etc/udev/rules.d/
+)
+
