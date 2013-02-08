@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(kobuki_bumper2pc)
-find_package(catkin REQUIRED COMPONENTS roscpp nodelet pcl_ros kobuki_msgs)
+find_package(catkin REQUIRED COMPONENTS roscpp nodelet pluginlib pcl_ros kobuki_msgs)
 
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES kobuki_bumper2pc_nodelet
-   CATKIN_DEPENDS roscpp nodelet pcl_ros kobuki_msgs
+   CATKIN_DEPENDS roscpp nodelet pluginlib pcl_ros kobuki_msgs
 )
 
 include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
