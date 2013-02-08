@@ -11,6 +11,6 @@ sudo cp `rospack find kobuki_ftdi`/57-kobuki.rules /etc/udev/rules.d
 echo ""
 echo "Restarting udev"
 echo ""
-service udev reload
-service udev restart
+sudo service udev reload
+sudo service udev restart
 
