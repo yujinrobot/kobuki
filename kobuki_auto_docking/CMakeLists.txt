@@ -16,6 +16,8 @@ include_directories(include)
 add_library(kobuki_auto_docking_ros src/auto_docking_ros.cpp src/dock_drive.cpp src/nodelet.cpp)
 add_library(kobuki_auto_docking_nodelet src/nodelet.cpp)
 
+add_dependencies(kobuki_auto_docking_ros kobuki_msgs_gencpp)
+
 target_link_libraries(kobuki_auto_docking_nodelet ${catkin_LIBRARIES})
 target_link_libraries(kobuki_auto_docking_nodelet kobuki_auto_docking_ros)
 
