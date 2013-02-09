@@ -35,9 +35,13 @@ install(FILES 57-kobuki.rules
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
-# This is not technically correct way of doing things
+# This has issues....hydro doing th same thing will result in 
+# a file conflict. We could call it 57-groovy-kobuki.rules and
+# 57-hydro-kobuki.rules. But that seems kind of lame and could
+# break things if they are actually different (which should
+# be called - udev will have no idea).
 
-install(FILES 57-kobuki.rules
-        DESTINATION /etc/udev/rules.d/
-)
+#install(FILES 57-kobuki.rules
+#        DESTINATION /etc/udev/rules.d/
+#)
 

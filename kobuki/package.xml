@@ -17,12 +17,12 @@
   <run_depend>kobuki_bumper2pc</run_depend>
   <run_depend>kobuki_controller_tutorial</run_depend>
 <!--  <run_depend>kobuki_description</run_depend> cannot be catkinized still due to xacro package -->
-  <run_depend>kobuki_driver</run_depend><!--
+  <run_depend>kobuki_driver</run_depend>
   <run_depend>kobuki_ftdi</run_depend>
   <run_depend>kobuki_keyop</run_depend>
   <run_depend>kobuki_node</run_depend>
   <run_depend>kobuki_safety_controller</run_depend>
-  <run_depend>kobuki_testsuit</run_depend>-->
+  <run_depend>kobuki_testsuite</run_depend>
 
   <export>
     <metapackage/>
