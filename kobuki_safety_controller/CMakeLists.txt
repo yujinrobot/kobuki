@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(kobuki_safety_controller)
-find_package(catkin REQUIRED COMPONENTS roscpp nodelet pluginlib std_msgs geometry_msgs kobuki_msgs yocs_controllers)
+find_package(catkin REQUIRED COMPONENTS roscpp nodelet pluginlib std_msgs geometry_msgs kobuki_msgs yocs_controllers ecl_threads)
 
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES kobuki_safety_controller_nodelet
-   CATKIN_DEPENDS roscpp nodelet pluginlib std_msgs geometry_msgs kobuki_msgs yocs_controllers
+   CATKIN_DEPENDS roscpp nodelet pluginlib std_msgs geometry_msgs kobuki_msgs yocs_controllers ecl_threads
 )
 
 include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
