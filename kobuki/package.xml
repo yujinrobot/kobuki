@@ -12,7 +12,7 @@
   <license>BSD</license>
   <url>http://ros.org/wiki/kobuki</url>
 
-  <!--<run_depend>kobuki_arm</run_depend>--> <!-- Currently not enabled -->
+  <run_depend>kobuki_arm</run_depend>
   <run_depend>kobuki_auto_docking</run_depend>
   <run_depend>kobuki_bumper2pc</run_depend>
   <run_depend>kobuki_controller_tutorial</run_depend>
