@@ -219,7 +219,7 @@ void KobukiRos::publishVersionInfo(const VersionInfo &version_info)
 
     msg->firmware = VersionInfo::toString(version_info.firmware);
     msg->hardware = VersionInfo::toString(version_info.hardware);
-    msg->software = "STILL NOT IMPLEMENTED"; //VersionInfo::toString(version_info.software);
+    msg->software = VersionInfo::getSoftwareVersion();
 
     msg->udid.resize(3);
     msg->udid[0] = version_info.udid0;
