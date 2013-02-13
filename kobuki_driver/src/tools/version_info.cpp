@@ -23,7 +23,7 @@ class KobukiManager {
 public:
   KobukiManager(const std::string &device_port) :
     acquired(false),
-    slot_version_info(&KobukiManager::processVersionInfo, *this) // establish the callback
+    slot_version_info(&KobukiManager::processVersionInfo, *this)
   {
     kobuki::Parameters parameters;
     parameters.sigslots_namespace = "/kobuki"; // configure the first part of the sigslot namespace
@@ -40,7 +40,8 @@ public:
   void processVersionInfo(const kobuki::VersionInfo &version_info) {
     hardware = kobuki::VersionInfo::toString(version_info.hardware);
     firmware = kobuki::VersionInfo::toString(version_info.firmware);
-    software = kobuki::VersionInfo::toString(version_info.software);
+    //software = kobuki::VersionInfo::toString(version_info.software);
+    software = kobuki::VersionInfo::getSoftwareVersion();
     udid = kobuki::VersionInfo::toString(version_info.udid0, version_info.udid1, version_info.udid2);
     acquired = true;
   }

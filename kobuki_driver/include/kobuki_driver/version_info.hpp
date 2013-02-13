@@ -18,6 +18,7 @@
 *****************************************************************************/
 
 #include <string>
+#include <sstream>
 #include <stdint.h>
 
 /*****************************************************************************
@@ -64,6 +65,8 @@ public:
     ss << udid0 << "-" << udid1 << "-" << udid2;
     return std::string(ss.str());
   }
+
+  static std::string getSoftwareVersion();
 };
 
 } // namespace kobuki
