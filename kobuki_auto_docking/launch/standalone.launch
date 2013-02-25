@@ -1,9 +1,8 @@
 <!--
-  Standalone launcher for running a default kobuki with
-  safe reactive controller (bump/cliff reactive control) alongside.
+  Standalone auto-docking launcher. 
  -->
 <launch>
-  <node pkg="nodelet" type="nodelet" name="dock_drive_manager"  args="manager"/>
+  <node pkg="nodelet" type="nodelet" name="dock_drive_manager" args="manager"/>
   <node pkg="nodelet" type="nodelet" name="dock_drive" args="load kobuki_auto_docking/AutoDockingNodelet dock_drive_manager">
     <remap from="dock_drive/odom" to="odom"/>
     <remap from="dock_drive/core" to="mobile_base/sensors/core"/>

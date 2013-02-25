@@ -1,15 +1,14 @@
 <!--
-  Standalone launcher for running a default kobuki with
-  safe reactive controller (bump/cliff reactive control) alongside.
+  Standalone auto-docking launcher with basic kobuki mobile base. 
  -->
 <launch>
-  <node pkg="nodelet" type="nodelet" name="kobuki"  args="manager"/>
-  <node pkg="nodelet" type="nodelet" name="mobile_base" args="load kobuki_node/KobukiNodelet kobuki">
+  <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
+  <node pkg="nodelet" type="nodelet" name="mobile_base" args="load kobuki_node/KobukiNodelet mobile_base_nodelet_manager">
     <rosparam file="$(find kobuki_node)/param/base.yaml" command="load"/>
     <remap from="mobile_base/odom" to="odom"/>
     <remap from="mobile_base/joint_states" to="joint_states"/>
   </node>
-  <node pkg="nodelet" type="nodelet" name="dock_drive" args="load kobuki_auto_docking/AutoDockingNodelet kobuki">
+  <node pkg="nodelet" type="nodelet" name="dock_drive" args="load kobuki_auto_docking/AutoDockingNodelet mobile_base_nodelet_manager">
     <remap from="dock_drive/odom" to="odom"/>
     <remap from="dock_drive/core" to="mobile_base/sensors/core"/>
     <remap from="dock_drive/dock_ir" to="mobile_base/sensors/dock_ir"/>
