@@ -120,21 +120,29 @@ void DiffDrive::velocityCommands(const double &vx, const double &wz) {
   // vx: in m/s
   // wz: in rad/s
   const double epsilon = 0.0001;
-  if ( std::abs(wz) < epsilon ) {
-    radius = 0; // straight
-  } else if ( (std::abs(vx) < epsilon ) && ( wz > epsilon ) ) {
-    radius = 1; // in place ccw turn
-  } else if ( (std::abs(vx) < epsilon ) && ( wz < -1*epsilon ) ) {
-    radius = -1; // in place cw turn
-  } else {
-    radius = (short)(vx * 1000.0f / wz);
-    // what happen, if resulatant radius from this block is -1, 0, or 1.
+
+  // Special Case #1 : Straight Run
+  if( std::abs(wz) < epsilon ) {
+    radius = 0;
+    speed  = (short)(1000.0f * vx);
+    return;
   }
-  if ( vx < 0.0 ) {
-    speed = (short)(1000.0f * std::min(vx + bias * wz / 2.0f, vx - bias * wz / 2.0f));
-  } else {
-    speed = (short)(1000.0f * std::max(vx + bias * wz / 2.0f, vx - bias * wz / 2.0f));
+
+  radius = (short)(vx * 1000.0f / wz);
+  // Special Case #2 : Pure Rotation or Radius is less than or equal to 1.0 mm
+  if( std::abs(vx) < epsilon || std::abs(radius) <= 1 ) {
+    speed  = (short)(1000.0f * bias * wz / 2.0f);
+    radius = 1;
+    return;
   }
+
+  // General Case :
+  if( radius > 0 ) {
+    speed  = (short)((radius + 1000.0f * bias / 2.0f) * wz);
+  } else {
+    speed  = (short)((radius - 1000.0f * bias / 2.0f) * wz);
+  }
+  return;
 }
 
 void DiffDrive::velocityCommands(const short &cmd_speed, const short &cmd_radius) {

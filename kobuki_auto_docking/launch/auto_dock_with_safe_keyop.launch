@@ -1,13 +1,13 @@
 <!--
-  Keyop configuration for working with the default kobuki launcher (minimal.launch). 
+  Auto-docking + keyop configuration for working with the default kobuki launcher (minimal.launch). 
  -->
 <launch>
-  <node pkg="nodelet" type="nodelet" name="cmd_vel_mux" args="load cmd_vel_mux/CmdVelMuxNodelet kobuki">
+  <node pkg="nodelet" type="nodelet" name="cmd_vel_mux" args="load cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
     <param name="yaml_cfg_file" value="$(find kobuki_auto_docking)/param/cmd_vel_mux.yaml"/>
-    <remap from="cmd_vel_mux/mux_cmd_vel" to="mobile_base/commands/velocity"/>
+    <remap from="cmd_vel_mux/output" to="mobile_base/commands/velocity"/>
   </node>
 
-  <node pkg="nodelet" type="nodelet" name="dock_drive" args="load kobuki_auto_docking/AutoDockingNodelet kobuki">
+  <node pkg="nodelet" type="nodelet" name="dock_drive" args="load kobuki_auto_docking/AutoDockingNodelet mobile_base_nodelet_manager">
     <remap from="dock_drive/odom" to="odom"/>
     <remap from="dock_drive/core" to="mobile_base/sensors/core"/>
     <remap from="dock_drive/dock_ir" to="mobile_base/sensors/dock_ir"/>
@@ -15,14 +15,14 @@
     <remap from="dock_drive/velocity" to="cmd_vel_mux/auto_docking"/>
   </node>
   
-  <node pkg="nodelet" type="nodelet" name="kobuki_safety_controller" args="load kobuki_safety_controller/SafetyControllerNodelet kobuki">
+  <node pkg="nodelet" type="nodelet" name="kobuki_safety_controller" args="load kobuki_safety_controller/SafetyControllerNodelet mobile_base_nodelet_manager">
     <remap from="kobuki_safety_controller/cmd_vel" to="cmd_vel_mux/safety_controller"/>
     <remap from="kobuki_safety_controller/events/bumper" to="mobile_base/events/bumper"/>
     <remap from="kobuki_safety_controller/events/cliff" to="mobile_base/events/cliff"/>
     <remap from="kobuki_safety_controller/events/wheel_drop" to="mobile_base/events/wheel_drop"/>
   </node>
   
-  <node pkg="nodelet" type="nodelet" name="keyop_vel_smoother" args="load yocs_velocity_smoother/VelocitySmootherNodelet kobuki">
+  <node pkg="nodelet" type="nodelet" name="keyop_vel_smoother" args="load yocs_velocity_smoother/VelocitySmootherNodelet mobile_base_nodelet_manager">
     <rosparam file="$(find kobuki_keyop)/param/keyop_smoother.yaml" command="load"/>
 <!--     <remap from="keyop_vel_smoother/raw_cmd_vel" to="raw_cmd_vel"/> -->
     <remap from="keyop_vel_smoother/odometry" to="odom"/>

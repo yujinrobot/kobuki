@@ -13,13 +13,13 @@ catkin_package(
 include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
 include_directories(include)
 
-add_library(kobuki_auto_docking_ros src/auto_docking_ros.cpp src/dock_drive.cpp src/nodelet.cpp)
+add_library(kobuki_auto_docking_ros src/auto_docking_ros.cpp src/dock_drive.cpp)
 add_library(kobuki_auto_docking_nodelet src/nodelet.cpp)
 
 add_dependencies(kobuki_auto_docking_ros kobuki_msgs_gencpp)
 
-target_link_libraries(kobuki_auto_docking_nodelet ${catkin_LIBRARIES})
-target_link_libraries(kobuki_auto_docking_nodelet kobuki_auto_docking_ros)
+target_link_libraries(kobuki_auto_docking_ros ${catkin_LIBRARIES})
+target_link_libraries(kobuki_auto_docking_nodelet ${catkin_LIBRARIES} kobuki_auto_docking_ros)
 
 install(TARGETS kobuki_auto_docking_ros kobuki_auto_docking_nodelet
         DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
