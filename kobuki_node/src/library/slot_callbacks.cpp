@@ -376,6 +376,19 @@ void KobukiRos::publishRobotEvent(const RobotEvent &event)
   }
 }
 
+/**
+ * @brief Prints the raw data stream to a publisher.
+ *
+ * This is a lazy publisher, it only publishes if someone is listening. It publishes the
+ * hex byte values of the raw data commands. Useful for debugging command to protocol
+ * byte packets to the firmware.
+ *
+ * The signal which calls this
+ * function is sending a copy of the buffer (don't worry about mutexes). Be ideal if we used
+ * const PacketFinder::BufferType here, but haven't updated PushPop to work with consts yet.
+ *
+ * @param buffer
+ */
 void KobukiRos::publishRawDataCommand(Command::Buffer &buffer)
 {
   if ( raw_data_command_publisher.getNumSubscribers() > 0 ) { // do not do string processing if there is no-one listening.
@@ -390,7 +403,19 @@ void KobukiRos::publishRawDataCommand(Command::Buffer &buffer)
     }
   }
 }
-
+/**
+ * @brief Prints the raw data stream to a publisher.
+ *
+ * This is a lazy publisher, it only publishes if someone is listening. It publishes the
+ * hex byte values of the raw data (incoming) stream. Useful for checking when bytes get
+ * mangled.
+ *
+ * The signal which calls this
+ * function is sending a copy of the buffer (don't worry about mutexes). Be ideal if we used
+ * const PacketFinder::BufferType here, but haven't updated PushPop to work with consts yet.
+ *
+ * @param buffer
+ */
 void KobukiRos::publishRawDataStream(PacketFinder::BufferType &buffer)
 {
   if ( raw_data_stream_publisher.getNumSubscribers() > 0 ) { // do not do string processing if there is no-one listening.
