@@ -1,0 +1,139 @@
+\section{\-Introduction}\label{koSigslotsGuide_sigslotsIntro}
+\-Sigslots are the primary way to handle events emitted by the kobuki driver (c.\-f. with the usual function callbacks with void function pointers as arguments). \-Rather than repeating here a verbose explanation of what they are and how they work, the best option is to go straight to the official documentation -\/ {\tt ecl\-\_\-sigslots}.\section{\-Sigslot Reference}\label{enSigslotsGuide_sigslotReference}
+\-The kobuki driver establishes a set of signals on uniquely established namespaces. \-The namespace for each is separated into two parts -\/ the first is the namespace specified by the sigslots\-\_\-namespace variable in the kobuki\-::\-Parameter strucutre. \-The second uniquely identifies the signal itself.
+
+\-The following represent the available signals when namespaced under \char`\"{}/kobuki\char`\"{} (default).
+
+
+\begin{DoxyItemize}
+\item void \-: /kobuki/stream\-\_\-data \-: informs when a new data packet has arrived from the kobuki
+\item std\-::string \-: /kobuki/ros\-\_\-debug \-: relay debug messages
+\item std\-::string \-: /kobuki/ros\-\_\-info \-: relay info messages
+\item std\-::string \-: /kobuki/ros\-\_\-warn \-: relay warning messages
+\item std\-::string \-: /kobuki/ros\-\_\-error \-: relay error messages
+\item \doxyref{kobuki\-::\-Button\-Event}{p.}{structkobuki_1_1ButtonEvent} \-: /kobuki/button\-\_\-event \-: receive an event when a button state changes
+\item \doxyref{kobuki\-::\-Bumper\-Event}{p.}{structkobuki_1_1BumperEvent} \-: /kobuki/bumper\-\_\-event \-: receive an event when the bumper state changes
+\item \doxyref{kobuki\-::\-Cliff\-Event}{p.}{structkobuki_1_1CliffEvent} \-: /kobuki/cliff\-\_\-event \-: receive an event when a cliff sensor state changes
+\item \doxyref{kobuki\-::\-Wheel\-Event}{p.}{structkobuki_1_1WheelEvent}\-: /kobuki/wheel\-\_\-event \-: receive an event when the wheel state (in/out) changes
+\item \doxyref{kobuki\-::\-Power\-Event}{p.}{structkobuki_1_1PowerEvent} \-: /kobuki/power\-\_\-event \-: receive an event when the power/charging state changes
+\item \doxyref{kobuki\-::\-Input\-Event}{p.}{structkobuki_1_1InputEvent} \-: /kobuki/input\-\_\-event \-: receive an event when the gpio state changes
+\item \doxyref{kobuki\-::\-Robot\-Event}{p.}{structkobuki_1_1RobotEvent} \-: /kobuki/robot\-\_\-event \-: receive an event when the robot state changes
+\item \doxyref{kobuki\-::\-Version\-Info}{p.}{classkobuki_1_1VersionInfo} \-: /kobuki/version\-\_\-info \-: receive version info strings on this signal
+\end{DoxyItemize}
+
+\-It does not establish any slots.\section{\-Usage}\label{enSigslotsGuide_exampleSigSlots}
+\-The {\itshape /kobuki/stream\-\_\-data\/} is the most important slot. \-The kobuki sends a single long data packet periodically and when this is received, it emits a signal informing you that it has arrived and is ready to be processed. \-At this point, you can quiz the kobuki driver for the state ( \doxyref{kobuki\-::\-Kobuki\-::get\-Core\-Sensor\-Data}{p.}{classkobuki_1_1Kobuki_a33ff3a81a9a43c025da6efb21dc0ac9b}) which returns a \doxyref{kobuki\-::\-Core\-Sensors\-::\-Data}{p.}{structkobuki_1_1CoreSensors_1_1Data} structure holding all the important sensor information for kobuki.\subsection{\-Simple Example -\/ Catching Wheel Odometry}\label{enSigslotsGuide_simpleExample}
+\-A small example program which processes this signal sending current wheel encoder values to standard output\-:
+
+
+\begin{DoxyCode}
+#include <ecl/time.hpp>
+#include <ecl/sigslots.hpp>
+#include <iostream>
+#include <kobuki_driver/kobuki.hpp>
+
+class KobukiManager {
+public:
+  KobukiManager() :
+      slot_stream_data(&KobukiManager::processStreamData, *this) // establish
+       the callback
+  {
+    kobuki::Parameters parameters;
+    parameters.sigslots_namespace = "/kobuki"; // configure the first part of
+       the sigslot namespace
+    parameters.device_port = "/dev/kobuki";         // the serial port to
+       connect to (windows COM1..)
+    kobuki.init(parameters);
+    slot_stream_data.connect("/kobuki/stream_data");
+  }
+
+  void spin() {
+    ecl::Sleep sleep(1);
+    while ( true ) {
+      sleep();
+    }
+  }
+
+  /*
+ Called whenever the kobuki receives a data packet. Up to you from here to
+       process it.
+
+ Note that special processing is done for the various events which discretely
+       change
+ state (bumpers, cliffs etc) and updates for these are informed via the
+       xxxEvent
+ signals provided by the kobuki driver.
+   */
+  void processStreamData() {
+    kobuki::CoreSensors::Data data = kobuki.getCoreSensorData();
+    std::cout << "Encoders [" <<  data.left_encoder << "," << data.right_encoder
+       << "]" << std::endl;
+  }
+
+private:
+  kobuki::Kobuki kobuki;
+  ecl::Slot<> slot_stream_data;
+};
+
+int main() {
+  KobukiManager kobuki_manager;
+  kobuki_manager.spin();
+  return 0;
+}
+\end{DoxyCode}
+\subsection{\-Other Signals}\label{enSigslotsGuide_otherSignals}
+\-The other signals will pass a structure of a particular type with the transmitted information. \-Process the same way, using the event type as the argument to the callback function.\section{\-Detailed Example}\label{enSigslotsGuide_detailedSigslotsExample}
+\-More detailed example code can be found in the ros kobuki node implementation. \-See the {\tt kobuki\-\_\-node} implementation for a ros platform.\section{\-Troubleshooting}\label{enSigslotsGuide_Troubleshooting}
+\-While debugging, you may often accidentally leave sigslots dangling, typos for the connection name are a common cause. \-For this, there is an introspection method available which you can use to quickly print the currently sigslot connections (dangling or otherwise).
+
+\-A code snippet\-:
+
+
+\begin{DoxyCode}
+  Kobuki kobuki
+  Parameters parameters;
+  // configure parameters here 
+  kobuki.init(parameters);
+  // make some sigslot connections here
+  kobuki.printSigSlotConnections();
+\end{DoxyCode}
+
+
+\-Depending on your sigslot connection configuration, you should see something like the following,
+
+
+\begin{DoxyCode}
+========== Void ==========
+Topics
+  Name: /kobuki/stream_data
+    # Subscribers: 1
+    # Publishers : 1
+========= String =========
+Topics
+  Name: /kobuki/ros_debug
+    # Subscribers: 1
+    # Publishers : 1
+  Name: /kobuki/ros_error
+    # Subscribers: 1
+    # Publishers : 2
+  Name: /kobuki/ros_info
+    # Subscribers: 1
+    # Publishers : 1
+  Name: /kobuki/ros_warn
+    # Subscribers: 1
+    # Publishers : 2
+====== Button Event ======
+Topics
+  Name: /kobuki/button_event
+    # Subscribers: 1
+    # Publishers : 1
+====== Bumper Event ======
+Topics
+  Name: /kobuki/bumper_event
+    # Subscribers: 1
+    # Publishers : 1
+...
+\end{DoxyCode}
+
+
+\-This uses the sigslots manager to retrieve the information. \-A full example of its use can be found in the ecl\-\_\-sigslot sources\-: {\tt example cpp program}. 

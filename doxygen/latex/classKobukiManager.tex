@@ -1,0 +1,353 @@
+\section{\-Kobuki\-Manager \-Class \-Reference}
+\label{classKobukiManager}\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\-::string \& {\bf get\-Firmware\-Version} ()
+\item 
+std\-::string \& {\bf get\-Hardware\-Version} ()
+\item 
+ecl\-::\-Pose2\-D$<$ double $>$ {\bf get\-Pose} ()
+\item 
+std\-::string \& {\bf get\-Software\-Version} ()
+\item 
+std\-::string \& {\bf get\-U\-D\-I\-D} ()
+\item 
+bool {\bf is\-Acquired} ()
+\item 
+{\bf \-Kobuki\-Manager} ()
+\item 
+{\bf \-Kobuki\-Manager} ()
+\item 
+{\bf \-Kobuki\-Manager} (const std\-::string \&device\-\_\-port)
+\item 
+{\bf \-Kobuki\-Manager} ()
+\item 
+void {\bf process\-Motion} ()
+\item 
+void {\bf process\-Stream\-Data} ()
+\item 
+void {\bf process\-Stream\-Data} ()
+\item 
+void {\bf process\-Version\-Info} (const {\bf kobuki\-::\-Version\-Info} \&version\-\_\-info)
+\item 
+void {\bf spin} ()
+\item 
+{\bf $\sim$\-Kobuki\-Manager} ()
+\item 
+{\bf $\sim$\-Kobuki\-Manager} ()
+\end{DoxyCompactItemize}
+\subsection*{\-Private \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+volatile bool {\bf acquired}
+\item 
+double {\bf dth}
+\item 
+double {\bf dx}
+\item 
+std\-::string {\bf firmware}
+\item 
+std\-::string {\bf hardware}
+\item 
+{\bf kobuki\-::\-Kobuki} {\bf kobuki}
+\item 
+ecl\-::\-Pose2\-D$<$ double $>$ {\bf pose}
+\item 
+ecl\-::\-Slot {\bf slot\-\_\-stream\-\_\-data}
+\item 
+ecl\-::\-Slot$<$ const \*
+{\bf kobuki\-::\-Version\-Info} \& $>$ {\bf slot\-\_\-version\-\_\-info}
+\item 
+std\-::string {\bf software}
+\item 
+std\-::string {\bf udid}
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+
+
+\-Definition at line 13 of file initialisation.\-cpp.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!\-Kobuki\-Manager@{\-Kobuki\-Manager}}
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{\-Kobuki\-Manager}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Kobuki\-Manager\-::\-Kobuki\-Manager} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_af719c61bfe21c8c3e35320edba20f7aa}
+
+
+\-Definition at line 15 of file initialisation.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!\-Kobuki\-Manager@{\-Kobuki\-Manager}}
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{\-Kobuki\-Manager}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Kobuki\-Manager\-::\-Kobuki\-Manager} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_af719c61bfe21c8c3e35320edba20f7aa}
+
+
+\-Definition at line 21 of file sigslots.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!\-Kobuki\-Manager@{\-Kobuki\-Manager}}
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{\-Kobuki\-Manager}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Kobuki\-Manager\-::\-Kobuki\-Manager} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_af719c61bfe21c8c3e35320edba20f7aa}
+
+
+\-Definition at line 26 of file simple\-\_\-loop.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!$\sim$\-Kobuki\-Manager@{$\sim$\-Kobuki\-Manager}}
+\index{$\sim$\-Kobuki\-Manager@{$\sim$\-Kobuki\-Manager}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{$\sim$\-Kobuki\-Manager}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Kobuki\-Manager\-::$\sim$\-Kobuki\-Manager} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_ac42d8ea226f1b7aed59781c58ceea311}
+
+
+\-Definition at line 39 of file simple\-\_\-loop.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!\-Kobuki\-Manager@{\-Kobuki\-Manager}}
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{\-Kobuki\-Manager}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Kobuki\-Manager\-::\-Kobuki\-Manager} (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{device\-\_\-port}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_a26c5c2dba94d25134a9e07cf200081b4}
+
+
+\-Definition at line 24 of file version\-\_\-info.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!$\sim$\-Kobuki\-Manager@{$\sim$\-Kobuki\-Manager}}
+\index{$\sim$\-Kobuki\-Manager@{$\sim$\-Kobuki\-Manager}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{$\sim$\-Kobuki\-Manager}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Kobuki\-Manager\-::$\sim$\-Kobuki\-Manager} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_ac42d8ea226f1b7aed59781c58ceea311}
+
+
+\-Definition at line 36 of file version\-\_\-info.\-cpp.
+
+
+
+\subsection{\-Member \-Function \-Documentation}
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!get\-Firmware\-Version@{get\-Firmware\-Version}}
+\index{get\-Firmware\-Version@{get\-Firmware\-Version}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{get\-Firmware\-Version}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string\& {\bf \-Kobuki\-Manager\-::get\-Firmware\-Version} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_ad41d68f9b7b3fbfed839e75c80126889}
+
+
+\-Definition at line 51 of file version\-\_\-info.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!get\-Hardware\-Version@{get\-Hardware\-Version}}
+\index{get\-Hardware\-Version@{get\-Hardware\-Version}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{get\-Hardware\-Version}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string\& {\bf \-Kobuki\-Manager\-::get\-Hardware\-Version} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_ae706ebf599facb44f54a063719455942}
+
+
+\-Definition at line 50 of file version\-\_\-info.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!get\-Pose@{get\-Pose}}
+\index{get\-Pose@{get\-Pose}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{get\-Pose}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Pose2\-D$<$double$>$ {\bf \-Kobuki\-Manager\-::get\-Pose} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_ac3d4fe90255dc0000d7c7d9dbfd991e4}
+
+
+\-Definition at line 64 of file simple\-\_\-loop.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!get\-Software\-Version@{get\-Software\-Version}}
+\index{get\-Software\-Version@{get\-Software\-Version}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{get\-Software\-Version}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string\& {\bf \-Kobuki\-Manager\-::get\-Software\-Version} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_a3f216a279cf2aae62b4abe14c9022352}
+
+
+\-Definition at line 52 of file version\-\_\-info.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!get\-U\-D\-I\-D@{get\-U\-D\-I\-D}}
+\index{get\-U\-D\-I\-D@{get\-U\-D\-I\-D}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{get\-U\-D\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string\& {\bf \-Kobuki\-Manager\-::get\-U\-D\-I\-D} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_a5d20b8f584ca407cc6465679b6a64f54}
+
+
+\-Definition at line 53 of file version\-\_\-info.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!is\-Acquired@{is\-Acquired}}
+\index{is\-Acquired@{is\-Acquired}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{is\-Acquired}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Kobuki\-Manager\-::is\-Acquired} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_a7aab020e5b0bce432047578ffa62b1c2}
+
+
+\-Definition at line 49 of file version\-\_\-info.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!process\-Motion@{process\-Motion}}
+\index{process\-Motion@{process\-Motion}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{process\-Motion}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Kobuki\-Manager\-::process\-Motion} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_a3f21876cbc4f349b4ae711395c8c2dd3}
+
+
+\-Definition at line 58 of file simple\-\_\-loop.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!process\-Stream\-Data@{process\-Stream\-Data}}
+\index{process\-Stream\-Data@{process\-Stream\-Data}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{process\-Stream\-Data}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Kobuki\-Manager\-::process\-Stream\-Data} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_a8b7d112844422e6d0e1bb67acacfc6e5}
+
+
+\-Definition at line 44 of file simple\-\_\-loop.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!process\-Stream\-Data@{process\-Stream\-Data}}
+\index{process\-Stream\-Data@{process\-Stream\-Data}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{process\-Stream\-Data}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Kobuki\-Manager\-::process\-Stream\-Data} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_a8b7d112844422e6d0e1bb67acacfc6e5}
+
+
+\-Definition at line 46 of file sigslots.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!process\-Version\-Info@{process\-Version\-Info}}
+\index{process\-Version\-Info@{process\-Version\-Info}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{process\-Version\-Info}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Kobuki\-Manager\-::process\-Version\-Info} (
+\begin{DoxyParamCaption}
+\item[{const {\bf kobuki\-::\-Version\-Info} \&}]{version\-\_\-info}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_a40431417c3d7cf986620b1ae3f2c7146}
+
+
+\-Definition at line 40 of file version\-\_\-info.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!spin@{spin}}
+\index{spin@{spin}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{spin}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Kobuki\-Manager\-::spin} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classKobukiManager_aa2a9199cb862ebc899996a9eef3214c6}
+
+
+\-Definition at line 32 of file sigslots.\-cpp.
+
+
+
+\subsection{\-Member \-Data \-Documentation}
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!acquired@{acquired}}
+\index{acquired@{acquired}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{acquired}]{\setlength{\rightskip}{0pt plus 5cm}volatile bool {\bf \-Kobuki\-Manager\-::acquired}\hspace{0.3cm}{\ttfamily  [private]}}\label{classKobukiManager_ae0fc37eff1e67a79fd09a992e0ae4d23}
+
+
+\-Definition at line 56 of file version\-\_\-info.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!dth@{dth}}
+\index{dth@{dth}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{dth}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf \-Kobuki\-Manager\-::dth}\hspace{0.3cm}{\ttfamily  [private]}}\label{classKobukiManager_aae56a5aba9c5860a6a4c0825838578e5}
+
+
+\-Definition at line 69 of file simple\-\_\-loop.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!dx@{dx}}
+\index{dx@{dx}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{dx}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf \-Kobuki\-Manager\-::dx}\hspace{0.3cm}{\ttfamily  [private]}}\label{classKobukiManager_ae27c93049cd6d6a5b8ab94ee16a5e1fa}
+
+
+\-Definition at line 69 of file simple\-\_\-loop.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!firmware@{firmware}}
+\index{firmware@{firmware}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{firmware}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string {\bf \-Kobuki\-Manager\-::firmware}\hspace{0.3cm}{\ttfamily  [private]}}\label{classKobukiManager_add3c2b016571059102d52edcbf8b63ac}
+
+
+\-Definition at line 58 of file version\-\_\-info.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!hardware@{hardware}}
+\index{hardware@{hardware}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{hardware}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string {\bf \-Kobuki\-Manager\-::hardware}\hspace{0.3cm}{\ttfamily  [private]}}\label{classKobukiManager_a36968fe38609a51c9949e7c6aada04f1}
+
+
+\-Definition at line 58 of file version\-\_\-info.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!kobuki@{kobuki}}
+\index{kobuki@{kobuki}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{kobuki}]{\setlength{\rightskip}{0pt plus 5cm}{\bf kobuki\-::\-Kobuki} {\bf \-Kobuki\-Manager\-::kobuki}\hspace{0.3cm}{\ttfamily  [private]}}\label{classKobukiManager_aedbd8a41454f86c36938b15481688d4c}
+
+
+\-Definition at line 39 of file initialisation.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!pose@{pose}}
+\index{pose@{pose}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{pose}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Pose2\-D$<$double$>$ {\bf \-Kobuki\-Manager\-::pose}\hspace{0.3cm}{\ttfamily  [private]}}\label{classKobukiManager_ad0ed629496ed8578df47bd15d4a1b3f6}
+
+
+\-Definition at line 70 of file simple\-\_\-loop.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!slot\-\_\-stream\-\_\-data@{slot\-\_\-stream\-\_\-data}}
+\index{slot\-\_\-stream\-\_\-data@{slot\-\_\-stream\-\_\-data}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{slot\-\_\-stream\-\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Slot {\bf \-Kobuki\-Manager\-::slot\-\_\-stream\-\_\-data}\hspace{0.3cm}{\ttfamily  [private]}}\label{classKobukiManager_a932be6e61aa406bc1a33c12281bc4499}
+
+
+\-Definition at line 53 of file sigslots.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!slot\-\_\-version\-\_\-info@{slot\-\_\-version\-\_\-info}}
+\index{slot\-\_\-version\-\_\-info@{slot\-\_\-version\-\_\-info}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{slot\-\_\-version\-\_\-info}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Slot$<$const {\bf kobuki\-::\-Version\-Info}\&$>$ {\bf \-Kobuki\-Manager\-::slot\-\_\-version\-\_\-info}\hspace{0.3cm}{\ttfamily  [private]}}\label{classKobukiManager_a3e2ed71aaa1c0bd70840322114076169}
+
+
+\-Definition at line 59 of file version\-\_\-info.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!software@{software}}
+\index{software@{software}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{software}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string {\bf \-Kobuki\-Manager\-::software}\hspace{0.3cm}{\ttfamily  [private]}}\label{classKobukiManager_ada9d19dceec947a9722f64d6f4248a2d}
+
+
+\-Definition at line 58 of file version\-\_\-info.\-cpp.
+
+\index{\-Kobuki\-Manager@{\-Kobuki\-Manager}!udid@{udid}}
+\index{udid@{udid}!KobukiManager@{\-Kobuki\-Manager}}
+\subsubsection[{udid}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string {\bf \-Kobuki\-Manager\-::udid}\hspace{0.3cm}{\ttfamily  [private]}}\label{classKobukiManager_a7f3b07bf7e4d7ce7d601e102ab2bd723}
+
+
+\-Definition at line 58 of file version\-\_\-info.\-cpp.
+
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+{\bf initialisation.\-cpp}\item 
+{\bf sigslots.\-cpp}\item 
+{\bf simple\-\_\-loop.\-cpp}\item 
+{\bf version\-\_\-info.\-cpp}\end{DoxyCompactItemize}

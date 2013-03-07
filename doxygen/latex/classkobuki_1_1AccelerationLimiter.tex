@@ -1,0 +1,138 @@
+\section{kobuki\-:\-:\-Acceleration\-Limiter \-Class \-Reference}
+\label{classkobuki_1_1AccelerationLimiter}\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}}
+
+
+\-An acceleration limiter for the kobuki.  
+
+
+
+
+{\ttfamily \#include $<$acceleration\-\_\-limiter.\-hpp$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bf \-Acceleration\-Limiter} ()
+\item 
+void {\bf confirm} (short \&{\bf speed}, short \&{\bf radius})
+\begin{DoxyCompactList}\small\item\em \-Limits the input velocity commands if gatekeeper is enabled. \end{DoxyCompactList}\item 
+void {\bf init} (bool enable\-\_\-acceleration\-\_\-limiter)
+\end{DoxyCompactItemize}
+\subsection*{\-Private \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bf is\-\_\-enabled}
+\item 
+short {\bf last\-\_\-radius}
+\item 
+short {\bf last\-\_\-speed}
+\item 
+ecl\-::\-Time\-Stamp {\bf last\-\_\-timestamp}
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-An acceleration limiter for the kobuki. 
+
+\-This class will check incoming velocity commands and limit them if the change since the last incoming command is great.
+
+\-Right now, this hasn't got any configurable parameters for the user -\/ that might be an option to provide for users in the future. \-Ideally
+
+
+\begin{DoxyItemize}
+\item \-User can disable this and do their own velocity smoothing outside.
+\item \-User can enable this with defaults (fairly high accelerations)
+\item (\-Later) \-User can enable this reconfigure a parameter to suit. 
+\end{DoxyItemize}
+
+\-Definition at line 46 of file acceleration\-\_\-limiter.\-hpp.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!\-Acceleration\-Limiter@{\-Acceleration\-Limiter}}
+\index{\-Acceleration\-Limiter@{\-Acceleration\-Limiter}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{\-Acceleration\-Limiter}]{\setlength{\rightskip}{0pt plus 5cm}{\bf kobuki\-::\-Acceleration\-Limiter\-::\-Acceleration\-Limiter} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1AccelerationLimiter_ae216fa81d91e71b5d630d277ed63f3f6}
+
+
+\-Definition at line 48 of file acceleration\-\_\-limiter.\-hpp.
+
+
+
+\subsection{\-Member \-Function \-Documentation}
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!confirm@{confirm}}
+\index{confirm@{confirm}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{confirm}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Acceleration\-Limiter\-::confirm} (
+\begin{DoxyParamCaption}
+\item[{short \&}]{speed, }
+\item[{short \&}]{radius}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1AccelerationLimiter_a031370ed9a9003165c849f2f62e0bd43}
+
+
+\-Limits the input velocity commands if gatekeeper is enabled. 
+
+\-What is the limit?
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em speed} & \-: .. \\
+\hline
+{\em radius} & \-: .. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 62 of file acceleration\-\_\-limiter.\-hpp.
+
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!init@{init}}
+\index{init@{init}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Acceleration\-Limiter\-::init} (
+\begin{DoxyParamCaption}
+\item[{bool}]{enable\-\_\-acceleration\-\_\-limiter}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1AccelerationLimiter_a4f1b61d1630c6a1cecac4b30009963c3}
+
+
+\-Definition at line 53 of file acceleration\-\_\-limiter.\-hpp.
+
+
+
+\subsection{\-Member \-Data \-Documentation}
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!is\-\_\-enabled@{is\-\_\-enabled}}
+\index{is\-\_\-enabled@{is\-\_\-enabled}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{is\-\_\-enabled}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf kobuki\-::\-Acceleration\-Limiter\-::is\-\_\-enabled}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1AccelerationLimiter_ab90665ce1cf7fc344045eb9a3e705e93}
+
+
+\-Definition at line 106 of file acceleration\-\_\-limiter.\-hpp.
+
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!last\-\_\-radius@{last\-\_\-radius}}
+\index{last\-\_\-radius@{last\-\_\-radius}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{last\-\_\-radius}]{\setlength{\rightskip}{0pt plus 5cm}short {\bf kobuki\-::\-Acceleration\-Limiter\-::last\-\_\-radius}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1AccelerationLimiter_af59e262cc5235e5143b9a5e47e9b0900}
+
+
+\-Definition at line 108 of file acceleration\-\_\-limiter.\-hpp.
+
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!last\-\_\-speed@{last\-\_\-speed}}
+\index{last\-\_\-speed@{last\-\_\-speed}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{last\-\_\-speed}]{\setlength{\rightskip}{0pt plus 5cm}short {\bf kobuki\-::\-Acceleration\-Limiter\-::last\-\_\-speed}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1AccelerationLimiter_a44e4b57394fdb2ec79d93077d733a3cb}
+
+
+\-Definition at line 107 of file acceleration\-\_\-limiter.\-hpp.
+
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!last\-\_\-timestamp@{last\-\_\-timestamp}}
+\index{last\-\_\-timestamp@{last\-\_\-timestamp}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{last\-\_\-timestamp}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Time\-Stamp {\bf kobuki\-::\-Acceleration\-Limiter\-::last\-\_\-timestamp}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1AccelerationLimiter_aa09a6b30cb4807218a8c611a763c1314}
+
+
+\-Definition at line 110 of file acceleration\-\_\-limiter.\-hpp.
+
+
+
+\-The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+{\bf acceleration\-\_\-limiter.\-hpp}\end{DoxyCompactItemize}

@@ -1,0 +1,133 @@
+\section{kobuki\-:\-:\-Command\-:\-:\-Data \-Struct \-Reference}
+\label{structkobuki_1_1Command_1_1Data}\index{kobuki\-::\-Command\-::\-Data@{kobuki\-::\-Command\-::\-Data}}
+
+
+\doxyref{\-Data}{p.}{structkobuki_1_1Command_1_1Data} structure containing data for commands.  
+
+
+
+
+{\ttfamily \#include $<$command.\-hpp$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bf \-Data} ()
+\end{DoxyCompactItemize}
+\subsection*{\-Public \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+{\bf \-Name} {\bf command}
+\item 
+unsigned char {\bf duration}
+\item 
+unsigned char {\bf frame\-\_\-id}
+\item 
+uint16\-\_\-t {\bf gp\-\_\-out}
+\item 
+uint16\-\_\-t {\bf note}
+\item 
+int16\-\_\-t {\bf radius}
+\item 
+uint16\-\_\-t {\bf request\-\_\-flags}
+\item 
+unsigned char {\bf segment\-\_\-name}
+\item 
+int16\-\_\-t {\bf speed}
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\doxyref{\-Data}{p.}{structkobuki_1_1Command_1_1Data} structure containing data for commands. 
+
+\-It is important to keep this state as it will have to retain knowledge of the last known command in some instances -\/ e.\-g. for gp\-\_\-out commands, quite often the incoming command is only to set the output for a single led while keeping the rest of the current gp\-\_\-out values as is.
+
+\-For generating individual commands we modify the data here, then copy the command class (avoid doing mutexes) and spin it off for sending down to the device. 
+
+\-Definition at line 65 of file command.\-hpp.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\index{kobuki\-::\-Command\-::\-Data@{kobuki\-::\-Command\-::\-Data}!\-Data@{\-Data}}
+\index{\-Data@{\-Data}!kobuki::Command::Data@{kobuki\-::\-Command\-::\-Data}}
+\subsubsection[{\-Data}]{\setlength{\rightskip}{0pt plus 5cm}{\bf kobuki\-::\-Command\-::\-Data\-::\-Data} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{structkobuki_1_1Command_1_1Data_a656ba136485c301b1c6e61812d4d5b26}
+
+
+\-Definition at line 67 of file command.\-hpp.
+
+
+
+\subsection{\-Member \-Data \-Documentation}
+\index{kobuki\-::\-Command\-::\-Data@{kobuki\-::\-Command\-::\-Data}!command@{command}}
+\index{command@{command}!kobuki::Command::Data@{kobuki\-::\-Command\-::\-Data}}
+\subsubsection[{command}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Name} {\bf kobuki\-::\-Command\-::\-Data\-::command}}\label{structkobuki_1_1Command_1_1Data_ac9490c50436e23bf5637317c89e4dff5}
+
+
+\-Definition at line 72 of file command.\-hpp.
+
+\index{kobuki\-::\-Command\-::\-Data@{kobuki\-::\-Command\-::\-Data}!duration@{duration}}
+\index{duration@{duration}!kobuki::Command::Data@{kobuki\-::\-Command\-::\-Data}}
+\subsubsection[{duration}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char {\bf kobuki\-::\-Command\-::\-Data\-::duration}}\label{structkobuki_1_1Command_1_1Data_a74b7821f305bf842734fdef2fba643f2}
+
+
+\-Definition at line 80 of file command.\-hpp.
+
+\index{kobuki\-::\-Command\-::\-Data@{kobuki\-::\-Command\-::\-Data}!frame\-\_\-id@{frame\-\_\-id}}
+\index{frame\-\_\-id@{frame\-\_\-id}!kobuki::Command::Data@{kobuki\-::\-Command\-::\-Data}}
+\subsubsection[{frame\-\_\-id}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char {\bf kobuki\-::\-Command\-::\-Data\-::frame\-\_\-id}}\label{structkobuki_1_1Command_1_1Data_a11680a7d1e2c5cd0329ef03a1e089d5d}
+
+
+\-Definition at line 91 of file command.\-hpp.
+
+\index{kobuki\-::\-Command\-::\-Data@{kobuki\-::\-Command\-::\-Data}!gp\-\_\-out@{gp\-\_\-out}}
+\index{gp\-\_\-out@{gp\-\_\-out}!kobuki::Command::Data@{kobuki\-::\-Command\-::\-Data}}
+\subsubsection[{gp\-\_\-out}]{\setlength{\rightskip}{0pt plus 5cm}uint16\-\_\-t {\bf kobuki\-::\-Command\-::\-Data\-::gp\-\_\-out}}\label{structkobuki_1_1Command_1_1Data_a6455b2f01642efe3ca9c64be3491e2a9}
+
+
+\-Definition at line 97 of file command.\-hpp.
+
+\index{kobuki\-::\-Command\-::\-Data@{kobuki\-::\-Command\-::\-Data}!note@{note}}
+\index{note@{note}!kobuki::Command::Data@{kobuki\-::\-Command\-::\-Data}}
+\subsubsection[{note}]{\setlength{\rightskip}{0pt plus 5cm}uint16\-\_\-t {\bf kobuki\-::\-Command\-::\-Data\-::note}}\label{structkobuki_1_1Command_1_1Data_ad168a40d28679febe6ca598ccc9b9b84}
+
+
+\-Definition at line 79 of file command.\-hpp.
+
+\index{kobuki\-::\-Command\-::\-Data@{kobuki\-::\-Command\-::\-Data}!radius@{radius}}
+\index{radius@{radius}!kobuki::Command::Data@{kobuki\-::\-Command\-::\-Data}}
+\subsubsection[{radius}]{\setlength{\rightskip}{0pt plus 5cm}int16\-\_\-t {\bf kobuki\-::\-Command\-::\-Data\-::radius}}\label{structkobuki_1_1Command_1_1Data_a119d3f5bfc5ce07d4e1d275963790053}
+
+
+\-Definition at line 76 of file command.\-hpp.
+
+\index{kobuki\-::\-Command\-::\-Data@{kobuki\-::\-Command\-::\-Data}!request\-\_\-flags@{request\-\_\-flags}}
+\index{request\-\_\-flags@{request\-\_\-flags}!kobuki::Command::Data@{kobuki\-::\-Command\-::\-Data}}
+\subsubsection[{request\-\_\-flags}]{\setlength{\rightskip}{0pt plus 5cm}uint16\-\_\-t {\bf kobuki\-::\-Command\-::\-Data\-::request\-\_\-flags}}\label{structkobuki_1_1Command_1_1Data_aa5817272bf53d12beaec3cbe4a7ed8ed}
+
+
+\-Definition at line 88 of file command.\-hpp.
+
+\index{kobuki\-::\-Command\-::\-Data@{kobuki\-::\-Command\-::\-Data}!segment\-\_\-name@{segment\-\_\-name}}
+\index{segment\-\_\-name@{segment\-\_\-name}!kobuki::Command::Data@{kobuki\-::\-Command\-::\-Data}}
+\subsubsection[{segment\-\_\-name}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char {\bf kobuki\-::\-Command\-::\-Data\-::segment\-\_\-name}}\label{structkobuki_1_1Command_1_1Data_a6e2363137b38213de976495eb8648d5f}
+
+
+\-Definition at line 85 of file command.\-hpp.
+
+\index{kobuki\-::\-Command\-::\-Data@{kobuki\-::\-Command\-::\-Data}!speed@{speed}}
+\index{speed@{speed}!kobuki::Command::Data@{kobuki\-::\-Command\-::\-Data}}
+\subsubsection[{speed}]{\setlength{\rightskip}{0pt plus 5cm}int16\-\_\-t {\bf kobuki\-::\-Command\-::\-Data\-::speed}}\label{structkobuki_1_1Command_1_1Data_aa8dca8b284b4d2f6bca8c62d06363b14}
+
+
+\-Definition at line 75 of file command.\-hpp.
+
+
+
+\-The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+{\bf command.\-hpp}\end{DoxyCompactItemize}

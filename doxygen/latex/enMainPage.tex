@@ -1,0 +1,28 @@
+\section{\-Overview}\label{koMainPage_Overview}
+\-The kobuki driver is a simple c++ library that allows interfacing to the kobuki mobile research base. \-Before\subsection{\-Target audience}\label{enMainPage_who}
+\-This documentation is targeted for users creating a custom robot on top of kobuki using either posix/win32 or an apple operating system. \-If that is you, you are in the right place -\/ proceed to the guides below. \-If you're interested in developing a driver for a custom unsupported platform (e.\-g. vxworks) then you'll want to check the serial protocol reference in the \doxyref{appendix}{p.}{enAppendixProtocolSpecification}.
+
+\-Alternatively, if you're using a {\itshape kobuki reference platform\/}, check one of the links below.
+
+
+\begin{DoxyItemize}
+\item {\itshape \-Turtlebot\/} \-: refer to the documentation for {\tt turtlebot}.
+\item {\itshape \-Ros on \-Kobuki\/} \-: refer to the documentation for the {\tt kobuki node}.
+\item {\itshape \-Other\/} \-: if you would like your platform listed here, contact the maintainers of this project.
+\end{DoxyItemize}\subsection{\-Design}\label{enMainPage_design}
+\-Firstly, note that the library isn't designed to run your control loop. \-Robots are quite varied -\/ everything from something really simple running on very minimal embedded resources to a fully fledged system. \-There is also a wide variety of architectures that a driver must neatly integrate with, so we have left the decision on how to design and integrate the driver up to the user. \-To that end, the driver is simply a library of classes, simple functions and callback oriented \doxyref{sigslots}{p.}{enSigslotsGuide}.
+
+\-We have a simple implementation in the guides below and a more detailed implementation can be found for the {\tt kobuki\-\_\-node} that runs within the ros framework.\section{\-Guides}\label{koMainPage_Guides}
+
+\begin{DoxyItemize}
+\item \doxyref{\-Installation (\-Linux)}{p.}{enInstallationLinuxGuide}
+\item \doxyref{\-Installation (\-Windows)}{p.}{enInstallationWindowsGuide}
+\item \doxyref{\-Installation (\-Apple)}{p.}{enInstallationAppleGuide}
+\item \doxyref{\-Ftdi \-Serial \-Device}{p.}{enFtdiGuide}
+\item \doxyref{\-Getting \-Started}{p.}{enGettingStartedGuide}
+\item \doxyref{\-Sigslots}{p.}{enSigslotsGuide}
+\item \doxyref{\-Simple \-Control \-Loop \-Example}{p.}{enSimpleExample}
+\item \doxyref{\-Embedded \-Board \-Tutorial}{p.}{enEmbeddedBoardTutorial}
+\item \doxyref{\-Appendix \-: \-Protocol \-Specification}{p.}{enAppendixProtocolSpecification}
+\item \doxyref{\-Appendix \-: \-Version \-Info}{p.}{enAppendixVersionInfo} 
+\end{DoxyItemize}

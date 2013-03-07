@@ -1,0 +1,262 @@
+\section{\-Overview}\label{koMainPage_Overview}
+\-This example will show you how to process kobuki's pose data and send wheel commands to robot.\section{\-Source Code}\label{enSimpleExample_Full}
+\-Here is full source code of simple control loop example. \-You can find it from \doxyref{src/test/simple\-\_\-loop.\-cpp}{p.}{simple__loop_8cpp}
+
+
+\begin{DoxyCode}
+/*****************************************************************************
+ Includes
+*****************************************************************************/
+
+#include <csignal>
+#include <ecl/time.hpp>
+#include <ecl/sigslots.hpp>
+#include <ecl/geometry/pose2d.hpp>
+#include <ecl/linear_algebra.hpp>
+#include "kobuki_driver/kobuki.hpp"
+
+/*****************************************************************************
+ Classes
+*****************************************************************************/
+
+class KobukiManager {
+public:
+  KobukiManager() :
+    dx(0.0), dth(0.0),
+    slot_stream_data(&KobukiManager::processStreamData, *this)
+  {
+    kobuki::Parameters parameters;
+    parameters.sigslots_namespace = "/kobuki";
+    parameters.device_port = "/dev/kobuki";
+    parameters.enable_acceleration_limiter = false;
+    kobuki.init(parameters);
+    kobuki.enable();
+    slot_stream_data.connect("/kobuki/stream_data");
+  }
+
+  ~KobukiManager() {
+    kobuki.setBaseControl(0,0); // linear_velocity, angular_velocity in (m/s),
+       (rad/s)
+    kobuki.disable();
+  }
+
+  void processStreamData() {
+    ecl::Pose2D<double> pose_update;
+    ecl::linear_algebra::Vector3d pose_update_rates;
+    kobuki.updateOdometry(pose_update, pose_update_rates);
+    pose *= pose_update;
+    dx += pose_update.x();
+    dth += pose_update.heading();
+    processMotion();
+  }
+
+  // Generate square motion
+  void processMotion() {
+    if (dx >= 1.0 && dth >= ecl::pi/2.0) { dx=0.0; dth=0.0; kobuki.
+      setBaseControl(0.0, 0.0); return; }
+    else if (dx >= 1.0) { kobuki.setBaseControl(0.0, 3.3); return; }
+    else { kobuki.setBaseControl(0.3, 0.0); return; }
+  }
+
+  ecl::Pose2D<double> getPose() {
+    return pose;
+  }
+
+private:
+  double dx, dth;
+  ecl::Pose2D<double> pose;
+  kobuki::Kobuki kobuki;
+  ecl::Slot<> slot_stream_data;
+};
+
+/*****************************************************************************
+ Signal Handler
+*****************************************************************************/
+
+bool shutdown_req = false;
+void signalHandler(int signum) {
+  shutdown_req = true;
+}
+
+/*****************************************************************************
+ Main
+*****************************************************************************/
+
+int main(int argc, char** argv)
+{
+  signal(SIGINT, signalHandler);
+
+  std::cout << "Demo : Example of simple control loop." << std::endl;
+  KobukiManager kobuki_manager;
+
+  ecl::Sleep sleep(1);
+  ecl::Pose2D<double> pose;
+  while (!shutdown_req){
+    sleep();
+    pose = kobuki_manager.getPose();
+    std::cout << "current pose: [" << pose.x() << ", " << pose.y() << ", " << 
+      pose.heading() << "]" << std::endl;
+  }
+  return 0;
+}
+\end{DoxyCode}
+\section{\-Explanation}\label{enSimpleExample_Explanation}
+\-This simple control loop program process kobuki's stream data to retrive how far moved from last stream, and accumulate it to get current pose(position and orientation). \-And control the robot to following the simple squre path where each side is 1.\-0 meter.\subsection{\-Includes}\label{enSimpleExample_includes}
+
+\begin{DoxyCode}
+#include <csignal>
+#include <ecl/time.hpp>
+#include <ecl/sigslots.hpp>
+#include <ecl/geometry/pose2d.hpp>
+#include <ecl/linear_algebra.hpp>
+#include "kobuki_driver/kobuki.hpp"
+\end{DoxyCode}
+
+
+ecl\-::\-Sleep from ecl/time.\-hpp is used to throttle the rate of outputs of current pose printing. \-Signal handler from csignal also introduced to prevent unexpected behavior, when it quiting.
+
+ecl/geometry/pose2d.\-hpp and ecl/linear\-\_\-algebra.\-hpp is used to store and calculated robot pose from odometry info.\subsection{\-Class}\label{enSimpleExample_class}
+\-The \doxyref{\-Kobuki\-Manager}{p.}{classKobukiManager} class contains \doxyref{kobuki\-::\-Kobuki}{p.}{classkobuki_1_1Kobuki} class, pose data and sigslot callback. \doxyref{\-Kobuki\-Manager}{p.}{classKobukiManager} class is extended from previous \doxyref{sigslots}{p.}{enSigslotsGuide} examples. \-Now it has dx, dth and pose data.
+
+
+\begin{DoxyCode}
+class KobukiManager {
+public:
+  KobukiManager() :
+    dx(0.0), dth(0.0),
+    slot_stream_data(&KobukiManager::processStreamData, *this)
+  {
+    kobuki::Parameters parameters;
+    parameters.sigslots_namespace = "/kobuki";
+    parameters.device_port = "/dev/kobuki";
+    parameters.enable_acceleration_limiter = false;
+    kobuki.init(parameters);
+    kobuki.enable();
+    slot_stream_data.connect("/kobuki/stream_data");
+  }
+\end{DoxyCode}
+
+
+\-Only \doxyref{kobuki.enable()}{p.}{classkobuki_1_1Kobuki_afa7f47487ef0224c1ce79f2d70de233b} is added from previous sigslot exmaple. \-It will turn on motor power of kobuki. \-To moving kobuki, you should call this function before commanding wheel velocities.
+
+
+\begin{DoxyCode}
+  ~KobukiManager() {
+    kobuki.setBaseControl(0,0); // linear_velocity, angular_velocity in (m/s),
+       (rad/s)
+    kobuki.disable();
+  }
+\end{DoxyCode}
+
+
+\-Destructor is added in this example. \-When quiting the porgam, this code will immediately stop the robot and disable it. \-It will improve the controllability in emergent condition, and will prevent unwanted behavior.
+
+\doxyref{kobuki.set\-Base\-Control()}{p.}{classkobuki_1_1Kobuki_af016306e3114daf0c61ffbaae0b3d1a0} is a function to send wheel command to robot. \-It's arguments are linear and angular velocities in (m/s) and (rad/s).
+
+\doxyref{disable()}{p.}{classkobuki_1_1Kobuki_a9e4447e3b2bb177155ee681daccdc274} will turned off the motor power.
+
+
+\begin{DoxyCode}
+  void processStreamData() {
+    ecl::Pose2D<double> pose_update;
+    ecl::linear_algebra::Vector3d pose_update_rates;
+    kobuki.updateOdometry(pose_update, pose_update_rates);
+    pose *= pose_update;
+    dx += pose_update.x();
+    dth += pose_update.heading();
+    processMotion();
+  }
+\end{DoxyCode}
+
+
+process\-Stream\-Data() is slot callback function, when stream data is arrived from robot, this callback will be called.
+
+@ \doxyref{kobuki\-::\-Kobuki\-::update\-Odometry()}{p.}{classkobuki_1_1Kobuki_a1c1cf4b6b10d5d18109430d764763544} method is used to retriving odometry data from last stream data. \-It returns `updated\-\_\-pose` and `updated\-\_\-pose\-\_\-rate` that calculated from encoder ticks.
+
+pose\-\_\-update containts calculated linear and angular displacements between the stream. pose\-\_\-update\-\_\-rates contains calculated linear and angular velocities as well.
+
+\-And, by perform below calculation\-:
+
+
+\begin{DoxyCode}
+pose *= pose_update;
+\end{DoxyCode}
+
+
+we can get accumulated pose from odoemtry.
+
+
+\begin{DoxyCode}
+  // Generate square motion
+  void processMotion() {
+    if (dx >= 1.0 && dth >= ecl::pi/2.0) { dx=0.0; dth=0.0; kobuki.
+      setBaseControl(0.0, 0.0); return; }
+    else if (dx >= 1.0) { kobuki.setBaseControl(0.0, 3.3); return; }
+    else { kobuki.setBaseControl(0.3, 0.0); return; }
+  }
+\end{DoxyCode}
+
+
+process\-Motion() determines next base command to the robot. \-These commands will makes robot to follow squre path at the last, by running below commands repeatedly\-:
+
+\begin{DoxyItemize}
+\item go forward 1.\-0 meter \item rotate counter-\/clockwise in 90 degree\end{DoxyItemize}
+
+\begin{DoxyCode}
+  ecl::Pose2D<double> getPose() {
+    return pose;
+  }
+\end{DoxyCode}
+
+
+get\-Pose() is simple getter method for accumulated pose of robot.
+
+
+\begin{DoxyCode}
+private:
+  double dx, dth;
+  ecl::Pose2D<double> pose;
+  kobuki::Kobuki kobuki;
+  ecl::Slot<> slot_stream_data;
+};
+\end{DoxyCode}
+\subsection{\-Signal Handler}\label{enSimpleExample_signalhandler}
+
+\begin{DoxyCode}
+bool shutdown_req = false;
+void signalHandler(int signum) {
+  shutdown_req = true;
+}
+\end{DoxyCode}
+
+
+\-This part is signal handler. \doxyref{signal\-Handler()}{p.}{simple__loop_8cpp_a8ee3282bc313e547dbbb8d4f4010db61} will be called when the \-S\-I\-G\-I\-N\-T signal is catched(e.\-g. user pressed the ctrl+c keys). \-A bool variable, shutdown\-\_\-req, setted to false will break the while loop in main function, and terminates program also. \-If there is no signal handler, program will terminated without calling destructor of \doxyref{\-Kobuki\-Manager}{p.}{classKobukiManager} class. \-And the robot will run last wheel command continuously until timed out(5 seconds by default).\subsection{\-Main}\label{enSimpleExample_main}
+
+\begin{DoxyCode}
+int main(int argc, char** argv)
+{
+  signal(SIGINT, signalHandler);
+\end{DoxyCode}
+
+
+\-Call signal() function to install \doxyref{signal\-Handler()}{p.}{simple__loop_8cpp_a8ee3282bc313e547dbbb8d4f4010db61}.
+
+
+\begin{DoxyCode}
+  std::cout << "Demo : Example of simple control loop." << std::endl;
+  KobukiManager kobuki_manager;
+
+  ecl::Sleep sleep(1);
+  ecl::Pose2D<double> pose;
+  while (!shutdown_req){
+    sleep();
+    pose = kobuki_manager.getPose();
+    std::cout << "current pose: [" << pose.x() << ", " << pose.y() << ", " << 
+      pose.heading() << "]" << std::endl;
+  }
+  return 0;
+}
+\end{DoxyCode}
+
+
+\-Accumulated pose will be printed in every seconds. \-If you pressed ctrl+c keys, then robot will stop and program will be terminated. 

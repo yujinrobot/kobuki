@@ -1,0 +1,809 @@
+\section{kobuki\-:\-:\-Kobuki \-Class \-Reference}
+\label{classkobuki_1_1Kobuki}\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}}
+
+
+\-The core kobuki driver class.  
+
+
+
+
+{\ttfamily \#include $<$kobuki.\-hpp$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bf \-Battery} {\bf battery\-Status} () const 
+\item 
+bool {\bf disable} ()
+\item 
+bool {\bf enable} ()
+\item 
+double {\bf get\-Angular\-Velocity} () const 
+\item 
+{\bf \-Cliff\-::\-Data} {\bf get\-Cliff\-Data} () const 
+\item 
+{\bf \-Core\-Sensors\-::\-Data} {\bf get\-Core\-Sensor\-Data} () const 
+\item 
+{\bf \-Current\-::\-Data} {\bf get\-Current\-Data} () const 
+\item 
+{\bf \-Dock\-I\-R\-::\-Data} {\bf get\-Dock\-I\-R\-Data} () const 
+\item 
+{\bf \-Gp\-Input\-::\-Data} {\bf get\-Gp\-Input\-Data} () const 
+\item 
+ecl\-::\-Angle$<$ double $>$ {\bf get\-Heading} () const 
+\item 
+{\bf \-Inertia\-::\-Data} {\bf get\-Inertia\-Data} () const 
+\item 
+{\bf \-Three\-Axis\-Gyro\-::\-Data} {\bf get\-Raw\-Inertia\-Data} () const 
+\item 
+void {\bf get\-Wheel\-Joint\-States} (double \&wheel\-\_\-left\-\_\-angle, double \&wheel\-\_\-left\-\_\-angle\-\_\-rate, double \&wheel\-\_\-right\-\_\-angle, double \&wheel\-\_\-right\-\_\-angle\-\_\-rate)
+\item 
+void {\bf init} ({\bf \-Parameters} \&{\bf parameters})  throw (ecl\-::\-Standard\-Exception)
+\item 
+bool {\bf is\-Alive} () const 
+\item 
+bool {\bf is\-Enabled} () const 
+\item 
+bool {\bf is\-Shutdown} () const 
+\item 
+{\bf \-Kobuki} ()
+\item 
+void {\bf play\-Sound\-Sequence} (const enum {\bf \-Sound\-Sequences} \&number)
+\item 
+void {\bf print\-Sig\-Slot\-Connections} () const 
+\begin{DoxyCompactList}\small\item\em \-Print a list of all relevant sigslot connections. \end{DoxyCompactList}\item 
+void {\bf reset\-Odometry} ()
+\item 
+void {\bf set\-Base\-Control} (const double \&linear\-\_\-velocity, const double \&angular\-\_\-velocity)
+\item 
+void {\bf set\-Digital\-Output} (const {\bf \-Digital\-Output} \&digital\-\_\-output)
+\item 
+void {\bf set\-External\-Power} (const {\bf \-Digital\-Output} \&digital\-\_\-output)
+\item 
+void {\bf set\-Led} (const enum {\bf \-Led\-Number} \&number, const enum {\bf \-Led\-Colour} \&colour)
+\item 
+void {\bf shutdown} ()
+\item 
+void {\bf spin} ()
+\begin{DoxyCompactList}\small\item\em \-Performs a scan looking for incoming data packets. \end{DoxyCompactList}\item 
+void {\bf update\-Odometry} (ecl\-::\-Pose2\-D$<$ double $>$ \&pose\-\_\-update, ecl\-::linear\-\_\-algebra\-::\-Vector3d \&pose\-\_\-update\-\_\-rates)
+\begin{DoxyCompactList}\small\item\em \-Use the current sensor data (encoders and gyro) to calculate an update for the odometry. \end{DoxyCompactList}\item 
+{\bf \-Version\-Info} {\bf version\-Info} () const 
+\item 
+{\bf $\sim$\-Kobuki} ()
+\end{DoxyCompactItemize}
+\subsection*{\-Private \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+void {\bf send\-Base\-Control\-Command} ()
+\item 
+void {\bf send\-Command} ({\bf \-Command} command)
+\begin{DoxyCompactList}\small\item\em \-Send the prepared command to the serial port. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Private \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+{\bf \-Acceleration\-Limiter} {\bf acceleration\-\_\-limiter}
+\item 
+{\bf \-Cliff} {\bf cliff}
+\item 
+{\bf \-Command\-::\-Buffer} {\bf command\-\_\-buffer}
+\item 
+ecl\-::\-Mutex {\bf command\-\_\-mutex}
+\item 
+{\bf \-Core\-Sensors} {\bf core\-\_\-sensors}
+\item 
+{\bf \-Current} {\bf current}
+\item 
+{\bf \-Packet\-Finder\-::\-Buffer\-Type} {\bf data\-\_\-buffer}
+\item 
+{\bf \-Diff\-Drive} {\bf diff\-\_\-drive}
+\item 
+{\bf \-Dock\-I\-R} {\bf dock\-\_\-ir}
+\item 
+{\bf \-Event\-Manager} {\bf event\-\_\-manager}
+\item 
+{\bf \-Firmware} {\bf firmware}
+\item 
+{\bf \-Gp\-Input} {\bf gp\-\_\-input}
+\item 
+{\bf \-Hardware} {\bf hardware}
+\item 
+{\bf \-Inertia} {\bf inertia}
+\item 
+bool {\bf is\-\_\-alive}
+\item 
+bool {\bf is\-\_\-connected}
+\item 
+bool {\bf is\-\_\-enabled}
+\item 
+{\bf \-Command} {\bf kobuki\-\_\-command}
+\item 
+{\bf \-Packet\-Finder} {\bf packet\-\_\-finder}
+\item 
+{\bf \-Parameters} {\bf parameters}
+\item 
+ecl\-::\-Serial {\bf serial}
+\item 
+bool {\bf shutdown\-\_\-requested}
+\item 
+ecl\-::\-Signal$<$ const std\-::string \& $>$ {\bf sig\-\_\-debug}
+\item 
+ecl\-::\-Signal$<$ const std\-::string \& $>$ {\bf sig\-\_\-error}
+\item 
+ecl\-::\-Signal$<$ const std\-::string \& $>$ {\bf sig\-\_\-info}
+\item 
+ecl\-::\-Signal$<$ {\bf \-Command\-::\-Buffer} \& $>$ {\bf sig\-\_\-raw\-\_\-data\-\_\-command}
+\item 
+ecl\-::\-Signal\*
+$<$ {\bf \-Packet\-Finder\-::\-Buffer\-Type} \& $>$ {\bf sig\-\_\-raw\-\_\-data\-\_\-stream}
+\item 
+ecl\-::\-Signal {\bf sig\-\_\-stream\-\_\-data}
+\item 
+ecl\-::\-Signal$<$ const {\bf \-Version\-Info} \& $>$ {\bf sig\-\_\-version\-\_\-info}
+\item 
+ecl\-::\-Signal$<$ const std\-::string \& $>$ {\bf sig\-\_\-warn}
+\item 
+ecl\-::\-Thread {\bf thread}
+\item 
+{\bf \-Three\-Axis\-Gyro} {\bf three\-\_\-axis\-\_\-gyro}
+\item 
+{\bf \-Unique\-Device\-I\-D} {\bf unique\-\_\-device\-\_\-id}
+\item 
+int {\bf version\-\_\-info\-\_\-reminder}
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-The core kobuki driver class. 
+
+\-This connects to the outside world via sigslots and get accessors. 
+
+\-Definition at line 70 of file kobuki.\-hpp.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!\-Kobuki@{\-Kobuki}}
+\index{\-Kobuki@{\-Kobuki}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{\-Kobuki}]{\setlength{\rightskip}{0pt plus 5cm}{\bf kobuki\-::\-Kobuki\-::\-Kobuki} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1Kobuki_a4c767b0d60457092a6085ce0b1db7ff8}
+
+
+\-Definition at line 50 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!$\sim$\-Kobuki@{$\sim$\-Kobuki}}
+\index{$\sim$\-Kobuki@{$\sim$\-Kobuki}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{$\sim$\-Kobuki}]{\setlength{\rightskip}{0pt plus 5cm}{\bf kobuki\-::\-Kobuki\-::$\sim$\-Kobuki} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1Kobuki_a22de83f3db0db6dff0647299bbc5f90e}
+\-Shutdown the driver -\/ make sure we wait for the thread to finish. 
+
+\-Definition at line 62 of file kobuki.\-cpp.
+
+
+
+\subsection{\-Member \-Function \-Documentation}
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!battery\-Status@{battery\-Status}}
+\index{battery\-Status@{battery\-Status}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{battery\-Status}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Battery} {\bf kobuki\-::\-Kobuki\-::battery\-Status} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Kobuki_ada9c8b518d41ceaf9326de577eec2d2b}
+
+
+\-Definition at line 94 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!disable@{disable}}
+\index{disable@{disable}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{disable}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf kobuki\-::\-Kobuki\-::disable} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1Kobuki_a9e4447e3b2bb177155ee681daccdc274}
+\-Disable power to the motors. 
+
+\-Definition at line 500 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!enable@{enable}}
+\index{enable@{enable}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{enable}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf kobuki\-::\-Kobuki\-::enable} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1Kobuki_afa7f47487ef0224c1ce79f2d70de233b}
+\-Enable power to the motors. 
+
+\-Definition at line 494 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!get\-Angular\-Velocity@{get\-Angular\-Velocity}}
+\index{get\-Angular\-Velocity@{get\-Angular\-Velocity}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{get\-Angular\-Velocity}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Kobuki\-::get\-Angular\-Velocity} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classkobuki_1_1Kobuki_a2a64a16a6c4b587627f5a304359ec641}
+
+
+\-Definition at line 376 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!get\-Cliff\-Data@{get\-Cliff\-Data}}
+\index{get\-Cliff\-Data@{get\-Cliff\-Data}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{get\-Cliff\-Data}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Cliff\-::\-Data} {\bf kobuki\-::\-Kobuki\-::get\-Cliff\-Data} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Kobuki_a75ed69becc3058d2a9525cfbe81aabe1}
+
+
+\-Definition at line 101 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!get\-Core\-Sensor\-Data@{get\-Core\-Sensor\-Data}}
+\index{get\-Core\-Sensor\-Data@{get\-Core\-Sensor\-Data}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{get\-Core\-Sensor\-Data}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Core\-Sensors\-::\-Data} {\bf kobuki\-::\-Kobuki\-::get\-Core\-Sensor\-Data} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Kobuki_a33ff3a81a9a43c025da6efb21dc0ac9b}
+
+
+\-Definition at line 99 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!get\-Current\-Data@{get\-Current\-Data}}
+\index{get\-Current\-Data@{get\-Current\-Data}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{get\-Current\-Data}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Current\-::\-Data} {\bf kobuki\-::\-Kobuki\-::get\-Current\-Data} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Kobuki_a7e32d9b2879ed4fa50a233bb4fed8413}
+
+
+\-Definition at line 102 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!get\-Dock\-I\-R\-Data@{get\-Dock\-I\-R\-Data}}
+\index{get\-Dock\-I\-R\-Data@{get\-Dock\-I\-R\-Data}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{get\-Dock\-I\-R\-Data}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Dock\-I\-R\-::\-Data} {\bf kobuki\-::\-Kobuki\-::get\-Dock\-I\-R\-Data} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Kobuki_a8af97d7fdc4bd55f1172e5b9b421f343}
+
+
+\-Definition at line 100 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!get\-Gp\-Input\-Data@{get\-Gp\-Input\-Data}}
+\index{get\-Gp\-Input\-Data@{get\-Gp\-Input\-Data}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{get\-Gp\-Input\-Data}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Gp\-Input\-::\-Data} {\bf kobuki\-::\-Kobuki\-::get\-Gp\-Input\-Data} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Kobuki_a2ab9631196aa4211b9b6b1634ab9b5f5}
+
+
+\-Definition at line 104 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!get\-Heading@{get\-Heading}}
+\index{get\-Heading@{get\-Heading}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{get\-Heading}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Angle$<$ double $>$ {\bf kobuki\-::\-Kobuki\-::get\-Heading} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classkobuki_1_1Kobuki_af72c123e33ca1882f25800c9af5fb717}
+
+
+\-Definition at line 368 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!get\-Inertia\-Data@{get\-Inertia\-Data}}
+\index{get\-Inertia\-Data@{get\-Inertia\-Data}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{get\-Inertia\-Data}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Inertia\-::\-Data} {\bf kobuki\-::\-Kobuki\-::get\-Inertia\-Data} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Kobuki_a7dd63be4984cc95c72aa2fa9dcd0f9d1}
+
+
+\-Definition at line 103 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!get\-Raw\-Inertia\-Data@{get\-Raw\-Inertia\-Data}}
+\index{get\-Raw\-Inertia\-Data@{get\-Raw\-Inertia\-Data}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{get\-Raw\-Inertia\-Data}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Three\-Axis\-Gyro\-::\-Data} {\bf kobuki\-::\-Kobuki\-::get\-Raw\-Inertia\-Data} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Kobuki_ae3d74aafb393b426069b196e04b09574}
+
+
+\-Definition at line 105 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!get\-Wheel\-Joint\-States@{get\-Wheel\-Joint\-States}}
+\index{get\-Wheel\-Joint\-States@{get\-Wheel\-Joint\-States}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{get\-Wheel\-Joint\-States}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Kobuki\-::get\-Wheel\-Joint\-States} (
+\begin{DoxyParamCaption}
+\item[{double \&}]{wheel\-\_\-left\-\_\-angle, }
+\item[{double \&}]{wheel\-\_\-left\-\_\-angle\-\_\-rate, }
+\item[{double \&}]{wheel\-\_\-right\-\_\-angle, }
+\item[{double \&}]{wheel\-\_\-right\-\_\-angle\-\_\-rate}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1Kobuki_a70e163fcf282a169a1c1c7cbb8564294}
+
+
+\-Definition at line 391 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!init@{init}}
+\index{init@{init}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Kobuki\-::init} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-Parameters} \&}]{parameters}
+\end{DoxyParamCaption}
+)  throw (ecl\-::\-Standard\-Exception)}\label{classkobuki_1_1Kobuki_a0648c958434e641d4573721541099ee4}
+
+
+\-Definition at line 70 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!is\-Alive@{is\-Alive}}
+\index{is\-Alive@{is\-Alive}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{is\-Alive}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf kobuki\-::\-Kobuki\-::is\-Alive} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Kobuki_a395e07e7e4c32117471c4ec8459b73c5}
+\-Whether the connection to the robot is alive and currently streaming. 
+
+\-Definition at line 80 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!is\-Enabled@{is\-Enabled}}
+\index{is\-Enabled@{is\-Enabled}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{is\-Enabled}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf kobuki\-::\-Kobuki\-::is\-Enabled} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Kobuki_a3c250f1d287ebe46c4711307c1d99d59}
+\-Whether the motor power is enabled or disabled. 
+
+\-Definition at line 82 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!is\-Shutdown@{is\-Shutdown}}
+\index{is\-Shutdown@{is\-Shutdown}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{is\-Shutdown}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf kobuki\-::\-Kobuki\-::is\-Shutdown} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Kobuki_a96f16e56b7483d3dad75b63ce10f91a5}
+\-Whether the worker thread is alive or not. 
+
+\-Definition at line 81 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!play\-Sound\-Sequence@{play\-Sound\-Sequence}}
+\index{play\-Sound\-Sequence@{play\-Sound\-Sequence}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{play\-Sound\-Sequence}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Kobuki\-::play\-Sound\-Sequence} (
+\begin{DoxyParamCaption}
+\item[{const enum {\bf \-Sound\-Sequences} \&}]{number}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1Kobuki_afaf3bd9ab3e781fec84200041ed95f30}
+
+
+\-Definition at line 436 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!print\-Sig\-Slot\-Connections@{print\-Sig\-Slot\-Connections}}
+\index{print\-Sig\-Slot\-Connections@{print\-Sig\-Slot\-Connections}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{print\-Sig\-Slot\-Connections}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Kobuki\-::print\-Sig\-Slot\-Connections} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classkobuki_1_1Kobuki_a74865ce787f6dfc15e55fddf0646dccd}
+
+
+\-Print a list of all relevant sigslot connections. 
+
+\-This includes both the kobuki driver signals as well as externally connected slots. \-Useful for when you need to check if any of your connections are dangling (often happens when you typo the name of the sigslots connection). 
+
+\-Definition at line 516 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!reset\-Odometry@{reset\-Odometry}}
+\index{reset\-Odometry@{reset\-Odometry}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{reset\-Odometry}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Kobuki\-::reset\-Odometry} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1Kobuki_a9a8e7a0dfa5c9fd447d2791217ca1bca}
+
+
+\-Definition at line 386 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!send\-Base\-Control\-Command@{send\-Base\-Control\-Command}}
+\index{send\-Base\-Control\-Command@{send\-Base\-Control\-Command}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{send\-Base\-Control\-Command}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Kobuki\-::send\-Base\-Control\-Command} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a78ca3419d9dc80e954f8feaecc2c0c0c}
+
+
+\-Definition at line 446 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!send\-Command@{send\-Command}}
+\index{send\-Command@{send\-Command}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{send\-Command}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Kobuki\-::send\-Command} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-Command}}]{command}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a417ab3236c96d0ea4d9c8dfc40ba8a6e}
+
+
+\-Send the prepared command to the serial port. 
+
+\-Need to be a bit careful here, because we have no control over how the user is calling this -\/ they may be calling from different threads (this is so for kobuki\-\_\-node), so we mutex protect it here rather than relying on the user to do so above.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em command} & \-: prepared command template (see \doxyref{\-Command}{p.}{classkobuki_1_1Command}'s static member functions). \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 464 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!set\-Base\-Control@{set\-Base\-Control}}
+\index{set\-Base\-Control@{set\-Base\-Control}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{set\-Base\-Control}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Kobuki\-::set\-Base\-Control} (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{linear\-\_\-velocity, }
+\item[{const double \&}]{angular\-\_\-velocity}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1Kobuki_af016306e3114daf0c61ffbaae0b3d1a0}
+
+
+\-Definition at line 441 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!set\-Digital\-Output@{set\-Digital\-Output}}
+\index{set\-Digital\-Output@{set\-Digital\-Output}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{set\-Digital\-Output}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Kobuki\-::set\-Digital\-Output} (
+\begin{DoxyParamCaption}
+\item[{const {\bf \-Digital\-Output} \&}]{digital\-\_\-output}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1Kobuki_a188d1db38aa059f96e3bfb0879b244f8}
+
+
+\-Definition at line 423 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!set\-External\-Power@{set\-External\-Power}}
+\index{set\-External\-Power@{set\-External\-Power}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{set\-External\-Power}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Kobuki\-::set\-External\-Power} (
+\begin{DoxyParamCaption}
+\item[{const {\bf \-Digital\-Output} \&}]{digital\-\_\-output}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1Kobuki_a53a52a4a94507afe3ce30a0f6dfbefdf}
+
+
+\-Definition at line 427 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!set\-Led@{set\-Led}}
+\index{set\-Led@{set\-Led}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{set\-Led}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Kobuki\-::set\-Led} (
+\begin{DoxyParamCaption}
+\item[{const enum {\bf \-Led\-Number} \&}]{number, }
+\item[{const enum {\bf \-Led\-Colour} \&}]{colour}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1Kobuki_acfa8adb823fe03d7223d41a13d8e66cf}
+
+
+\-Definition at line 418 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{shutdown}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Kobuki\-::shutdown} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Kobuki_a36ba47467282656af96beb1384e4d337}
+\-Gently terminate the worker thread. 
+
+\-Definition at line 85 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!spin@{spin}}
+\index{spin@{spin}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{spin}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Kobuki\-::spin} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1Kobuki_a6a4ff5d9a33ec16d705c9a8911d50649}
+
+
+\-Performs a scan looking for incoming data packets. 
+
+\-Sits on the device waiting for incoming and then parses it, and signals that an update has occured.
+
+\-Or, if in simulation, just loopsback the motor devices. 
+
+\-Definition at line 146 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!update\-Odometry@{update\-Odometry}}
+\index{update\-Odometry@{update\-Odometry}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{update\-Odometry}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Kobuki\-::update\-Odometry} (
+\begin{DoxyParamCaption}
+\item[{ecl\-::\-Pose2\-D$<$ double $>$ \&}]{pose\-\_\-update, }
+\item[{ecl\-::linear\-\_\-algebra\-::\-Vector3d \&}]{pose\-\_\-update\-\_\-rates}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1Kobuki_a1c1cf4b6b10d5d18109430d764763544}
+
+
+\-Use the current sensor data (encoders and gyro) to calculate an update for the odometry. 
+
+\-This fuses current sensor data with the last updated odometry state to produce the new odometry state. \-This will be usually done in the slot callback to the stream\-\_\-data signal.
+
+\-It is important that this is called every time a data packet is received from the robot.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em pose\-\_\-update} & \-: return the pose updates in this variable. \\
+\hline
+{\em pose\-\_\-update\-\_\-rates} & \-: return the pose update rates in this variable. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 408 of file kobuki.\-cpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!version\-Info@{version\-Info}}
+\index{version\-Info@{version\-Info}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{version\-Info}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Version\-Info} {\bf kobuki\-::\-Kobuki\-::version\-Info} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Kobuki_a2b45e19fa61a2c542dcae5a7973dd28f}
+
+
+\-Definition at line 93 of file kobuki.\-hpp.
+
+
+
+\subsection{\-Member \-Data \-Documentation}
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!acceleration\-\_\-limiter@{acceleration\-\_\-limiter}}
+\index{acceleration\-\_\-limiter@{acceleration\-\_\-limiter}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{acceleration\-\_\-limiter}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Acceleration\-Limiter} {\bf kobuki\-::\-Kobuki\-::acceleration\-\_\-limiter}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_ac5a6df7edf64e09a33f9f3c680eadf1b}
+
+
+\-Definition at line 156 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!cliff@{cliff}}
+\index{cliff@{cliff}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{cliff}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Cliff} {\bf kobuki\-::\-Kobuki\-::cliff}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a39c45a62a2480ad7bfec13c390fa610f}
+
+
+\-Definition at line 164 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!command\-\_\-buffer@{command\-\_\-buffer}}
+\index{command\-\_\-buffer@{command\-\_\-buffer}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{command\-\_\-buffer}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Command\-::\-Buffer} {\bf kobuki\-::\-Kobuki\-::command\-\_\-buffer}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_afa6b9c7df7155fe1ca2e9154af773ca8}
+
+
+\-Definition at line 186 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!command\-\_\-mutex@{command\-\_\-mutex}}
+\index{command\-\_\-mutex@{command\-\_\-mutex}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{command\-\_\-mutex}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Mutex {\bf kobuki\-::\-Kobuki\-::command\-\_\-mutex}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_af40490e786d8ec95719a10172c1eef3e}
+
+
+\-Definition at line 184 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!core\-\_\-sensors@{core\-\_\-sensors}}
+\index{core\-\_\-sensors@{core\-\_\-sensors}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{core\-\_\-sensors}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Core\-Sensors} {\bf kobuki\-::\-Kobuki\-::core\-\_\-sensors}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a76b781f33f5e4a7fcfffcfe05bf744ab}
+
+
+\-Definition at line 161 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!current@{current}}
+\index{current@{current}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{current}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Current} {\bf kobuki\-::\-Kobuki\-::current}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_af841f499eedcdd0d0a03f143f36d46ae}
+
+
+\-Definition at line 165 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!data\-\_\-buffer@{data\-\_\-buffer}}
+\index{data\-\_\-buffer@{data\-\_\-buffer}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{data\-\_\-buffer}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Packet\-Finder\-::\-Buffer\-Type} {\bf kobuki\-::\-Kobuki\-::data\-\_\-buffer}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a65d6583aa72e37ee6622ad00e669234d}
+
+
+\-Definition at line 174 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!diff\-\_\-drive@{diff\-\_\-drive}}
+\index{diff\-\_\-drive@{diff\-\_\-drive}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{diff\-\_\-drive}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Diff\-Drive} {\bf kobuki\-::\-Kobuki\-::diff\-\_\-drive}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a31467a3683f79790e30ba2fe5a597210}
+
+
+\-Definition at line 144 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!dock\-\_\-ir@{dock\-\_\-ir}}
+\index{dock\-\_\-ir@{dock\-\_\-ir}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{dock\-\_\-ir}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Dock\-I\-R} {\bf kobuki\-::\-Kobuki\-::dock\-\_\-ir}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a753915dbef81df0f85bd51dc20128255}
+
+
+\-Definition at line 163 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!event\-\_\-manager@{event\-\_\-manager}}
+\index{event\-\_\-manager@{event\-\_\-manager}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{event\-\_\-manager}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Event\-Manager} {\bf kobuki\-::\-Kobuki\-::event\-\_\-manager}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_afee2605f8166f479026d8977b2697dfa}
+
+
+\-Definition at line 191 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!firmware@{firmware}}
+\index{firmware@{firmware}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{firmware}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Firmware} {\bf kobuki\-::\-Kobuki\-::firmware}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a231eabfedb0cbda53a4fea9582a36628}
+
+
+\-Definition at line 168 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!gp\-\_\-input@{gp\-\_\-input}}
+\index{gp\-\_\-input@{gp\-\_\-input}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{gp\-\_\-input}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Gp\-Input} {\bf kobuki\-::\-Kobuki\-::gp\-\_\-input}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_aa919d8b508b8fa9ac2b380e91d91fbe7}
+
+
+\-Definition at line 166 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!hardware@{hardware}}
+\index{hardware@{hardware}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{hardware}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Hardware} {\bf kobuki\-::\-Kobuki\-::hardware}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_ab3b7838b614cca5f785e52c8ea160b8c}
+
+
+\-Definition at line 167 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!inertia@{inertia}}
+\index{inertia@{inertia}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{inertia}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Inertia} {\bf kobuki\-::\-Kobuki\-::inertia}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a2b867d6cda20d8fc21a36dbb4d6ba125}
+
+
+\-Definition at line 162 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!is\-\_\-alive@{is\-\_\-alive}}
+\index{is\-\_\-alive@{is\-\_\-alive}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{is\-\_\-alive}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf kobuki\-::\-Kobuki\-::is\-\_\-alive}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_acba33ca9f76f440202fd20b3579c9c9e}
+
+
+\-Definition at line 175 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!is\-\_\-connected@{is\-\_\-connected}}
+\index{is\-\_\-connected@{is\-\_\-connected}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{is\-\_\-connected}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf kobuki\-::\-Kobuki\-::is\-\_\-connected}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a0f521d6b02b875ca38c7a217d9856fd7}
+
+
+\-Definition at line 151 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!is\-\_\-enabled@{is\-\_\-enabled}}
+\index{is\-\_\-enabled@{is\-\_\-enabled}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{is\-\_\-enabled}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf kobuki\-::\-Kobuki\-::is\-\_\-enabled}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a817e0f9b75c591fac8753280f88442e6}
+
+
+\-Definition at line 145 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!kobuki\-\_\-command@{kobuki\-\_\-command}}
+\index{kobuki\-\_\-command@{kobuki\-\_\-command}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{kobuki\-\_\-command}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Command} {\bf kobuki\-::\-Kobuki\-::kobuki\-\_\-command}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a2ef8e78d7168a90faffaa516522f79bf}
+
+
+\-Definition at line 185 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!packet\-\_\-finder@{packet\-\_\-finder}}
+\index{packet\-\_\-finder@{packet\-\_\-finder}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{packet\-\_\-finder}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Packet\-Finder} {\bf kobuki\-::\-Kobuki\-::packet\-\_\-finder}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_aa438e90f351c31b1ae6f9cdaddce6058}
+
+
+\-Definition at line 173 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!parameters@{parameters}}
+\index{parameters@{parameters}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{parameters}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Parameters} {\bf kobuki\-::\-Kobuki\-::parameters}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a02ada66911213cd57bb2f5ac21937562}
+
+
+\-Definition at line 150 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!serial@{serial}}
+\index{serial@{serial}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{serial}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Serial {\bf kobuki\-::\-Kobuki\-::serial}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a6fbdcfe7e8557c0c2d0480be3cdf7773}
+
+
+\-Definition at line 172 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!shutdown\-\_\-requested@{shutdown\-\_\-requested}}
+\index{shutdown\-\_\-requested@{shutdown\-\_\-requested}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{shutdown\-\_\-requested}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf kobuki\-::\-Kobuki\-::shutdown\-\_\-requested}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_aeb000976a20ed8f5eaf847c258527ace}
+
+
+\-Definition at line 139 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-debug@{sig\-\_\-debug}}
+\index{sig\-\_\-debug@{sig\-\_\-debug}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{sig\-\_\-debug}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal$<$const std\-::string\&$>$ {\bf kobuki\-::\-Kobuki\-::sig\-\_\-debug}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_aa3bb2d628f9a64aa4ec7bcfb7d911266}
+
+
+\-Definition at line 198 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-error@{sig\-\_\-error}}
+\index{sig\-\_\-error@{sig\-\_\-error}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{sig\-\_\-error}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal$<$const std\-::string\&$>$ {\bf kobuki\-::\-Kobuki\-::sig\-\_\-error}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a60fc90929f8649468272cbdc1ca4ad6d}
+
+
+\-Definition at line 198 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-info@{sig\-\_\-info}}
+\index{sig\-\_\-info@{sig\-\_\-info}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{sig\-\_\-info}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal$<$const std\-::string\&$>$ {\bf kobuki\-::\-Kobuki\-::sig\-\_\-info}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_aa39b142b5f651d5831b9107c35e86330}
+
+
+\-Definition at line 198 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-raw\-\_\-data\-\_\-command@{sig\-\_\-raw\-\_\-data\-\_\-command}}
+\index{sig\-\_\-raw\-\_\-data\-\_\-command@{sig\-\_\-raw\-\_\-data\-\_\-command}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{sig\-\_\-raw\-\_\-data\-\_\-command}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal$<${\bf \-Command\-::\-Buffer}\&$>$ {\bf kobuki\-::\-Kobuki\-::sig\-\_\-raw\-\_\-data\-\_\-command}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a9fa84f5f2d6bf182a5b5f38a8be0d47c}
+
+
+\-Definition at line 199 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-raw\-\_\-data\-\_\-stream@{sig\-\_\-raw\-\_\-data\-\_\-stream}}
+\index{sig\-\_\-raw\-\_\-data\-\_\-stream@{sig\-\_\-raw\-\_\-data\-\_\-stream}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{sig\-\_\-raw\-\_\-data\-\_\-stream}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal$<${\bf \-Packet\-Finder\-::\-Buffer\-Type}\&$>$ {\bf kobuki\-::\-Kobuki\-::sig\-\_\-raw\-\_\-data\-\_\-stream}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a4752fa63c69f3fae94298a078769366e}
+
+
+\-Definition at line 200 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-stream\-\_\-data@{sig\-\_\-stream\-\_\-data}}
+\index{sig\-\_\-stream\-\_\-data@{sig\-\_\-stream\-\_\-data}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{sig\-\_\-stream\-\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal {\bf kobuki\-::\-Kobuki\-::sig\-\_\-stream\-\_\-data}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a780d7dacef70b02c22d1eae65be23411}
+
+
+\-Definition at line 196 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-version\-\_\-info@{sig\-\_\-version\-\_\-info}}
+\index{sig\-\_\-version\-\_\-info@{sig\-\_\-version\-\_\-info}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{sig\-\_\-version\-\_\-info}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal$<$const {\bf \-Version\-Info}\&$>$ {\bf kobuki\-::\-Kobuki\-::sig\-\_\-version\-\_\-info}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_af3c8487e4421094cc0eb38bfb621c414}
+
+
+\-Definition at line 197 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-warn@{sig\-\_\-warn}}
+\index{sig\-\_\-warn@{sig\-\_\-warn}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{sig\-\_\-warn}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal$<$const std\-::string\&$>$ {\bf kobuki\-::\-Kobuki\-::sig\-\_\-warn}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a8365fa1b3e2dbe361fd51e855ac63681}
+
+
+\-Definition at line 198 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!thread@{thread}}
+\index{thread@{thread}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{thread}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Thread {\bf kobuki\-::\-Kobuki\-::thread}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a6330b66495007d2956a59a1931fde123}
+
+
+\-Definition at line 138 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!three\-\_\-axis\-\_\-gyro@{three\-\_\-axis\-\_\-gyro}}
+\index{three\-\_\-axis\-\_\-gyro@{three\-\_\-axis\-\_\-gyro}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{three\-\_\-axis\-\_\-gyro}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Three\-Axis\-Gyro} {\bf kobuki\-::\-Kobuki\-::three\-\_\-axis\-\_\-gyro}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a416e41478d6941078d11f69f6a7a1207}
+
+
+\-Definition at line 170 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!unique\-\_\-device\-\_\-id@{unique\-\_\-device\-\_\-id}}
+\index{unique\-\_\-device\-\_\-id@{unique\-\_\-device\-\_\-id}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{unique\-\_\-device\-\_\-id}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Unique\-Device\-I\-D} {\bf kobuki\-::\-Kobuki\-::unique\-\_\-device\-\_\-id}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_acddbc6dc21324a02d2118322c5eb7167}
+
+
+\-Definition at line 169 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!version\-\_\-info\-\_\-reminder@{version\-\_\-info\-\_\-reminder}}
+\index{version\-\_\-info\-\_\-reminder@{version\-\_\-info\-\_\-reminder}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{version\-\_\-info\-\_\-reminder}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf kobuki\-::\-Kobuki\-::version\-\_\-info\-\_\-reminder}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_ab07dc6fa02d48f837ea3755f3ac7b03c}
+
+
+\-Definition at line 177 of file kobuki.\-hpp.
+
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+{\bf kobuki.\-hpp}\item 
+{\bf kobuki.\-cpp}\end{DoxyCompactItemize}

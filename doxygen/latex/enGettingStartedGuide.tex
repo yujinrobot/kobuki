@@ -1,0 +1,95 @@
+\section{\-Overview}\label{enGettingStartedGuide_kobukiClass}
+\-The \doxyref{kobuki\-::\-Kobuki}{p.}{classkobuki_1_1Kobuki} class is the first port of call for developing your kobuki program. \-All kobuki configuration and interaction is done via this class. \-This guide will cover configuration and interaction with the library method api. \-Interactions via callbacks using sigslots is covered especially in the guide on \doxyref{sigslots}{p.}{enSigslotsGuide}.\section{\-Configuration}\label{enGettingStartedGuide_kobukiConfiguration}
+\-Kobuki configuration is handled by the \doxyref{kobuki\-:\-:\-Parameters}{p.}{classkobuki_1_1Parameters} class which is passed to the kobuki instance via the \doxyref{kobuki\-:\-:\-Kobuki\-:\-:init()}{p.}{classkobuki_1_1Kobuki_a0648c958434e641d4573721541099ee4} method. \-Most of the parameters to be configured have sane defaults. \-The only one that requires frequent configuration is typically the serial \doxyref{device\-\_\-port}{p.}{classkobuki_1_1Parameters_a993217236ea68f063f5bc285414408e2}. \-Note that on some systems you can configure a rule (refer to the \doxyref{ftdi serial device guide}{p.}{enFtdiGuide}) for the device port, otherwise you will require one of the usual \-C\-O\-M1 or /dev/tty\-U\-S\-B0 values.
+
+
+\begin{DoxyCode}
+#include <iostream>
+#include <kobuki_driver/kobuki.hpp>
+
+class KobukiManager {
+public:
+  KobukiManager() {
+    kobuki::Parameters parameters;
+    // change the default device port from /dev/kobuki to /dev/ttyUSB0
+    parameters.device_port = "/dev/ttyUSB0";
+    // Other parameters are typically happy enough as defaults
+    // namespaces all sigslot connection names under this value, only important
+       if you want to 
+    parameters.sigslots_namespace = "/kobuki";
+    // Most people will prefer to do their own velocity smoothing/acceleration
+       limiting.
+    // If you wish to utilise kobuki's minimal acceleration limiter, set to
+       true 
+    parameters.enable_acceleration_limiter = false; 
+    // If your battery levels are showing significant variance from factory
+       defaults, adjust thresholds. 
+    // This will affect the led on the front of the robot as well as when
+       signals are emitted by the driver.
+    parameters.battery_capacity = 16.5;
+    parameters.battery_low = 14.0;
+    parameters.battery_dangerous = 13.2;
+
+    // initialise - it will throw an exception if parameter validation or
+       initialisation fails.
+    try {
+      kobuki.init(parameters);
+    } catch ( ecl::StandardException &e ) {
+      std::cout << e.what();
+    }
+  }
+private:
+  kobuki::Kobuki kobuki;
+};
+
+int main() {
+  KobukiManager kobuki_manager;
+  return 0;
+}
+\end{DoxyCode}
+
+
+\-If you compile and run this program, you should hear kobuki's starting up chirp followed immediately by the shutting down chirp.\section{\-Library Api}\label{enGettingStartedGuide_kobukiLibraryApi}
+\subsection{\-Raw Data}\label{enGettingStartedGuide_kobukiRawData}
+\-The kobuki driver runs a background thread which continually retrieves packets from the kobuki, saving the raw data, and additionally doing some processing before updating the current state of the robot.
+
+\-Raw data can be accessed at any time by one of the following get\-X\-X\-X commands\-:
+
+
+\begin{DoxyItemize}
+\item \doxyref{kobuki\-::\-Kobuki\-::get\-Core\-Sensor\-Data}{p.}{classkobuki_1_1Kobuki_a33ff3a81a9a43c025da6efb21dc0ac9b}
+\item \doxyref{kobuki\-::\-Kobuki\-::get\-Dock\-I\-R\-Data}{p.}{classkobuki_1_1Kobuki_a8af97d7fdc4bd55f1172e5b9b421f343}
+\item \doxyref{kobuki\-::\-Kobuki\-::get\-Cliff\-Data}{p.}{classkobuki_1_1Kobuki_a75ed69becc3058d2a9525cfbe81aabe1}
+\item \doxyref{kobuki\-::\-Kobuki\-::get\-Current\-Data}{p.}{classkobuki_1_1Kobuki_a7e32d9b2879ed4fa50a233bb4fed8413}
+\item \doxyref{kobuki\-::\-Kobuki\-::get\-Gp\-Input\-Data}{p.}{classkobuki_1_1Kobuki_a2ab9631196aa4211b9b6b1634ab9b5f5}
+\item \doxyref{kobuki\-::\-Kobuki\-::get\-Inertia\-Data}{p.}{classkobuki_1_1Kobuki_a7dd63be4984cc95c72aa2fa9dcd0f9d1}
+\item \doxyref{kobuki\-::\-Kobuki\-::get\-Raw\-Inertia\-Data}{p.}{classkobuki_1_1Kobuki_ae3d74aafb393b426069b196e04b09574}
+\end{DoxyItemize}
+
+\-The gyro provides both filtered yaw angle as well as unfiltered 3-\/axis inertial data hence the two calls above.\subsection{\-Processed Data and Status}\label{enGettingStartedGuide_kobukiProcessedData}
+\-The following are convenience methods for accessing the current state of the robot
+
+
+\begin{DoxyItemize}
+\item \doxyref{kobuki\-::\-Kobuki\-::battery\-Status}{p.}{classkobuki_1_1Kobuki_ada9c8b518d41ceaf9326de577eec2d2b}
+\item \doxyref{kobuki\-::\-Kobuki\-::get\-Heading}{p.}{classkobuki_1_1Kobuki_af72c123e33ca1882f25800c9af5fb717}
+\item \doxyref{kobuki\-::\-Kobuki\-::get\-Angular\-Velocity}{p.}{classkobuki_1_1Kobuki_a2a64a16a6c4b587627f5a304359ec641}
+\item \doxyref{kobuki\-::\-Kobuki\-::version\-Info}{p.}{classkobuki_1_1Kobuki_a2b45e19fa61a2c542dcae5a7973dd28f} \-: hardware, firmware and software version strings.
+\item \doxyref{kobuki\-::\-Kobuki\-::get\-Wheel\-Joint\-States}{p.}{classkobuki_1_1Kobuki_a70e163fcf282a169a1c1c7cbb8564294}
+\item \doxyref{kobuki\-::\-Kobuki\-::is\-Alive}{p.}{classkobuki_1_1Kobuki_a395e07e7e4c32117471c4ec8459b73c5} \-: true if a kobuki is detected and streaming data.
+\item \doxyref{kobuki\-::\-Kobuki\-::is\-Enabled}{p.}{classkobuki_1_1Kobuki_a3c250f1d287ebe46c4711307c1d99d59} \-: true if the motor power is enabled
+\item \doxyref{kobuki\-::\-Kobuki\-::is\-Shutdown}{p.}{classkobuki_1_1Kobuki_a96f16e56b7483d3dad75b63ce10f91a5} \-: true if the worker threads for this driver have been shut down.
+\end{DoxyItemize}\subsection{\-Soft Commands}\label{enGettingStartedGuide_kobukiSoftCommands}
+
+\begin{DoxyItemize}
+\item \doxyref{kobuki\-::\-Kobuki\-::reset\-Odometry}{p.}{classkobuki_1_1Kobuki_a9a8e7a0dfa5c9fd447d2791217ca1bca}
+\end{DoxyItemize}\subsection{\-Hard Commands}\label{enGettingStartedGuide_kobukiHardCommands}
+
+\begin{DoxyItemize}
+\item \doxyref{kobuki\-::\-Kobuki\-::set\-Base\-Control}{p.}{classkobuki_1_1Kobuki_af016306e3114daf0c61ffbaae0b3d1a0}
+\item \doxyref{kobuki\-::\-Kobuki\-::set\-Led}{p.}{classkobuki_1_1Kobuki_acfa8adb823fe03d7223d41a13d8e66cf}
+\item \doxyref{kobuki\-::\-Kobuki\-::set\-Digital\-Output}{p.}{classkobuki_1_1Kobuki_a188d1db38aa059f96e3bfb0879b244f8}
+\item \doxyref{kobuki\-::\-Kobuki\-::set\-External\-Power}{p.}{classkobuki_1_1Kobuki_a53a52a4a94507afe3ce30a0f6dfbefdf}
+\item \doxyref{kobuki\-::\-Kobuki\-::play\-Sound\-Sequence}{p.}{classkobuki_1_1Kobuki_afaf3bd9ab3e781fec84200041ed95f30}
+\end{DoxyItemize}\subsection{\-The Differential Drive Module}\label{enGettingStartedGuide_differentialDriverModule}
+\-The final function of importance is the \doxyref{kobuki\-::\-Kobuki\-::update\-Odometry}{p.}{classkobuki_1_1Kobuki_a1c1cf4b6b10d5d18109430d764763544} method. \-This updates the current odometry state of the robot, fusing encoder and gyro heading data with the previous known state. \-For deterministic odometry, it is important this method is called each time a new data packet from the kobuki arrives. \-Refer to the \doxyref{simple control loop example}{p.}{enSimpleExample} for more information and working code to illustrate. 

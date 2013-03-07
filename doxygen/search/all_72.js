@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['radius',['radius',['../structkobuki_1_1Command_1_1Data.html#a119d3f5bfc5ce07d4e1d275963790053',1,'kobuki::Command::Data::radius()'],['../classkobuki_1_1DiffDrive.html#ab0859422eaf53fca148a6df9b689ac4f',1,'kobuki::DiffDrive::radius()'],['../velocity__commands_8cpp.html#a3f67c53b80389c5f53961936edba04c9',1,'radius():&#160;velocity_commands.cpp']]],
+  ['raised',['Raised',['../structkobuki_1_1WheelEvent.html#a89ff3c678c1f83bc31aa8bbcbb49cb83ab840370376440e0a0ac801f11e3e0fb9',1,'kobuki::WheelEvent']]],
+  ['rb2vw',['Rb2Vw',['../classRb2Vw.html',1,'Rb2Vw'],['../classRb2Vw.html#a8d5dfd84ede536e1dc63efd3e33c044e',1,'Rb2Vw::Rb2Vw()']]],
+  ['recharge',['Recharge',['../namespacekobuki.html#a336129805a07def7a2c2b0be281e7ddda1892b6e1833f580460466c1dc1ff86f7',1,'kobuki']]],
+  ['red',['Red',['../namespacekobuki.html#a278fbe81cdc3dd93c2fde224fb013c26af5fdce63f53b8b80342a5b2645b1fa8e',1,'kobuki']]],
+  ['released',['Released',['../structkobuki_1_1ButtonEvent.html#ad74db533b4ed915d35dcb4dcc3aa424da9a45540769414c9ecc57b2e01d3d955c',1,'kobuki::ButtonEvent::Released()'],['../structkobuki_1_1BumperEvent.html#ae9874ebe03039f3f72a3e45edd3ef886a2ded73833c827202a00e3c4df3b3512a',1,'kobuki::BumperEvent::Released()']]],
+  ['request_5fflags',['request_flags',['../structkobuki_1_1Command_1_1Data.html#aa5817272bf53d12beaec3cbe4a7ed8ed',1,'kobuki::Command::Data']]],
+  ['requesteeprom',['RequestEeprom',['../classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490af0c1f3e40a5b8985b51762e1cf291eff',1,'kobuki::Command']]],
+  ['requestextra',['RequestExtra',['../classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490ae647768d925db095981032a07fd916f4',1,'kobuki::Command']]],
+  ['reserved',['Reserved',['../classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea318b4db383427ffd7a20ee03c5c80da6',1,'kobuki::Header']]],
+  ['reset',['reset',['../classkobuki_1_1DiffDrive.html#aa2fcd8f4444fa80ec2ea58dbf32b5751',1,'kobuki::DiffDrive']]],
+  ['resetbuffer',['resetBuffer',['../classkobuki_1_1Command.html#a92e11a248177d836d59dca61b2730018',1,'kobuki::Command']]],
+  ['resetodometry',['resetOdometry',['../classkobuki_1_1Kobuki.html#a9a8e7a0dfa5c9fd447d2791217ca1bca',1,'kobuki::Kobuki']]],
+  ['right',['Right',['../structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1a37f5071bda055b38bafdefac64f7fa19',1,'kobuki::BumperEvent::Right()'],['../structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175afa1ce20d32d968b34c4d1f06fbd8cc01fa',1,'kobuki::CliffEvent::Right()'],['../structkobuki_1_1WheelEvent.html#a6fb0e7dbe75f3c76c7cebb9528f7b29ca526680cb145f42cfb300c2fdcb1d73d2',1,'kobuki::WheelEvent::Right()']]],
+  ['right_5fencoder',['right_encoder',['../structkobuki_1_1CoreSensors_1_1Data.html#ab5d251034bca20f28ec57bde1441ca45',1,'kobuki::CoreSensors::Data']]],
+  ['right_5fpwm',['right_pwm',['../structkobuki_1_1CoreSensors_1_1Data.html#a7a32588b92f15eff9cef99ebe2d600b2',1,'kobuki::CoreSensors::Data']]],
+  ['rightbumper',['RightBumper',['../structkobuki_1_1CoreSensors_1_1Flags.html#a46a0af0ca751224ee77ca8229dee8d74',1,'kobuki::CoreSensors::Flags']]],
+  ['rightcliff',['RightCliff',['../structkobuki_1_1CoreSensors_1_1Flags.html#a26c8b51ff04d0aa820b11362cde089a9',1,'kobuki::CoreSensors::Flags']]],
+  ['rightwheel',['RightWheel',['../structkobuki_1_1CoreSensors_1_1Flags.html#adcbe63546742933ef4f2e60ba2ba206b',1,'kobuki::CoreSensors::Flags']]],
+  ['rightwheel_5foc',['RightWheel_OC',['../structkobuki_1_1CoreSensors_1_1Flags.html#acd0f2a4e0f3bc264289ebc67f7ef4316',1,'kobuki::CoreSensors::Flags']]],
+  ['robotevent',['RobotEvent',['../structkobuki_1_1RobotEvent.html',1,'kobuki']]]
+];

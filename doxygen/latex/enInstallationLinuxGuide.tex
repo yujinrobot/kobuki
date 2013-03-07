@@ -1,0 +1,110 @@
+\section{\-Overview}\label{koMainPage_Overview}
+\-This section describes the installation process for \-Linux.\subsection{\-Target audience}\label{enMainPage_who}
+\-Linux people who want to compile \-Kobuki driver, but not use ros\section{\-Procedure}\label{enInstallationLinuxGuide_Procedure}
+\subsection{\-Prerequirements}\label{enInstallationLinuxGuide_prereq}
+\-Starting with version 0.\-3.\-0, the \-Kobuki driver is a catkin package, so first of all you need to install catkin dependencies\-:
+
+
+\begin{DoxyItemize}
+\item {\itshape \-C\-Make\/} -\/ \-A cross-\/platform, open-\/source build system.
+\item {\itshape \-Python\/} -\/ \-Python is a general-\/purpose, interpreted high-\/level programming language.
+\item {\itshape catkin\-\_\-pkg\/} -\/ \-A \-Python runtime library for catkin.
+\item {\itshape empy\/} -\/ \-A \-Python template library.
+\item {\itshape nose\/} -\/ \-A \-Python testing framework.
+\end{DoxyItemize}
+
+\-You can resolve these dependencies on \-Ubuntu with this command\-:
+
+
+\begin{DoxyCode}
+  sudo apt-get install cmake python-catkin-pkg python-empy python-nose python-
+      setuptools build-essential
+\end{DoxyCode}
+
+
+\-If you are {\bfseries not} on \-Ubuntu you can install \-Python packages from {\tt \-Py\-Pi} via pip.
+
+\-Refer to the {\tt \-Catkin documentation} for more details.\subsection{\-Catkin workspace}\label{enInstallationLinuxGuide_catkin}
+\-Next we must prepare a catkin workspace. \-Here we explain the manual way, completely independent from \-R\-O\-S tools (apart from catkin itself)\-:
+
+
+\begin{DoxyCode}
+  # Create a workspace directory tree somewhere in you file system
+  mkdir ~/kobuki_ws
+  cd ~/kobuki_ws
+  mkdir build
+  mkdir src
+  cd src
+  # Clone catkin repository
+  git clone https://github.com/ros/catkin.git
+  # These instructions have been tested with catkin version 0.5.63, so we
+       suggest to use that version
+  cd catkin ; git checkout 0.5.63 ; cd ..
+  # We need this file on src directory
+  cp catkin/cmake/toplevel.cmake CMakeLists.txt
+\end{DoxyCode}
+\subsection{\-Download Kobuki driver}\label{enInstallationLinuxGuide_download}
+\-If all went fine, we can proceed with the \-Kobuki driver and the {\tt \-E\-C\-L libraries} it depends on. \-E\-C\-L in turn depends on {\tt \-Eigen libraries}, so we install them\-:
+
+
+\begin{DoxyCode}
+  sudo apt-get install libeigen3-dev 
+\end{DoxyCode}
+
+
+\-Download the code\-:
+
+
+\begin{DoxyCode}
+  cd ~/kobuki_ws/src
+  # Clone kobuki repository and checkout the latest tested tag
+  git clone https://github.com/yujinrobot/kobuki.git
+  cd kobuki         ; git checkout 0.3.0;  cd ..
+  # Clone required ecl repositories and checkout the latest tested tags
+  git clone https://github.com/stonier/ecl_core.git
+  cd ecl_core       ; git checkout 0.50.3; cd ..
+  git clone https://github.com/stonier/ecl_lite.git
+  cd ecl_lite       ; git checkout 0.50.3; cd ..
+  git clone https://github.com/stonier/ecl_tools.git
+  cd ecl_tools      ; git checkout 0.50.2; cd ..
+  git clone https://github.com/stonier/ecl_navigation.git
+  cd ecl_navigation ; git checkout 0.50.1; cd ..
+\end{DoxyCode}
+\subsection{\-Configure and compile Kobuki driver}\label{enInstallationLinuxGuide_config}
+\-We are ready to configure our workspace. \-Note that we pass a white list to cmake to avoid compiling all but the \-Kobuki driver and its required packages. \-The tricky command just reads the white list file, replaces line breaks by semicolons and adds double quotes to the list to avoid problems with white spaces and tabs. \-Note also that we change the installed software location to {\itshape ../install\/} (the default is {\itshape /usr/local\/}). \-Feel free to change it to wherever you want.
+
+\begin{DoxyWarning}{\-Warning}
+\-White list packages parsing is sensitive, so be careful if for any reason you need to modify this file. \-Do not add extra characters other than package names, spaces, tabs and line breaks. \-It also must be exhaustive, including all upstream dependencies.
+\end{DoxyWarning}
+
+\begin{DoxyCode}
+  cd ~/kobuki_ws/build
+  KOBUKI_DRIVER_LOCATION=../install
+  KOBUKI_DRIVER_PACKAGES="`sed -n -e ":a" -e "$ s/\n/;/gp;N;b a"
+       ../src/kobuki/kobuki_driver/catkin_whitelist`"
+  cmake ../src -DCATKIN_WHITELIST_PACKAGES=$KOBUKI_DRIVER_PACKAGES -
+      DCMAKE_INSTALL_PREFIX=$KOBUKI_DRIVER_LOCATION
+\end{DoxyCode}
+
+
+\-If all went well, you are ready to compile and install
+
+
+\begin{DoxyCode}
+  cd ~/kobuki_ws/build
+  make
+  # Optional step, if you want to install the binaries, headers and extra files
+       to KOBUKI_DRIVER_LOCATION
+  make install 
+\end{DoxyCode}
+\subsection{\-Testing your installation}\label{enInstallationLinuxGuide_test}
+\-Assuming you executed {\itshape make install\/}, you can test your installation by executing some of the demo and test programs provided with \-Kobuki driver. \-Unless you specified a \-Linux standard installation path, as {\itshape /usr\/} or {\itshape /usr/local\/}, for the {\itshape \-K\-O\-B\-U\-K\-I\-\_\-\-D\-R\-I\-V\-E\-R\-\_\-\-L\-O\-C\-A\-T\-I\-O\-N\/}, you must point your {\itshape \-L\-D\-\_\-\-L\-I\-B\-R\-A\-R\-Y\-\_\-\-P\-A\-T\-H\/} variable to the installed libraries. \-For example, if you type the following commands, the robot should move making squares\-:
+
+
+\begin{DoxyCode}
+  export LD_LIBRARY_PATH=$KOBUKI_DRIVER_LOCATION/lib
+  $KOBUKI_DRIVER_LOCATION/lib/kobuki_driver/demo_kobuki_simple_loop
+\end{DoxyCode}
+\section{\-Cross compiling}\label{enInstallationLinuxGuide_crossc}
+\-We still have not prepared proper cross-\/compiling documentation, but we will be happy to help you meanwhile.\section{\-Additional support}\label{enInstallationLinuxGuide_support}
+\-Do not hesitate to ask on {\tt \-Kobuki users list} if you need additional support. 

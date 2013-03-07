@@ -1,0 +1,31 @@
+\section{\-Overview}\label{enAppendixVersionInfo_enOverview}
+\-If you want to know version information of kobuki for compatibility checking and introspection, you can just run version\-\_\-info program.\section{\-Build}\label{enAppendixVersionInfo_enBuild}
+\-If you build kobuki\-\_\-driver package, the version\-\_\-info program will be built automatically. \-Source code is located at \doxyref{src/tools/version\-\_\-info.\-cpp}{p.}{version__info_8cpp}
+
+\begin{DoxyVerb}
+$ cd kobuki_driver
+$ make
+\end{DoxyVerb}
+\section{\-Before running}\label{enAppendixVersionInfo_enBeforeRunning}
+\-Before the running the version\-\_\-info program, make sure that robot is connected and appeared as /dev/kobuki. \-See {\tt kobuki\-\_\-ftdi} for more detail.
+
+\begin{DoxyVerb}
+$ ll /dev/kobuki 
+lrwxrwxrwx 1 root root 7 Jan 25 18:19 /dev/kobuki -> ttyUSB0
+\end{DoxyVerb}
+\section{\-Running}\label{enAppendixVersionInfo_enRunning}
+\-The version\-\_\-info program retrieve and print the version information of kobuki, including hardware, firmware and software version numbers. \-And \-Unique \-Device \-I\-Dentifier(\-U\-D\-I\-D) also.
+
+\begin{DoxyVerb}
+$ ./bin/version_info 
+Version Info:
+ * Hardware Version: 1.0.4
+ * Firmware Version: 1.1.4
+ * Software Version: 0.0.0
+ * Unique Device ID: 736034612-892621875-1125147971
+\end{DoxyVerb}
+
+
+\begin{DoxyWarning}{\-Warning}
+\-Software version is not implemented yet. 
+\end{DoxyWarning}

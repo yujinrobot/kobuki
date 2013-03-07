@@ -1,0 +1,359 @@
+\section{kobuki\-:\-:\-Diff\-Drive \-Class \-Reference}
+\label{classkobuki_1_1DiffDrive}\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}}
+
+
+{\ttfamily \#include $<$diff\-\_\-drive.\-hpp$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+int16\-\_\-t {\bf command\-Radius} () const 
+\item 
+int16\-\_\-t {\bf command\-Speed} () const 
+\item 
+{\bf \-Diff\-Drive} ()
+\item 
+void {\bf get\-Wheel\-Joint\-States} (double \&wheel\-\_\-left\-\_\-angle, double \&wheel\-\_\-left\-\_\-angle\-\_\-rate, double \&wheel\-\_\-right\-\_\-angle, double \&wheel\-\_\-right\-\_\-angle\-\_\-rate) const 
+\item 
+const \*
+ecl\-::\-Differential\-Drive\-::\-Kinematics \& {\bf kinematics} ()
+\item 
+void {\bf reset} (const double \&current\-\_\-heading)
+\item 
+void {\bf update} (const uint16\-\_\-t \&time\-\_\-stamp, const uint16\-\_\-t \&left\-\_\-encoder, const uint16\-\_\-t \&right\-\_\-encoder, ecl\-::\-Pose2\-D$<$ double $>$ \&pose\-\_\-update, ecl\-::linear\-\_\-algebra\-::\-Vector3d \&pose\-\_\-update\-\_\-rates)
+\begin{DoxyCompactList}\small\item\em \-Updates the odometry from firmware stamps and encoders. \end{DoxyCompactList}\item 
+void {\bf velocity\-Commands} (const double \&vx, const double \&wz)
+\item 
+void {\bf velocity\-Commands} (const short \&cmd\-\_\-speed, const short \&cmd\-\_\-radius)
+\item 
+std\-::vector$<$ short $>$ {\bf velocity\-Commands} () const 
+\item 
+double {\bf wheel\-\_\-bias} () const 
+\end{DoxyCompactItemize}
+\subsection*{\-Private \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double {\bf bias}
+\item 
+ecl\-::\-Differential\-Drive\-::\-Kinematics {\bf diff\-\_\-drive\-\_\-kinematics}
+\item 
+int {\bf imu\-\_\-heading\-\_\-offset}
+\item 
+double {\bf last\-\_\-diff\-\_\-time}
+\item 
+double {\bf last\-\_\-rad\-\_\-left}
+\item 
+double {\bf last\-\_\-rad\-\_\-right}
+\item 
+unsigned short {\bf last\-\_\-tick\-\_\-left}
+\item 
+unsigned short {\bf last\-\_\-tick\-\_\-right}
+\item 
+unsigned short {\bf last\-\_\-timestamp}
+\item 
+double {\bf last\-\_\-velocity\-\_\-left}
+\item 
+double {\bf last\-\_\-velocity\-\_\-right}
+\item 
+short {\bf radius}
+\item 
+short {\bf speed}
+\item 
+const double {\bf tick\-\_\-to\-\_\-rad}
+\item 
+short {\bf v}
+\item 
+short {\bf w}
+\item 
+double {\bf wheel\-\_\-radius}
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+
+
+\-Definition at line 34 of file diff\-\_\-drive.\-hpp.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!\-Diff\-Drive@{\-Diff\-Drive}}
+\index{\-Diff\-Drive@{\-Diff\-Drive}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{\-Diff\-Drive}]{\setlength{\rightskip}{0pt plus 5cm}{\bf kobuki\-::\-Diff\-Drive\-::\-Diff\-Drive} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1DiffDrive_a5b3265fdb9be865c17e26bdacdfd6f07}
+
+
+\-Definition at line 25 of file diff\-\_\-drive.\-cpp.
+
+
+
+\subsection{\-Member \-Function \-Documentation}
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!command\-Radius@{command\-Radius}}
+\index{command\-Radius@{command\-Radius}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{command\-Radius}]{\setlength{\rightskip}{0pt plus 5cm}int16\-\_\-t {\bf kobuki\-::\-Diff\-Drive\-::command\-Radius} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1DiffDrive_a4b234c5972005fc6c92e055eae9ff129}
+
+
+\-Definition at line 54 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!command\-Speed@{command\-Speed}}
+\index{command\-Speed@{command\-Speed}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{command\-Speed}]{\setlength{\rightskip}{0pt plus 5cm}int16\-\_\-t {\bf kobuki\-::\-Diff\-Drive\-::command\-Speed} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1DiffDrive_a308620d0d850f3c5e857fe015d7ae9b9}
+
+
+\-Definition at line 53 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!get\-Wheel\-Joint\-States@{get\-Wheel\-Joint\-States}}
+\index{get\-Wheel\-Joint\-States@{get\-Wheel\-Joint\-States}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{get\-Wheel\-Joint\-States}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Diff\-Drive\-::get\-Wheel\-Joint\-States} (
+\begin{DoxyParamCaption}
+\item[{double \&}]{wheel\-\_\-left\-\_\-angle, }
+\item[{double \&}]{wheel\-\_\-left\-\_\-angle\-\_\-rate, }
+\item[{double \&}]{wheel\-\_\-right\-\_\-angle, }
+\item[{double \&}]{wheel\-\_\-right\-\_\-angle\-\_\-rate}
+\end{DoxyParamCaption}
+) const}\label{classkobuki_1_1DiffDrive_a6f2387c9170da415d1e39e15cf35ce11}
+
+
+\-Definition at line 111 of file diff\-\_\-drive.\-cpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!kinematics@{kinematics}}
+\index{kinematics@{kinematics}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{kinematics}]{\setlength{\rightskip}{0pt plus 5cm}const ecl\-::\-Differential\-Drive\-::\-Kinematics\& {\bf kobuki\-::\-Diff\-Drive\-::kinematics} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1DiffDrive_ac114f4961247b3588377634b801c9d59}
+
+
+\-Definition at line 37 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!reset@{reset}}
+\index{reset@{reset}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{reset}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Diff\-Drive\-::reset} (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{current\-\_\-heading}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1DiffDrive_aa2fcd8f4444fa80ec2ea58dbf32b5751}
+
+
+\-Definition at line 103 of file diff\-\_\-drive.\-cpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!update@{update}}
+\index{update@{update}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{update}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Diff\-Drive\-::update} (
+\begin{DoxyParamCaption}
+\item[{const uint16\-\_\-t \&}]{time\-\_\-stamp, }
+\item[{const uint16\-\_\-t \&}]{left\-\_\-encoder, }
+\item[{const uint16\-\_\-t \&}]{right\-\_\-encoder, }
+\item[{ecl\-::\-Pose2\-D$<$ double $>$ \&}]{pose\-\_\-update, }
+\item[{ecl\-::linear\-\_\-algebra\-::\-Vector3d \&}]{pose\-\_\-update\-\_\-rates}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1DiffDrive_a1655bb061ec059c98a646f7dcdecd949}
+
+
+\-Updates the odometry from firmware stamps and encoders. 
+
+\-Really horrible -\/ could do with an overhaul.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em time\-\_\-stamp} & \\
+\hline
+{\em left\-\_\-encoder} & \\
+\hline
+{\em right\-\_\-encoder} & \\
+\hline
+{\em pose\-\_\-update} & \\
+\hline
+{\em pose\-\_\-update\-\_\-rates} & \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 52 of file diff\-\_\-drive.\-cpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!velocity\-Commands@{velocity\-Commands}}
+\index{velocity\-Commands@{velocity\-Commands}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{velocity\-Commands}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Diff\-Drive\-::velocity\-Commands} (
+\begin{DoxyParamCaption}
+\item[{const double \&}]{vx, }
+\item[{const double \&}]{wz}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1DiffDrive_a74a496205059a0acd9b89b69309cab74}
+
+
+\-Definition at line 119 of file diff\-\_\-drive.\-cpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!velocity\-Commands@{velocity\-Commands}}
+\index{velocity\-Commands@{velocity\-Commands}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{velocity\-Commands}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Diff\-Drive\-::velocity\-Commands} (
+\begin{DoxyParamCaption}
+\item[{const short \&}]{cmd\-\_\-speed, }
+\item[{const short \&}]{cmd\-\_\-radius}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1DiffDrive_a1f01310eca08064aa55adbca8d6e24f0}
+
+
+\-Definition at line 148 of file diff\-\_\-drive.\-cpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!velocity\-Commands@{velocity\-Commands}}
+\index{velocity\-Commands@{velocity\-Commands}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{velocity\-Commands}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$ short $>$ {\bf kobuki\-::\-Diff\-Drive\-::velocity\-Commands} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classkobuki_1_1DiffDrive_a0235dd6ef6bfe6bf3b2f96a2160cadfa}
+
+
+\-Definition at line 153 of file diff\-\_\-drive.\-cpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!wheel\-\_\-bias@{wheel\-\_\-bias}}
+\index{wheel\-\_\-bias@{wheel\-\_\-bias}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{wheel\-\_\-bias}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Diff\-Drive\-::wheel\-\_\-bias} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1DiffDrive_a32e069cb09848f2bf2c45f697b31a62f}
+
+
+\-Definition at line 59 of file diff\-\_\-drive.\-hpp.
+
+
+
+\subsection{\-Member \-Data \-Documentation}
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!bias@{bias}}
+\index{bias@{bias}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{bias}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Diff\-Drive\-::bias}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_a5216bed924c0220609960542fa27a38d}
+
+
+\-Definition at line 72 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!diff\-\_\-drive\-\_\-kinematics@{diff\-\_\-drive\-\_\-kinematics}}
+\index{diff\-\_\-drive\-\_\-kinematics@{diff\-\_\-drive\-\_\-kinematics}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{diff\-\_\-drive\-\_\-kinematics}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Differential\-Drive\-::\-Kinematics {\bf kobuki\-::\-Diff\-Drive\-::diff\-\_\-drive\-\_\-kinematics}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_a163c81a5f6489947408301867adbd240}
+
+
+\-Definition at line 77 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!imu\-\_\-heading\-\_\-offset@{imu\-\_\-heading\-\_\-offset}}
+\index{imu\-\_\-heading\-\_\-offset@{imu\-\_\-heading\-\_\-offset}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{imu\-\_\-heading\-\_\-offset}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf kobuki\-::\-Diff\-Drive\-::imu\-\_\-heading\-\_\-offset}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_aa7fec6b3a36eec177d79b99cd065d20a}
+
+
+\-Definition at line 74 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!last\-\_\-diff\-\_\-time@{last\-\_\-diff\-\_\-time}}
+\index{last\-\_\-diff\-\_\-time@{last\-\_\-diff\-\_\-time}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{last\-\_\-diff\-\_\-time}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Diff\-Drive\-::last\-\_\-diff\-\_\-time}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_af8d700fcf943ae91ce7bb96c24edb7be}
+
+
+\-Definition at line 64 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!last\-\_\-rad\-\_\-left@{last\-\_\-rad\-\_\-left}}
+\index{last\-\_\-rad\-\_\-left@{last\-\_\-rad\-\_\-left}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{last\-\_\-rad\-\_\-left}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Diff\-Drive\-::last\-\_\-rad\-\_\-left}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_a3a5f3a028bad67a5dac076e3fc9d8d22}
+
+
+\-Definition at line 67 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!last\-\_\-rad\-\_\-right@{last\-\_\-rad\-\_\-right}}
+\index{last\-\_\-rad\-\_\-right@{last\-\_\-rad\-\_\-right}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{last\-\_\-rad\-\_\-right}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Diff\-Drive\-::last\-\_\-rad\-\_\-right}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_a799258e6537987af4f1e2a3d1750e9a3}
+
+
+\-Definition at line 67 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!last\-\_\-tick\-\_\-left@{last\-\_\-tick\-\_\-left}}
+\index{last\-\_\-tick\-\_\-left@{last\-\_\-tick\-\_\-left}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{last\-\_\-tick\-\_\-left}]{\setlength{\rightskip}{0pt plus 5cm}unsigned short {\bf kobuki\-::\-Diff\-Drive\-::last\-\_\-tick\-\_\-left}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_aae2baf5652d3cf5d17b9430df74460bc}
+
+
+\-Definition at line 66 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!last\-\_\-tick\-\_\-right@{last\-\_\-tick\-\_\-right}}
+\index{last\-\_\-tick\-\_\-right@{last\-\_\-tick\-\_\-right}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{last\-\_\-tick\-\_\-right}]{\setlength{\rightskip}{0pt plus 5cm}unsigned short {\bf kobuki\-::\-Diff\-Drive\-::last\-\_\-tick\-\_\-right}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_a5486e5f69560bf760c44893babcc03a4}
+
+
+\-Definition at line 66 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!last\-\_\-timestamp@{last\-\_\-timestamp}}
+\index{last\-\_\-timestamp@{last\-\_\-timestamp}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{last\-\_\-timestamp}]{\setlength{\rightskip}{0pt plus 5cm}unsigned short {\bf kobuki\-::\-Diff\-Drive\-::last\-\_\-timestamp}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_a8dc0a500edd3524833540839b1d145a6}
+
+
+\-Definition at line 62 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!last\-\_\-velocity\-\_\-left@{last\-\_\-velocity\-\_\-left}}
+\index{last\-\_\-velocity\-\_\-left@{last\-\_\-velocity\-\_\-left}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{last\-\_\-velocity\-\_\-left}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Diff\-Drive\-::last\-\_\-velocity\-\_\-left}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_a48835379938377e577583e5cd70b97ce}
+
+
+\-Definition at line 63 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!last\-\_\-velocity\-\_\-right@{last\-\_\-velocity\-\_\-right}}
+\index{last\-\_\-velocity\-\_\-right@{last\-\_\-velocity\-\_\-right}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{last\-\_\-velocity\-\_\-right}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Diff\-Drive\-::last\-\_\-velocity\-\_\-right}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_a9cc7021c7beeb40e163f60d0260e8570}
+
+
+\-Definition at line 63 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!radius@{radius}}
+\index{radius@{radius}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{radius}]{\setlength{\rightskip}{0pt plus 5cm}short {\bf kobuki\-::\-Diff\-Drive\-::radius}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_ab0859422eaf53fca148a6df9b689ac4f}
+
+
+\-Definition at line 70 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!speed@{speed}}
+\index{speed@{speed}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{speed}]{\setlength{\rightskip}{0pt plus 5cm}short {\bf kobuki\-::\-Diff\-Drive\-::speed}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_ad46245e29706e8b86722390659e9f540}
+
+
+\-Definition at line 71 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!tick\-\_\-to\-\_\-rad@{tick\-\_\-to\-\_\-rad}}
+\index{tick\-\_\-to\-\_\-rad@{tick\-\_\-to\-\_\-rad}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{tick\-\_\-to\-\_\-rad}]{\setlength{\rightskip}{0pt plus 5cm}const double {\bf kobuki\-::\-Diff\-Drive\-::tick\-\_\-to\-\_\-rad}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_ac61d00b9dfa7e395e42e8440124c0d46}
+
+
+\-Definition at line 75 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!v@{v}}
+\index{v@{v}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{v}]{\setlength{\rightskip}{0pt plus 5cm}short {\bf kobuki\-::\-Diff\-Drive\-::v}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_add2f082180cce0d7e09a69c8d736b2bb}
+
+
+\-Definition at line 69 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!w@{w}}
+\index{w@{w}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{w}]{\setlength{\rightskip}{0pt plus 5cm}short {\bf kobuki\-::\-Diff\-Drive\-::w}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_a3f552c92800750cafb8f7e2e8b27191a}
+
+
+\-Definition at line 69 of file diff\-\_\-drive.\-hpp.
+
+\index{kobuki\-::\-Diff\-Drive@{kobuki\-::\-Diff\-Drive}!wheel\-\_\-radius@{wheel\-\_\-radius}}
+\index{wheel\-\_\-radius@{wheel\-\_\-radius}!kobuki::DiffDrive@{kobuki\-::\-Diff\-Drive}}
+\subsubsection[{wheel\-\_\-radius}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Diff\-Drive\-::wheel\-\_\-radius}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1DiffDrive_a8074f33732a3dd52f6ba2fc00223727d}
+
+
+\-Definition at line 73 of file diff\-\_\-drive.\-hpp.
+
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+{\bf diff\-\_\-drive.\-hpp}\item 
+{\bf diff\-\_\-drive.\-cpp}\end{DoxyCompactItemize}

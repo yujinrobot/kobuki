@@ -1,0 +1,563 @@
+\section{\-Overview}\label{enAppendixVersionInfo_enOverview}
+\-The \doxyref{kobuki driver}{p.}{classkobuki_1_1Kobuki} communicates with the robot by using predefined protocol. \-In general, the driver sends the commands to the robot and the robot sends some feedback data or sensor readings. \-These commands and feedback data are converted into bytestreams for communication via serial interface. \-The protocol specifies that rules and forms of bytestreams.\section{\-Structure of Bytestream}\label{enAppendixProtocolSpecification_enBytestream}
+\-A bytestream can be devided into 4 fields; \-Headers, \-Length, \-Payload and \-Checksum.
+
+\begin{TabularC}{6}
+\hline
+\-Name&\-Header 0&\-Header 1&\-Length&\-Payload&\-Checksum \\\cline{1-6}
+\-Size&1 \-Byte&1 \-Byte&1 \-Byte&\-N \-Bytes&1 \-Byte \\\cline{1-6}
+\-Description&0x\-A\-A\par
+(\-Fixed)&0x55\par
+(\-Fixed)&\-Size of payload in bytes&\-Described below&\-X\-O\-R'ed value of every bytes of bytesream except headers \\\cline{1-6}
+\end{TabularC}
+
+
+\par
+\subsection{\-Header}\label{enAppendixProtocolSpecification_enHeader}
+\-Two bytes of headers, header 0 and hader 1, are fixed value for both bytestreams, commands and feedback data. \-This headers are used to detect the starting point of bytestream.
+
+\par
+\subsection{\-Length}\label{enAppendixProtocolSpecification_enLength}
+\-Length indicated the length of following bytes that single bytestream hold. \-Default size of this field is 1 byte. \-Length can be used to distinguish each bytestreams. \-Minimum value of this field is 3.
+
+\par
+\subsection{\-Payload}\label{enAppendixProtocolSpecification_enPayload}
+\-Payload contains actual data of bytestream.
+
+\par
+
+
+\begin{DoxyParagraph}{}
+
+\end{DoxyParagraph}
+\subsubsection{\-Structure Of Payload}\label{enAppendixProtocolSpecification_enStructureOfPayload}
+\begin{DoxyParagraph}{}
+\-Payload is a consist of several sub-\/payloads.
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+\begin{TabularC}{5}
+\hline
+\-Payload \\\cline{1-1}
+\-Sub-\/\-Payload 0&\-Sub-\/\-Payload 1&\-Sub-\/\-Payload 2&...&\-Sub-\/\-Payload \-N-\/1 \\\cline{1-5}
+\end{TabularC}
+
+\end{DoxyParagraph}
+\par
+\subsubsection{\-Structure Of Sub-\/\-Payloads}\label{enAppendixProtocolSpecification_enStructureOfSubPayloads}
+\begin{DoxyParagraph}{}
+\-Sub-\/payload can be devided into three parts, \-Header, \-Length and \-Data.
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+\begin{TabularC}{4}
+\hline
+\-Name&\-Header&\-Length&\-Data \\\cline{1-4}
+\-Size&1 \-Byte&1 \-Byte&\-N \-Byte(s) \\\cline{1-4}
+\-Description&\-Predefined \-Identifier&\-Size of data in byte(s)&\-Described below \\\cline{1-4}
+\end{TabularC}
+
+\end{DoxyParagraph}
+\par
+\subsection{\-Checksum}\label{enAppendixProtocolSpecification_enChecksum}
+\-Checksum is \-X\-O\-R'ed value of entire bytestream except headers. \-Checksum process ensure the integrity of bytestreams.
+
+\-Here is simple code snippet for it. 
+\begin{DoxyCode}
+unsigned int packet_size(buffer.size());
+unsigned char cs(0);
+for (unsigned int i = 2; i < packet_size; i++)
+{
+  cs ^= buffer[i];
+}
+return cs ? false : true;
+\end{DoxyCode}
+
+
+\par
+\subsection{\-Entire Bytestream}\label{enAppendixProtocolSpecification_enEntireBytestream}
+\begin{TabularC}{7}
+\hline
+\-Headers&\multirow{2}{\linewidth}{\-Length}&\-Payload&\multirow{2}{\linewidth}{\-Checksum }\\\cline{2-4}
+\-Header 0&&&\-Header 1&\-Sub-\/\-Payload 0&\-Sub-\/\-Payload 1&\-Sub-\/\-Payload 2&...&\-Sub-\/\-Payload \-N-\/1 \\\cline{1-9}
+\end{TabularC}
+
+
+\-Above table shows the structure of entire bytestream.
+
+\-Minimum length of payload is 3; \-Payload with a sub-\/payload, that has only 1 byte data.
+
+\-Theoretical minimum length of entire packet(bytestream) is 7.
+
+\par
+\section{\-Data Types}\label{enAppendixProtocolSpecification_enDataTypes}
+\-Data field in \-Sub-\/payload is a mixture of below three data types; byte, short and int. \begin{TabularC}{7}
+\hline
+\-Name&\-Description&\-Byte \-Length&\-Bit \-Length&\-Data \-Range&\-C/\-C++ \-Identifier \\\cline{1-6}
+\-Unsigned \-Byte&8-\/bit unsigned integer&1&8&0$\sim$255&unsigend char&uint8\-\_\-t \\\cline{1-7}
+\-Unsigned \-Short&16-\/bit unsigned integer&2&16&0$\sim$65,535&unsigend short&uint16\-\_\-t \\\cline{1-7}
+\-Unsigned \-Int&32-\/bit unsigned integer&4&32&0$\sim$4,294,967,295&unsigend int&uint32\-\_\-t  \\\cline{1-7}
+\end{TabularC}
+
+
+\par
+\subsection{\-Serialization-\/\-Deserialization}\label{enAppendixProtocolSpecification_enSerializationDerialization}
+{\tt \-Serialization} is the process of converting a data sturcture into a bytestream. \-Deserialization is reversal process. \-Each data types are serialized and deserialized by `{\tt \-L\-S\-B}-\/\-First \-Order`. \-It means \-Least \-Significant \-Bytes will comes first on the bytestream. \-For example, \-The integer number 2,864,434,397(0x\-A\-A\-B\-B\-C\-C\-D\-D) can be serialized into\-: \begin{TabularC}{4}
+\hline
+0x\-D\-D&0x\-C\-C&0x\-B\-B&0x\-A\-A \\\cline{1-4}
+\end{TabularC}
+\-So, 0x\-D\-D will arrive first in bytestream.
+
+\-Here are template functions to handle it on kobuki\-\_\-deriver, \doxyref{build\-Variable()}{p.}{classpacket__handler_1_1payloadBase_a367c89d2f4ed8a587956f99e62cf865a} and \doxyref{build\-Bytes()}{p.}{classpacket__handler_1_1payloadBase_ab614ccfc29826da5758ae165cb7eabf6}.
+
+\par
+\section{\-Command Packets}\label{enAppendixProtocolSpecification_enCommandPackets}
+\subsection{\-Command Identifier}\label{enAppendixProtocolSpecification_enCommandIdentifier}
+\begin{TabularC}{3}
+\hline
+\-I\-D&\-Name&\-Description \\\cline{1-3}
+1&\-Base \-Control&\-Control wheel motors \\\cline{1-3}
+2&{\itshape \-Reserved\/}&\\\cline{1-3}
+3&\-Sound&\-Play custom sounds \\\cline{1-3}
+4&\-Sound \-Sequence&\-Play predefined sounds \\\cline{1-3}
+5&{\itshape \-Reserved\/}&\\\cline{1-3}
+6&{\itshape \-Reserved\/}&\\\cline{1-3}
+7&{\itshape \-Reserved\/}&\\\cline{1-3}
+8&\-Set \-Power&\-Control external powers \\\cline{1-3}
+9&\-Request \-Extra&\-Request extra informations \\\cline{1-3}
+10&{\itshape \-Reserved\/}&\\\cline{1-3}
+11&{\itshape \-Reserved\/}&\\\cline{1-3}
+12&\-General \-Purpose \-Output&\-Control general purpose outputs \\\cline{1-3}
+\end{TabularC}
+
+
+\par
+\subsection{\-Base Control}\label{enAppendixProtocolSpecification_enBaseControl}
+\-Control wheel motors to moving robot. \-Robot will follow the arc, which radius is {\bfseries $<$\-Radius$>$} mm, with {\bfseries $<$\-Velocity$>$} mm/s.
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&1&0x01&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&4&0x04&\-Fixed \\\cline{1-6}
+\multirow{2}{\linewidth}{\-Data}&\-Speed&2&&&in mm/s \\\cline{2-6}
+&\-Radius&2&&&in mm \\\cline{1-6}
+\end{TabularC}
+
+
+\par
+\subsection{\-Sound}\label{enAppendixProtocolSpecification_enSound}
+\-Play custom sounds with note and duration.
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&3&0x03&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&3&0x03&\-Fixed \\\cline{1-6}
+\multirow{2}{\linewidth}{\-Data}&\-Note&2&&&$\mbox{1/}(f \cdotp a)$, where $f$ is frequency of sound in \-Hz, and $a$ is 0.\-00000275 \\\cline{2-6}
+&\-Duration&1&&&\-Duration of playing note in mili-\/seconds \\\cline{1-6}
+\end{TabularC}
+
+
+\begin{DoxyWarning}{\-Warning}
+\-This command is implemented on the kobuki with firmware, but not implemented yet on driver software(kobuki\-\_\-driver).
+\end{DoxyWarning}
+\par
+\subsection{\-Sound Sequence}\label{enAppendixProtocolSpecification_enSoundSequence}
+\-Play predefined sounds by its index.
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&4&0x04&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&1&0x01&\-Fixed \\\cline{1-6}
+\-Data&\-Sequence number&1&&&0 for \-O\-N sound\par
+1 for \-O\-F\-F sound\par
+2 for \-R\-E\-C\-H\-A\-R\-G\-E sound\par
+3 for \-B\-U\-T\-T\-O\-N sound\par
+4 for \-E\-R\-R\-O\-R sound\par
+5 for \-C\-L\-E\-A\-N\-I\-N\-G\-S\-T\-A\-R\-T sound\par
+6 for \-C\-L\-E\-A\-N\-I\-N\-G\-E\-N\-D sound \\\cline{1-6}
+\end{TabularC}
+
+
+\par
+\subsection{\-Set Power}\label{enAppendixProtocolSpecification_enSetPower}
+\-Control the external powers; 3.\-3\-V, 5\-V, 12\-V1\-A, 12\-V5\-A. \-It is identical role with external power part of \-General \-Purpose \-Output.
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&8&0x08&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&2&0x02&\-Fixed \\\cline{1-6}
+\-Data&\-Power control flags&2&&&\-Set the flags to turn on external powers\par
+0x01 for external power 3.\-3\-V ch.\par
+0x02 for external power 5\-V ch.\par
+0x04 for external power 12\-V1\-A ch.\par
+0x08 for external power 12\-V5\-A ch. \\\cline{1-6}
+\end{TabularC}
+
+
+\begin{DoxyWarning}{\-Warning}
+\-This command is implemented on the kobuki with firmware, but not implemented yet on driver software(kobuki\-\_\-driver).
+\end{DoxyWarning}
+\begin{DoxySeeAlso}{\-See also}
+\doxyref{\-General \-Purpose \-Output}{p.}{enAppendixProtocolSpecification_enGeneralPurposeOutput}
+\end{DoxySeeAlso}
+\par
+\subsection{\-Request Extra}\label{enAppendixProtocolSpecification_enRequestExtra}
+\-Request extra data from robot. \-Especially version info of kobuki; \-Hardware \-Version, \-Firmware \-Version and \-Unique \-Deivce \-I\-Dentifier(\-U\-D\-I\-D)
+
+\-U\-D\-I\-D is unique to device. so can be used to identify on multiple robots.
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&9&0x09&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&2&0x02&\-Fixed \\\cline{1-6}
+\-Data&\-Reqeust flags&2&&&\-Set the flags to request extra data\par
+0x01 for \-Hardware \-Version\par
+0x02 for \-Firmware \-Version\par
+0x08 for \-Unique \-Device \-I\-D \\\cline{1-6}
+\end{TabularC}
+
+
+\begin{DoxySeeAlso}{\-See also}
+\doxyref{\-Hardware \-Version}{p.}{enAppendixProtocolSpecification_enHardwareVersion} \doxyref{\-Firmware \-Version}{p.}{enAppendixProtocolSpecification_enFirmwareVersion}, \doxyref{\-Unique \-Device \-I\-Dentifier(\-U\-D\-I\-D)}{p.}{enAppendixProtocolSpecification_enUniqueDeviceIDentifier}
+\end{DoxySeeAlso}
+\par
+\subsection{\-General Purpose Output}\label{enAppendixProtocolSpecification_enGeneralPurposeOutput}
+\-This command has multiple roles. \-It controls \-L\-E\-Ds, digital outputs and external powers.
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&12&0x0\-C&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&2&0x02&\-Fixed \\\cline{1-6}
+\-Data&\-Digital output flags&2&&&\-Set the flags to set high on output pins of expansion port\par
+0x0001 for digital output ch. 0\par
+0x0002 for digital output ch. 1\par
+0x0004 for digital output ch. 2\par
+0x0008 for digital output ch. 3\par
+\par
+\-Set the flags to turn on external powers\par
+0x0010 for external power 3.\-3\-V ch.\par
+0x0020 for external power 5\-V ch.\par
+0x0040 for external power 12\-V1\-A ch.\par
+0x0080 for external power 12\-V5\-A ch.\par
+\par
+\-Set the flags to turn on \-L\-E\-Ds\par
+0x0100 for red colour of \-L\-E\-D1\par
+0x0200 for green colour of \-L\-E\-D1\par
+0x0400 for red colour of \-L\-E\-D2\par
+0x0800 for green colour of \-L\-E\-D2\par
+ \\\cline{1-6}
+\end{TabularC}
+
+
+\begin{DoxySeeAlso}{\-See also}
+\doxyref{\-Set \-Power}{p.}{enAppendixProtocolSpecification_enSetPower}
+\end{DoxySeeAlso}
+\par
+\section{\-Feedback Packets}\label{enAppendixProtocolSpecification_enFeedbackPackets}
+\subsection{\-Feedback Identifier}\label{enAppendixProtocolSpecification_enFeedbackIdentifier}
+\-Kobuki sends below default feedbacks periodically in 50 \-Hz, when it powered on.
+
+\begin{TabularC}{4}
+\hline
+\-I\-D&\-Name&\-Description&\-Availability \\\cline{1-4}
+1&\-Basic \-Sensor \-Data&\-Basic core sensor data&\-By default \\\cline{1-4}
+2&{\itshape \-Reserved\/}&&\\\cline{1-4}
+3&\-Docking \-I\-R&\-Signals from docking station&\-By default \\\cline{1-4}
+4&\-Inertial \-Sensor&\-Gyro data both angle and angular velocity&\-By default \\\cline{1-4}
+5&\-Cliff&\-P\-S\-D data facing floor&\-By default \\\cline{1-4}
+6&\-Current&\-Current of wheel motors&\-By default \\\cline{1-4}
+7&{\itshape \-Reserved\/}&&\\\cline{1-4}
+8&{\itshape \-Reserved\/}&&\\\cline{1-4}
+9&{\itshape \-Reserved\/}&&\\\cline{1-4}
+10&\-Hardware \-Version&\-Version number of kobuki hardware&\-On request \\\cline{1-4}
+11&\-Firmware \-Version&\-Version number of kobuki firmware&\-On request \\\cline{1-4}
+12&{\itshape \-Reserved\/}&&\\\cline{1-4}
+13&\-Raw data of 3-\/axis gyro&\-Raw \-A\-D\-C data of digital 3-\/axis gyro&\-By default \\\cline{1-4}
+14&{\itshape \-Reserved\/}&&\\\cline{1-4}
+15&\-Reserved&&\\\cline{1-4}
+16&\-General \-Purpose \-Input&\-Inputs from 25-\/pin expansion port&\-By default \\\cline{1-4}
+17&{\itshape \-Reserved\/}&&\\\cline{1-4}
+18&{\itshape \-Reserved\/}&&\\\cline{1-4}
+19&\-Unique \-Device \-I\-Dentifier(\-U\-D\-I\-D)&\-Unique number to identify robot&\-On request \\\cline{1-4}
+20&{\itshape \-Reserved\/}&&\\\cline{1-4}
+\end{TabularC}
+
+
+\par
+\subsection{\-Basic Sensor Data}\label{enAppendixProtocolSpecification_enBasicSensorData}
+\-Basic core sensor data.
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Feedback \-Identifier&1&1&0x01&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&15&0x0\-F&\-Fixed \\\cline{1-6}
+\multirow{12}{\linewidth}{\-Data}&\-Timestamp&2&&&\-Timestamp generated internally in milliseconds\par
+\-It circulates from 0 to 65535 \\\cline{1-10}
+&\-Bumper&1&&&\-Flag will be setted when bumper is pressed\par
+0x01 for right bumper\par
+0x02 for central bumper\par
+0x04 for left bumper \\\cline{1-9}
+&\-Wheel drop&1&&&\-Flag will be setted when wheel is dropped\par
+0x01 for right wheel\par
+0x02 for left wheel \\\cline{1-8}
+&\-Cliff&1&&&\-Flag will be setted when cliff is detected\par
+0x01 for right cliff sensor\par
+0x02 for central cliff sensor\par
+0x04 for left cliff sensor \\\cline{1-7}
+&\-Left encoder&2&&&\multirow{2}{\linewidth}{\-Accumulated encoder data of left and right wheels in ticks\par
+\-Increments of this value means forward direction\par
+\-It circulates from 0 to 65535 }\\\cline{1-6}\cline{2-6}
+&&\-Right encoder&2&&&\\\cline{1-5}\cline{1-4}\cline{6-7}
+&\-Left \-P\-W\-M&1&&&\multirow{2}{\linewidth}{\-P\-W\-M value that applied to left and right wheel motor\par
+\-This data should be converted signed type to represent correctly\par
+\-Negative sign indicated backward direction }\\\cline{1-3}\cline{2-6}
+&&\-Right \-P\-W\-M&1&&&\\\cline{1-2}\cline{1-1}\cline{3-7}
+&\-Button&1&&&\-Flag will be setted when button is pressed\par
+0x01 for \-Button 0\par
+0x02 for \-Button 1\par
+0x04 for \-Button 2 \\\cline{2-6}
+&\-Charger&1&&&0 for \-D\-I\-S\-C\-H\-A\-R\-G\-I\-N\-G state\par
+2 for \-D\-O\-C\-K\-I\-N\-G\-\_\-\-C\-H\-A\-R\-G\-E\-D state\par
+6 for \-D\-O\-C\-K\-I\-N\-G\-\_\-\-C\-H\-A\-R\-G\-I\-N\-G state\par
+18 for \-A\-D\-A\-P\-T\-E\-R\-\_\-\-C\-H\-A\-R\-G\-E\-D state\par
+22 for \-A\-D\-A\-P\-T\-E\-R\-\_\-\-C\-H\-A\-R\-G\-I\-N\-G state \\\cline{1-6}
+\-Battery&1&&&\-Voltage of battery in 0.\-1 \-V\par
+\-Typically 16.\-7 \-V when fully charged \\\cline{1-5}
+\-Over current flags&1&&&\-Flag will be setted when over current is detected\par
+0x01 for left wheel\par
+0x02 for right wheel \\\cline{1-5}
+\end{TabularC}
+
+
+\begin{DoxyNote}{\-Note}
+\-This sub-\/payload will be sent by default.
+\end{DoxyNote}
+\par
+\subsection{\-Docking I\-R}\label{enAppendixProtocolSpecification_enDockingIR}
+\-Signals from the docking station.
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&3&0x03&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&3&0x03&\-Fixed \\\cline{1-6}
+\multirow{3}{\linewidth}{\-Data}&\-Right signal&1&&&\multirow{3}{\linewidth}{\-Flag will be setted when signal is detected\par
+0x01 for \-N\-E\-A\-R\-\_\-\-L\-E\-F\-T state\par
+0x02 for \-N\-E\-A\-R\-\_\-\-C\-E\-N\-T\-E\-R state\par
+0x04 for \-N\-E\-A\-R\-\_\-\-R\-I\-G\-H\-T state\par
+0x08 for \-F\-A\-R\-\_\-\-C\-E\-N\-T\-E\-R state\par
+ox10 for \-F\-A\-R\-\_\-\-L\-E\-F\-T state\par
+0x20 for \-F\-A\-R\-\_\-\-R\-I\-G\-H\-T state }\\\cline{1-1}\cline{3-6}
+&&\-Central signal&1&&&\\\cline{2-7}
+&&\-Left signal&1&&&\\\cline{1-7}
+\end{TabularC}
+
+
+\-Kobuki's docking station has 3 {\tt \-I\-R} emitters. \-The emitted \-I\-R lights cover three regions in front of the docking station\-: left, central and right, each divided in two sub-\/fields\-: near and far. \-Each beam encodes this information, so the robot knows at any moment in which region and sub-\/field he is. \-Also, as regions and fields are independently identified, they can be overlap on its borders.  \par
+\subsection{\-Inertial Sensor Data}\label{enAppendixProtocolSpecification_enInertialSensorData}
+\-Inertial sensor data. \-Only 1 axis gyro data only available.
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&4&0x04&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&7&0x07&\-Fixed \\\cline{1-6}
+\multirow{5}{\linewidth}{\-Data}&\-Angle&2&&&\-Factory calibrated \\\cline{1-3}\cline{5-6}
+&\-Angle rate&2&&&\-Factory calibrated \\\cline{1-2}\cline{4-6}
+&\-Unused&1&&&\\\cline{1-1}\cline{3-6}
+&\-Unused&1&&&\\\cline{2-6}
+&\-Unused&1&&&\\\cline{1-6}
+\end{TabularC}
+
+
+\begin{DoxyNote}{\-Note}
+\-This sub-\/payload will be sent by default.
+\end{DoxyNote}
+\par
+\subsection{\-Cliff Sensor Data}\label{enAppendixProtocolSpecification_enCliffSensorData}
+\-This sub-\/payload provides {\tt \-A\-D\-C} data of {\tt \-P\-S\-D}, which is facing the floor.
+
+\-This value is related with distance between sensor and floor surface. \-See the {\tt datasheet} for more detailed information.
+
+\-This data also available in the \-Cliff field of \doxyref{\-Basic \-Sensor \-Data}{p.}{enAppendixProtocolSpecification_enBasicSensorData} , as a boolean type, processed on the kobuki.
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&5&0x05&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&6&0x06&\-Fixed \\\cline{1-6}
+\multirow{3}{\linewidth}{\-Data}&\-Right cliff sensor&2&&&\multirow{3}{\linewidth}{\-A\-D\-C output of each \-P\-S\-D\par
+\-Data range\-: 0 $\sim$ 4095\par
+\-Distance range\-: 2 $\sim$ 15 cm\par
+\-Distance is non-\/linear }\\\cline{1-1}\cline{3-6}
+&&\-Central cliff sensor&2&&&\\\cline{2-7}
+&&\-Left cliff sensor&2&&&\\\cline{1-7}
+\end{TabularC}
+
+
+\begin{DoxyNote}{\-Note}
+\-This sub-\/payload will be sent by default.
+\end{DoxyNote}
+\begin{DoxySeeAlso}{\-See also}
+\doxyref{\-Basic \-Sensor \-Data}{p.}{enAppendixProtocolSpecification_enBasicSensorData}
+\end{DoxySeeAlso}
+\par
+\subsection{\-Current}\label{enAppendixProtocolSpecification_enCurrent}
+\-Current sensor readings of wheel motors.
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&6&0x06&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&2&0x02&\-Fixed \\\cline{1-6}
+\multirow{2}{\linewidth}{\-Data}&\-Left motor&2&&&in 10m\-A \\\cline{2-6}
+&\-Right motor&2&&&in 10m\-A \\\cline{1-6}
+\end{TabularC}
+
+
+\begin{DoxyNote}{\-Note}
+\-This sub-\/payload will be sent by default.
+\end{DoxyNote}
+\par
+\subsection{\-Hardware Version}\label{enAppendixProtocolSpecification_enHardwareVersion}
+\-Hardware version info in triplet form; $<$major$>$.$<$minor$>$.$<$patch$>$
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&10&0x0\-A&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&4&0x04&\-Fixed \\\cline{1-6}
+\multirow{4}{\linewidth}{\-Data}&\-Patch&1&&&\\\cline{1-2}\cline{4-6}
+&\-Minor&1&&&\\\cline{1-1}\cline{3-6}
+&\-Major&1&&&\\\cline{2-6}
+&\-Unused&1&0&0x00&\-Fixed \\\cline{1-6}
+\end{TabularC}
+
+
+\begin{DoxyNote}{\-Note}
+\-This sub-\/payload will be sent on request. 
+\end{DoxyNote}
+\begin{DoxySeeAlso}{\-See also}
+\doxyref{\-Request \-Extra}{p.}{enAppendixProtocolSpecification_enRequestExtra}
+\end{DoxySeeAlso}
+\par
+\subsection{\-Firmware Version}\label{enAppendixProtocolSpecification_enFirmwareVersion}
+\-Firmware version info in triplet form; $<$major$>$.$<$minor$>$.$<$patch$>$
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&11&0x0\-B&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&4&0x04&\-Fixed \\\cline{1-6}
+\multirow{4}{\linewidth}{\-Data}&\-Patch&1&&&\\\cline{1-2}\cline{4-6}
+&\-Minor&1&&&\\\cline{1-1}\cline{3-6}
+&\-Major&1&&&\\\cline{2-6}
+&\-Unused&1&0&0x00&\-Fixed \\\cline{1-6}
+\end{TabularC}
+
+
+\begin{DoxyNote}{\-Note}
+\-This sub-\/payload will be sent on request. 
+\end{DoxyNote}
+\begin{DoxySeeAlso}{\-See also}
+\doxyref{\-Request \-Extra}{p.}{enAppendixProtocolSpecification_enRequestExtra}
+\end{DoxySeeAlso}
+\par
+\subsection{\-Raw Data Of 3\-D Gyro}\label{enAppendixProtocolSpecification_enRawDataOf3DGyro}
+\-Raw \-A\-D\-C data of digital 3\-D gyro; {\tt \-L3\-G4200\-D}
+
+\-Due to difference of acquisition rate and update rate, 2-\/3 data will be arrived at once.
+
+\-Digit to deg/s ratio is 0.\-00875, it comes from {\tt datasheet} of 3d gyro.
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&13&0x0\-D&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&2+6\-N&&\\\cline{1-6}
+\multirow{9}{\linewidth}{\-Data}&\-Frame id&1&&&\-Frame id of '\-Raw gyro data 0'\par
+\-Every sensor readings can identified by frame id\par
+, \-It circulate from 0 to 255 \\\cline{1-7}
+&\-Followed data length&1&3\-N&&\\\cline{1-6}
+&\multirow{3}{\linewidth}{\-Raw gyro data 0}&x-\/axis&2&&&\multirow{7}{\linewidth}{\-A\-D\-C output of each-\/axis in 0.\-00875 deg/s }\\\cline{1-5}\cline{3-3}\cline{7-7}
+&&&y-\/axis&2&&&\\\cline{1-4}\cline{2-3}\cline{6-8}
+&&&z-\/axis&2&&&\\\cline{1-3}\cline{1-2}\cline{5-8}
+&&\-:\par
+\-: \\\cline{1-1}
+&&\multirow{3}{\linewidth}{\-Raw gyro data \-N-\/1}&x-\/axis&2&&&\\\cline{3-8}
+&&&y-\/axis&2&&&\\\cline{2-8}
+z-\/axis&2&&&&\\\cline{1-6}
+\end{TabularC}
+
+
+\begin{DoxyNote}{\-Note}
+\-This sub-\/payload will be sent by default.
+\end{DoxyNote}
+\par
+
+
+\begin{DoxyWarning}{\-Warning}
+\-Sensing axis of 3d gyro is not match with robot. \-It is rotated 90 degree counterclockwise about z-\/axis. \-So, below conversion will needed. 
+\begin{DoxyCode}
+const double digit_to_dps = 0.00875;
+angular_velocity.x =  -digit_to_dps * (short)raw_gyro_data.y;
+angular_velocity.y =   digit_to_dps * (short)raw_gyro_data.x;
+angular_velocity.z =   digit_to_dps * (short)raw_gyro_data.z;
+\end{DoxyCode}
+
+\end{DoxyWarning}
+\par
+\subsection{\-General Purpose Input}\label{enAppendixProtocolSpecification_enGeneralPurposeInput}
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&16&0x10&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&16&0x10&\-Fixed \\\cline{1-6}
+\multirow{8}{\linewidth}{\-Data}&\-Digital input&2&&&\-Flag will be setted, when high voltage is applied\par
+0x01 for digital input ch. 0\par
+0x02 for digital input ch. 1\par
+0x04 for digital input ch. 2\par
+0x08 for input output ch. 3 \\\cline{1-6}
+&\-Analog input ch.\-0&2&&&\multirow{4}{\linewidth}{12-\/bit \-A\-D\-C output of each channel\par
+\-Data range\-: 0 $\sim$ 4095(2$^\wedge$12-\/1)\par
+\-Conversion voltage range\-: 0 $\sim$ 3.\-3 \-V }\\\cline{1-5}\cline{4-6}
+&&\-Analog input ch.\-1&2&&&\\\cline{1-4}\cline{3-7}
+&&\-Analog input ch.\-2&2&&&\\\cline{1-3}\cline{2-7}
+&&\-Analog input ch.\-3&2&&&\\\cline{1-2}\cline{1-1}\cline{3-7}
+&\-Unused&2&&&\\\cline{2-6}
+&\-Unused&2&&&\\\cline{1-6}
+\-Unused&2&&&\\\cline{1-5}
+\end{TabularC}
+
+
+\begin{DoxyNote}{\-Note}
+\-This sub-\/payload will be sent by default.
+\end{DoxyNote}
+\par
+\subsection{\-Unique Device I\-Dentifier(\-U\-D\-I\-D)}\label{enAppendixProtocolSpecification_enUniqueDeviceIDentifier}
+\-Contains \-Unique \-Device \-I\-Dentifier of robot. \-This value is unique for all robot in the world. \-It can be represented by triplet form\-: $<$\-U\-D\-I\-D0$>$-\/$<$\-U\-D\-I\-D1$>$-\/$<$\-U\-D\-I\-D2$>$
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&19&0x13&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&12&0x0\-C&\-Fixed \\\cline{1-6}
+\multirow{4}{\linewidth}{\-Data}&\-U\-D\-I\-D0&4&&&\\\cline{1-2}\cline{4-6}
+&\-U\-D\-I\-D1&4&&&\\\cline{1-1}\cline{3-6}
+&\-U\-D\-I\-D2&4&&&\\\cline{2-6}
+\end{TabularC}
+
+
+\begin{DoxyNote}{\-Note}
+\-This sub-\/payload will be sent on request. 
+\end{DoxyNote}
+\begin{DoxySeeAlso}{\-See also}
+\doxyref{\-Request \-Extra}{p.}{enAppendixProtocolSpecification_enRequestExtra}
+\end{DoxySeeAlso}
+\par
+ 

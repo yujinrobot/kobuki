@@ -1,0 +1,175 @@
+\section{packet\-\_\-handler\-:\-:payload\-Base \-Class \-Reference}
+\label{classpacket__handler_1_1payloadBase}\index{packet\-\_\-handler\-::payload\-Base@{packet\-\_\-handler\-::payload\-Base}}
+
+
+\-Provides base class for payloads.  
+
+
+
+
+{\ttfamily \#include $<$payload\-\_\-base.\-hpp$>$}
+
+
+
+\-Inheritance diagram for packet\-\_\-handler\-:\-:payload\-Base\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classpacket__handler_1_1payloadBase__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool {\bf deserialise} (ecl\-::\-Push\-And\-Pop$<$ unsigned char $>$ \&byte\-Stream)=0
+\item 
+{\bf payload\-Base} ()
+\item 
+virtual bool {\bf serialise} (ecl\-::\-Push\-And\-Pop$<$ unsigned char $>$ \&byte\-Stream)=0
+\item 
+virtual {\bf $\sim$payload\-Base} ()
+\end{DoxyCompactItemize}
+\subsection*{\-Public \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bf yes}
+\end{DoxyCompactItemize}
+\subsection*{\-Protected \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\void {\bf build\-Bytes} (const \-T \&\-V, ecl\-::\-Push\-And\-Pop$<$ unsigned char $>$ \&buffer)
+\item 
+{\footnotesize template$<$$>$ }\\void {\bf build\-Bytes} (const float \&\-V, ecl\-::\-Push\-And\-Pop$<$ unsigned char $>$ \&buffer)
+\item 
+{\footnotesize template$<$typename T $>$ }\\void {\bf build\-Variable} (\-T \&\-V, ecl\-::\-Push\-And\-Pop$<$ unsigned char $>$ \&buffer)
+\item 
+{\footnotesize template$<$$>$ }\\void {\bf build\-Variable} (float \&\-V, ecl\-::\-Push\-And\-Pop$<$ unsigned char $>$ \&buffer)
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Provides base class for payloads. 
+
+\-Definition at line 38 of file payload\-\_\-base.\-hpp.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\index{packet\-\_\-handler\-::payload\-Base@{packet\-\_\-handler\-::payload\-Base}!payload\-Base@{payload\-Base}}
+\index{payload\-Base@{payload\-Base}!packet_handler::payloadBase@{packet\-\_\-handler\-::payload\-Base}}
+\subsubsection[{payload\-Base}]{\setlength{\rightskip}{0pt plus 5cm}{\bf packet\-\_\-handler\-::payload\-Base\-::payload\-Base} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classpacket__handler_1_1payloadBase_a4c51ad34cba8ba6c15f71640263fe5cd}
+
+
+\-Definition at line 51 of file payload\-\_\-base.\-hpp.
+
+\index{packet\-\_\-handler\-::payload\-Base@{packet\-\_\-handler\-::payload\-Base}!$\sim$payload\-Base@{$\sim$payload\-Base}}
+\index{$\sim$payload\-Base@{$\sim$payload\-Base}!packet_handler::payloadBase@{packet\-\_\-handler\-::payload\-Base}}
+\subsubsection[{$\sim$payload\-Base}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf packet\-\_\-handler\-::payload\-Base\-::$\sim$payload\-Base} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline, virtual]}}\label{classpacket__handler_1_1payloadBase_a9fe1568cef0c03d0fc6395cfc05dce01}
+
+
+\-Definition at line 52 of file payload\-\_\-base.\-hpp.
+
+
+
+\subsection{\-Member \-Function \-Documentation}
+\index{packet\-\_\-handler\-::payload\-Base@{packet\-\_\-handler\-::payload\-Base}!build\-Bytes@{build\-Bytes}}
+\index{build\-Bytes@{build\-Bytes}!packet_handler::payloadBase@{packet\-\_\-handler\-::payload\-Base}}
+\subsubsection[{build\-Bytes}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf packet\-\_\-handler\-::payload\-Base\-::build\-Bytes} (
+\begin{DoxyParamCaption}
+\item[{const \-T \&}]{\-V, }
+\item[{ecl\-::\-Push\-And\-Pop$<$ unsigned char $>$ \&}]{buffer}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline, protected]}}\label{classpacket__handler_1_1payloadBase_ab614ccfc29826da5758ae165cb7eabf6}
+
+
+\-Definition at line 79 of file payload\-\_\-base.\-hpp.
+
+\index{packet\-\_\-handler\-::payload\-Base@{packet\-\_\-handler\-::payload\-Base}!build\-Bytes@{build\-Bytes}}
+\index{build\-Bytes@{build\-Bytes}!packet_handler::payloadBase@{packet\-\_\-handler\-::payload\-Base}}
+\subsubsection[{build\-Bytes}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf packet\-\_\-handler\-::payload\-Base\-::build\-Bytes} (
+\begin{DoxyParamCaption}
+\item[{const float \&}]{\-V, }
+\item[{ecl\-::\-Push\-And\-Pop$<$ unsigned char $>$ \&}]{buffer}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline, protected]}}\label{classpacket__handler_1_1payloadBase_ab5a5a6d9681b917b857bef163225d955}
+
+
+\-Definition at line 113 of file payload\-\_\-base.\-hpp.
+
+\index{packet\-\_\-handler\-::payload\-Base@{packet\-\_\-handler\-::payload\-Base}!build\-Variable@{build\-Variable}}
+\index{build\-Variable@{build\-Variable}!packet_handler::payloadBase@{packet\-\_\-handler\-::payload\-Base}}
+\subsubsection[{build\-Variable}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf packet\-\_\-handler\-::payload\-Base\-::build\-Variable} (
+\begin{DoxyParamCaption}
+\item[{\-T \&}]{\-V, }
+\item[{ecl\-::\-Push\-And\-Pop$<$ unsigned char $>$ \&}]{buffer}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline, protected]}}\label{classpacket__handler_1_1payloadBase_a367c89d2f4ed8a587956f99e62cf865a}
+
+
+\-Definition at line 65 of file payload\-\_\-base.\-hpp.
+
+\index{packet\-\_\-handler\-::payload\-Base@{packet\-\_\-handler\-::payload\-Base}!build\-Variable@{build\-Variable}}
+\index{build\-Variable@{build\-Variable}!packet_handler::payloadBase@{packet\-\_\-handler\-::payload\-Base}}
+\subsubsection[{build\-Variable}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf packet\-\_\-handler\-::payload\-Base\-::build\-Variable} (
+\begin{DoxyParamCaption}
+\item[{float \&}]{\-V, }
+\item[{ecl\-::\-Push\-And\-Pop$<$ unsigned char $>$ \&}]{buffer}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline, protected]}}\label{classpacket__handler_1_1payloadBase_ab78ef94cab7542689a41647dd2d1e9bf}
+\-Need to be very careful with this -\/ it will only work across platforms if they happen to be doing reinterpret\-\_\-cast with the same float standard. 
+\begin{DoxyParams}{\-Parameters}
+{\em \-V} & \\
+\hline
+{\em buffer} & \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 96 of file payload\-\_\-base.\-hpp.
+
+\index{packet\-\_\-handler\-::payload\-Base@{packet\-\_\-handler\-::payload\-Base}!deserialise@{deserialise}}
+\index{deserialise@{deserialise}!packet_handler::payloadBase@{packet\-\_\-handler\-::payload\-Base}}
+\subsubsection[{deserialise}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool {\bf packet\-\_\-handler\-::payload\-Base\-::deserialise} (
+\begin{DoxyParamCaption}
+\item[{ecl\-::\-Push\-And\-Pop$<$ unsigned char $>$ \&}]{byte\-Stream}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [pure virtual]}}\label{classpacket__handler_1_1payloadBase_a42d7908c86387e88b4a8705b7647c093}
+
+
+\-Implemented in {\bf kobuki\-::\-Command} \doxyref{}{p.}{classkobuki_1_1Command_a940dc54294dc2b6ca9305867229137de}, {\bf kobuki\-::\-Core\-Sensors} \doxyref{}{p.}{classkobuki_1_1CoreSensors_a040a72096617002a0d0f93b848006ebc}, {\bf kobuki\-::\-Three\-Axis\-Gyro} \doxyref{}{p.}{classkobuki_1_1ThreeAxisGyro_a65c15215e2769e7227c3f1f772a445b1}, {\bf kobuki\-::\-Gp\-Input} \doxyref{}{p.}{classkobuki_1_1GpInput_a28b4dbbd1a1df1b22cda86193dadd60e}, {\bf kobuki\-::\-Eeprom} \doxyref{}{p.}{classkobuki_1_1Eeprom_ac60a5c8a4ba3b95dd21f9a671c416710}, {\bf kobuki\-::\-Firmware} \doxyref{}{p.}{classkobuki_1_1Firmware_af41cef6ff3dc0ed1e7b256681544e1a2}, {\bf kobuki\-::\-Current} \doxyref{}{p.}{classkobuki_1_1Current_a0650572b8e343637d000a8c3682bed5d}, {\bf kobuki\-::\-Inertia} \doxyref{}{p.}{classkobuki_1_1Inertia_a44d0ed2f43fd3598521fdb0104da3e5a}, {\bf kobuki\-::\-Unique\-Device\-I\-D} \doxyref{}{p.}{classkobuki_1_1UniqueDeviceID_ac3fefd5a6c768a52e96b1890afa41319}, {\bf kobuki\-::\-Cliff} \doxyref{}{p.}{classkobuki_1_1Cliff_ab4feb28d6b1863d7d1cd7b68d6963724}, {\bf kobuki\-::\-Dock\-I\-R} \doxyref{}{p.}{classkobuki_1_1DockIR_acee0bd7f154a549d8d5a0f56aa9a6771}, and {\bf kobuki\-::\-Hardware} \doxyref{}{p.}{classkobuki_1_1Hardware_a0e30a67914debe3e5de881720273c17b}.
+
+\index{packet\-\_\-handler\-::payload\-Base@{packet\-\_\-handler\-::payload\-Base}!serialise@{serialise}}
+\index{serialise@{serialise}!packet_handler::payloadBase@{packet\-\_\-handler\-::payload\-Base}}
+\subsubsection[{serialise}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool {\bf packet\-\_\-handler\-::payload\-Base\-::serialise} (
+\begin{DoxyParamCaption}
+\item[{ecl\-::\-Push\-And\-Pop$<$ unsigned char $>$ \&}]{byte\-Stream}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [pure virtual]}}\label{classpacket__handler_1_1payloadBase_a6ef7b31bf2c88202403f07214f7b9423}
+
+
+\-Implemented in {\bf kobuki\-::\-Command} \doxyref{}{p.}{classkobuki_1_1Command_a735d4fe3925e2ca28dee437b61ce8398}, {\bf kobuki\-::\-Core\-Sensors} \doxyref{}{p.}{classkobuki_1_1CoreSensors_a0be7c59b7aebbbf7c3bcc11b1521d9ed}, {\bf kobuki\-::\-Three\-Axis\-Gyro} \doxyref{}{p.}{classkobuki_1_1ThreeAxisGyro_aa3f954eed385bdcd23377219a304fc99}, {\bf kobuki\-::\-Firmware} \doxyref{}{p.}{classkobuki_1_1Firmware_ad70e38096ca2ca1ceba11c825113bebf}, {\bf kobuki\-::\-Gp\-Input} \doxyref{}{p.}{classkobuki_1_1GpInput_a1593df2dfb3739e4b9c83144e744016f}, {\bf kobuki\-::\-Current} \doxyref{}{p.}{classkobuki_1_1Current_aa316a7575e368dd6c731d8de7186802d}, {\bf kobuki\-::\-Eeprom} \doxyref{}{p.}{classkobuki_1_1Eeprom_a47c436f684217129556b979fcde4d9e8}, {\bf kobuki\-::\-Inertia} \doxyref{}{p.}{classkobuki_1_1Inertia_af929db04f4bfc0758aac60ab93cb78ca}, {\bf kobuki\-::\-Unique\-Device\-I\-D} \doxyref{}{p.}{classkobuki_1_1UniqueDeviceID_a9bde99f3c3f501524e48ba0e2116e7e4}, {\bf kobuki\-::\-Cliff} \doxyref{}{p.}{classkobuki_1_1Cliff_a80c8df9ced461885659f8810e434800e}, {\bf kobuki\-::\-Dock\-I\-R} \doxyref{}{p.}{classkobuki_1_1DockIR_a128386a3799571a9aaa71565156ab9ff}, and {\bf kobuki\-::\-Hardware} \doxyref{}{p.}{classkobuki_1_1Hardware_a40d1460b39060fbc02684355922b2672}.
+
+
+
+\subsection{\-Member \-Data \-Documentation}
+\index{packet\-\_\-handler\-::payload\-Base@{packet\-\_\-handler\-::payload\-Base}!yes@{yes}}
+\index{yes@{yes}!packet_handler::payloadBase@{packet\-\_\-handler\-::payload\-Base}}
+\subsubsection[{yes}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf packet\-\_\-handler\-::payload\-Base\-::yes}}\label{classpacket__handler_1_1payloadBase_ace337f35fbb2b2ae1abffeb078a7cfd8}
+this is simple magic to write the flag, when we get the packet from the host or when we want to send the data 
+
+\-Definition at line 46 of file payload\-\_\-base.\-hpp.
+
+
+
+\-The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+{\bf payload\-\_\-base.\-hpp}\end{DoxyCompactItemize}
