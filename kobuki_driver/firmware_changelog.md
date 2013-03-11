@@ -1,12 +1,11 @@
 Firmware Changelog
 ==================
 
-This documents the version changes to the kobuki firmware. ***note: not this software package!***
+This documents the version changes to the kobuki firmware. ***note that not this software package!***
 
 #### v1.1.4 
 2013-02-22 **Jae Young Lee** <<jakan2@yujinrobot.com>>
 * Gyro drift bug fixed
-
 
 #### v1.1.3 
 2012-12-14 **Jae Young Lee** <<jakan2@yujinrobot.com>>
