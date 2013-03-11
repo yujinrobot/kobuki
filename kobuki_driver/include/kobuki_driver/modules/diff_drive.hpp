@@ -20,6 +20,7 @@
 #include <stdint.h>
 
 #include <ecl/mobile_robot.hpp>
+#include <ecl/threads/mutex.hpp>
 
 /*****************************************************************************
 ** Namespaces
@@ -42,16 +43,14 @@ public:
               ecl::linear_algebra::Vector3d &pose_update_rates);
   void reset(const double& current_heading);
   void getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
-                            double &wheel_right_angle, double &wheel_right_angle_rate) const;
+                            double &wheel_right_angle, double &wheel_right_angle_rate);
   void velocityCommands(const double &vx, const double &wz);
   void velocityCommands(const short &cmd_speed, const short &cmd_radius);
 
   /*********************
   ** Command Accessors
   **********************/
-  std::vector<short> velocityCommands() const;
-  int16_t commandSpeed() const { return speed; } // used to send to build into the fw command packet
-  int16_t commandRadius() const { return radius; } // used to send to build into the fw command packet
+  std::vector<short> velocityCommands();
 
   /*********************
   ** Property Accessors
@@ -75,7 +74,7 @@ private:
   const double tick_to_rad;
 
   ecl::DifferentialDrive::Kinematics diff_drive_kinematics;
-
+  ecl::Mutex velocity_mutex, state_mutex;
 };
 
 } // namespace kobuki
