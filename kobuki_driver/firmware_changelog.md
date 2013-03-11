@@ -1,4 +1,5 @@
-== Firmware Changelog ==
+Firmware Changelog
+==================
 
 This documents the version changes to the kobuki firmware (note - not this software package!).
 
@@ -23,18 +24,18 @@ This documents the version changes to the kobuki firmware (note - not this softw
 2012-11-24 v1.1.0 Jae Yeong Lee <jakan2@rnd.yujinrobot.com>
 
    Special modes version
-    * Startup button modes - B0:random-wandering and B1:arduino-support
+   * Startup button modes - B0:random-wandering and B1:arduino-support
 
 2012-11-21 v1.0.0 Young Hoon Ju <younghoon.ju@rnd.yujinrobot.com>
 
    This is the factory version currently flashed on the robots
-    * First tested firmware frozen for the factory
-    * Flexible firmware protocol for trouble-free updates
-    * Raw data stream of 3-axis gyro
+   * First tested firmware frozen for the factory
+   * Flexible firmware protocol for trouble-free updates
+   * Raw data stream of 3-axis gyro
 
 2012-11-14 v0.0.1 Young Hoon Ju <younghoon.ju@rnd.yujinrobot.com>
 
-    * First released version
-    * Alternate serial access over the 25-pin port
-    * Unique Device Indentifier
+   * First released version
+   * Alternate serial access over the 25-pin port
+   * Unique Device Indentifier
 
