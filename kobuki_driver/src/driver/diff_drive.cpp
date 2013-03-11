@@ -170,18 +170,4 @@ std::vector<short> DiffDrive::velocityCommands() {
   return cmd;
 }
 
-int16_t DiffDrive::commandSpeed() {
-  velocity_mutex.lock();
-  int16_t ret_val = speed;
-  velocity_mutex.unlock();
-  return ret_val;
-}
-
-int16_t DiffDrive::commandRadius() {
-  velocity_mutex.lock();
-  int16_t ret_val = radius;
-  velocity_mutex.unlock();
-  return ret_val;
-}
-
 } // namespace kobuki

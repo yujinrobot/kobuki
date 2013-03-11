@@ -157,8 +157,9 @@ Command Command::GetVersionInfo()
 Command Command::SetVelocityControl(DiffDrive& diff_drive)
 {
   Command outgoing;
-  outgoing.data.speed = diff_drive.commandSpeed();
-  outgoing.data.radius = diff_drive.commandRadius();
+  std::vector<short> velocity_commands = diff_drive.velocityCommands();
+  outgoing.data.speed = velocity_commands[0];
+  outgoing.data.radius = velocity_commands[1];
   outgoing.data.command = Command::BaseControl;
   return outgoing;
 }

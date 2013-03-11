@@ -51,8 +51,6 @@ public:
   ** Command Accessors
   **********************/
   std::vector<short> velocityCommands();
-  int16_t commandSpeed(); // used to send to build into the fw command packet
-  int16_t commandRadius(); // used to send to build into the fw command packet
 
   /*********************
   ** Property Accessors
