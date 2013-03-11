@@ -154,7 +154,7 @@ Command Command::GetVersionInfo()
   return outgoing;
 }
 
-Command Command::SetVelocityControl(const DiffDrive& diff_drive)
+Command Command::SetVelocityControl(DiffDrive& diff_drive)
 {
   Command outgoing;
   outgoing.data.speed = diff_drive.commandSpeed();
