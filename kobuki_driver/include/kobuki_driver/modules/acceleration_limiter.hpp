@@ -17,6 +17,10 @@
 ** Includes
 *****************************************************************************/
 
+#include <vector>
+#include <iomanip>
+#include <sstream>
+#include <iostream>
 #include <stdint.h>
 #include <ecl/time.hpp>
 
@@ -47,10 +51,22 @@ class AccelerationLimiter {
 public:
   AccelerationLimiter() :
     is_enabled(true),
-    last_speed(0), 
+    last_speed(0),
     last_timestamp(ecl::TimeStamp())
   {}
-  void init(bool enable_acceleration_limiter){ is_enabled = enable_acceleration_limiter; }
+  void init(bool enable_acceleration_limiter
+    , double linear_acceleration_max_= 0.5, double angular_acceleration_max_= 3.5
+    , double linear_deceleration_max_=-0.5*1.2, double angular_deceleration_max_=-3.5*1.2)
+  {
+    is_enabled = enable_acceleration_limiter;
+    linear_acceleration_max  = linear_acceleration_max_ ;
+    linear_deceleration_max  = linear_deceleration_max_ ;
+    angular_acceleration_max = angular_acceleration_max_;
+    angular_deceleration_max = angular_deceleration_max_;
+  }
+
+  bool isEnabled() const { return is_enabled; }
+
   /**
    * @brief Limits the input velocity commands if gatekeeper is enabled.
    *
@@ -59,46 +75,51 @@ public:
    * @param speed : ..
    * @param radius : ..
    */
-  void confirm(short &speed, short &radius) // or smoother, limiter, etc
+  std::vector<double> limit(const std::vector<double> &command) { return limit(command[0], command[1]); }
+
+  std::vector<double> limit(const double &vx, const double &wz)
   {
-    if( is_enabled )
-    {
+    if( is_enabled ) {
       //get current time
       ecl::TimeStamp curr_timestamp;
       //get time difference
       ecl::TimeStamp duration = curr_timestamp - last_timestamp;
       //calculate acceleration
-      double acceleration = ((double)(speed - last_speed)) / duration; // in mm/s^2
+      double linear_acceleration = ((double)(vx - last_vx)) / duration; // in [m/s^2]
+      double angular_acceleration = ((double)(wz - last_wz)) / duration; // in [rad/s^2]
 
-      //if criterion meet some condition, limit input velocity in certain step
-//      std::ostringstream oss;
-//      oss << "[" << duration << "]";
-//      oss << "[" << last_speed << "]";
-//      oss << "[" << speed << ", " << radius << "]";
-//      oss << "[" << acceleration << "]";
+      //std::ostringstream oss;
+      //oss << std::fixed << std::setprecision(4);
+      //oss << "[" << std::setw(6) << (double)duration << "]";
+      //oss << "[" << std::setw(6) << last_vx << ", " << std::setw(6) << last_wz << "]";
+      //oss << "[" << std::setw(6) << vx << ", " << std::setw(6) << wz << "]";
+      //oss << "[" << std::setw(6) << linear_acceleration << ", " << std::setw(6) << angular_acceleration << "]";
 
-      if( std::abs(acceleration) > 20.0 ) // 20mm/s^2 ?
-      { 
-        if( std::abs(speed - last_speed) > 8 ) // this might have been experimentally determined, possibly becoming incorrect if the kobuki update rate changes.
-        {
-          speed = last_speed + 8 * (short)(acceleration / std::abs(acceleration));
-        }
-      }
-      /*
-      if( radius == 0 && std::abs(speed) > 0 ) {
-        radius = last_radius;
-      } else { 
-        last_radius = radius;
-      }
-      */
- //     oss << "[" << speed << ", " << radius << "]";
- //     std::cout << oss.str() << std::endl;
+      if( linear_acceleration > linear_acceleration_max )
+        command_vx = last_vx + linear_acceleration_max * duration;
+      else if( linear_acceleration < linear_deceleration_max )
+        command_vx = last_vx + linear_deceleration_max * duration;
+      else
+        command_vx = vx;
+      last_vx = command_vx;
 
-      //update last_speed
-      last_speed = speed;
-      //update last_timestamp
+      if( angular_acceleration > angular_acceleration_max )
+        command_wz = last_wz + angular_acceleration_max * duration;
+      else if( angular_acceleration < angular_deceleration_max )
+        command_wz = last_wz + angular_deceleration_max * duration;
+      else
+        command_wz = wz;
+      last_wz = command_wz;
+
       last_timestamp = curr_timestamp;
-      
+
+      //oss << "[" << std::setw(6) << command_vx << ", " << std::setw(6) << command_wz << "]";
+      //std::cout << oss.str() << std::endl;
+
+      std::vector<double> ret_val;
+      ret_val.push_back(command_vx);
+      ret_val.push_back(command_wz);
+      return ret_val;
     }
   }
 
@@ -108,6 +129,11 @@ private:
   short last_radius;
 //  unsigned short last_timestamp;
   ecl::TimeStamp last_timestamp;
+
+  double last_vx, last_wz; // In [m/s] and [rad/s]
+  double command_vx, command_wz; // In [m/s] and [rad/s]
+  double linear_acceleration_max, linear_deceleration_max; // In [m/s^2]
+  double angular_acceleration_max, angular_deceleration_max; // In [rad/s^2]
 };
 
 } // namespace kobuki

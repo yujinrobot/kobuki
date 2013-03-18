@@ -29,8 +29,9 @@ DiffDrive::DiffDrive() :
   last_tick_right(0),
   last_rad_left(0.0),
   last_rad_right(0.0),
-  v(0), w(0), // command velocities, in [m/s] and [rad/s]
+//  v(0.0), w(0.0), // command velocities, in [m/s] and [rad/s]
   radius(0), speed(0), // command velocities, in [mm] and [mm/s]
+  point_velocity(2,0.0), // command velocities, in [m/s] and [rad/s]
   bias(0.23), // wheelbase, wheel_to_wheel, in [m]
   wheel_radius(0.035), // radius of main wheel, in [m]
   imu_heading_offset(0),
@@ -114,6 +115,13 @@ void DiffDrive::getWheelJointStates(double &wheel_left_angle, double &wheel_left
   wheel_right_angle = last_rad_right;
   wheel_left_angle_rate = last_velocity_left;
   wheel_right_angle_rate = last_velocity_right;
+}
+
+void DiffDrive::setVelocityCommands(const double &vx, const double &wz) {
+  // vx: in m/s
+  // wz: in rad/s
+  point_velocity[0]=vx;
+  point_velocity[1]=wz;
 }
 
 void DiffDrive::velocityCommands(const double &vx, const double &wz) {
