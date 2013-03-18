@@ -67,7 +67,7 @@ class CliffSensorTask : public diagnostic_updater::DiagnosticTask {
 public:
   CliffSensorTask() : DiagnosticTask("Cliff Sensor") {}
   void run(diagnostic_updater::DiagnosticStatusWrapper &stat);
-  void update(uint8_t new_status, const Cliff::Data &new_values) {
+  void update(const uint8_t &new_status, const Cliff::Data &new_values) {
     status = new_status; values = new_values;
   }
 
@@ -83,7 +83,7 @@ class WallSensorTask : public diagnostic_updater::DiagnosticTask {
 public:
   WallSensorTask() : DiagnosticTask("Wall Sensor") {}
   void run(diagnostic_updater::DiagnosticStatusWrapper &stat);
-  void update(uint8_t new_status) { status = new_status; }
+  void update(const uint8_t &new_status) { status = new_status; }
 
 private:
   uint8_t status;
@@ -96,7 +96,7 @@ class WheelDropTask : public diagnostic_updater::DiagnosticTask {
 public:
   WheelDropTask() : DiagnosticTask("Wheel Drop") {}
   void run(diagnostic_updater::DiagnosticStatusWrapper &stat);
-  void update(uint8_t new_status) { status = new_status; }
+  void update(const uint8_t &new_status) { status = new_status; }
 
 private:
   uint8_t status;
