@@ -440,13 +440,17 @@ void Kobuki::playSoundSequence(const enum SoundSequences &number)
 
 void Kobuki::setBaseControl(const double &linear_velocity, const double &angular_velocity)
 {
-  diff_drive.velocityCommands(linear_velocity, angular_velocity);
+  diff_drive.setVelocityCommands(linear_velocity, angular_velocity);
 }
 
 void Kobuki::sendBaseControlCommand()
 {
+  if( acceleration_limiter.isEnabled() ) {
+    diff_drive.velocityCommands(acceleration_limiter.limit(diff_drive.pointVelocity()));
+  } else {
+    diff_drive.velocityCommands(diff_drive.pointVelocity());
+  }
   std::vector<short> velocity_commands = diff_drive.velocityCommands();
-  acceleration_limiter.confirm(velocity_commands[0], velocity_commands[1]);
   //std::cout << "speed: " << velocity_commands[0] << ", radius: " << velocity_commands[1] << std::endl;
   sendCommand(Command::SetVelocityControl(velocity_commands[0], velocity_commands[1]));
 }

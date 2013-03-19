@@ -17,9 +17,10 @@
 ** Includes
 *****************************************************************************/
 
+#include <vector>
 #include <stdint.h>
-
 #include <ecl/mobile_robot.hpp>
+#include <ecl/threads/mutex.hpp>
 
 /*****************************************************************************
 ** Namespaces
@@ -42,16 +43,21 @@ public:
               ecl::linear_algebra::Vector3d &pose_update_rates);
   void reset(const double& current_heading);
   void getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
-                            double &wheel_right_angle, double &wheel_right_angle_rate) const;
+                            double &wheel_right_angle, double &wheel_right_angle_rate);
+  void setVelocityCommands(const double &vx, const double &wz);
   void velocityCommands(const double &vx, const double &wz);
   void velocityCommands(const short &cmd_speed, const short &cmd_radius);
+  void velocityCommands(const std::vector<double> &cmd) { velocityCommands(cmd[0], cmd[1]); }
+  void velocityCommands(const std::vector<short>  &cmd) { velocityCommands(cmd[0], cmd[1]); }
 
   /*********************
   ** Command Accessors
   **********************/
-  std::vector<short> velocityCommands() const;
-  int16_t commandSpeed() const { return speed; } // used to send to build into the fw command packet
-  int16_t commandRadius() const { return radius; } // used to send to build into the fw command packet
+  std::vector<short> velocityCommands();
+
+  double linearVelocity() const { return point_velocity[0]; }
+  double angularVelocity() const { return point_velocity[1]; }
+  std::vector<double> pointVelocity() const { return point_velocity; }
 
   /*********************
   ** Property Accessors
@@ -66,16 +72,17 @@ private:
   unsigned short last_tick_left, last_tick_right;
   double last_rad_left, last_rad_right;
 
-  short v, w;
-  short radius;
-  short speed;
+  //double v, w; // In [m/s] and [rad/s]
+  std::vector<double> point_velocity; //(vx, wz), in [m/s] and [rad/s]
+  short radius; // In [mm]
+  short speed;  // In [mm/s]
   double bias; //wheelbase, wheel_to_wheel, in [m]
   double wheel_radius;
   int imu_heading_offset;
   const double tick_to_rad;
 
   ecl::DifferentialDrive::Kinematics diff_drive_kinematics;
-
+  ecl::Mutex velocity_mutex, state_mutex;
 };
 
 } // namespace kobuki

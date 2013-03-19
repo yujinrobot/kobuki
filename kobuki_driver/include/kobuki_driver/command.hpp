@@ -104,7 +104,7 @@ public:
   static Command SetExternalPower(const DigitalOutput &digital_output, Command::Data &current_data);
   static Command PlaySoundSequence(const enum SoundSequences &number, Command::Data &current_data);
   static Command GetVersionInfo();
-  static Command SetVelocityControl(const DiffDrive& diff_drive);
+  static Command SetVelocityControl(DiffDrive& diff_drive);
   static Command SetVelocityControl(const int16_t &speed, const int16_t &radius);
 
   Data data;

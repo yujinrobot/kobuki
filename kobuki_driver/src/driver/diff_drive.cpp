@@ -29,8 +29,9 @@ DiffDrive::DiffDrive() :
   last_tick_right(0),
   last_rad_left(0.0),
   last_rad_right(0.0),
-  v(0), w(0), // command velocities, in [m/s] and [rad/s]
+//  v(0.0), w(0.0), // command velocities, in [m/s] and [rad/s]
   radius(0), speed(0), // command velocities, in [mm] and [mm/s]
+  point_velocity(2,0.0), // command velocities, in [m/s] and [rad/s]
   bias(0.23), // wheelbase, wheel_to_wheel, in [m]
   wheel_radius(0.035), // radius of main wheel, in [m]
   imu_heading_offset(0),
@@ -54,6 +55,7 @@ void DiffDrive::update(const uint16_t &time_stamp,
             const uint16_t &right_encoder,
             ecl::Pose2D<double> &pose_update,
             ecl::linear_algebra::Vector3d &pose_update_rates) {
+  state_mutex.lock();
   static bool init_l = false;
   static bool init_r = false;
   double left_diff_ticks = 0.0f;
@@ -98,33 +100,47 @@ void DiffDrive::update(const uint16_t &time_stamp,
   pose_update_rates << pose_update.x()/last_diff_time,
                        pose_update.y()/last_diff_time,
                        pose_update.heading()/last_diff_time;
+  state_mutex.unlock();
 }
 
 void DiffDrive::reset(const double& current_heading) {
+  state_mutex.lock();
   last_rad_left = 0.0;
   last_rad_right = 0.0;
   last_velocity_left = 0.0;
   last_velocity_right = 0.0;
   imu_heading_offset = current_heading;
+  state_mutex.unlock();
 }
 
 void DiffDrive::getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
-                          double &wheel_right_angle, double &wheel_right_angle_rate) const {
+                          double &wheel_right_angle, double &wheel_right_angle_rate) {
+  state_mutex.lock();
   wheel_left_angle = last_rad_left;
   wheel_right_angle = last_rad_right;
   wheel_left_angle_rate = last_velocity_left;
   wheel_right_angle_rate = last_velocity_right;
+  state_mutex.unlock();
+}
+
+void DiffDrive::setVelocityCommands(const double &vx, const double &wz) {
+  // vx: in m/s
+  // wz: in rad/s
+  point_velocity[0]=vx;
+  point_velocity[1]=wz;
 }
 
 void DiffDrive::velocityCommands(const double &vx, const double &wz) {
   // vx: in m/s
   // wz: in rad/s
+  velocity_mutex.lock();
   const double epsilon = 0.0001;
 
   // Special Case #1 : Straight Run
   if( std::abs(wz) < epsilon ) {
     radius = 0;
     speed  = (short)(1000.0f * vx);
+    velocity_mutex.unlock();
     return;
   }
 
@@ -133,6 +149,7 @@ void DiffDrive::velocityCommands(const double &vx, const double &wz) {
   if( std::abs(vx) < epsilon || std::abs(radius) <= 1 ) {
     speed  = (short)(1000.0f * bias * wz / 2.0f);
     radius = 1;
+    velocity_mutex.unlock();
     return;
   }
 
@@ -142,18 +159,24 @@ void DiffDrive::velocityCommands(const double &vx, const double &wz) {
   } else {
     speed  = (short)((radius - 1000.0f * bias / 2.0f) * wz);
   }
+  velocity_mutex.unlock();
   return;
 }
 
 void DiffDrive::velocityCommands(const short &cmd_speed, const short &cmd_radius) {
-  speed = cmd_speed;   // In mm/s
-  radius = cmd_radius; // In mm
+  velocity_mutex.lock();
+  speed = cmd_speed;   // In [mm/s]
+  radius = cmd_radius; // In [mm]
+  velocity_mutex.unlock();
+  return;
 }
 
-std::vector<short> DiffDrive::velocityCommands() const {
+std::vector<short> DiffDrive::velocityCommands() {
+  velocity_mutex.lock();
   std::vector<short> cmd(2);
-  cmd[0] = speed;  // In mm/s
-  cmd[1] = radius; // In mm
+  cmd[0] = speed;  // In [mm/s]
+  cmd[1] = radius; // In [mm]
+  velocity_mutex.unlock();
   return cmd;
 }
 
