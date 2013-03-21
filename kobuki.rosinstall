@@ -36,14 +36,14 @@
 - git:
     uri: https://github.com/yujinrobot/yujin_ocs.git
     local-name: yujin_ocs
-    version: groovy-devel
+    version: hydro-devel
 
 - git:
     uri: https://github.com/yujinrobot/kobuki_msgs.git
     local-name: kobuki_msgs
-    version: groovy-devel
+    version: hydro-devel
 
 - git:
     uri: https://github.com/yujinrobot/kobuki.git
     local-name: kobuki
-    version: groovy-devel
+    version: hydro-devel
