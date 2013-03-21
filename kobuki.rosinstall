@@ -47,3 +47,10 @@
     uri: https://github.com/yujinrobot/kobuki.git
     local-name: kobuki
     version: hydro-devel
+
+
+# for hydro kobuki description.
+- git:
+    uri: https://github.com/ros/xacro.git
+    local-name: xacro
+    version: groovy-devel
