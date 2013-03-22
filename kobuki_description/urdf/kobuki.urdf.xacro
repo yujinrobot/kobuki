@@ -15,22 +15,8 @@
 
   <!-- Kobuki --> 
   <xacro:macro name="kobuki">   
-    <link name="base_footprint">
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <box size="0.001 0.001 0.001"/>
-        </geometry>
-        <xacro:insert_block name="material_black" />
-      </visual>
-      <collision>
-        <origin xyz="0 0 0.035" rpy="0 0 0"/>
-        <geometry>
-         <box size="0.001 0.001 0.001"/>
-        </geometry>
-      </collision>
-    </link>
-     <!--
+    <link name="base_footprint"/>
+    <!--
        Base link is set at the bottom of the base mould.
        This is done to be compatible with the way base link
        was configured for turtlebot 1. Refer to
@@ -42,23 +28,23 @@
        to 0.352.
       -->
     <joint name="base_joint" type="fixed">
-      <origin xyz="0 0 0.0102" rpy="0 0 0" />        
+      <origin xyz="0 0 0.0102" rpy="0 0 0" />
       <parent link="base_footprint"/>
       <child link="base_link" />
     </joint>
     <link name="base_link">
       <visual>
         <geometry>
-          <mesh filename="package://kobuki_description/meshes/base.dae" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}"/>
+          <!-- new mesh -->
+          <mesh filename="package://kobuki_description/meshes/main_body.dae" />
         </geometry>
-        <origin xyz="0.0 0 0.05469" rpy="${M_PI/2} 0 ${M_PI/2}"/>
-        <xacro:insert_block name="material_black"/>
+        <origin xyz="0.001 0 0.05199" rpy="0 0 0"/>
       </visual>
       <collision>
         <geometry>
-          <cylinder length="0.10938" radius="0.175615"/>
+          <cylinder length="0.10938" radius="0.176"/>
         </geometry>
-        <origin xyz="0.0 0.0 0.05469" rpy="0 0 0"/>
+        <origin xyz="0.0 0 0.05949" rpy="0 0 0"/>
       </collision>
       <inertial>
         <mass value="2.4"/> <!-- 2.4/2.6 kg for small/big battery pack -->
@@ -67,10 +53,8 @@
                  iyy="0.0001" iyz="0.0" 
                  izz="0.0001" />
       </inertial>
-      <gazebo reference="base_link">
-        <material>Gazebo/Black</material>
-      </gazebo>
     </link>
+    
     <joint name="wheel_left_joint" type="continuous">
       <parent link="base_link"/>
       <child link="wheel_left_link"/>
@@ -80,17 +64,16 @@
     <link name="wheel_left_link">
       <visual>
         <geometry>
-          <mesh filename="package://kobuki_description/meshes/wheel.dae" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}"/>
+          <mesh filename="package://kobuki_description/meshes/wheel.dae"/>
         </geometry>
-        <origin xyz="0 0 0" rpy="0 ${M_PI/2} 0"/>
-        <xacro:insert_block name="material_black"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
       </visual>
       <collision>
         <geometry>
           <cylinder length="0.0206" radius="0.0352"/>
         </geometry>
         <origin rpy="0 0 0" xyz="0 0 0"/>
-      </collision>      
+      </collision>
       <inertial>
         <mass value="0.01" />
         <origin xyz="0 0 0" />        
@@ -99,7 +82,7 @@
                  izz="0.001" />
       </inertial>
     </link>
-  
+    
     <joint name="wheel_right_joint" type="continuous">
       <parent link="base_link"/>
       <child link="wheel_right_link"/>
@@ -109,14 +92,55 @@
     <link name="wheel_right_link">
       <visual>
         <geometry>
-          <mesh filename="package://kobuki_description/meshes/wheel.dae" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}"/>
+          <mesh filename="package://kobuki_description/meshes/wheel.dae"/>
         </geometry>
-        <origin xyz="0 0 0" rpy="0 ${M_PI/2} 0"/>
-        <xacro:insert_block name="material_black"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
       </visual>
       <collision>
         <geometry>
           <cylinder length="0.0206" radius="0.0350"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
+      <inertial>
+        <mass value="0.01" />
+        <origin xyz="0 0 0" />        
+        <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                 iyy="0.001" iyz="0.0" 
+                 izz="0.001" />
+      </inertial>
+    </link>
+    
+    <joint name="caster_front_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="caster_front_link"/>
+      <origin xyz="0.115 0.0 0.007" rpy="${-M_PI/2} 0 0"/>
+    </joint>
+    <link name="caster_front_link">
+      <collision>
+        <geometry>
+          <cylinder length="0.0176" radius="0.017"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>      
+      <inertial>
+        <mass value="0.01" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                 iyy="0.001" iyz="0.0" 
+                 izz="0.001" />
+      </inertial>
+    </link>
+    
+    <joint name="caster_back_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="caster_back_link"/>
+      <origin xyz="-0.135 0.0 0.009" rpy="${-M_PI/2} 0 0"/>
+    </joint>
+    <link name="caster_back_link">
+      <collision>
+        <geometry>
+          <cylinder length="0.0176" radius="0.017"/>
         </geometry>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </collision>      
@@ -128,12 +152,11 @@
                  izz="0.001" />
       </inertial>
     </link>
-  
+    
     <!-- Kobuki's sensors -->
-    <!-- TODO: Check placement! -->
     <joint name="gyro_joint" type="fixed">
       <axis xyz="0 1 0"/>
-      <origin xyz="0 0 0.058" rpy="0 0 0"/>
+      <origin xyz="0.056 0.062 0.0202" rpy="0 0 0"/>
       <parent link="base_link"/>
       <child link="gyro_link"/>
     </joint>
@@ -148,7 +171,7 @@
     </link>
 	
 	  <joint name="cliff_sensor_left_joint" type="fixed">
-	    <origin xyz="0.07 0.14 0.028" rpy="0 ${M_PI/2} 0" />        
+	    <origin xyz="0.08734 0.13601 0.0214" rpy="0 ${M_PI/2} 0" />
 	    <parent link="base_link"/>
 	    <child link="cliff_sensor_left_link" />
 	  </joint>
@@ -163,7 +186,7 @@
     </link>
 	
 	  <joint name="cliff_sensor_right_joint" type="fixed">
-	    <origin xyz="0.07 -0.14 0.028" rpy="0 ${M_PI/2} 0" />        
+	    <origin xyz="0.085 -0.13601 0.0214" rpy="0 ${M_PI/2} 0" />
 	    <parent link="base_link"/>
 	    <child link="cliff_sensor_right_link" />
 	  </joint>
@@ -178,7 +201,7 @@
     </link>
     
     <joint name="cliff_sensor_front_joint" type="fixed">
-      <origin xyz="0.18 0.00 0.028" rpy="0 ${M_PI/2} 0" />        
+      <origin xyz="0.156 0.00 0.0214" rpy="0 ${M_PI/2} 0" />
       <parent link="base_link"/>
       <child link="cliff_sensor_front_link" />
     </joint>
@@ -191,10 +214,10 @@
                  izz="0.0001" />
       </inertial>
     </link>
-   
     <!--  Gazebo additions -->
     <kobuki_sim/>
+    <kobuki_bumpers/>
     <kobuki_cliff_sensors/>
-    <turtlebot_sim_imu/>
+    <kobuki_sim_imu/>
   </xacro:macro>
 </robot>
