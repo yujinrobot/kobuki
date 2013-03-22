@@ -44,5 +44,9 @@ namespace kobuki
     this->versioninfo.firmware = "fake";
     this->versioninfo.software = "0.0.0";
 
+    this->odom_pose[0] = 0;
+    this->odom_pose[1] = 0;
+    this->odom_pose[2] = 0;
+
   }
 }
