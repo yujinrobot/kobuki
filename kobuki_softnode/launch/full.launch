@@ -3,6 +3,8 @@
  -->
 <launch>
   <arg name="urdf_file" default="$(find xacro)/scripts/xacro.py '$(find kobuki_description)/urdf/kobuki_standalone.urdf.xacro'" />
+  <arg name="robot_name" default="" />
+
   <param name="robot_description" command="$(arg urdf_file)" />
 
   <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
@@ -18,5 +20,6 @@
 
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
     <param name="publish_frequency" type="double" value="30.0" />
+    <param name="~tf_prefix" value="$(arg robot_name)"/>
   </node>
 </launch>
