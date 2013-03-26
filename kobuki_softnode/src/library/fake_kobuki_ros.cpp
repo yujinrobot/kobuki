@@ -25,6 +25,7 @@ namespace kobuki
     publishVersionInfoOnce(); 
 
     this->prev_update_time = ros::Time::now();
+    return true;
   }
 
 
