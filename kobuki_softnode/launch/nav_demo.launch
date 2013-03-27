@@ -1,0 +1,30 @@
+<launch>
+  <arg name="map_name" default="$(find kobuki_softnode)/maps/6th_floor_plan.yaml"/>
+  <include file="$(find kobuki_softnode)/launch/full.launch"/>
+
+  <node pkg="fake_localization" name="fake_localization" type="fake_localization">
+    <remap from="base_pose_ground_truth" to="odom"/>
+    <remap from="particlecloud" to="robot_pose"/>
+  </node>
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="combined_robot_state_publisher" output="screen">
+    <param name="publish_frequency" type="double" value="30.0" />
+    <param name="~tf_prefix" value="kobuki"/>
+    <remap from="/tf" to="/tf_combined"/>
+  </node>
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find turtlebot_navigation)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find turtlebot_navigation)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find turtlebot_navigation)/param/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find turtlebot_navigation)/param/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find turtlebot_navigation)/param/base_local_planner_params.yaml" command="load" />
+    <remap from="cmd_vel" to="mobile_base/commands/velocity"/>
+  </node>
+
+  <node pkg="map_server" type="map_server" name="map_server" output="screen" args="$(arg map_name)">
+  </node>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kobuki_softnode)/rviz/nav.rviz"/>
+</launch>
+
