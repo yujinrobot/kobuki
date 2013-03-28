@@ -7,6 +7,12 @@
     <remap from="particlecloud" to="robot_pose"/>
   </node>
 
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="combined_robot_state_publisher" output="screen">
+    <param name="publish_frequency" type="double" value="30.0" />
+    <param name="~tf_prefix" value="kobuki"/>
+    <remap from="/tf" to="/tf_combined"/>
+  </node>
+
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <rosparam file="$(find turtlebot_navigation)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find turtlebot_navigation)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
