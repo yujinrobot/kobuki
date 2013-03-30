@@ -3,7 +3,6 @@
 
   <node pkg="fake_localization" name="fake_localization" type="fake_localization">
     <remap from="base_pose_ground_truth" to="odom"/>
-    <remap from="particlecloud" to="robot_pose"/>
   </node>
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
