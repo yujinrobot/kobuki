@@ -53,6 +53,7 @@ Kobuki::Kobuki() :
     , is_connected(false)
     , is_alive(false)
     , version_info_reminder(0)
+    , velocity_commands_sent(2, 0)
 {
 }
 
@@ -83,6 +84,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_stream_data.connect(sigslots_namespace + std::string("/stream_data"));
   sig_raw_data_command.connect(sigslots_namespace + std::string("/raw_data_command"));
   sig_raw_data_stream.connect(sigslots_namespace + std::string("/raw_data_stream"));
+  sig_raw_control_command.connect(sigslots_namespace + std::string("/raw_control_command"));
   //sig_serial_timeout.connect(sigslots_namespace+std::string("/serial_timeout"));
 
   sig_debug.connect(sigslots_namespace + std::string("/ros_debug"));
@@ -453,6 +455,10 @@ void Kobuki::sendBaseControlCommand()
   std::vector<short> velocity_commands = diff_drive.velocityCommands();
   //std::cout << "speed: " << velocity_commands[0] << ", radius: " << velocity_commands[1] << std::endl;
   sendCommand(Command::SetVelocityControl(velocity_commands[0], velocity_commands[1]));
+
+  //experimental; send raw_control_command
+  velocity_commands_sent=velocity_commands;
+  sig_raw_control_command.emit(velocity_commands_sent);
 }
 
 /**

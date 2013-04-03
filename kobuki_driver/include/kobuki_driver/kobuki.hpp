@@ -184,6 +184,7 @@ private:
   ecl::Mutex command_mutex; // protection against the user calling the command functions from multiple threads
   Command kobuki_command; // used to maintain some state about the command history
   Command::Buffer command_buffer;
+  std::vector<short> velocity_commands_sent;
 
   /*********************
   ** Events
@@ -198,6 +199,7 @@ private:
   ecl::Signal<const std::string&> sig_debug, sig_info, sig_warn, sig_error;
   ecl::Signal<Command::Buffer&> sig_raw_data_command; // should be const, but pushnpop is not fully realised yet for const args in the formatters.
   ecl::Signal<PacketFinder::BufferType&> sig_raw_data_stream; // should be const, but pushnpop is not fully realised yet for const args in the formatters.
+  ecl::Signal<const std::vector<short>&> sig_raw_control_command;
 };
 
 } // namespace kobuki

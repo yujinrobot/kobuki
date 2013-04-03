@@ -451,4 +451,17 @@ void KobukiRos::publishRawDataStream(PacketFinder::BufferType &buffer)
   }
 }
 
+void KobukiRos::publishRawControlCommand(const std::vector<short> &velocity_commands)
+{
+  if ( raw_control_command_publisher.getNumSubscribers() > 0 ) {
+    std_msgs::Int16MultiArrayPtr msg(new std_msgs::Int16MultiArray);
+    msg->data = velocity_commands;
+    if (ros::ok())
+    {
+      raw_control_command_publisher.publish(msg);
+    }
+  }
+  return;
+}
+
 } // namespace kobuki

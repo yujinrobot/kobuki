@@ -51,6 +51,7 @@
 #include <angles/angles.h>
 #include <std_msgs/Empty.h>
 #include <std_msgs/String.h>
+#include <std_msgs/Int16MultiArray.h>
 #include <sensor_msgs/JointState.h>
 #include <sensor_msgs/Imu.h>
 #include <ecl/sigslots.hpp>
@@ -106,7 +107,7 @@ private:
   ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher, dock_ir_publisher, raw_imu_data_publisher;
   ros::Publisher button_event_publisher, input_event_publisher, robot_event_publisher;
   ros::Publisher bumper_event_publisher, cliff_event_publisher, wheel_event_publisher, power_event_publisher;
-  ros::Publisher raw_data_command_publisher, raw_data_stream_publisher;
+  ros::Publisher raw_data_command_publisher, raw_data_stream_publisher, raw_control_command_publisher;
 
   ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber, external_power_command_subscriber;
   ros::Subscriber led1_command_subscriber, led2_command_subscriber, sound_command_subscriber;
@@ -142,6 +143,7 @@ private:
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
   ecl::Slot<Command::Buffer&> slot_raw_data_command;
   ecl::Slot<PacketFinder::BufferType&> slot_raw_data_stream;
+  ecl::Slot<const std::vector<short>&> slot_raw_control_command;
 
   /*********************
    ** Slot Callbacks
@@ -170,6 +172,7 @@ private:
 
   void publishRawDataCommand(Command::Buffer &buffer);
   void publishRawDataStream(PacketFinder::BufferType &buffer);
+  void publishRawControlCommand(const std::vector<short> &velocity_commands);
 
   /*********************
   ** Diagnostics
