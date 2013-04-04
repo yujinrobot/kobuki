@@ -52,8 +52,7 @@
 #include <pcl/point_types.h>
 #include <pcl_ros/point_cloud.h>
 
-#include <kobuki_msgs/CliffEvent.h>
-#include <kobuki_msgs/BumperEvent.h>
+#include <kobuki_msgs/SensorState.h>
 
 /*****************************************************************************
  ** Namespace
@@ -68,34 +67,32 @@ namespace kobuki_bumper2pc
 class Bumper2PcNodelet : public nodelet::Nodelet
 {
 public:
-  Bumper2PcNodelet()  { }
+  Bumper2PcNodelet() : FAR_AWAY(100), prev_bumper(0), prev_cliff(0) { }
   ~Bumper2PcNodelet() { }
 
   virtual void onInit();
 
 private:
+  const double FAR_AWAY;  // somewhere out of reach from the robot
+
+  uint8_t prev_bumper;
+  uint8_t prev_cliff;
+
   double pointcloud_radius_;
   double pointcloud_side_x_;
   double pointcloud_side_y_;
 
   ros::Publisher  pointcloud_pub_;
 
-  ros::Subscriber cliff_event_sub_;
-  ros::Subscriber bumper_event_sub_;
+  ros::Subscriber core_sensor_sub_;
 
   pcl::PointCloud<pcl::PointXYZ> pointcloud_;
 
   /**
-   * @brief Keeps track of cliff detection
+   * @brief Core sensors state structure callback
    * @param msg incoming topic message
    */
-  void cliffEventCB(const kobuki_msgs::CliffEvent::ConstPtr& msg);
-
-  /**
-   * @brief Keeps track of bumps
-   * @param msg incoming topic message
-   */
-  void bumperEventCB(const kobuki_msgs::BumperEvent::ConstPtr& msg);
+  void coreSensorCB(const kobuki_msgs::SensorState::ConstPtr& msg);
 };
 
 } // namespace kobuki_bumper2pc
