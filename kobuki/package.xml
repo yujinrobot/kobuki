@@ -12,6 +12,8 @@
   <license>BSD</license>
   <url>http://ros.org/wiki/kobuki</url>
 
+  <buildtool_depend>catkin</buildtool_depend>
+
   <run_depend>kobuki_arm</run_depend>
   <run_depend>kobuki_auto_docking</run_depend>
   <run_depend>kobuki_bumper2pc</run_depend>
