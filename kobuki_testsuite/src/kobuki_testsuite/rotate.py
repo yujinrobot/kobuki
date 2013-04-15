@@ -7,7 +7,6 @@
 # Imports
 ##############################################################################
 
-import roslib; roslib.load_manifest('kobuki_testsuite')
 import threading
 import rospy
 import math

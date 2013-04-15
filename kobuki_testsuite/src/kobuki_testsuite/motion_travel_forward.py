@@ -8,7 +8,6 @@
 ##############################################################################
 
 import math
-import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
 from geometry_msgs.msg import Twist, Pose
 from nav_msgs.msg import Odometry
