@@ -1,6 +1,6 @@
 <package>
   <name>kobuki_ftdi</name>
-  <version>0.3.6</version>
+  <version>0.3.7</version>
   <description>
 	    Utilities for flashing and enabling Kobuki's USB connection.
 	    This package contains tools for flashing the Kobuki's FTDI chip (usually done at the factory).
