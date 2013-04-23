@@ -20,37 +20,9 @@
 #
 ##############################################################################
 
-# Official ros stacks
-
-- other:
-    local-name: /opt/ros/groovy/share/ros
-- other:
-    local-name: /opt/ros/groovy/share
-- other:
-    local-name: /opt/ros/groovy/stacks
-- setup-file:
-    local-name: /opt/ros/groovy/setup.sh
-
 # Kobuki / Yujin stacks
 
-- git:
-    uri: https://github.com/yujinrobot/yujin_ocs.git
-    local-name: yujin_ocs
-    version: hydro-devel
-
-- git:
-    uri: https://github.com/yujinrobot/kobuki_msgs.git
-    local-name: kobuki_msgs
-    version: hydro-devel
-
-- git:
-    uri: https://github.com/yujinrobot/kobuki.git
-    local-name: kobuki
-    version: hydro-devel
-
-
-# for hydro kobuki description.
-- git:
-    uri: https://github.com/ros/xacro.git
-    local-name: xacro
-    version: groovy-devel
+- git: {local-name: yujin_ocs, version: hydro-devel, uri: 'https://github.com/yujinrobot/yujin_ocs.git'}
+- git: {local-name: kobuki_msgs, version: hydro-devel, uri: 'https://github.com/yujinrobot/kobuki_msgs.git'}
+- git: {local-name: kobuki, version: hydro-devel, uri: 'https://github.com/yujinrobot/kobuki.git'}
+- git: {local-name: xacro, version: hydro-devel, uri: 'https://github.com/ros/xacro.git'}
