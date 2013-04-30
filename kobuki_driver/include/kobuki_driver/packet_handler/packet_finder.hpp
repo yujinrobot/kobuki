@@ -64,7 +64,7 @@ namespace kobuki
  * (2) simple construction of this class<br>
  * (3) device abstraction<br>
  * (4) extend-able packet structures<br>
- * (5) ros泥섎읆 �뚯씪�먯꽌 �ㅽ겕由쏀듃�쎄퀬 auto-generation��肄붾뱶瑜��ъ슜�����덉쑝硫��명븯��<br>
+ * (5) like ros, auto-generation of code from scripts<br>
  * (6) packetFinder to ros converter<br>
  * (7) evaluate it (valgrind)
  *

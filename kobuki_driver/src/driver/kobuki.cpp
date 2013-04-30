@@ -94,12 +94,10 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   //checking device
   ecl::OFile of;
   if (!of.open(parameters.device_port, ecl::New))
-//  if (access(parameters.device_port.c_str(), F_OK) == -1)
   {
     ecl::Sleep waiting(5); //for 5sec.
     event_manager.update(is_connected, is_alive);
     while (!of.open(parameters.device_port, ecl::New))
-//    while (access(parameters.device_port.c_str(), F_OK) == -1)
     {
       sig_info.emit("Device does not exist. Waiting...");
       waiting();
@@ -165,7 +163,6 @@ void Kobuki::spin()
      **********************/
 	ecl::OFile of;
 	if (!of.open(parameters.device_port, ecl::New)) {
-//    if( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
       sig_error.emit("Device does not exist.");
       is_connected = false;
       is_alive = false;
@@ -179,7 +176,6 @@ void Kobuki::spin()
       //try_open();
       ecl::Sleep waiting(5); //for 5sec.
       while (!of.open(parameters.device_port, ecl::New)) {
-//      while( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
         sig_info.emit("Device does not exist. Still waiting...");
         waiting();
       }
