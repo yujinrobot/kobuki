@@ -20,6 +20,7 @@
 #include <string>
 #include <sstream>
 #include <stdint.h>
+#include "macros.hpp"
 
 /*****************************************************************************
 ** Namespaces
@@ -33,7 +34,7 @@ namespace kobuki {
 /**
  * Class holding version info for the kobuki driver.
  */
-class VersionInfo {
+class kobuki_PUBLIC VersionInfo {
 public:
   VersionInfo(const uint32_t &fw, const uint32_t &hw, const uint32_t udid0_, const uint32_t udid1_, const uint32_t udid2_ ) :
     firmware(fw),

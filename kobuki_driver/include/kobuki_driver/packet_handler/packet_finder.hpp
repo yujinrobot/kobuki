@@ -25,6 +25,7 @@
 #include <iomanip>
 #include <ecl/containers.hpp>
 #include <ecl/sigslots.hpp>
+#include "../macros.hpp"
 
 /*****************************************************************************
  ** Namespaces
@@ -63,12 +64,12 @@ namespace kobuki
  * (2) simple construction of this class<br>
  * (3) device abstraction<br>
  * (4) extend-able packet structures<br>
- * (5) ros처럼 파일에서 스크립트읽고 auto-generation된 코드를 사용할 수 있으면 편하다.<br>
+ * (5) like ros, auto-generation of code from scripts<br>
  * (6) packetFinder to ros converter<br>
  * (7) evaluate it (valgrind)
  *
  */
-class PacketFinderBase
+class kobuki_PUBLIC PacketFinderBase
 {
 public:
   typedef ecl::PushAndPop<unsigned char> BufferType;

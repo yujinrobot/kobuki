@@ -30,6 +30,7 @@
 #include "modules.hpp"
 #include "packets.hpp"
 #include "packet_handler/packet_finder.hpp"
+#include "macros.hpp"
 
 /*****************************************************************************
  ** Namespaces
@@ -67,7 +68,7 @@ public:
  *
  * This connects to the outside world via sigslots and get accessors.
  **/
-class Kobuki
+class kobuki_PUBLIC Kobuki
 {
 public:
   Kobuki();
