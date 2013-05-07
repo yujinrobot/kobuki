@@ -18,6 +18,7 @@
 *****************************************************************************/
 
 #include <vector>
+#include <climits>
 #include <stdint.h>
 #include <ecl/mobile_robot.hpp>
 #include <ecl/threads/mutex.hpp>
@@ -74,8 +75,8 @@ private:
 
   //double v, w; // In [m/s] and [rad/s]
   std::vector<double> point_velocity; //(vx, wz), in [m/s] and [rad/s]
-  short radius; // In [mm]
-  short speed;  // In [mm/s]
+  double radius; // In [mm]
+  double speed;  // In [mm/s]
   double bias; //wheelbase, wheel_to_wheel, in [m]
   double wheel_radius;
   int imu_heading_offset;
@@ -83,6 +84,9 @@ private:
 
   ecl::DifferentialDrive::Kinematics diff_drive_kinematics;
   ecl::Mutex velocity_mutex, state_mutex;
+
+  // Utility
+  short bound(const double &value);
 };
 
 } // namespace kobuki
