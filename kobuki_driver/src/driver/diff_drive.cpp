@@ -181,8 +181,8 @@ std::vector<short> DiffDrive::velocityCommands() {
 }
 
 short DiffDrive::bound(const double &value) {
-  if (value > static_cast<double>(SHRT_MAX) return SHRT_MAX;
-  if (value < static_cast<double>(SHRT_MIN) return SHRT_MIN;
+  if (value > static_cast<double>(SHRT_MAX)) return SHRT_MAX;
+  if (value < static_cast<double>(SHRT_MIN)) return SHRT_MIN;
   return static_cast<short>(value);
 }
 
