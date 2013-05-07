@@ -144,7 +144,7 @@ void DiffDrive::velocityCommands(const double &vx, const double &wz) {
     return;
   }
 
-  radius = (short)(vx * 1000.0f / wz);
+  radius = vx * 1000.0f / wz;
   // Special Case #2 : Pure Rotation or Radius is less than or equal to 1.0 mm
   if( std::abs(vx) < epsilon || std::abs(radius) <= 1.0f ) {
     speed  = 1000.0f * bias * wz / 2.0f;
