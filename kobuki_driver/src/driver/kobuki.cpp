@@ -53,7 +53,7 @@ Kobuki::Kobuki() :
     , is_connected(false)
     , is_alive(false)
     , version_info_reminder(0)
-    , velocity_commands_sent(2, 0)
+    , velocity_commands_debug(4, 0)
 {
 }
 
@@ -447,18 +447,22 @@ void Kobuki::setBaseControl(const double &linear_velocity, const double &angular
 
 void Kobuki::sendBaseControlCommand()
 {
+  std::vector<double> velocity_commands_received;
   if( acceleration_limiter.isEnabled() ) {
-    diff_drive.velocityCommands(acceleration_limiter.limit(diff_drive.pointVelocity()));
+    velocity_commands_received=acceleration_limiter.limit(diff_drive.pointVelocity());
   } else {
-    diff_drive.velocityCommands(diff_drive.pointVelocity());
+    velocity_commands_received=diff_drive.pointVelocity();
   }
+  diff_drive.velocityCommands(velocity_commands_received);
   std::vector<short> velocity_commands = diff_drive.velocityCommands();
   //std::cout << "speed: " << velocity_commands[0] << ", radius: " << velocity_commands[1] << std::endl;
   sendCommand(Command::SetVelocityControl(velocity_commands[0], velocity_commands[1]));
 
-  //experimental; send raw_control_command
-  velocity_commands_sent=velocity_commands;
-  sig_raw_control_command.emit(velocity_commands_sent);
+  //experimental; send raw control command and received command velocity
+  velocity_commands_debug=velocity_commands;
+  velocity_commands_debug.push_back((short)(velocity_commands_received[0]*1000.0));
+  velocity_commands_debug.push_back((short)(velocity_commands_received[1]*1000.0));
+  sig_raw_control_command.emit(velocity_commands_debug);
 }
 
 /**

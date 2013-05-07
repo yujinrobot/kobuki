@@ -184,7 +184,7 @@ private:
   ecl::Mutex command_mutex; // protection against the user calling the command functions from multiple threads
   Command kobuki_command; // used to maintain some state about the command history
   Command::Buffer command_buffer;
-  std::vector<short> velocity_commands_sent;
+  std::vector<short> velocity_commands_debug;
 
   /*********************
   ** Events
