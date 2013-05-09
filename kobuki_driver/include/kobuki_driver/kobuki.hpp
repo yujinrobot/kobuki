@@ -61,6 +61,16 @@ public:
 };
 
 /*****************************************************************************
+** Extern Templates
+*****************************************************************************/
+
+EXP_TEMPLATE template class kobuki_PUBLIC ecl::SigSlotsManager<>;
+EXP_TEMPLATE template class kobuki_PUBLIC ecl::SigSlotsManager<const VersionInfo&>;
+EXP_TEMPLATE template class kobuki_PUBLIC ecl::SigSlotsManager<const std::string&>;
+EXP_TEMPLATE template class kobuki_PUBLIC ecl::SigSlotsManager<Command::Buffer&>;
+EXP_TEMPLATE template class kobuki_PUBLIC ecl::SigSlotsManager<PacketFinder::BufferType&>;
+
+/*****************************************************************************
  ** Interface [Kobuki]
  *****************************************************************************/
 /**
