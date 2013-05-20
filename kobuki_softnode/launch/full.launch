@@ -2,7 +2,7 @@
   Standalone launcher for running a default Kobuki
  -->
 <launch>
-  <arg name="urdf_file" default="$(find xacro)/scripts/xacro '$(find kobuki_description)/urdf/kobuki_standalone.urdf.xacro'" />
+  <arg name="urdf_file" default="$(find xacro)/xacro.py '$(find kobuki_description)/urdf/kobuki_standalone.urdf.xacro'" />
   <arg name="robot_name" default="" />
 
   <param name="robot_description" command="$(arg urdf_file)" />
