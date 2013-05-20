@@ -72,6 +72,8 @@ public:
 
   virtual void onInit();
 
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
 private:
   const double FAR_AWAY;  // somewhere out of reach from the robot
 
