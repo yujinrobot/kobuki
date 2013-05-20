@@ -73,6 +73,8 @@ public:
 
   virtual void onInit();
 
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
 private:
   double pointcloud_radius_;
   double pointcloud_side_x_;
