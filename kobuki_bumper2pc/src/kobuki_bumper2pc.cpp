@@ -65,6 +65,7 @@ void Bumper2PcNodelet::coreSensorCB(const kobuki_msgs::SensorState::ConstPtr& ms
     pointcloud_[2].y = - FAR_AWAY;
   }
 
+  pointcloud_.header.stamp = msg->header.stamp;
   pointcloud_pub_.publish(pointcloud_);
 }
 
