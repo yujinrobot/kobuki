@@ -18,6 +18,7 @@
 #include <ecl/sigslots.hpp>
 #include <ecl/geometry/angle.hpp>
 #include <ecl/time/timestamp.hpp>
+#include <ecl/devices/ofile.hpp>
 #include "../../include/kobuki_driver/kobuki.hpp"
 #include "../../include/kobuki_driver/packet_handler/payload_headers.hpp"
 
@@ -91,14 +92,18 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_error.connect(sigslots_namespace + std::string("/ros_error"));
 
   //checking device
-  if( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
-	ecl::Sleep waiting(5); //for 5sec.
+  ecl::OFile of;
+  if (!of.open(parameters.device_port, ecl::New))
+  {
+    ecl::Sleep waiting(5); //for 5sec.
     event_manager.update(is_connected, is_alive);
-    while (access(parameters.device_port.c_str(), F_OK) == -1) {
+    while (!of.open(parameters.device_port, ecl::New))
+    {
       sig_info.emit("Device does not exist. Waiting...");
       waiting();
     }
   }
+  of.close();
 
   serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
 
@@ -156,7 +161,8 @@ void Kobuki::spin()
     /*********************
      ** Checking Connection
      **********************/
-	if( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
+	ecl::OFile of;
+	if (!of.open(parameters.device_port, ecl::New)) {
       sig_error.emit("Device does not exist.");
       is_connected = false;
       is_alive = false;
@@ -169,7 +175,7 @@ void Kobuki::spin()
       }
       //try_open();
       ecl::Sleep waiting(5); //for 5sec.
-      while( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
+      while (!of.open(parameters.device_port, ecl::New)) {
         sig_info.emit("Device does not exist. Still waiting...");
         waiting();
       }
@@ -181,6 +187,7 @@ void Kobuki::spin()
         version_info_reminder = 10;
       }
     }
+	of.close();
 
     /*********************
      ** Read Incoming
