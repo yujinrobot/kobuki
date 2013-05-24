@@ -18,7 +18,7 @@ var searchData=
   ['getudid',['getUDID',['../classKobukiManager.html#a5d20b8f584ca407cc6465679b6a64f54',1,'KobukiManager']]],
   ['getversioninfo',['GetVersionInfo',['../classkobuki_1_1Command.html#af88113d4e2bb59857a1194d76d813c6c',1,'kobuki::Command']]],
   ['getvw',['getVW',['../classRb2Vw.html#a3c38334afce171dd5aa129b85326260c',1,'Rb2Vw']]],
-  ['getwheeljointstates',['getWheelJointStates',['../classkobuki_1_1Kobuki.html#a70e163fcf282a169a1c1c7cbb8564294',1,'kobuki::Kobuki::getWheelJointStates()'],['../classkobuki_1_1DiffDrive.html#a6f2387c9170da415d1e39e15cf35ce11',1,'kobuki::DiffDrive::getWheelJointStates()']]],
+  ['getwheeljointstates',['getWheelJointStates',['../classkobuki_1_1Kobuki.html#a70e163fcf282a169a1c1c7cbb8564294',1,'kobuki::Kobuki::getWheelJointStates()'],['../classkobuki_1_1DiffDrive.html#adbda4aac1c7fc982a3f4de3ea969118f',1,'kobuki::DiffDrive::getWheelJointStates()']]],
   ['getwheelvelocity',['getWheelVelocity',['../classRb2Vw.html#a59aef8fda1e80bcd18f52846bae1979e',1,'Rb2Vw']]],
   ['gp_5finput',['gp_input',['../classkobuki_1_1Kobuki.html#aa919d8b508b8fa9ac2b380e91d91fbe7',1,'kobuki::Kobuki']]],
   ['gp_5finput_2ehpp',['gp_input.hpp',['../gp__input_8hpp.html',1,'']]],

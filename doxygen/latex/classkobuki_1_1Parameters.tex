@@ -19,6 +19,10 @@ bool {\bf validate} ()
 \subsection*{\-Public \-Attributes}
 \begin{DoxyCompactItemize}
 \item 
+double {\bf angular\-\_\-acceleration\-\_\-limit}
+\item 
+double {\bf angular\-\_\-deceleration\-\_\-limit}
+\item 
 double {\bf battery\-\_\-capacity}
 \begin{DoxyCompactList}\small\item\em \-Capacity voltage of the battery [16.\-5\-V]. \end{DoxyCompactList}\item 
 double {\bf battery\-\_\-dangerous}
@@ -31,6 +35,10 @@ bool {\bf enable\-\_\-acceleration\-\_\-limiter}
 \begin{DoxyCompactList}\small\item\em \-Enable or disable the acceleration limiter [true]. \end{DoxyCompactList}\item 
 std\-::string {\bf error\-\_\-msg}
 \begin{DoxyCompactList}\small\item\em \-Provides error messages when parameter validation fails (internal purposes only) \end{DoxyCompactList}\item 
+double {\bf linear\-\_\-acceleration\-\_\-limit}
+\item 
+double {\bf linear\-\_\-deceleration\-\_\-limit}
+\item 
 std\-::string {\bf sigslots\-\_\-namespace}
 \begin{DoxyCompactList}\small\item\em \-The first part of a sigslot connection namespace [\char`\"{}/kobuki\char`\"{}]. \end{DoxyCompactList}\item 
 bool {\bf simulation}
@@ -81,11 +89,25 @@ bool \-: true if valid, false otherwise.
 \end{DoxyReturn}
 
 
-\-Definition at line 66 of file parameters.\-hpp.
+\-Definition at line 74 of file parameters.\-hpp.
 
 
 
 \subsection{\-Member \-Data \-Documentation}
+\index{kobuki\-::\-Parameters@{kobuki\-::\-Parameters}!angular\-\_\-acceleration\-\_\-limit@{angular\-\_\-acceleration\-\_\-limit}}
+\index{angular\-\_\-acceleration\-\_\-limit@{angular\-\_\-acceleration\-\_\-limit}!kobuki::Parameters@{kobuki\-::\-Parameters}}
+\subsubsection[{angular\-\_\-acceleration\-\_\-limit}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Parameters\-::angular\-\_\-acceleration\-\_\-limit}}\label{classkobuki_1_1Parameters_a39945d15b7e6e73365546ec7cd1e0e38}
+
+
+\-Definition at line 64 of file parameters.\-hpp.
+
+\index{kobuki\-::\-Parameters@{kobuki\-::\-Parameters}!angular\-\_\-deceleration\-\_\-limit@{angular\-\_\-deceleration\-\_\-limit}}
+\index{angular\-\_\-deceleration\-\_\-limit@{angular\-\_\-deceleration\-\_\-limit}!kobuki::Parameters@{kobuki\-::\-Parameters}}
+\subsubsection[{angular\-\_\-deceleration\-\_\-limit}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Parameters\-::angular\-\_\-deceleration\-\_\-limit}}\label{classkobuki_1_1Parameters_a2aa21b58334b3e115f0f583115c852a0}
+
+
+\-Definition at line 65 of file parameters.\-hpp.
+
 \index{kobuki\-::\-Parameters@{kobuki\-::\-Parameters}!battery\-\_\-capacity@{battery\-\_\-capacity}}
 \index{battery\-\_\-capacity@{battery\-\_\-capacity}!kobuki::Parameters@{kobuki\-::\-Parameters}}
 \subsubsection[{battery\-\_\-capacity}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Parameters\-::battery\-\_\-capacity}}\label{classkobuki_1_1Parameters_a0c7b04175141d702f520c4a963876143}
@@ -95,7 +117,7 @@ bool \-: true if valid, false otherwise.
 
 
 
-\-Definition at line 54 of file parameters.\-hpp.
+\-Definition at line 58 of file parameters.\-hpp.
 
 \index{kobuki\-::\-Parameters@{kobuki\-::\-Parameters}!battery\-\_\-dangerous@{battery\-\_\-dangerous}}
 \index{battery\-\_\-dangerous@{battery\-\_\-dangerous}!kobuki::Parameters@{kobuki\-::\-Parameters}}
@@ -106,7 +128,7 @@ bool \-: true if valid, false otherwise.
 
 
 
-\-Definition at line 56 of file parameters.\-hpp.
+\-Definition at line 60 of file parameters.\-hpp.
 
 \index{kobuki\-::\-Parameters@{kobuki\-::\-Parameters}!battery\-\_\-low@{battery\-\_\-low}}
 \index{battery\-\_\-low@{battery\-\_\-low}!kobuki::Parameters@{kobuki\-::\-Parameters}}
@@ -117,7 +139,7 @@ bool \-: true if valid, false otherwise.
 
 
 
-\-Definition at line 55 of file parameters.\-hpp.
+\-Definition at line 59 of file parameters.\-hpp.
 
 \index{kobuki\-::\-Parameters@{kobuki\-::\-Parameters}!device\-\_\-port@{device\-\_\-port}}
 \index{device\-\_\-port@{device\-\_\-port}!kobuki::Parameters@{kobuki\-::\-Parameters}}
@@ -128,7 +150,7 @@ bool \-: true if valid, false otherwise.
 
 
 
-\-Definition at line 50 of file parameters.\-hpp.
+\-Definition at line 54 of file parameters.\-hpp.
 
 \index{kobuki\-::\-Parameters@{kobuki\-::\-Parameters}!enable\-\_\-acceleration\-\_\-limiter@{enable\-\_\-acceleration\-\_\-limiter}}
 \index{enable\-\_\-acceleration\-\_\-limiter@{enable\-\_\-acceleration\-\_\-limiter}!kobuki::Parameters@{kobuki\-::\-Parameters}}
@@ -139,7 +161,7 @@ bool \-: true if valid, false otherwise.
 
 
 
-\-Definition at line 53 of file parameters.\-hpp.
+\-Definition at line 57 of file parameters.\-hpp.
 
 \index{kobuki\-::\-Parameters@{kobuki\-::\-Parameters}!error\-\_\-msg@{error\-\_\-msg}}
 \index{error\-\_\-msg@{error\-\_\-msg}!kobuki::Parameters@{kobuki\-::\-Parameters}}
@@ -150,7 +172,21 @@ bool \-: true if valid, false otherwise.
 
 
 
-\-Definition at line 72 of file parameters.\-hpp.
+\-Definition at line 80 of file parameters.\-hpp.
+
+\index{kobuki\-::\-Parameters@{kobuki\-::\-Parameters}!linear\-\_\-acceleration\-\_\-limit@{linear\-\_\-acceleration\-\_\-limit}}
+\index{linear\-\_\-acceleration\-\_\-limit@{linear\-\_\-acceleration\-\_\-limit}!kobuki::Parameters@{kobuki\-::\-Parameters}}
+\subsubsection[{linear\-\_\-acceleration\-\_\-limit}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Parameters\-::linear\-\_\-acceleration\-\_\-limit}}\label{classkobuki_1_1Parameters_a80f340ed5ef2c38e29dcc84bd808d8d8}
+
+
+\-Definition at line 62 of file parameters.\-hpp.
+
+\index{kobuki\-::\-Parameters@{kobuki\-::\-Parameters}!linear\-\_\-deceleration\-\_\-limit@{linear\-\_\-deceleration\-\_\-limit}}
+\index{linear\-\_\-deceleration\-\_\-limit@{linear\-\_\-deceleration\-\_\-limit}!kobuki::Parameters@{kobuki\-::\-Parameters}}
+\subsubsection[{linear\-\_\-deceleration\-\_\-limit}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Parameters\-::linear\-\_\-deceleration\-\_\-limit}}\label{classkobuki_1_1Parameters_a508680b2d1079e83d80492af73aed9cd}
+
+
+\-Definition at line 63 of file parameters.\-hpp.
 
 \index{kobuki\-::\-Parameters@{kobuki\-::\-Parameters}!sigslots\-\_\-namespace@{sigslots\-\_\-namespace}}
 \index{sigslots\-\_\-namespace@{sigslots\-\_\-namespace}!kobuki::Parameters@{kobuki\-::\-Parameters}}
@@ -161,7 +197,7 @@ bool \-: true if valid, false otherwise.
 
 
 
-\-Definition at line 51 of file parameters.\-hpp.
+\-Definition at line 55 of file parameters.\-hpp.
 
 \index{kobuki\-::\-Parameters@{kobuki\-::\-Parameters}!simulation@{simulation}}
 \index{simulation@{simulation}!kobuki::Parameters@{kobuki\-::\-Parameters}}
@@ -172,7 +208,7 @@ bool \-: true if valid, false otherwise.
 
 
 
-\-Definition at line 52 of file parameters.\-hpp.
+\-Definition at line 56 of file parameters.\-hpp.
 
 
 

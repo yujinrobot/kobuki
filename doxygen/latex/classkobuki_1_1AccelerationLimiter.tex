@@ -14,12 +14,24 @@
 \item 
 {\bf \-Acceleration\-Limiter} ()
 \item 
-void {\bf confirm} (short \&{\bf speed}, short \&{\bf radius})
+void {\bf init} (bool enable\-\_\-acceleration\-\_\-limiter, double linear\-\_\-acceleration\-\_\-max\-\_\-=0.\-5, double angular\-\_\-acceleration\-\_\-max\-\_\-=3.\-5, double linear\-\_\-deceleration\-\_\-max\-\_\-=-\/0.\-5 $\ast$1.\-2, double angular\-\_\-deceleration\-\_\-max\-\_\-=-\/3.\-5 $\ast$1.\-2)
+\item 
+bool {\bf is\-Enabled} () const 
+\item 
+std\-::vector$<$ double $>$ {\bf limit} (const std\-::vector$<$ double $>$ \&command)
 \begin{DoxyCompactList}\small\item\em \-Limits the input velocity commands if gatekeeper is enabled. \end{DoxyCompactList}\item 
-void {\bf init} (bool enable\-\_\-acceleration\-\_\-limiter)
+std\-::vector$<$ double $>$ {\bf limit} (const double \&vx, const double \&wz)
 \end{DoxyCompactItemize}
 \subsection*{\-Private \-Attributes}
 \begin{DoxyCompactItemize}
+\item 
+double {\bf angular\-\_\-acceleration\-\_\-max}
+\item 
+double {\bf angular\-\_\-deceleration\-\_\-max}
+\item 
+double {\bf command\-\_\-vx}
+\item 
+double {\bf command\-\_\-wz}
 \item 
 bool {\bf is\-\_\-enabled}
 \item 
@@ -28,6 +40,14 @@ short {\bf last\-\_\-radius}
 short {\bf last\-\_\-speed}
 \item 
 ecl\-::\-Time\-Stamp {\bf last\-\_\-timestamp}
+\item 
+double {\bf last\-\_\-vx}
+\item 
+double {\bf last\-\_\-wz}
+\item 
+double {\bf linear\-\_\-acceleration\-\_\-max}
+\item 
+double {\bf linear\-\_\-deceleration\-\_\-max}
 \end{DoxyCompactItemize}
 
 
@@ -45,7 +65,7 @@ ecl\-::\-Time\-Stamp {\bf last\-\_\-timestamp}
 \item (\-Later) \-User can enable this reconfigure a parameter to suit. 
 \end{DoxyItemize}
 
-\-Definition at line 46 of file acceleration\-\_\-limiter.\-hpp.
+\-Definition at line 50 of file acceleration\-\_\-limiter.\-hpp.
 
 
 
@@ -59,19 +79,44 @@ ecl\-::\-Time\-Stamp {\bf last\-\_\-timestamp}
 )\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1AccelerationLimiter_ae216fa81d91e71b5d630d277ed63f3f6}
 
 
-\-Definition at line 48 of file acceleration\-\_\-limiter.\-hpp.
+\-Definition at line 52 of file acceleration\-\_\-limiter.\-hpp.
 
 
 
 \subsection{\-Member \-Function \-Documentation}
-\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!confirm@{confirm}}
-\index{confirm@{confirm}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
-\subsubsection[{confirm}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Acceleration\-Limiter\-::confirm} (
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!init@{init}}
+\index{init@{init}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Acceleration\-Limiter\-::init} (
 \begin{DoxyParamCaption}
-\item[{short \&}]{speed, }
-\item[{short \&}]{radius}
+\item[{bool}]{enable\-\_\-acceleration\-\_\-limiter, }
+\item[{double}]{linear\-\_\-acceleration\-\_\-max\-\_\- = {\ttfamily 0.5}, }
+\item[{double}]{angular\-\_\-acceleration\-\_\-max\-\_\- = {\ttfamily 3.5}, }
+\item[{double}]{linear\-\_\-deceleration\-\_\-max\-\_\- = {\ttfamily -\/0.5$\ast$1.2}, }
+\item[{double}]{angular\-\_\-deceleration\-\_\-max\-\_\- = {\ttfamily -\/3.5$\ast$1.2}}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1AccelerationLimiter_a031370ed9a9003165c849f2f62e0bd43}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1AccelerationLimiter_a0da69f213f2e3911ef235376bc3ab9a1}
+
+
+\-Definition at line 57 of file acceleration\-\_\-limiter.\-hpp.
+
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!is\-Enabled@{is\-Enabled}}
+\index{is\-Enabled@{is\-Enabled}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{is\-Enabled}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf kobuki\-::\-Acceleration\-Limiter\-::is\-Enabled} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1AccelerationLimiter_aa5d776b407c07f62efe4c343426415d9}
+
+
+\-Definition at line 68 of file acceleration\-\_\-limiter.\-hpp.
+
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!limit@{limit}}
+\index{limit@{limit}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{limit}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$double$>$ {\bf kobuki\-::\-Acceleration\-Limiter\-::limit} (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ double $>$ \&}]{command}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1AccelerationLimiter_abc759c954227e4874ecfd49b9624474f}
 
 
 \-Limits the input velocity commands if gatekeeper is enabled. 
@@ -87,49 +132,106 @@ ecl\-::\-Time\-Stamp {\bf last\-\_\-timestamp}
 \end{DoxyParams}
 
 
-\-Definition at line 62 of file acceleration\-\_\-limiter.\-hpp.
+\-Definition at line 78 of file acceleration\-\_\-limiter.\-hpp.
 
-\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!init@{init}}
-\index{init@{init}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
-\subsubsection[{init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Acceleration\-Limiter\-::init} (
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!limit@{limit}}
+\index{limit@{limit}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{limit}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$double$>$ {\bf kobuki\-::\-Acceleration\-Limiter\-::limit} (
 \begin{DoxyParamCaption}
-\item[{bool}]{enable\-\_\-acceleration\-\_\-limiter}
+\item[{const double \&}]{vx, }
+\item[{const double \&}]{wz}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1AccelerationLimiter_a4f1b61d1630c6a1cecac4b30009963c3}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1AccelerationLimiter_aed8ff9cd14cf20788a46e8f27b918a31}
 
 
-\-Definition at line 53 of file acceleration\-\_\-limiter.\-hpp.
+\-Definition at line 80 of file acceleration\-\_\-limiter.\-hpp.
 
 
 
 \subsection{\-Member \-Data \-Documentation}
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!angular\-\_\-acceleration\-\_\-max@{angular\-\_\-acceleration\-\_\-max}}
+\index{angular\-\_\-acceleration\-\_\-max@{angular\-\_\-acceleration\-\_\-max}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{angular\-\_\-acceleration\-\_\-max}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Acceleration\-Limiter\-::angular\-\_\-acceleration\-\_\-max}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1AccelerationLimiter_a7a19367da2d65991216c6960da6a734c}
+
+
+\-Definition at line 136 of file acceleration\-\_\-limiter.\-hpp.
+
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!angular\-\_\-deceleration\-\_\-max@{angular\-\_\-deceleration\-\_\-max}}
+\index{angular\-\_\-deceleration\-\_\-max@{angular\-\_\-deceleration\-\_\-max}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{angular\-\_\-deceleration\-\_\-max}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Acceleration\-Limiter\-::angular\-\_\-deceleration\-\_\-max}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1AccelerationLimiter_a7724a492b34cd65562411d08c12aa222}
+
+
+\-Definition at line 136 of file acceleration\-\_\-limiter.\-hpp.
+
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!command\-\_\-vx@{command\-\_\-vx}}
+\index{command\-\_\-vx@{command\-\_\-vx}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{command\-\_\-vx}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Acceleration\-Limiter\-::command\-\_\-vx}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1AccelerationLimiter_abff130d8f74eaa85b69ba14c8a6ca943}
+
+
+\-Definition at line 134 of file acceleration\-\_\-limiter.\-hpp.
+
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!command\-\_\-wz@{command\-\_\-wz}}
+\index{command\-\_\-wz@{command\-\_\-wz}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{command\-\_\-wz}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Acceleration\-Limiter\-::command\-\_\-wz}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1AccelerationLimiter_a3ca42c02d3638bf014015afc0b666bba}
+
+
+\-Definition at line 134 of file acceleration\-\_\-limiter.\-hpp.
+
 \index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!is\-\_\-enabled@{is\-\_\-enabled}}
 \index{is\-\_\-enabled@{is\-\_\-enabled}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
 \subsubsection[{is\-\_\-enabled}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf kobuki\-::\-Acceleration\-Limiter\-::is\-\_\-enabled}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1AccelerationLimiter_ab90665ce1cf7fc344045eb9a3e705e93}
 
 
-\-Definition at line 106 of file acceleration\-\_\-limiter.\-hpp.
+\-Definition at line 127 of file acceleration\-\_\-limiter.\-hpp.
 
 \index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!last\-\_\-radius@{last\-\_\-radius}}
 \index{last\-\_\-radius@{last\-\_\-radius}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
 \subsubsection[{last\-\_\-radius}]{\setlength{\rightskip}{0pt plus 5cm}short {\bf kobuki\-::\-Acceleration\-Limiter\-::last\-\_\-radius}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1AccelerationLimiter_af59e262cc5235e5143b9a5e47e9b0900}
 
 
-\-Definition at line 108 of file acceleration\-\_\-limiter.\-hpp.
+\-Definition at line 129 of file acceleration\-\_\-limiter.\-hpp.
 
 \index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!last\-\_\-speed@{last\-\_\-speed}}
 \index{last\-\_\-speed@{last\-\_\-speed}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
 \subsubsection[{last\-\_\-speed}]{\setlength{\rightskip}{0pt plus 5cm}short {\bf kobuki\-::\-Acceleration\-Limiter\-::last\-\_\-speed}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1AccelerationLimiter_a44e4b57394fdb2ec79d93077d733a3cb}
 
 
-\-Definition at line 107 of file acceleration\-\_\-limiter.\-hpp.
+\-Definition at line 128 of file acceleration\-\_\-limiter.\-hpp.
 
 \index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!last\-\_\-timestamp@{last\-\_\-timestamp}}
 \index{last\-\_\-timestamp@{last\-\_\-timestamp}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
 \subsubsection[{last\-\_\-timestamp}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Time\-Stamp {\bf kobuki\-::\-Acceleration\-Limiter\-::last\-\_\-timestamp}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1AccelerationLimiter_aa09a6b30cb4807218a8c611a763c1314}
 
 
-\-Definition at line 110 of file acceleration\-\_\-limiter.\-hpp.
+\-Definition at line 131 of file acceleration\-\_\-limiter.\-hpp.
+
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!last\-\_\-vx@{last\-\_\-vx}}
+\index{last\-\_\-vx@{last\-\_\-vx}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{last\-\_\-vx}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Acceleration\-Limiter\-::last\-\_\-vx}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1AccelerationLimiter_a1af05999946b0cdcbe2ab0935b1ccbf8}
+
+
+\-Definition at line 133 of file acceleration\-\_\-limiter.\-hpp.
+
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!last\-\_\-wz@{last\-\_\-wz}}
+\index{last\-\_\-wz@{last\-\_\-wz}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{last\-\_\-wz}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Acceleration\-Limiter\-::last\-\_\-wz}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1AccelerationLimiter_a2d1c0d363ba76e38bd56ecc572416682}
+
+
+\-Definition at line 133 of file acceleration\-\_\-limiter.\-hpp.
+
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!linear\-\_\-acceleration\-\_\-max@{linear\-\_\-acceleration\-\_\-max}}
+\index{linear\-\_\-acceleration\-\_\-max@{linear\-\_\-acceleration\-\_\-max}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{linear\-\_\-acceleration\-\_\-max}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Acceleration\-Limiter\-::linear\-\_\-acceleration\-\_\-max}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1AccelerationLimiter_ae3590371d3d9ffe38481162d41ad7537}
+
+
+\-Definition at line 135 of file acceleration\-\_\-limiter.\-hpp.
+
+\index{kobuki\-::\-Acceleration\-Limiter@{kobuki\-::\-Acceleration\-Limiter}!linear\-\_\-deceleration\-\_\-max@{linear\-\_\-deceleration\-\_\-max}}
+\index{linear\-\_\-deceleration\-\_\-max@{linear\-\_\-deceleration\-\_\-max}!kobuki::AccelerationLimiter@{kobuki\-::\-Acceleration\-Limiter}}
+\subsubsection[{linear\-\_\-deceleration\-\_\-max}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf kobuki\-::\-Acceleration\-Limiter\-::linear\-\_\-deceleration\-\_\-max}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1AccelerationLimiter_ab9d7e7921aa359762a4e62776fad2447}
+
+
+\-Definition at line 135 of file acceleration\-\_\-limiter.\-hpp.
 
 
 

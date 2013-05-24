@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['dangerous',['dangerous',['../classkobuki_1_1Battery.html#afed5fa95de7082b1d36e01bc7f551f56',1,'kobuki::Battery::dangerous()'],['../classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bca27e3cf6d1fd3207e1d16ba4b808506ef',1,'kobuki::Battery::Dangerous()']]],
+  ['dangerous',['Dangerous',['../classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bca27e3cf6d1fd3207e1d16ba4b808506ef',1,'kobuki::Battery::Dangerous()'],['../classkobuki_1_1Battery.html#afed5fa95de7082b1d36e01bc7f551f56',1,'kobuki::Battery::dangerous()']]],
   ['data',['Data',['../structkobuki_1_1Command_1_1Data.html',1,'kobuki::Command']]],
   ['data',['Data',['../structkobuki_1_1Hardware_1_1Data.html',1,'kobuki::Hardware']]],
   ['data',['Data',['../structkobuki_1_1Cliff_1_1Data.html',1,'kobuki::Cliff']]],

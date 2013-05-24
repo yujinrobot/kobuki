@@ -87,30 +87,38 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00043"></a>00043     <a class="code" href="classkobuki_1_1Parameters.html#ab6eaa092677b34a152c9a11dfd3ff56f" title="Enable or disable the acceleration limiter [true].">enable_acceleration_limiter</a>(true),
 <a name="l00044"></a>00044     <a class="code" href="classkobuki_1_1Parameters.html#a0c7b04175141d702f520c4a963876143" title="Capacity voltage of the battery [16.5V].">battery_capacity</a>(<a class="code" href="classkobuki_1_1Battery.html" title="Battery level module.">Battery</a>::capacity),
 <a name="l00045"></a>00045     <a class="code" href="classkobuki_1_1Parameters.html#afbe3833926add7263db592c6b0116b36" title="Threshold for battery level warnings [14.0V].">battery_low</a>(<a class="code" href="classkobuki_1_1Battery.html" title="Battery level module.">Battery</a>::low),
-<a name="l00046"></a>00046     <a class="code" href="classkobuki_1_1Parameters.html#a6332cc2748b6f7095e1eb463a024289d" title="Threshold for battery level in danger of depletion [13.2V].">battery_dangerous</a>(<a class="code" href="classkobuki_1_1Battery.html" title="Battery level module.">Battery</a>::dangerous)
-<a name="l00047"></a>00047   {
-<a name="l00048"></a>00048   } 
-<a name="l00050"></a><a class="code" href="classkobuki_1_1Parameters.html#a993217236ea68f063f5bc285414408e2">00050</a>   std::string <a class="code" href="classkobuki_1_1Parameters.html#a993217236ea68f063f5bc285414408e2" title="The serial device port name [/dev/kobuki].">device_port</a>;         
-<a name="l00051"></a><a class="code" href="classkobuki_1_1Parameters.html#a0717933338e84bc7907f7e8345e2347e">00051</a>   std::string <a class="code" href="classkobuki_1_1Parameters.html#a0717933338e84bc7907f7e8345e2347e" title="The first part of a sigslot connection namespace [&quot;/kobuki&quot;].">sigslots_namespace</a>;  
-<a name="l00052"></a><a class="code" href="classkobuki_1_1Parameters.html#afb674fc8606ffb15482a4230293cae6c">00052</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Parameters.html#afb674fc8606ffb15482a4230293cae6c" title="Whether to put the motors in loopback mode or not [false].">simulation</a>;                 
-<a name="l00053"></a><a class="code" href="classkobuki_1_1Parameters.html#ab6eaa092677b34a152c9a11dfd3ff56f">00053</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Parameters.html#ab6eaa092677b34a152c9a11dfd3ff56f" title="Enable or disable the acceleration limiter [true].">enable_acceleration_limiter</a>;
-<a name="l00054"></a><a class="code" href="classkobuki_1_1Parameters.html#a0c7b04175141d702f520c4a963876143">00054</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Parameters.html#a0c7b04175141d702f520c4a963876143" title="Capacity voltage of the battery [16.5V].">battery_capacity</a>;          <span class="comment">/* defaults defined in battery.cpp */</span>
-<a name="l00055"></a><a class="code" href="classkobuki_1_1Parameters.html#afbe3833926add7263db592c6b0116b36">00055</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Parameters.html#afbe3833926add7263db592c6b0116b36" title="Threshold for battery level warnings [14.0V].">battery_low</a>;                <span class="comment">/* defaults defined in battery.cpp */</span>
-<a name="l00056"></a><a class="code" href="classkobuki_1_1Parameters.html#a6332cc2748b6f7095e1eb463a024289d">00056</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Parameters.html#a6332cc2748b6f7095e1eb463a024289d" title="Threshold for battery level in danger of depletion [13.2V].">battery_dangerous</a>;          <span class="comment">/* defaults defined in battery.cpp */</span>
-<a name="l00057"></a>00057 
-<a name="l00058"></a>00058 
-<a name="l00066"></a><a class="code" href="classkobuki_1_1Parameters.html#ab69e82cd5161562203da02c5b39aeb1f">00066</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Parameters.html#ab69e82cd5161562203da02c5b39aeb1f" title="A validator to ensure the user has supplied correct/sensible parameter values.">validate</a>()
-<a name="l00067"></a>00067   {
-<a name="l00068"></a>00068     <span class="comment">// not doing anything right now -  delete it, if we can find a use case ...</span>
-<a name="l00069"></a>00069     <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00070"></a>00070   }
-<a name="l00071"></a>00071 
-<a name="l00072"></a><a class="code" href="classkobuki_1_1Parameters.html#a173dfe128efc68e860cdd0b3193dc2d7">00072</a>   std::string <a class="code" href="classkobuki_1_1Parameters.html#a173dfe128efc68e860cdd0b3193dc2d7" title="Provides error messages when parameter validation fails (internal purposes only)">error_msg</a>; 
-<a name="l00073"></a>00073 };
-<a name="l00074"></a>00074 
-<a name="l00075"></a>00075 } <span class="comment">// namespace kobuki</span>
-<a name="l00076"></a>00076 
-<a name="l00077"></a>00077 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_PARAMETERS_HPP_ */</span>
+<a name="l00046"></a>00046     <a class="code" href="classkobuki_1_1Parameters.html#a6332cc2748b6f7095e1eb463a024289d" title="Threshold for battery level in danger of depletion [13.2V].">battery_dangerous</a>(<a class="code" href="classkobuki_1_1Battery.html" title="Battery level module.">Battery</a>::dangerous),
+<a name="l00047"></a>00047     <a class="code" href="classkobuki_1_1Parameters.html#a80f340ed5ef2c38e29dcc84bd808d8d8">linear_acceleration_limit</a>(0.3),
+<a name="l00048"></a>00048     <a class="code" href="classkobuki_1_1Parameters.html#a508680b2d1079e83d80492af73aed9cd">linear_deceleration_limit</a>(-0.3*1.2),
+<a name="l00049"></a>00049     <a class="code" href="classkobuki_1_1Parameters.html#a39945d15b7e6e73365546ec7cd1e0e38">angular_acceleration_limit</a>(3.5),
+<a name="l00050"></a>00050     <a class="code" href="classkobuki_1_1Parameters.html#a2aa21b58334b3e115f0f583115c852a0">angular_deceleration_limit</a>(-3.5*1.2)
+<a name="l00051"></a>00051   {
+<a name="l00052"></a>00052   } 
+<a name="l00054"></a><a class="code" href="classkobuki_1_1Parameters.html#a993217236ea68f063f5bc285414408e2">00054</a>   std::string <a class="code" href="classkobuki_1_1Parameters.html#a993217236ea68f063f5bc285414408e2" title="The serial device port name [/dev/kobuki].">device_port</a>;         
+<a name="l00055"></a><a class="code" href="classkobuki_1_1Parameters.html#a0717933338e84bc7907f7e8345e2347e">00055</a>   std::string <a class="code" href="classkobuki_1_1Parameters.html#a0717933338e84bc7907f7e8345e2347e" title="The first part of a sigslot connection namespace [&quot;/kobuki&quot;].">sigslots_namespace</a>;  
+<a name="l00056"></a><a class="code" href="classkobuki_1_1Parameters.html#afb674fc8606ffb15482a4230293cae6c">00056</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Parameters.html#afb674fc8606ffb15482a4230293cae6c" title="Whether to put the motors in loopback mode or not [false].">simulation</a>;                 
+<a name="l00057"></a><a class="code" href="classkobuki_1_1Parameters.html#ab6eaa092677b34a152c9a11dfd3ff56f">00057</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Parameters.html#ab6eaa092677b34a152c9a11dfd3ff56f" title="Enable or disable the acceleration limiter [true].">enable_acceleration_limiter</a>;
+<a name="l00058"></a><a class="code" href="classkobuki_1_1Parameters.html#a0c7b04175141d702f520c4a963876143">00058</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Parameters.html#a0c7b04175141d702f520c4a963876143" title="Capacity voltage of the battery [16.5V].">battery_capacity</a>;          <span class="comment">/* defaults defined in battery.cpp */</span>
+<a name="l00059"></a><a class="code" href="classkobuki_1_1Parameters.html#afbe3833926add7263db592c6b0116b36">00059</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Parameters.html#afbe3833926add7263db592c6b0116b36" title="Threshold for battery level warnings [14.0V].">battery_low</a>;                <span class="comment">/* defaults defined in battery.cpp */</span>
+<a name="l00060"></a><a class="code" href="classkobuki_1_1Parameters.html#a6332cc2748b6f7095e1eb463a024289d">00060</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Parameters.html#a6332cc2748b6f7095e1eb463a024289d" title="Threshold for battery level in danger of depletion [13.2V].">battery_dangerous</a>;          <span class="comment">/* defaults defined in battery.cpp */</span>
+<a name="l00061"></a>00061 
+<a name="l00062"></a><a class="code" href="classkobuki_1_1Parameters.html#a80f340ed5ef2c38e29dcc84bd808d8d8">00062</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Parameters.html#a80f340ed5ef2c38e29dcc84bd808d8d8">linear_acceleration_limit</a>;
+<a name="l00063"></a><a class="code" href="classkobuki_1_1Parameters.html#a508680b2d1079e83d80492af73aed9cd">00063</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Parameters.html#a508680b2d1079e83d80492af73aed9cd">linear_deceleration_limit</a>;
+<a name="l00064"></a><a class="code" href="classkobuki_1_1Parameters.html#a39945d15b7e6e73365546ec7cd1e0e38">00064</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Parameters.html#a39945d15b7e6e73365546ec7cd1e0e38">angular_acceleration_limit</a>;
+<a name="l00065"></a><a class="code" href="classkobuki_1_1Parameters.html#a2aa21b58334b3e115f0f583115c852a0">00065</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Parameters.html#a2aa21b58334b3e115f0f583115c852a0">angular_deceleration_limit</a>;
+<a name="l00066"></a>00066 
+<a name="l00074"></a><a class="code" href="classkobuki_1_1Parameters.html#ab69e82cd5161562203da02c5b39aeb1f">00074</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Parameters.html#ab69e82cd5161562203da02c5b39aeb1f" title="A validator to ensure the user has supplied correct/sensible parameter values.">validate</a>()
+<a name="l00075"></a>00075   {
+<a name="l00076"></a>00076     <span class="comment">// not doing anything right now -  delete it, if we can find a use case ...</span>
+<a name="l00077"></a>00077     <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00078"></a>00078   }
+<a name="l00079"></a>00079 
+<a name="l00080"></a><a class="code" href="classkobuki_1_1Parameters.html#a173dfe128efc68e860cdd0b3193dc2d7">00080</a>   std::string <a class="code" href="classkobuki_1_1Parameters.html#a173dfe128efc68e860cdd0b3193dc2d7" title="Provides error messages when parameter validation fails (internal purposes only)">error_msg</a>; 
+<a name="l00081"></a>00081 };
+<a name="l00082"></a>00082 
+<a name="l00083"></a>00083 } <span class="comment">// namespace kobuki</span>
+<a name="l00084"></a>00084 
+<a name="l00085"></a>00085 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_PARAMETERS_HPP_ */</span>
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -131,7 +139,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <younghoon.ju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Thu Mar 7 2013 09:10:19</small>
+<small>autogenerated on Fri May 24 2013 20:32:16</small>
 </div>
 </body>
 </html>

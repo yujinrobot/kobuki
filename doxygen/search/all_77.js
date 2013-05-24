@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['w',['w',['../classkobuki_1_1DiffDrive.html#a3f552c92800750cafb8f7e2e8b27191a',1,'kobuki::DiffDrive']]],
   ['waitforetx',['waitForEtx',['../classkobuki_1_1PacketFinderBase.html#a211cc4e18d4b48e951539952cf3a0607',1,'kobuki::PacketFinderBase']]],
   ['waitforpayloadandetx',['waitForPayloadAndEtx',['../classkobuki_1_1PacketFinderBase.html#a14e362e78ff9f5d584ee437b353580aa',1,'kobuki::PacketFinderBase']]],
   ['waitforpayloadsize',['waitForPayloadSize',['../classkobuki_1_1PacketFinderBase.html#a95a3ef9d47f9a00dde9924d97f207c0f',1,'kobuki::PacketFinderBase']]],

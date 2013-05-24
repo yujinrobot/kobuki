@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['w',['w',['../classkobuki_1_1DiffDrive.html#a3f552c92800750cafb8f7e2e8b27191a',1,'kobuki::DiffDrive']]],
   ['wheel',['wheel',['../structkobuki_1_1WheelEvent.html#a2c8867560bae32f5c74d2fa3da7acaae',1,'kobuki::WheelEvent']]],
   ['wheel_5fdrop',['wheel_drop',['../structkobuki_1_1CoreSensors_1_1Data.html#a47fa534f8b8da4ef4dfed6ecdaa9e2e5',1,'kobuki::CoreSensors::Data']]],
   ['wheel_5fradius',['wheel_radius',['../classkobuki_1_1DiffDrive.html#a8074f33732a3dd52f6ba2fc00223727d',1,'kobuki::DiffDrive']]],

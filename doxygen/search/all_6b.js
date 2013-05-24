@@ -12,7 +12,7 @@ var searchData=
   ['ko_5fsigslots_2edox',['ko_sigslots.dox',['../ko__sigslots_8dox.html',1,'']]],
   ['ko_5fsimple_5fexample_2edox',['ko_simple_example.dox',['../ko__simple__example_8dox.html',1,'']]],
   ['kobuki',['Kobuki',['../classkobuki_1_1Kobuki.html',1,'kobuki']]],
-  ['kobuki',['kobuki',['../namespacekobuki.html',1,'kobuki'],['../classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c',1,'KobukiManager::kobuki()'],['../classkobuki_1_1Kobuki.html#a4c767b0d60457092a6085ce0b1db7ff8',1,'kobuki::Kobuki::Kobuki()']]],
+  ['kobuki',['kobuki',['../namespacekobuki.html',1,'kobuki'],['../classkobuki_1_1Kobuki.html#a4c767b0d60457092a6085ce0b1db7ff8',1,'kobuki::Kobuki::Kobuki()'],['../classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c',1,'KobukiManager::kobuki()']]],
   ['kobuki_2ecpp',['kobuki.cpp',['../kobuki_8cpp.html',1,'']]],
   ['kobuki_2ehpp',['kobuki.hpp',['../kobuki_8hpp.html',1,'']]],
   ['kobuki_5fcommand',['kobuki_command',['../classkobuki_1_1Kobuki.html#a2ef8e78d7168a90faffaa516522f79bf',1,'kobuki::Kobuki']]],

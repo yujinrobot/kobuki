@@ -92,6 +92,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A validator to ensure the user has supplied correct/sensible parameter values.  <a href="#ab69e82cd5161562203da02c5b39aeb1f"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Parameters.html#a39945d15b7e6e73365546ec7cd1e0e38">angular_acceleration_limit</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Parameters.html#a2aa21b58334b3e115f0f583115c852a0">angular_deceleration_limit</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Parameters.html#a0c7b04175141d702f520c4a963876143">battery_capacity</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Capacity voltage of the battery [16.5V].  <a href="#a0c7b04175141d702f520c4a963876143"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Parameters.html#a6332cc2748b6f7095e1eb463a024289d">battery_dangerous</a></td></tr>
@@ -104,6 +106,8 @@ Public Attributes</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable or disable the acceleration limiter [true].  <a href="#ab6eaa092677b34a152c9a11dfd3ff56f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Parameters.html#a173dfe128efc68e860cdd0b3193dc2d7">error_msg</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides error messages when parameter validation fails (internal purposes only)  <a href="#a173dfe128efc68e860cdd0b3193dc2d7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Parameters.html#a80f340ed5ef2c38e29dcc84bd808d8d8">linear_acceleration_limit</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Parameters.html#a508680b2d1079e83d80492af73aed9cd">linear_deceleration_limit</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Parameters.html#a0717933338e84bc7907f7e8345e2347e">sigslots_namespace</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The first part of a sigslot connection namespace ["/kobuki"].  <a href="#a0717933338e84bc7907f7e8345e2347e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Parameters.html#afb674fc8606ffb15482a4230293cae6c">simulation</a></td></tr>
@@ -153,11 +157,41 @@ Public Attributes</h2></td></tr>
 <p>This validates the current parameters and if invalid, puts an error string in error_msg.</p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>bool : true if valid, false otherwise. </dd></dl>
 
-<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00066">66</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
+<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00074">74</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="a39945d15b7e6e73365546ec7cd1e0e38"></a><!-- doxytag: member="kobuki::Parameters::angular_acceleration_limit" ref="a39945d15b7e6e73365546ec7cd1e0e38" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="classkobuki_1_1Parameters.html#a39945d15b7e6e73365546ec7cd1e0e38">kobuki::Parameters::angular_acceleration_limit</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00064">64</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2aa21b58334b3e115f0f583115c852a0"></a><!-- doxytag: member="kobuki::Parameters::angular_deceleration_limit" ref="a2aa21b58334b3e115f0f583115c852a0" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="classkobuki_1_1Parameters.html#a2aa21b58334b3e115f0f583115c852a0">kobuki::Parameters::angular_deceleration_limit</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00065">65</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a0c7b04175141d702f520c4a963876143"></a><!-- doxytag: member="kobuki::Parameters::battery_capacity" ref="a0c7b04175141d702f520c4a963876143" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -171,7 +205,7 @@ Public Attributes</h2></td></tr>
 
 <p>Capacity voltage of the battery [16.5V]. </p>
 
-<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00054">54</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
+<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00058">58</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
 
 </div>
 </div>
@@ -188,7 +222,7 @@ Public Attributes</h2></td></tr>
 
 <p>Threshold for battery level in danger of depletion [13.2V]. </p>
 
-<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00056">56</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
+<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00060">60</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
 
 </div>
 </div>
@@ -205,7 +239,7 @@ Public Attributes</h2></td></tr>
 
 <p>Threshold for battery level warnings [14.0V]. </p>
 
-<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00055">55</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
+<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00059">59</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
 
 </div>
 </div>
@@ -222,7 +256,7 @@ Public Attributes</h2></td></tr>
 
 <p>The serial device port name [/dev/kobuki]. </p>
 
-<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00050">50</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
+<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00054">54</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
 
 </div>
 </div>
@@ -239,7 +273,7 @@ Public Attributes</h2></td></tr>
 
 <p>Enable or disable the acceleration limiter [true]. </p>
 
-<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00053">53</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
+<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00057">57</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
 
 </div>
 </div>
@@ -256,7 +290,37 @@ Public Attributes</h2></td></tr>
 
 <p>Provides error messages when parameter validation fails (internal purposes only) </p>
 
-<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00072">72</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
+<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00080">80</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a80f340ed5ef2c38e29dcc84bd808d8d8"></a><!-- doxytag: member="kobuki::Parameters::linear_acceleration_limit" ref="a80f340ed5ef2c38e29dcc84bd808d8d8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="classkobuki_1_1Parameters.html#a80f340ed5ef2c38e29dcc84bd808d8d8">kobuki::Parameters::linear_acceleration_limit</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00062">62</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a508680b2d1079e83d80492af73aed9cd"></a><!-- doxytag: member="kobuki::Parameters::linear_deceleration_limit" ref="a508680b2d1079e83d80492af73aed9cd" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="classkobuki_1_1Parameters.html#a508680b2d1079e83d80492af73aed9cd">kobuki::Parameters::linear_deceleration_limit</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00063">63</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
 
 </div>
 </div>
@@ -273,7 +337,7 @@ Public Attributes</h2></td></tr>
 
 <p>The first part of a sigslot connection namespace ["/kobuki"]. </p>
 
-<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00051">51</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
+<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00055">55</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
 
 </div>
 </div>
@@ -290,7 +354,7 @@ Public Attributes</h2></td></tr>
 
 <p>Whether to put the motors in loopback mode or not [false]. </p>
 
-<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00052">52</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
+<p>Definition at line <a class="el" href="parameters_8hpp_source.html#l00056">56</a> of file <a class="el" href="parameters_8hpp_source.html">parameters.hpp</a>.</p>
 
 </div>
 </div>
@@ -317,7 +381,7 @@ Public Attributes</h2></td></tr>
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <younghoon.ju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Thu Mar 7 2013 09:10:20</small>
+<small>autogenerated on Fri May 24 2013 20:32:16</small>
 </div>
 </body>
 </html>

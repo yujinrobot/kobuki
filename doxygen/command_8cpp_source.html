@@ -158,95 +158,96 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00154"></a>00154   <span class="keywordflow">return</span> outgoing;
 <a name="l00155"></a>00155 }
 <a name="l00156"></a>00156 
-<a name="l00157"></a><a class="code" href="classkobuki_1_1Command.html#a061ac96efc69c57ec6ce46406b410d99">00157</a> <a class="code" href="classkobuki_1_1Command.html">Command</a> <a class="code" href="classkobuki_1_1Command.html#a061ac96efc69c57ec6ce46406b410d99">Command::SetVelocityControl</a>(<span class="keyword">const</span> <a class="code" href="classkobuki_1_1DiffDrive.html">DiffDrive</a>&amp; diff_drive)
+<a name="l00157"></a><a class="code" href="classkobuki_1_1Command.html#ad5156efc2b7de9b519f822cf990e201d">00157</a> <a class="code" href="classkobuki_1_1Command.html">Command</a> <a class="code" href="classkobuki_1_1Command.html#ad5156efc2b7de9b519f822cf990e201d">Command::SetVelocityControl</a>(<a class="code" href="classkobuki_1_1DiffDrive.html">DiffDrive</a>&amp; diff_drive)
 <a name="l00158"></a>00158 {
 <a name="l00159"></a>00159   <a class="code" href="classkobuki_1_1Command.html">Command</a> outgoing;
-<a name="l00160"></a>00160   outgoing.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#aa8dca8b284b4d2f6bca8c62d06363b14">speed</a> = diff_drive.<a class="code" href="classkobuki_1_1DiffDrive.html#a308620d0d850f3c5e857fe015d7ae9b9">commandSpeed</a>();
-<a name="l00161"></a>00161   outgoing.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#a119d3f5bfc5ce07d4e1d275963790053">radius</a> = diff_drive.<a class="code" href="classkobuki_1_1DiffDrive.html#a4b234c5972005fc6c92e055eae9ff129">commandRadius</a>();
-<a name="l00162"></a>00162   outgoing.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#ac9490c50436e23bf5637317c89e4dff5">command</a> = <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a17c390fb6bb18a3219da6307edc858d4">Command::BaseControl</a>;
-<a name="l00163"></a>00163   <span class="keywordflow">return</span> outgoing;
-<a name="l00164"></a>00164 }
-<a name="l00165"></a><a class="code" href="classkobuki_1_1Command.html#aff87b6a6fa0607fd423da88b7a7bd706">00165</a> <a class="code" href="classkobuki_1_1Command.html">Command</a> <a class="code" href="classkobuki_1_1Command.html#a061ac96efc69c57ec6ce46406b410d99">Command::SetVelocityControl</a>(<span class="keyword">const</span> int16_t &amp;<a class="code" href="velocity__commands_8cpp.html#a6dc6e6f3c75c509ce943163afb5dade7">speed</a>, <span class="keyword">const</span> int16_t &amp;<a class="code" href="velocity__commands_8cpp.html#a3f67c53b80389c5f53961936edba04c9">radius</a>)
-<a name="l00166"></a>00166 {
-<a name="l00167"></a>00167   <a class="code" href="classkobuki_1_1Command.html">Command</a> outgoing;
-<a name="l00168"></a>00168   outgoing.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#aa8dca8b284b4d2f6bca8c62d06363b14">speed</a> = <a class="code" href="velocity__commands_8cpp.html#a6dc6e6f3c75c509ce943163afb5dade7">speed</a>;
-<a name="l00169"></a>00169   outgoing.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#a119d3f5bfc5ce07d4e1d275963790053">radius</a> = <a class="code" href="velocity__commands_8cpp.html#a3f67c53b80389c5f53961936edba04c9">radius</a>;
-<a name="l00170"></a>00170   outgoing.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#ac9490c50436e23bf5637317c89e4dff5">command</a> = <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a17c390fb6bb18a3219da6307edc858d4">Command::BaseControl</a>;
-<a name="l00171"></a>00171   <span class="keywordflow">return</span> outgoing;
-<a name="l00172"></a>00172 }
-<a name="l00173"></a>00173 
-<a name="l00174"></a>00174 <span class="comment">/*****************************************************************************</span>
-<a name="l00175"></a>00175 <span class="comment">** Implementation [Serialisation]</span>
-<a name="l00176"></a>00176 <span class="comment">*****************************************************************************/</span>
-<a name="l00180"></a><a class="code" href="classkobuki_1_1Command.html#a92e11a248177d836d59dca61b2730018">00180</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Command.html#a92e11a248177d836d59dca61b2730018">Command::resetBuffer</a>(<a class="code" href="classkobuki_1_1Command.html#addaf13fee8c86fd78c085255eec58318">Buffer</a>&amp; buffer) {
-<a name="l00181"></a>00181   buffer.clear();
-<a name="l00182"></a>00182   buffer.resize(64);
-<a name="l00183"></a>00183   buffer.push_back(<a class="code" href="classkobuki_1_1Command.html#a619203f3cdf47bd574f868dea15376e9">Command::header0</a>);
-<a name="l00184"></a>00184   buffer.push_back(<a class="code" href="classkobuki_1_1Command.html#a6d4b993120c36903186ca233c2fbf248">Command::header1</a>);
-<a name="l00185"></a>00185   buffer.push_back(0); <span class="comment">// just initialise, we usually write in the payload here later (size of payload only, not stx, not etx, not length)</span>
-<a name="l00186"></a>00186 }
-<a name="l00187"></a>00187 
-<a name="l00188"></a><a class="code" href="classkobuki_1_1Command.html#a735d4fe3925e2ca28dee437b61ce8398">00188</a> <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Command.html#a735d4fe3925e2ca28dee437b61ce8398">Command::serialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
-<a name="l00189"></a>00189 {
-<a name="l00190"></a>00190   <span class="keywordflow">if</span> (!(byteStream.size() &gt; 0))
-<a name="l00191"></a>00191   {
-<a name="l00192"></a>00192     <span class="comment">//ROS_WARN_STREAM(&quot;kobuki_node: kobuki_command: serialise failed. empty byte stream.&quot;);</span>
-<a name="l00193"></a>00193     <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00194"></a>00194   }
-<a name="l00195"></a>00195   <span class="comment">// need to be sure we don&#39;t pass through an emum to the Trans&#39;d buildBytes functions.</span>
-<a name="l00196"></a>00196   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> cmd = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#ac9490c50436e23bf5637317c89e4dff5">command</a>);
-<a name="l00197"></a>00197   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> length = 0;
-<a name="l00198"></a>00198   <span class="keywordflow">switch</span> (<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#ac9490c50436e23bf5637317c89e4dff5">command</a>)
-<a name="l00199"></a>00199   {
-<a name="l00200"></a>00200     <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a17c390fb6bb18a3219da6307edc858d4">BaseControl</a>:
-<a name="l00201"></a>00201       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(cmd, byteStream);
-<a name="l00202"></a>00202       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length=4, byteStream);
-<a name="l00203"></a>00203       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#aa8dca8b284b4d2f6bca8c62d06363b14">speed</a>, byteStream);
-<a name="l00204"></a>00204       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#a119d3f5bfc5ce07d4e1d275963790053">radius</a>, byteStream);
-<a name="l00205"></a>00205       <span class="keywordflow">break</span>;
-<a name="l00206"></a>00206     <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a1385b09667f5e94cc7997f09d77c3bb6">Sound</a>:
-<a name="l00207"></a>00207       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(cmd, byteStream);
-<a name="l00208"></a>00208       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length=3, byteStream);
-<a name="l00209"></a>00209       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#ad168a40d28679febe6ca598ccc9b9b84">note</a>, byteStream);
-<a name="l00210"></a>00210       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#a74b7821f305bf842734fdef2fba643f2">duration</a>, byteStream);
-<a name="l00211"></a>00211       <span class="keywordflow">break</span>;
-<a name="l00212"></a>00212     <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a1270714ddc55c2c0847b642823ddbbae">SoundSequence</a>:
-<a name="l00213"></a>00213       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(cmd, byteStream);
-<a name="l00214"></a>00214       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length=1, byteStream);
-<a name="l00215"></a>00215       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#a6e2363137b38213de976495eb8648d5f">segment_name</a>, byteStream);
-<a name="l00216"></a>00216       <span class="keywordflow">break</span>;
-<a name="l00217"></a>00217     <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490ae647768d925db095981032a07fd916f4">RequestExtra</a>:
-<a name="l00218"></a>00218       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(cmd, byteStream);
-<a name="l00219"></a>00219       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length=2, byteStream);
-<a name="l00220"></a>00220       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#aa5817272bf53d12beaec3cbe4a7ed8ed">request_flags</a>, byteStream);
-<a name="l00221"></a>00221       <span class="keywordflow">break</span>;
-<a name="l00222"></a>00222     <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a502c1e106a77d0087ad67d82fd6aadf9">ChangeFrame</a>:
-<a name="l00223"></a>00223       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(cmd, byteStream);
-<a name="l00224"></a>00224       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length=1, byteStream);
-<a name="l00225"></a>00225       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#a11680a7d1e2c5cd0329ef03a1e089d5d">frame_id</a>, byteStream);
-<a name="l00226"></a>00226       <span class="keywordflow">break</span>;
-<a name="l00227"></a>00227     <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490af0c1f3e40a5b8985b51762e1cf291eff">RequestEeprom</a>:
-<a name="l00228"></a>00228       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(cmd, byteStream);
-<a name="l00229"></a>00229       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length=1, byteStream);
-<a name="l00230"></a>00230       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#a11680a7d1e2c5cd0329ef03a1e089d5d">frame_id</a>, byteStream);
-<a name="l00231"></a>00231       <span class="keywordflow">break</span>;
-<a name="l00232"></a>00232     <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490ae2094f7bf83d07b161f4bf983c604ab4">SetDigitalOut</a>:
-<a name="l00233"></a>00233     { <span class="comment">// this one controls led, external power sources, gp digitial output</span>
-<a name="l00234"></a>00234       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(cmd, byteStream);
-<a name="l00235"></a>00235       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length=2, byteStream);
-<a name="l00236"></a>00236       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#a6455b2f01642efe3ca9c64be3491e2a9">gp_out</a>, byteStream);
-<a name="l00237"></a>00237       <span class="keywordflow">break</span>;
-<a name="l00238"></a>00238     }
-<a name="l00239"></a>00239     <span class="keywordflow">default</span>:
-<a name="l00240"></a>00240       <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00241"></a>00241       <span class="keywordflow">break</span>;
-<a name="l00242"></a>00242   }
-<a name="l00243"></a>00243   <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00244"></a>00244 }
-<a name="l00245"></a>00245 
+<a name="l00160"></a>00160   std::vector&lt;short&gt; velocity_commands = diff_drive.<a class="code" href="classkobuki_1_1DiffDrive.html#a74a496205059a0acd9b89b69309cab74">velocityCommands</a>();
+<a name="l00161"></a>00161   outgoing.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#aa8dca8b284b4d2f6bca8c62d06363b14">speed</a> = velocity_commands[0];
+<a name="l00162"></a>00162   outgoing.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#a119d3f5bfc5ce07d4e1d275963790053">radius</a> = velocity_commands[1];
+<a name="l00163"></a>00163   outgoing.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#ac9490c50436e23bf5637317c89e4dff5">command</a> = <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a17c390fb6bb18a3219da6307edc858d4">Command::BaseControl</a>;
+<a name="l00164"></a>00164   <span class="keywordflow">return</span> outgoing;
+<a name="l00165"></a>00165 }
+<a name="l00166"></a><a class="code" href="classkobuki_1_1Command.html#aff87b6a6fa0607fd423da88b7a7bd706">00166</a> <a class="code" href="classkobuki_1_1Command.html">Command</a> <a class="code" href="classkobuki_1_1Command.html#ad5156efc2b7de9b519f822cf990e201d">Command::SetVelocityControl</a>(<span class="keyword">const</span> int16_t &amp;<a class="code" href="velocity__commands_8cpp.html#a6dc6e6f3c75c509ce943163afb5dade7">speed</a>, <span class="keyword">const</span> int16_t &amp;<a class="code" href="velocity__commands_8cpp.html#a3f67c53b80389c5f53961936edba04c9">radius</a>)
+<a name="l00167"></a>00167 {
+<a name="l00168"></a>00168   <a class="code" href="classkobuki_1_1Command.html">Command</a> outgoing;
+<a name="l00169"></a>00169   outgoing.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#aa8dca8b284b4d2f6bca8c62d06363b14">speed</a> = <a class="code" href="velocity__commands_8cpp.html#a6dc6e6f3c75c509ce943163afb5dade7">speed</a>;
+<a name="l00170"></a>00170   outgoing.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#a119d3f5bfc5ce07d4e1d275963790053">radius</a> = <a class="code" href="velocity__commands_8cpp.html#a3f67c53b80389c5f53961936edba04c9">radius</a>;
+<a name="l00171"></a>00171   outgoing.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#ac9490c50436e23bf5637317c89e4dff5">command</a> = <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a17c390fb6bb18a3219da6307edc858d4">Command::BaseControl</a>;
+<a name="l00172"></a>00172   <span class="keywordflow">return</span> outgoing;
+<a name="l00173"></a>00173 }
+<a name="l00174"></a>00174 
+<a name="l00175"></a>00175 <span class="comment">/*****************************************************************************</span>
+<a name="l00176"></a>00176 <span class="comment">** Implementation [Serialisation]</span>
+<a name="l00177"></a>00177 <span class="comment">*****************************************************************************/</span>
+<a name="l00181"></a><a class="code" href="classkobuki_1_1Command.html#a92e11a248177d836d59dca61b2730018">00181</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Command.html#a92e11a248177d836d59dca61b2730018">Command::resetBuffer</a>(<a class="code" href="classkobuki_1_1Command.html#addaf13fee8c86fd78c085255eec58318">Buffer</a>&amp; buffer) {
+<a name="l00182"></a>00182   buffer.clear();
+<a name="l00183"></a>00183   buffer.resize(64);
+<a name="l00184"></a>00184   buffer.push_back(<a class="code" href="classkobuki_1_1Command.html#a619203f3cdf47bd574f868dea15376e9">Command::header0</a>);
+<a name="l00185"></a>00185   buffer.push_back(<a class="code" href="classkobuki_1_1Command.html#a6d4b993120c36903186ca233c2fbf248">Command::header1</a>);
+<a name="l00186"></a>00186   buffer.push_back(0); <span class="comment">// just initialise, we usually write in the payload here later (size of payload only, not stx, not etx, not length)</span>
+<a name="l00187"></a>00187 }
+<a name="l00188"></a>00188 
+<a name="l00189"></a><a class="code" href="classkobuki_1_1Command.html#a735d4fe3925e2ca28dee437b61ce8398">00189</a> <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Command.html#a735d4fe3925e2ca28dee437b61ce8398">Command::serialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
+<a name="l00190"></a>00190 {
+<a name="l00191"></a>00191   <span class="keywordflow">if</span> (!(byteStream.size() &gt; 0))
+<a name="l00192"></a>00192   {
+<a name="l00193"></a>00193     <span class="comment">//ROS_WARN_STREAM(&quot;kobuki_node: kobuki_command: serialise failed. empty byte stream.&quot;);</span>
+<a name="l00194"></a>00194     <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00195"></a>00195   }
+<a name="l00196"></a>00196   <span class="comment">// need to be sure we don&#39;t pass through an emum to the Trans&#39;d buildBytes functions.</span>
+<a name="l00197"></a>00197   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> cmd = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#ac9490c50436e23bf5637317c89e4dff5">command</a>);
+<a name="l00198"></a>00198   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> length = 0;
+<a name="l00199"></a>00199   <span class="keywordflow">switch</span> (<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#ac9490c50436e23bf5637317c89e4dff5">command</a>)
+<a name="l00200"></a>00200   {
+<a name="l00201"></a>00201     <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a17c390fb6bb18a3219da6307edc858d4">BaseControl</a>:
+<a name="l00202"></a>00202       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(cmd, byteStream);
+<a name="l00203"></a>00203       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length=4, byteStream);
+<a name="l00204"></a>00204       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#aa8dca8b284b4d2f6bca8c62d06363b14">speed</a>, byteStream);
+<a name="l00205"></a>00205       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#a119d3f5bfc5ce07d4e1d275963790053">radius</a>, byteStream);
+<a name="l00206"></a>00206       <span class="keywordflow">break</span>;
+<a name="l00207"></a>00207     <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a1385b09667f5e94cc7997f09d77c3bb6">Sound</a>:
+<a name="l00208"></a>00208       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(cmd, byteStream);
+<a name="l00209"></a>00209       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length=3, byteStream);
+<a name="l00210"></a>00210       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#ad168a40d28679febe6ca598ccc9b9b84">note</a>, byteStream);
+<a name="l00211"></a>00211       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#a74b7821f305bf842734fdef2fba643f2">duration</a>, byteStream);
+<a name="l00212"></a>00212       <span class="keywordflow">break</span>;
+<a name="l00213"></a>00213     <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a1270714ddc55c2c0847b642823ddbbae">SoundSequence</a>:
+<a name="l00214"></a>00214       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(cmd, byteStream);
+<a name="l00215"></a>00215       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length=1, byteStream);
+<a name="l00216"></a>00216       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#a6e2363137b38213de976495eb8648d5f">segment_name</a>, byteStream);
+<a name="l00217"></a>00217       <span class="keywordflow">break</span>;
+<a name="l00218"></a>00218     <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490ae647768d925db095981032a07fd916f4">RequestExtra</a>:
+<a name="l00219"></a>00219       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(cmd, byteStream);
+<a name="l00220"></a>00220       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length=2, byteStream);
+<a name="l00221"></a>00221       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#aa5817272bf53d12beaec3cbe4a7ed8ed">request_flags</a>, byteStream);
+<a name="l00222"></a>00222       <span class="keywordflow">break</span>;
+<a name="l00223"></a>00223     <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a502c1e106a77d0087ad67d82fd6aadf9">ChangeFrame</a>:
+<a name="l00224"></a>00224       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(cmd, byteStream);
+<a name="l00225"></a>00225       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length=1, byteStream);
+<a name="l00226"></a>00226       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#a11680a7d1e2c5cd0329ef03a1e089d5d">frame_id</a>, byteStream);
+<a name="l00227"></a>00227       <span class="keywordflow">break</span>;
+<a name="l00228"></a>00228     <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490af0c1f3e40a5b8985b51762e1cf291eff">RequestEeprom</a>:
+<a name="l00229"></a>00229       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(cmd, byteStream);
+<a name="l00230"></a>00230       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length=1, byteStream);
+<a name="l00231"></a>00231       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#a11680a7d1e2c5cd0329ef03a1e089d5d">frame_id</a>, byteStream);
+<a name="l00232"></a>00232       <span class="keywordflow">break</span>;
+<a name="l00233"></a>00233     <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490ae2094f7bf83d07b161f4bf983c604ab4">SetDigitalOut</a>:
+<a name="l00234"></a>00234     { <span class="comment">// this one controls led, external power sources, gp digitial output</span>
+<a name="l00235"></a>00235       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(cmd, byteStream);
+<a name="l00236"></a>00236       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length=2, byteStream);
+<a name="l00237"></a>00237       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>.<a class="code" href="structkobuki_1_1Command_1_1Data.html#a6455b2f01642efe3ca9c64be3491e2a9">gp_out</a>, byteStream);
+<a name="l00238"></a>00238       <span class="keywordflow">break</span>;
+<a name="l00239"></a>00239     }
+<a name="l00240"></a>00240     <span class="keywordflow">default</span>:
+<a name="l00241"></a>00241       <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00242"></a>00242       <span class="keywordflow">break</span>;
+<a name="l00243"></a>00243   }
+<a name="l00244"></a>00244   <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00245"></a>00245 }
 <a name="l00246"></a>00246 
 <a name="l00247"></a>00247 
-<a name="l00248"></a>00248 } <span class="comment">// namespace kobuki</span>
+<a name="l00248"></a>00248 
+<a name="l00249"></a>00249 } <span class="comment">// namespace kobuki</span>
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -267,7 +268,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <younghoon.ju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Thu Mar 7 2013 09:10:19</small>
+<small>autogenerated on Fri May 24 2013 20:32:16</small>
 </div>
 </body>
 </html>

@@ -77,20 +77,20 @@ Source Code</h2>
     parameters.<a class="code" href="classkobuki_1_1Parameters.html#a0717933338e84bc7907f7e8345e2347e" title="The first part of a sigslot connection namespace [&quot;/kobuki&quot;].">sigslots_namespace</a> = <span class="stringliteral">&quot;/kobuki&quot;</span>;
     parameters.<a class="code" href="classkobuki_1_1Parameters.html#a993217236ea68f063f5bc285414408e2" title="The serial device port name [/dev/kobuki].">device_port</a> = <span class="stringliteral">&quot;/dev/kobuki&quot;</span>;
     parameters.<a class="code" href="classkobuki_1_1Parameters.html#ab6eaa092677b34a152c9a11dfd3ff56f" title="Enable or disable the acceleration limiter [true].">enable_acceleration_limiter</a> = <span class="keyword">false</span>;
-    kobuki.init(parameters);
-    kobuki.enable();
+    <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>.<a class="code" href="classkobuki_1_1Kobuki.html#a0648c958434e641d4573721541099ee4">init</a>(parameters);
+    <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>.<a class="code" href="classkobuki_1_1Kobuki.html#afa7f47487ef0224c1ce79f2d70de233b">enable</a>();
     <a class="code" href="classKobukiManager.html#a932be6e61aa406bc1a33c12281bc4499">slot_stream_data</a>.connect(<span class="stringliteral">&quot;/kobuki/stream_data&quot;</span>);
   }
 
   <a class="code" href="classKobukiManager.html#ac42d8ea226f1b7aed59781c58ceea311">~KobukiManager</a>() {
-    kobuki.setBaseControl(0,0); <span class="comment">// linear_velocity, angular_velocity in (m/s), (rad/s)</span>
-    kobuki.disable();
+    <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>.<a class="code" href="classkobuki_1_1Kobuki.html#af016306e3114daf0c61ffbaae0b3d1a0">setBaseControl</a>(0,0); <span class="comment">// linear_velocity, angular_velocity in (m/s), (rad/s)</span>
+    <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>.<a class="code" href="classkobuki_1_1Kobuki.html#a9e4447e3b2bb177155ee681daccdc274">disable</a>();
   }
 
   <span class="keywordtype">void</span> <a class="code" href="classKobukiManager.html#a8b7d112844422e6d0e1bb67acacfc6e5">processStreamData</a>() {
     ecl::Pose2D&lt;double&gt; pose_update;
     ecl::linear_algebra::Vector3d pose_update_rates;
-    kobuki.updateOdometry(pose_update, pose_update_rates);
+    <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>.<a class="code" href="classkobuki_1_1Kobuki.html#a1c1cf4b6b10d5d18109430d764763544" title="Use the current sensor data (encoders and gyro) to calculate an update for the odometry.">updateOdometry</a>(pose_update, pose_update_rates);
     <a class="code" href="classKobukiManager.html#ad0ed629496ed8578df47bd15d4a1b3f6">pose</a> *= pose_update;
     <a class="code" href="classKobukiManager.html#ae27c93049cd6d6a5b8ab94ee16a5e1fa">dx</a> += pose_update.x();
     <a class="code" href="classKobukiManager.html#aae56a5aba9c5860a6a4c0825838578e5">dth</a> += pose_update.heading();
@@ -99,9 +99,9 @@ Source Code</h2>
 
   <span class="comment">// Generate square motion</span>
   <span class="keywordtype">void</span> <a class="code" href="classKobukiManager.html#a3f21876cbc4f349b4ae711395c8c2dd3">processMotion</a>() {
-    <span class="keywordflow">if</span> (<a class="code" href="classKobukiManager.html#ae27c93049cd6d6a5b8ab94ee16a5e1fa">dx</a> &gt;= 1.0 &amp;&amp; <a class="code" href="classKobukiManager.html#aae56a5aba9c5860a6a4c0825838578e5">dth</a> &gt;= ecl::pi/2.0) { <a class="code" href="classKobukiManager.html#ae27c93049cd6d6a5b8ab94ee16a5e1fa">dx</a>=0.0; <a class="code" href="classKobukiManager.html#aae56a5aba9c5860a6a4c0825838578e5">dth</a>=0.0; kobuki.setBaseControl(0.0, 0.0); <span class="keywordflow">return</span>; }
-    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="classKobukiManager.html#ae27c93049cd6d6a5b8ab94ee16a5e1fa">dx</a> &gt;= 1.0) { kobuki.setBaseControl(0.0, 3.3); <span class="keywordflow">return</span>; }
-    <span class="keywordflow">else</span> { kobuki.setBaseControl(0.3, 0.0); <span class="keywordflow">return</span>; }
+    <span class="keywordflow">if</span> (<a class="code" href="classKobukiManager.html#ae27c93049cd6d6a5b8ab94ee16a5e1fa">dx</a> &gt;= 1.0 &amp;&amp; <a class="code" href="classKobukiManager.html#aae56a5aba9c5860a6a4c0825838578e5">dth</a> &gt;= ecl::pi/2.0) { <a class="code" href="classKobukiManager.html#ae27c93049cd6d6a5b8ab94ee16a5e1fa">dx</a>=0.0; <a class="code" href="classKobukiManager.html#aae56a5aba9c5860a6a4c0825838578e5">dth</a>=0.0; <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>.<a class="code" href="classkobuki_1_1Kobuki.html#af016306e3114daf0c61ffbaae0b3d1a0">setBaseControl</a>(0.0, 0.0); <span class="keywordflow">return</span>; }
+    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="classKobukiManager.html#ae27c93049cd6d6a5b8ab94ee16a5e1fa">dx</a> &gt;= 1.0) { <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>.<a class="code" href="classkobuki_1_1Kobuki.html#af016306e3114daf0c61ffbaae0b3d1a0">setBaseControl</a>(0.0, 3.3); <span class="keywordflow">return</span>; }
+    <span class="keywordflow">else</span> { <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>.<a class="code" href="classkobuki_1_1Kobuki.html#af016306e3114daf0c61ffbaae0b3d1a0">setBaseControl</a>(0.3, 0.0); <span class="keywordflow">return</span>; }
   }
 
   ecl::Pose2D&lt;double&gt; <a class="code" href="classKobukiManager.html#ac3d4fe90255dc0000d7c7d9dbfd991e4">getPose</a>() {
@@ -170,8 +170,8 @@ Class</h3>
     parameters.<a class="code" href="classkobuki_1_1Parameters.html#a0717933338e84bc7907f7e8345e2347e" title="The first part of a sigslot connection namespace [&quot;/kobuki&quot;].">sigslots_namespace</a> = <span class="stringliteral">&quot;/kobuki&quot;</span>;
     parameters.<a class="code" href="classkobuki_1_1Parameters.html#a993217236ea68f063f5bc285414408e2" title="The serial device port name [/dev/kobuki].">device_port</a> = <span class="stringliteral">&quot;/dev/kobuki&quot;</span>;
     parameters.<a class="code" href="classkobuki_1_1Parameters.html#ab6eaa092677b34a152c9a11dfd3ff56f" title="Enable or disable the acceleration limiter [true].">enable_acceleration_limiter</a> = <span class="keyword">false</span>;
-    kobuki.init(parameters);
-    kobuki.enable();
+    <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>.<a class="code" href="classkobuki_1_1Kobuki.html#a0648c958434e641d4573721541099ee4">init</a>(parameters);
+    <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>.<a class="code" href="classkobuki_1_1Kobuki.html#afa7f47487ef0224c1ce79f2d70de233b">enable</a>();
     <a class="code" href="classKobukiManager.html#a932be6e61aa406bc1a33c12281bc4499">slot_stream_data</a>.connect(<span class="stringliteral">&quot;/kobuki/stream_data&quot;</span>);
   }
 </pre></div><p>Only <a class="el" href="classkobuki_1_1Kobuki.html#afa7f47487ef0224c1ce79f2d70de233b">kobuki.enable()</a> is added from previous sigslot exmaple. It will turn on motor power of kobuki. To moving kobuki, you should call this function before commanding wheel velocities.</p>
@@ -264,7 +264,7 @@ Main</h3>
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <younghoon.ju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Thu Mar 7 2013 09:10:20</small>
+<small>autogenerated on Fri May 24 2013 20:32:16</small>
 </div>
 </body>
 </html>

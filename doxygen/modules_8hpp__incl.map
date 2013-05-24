@@ -1,10 +1,10 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$battery_8hpp.html" title="Human friendly batter indicator class." alt="" coords="5,83,144,112"/>
-<area shape="rect" id="node15" href="$digital__output_8hpp.html" title="Digital output flags." alt="" coords="168,83,344,112"/>
-<area shape="rect" id="node17" href="$led__array_8hpp.html" title="Definitions for manipulating the led&#39;s." alt="" coords="368,83,520,112"/>
-<area shape="rect" id="node19" href="$diff__drive_8hpp.html" title="Simple module for the diff drive odometry." alt="" coords="544,83,696,112"/>
-<area shape="rect" id="node24" href="$sound_8hpp.html" title="Flags and id&#39;s for commanding sound sequences." alt="" coords="720,83,853,112"/>
-<area shape="rect" id="node26" href="$acceleration__limiter_8hpp.html" title="Simple module for the velocity smoothing." alt="" coords="877,83,1088,112"/>
-<area shape="rect" id="node7" href="$core__sensors_8hpp.html" title="Core sensor packet payloads." alt="" coords="73,160,260,189"/>
-<area shape="rect" id="node9" href="$payload__base_8hpp.html" title="Base class for payloads." alt="" coords="52,237,281,267"/>
+<area shape="rect" id="node3" href="$battery_8hpp.html" title="Human friendly batter indicator class." alt="" coords="253,83,392,112"/>
+<area shape="rect" id="node15" href="$digital__output_8hpp.html" title="Digital output flags." alt="" coords="1004,83,1180,112"/>
+<area shape="rect" id="node17" href="$led__array_8hpp.html" title="Definitions for manipulating the led&#39;s." alt="" coords="1204,83,1356,112"/>
+<area shape="rect" id="node19" href="$diff__drive_8hpp.html" title="Simple module for the diff drive odometry." alt="" coords="828,83,980,112"/>
+<area shape="rect" id="node30" href="$sound_8hpp.html" title="Flags and id&#39;s for commanding sound sequences." alt="" coords="1380,83,1513,112"/>
+<area shape="rect" id="node32" href="$acceleration__limiter_8hpp.html" title="Simple module for the velocity smoothing." alt="" coords="552,83,763,112"/>
+<area shape="rect" id="node7" href="$core__sensors_8hpp.html" title="Core sensor packet payloads." alt="" coords="99,160,285,189"/>
+<area shape="rect" id="node9" href="$payload__base_8hpp.html" title="Base class for payloads." alt="" coords="5,237,235,267"/>
 </map>

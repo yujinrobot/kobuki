@@ -67,7 +67,7 @@ static {\bf \-Command} {\bf \-Set\-External\-Power} (const {\bf \-Digital\-Outpu
 \item 
 static {\bf \-Command} {\bf \-Set\-Led\-Array} (const enum {\bf \-Led\-Number} \&number, const enum {\bf \-Led\-Colour} \&colour, {\bf \-Command\-::\-Data} \&current\-\_\-data)
 \item 
-static {\bf \-Command} {\bf \-Set\-Velocity\-Control} (const {\bf \-Diff\-Drive} \&diff\-\_\-drive)
+static {\bf \-Command} {\bf \-Set\-Velocity\-Control} ({\bf \-Diff\-Drive} \&diff\-\_\-drive)
 \item 
 static {\bf \-Command} {\bf \-Set\-Velocity\-Control} (const int16\-\_\-t \&{\bf speed}, const int16\-\_\-t \&{\bf radius})
 \end{DoxyCompactItemize}
@@ -220,7 +220,7 @@ static const unsigned char {\bf header1} = 0x55
 )}\label{classkobuki_1_1Command_a92e11a248177d836d59dca61b2730018}
 \-Clears the command buffer and resets the header. 
 
-\-Definition at line 180 of file command.\-cpp.
+\-Definition at line 181 of file command.\-cpp.
 
 \index{kobuki\-::\-Command@{kobuki\-::\-Command}!serialise@{serialise}}
 \index{serialise@{serialise}!kobuki::Command@{kobuki\-::\-Command}}
@@ -235,7 +235,7 @@ static const unsigned char {\bf header1} = 0x55
 
 
 
-\-Definition at line 188 of file command.\-cpp.
+\-Definition at line 189 of file command.\-cpp.
 
 \index{kobuki\-::\-Command@{kobuki\-::\-Command}!\-Set\-Digital\-Output@{\-Set\-Digital\-Output}}
 \index{\-Set\-Digital\-Output@{\-Set\-Digital\-Output}!kobuki::Command@{kobuki\-::\-Command}}
@@ -342,9 +342,9 @@ static const unsigned char {\bf header1} = 0x55
 \index{\-Set\-Velocity\-Control@{\-Set\-Velocity\-Control}!kobuki::Command@{kobuki\-::\-Command}}
 \subsubsection[{\-Set\-Velocity\-Control}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Command} {\bf kobuki\-::\-Command\-::\-Set\-Velocity\-Control} (
 \begin{DoxyParamCaption}
-\item[{const {\bf \-Diff\-Drive} \&}]{diff\-\_\-drive}
+\item[{{\bf \-Diff\-Drive} \&}]{diff\-\_\-drive}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily  [static]}}\label{classkobuki_1_1Command_a061ac96efc69c57ec6ce46406b410d99}
+)\hspace{0.3cm}{\ttfamily  [static]}}\label{classkobuki_1_1Command_ad5156efc2b7de9b519f822cf990e201d}
 
 
 \-Definition at line 157 of file command.\-cpp.
@@ -359,7 +359,7 @@ static const unsigned char {\bf header1} = 0x55
 )\hspace{0.3cm}{\ttfamily  [static]}}\label{classkobuki_1_1Command_aff87b6a6fa0607fd423da88b7a7bd706}
 
 
-\-Definition at line 165 of file command.\-cpp.
+\-Definition at line 166 of file command.\-cpp.
 
 
 

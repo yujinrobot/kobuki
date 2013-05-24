@@ -61,12 +61,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 This is the complete list of members for <a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a>, including all inherited members.<table>
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#ae216fa81d91e71b5d630d277ed63f3f6">AccelerationLimiter</a>()</td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [inline]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#a031370ed9a9003165c849f2f62e0bd43">confirm</a>(short &amp;speed, short &amp;radius)</td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [inline]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#a4f1b61d1630c6a1cecac4b30009963c3">init</a>(bool enable_acceleration_limiter)</td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#a7a19367da2d65991216c6960da6a734c">angular_acceleration_max</a></td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#a7724a492b34cd65562411d08c12aa222">angular_deceleration_max</a></td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#abff130d8f74eaa85b69ba14c8a6ca943">command_vx</a></td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#a3ca42c02d3638bf014015afc0b666bba">command_wz</a></td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#a0da69f213f2e3911ef235376bc3ab9a1">init</a>(bool enable_acceleration_limiter, double linear_acceleration_max_=0.5, double angular_acceleration_max_=3.5, double linear_deceleration_max_=-0.5 *1.2, double angular_deceleration_max_=-3.5 *1.2)</td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [inline]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#ab90665ce1cf7fc344045eb9a3e705e93">is_enabled</a></td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#aa5d776b407c07f62efe4c343426415d9">isEnabled</a>() const </td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [inline]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#af59e262cc5235e5143b9a5e47e9b0900">last_radius</a></td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#a44e4b57394fdb2ec79d93077d733a3cb">last_speed</a></td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#aa09a6b30cb4807218a8c611a763c1314">last_timestamp</a></td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#a1af05999946b0cdcbe2ab0935b1ccbf8">last_vx</a></td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#a2d1c0d363ba76e38bd56ecc572416682">last_wz</a></td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#abc759c954227e4874ecfd49b9624474f">limit</a>(const std::vector&lt; double &gt; &amp;command)</td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#aed8ff9cd14cf20788a46e8f27b918a31">limit</a>(const double &amp;vx, const double &amp;wz)</td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#ae3590371d3d9ffe38481162d41ad7537">linear_acceleration_max</a></td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html#ab9d7e7921aa359762a4e62776fad2447">linear_deceleration_max</a></td><td><a class="el" href="classkobuki_1_1AccelerationLimiter.html">kobuki::AccelerationLimiter</a></td><td><code> [private]</code></td></tr>
 </table></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -87,7 +97,7 @@ This is the complete list of members for <a class="el" href="classkobuki_1_1Acce
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <younghoon.ju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Thu Mar 7 2013 09:10:20</small>
+<small>autogenerated on Fri May 24 2013 20:32:16</small>
 </div>
 </body>
 </html>

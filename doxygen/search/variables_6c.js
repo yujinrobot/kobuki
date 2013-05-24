@@ -13,11 +13,17 @@ var searchData=
   ['last_5ftimestamp',['last_timestamp',['../classkobuki_1_1AccelerationLimiter.html#aa09a6b30cb4807218a8c611a763c1314',1,'kobuki::AccelerationLimiter::last_timestamp()'],['../classkobuki_1_1DiffDrive.html#a8dc0a500edd3524833540839b1d145a6',1,'kobuki::DiffDrive::last_timestamp()']]],
   ['last_5fvelocity_5fleft',['last_velocity_left',['../classkobuki_1_1DiffDrive.html#a48835379938377e577583e5cd70b97ce',1,'kobuki::DiffDrive']]],
   ['last_5fvelocity_5fright',['last_velocity_right',['../classkobuki_1_1DiffDrive.html#a9cc7021c7beeb40e163f60d0260e8570',1,'kobuki::DiffDrive']]],
+  ['last_5fvx',['last_vx',['../classkobuki_1_1AccelerationLimiter.html#a1af05999946b0cdcbe2ab0935b1ccbf8',1,'kobuki::AccelerationLimiter']]],
+  ['last_5fwz',['last_wz',['../classkobuki_1_1AccelerationLimiter.html#a2d1c0d363ba76e38bd56ecc572416682',1,'kobuki::AccelerationLimiter']]],
   ['left_5fencoder',['left_encoder',['../structkobuki_1_1CoreSensors_1_1Data.html#a9a2aee9ed43bb59570ab618f81016044',1,'kobuki::CoreSensors::Data']]],
   ['left_5fpwm',['left_pwm',['../structkobuki_1_1CoreSensors_1_1Data.html#ae98f21f55cbd5f271b34c2d954a80f88',1,'kobuki::CoreSensors::Data']]],
   ['leftbumper',['LeftBumper',['../structkobuki_1_1CoreSensors_1_1Flags.html#abd2dbde0aee87695348ee31e451469cf',1,'kobuki::CoreSensors::Flags']]],
   ['leftcliff',['LeftCliff',['../structkobuki_1_1CoreSensors_1_1Flags.html#ad986a906de2deaf17381f5b6457bf0af',1,'kobuki::CoreSensors::Flags']]],
   ['leftwheel',['LeftWheel',['../structkobuki_1_1CoreSensors_1_1Flags.html#a081dcff8c1a2ca453fe3952c19cff4b5',1,'kobuki::CoreSensors::Flags']]],
   ['leftwheel_5foc',['LeftWheel_OC',['../structkobuki_1_1CoreSensors_1_1Flags.html#a18f5b7c46447fa7a5661290ef052a863',1,'kobuki::CoreSensors::Flags']]],
+  ['linear_5facceleration_5flimit',['linear_acceleration_limit',['../classkobuki_1_1Parameters.html#a80f340ed5ef2c38e29dcc84bd808d8d8',1,'kobuki::Parameters']]],
+  ['linear_5facceleration_5fmax',['linear_acceleration_max',['../classkobuki_1_1AccelerationLimiter.html#ae3590371d3d9ffe38481162d41ad7537',1,'kobuki::AccelerationLimiter']]],
+  ['linear_5fdeceleration_5flimit',['linear_deceleration_limit',['../classkobuki_1_1Parameters.html#a508680b2d1079e83d80492af73aed9cd',1,'kobuki::Parameters']]],
+  ['linear_5fdeceleration_5fmax',['linear_deceleration_max',['../classkobuki_1_1AccelerationLimiter.html#ab9d7e7921aa359762a4e62776fad2447',1,'kobuki::AccelerationLimiter']]],
   ['low',['low',['../classkobuki_1_1Battery.html#ab52bd0243682d8f2b4f6a7b9fdb143d3',1,'kobuki::Battery']]]
 ];

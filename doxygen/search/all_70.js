@@ -21,6 +21,8 @@ var searchData=
   ['playsoundsequence',['playSoundSequence',['../classkobuki_1_1Kobuki.html#afaf3bd9ab3e781fec84200041ed95f30',1,'kobuki::Kobuki::playSoundSequence()'],['../classkobuki_1_1Command.html#a9eb46f3f36573b8168252b13434a7260',1,'kobuki::Command::PlaySoundSequence()']]],
   ['pluggedtoadapter',['PluggedToAdapter',['../structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7a89960e7b0f506f500ca8d1882c7371fe',1,'kobuki::PowerEvent']]],
   ['pluggedtodockbase',['PluggedToDockbase',['../structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7ae4ad9a2a92e08de985f2457c4e9944dd',1,'kobuki::PowerEvent']]],
+  ['point_5fvelocity',['point_velocity',['../classkobuki_1_1DiffDrive.html#ac02cea6f6f4e072326be6df76b5b3adb',1,'kobuki::DiffDrive']]],
+  ['pointvelocity',['pointVelocity',['../classkobuki_1_1DiffDrive.html#a91c8ef73aef454b10edc3364c864d677',1,'kobuki::DiffDrive']]],
   ['pose',['pose',['../classKobukiManager.html#ad0ed629496ed8578df47bd15d4a1b3f6',1,'KobukiManager']]],
   ['powerevent',['PowerEvent',['../structkobuki_1_1PowerEvent.html',1,'kobuki']]],
   ['pressed',['Pressed',['../structkobuki_1_1ButtonEvent.html#ad74db533b4ed915d35dcb4dcc3aa424da028a011233cc9802321d6e1d05824a16',1,'kobuki::ButtonEvent::Pressed()'],['../structkobuki_1_1BumperEvent.html#ae9874ebe03039f3f72a3e45edd3ef886af99360117ccb93fa96e2255fd4eecdf9',1,'kobuki::BumperEvent::Pressed()']]],

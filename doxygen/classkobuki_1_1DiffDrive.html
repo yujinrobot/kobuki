@@ -71,6 +71,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">kobuki::DiffDrive Class Reference</div>  </div>
@@ -83,19 +84,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a4b234c5972005fc6c92e055eae9ff129">commandRadius</a> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a308620d0d850f3c5e857fe015d7ae9b9">commandSpeed</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#adfc4ce4a5501c76292aad9d59d73cc74">angularVelocity</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a5b3265fdb9be865c17e26bdacdfd6f07">DiffDrive</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a6f2387c9170da415d1e39e15cf35ce11">getWheelJointStates</a> (double &amp;wheel_left_angle, double &amp;wheel_left_angle_rate, double &amp;wheel_right_angle, double &amp;wheel_right_angle_rate) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#adbda4aac1c7fc982a3f4de3ea969118f">getWheelJointStates</a> (double &amp;wheel_left_angle, double &amp;wheel_left_angle_rate, double &amp;wheel_right_angle, double &amp;wheel_right_angle_rate)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const <br class="typebreak"/>
 ecl::DifferentialDrive::Kinematics &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#ac114f4961247b3588377634b801c9d59">kinematics</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a5ae1e62efc9d2bc022e1ec153c00ef7c">linearVelocity</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a91c8ef73aef454b10edc3364c864d677">pointVelocity</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#aa2fcd8f4444fa80ec2ea58dbf32b5751">reset</a> (const double &amp;current_heading)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#ac03a97b1ee8b36a7b7d02ded9f28dd8a">setVelocityCommands</a> (const double &amp;vx, const double &amp;wz)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a1655bb061ec059c98a646f7dcdecd949">update</a> (const uint16_t &amp;time_stamp, const uint16_t &amp;left_encoder, const uint16_t &amp;right_encoder, ecl::Pose2D&lt; double &gt; &amp;pose_update, ecl::linear_algebra::Vector3d &amp;pose_update_rates)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the odometry from firmware stamps and encoders.  <a href="#a1655bb061ec059c98a646f7dcdecd949"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a74a496205059a0acd9b89b69309cab74">velocityCommands</a> (const double &amp;vx, const double &amp;wz)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a1f01310eca08064aa55adbca8d6e24f0">velocityCommands</a> (const short &amp;cmd_speed, const short &amp;cmd_radius)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; short &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a0235dd6ef6bfe6bf3b2f96a2160cadfa">velocityCommands</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a4cc6f20318958ef7c4c41150ab5b38b3">velocityCommands</a> (const std::vector&lt; double &gt; &amp;cmd)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a197a541c09d043422da4961a916757d4">velocityCommands</a> (const std::vector&lt; short &gt; &amp;cmd)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; short &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a6cce78209cb886b4fdd34e242d06e2d4">velocityCommands</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a32e069cb09848f2bf2c45f697b31a62f">wheel_bias</a> () const </td></tr>
+<tr><td colspan="2"><h2><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a8fb421cd060423c97ef74ce95ad45e16">bound</a> (const double &amp;value)</td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a5216bed924c0220609960542fa27a38d">bias</a></td></tr>
@@ -109,16 +117,17 @@ Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a8dc0a500edd3524833540839b1d145a6">last_timestamp</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a48835379938377e577583e5cd70b97ce">last_velocity_left</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a9cc7021c7beeb40e163f60d0260e8570">last_velocity_right</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#ab0859422eaf53fca148a6df9b689ac4f">radius</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#ad46245e29706e8b86722390659e9f540">speed</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#ac02cea6f6f4e072326be6df76b5b3adb">point_velocity</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#ad2507b8a204c5e8e02c25f40c1787eff">radius</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#ab035b44a28ff971feb1e8806c8ccca59">speed</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">ecl::Mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a986e84bef0c53fb84096b2c36594f05e">state_mutex</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#ac61d00b9dfa7e395e42e8440124c0d46">tick_to_rad</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#add2f082180cce0d7e09a69c8d736b2bb">v</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a3f552c92800750cafb8f7e2e8b27191a">w</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">ecl::Mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a7f9245868c140c829a98d5a94ffbeb3b">velocity_mutex</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1DiffDrive.html#a8074f33732a3dd52f6ba2fc00223727d">wheel_radius</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00034">34</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00036">36</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a5b3265fdb9be865c17e26bdacdfd6f07"></a><!-- doxytag: member="kobuki::DiffDrive::DiffDrive" ref="a5b3265fdb9be865c17e26bdacdfd6f07" args="()" -->
 <div class="memitem">
@@ -139,12 +148,12 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a4b234c5972005fc6c92e055eae9ff129"></a><!-- doxytag: member="kobuki::DiffDrive::commandRadius" ref="a4b234c5972005fc6c92e055eae9ff129" args="() const " -->
+<a class="anchor" id="adfc4ce4a5501c76292aad9d59d73cc74"></a><!-- doxytag: member="kobuki::DiffDrive::angularVelocity" ref="adfc4ce4a5501c76292aad9d59d73cc74" args="() const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int16_t <a class="el" href="classkobuki_1_1DiffDrive.html#a4b234c5972005fc6c92e055eae9ff129">kobuki::DiffDrive::commandRadius</a> </td>
+          <td class="memname">double <a class="el" href="classkobuki_1_1DiffDrive.html#adfc4ce4a5501c76292aad9d59d73cc74">kobuki::DiffDrive::angularVelocity</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const<code> [inline]</code></td>
@@ -153,34 +162,35 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00054">54</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00060">60</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a308620d0d850f3c5e857fe015d7ae9b9"></a><!-- doxytag: member="kobuki::DiffDrive::commandSpeed" ref="a308620d0d850f3c5e857fe015d7ae9b9" args="() const " -->
+<a class="anchor" id="a8fb421cd060423c97ef74ce95ad45e16"></a><!-- doxytag: member="kobuki::DiffDrive::bound" ref="a8fb421cd060423c97ef74ce95ad45e16" args="(const double &amp;value)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int16_t <a class="el" href="classkobuki_1_1DiffDrive.html#a308620d0d850f3c5e857fe015d7ae9b9">kobuki::DiffDrive::commandSpeed</a> </td>
+          <td class="memname">short <a class="el" href="classkobuki_1_1DiffDrive.html#a8fb421cd060423c97ef74ce95ad45e16">kobuki::DiffDrive::bound</a> </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const<code> [inline]</code></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td><code> [private]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00053">53</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8cpp_source.html#l00183">183</a> of file <a class="el" href="diff__drive_8cpp_source.html">diff_drive.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a6f2387c9170da415d1e39e15cf35ce11"></a><!-- doxytag: member="kobuki::DiffDrive::getWheelJointStates" ref="a6f2387c9170da415d1e39e15cf35ce11" args="(double &amp;wheel_left_angle, double &amp;wheel_left_angle_rate, double &amp;wheel_right_angle, double &amp;wheel_right_angle_rate) const " -->
+<a class="anchor" id="adbda4aac1c7fc982a3f4de3ea969118f"></a><!-- doxytag: member="kobuki::DiffDrive::getWheelJointStates" ref="adbda4aac1c7fc982a3f4de3ea969118f" args="(double &amp;wheel_left_angle, double &amp;wheel_left_angle_rate, double &amp;wheel_right_angle, double &amp;wheel_right_angle_rate)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classkobuki_1_1DiffDrive.html#a6f2387c9170da415d1e39e15cf35ce11">kobuki::DiffDrive::getWheelJointStates</a> </td>
+          <td class="memname">void <a class="el" href="classkobuki_1_1DiffDrive.html#adbda4aac1c7fc982a3f4de3ea969118f">kobuki::DiffDrive::getWheelJointStates</a> </td>
           <td>(</td>
           <td class="paramtype">double &amp;&#160;</td>
           <td class="paramname"><em>wheel_left_angle</em>, </td>
@@ -206,13 +216,13 @@ Private Attributes</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> const</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8cpp_source.html#l00111">111</a> of file <a class="el" href="diff__drive_8cpp_source.html">diff_drive.cpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8cpp_source.html#l00116">116</a> of file <a class="el" href="diff__drive_8cpp_source.html">diff_drive.cpp</a>.</p>
 
 </div>
 </div>
@@ -230,7 +240,43 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00037">37</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00039">39</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5ae1e62efc9d2bc022e1ec153c00ef7c"></a><!-- doxytag: member="kobuki::DiffDrive::linearVelocity" ref="a5ae1e62efc9d2bc022e1ec153c00ef7c" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="classkobuki_1_1DiffDrive.html#a5ae1e62efc9d2bc022e1ec153c00ef7c">kobuki::DiffDrive::linearVelocity</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00059">59</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a91c8ef73aef454b10edc3364c864d677"></a><!-- doxytag: member="kobuki::DiffDrive::pointVelocity" ref="a91c8ef73aef454b10edc3364c864d677" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; <a class="el" href="classkobuki_1_1DiffDrive.html#a91c8ef73aef454b10edc3364c864d677">kobuki::DiffDrive::pointVelocity</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00061">61</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
@@ -249,7 +295,36 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8cpp_source.html#l00103">103</a> of file <a class="el" href="diff__drive_8cpp_source.html">diff_drive.cpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8cpp_source.html#l00106">106</a> of file <a class="el" href="diff__drive_8cpp_source.html">diff_drive.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac03a97b1ee8b36a7b7d02ded9f28dd8a"></a><!-- doxytag: member="kobuki::DiffDrive::setVelocityCommands" ref="ac03a97b1ee8b36a7b7d02ded9f28dd8a" args="(const double &amp;vx, const double &amp;wz)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classkobuki_1_1DiffDrive.html#ac03a97b1ee8b36a7b7d02ded9f28dd8a">kobuki::DiffDrive::setVelocityCommands</a> </td>
+          <td>(</td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>vx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>wz</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="diff__drive_8cpp_source.html#l00126">126</a> of file <a class="el" href="diff__drive_8cpp_source.html">diff_drive.cpp</a>.</p>
 
 </div>
 </div>
@@ -309,7 +384,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="diff__drive_8cpp_source.html#l00052">52</a> of file <a class="el" href="diff__drive_8cpp_source.html">diff_drive.cpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8cpp_source.html#l00053">53</a> of file <a class="el" href="diff__drive_8cpp_source.html">diff_drive.cpp</a>.</p>
 
 </div>
 </div>
@@ -338,7 +413,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8cpp_source.html#l00119">119</a> of file <a class="el" href="diff__drive_8cpp_source.html">diff_drive.cpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8cpp_source.html#l00133">133</a> of file <a class="el" href="diff__drive_8cpp_source.html">diff_drive.cpp</a>.</p>
 
 </div>
 </div>
@@ -367,11 +442,49 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8cpp_source.html#l00148">148</a> of file <a class="el" href="diff__drive_8cpp_source.html">diff_drive.cpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8cpp_source.html#l00166">166</a> of file <a class="el" href="diff__drive_8cpp_source.html">diff_drive.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a0235dd6ef6bfe6bf3b2f96a2160cadfa"></a><!-- doxytag: member="kobuki::DiffDrive::velocityCommands" ref="a0235dd6ef6bfe6bf3b2f96a2160cadfa" args="() const " -->
+<a class="anchor" id="a4cc6f20318958ef7c4c41150ab5b38b3"></a><!-- doxytag: member="kobuki::DiffDrive::velocityCommands" ref="a4cc6f20318958ef7c4c41150ab5b38b3" args="(const std::vector&lt; double &gt; &amp;cmd)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classkobuki_1_1DiffDrive.html#a74a496205059a0acd9b89b69309cab74">kobuki::DiffDrive::velocityCommands</a> </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cmd</em></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00051">51</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a197a541c09d043422da4961a916757d4"></a><!-- doxytag: member="kobuki::DiffDrive::velocityCommands" ref="a197a541c09d043422da4961a916757d4" args="(const std::vector&lt; short &gt; &amp;cmd)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classkobuki_1_1DiffDrive.html#a74a496205059a0acd9b89b69309cab74">kobuki::DiffDrive::velocityCommands</a> </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; short &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cmd</em></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00052">52</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6cce78209cb886b4fdd34e242d06e2d4"></a><!-- doxytag: member="kobuki::DiffDrive::velocityCommands" ref="a6cce78209cb886b4fdd34e242d06e2d4" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -379,13 +492,13 @@ Private Attributes</h2></td></tr>
           <td class="memname">std::vector&lt; short &gt; <a class="el" href="classkobuki_1_1DiffDrive.html#a74a496205059a0acd9b89b69309cab74">kobuki::DiffDrive::velocityCommands</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8cpp_source.html#l00153">153</a> of file <a class="el" href="diff__drive_8cpp_source.html">diff_drive.cpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8cpp_source.html#l00174">174</a> of file <a class="el" href="diff__drive_8cpp_source.html">diff_drive.cpp</a>.</p>
 
 </div>
 </div>
@@ -403,7 +516,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00059">59</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00066">66</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
@@ -419,7 +532,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00072">72</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00080">80</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
@@ -434,7 +547,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00077">77</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00085">85</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
@@ -449,7 +562,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00074">74</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00082">82</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
@@ -464,7 +577,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00064">64</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00071">71</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
@@ -479,7 +592,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00067">67</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00074">74</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
@@ -494,7 +607,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00067">67</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00074">74</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
@@ -509,7 +622,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00066">66</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00073">73</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
@@ -524,7 +637,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00066">66</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00073">73</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
@@ -539,7 +652,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00062">62</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00069">69</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
@@ -554,7 +667,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00063">63</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00070">70</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
@@ -569,37 +682,67 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00063">63</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab0859422eaf53fca148a6df9b689ac4f"></a><!-- doxytag: member="kobuki::DiffDrive::radius" ref="ab0859422eaf53fca148a6df9b689ac4f" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">short <a class="el" href="classkobuki_1_1DiffDrive.html#ab0859422eaf53fca148a6df9b689ac4f">kobuki::DiffDrive::radius</a><code> [private]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
 <p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00070">70</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad46245e29706e8b86722390659e9f540"></a><!-- doxytag: member="kobuki::DiffDrive::speed" ref="ad46245e29706e8b86722390659e9f540" args="" -->
+<a class="anchor" id="ac02cea6f6f4e072326be6df76b5b3adb"></a><!-- doxytag: member="kobuki::DiffDrive::point_velocity" ref="ac02cea6f6f4e072326be6df76b5b3adb" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">short <a class="el" href="classkobuki_1_1DiffDrive.html#ad46245e29706e8b86722390659e9f540">kobuki::DiffDrive::speed</a><code> [private]</code></td>
+          <td class="memname">std::vector&lt;double&gt; <a class="el" href="classkobuki_1_1DiffDrive.html#ac02cea6f6f4e072326be6df76b5b3adb">kobuki::DiffDrive::point_velocity</a><code> [private]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00071">71</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00077">77</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad2507b8a204c5e8e02c25f40c1787eff"></a><!-- doxytag: member="kobuki::DiffDrive::radius" ref="ad2507b8a204c5e8e02c25f40c1787eff" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="classkobuki_1_1DiffDrive.html#ad2507b8a204c5e8e02c25f40c1787eff">kobuki::DiffDrive::radius</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00078">78</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab035b44a28ff971feb1e8806c8ccca59"></a><!-- doxytag: member="kobuki::DiffDrive::speed" ref="ab035b44a28ff971feb1e8806c8ccca59" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="classkobuki_1_1DiffDrive.html#ab035b44a28ff971feb1e8806c8ccca59">kobuki::DiffDrive::speed</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00079">79</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a986e84bef0c53fb84096b2c36594f05e"></a><!-- doxytag: member="kobuki::DiffDrive::state_mutex" ref="a986e84bef0c53fb84096b2c36594f05e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ecl::Mutex <a class="el" href="classkobuki_1_1DiffDrive.html#a986e84bef0c53fb84096b2c36594f05e">kobuki::DiffDrive::state_mutex</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00086">86</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
@@ -614,37 +757,22 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00075">75</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00083">83</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="add2f082180cce0d7e09a69c8d736b2bb"></a><!-- doxytag: member="kobuki::DiffDrive::v" ref="add2f082180cce0d7e09a69c8d736b2bb" args="" -->
+<a class="anchor" id="a7f9245868c140c829a98d5a94ffbeb3b"></a><!-- doxytag: member="kobuki::DiffDrive::velocity_mutex" ref="a7f9245868c140c829a98d5a94ffbeb3b" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">short <a class="el" href="classkobuki_1_1DiffDrive.html#add2f082180cce0d7e09a69c8d736b2bb">kobuki::DiffDrive::v</a><code> [private]</code></td>
+          <td class="memname">ecl::Mutex <a class="el" href="classkobuki_1_1DiffDrive.html#a7f9245868c140c829a98d5a94ffbeb3b">kobuki::DiffDrive::velocity_mutex</a><code> [private]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00069">69</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a3f552c92800750cafb8f7e2e8b27191a"></a><!-- doxytag: member="kobuki::DiffDrive::w" ref="a3f552c92800750cafb8f7e2e8b27191a" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">short <a class="el" href="classkobuki_1_1DiffDrive.html#a3f552c92800750cafb8f7e2e8b27191a">kobuki::DiffDrive::w</a><code> [private]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00069">69</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00086">86</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
@@ -659,7 +787,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00073">73</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
+<p>Definition at line <a class="el" href="diff__drive_8hpp_source.html#l00081">81</a> of file <a class="el" href="diff__drive_8hpp_source.html">diff_drive.hpp</a>.</p>
 
 </div>
 </div>
@@ -687,7 +815,7 @@ Private Attributes</h2></td></tr>
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <younghoon.ju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Thu Mar 7 2013 09:10:20</small>
+<small>autogenerated on Fri May 24 2013 20:32:16</small>
 </div>
 </body>
 </html>

@@ -2,6 +2,14 @@
 \-This section describes the installation process for \-Linux.\subsection{\-Target audience}\label{enMainPage_who}
 \-Linux people who want to compile \-Kobuki driver, but not use ros\section{\-Procedure}\label{enInstallationLinuxGuide_Procedure}
 \subsection{\-Prerequirements}\label{enInstallationLinuxGuide_prereq}
+\-We use wstool to manage our workspace, so first install it\-:
+
+
+\begin{DoxyCode}
+  sudo apt-get install python-wstool
+\end{DoxyCode}
+
+
 \-Starting with version 0.\-3.\-0, the \-Kobuki driver is a catkin package, so first of all you need to install catkin dependencies\-:
 
 
@@ -30,11 +38,9 @@
 
 \begin{DoxyCode}
   # Create a workspace directory tree somewhere in you file system
-  mkdir ~/kobuki_ws
-  cd ~/kobuki_ws
-  mkdir build
-  mkdir src
-  cd src
+  mkdir -p ~/kobuki_ws/src
+  mkdir -p ~/kobuki_ws/build
+  cd ~/kobuki_ws/src
   # Clone catkin repository
   git clone https://github.com/ros/catkin.git
   # These instructions have been tested with catkin version 0.5.63, so we
@@ -43,8 +49,38 @@
   # We need this file on src directory
   cp catkin/cmake/toplevel.cmake CMakeLists.txt
 \end{DoxyCode}
-\subsection{\-Download Kobuki driver}\label{enInstallationLinuxGuide_download}
-\-If all went fine, we can proceed with the \-Kobuki driver and the {\tt \-E\-C\-L libraries} it depends on. \-E\-C\-L in turn depends on {\tt \-Eigen libraries}, so we install them\-:
+
+
+\-Now we add the required repositories with wstool. \-For groovy type\-:
+
+
+\begin{DoxyCode}
+  wstool init
+  wstool set kobuki --git -v groovy-devel https://
+      github.com/yujinrobot/kobuki.git
+  wstool merge https://
+      raw.github.com/stonier/ecl_core/groovy-devel/ecl.rosinstall
+\end{DoxyCode}
+
+
+and for hydro\-:
+
+
+\begin{DoxyCode}
+  wstool init
+  wstool set kobuki --git -v hydro-devel https://
+      github.com/yujinrobot/kobuki.git
+  wstool merge https://
+      raw.github.com/stonier/ecl_core/hydro-devel/ecl.rosinstall
+\end{DoxyCode}
+
+
+\-And finally download the code\-: 
+\begin{DoxyCode}
+  wstool update
+\end{DoxyCode}
+\subsection{\-Configure and compile Kobuki driver}\label{enInstallationLinuxGuide_config}
+\-Kobuki driver depends on {\tt \-E\-C\-L libraries}, which in turn depends on {\tt \-Eigen libraries}, so we install them\-:
 
 
 \begin{DoxyCode}
@@ -52,25 +88,6 @@
 \end{DoxyCode}
 
 
-\-Download the code\-:
-
-
-\begin{DoxyCode}
-  cd ~/kobuki_ws/src
-  # Clone kobuki repository and checkout the latest tested tag
-  git clone https://github.com/yujinrobot/kobuki.git
-  cd kobuki         ; git checkout 0.3.0;  cd ..
-  # Clone required ecl repositories and checkout the latest tested tags
-  git clone https://github.com/stonier/ecl_core.git
-  cd ecl_core       ; git checkout 0.50.3; cd ..
-  git clone https://github.com/stonier/ecl_lite.git
-  cd ecl_lite       ; git checkout 0.50.3; cd ..
-  git clone https://github.com/stonier/ecl_tools.git
-  cd ecl_tools      ; git checkout 0.50.2; cd ..
-  git clone https://github.com/stonier/ecl_navigation.git
-  cd ecl_navigation ; git checkout 0.50.1; cd ..
-\end{DoxyCode}
-\subsection{\-Configure and compile Kobuki driver}\label{enInstallationLinuxGuide_config}
 \-We are ready to configure our workspace. \-Note that we pass a white list to cmake to avoid compiling all but the \-Kobuki driver and its required packages. \-The tricky command just reads the white list file, replaces line breaks by semicolons and adds double quotes to the list to avoid problems with white spaces and tabs. \-Note also that we change the installed software location to {\itshape ../install\/} (the default is {\itshape /usr/local\/}). \-Feel free to change it to wherever you want.
 
 \begin{DoxyWarning}{\-Warning}
@@ -91,7 +108,6 @@
 
 
 \begin{DoxyCode}
-  cd ~/kobuki_ws/build
   make
   # Optional step, if you want to install the binaries, headers and extra files
        to KOBUKI_DRIVER_LOCATION

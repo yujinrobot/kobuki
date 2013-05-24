@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['radius',['radius',['../structkobuki_1_1Command_1_1Data.html#a119d3f5bfc5ce07d4e1d275963790053',1,'kobuki::Command::Data::radius()'],['../classkobuki_1_1DiffDrive.html#ab0859422eaf53fca148a6df9b689ac4f',1,'kobuki::DiffDrive::radius()'],['../velocity__commands_8cpp.html#a3f67c53b80389c5f53961936edba04c9',1,'radius():&#160;velocity_commands.cpp']]],
+  ['radius',['radius',['../structkobuki_1_1Command_1_1Data.html#a119d3f5bfc5ce07d4e1d275963790053',1,'kobuki::Command::Data::radius()'],['../classkobuki_1_1DiffDrive.html#ad2507b8a204c5e8e02c25f40c1787eff',1,'kobuki::DiffDrive::radius()'],['../velocity__commands_8cpp.html#a3f67c53b80389c5f53961936edba04c9',1,'radius():&#160;velocity_commands.cpp']]],
   ['request_5fflags',['request_flags',['../structkobuki_1_1Command_1_1Data.html#aa5817272bf53d12beaec3cbe4a7ed8ed',1,'kobuki::Command::Data']]],
   ['right_5fencoder',['right_encoder',['../structkobuki_1_1CoreSensors_1_1Data.html#ab5d251034bca20f28ec57bde1441ca45',1,'kobuki::CoreSensors::Data']]],
   ['right_5fpwm',['right_pwm',['../structkobuki_1_1CoreSensors_1_1Data.html#a7a32588b92f15eff9cef99ebe2d600b2',1,'kobuki::CoreSensors::Data']]],

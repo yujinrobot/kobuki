@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['radius',['radius',['../structkobuki_1_1Command_1_1Data.html#a119d3f5bfc5ce07d4e1d275963790053',1,'kobuki::Command::Data::radius()'],['../classkobuki_1_1DiffDrive.html#ab0859422eaf53fca148a6df9b689ac4f',1,'kobuki::DiffDrive::radius()'],['../velocity__commands_8cpp.html#a3f67c53b80389c5f53961936edba04c9',1,'radius():&#160;velocity_commands.cpp']]],
+  ['radius',['radius',['../structkobuki_1_1Command_1_1Data.html#a119d3f5bfc5ce07d4e1d275963790053',1,'kobuki::Command::Data::radius()'],['../classkobuki_1_1DiffDrive.html#ad2507b8a204c5e8e02c25f40c1787eff',1,'kobuki::DiffDrive::radius()'],['../velocity__commands_8cpp.html#a3f67c53b80389c5f53961936edba04c9',1,'radius():&#160;velocity_commands.cpp']]],
   ['raised',['Raised',['../structkobuki_1_1WheelEvent.html#a89ff3c678c1f83bc31aa8bbcbb49cb83ab840370376440e0a0ac801f11e3e0fb9',1,'kobuki::WheelEvent']]],
   ['rb2vw',['Rb2Vw',['../classRb2Vw.html',1,'Rb2Vw'],['../classRb2Vw.html#a8d5dfd84ede536e1dc63efd3e33c044e',1,'Rb2Vw::Rb2Vw()']]],
   ['recharge',['Recharge',['../namespacekobuki.html#a336129805a07def7a2c2b0be281e7ddda1892b6e1833f580460466c1dc1ff86f7',1,'kobuki']]],

@@ -15,6 +15,7 @@ var searchData=
   ['bias',['bias',['../classkobuki_1_1DiffDrive.html#a5216bed924c0220609960542fa27a38d',1,'kobuki::DiffDrive::bias()'],['../velocity__commands_8cpp.html#aa6231a5027112a1cf56c610e6d7d91c5',1,'bias():&#160;velocity_commands.cpp']]],
   ['black',['Black',['../namespacekobuki.html#a278fbe81cdc3dd93c2fde224fb013c26a191694f35e7b7674f544e4586b1f4599',1,'kobuki']]],
   ['bottom',['bottom',['../structkobuki_1_1CliffEvent.html#ae837b247e5ee75496c5d37a3dee33601',1,'kobuki::CliffEvent::bottom()'],['../structkobuki_1_1Cliff_1_1Data.html#addf367ef49803e8814f0e468d87b78ac',1,'kobuki::Cliff::Data::bottom()']]],
+  ['bound',['bound',['../classkobuki_1_1DiffDrive.html#a8fb421cd060423c97ef74ce95ad45e16',1,'kobuki::DiffDrive']]],
   ['buffer',['buffer',['../classkobuki_1_1PacketFinderBase.html#aaa6673951c65a21948e94e6efbe41ff1',1,'kobuki::PacketFinderBase::buffer()'],['../classkobuki_1_1Command.html#addaf13fee8c86fd78c085255eec58318',1,'kobuki::Command::Buffer()']]],
   ['bufferstencil',['BufferStencil',['../classkobuki_1_1Command.html#a7c3623bd903c87f75ddf0f08d25b9e21',1,'kobuki::Command']]],
   ['buffertype',['BufferType',['../classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b',1,'kobuki::PacketFinderBase']]],
