@@ -132,6 +132,12 @@ public:
   std::string getStateStr() const { return state_str; }
   std::string getDebugStr() const { return debug_str; }
 
+  /*********************
+  ** Parameters Mutators
+  **********************/
+  void setMinAbsV(double mav) { min_abs_v = mav; }
+  void setMinAbsW(double maw) { min_abs_w = maw; }
+
   //debugging
   std::string getDebugStream() { return debug_output; } //stream.str(); }
   //std::string getDebugStream() { return debug_stream.str(); }
@@ -149,6 +155,10 @@ private:
   int dock_stabilizer;
   int dock_detector;
   double rotated;
+  double min_abs_v;
+  double min_abs_w;
+
+  void setVel(double v, double w);
 
   std::string binary(unsigned char number) const;
 

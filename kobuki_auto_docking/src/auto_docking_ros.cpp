@@ -42,6 +42,15 @@ AutoDockingROS::~AutoDockingROS()
 
 bool AutoDockingROS::init(ros::NodeHandle& nh)
 {
+  // Configure docking drive
+  double min_abs_v, min_abs_w;
+  if (nh.getParam("min_abs_v", min_abs_v) == true)
+    dock_.setMinAbsV(min_abs_v);
+
+  if (nh.getParam("min_abs_w", min_abs_w) == true)
+    dock_.setMinAbsW(min_abs_w);
+
+  // Publishers and subscribers
   velocity_commander_ = nh.advertise<geometry_msgs::Twist>("velocity", 10);
   debug_jabber_ = nh.advertise<std_msgs::String>("debug/feedback", 10);
 
