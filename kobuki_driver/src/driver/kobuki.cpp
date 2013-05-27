@@ -10,8 +10,6 @@
  ** Includes
  *****************************************************************************/
 
-#include <io.h>
-#include <stdlib.h>
 #include <stdexcept>
 #include <ecl/math.hpp>
 #include <ecl/geometry/angle.hpp>
@@ -20,7 +18,9 @@
 #include <ecl/sigslots.hpp>
 #include <ecl/geometry/angle.hpp>
 #include <ecl/time/timestamp.hpp>
-#include <ecl/devices/ofile.hpp>
+#ifdef ECL_IS_WIN32
+  #include <io.h>
+#endif
 #include "../../include/kobuki_driver/kobuki.hpp"
 #include "../../include/kobuki_driver/packet_handler/payload_headers.hpp"
 
