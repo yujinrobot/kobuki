@@ -96,7 +96,18 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_error.connect(sigslots_namespace + std::string("/ros_error"));
 
   serial.block(4000); // blocks by default, but just to be clear!
-  is_connected = serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
+  try {
+    serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);  // this will throw exceptions - NotFoundError, OpenError
+    is_connected = true;
+  }
+  catch (const ecl::StandardException &e)
+  {
+    if (e.flag() == ecl::NotFoundError) {
+      sig_warn.emit("device does not (yet) available, is the usb connected?."); // not a failure mode.
+    } else {
+      throw ecl::StandardException(LOC, e);
+    }
+  }
 
   ecl::PushAndPop<unsigned char> stx(2, 0);
   ecl::PushAndPop<unsigned char> etx(1);
@@ -115,7 +126,6 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
    *******************************************/
   version_info_reminder = 10;
   sendCommand(Command::GetVersionInfo());
-
   thread.start(&Kobuki::spin, *this);
 }
 
@@ -163,20 +173,20 @@ void Kobuki::spin()
 	_get_errno(&errnum);
 	if( errnum != EACCES && errnum != EINVAL) {
 #else
-	if( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
+//    if( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
 #endif
-      sig_error.emit("Device does not exist.");
-      is_connected = false;
-      is_alive = false;
-      event_manager.update(is_connected, is_alive);
-
-      if( serial.open() )
-      {
-        sig_info.emit("Device is still open, closing it and will try to open it again.");
-        serial.close();
-      }
-      //try_open();
-      ecl::Sleep waiting(5); //for 5sec.
+//      sig_error.emit("device does not exist.");
+//      is_connected = false;
+//      is_alive = false;
+//      event_manager.update(is_connected, is_alive);
+//
+//      if( serial.open() )
+//      {
+//        sig_info.emit("device is still open, closing it and will try to open it again.");
+//        serial.close();
+//      }
+//      //try_open();
+//      ecl::Sleep waiting(5); //for 5sec.
 #ifdef ECL_IS_WIN32
       while( true ) {
         _access( parameters.device_port.c_str(), 0 );
@@ -184,17 +194,29 @@ void Kobuki::spin()
         if( errnum == EACCES || errnum == EINVAL)
         	break;
 #else
-      while( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
 #endif
-        sig_info.emit("Device does not exist. Still waiting...");
-        waiting();
-      }
-      serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
-      if( serial.open() ) {
+    if ( !serial.open() ) {
+      try {
+        // this will throw exceptions - NotFoundError is the important one, handle it
+        serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
         sig_info.emit("device is connected.");
         is_connected = true;
         event_manager.update(is_connected, is_alive);
         version_info_reminder = 10;
+      }
+      catch (const ecl::StandardException &e)
+      {
+        if (e.flag() == ecl::NotFoundError) {
+          sig_info.emit("device does not (yet) available on this port, waiting...");
+          ecl::Sleep(5)(); // five seconds
+          is_connected = false;
+          is_alive = false;
+          continue;
+        } else {
+          // ultimately need some good way of handling here - even if just to throw sig_error.emit calls
+          // instead of rethrowing an unhandled exception
+          throw ecl::StandardException(LOC, e);
+        }
       }
     }
 
