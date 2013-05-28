@@ -204,7 +204,7 @@ bool KobukiRos::init(ros::NodeHandle& nh)
     kobuki.init(parameters);
     ros::Duration(0.25).sleep(); // wait for some data to come in.
     if ( !kobuki.isAlive() ) {
-      ROS_ERROR_STREAM("Kobuki : no data stream, is Kobuki turned on?");
+      ROS_WARN_STREAM("Kobuki : no data stream, is kobuki turned on?");
       // don't need to return false here - simply turning kobuki on while spin()'ing should resurrect the situation.
     }
     kobuki.enable();
@@ -218,11 +218,6 @@ bool KobukiRos::init(ros::NodeHandle& nh)
         ROS_ERROR_STREAM("Kobuki : could not open connection [" << parameters.device_port << "][" << name << "].");
         break;
       }
-      case (ecl::NotFoundError):
-      {
-        ROS_ERROR_STREAM("Kobuki : could not find the device [" << parameters.device_port << "][" << name << "].");
-        break;
-      }
       default:
       {
         ROS_ERROR_STREAM("Kobuki : initialisation failed [" << name << "].");
@@ -232,7 +227,6 @@ bool KobukiRos::init(ros::NodeHandle& nh)
     }
     return false;
   }
-
   // kobuki.printSigSlotConnections();
   return true;
 }

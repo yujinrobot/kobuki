@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Yujin Robot.
+ * Copyright (c) 2012, Yujin Robot.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,77 +26,65 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 /**
- * @file /include/kobuki_bumper2pc/kobuki_bumper2pc.hpp
+ * @file /kobuki_node/src/nodelet/kobuki_nodelet.cpp
  *
- * @brief Bumper/cliff to pointcloud nodelet class declaration.
- *
- * Publish bumpers and cliff sensors events as points in a pointcloud, so navistack can use them
- * for poor-man navigation. Implemented as a nodelet intended to run together with kobuki_node.
- *
- * @author Jorge Santos, Yujin Robot
- *
+ * @brief Implementation for the ROS Kobuki nodelet
  **/
-
-#ifndef _KOBUKI_BUMPER2PC_HPP_
-#define _KOBUKI_BUMPER2PC_HPP_
 
 /*****************************************************************************
  ** Includes
  *****************************************************************************/
 
-#include <ros/ros.h>
 #include <nodelet/nodelet.h>
+#include <pluginlib/class_list_macros.h>
+#include <boost/thread.hpp>
 
-#include <pcl/point_types.h>
-#include <pcl_ros/point_cloud.h>
+#include "kobuki_softnode/fake_kobuki_ros.h"
 
-#include <kobuki_msgs/SensorState.h>
 
-/*****************************************************************************
- ** Namespace
- *****************************************************************************/
-
-namespace kobuki_bumper2pc
+namespace kobuki
 {
 
-/**
- * @brief Bumper2PcNodelet class declaration
- */
-class Bumper2PcNodelet : public nodelet::Nodelet
+class SoftKobukiNodelet : public nodelet::Nodelet
 {
-public:
-  Bumper2PcNodelet() : FAR_AWAY(100), prev_bumper(0), prev_cliff(0) { }
-  ~Bumper2PcNodelet() { }
+  public:
+    SoftKobukiNodelet(){};
+    ~SoftKobukiNodelet()
+    {
+      NODELET_DEBUG_STREAM("Kobuki : waiting for update thread to finish.");
+      update_thread_.join();
+    }
+    virtual void onInit()
+    {
+      NODELET_DEBUG_STREAM("Kobuki : initialising nodelet...");
+      std::string nodelet_name = this->getName();
+      kobuki_.reset(new FakeKobukiRos(nodelet_name));
+      // if there are latency issues with callbacks, we might want to move to process callbacks in multiple threads (use MTPrivateNodeHandle)
+      if (kobuki_->init(this->getPrivateNodeHandle()))
+      {
+        update_thread_ = boost::thread(&SoftKobukiNodelet::update,this);
+        NODELET_INFO_STREAM("Kobuki : initialised.");
+      }
+      else
+      {
+        NODELET_ERROR_STREAM("Kobuki : could not initialise! Please restart.");
+      }
+    }
+  private:
+    void update()
+    {
+      ros::Rate spin_rate(30);
+      while (ros::ok() && kobuki_->update())
+      {
+        spin_rate.sleep();
+      }
+    }
 
-  virtual void onInit();
-
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
-private:
-  const double FAR_AWAY;  // somewhere out of reach from the robot
-
-  uint8_t prev_bumper;
-  uint8_t prev_cliff;
-
-  double pointcloud_radius_;
-  double pointcloud_side_x_;
-  double pointcloud_side_y_;
-
-  ros::Publisher  pointcloud_pub_;
-
-  ros::Subscriber core_sensor_sub_;
-
-  pcl::PointCloud<pcl::PointXYZ> pointcloud_;
-
-  /**
-   * @brief Core sensors state structure callback
-   * @param msg incoming topic message
-   */
-  void coreSensorCB(const kobuki_msgs::SensorState::ConstPtr& msg);
+    boost::shared_ptr<FakeKobukiRos> kobuki_;
+    boost::thread update_thread_;
 };
 
-} // namespace kobuki_bumper2pc
+} // namespace kobuki
 
-#endif // _KOBUKI_BUMPER2PC_HPP_
+PLUGINLIB_EXPORT_CLASS(kobuki::SoftKobukiNodelet, nodelet::Nodelet);

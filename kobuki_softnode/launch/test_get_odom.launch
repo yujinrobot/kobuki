@@ -1,0 +1,6 @@
+<launch>
+	<node pkg="kobuki_node" type="getOdom2D.py" name="getOdom2D">
+		<remap from="odom" to="/odom"/>
+		<remap from="pose2d" to="/pose2d"/>
+	</node>
+</launch>

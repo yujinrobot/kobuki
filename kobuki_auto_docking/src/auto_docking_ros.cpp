@@ -38,12 +38,19 @@ AutoDockingROS::~AutoDockingROS()
     as_.setAborted( result_, result_.text );
   }
   dock_.disable();
-  toggleMotor(false);
 }
 
 bool AutoDockingROS::init(ros::NodeHandle& nh)
 {
-  motor_power_enabler_ = nh.advertise<kobuki_msgs::MotorPower>("motor_power", 10);
+  // Configure docking drive
+  double min_abs_v, min_abs_w;
+  if (nh.getParam("min_abs_v", min_abs_v) == true)
+    dock_.setMinAbsV(min_abs_v);
+
+  if (nh.getParam("min_abs_w", min_abs_w) == true)
+    dock_.setMinAbsW(min_abs_w);
+
+  // Publishers and subscribers
   velocity_commander_ = nh.advertise<geometry_msgs::Twist>("velocity", 10);
   debug_jabber_ = nh.advertise<std_msgs::String>("debug/feedback", 10);
 
@@ -74,7 +81,6 @@ void AutoDockingROS::goalCb()
     ROS_INFO_STREAM("[" << name_ << "] New goal received but rejected.");
   } else {
     goal_ = *(as_.acceptNewGoal());
-    toggleMotor(true);
     dock_.enable();
     ROS_INFO_STREAM("[" << name_ << "] New goal received and accepted.");
   }
@@ -93,7 +99,6 @@ void AutoDockingROS::preemptCb()
     as_.setPreempted( result_, result_.text );
     ROS_INFO_STREAM("[" << name_ << "] " << result_.text );
     dock_.disable();
-    toggleMotor(false);
   }
 }
 
@@ -140,14 +145,12 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
       ROS_INFO_STREAM( "[" << name_ << "]: Arrived on docking station successfully.");
       ROS_DEBUG_STREAM( "[" << name_ << "]: Result sent.");
       dock_.disable();
-      toggleMotor(false);
     } else if ( !dock_.isEnabled() ) { //Action Server is activated, but DockDrive is not enabled, or disabled unexpectedly
       ROS_ERROR_STREAM("[" << name_ << "] Unintended Case: ActionService is active, but DockDrive is not enabled..");
       result_.text = "Aborted: dock_drive is disabled unexpectedly.";
       as_.setAborted( result_, "Aborted: dock_drive is disabled unexpectedly." );
       ROS_INFO_STREAM("[" << name_ << "] Goal aborted.");
       dock_.disable();
-      toggleMotor(false);
     } else {
       feedback_.state = dock_.getStateStr();
       feedback_.text = dock_.getDebugStr();
@@ -163,12 +166,5 @@ void AutoDockingROS::debugCb(const std_msgs::StringConstPtr& msg)
   dock_.modeShift(msg->data);
 }
 
-void AutoDockingROS::toggleMotor(const bool& on_off)
-{
-  kobuki_msgs::MotorPowerPtr power_cmd(new kobuki_msgs::MotorPower);
-  if (on_off) power_cmd->state = kobuki_msgs::MotorPower::ON;
-  else        power_cmd->state = kobuki_msgs::MotorPower::OFF;
-  motor_power_enabler_.publish(power_cmd);
-}
 
 } //namespace kobuki

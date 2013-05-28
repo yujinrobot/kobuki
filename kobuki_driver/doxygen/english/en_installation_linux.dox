@@ -15,6 +15,12 @@ Linux people who want to compile Kobuki driver, but not use ros
 
 @subsection prereq Prerequirements
 
+We use wstool to manage our workspace, so first install it:
+
+@code
+  sudo apt-get install python-wstool
+@endcode
+
 Starting with version 0.3.0, the Kobuki driver is a catkin package, so first of all you need to install catkin dependencies:
 
 - <i>CMake</i>      - A cross-platform, open-source build system.
@@ -39,11 +45,9 @@ Next we must prepare a catkin workspace. Here we explain the manual way, complet
 
 @code
   # Create a workspace directory tree somewhere in you file system
-  mkdir ~/kobuki_ws
-  cd ~/kobuki_ws
-  mkdir build
-  mkdir src
-  cd src
+  mkdir -p ~/kobuki_ws/src
+  mkdir -p ~/kobuki_ws/build
+  cd ~/kobuki_ws/src
   # Clone catkin repository
   git clone https://github.com/ros/catkin.git
   # These instructions have been tested with catkin version 0.5.63, so we suggest to use that version
@@ -52,34 +56,35 @@ Next we must prepare a catkin workspace. Here we explain the manual way, complet
   cp catkin/cmake/toplevel.cmake CMakeLists.txt
 @endcode
 
-@subsection download Download Kobuki driver 
+Now we add the required repositories with wstool. For groovy type:
 
-If all went fine, we can proceed with the Kobuki driver and the <a href="http://www.ros.org/wiki/ecl/">ECL libraries</a>
-it depends on. ECL in turn depends on <a href="http://eigen.tuxfamily.org/">Eigen libraries</a>, so we install them:
+@code
+  wstool init
+  wstool set kobuki --git -v groovy-devel https://github.com/yujinrobot/kobuki.git
+  wstool merge https://raw.github.com/stonier/ecl_core/groovy-devel/ecl.rosinstall
+@endcode
+
+and for hydro:
+
+@code
+  wstool init
+  wstool set kobuki --git -v hydro-devel https://github.com/yujinrobot/kobuki.git
+  wstool merge https://raw.github.com/stonier/ecl_core/hydro-devel/ecl.rosinstall
+@endcode
+
+And finally download the code:
+@code
+  wstool update
+@endcode
+
+@subsection config Configure and compile Kobuki driver 
+
+Kobuki driver depends on <a href="http://www.ros.org/wiki/ecl/">ECL libraries</a>, which in turn depends on
+<a href="http://eigen.tuxfamily.org/">Eigen libraries</a>, so we install them:
 
 @code
   sudo apt-get install libeigen3-dev 
 @endcode
-
-Download the code:
-
-@code
-  cd ~/kobuki_ws/src
-  # Clone kobuki repository and checkout the latest tested tag
-  git clone https://github.com/yujinrobot/kobuki.git
-  cd kobuki         ; git checkout 0.3.0;  cd ..
-  # Clone required ecl repositories and checkout the latest tested tags
-  git clone https://github.com/stonier/ecl_core.git
-  cd ecl_core       ; git checkout 0.50.3; cd ..
-  git clone https://github.com/stonier/ecl_lite.git
-  cd ecl_lite       ; git checkout 0.50.3; cd ..
-  git clone https://github.com/stonier/ecl_tools.git
-  cd ecl_tools      ; git checkout 0.50.2; cd ..
-  git clone https://github.com/stonier/ecl_navigation.git
-  cd ecl_navigation ; git checkout 0.50.1; cd ..
-@endcode
-
-@subsection config Configure and compile Kobuki driver 
 
 We are ready to configure our workspace. Note that we pass a white list to cmake to avoid compiling all but the Kobuki
 driver and its required packages. The tricky command just reads the white list file, replaces line breaks by semicolons
@@ -100,7 +105,6 @@ software location to <i>../install</i> (the default is <i>/usr/local</i>). Feel 
 If all went well, you are ready to compile and install
 
 @code
-  cd ~/kobuki_ws/build
   make
   # Optional step, if you want to install the binaries, headers and extra files to KOBUKI_DRIVER_LOCATION
   make install 

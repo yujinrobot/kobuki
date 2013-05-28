@@ -18,59 +18,54 @@
 namespace kobuki_bumper2pc
 {
 
-void Bumper2PcNodelet::cliffEventCB(const kobuki_msgs::CliffEvent::ConstPtr& msg)
+void Bumper2PcNodelet::coreSensorCB(const kobuki_msgs::SensorState::ConstPtr& msg)
 {
   if (pointcloud_pub_.getNumSubscribers() == 0)
     return;
 
-  // We replicate the sensors order of bumper/cliff event messages: LEFT = 0, CENTER = 1 and RIGHT = 2
-  switch (msg->sensor)
-  {
-    case kobuki_msgs::CliffEvent::LEFT:
-      pointcloud_[msg->sensor].x = (msg->state == kobuki_msgs::CliffEvent::CLIFF)? +pointcloud_side_x_: 99;
-      pointcloud_[msg->sensor].y = (msg->state == kobuki_msgs::CliffEvent::CLIFF)? +pointcloud_side_y_: 99;
-      break;
-    case kobuki_msgs::CliffEvent::CENTER:       // y-coordinate is always 0
-      pointcloud_[msg->sensor].x = (msg->state == kobuki_msgs::CliffEvent::CLIFF)? +pointcloud_radius_: 99;
-      break;
-    case kobuki_msgs::CliffEvent::RIGHT:
-      pointcloud_[msg->sensor].x = (msg->state == kobuki_msgs::CliffEvent::CLIFF)? +pointcloud_side_x_: 99;
-      pointcloud_[msg->sensor].y = (msg->state == kobuki_msgs::CliffEvent::CLIFF)? -pointcloud_side_y_: 99;
-      break;
-    default:
-      // This cannot happen unless CliffEvent message changes
-      ROS_WARN("Unknown sensor id (%d); ignoring", msg->sensor);
-      break;
-  }
-
-  pointcloud_pub_.publish(pointcloud_);
-}
-
-void Bumper2PcNodelet::bumperEventCB(const kobuki_msgs::BumperEvent::ConstPtr& msg)
-{
-  if (pointcloud_pub_.getNumSubscribers() == 0)
+  // We publish just one "no events" pc and stop spamming when bumper/cliff conditions disappear
+  if (! msg->bumper && ! msg->cliff && ! prev_bumper && ! prev_cliff)
     return;
 
+  prev_bumper = msg->bumper;
+  prev_cliff  = msg->cliff;
+
   // We replicate the sensors order of bumper/cliff event messages: LEFT = 0, CENTER = 1 and RIGHT = 2
-  switch (msg->bumper)
+  if ((msg->bumper & kobuki_msgs::SensorState::BUMPER_LEFT) ||
+      (msg->cliff  & kobuki_msgs::SensorState::CLIFF_LEFT))
   {
-    case kobuki_msgs::BumperEvent::LEFT:
-      pointcloud_[msg->bumper].x = (msg->state == kobuki_msgs::BumperEvent::PRESSED)? +pointcloud_side_x_: 99;
-      pointcloud_[msg->bumper].y = (msg->state == kobuki_msgs::BumperEvent::PRESSED)? +pointcloud_side_y_: 99;
-      break;
-    case kobuki_msgs::BumperEvent::CENTER:       // y-coordinate is always 0
-      pointcloud_[msg->bumper].x = (msg->state == kobuki_msgs::BumperEvent::PRESSED)? +pointcloud_radius_: 99;
-      break;
-    case kobuki_msgs::BumperEvent::RIGHT:
-      pointcloud_[msg->bumper].x = (msg->state == kobuki_msgs::BumperEvent::PRESSED)? +pointcloud_side_x_: 99;
-      pointcloud_[msg->bumper].y = (msg->state == kobuki_msgs::BumperEvent::PRESSED)? -pointcloud_side_y_: 99;
-      break;
-    default:
-      // This cannot happen unless BumperEvent message changes
-      ROS_WARN("Unknown sensor id (%d); ignoring", msg->bumper);
-      break;
+    pointcloud_[0].x = + pointcloud_side_x_;
+    pointcloud_[0].y = + pointcloud_side_y_;
+  }
+  else
+  {
+    pointcloud_[0].x = + FAR_AWAY;
+    pointcloud_[0].y = + FAR_AWAY;
   }
 
+  if ((msg->bumper & kobuki_msgs::SensorState::BUMPER_CENTRE) ||
+      (msg->cliff  & kobuki_msgs::SensorState::CLIFF_CENTRE))
+  {
+    pointcloud_[1].x = + pointcloud_radius_;
+  }
+  else
+  {
+    pointcloud_[1].x = + FAR_AWAY;
+  }
+
+  if ((msg->bumper & kobuki_msgs::SensorState::BUMPER_RIGHT) ||
+      (msg->cliff  & kobuki_msgs::SensorState::CLIFF_RIGHT))
+  {
+    pointcloud_[2].x = + pointcloud_side_x_;
+    pointcloud_[2].y = - pointcloud_side_y_;
+  }
+  else
+  {
+    pointcloud_[2].x = + FAR_AWAY;
+    pointcloud_[2].y = - FAR_AWAY;
+  }
+
+  pointcloud_.header.stamp = msg->header.stamp;
   pointcloud_pub_.publish(pointcloud_);
 }
 
@@ -92,12 +87,10 @@ void Bumper2PcNodelet::onInit()
 
   // bumper/cliff "points" fix coordinates (the others depend on sensor activation/deactivation)
   pointcloud_[0].x = pointcloud_[1].y = pointcloud_[2].x = 0.0;   // +π/2, 0 and -π/2 from x-axis
-  pointcloud_[0].z = pointcloud_[1].z = pointcloud_[2].z = 0.015; // z: elevation from base frame
+  pointcloud_[0].z = pointcloud_[1].z = pointcloud_[2].z = 0.04;  // z: elevation from base frame
 
   pointcloud_pub_  = nh.advertise < pcl::PointCloud <pcl::PointXYZ> > ("pointcloud", 10);
-
-  cliff_event_sub_  = nh.subscribe("cliff_events",  10, &Bumper2PcNodelet::cliffEventCB,  this);
-  bumper_event_sub_ = nh.subscribe("bumper_events", 10, &Bumper2PcNodelet::bumperEventCB, this);
+  core_sensor_sub_ = nh.subscribe("core_sensors", 10, &Bumper2PcNodelet::coreSensorCB, this);
 
   ROS_INFO("Bumper/cliff pointcloud configured at distance %f from base frame", pointcloud_radius_);
 }

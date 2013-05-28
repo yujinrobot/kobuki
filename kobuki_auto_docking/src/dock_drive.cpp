@@ -41,9 +41,9 @@
 ** Defines
 *****************************************************************************/
 
+#define sign(x) (x>0?+1:x<0?-1:0)
 #define stringfy(x) #x
 #define setState(x) {state=x;state_str=stringfy(x);}
-#define setVel(v,w) {vx=v;wz=w;}
 #define setStateVel(x,v,w) {setState(x);setVel(v,w);}
 
 /*****************************************************************************
@@ -63,12 +63,19 @@ DockDrive::DockDrive() :
   , dock_stabilizer(0)
   , dock_detector(0)
   , rotated(0.0)
+  , min_abs_v(0.01)
+  , min_abs_w(0.1)
 {
   pose.setIdentity();
 }
 
 DockDrive::~DockDrive(){;}
 
+void DockDrive::setVel(double v, double w)
+{
+  vx = sign(v) * std::max(std::abs(v), min_abs_v);
+  wz = sign(w) * std::max(std::abs(w), min_abs_w);
+}
 
 void DockDrive::modeShift(const std::string& mode)
 {

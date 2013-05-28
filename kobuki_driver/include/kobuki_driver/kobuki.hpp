@@ -19,6 +19,7 @@
 
 #include <string>
 #include <iomanip>
+#include <ecl/config.hpp>
 #include <ecl/threads.hpp>
 #include <ecl/devices.hpp>
 #include <ecl/threads/mutex.hpp>
@@ -36,11 +37,15 @@
 ** Extern Templates
 *****************************************************************************/
 
-EXP_TEMPLATE template class kobuki_PUBLIC ecl::SigSlotsManager<>;
-EXP_TEMPLATE template class kobuki_PUBLIC ecl::SigSlotsManager<const kobuki::VersionInfo&>;
-EXP_TEMPLATE template class kobuki_PUBLIC ecl::SigSlotsManager<const std::string&>;
-EXP_TEMPLATE template class kobuki_PUBLIC ecl::SigSlotsManager<kobuki::Command::Buffer&>;
-EXP_TEMPLATE template class kobuki_PUBLIC ecl::SigSlotsManager<kobuki::PacketFinderBase::BufferType&>;
+#ifdef ECL_IS_WIN32
+  /* Help windows create common instances of sigslots across kobuki dll
+   * and end user program (otherwise it creates two separate variables!) */
+  EXP_TEMPLATE template class kobuki_PUBLIC ecl::SigSlotsManager<>;
+  EXP_TEMPLATE template class kobuki_PUBLIC ecl::SigSlotsManager<const kobuki::VersionInfo&>;
+  EXP_TEMPLATE template class kobuki_PUBLIC ecl::SigSlotsManager<const std::string&>;
+  EXP_TEMPLATE template class kobuki_PUBLIC ecl::SigSlotsManager<kobuki::Command::Buffer&>;
+  EXP_TEMPLATE template class kobuki_PUBLIC ecl::SigSlotsManager<kobuki::PacketFinderBase::BufferType&>;
+#endif
 
 /*****************************************************************************
  ** Namespaces

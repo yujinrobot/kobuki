@@ -22,17 +22,7 @@
 
 # Kobuki / Yujin stacks
 
-- git:
-    uri: https://github.com/yujinrobot/yujin_ocs.git
-    local-name: yujin_ocs
-    version: groovy-devel
-
-- git:
-    uri: https://github.com/yujinrobot/kobuki_msgs.git
-    local-name: kobuki_msgs
-    version: groovy-devel
-
-- git:
-    uri: https://github.com/yujinrobot/kobuki.git
-    local-name: kobuki
-    version: groovy-devel
+- git: {local-name: yujin_ocs, version: hydro-devel, uri: 'https://github.com/yujinrobot/yujin_ocs.git'}
+- git: {local-name: kobuki_msgs, version: hydro-devel, uri: 'https://github.com/yujinrobot/kobuki_msgs.git'}
+- git: {local-name: kobuki, version: hydro-devel, uri: 'https://github.com/yujinrobot/kobuki.git'}
+- git: {local-name: xacro, version: hydro-devel, uri: 'https://github.com/ros/xacro.git'}
