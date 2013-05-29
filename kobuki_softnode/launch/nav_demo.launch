@@ -1,5 +1,5 @@
 <launch>
-  <arg name="map_name" default="$(find kobuki_softnode)/maps/6th_floor_plan.yaml"/>
+  <arg name="map_name" default="$(find yujin_maps)/maps/6th_floor_plan.yaml"/>
   <include file="$(find kobuki_softnode)/launch/full.launch"/>
 
   <node pkg="fake_localization" name="fake_localization" type="fake_localization">
@@ -7,11 +7,11 @@
   </node>
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-    <rosparam file="$(find turtlebot_navigation)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find turtlebot_navigation)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find turtlebot_navigation)/param/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find turtlebot_navigation)/param/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find turtlebot_navigation)/param/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find kobuki_softnode)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find kobuki_softnode)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find kobuki_softnode)/param/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find kobuki_softnode)/param/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find kobuki_softnode)/param/base_local_planner_params.yaml" command="load" />
     <remap from="cmd_vel" to="mobile_base/commands/velocity"/>
   </node>
 

@@ -23,6 +23,13 @@
   <run_depend>kobuki_msgs</run_depend>
   <run_depend>nodelet</run_depend>
   <run_depend>tf</run_depend>
+  <run_depend>yujin_maps</run_depend>
+  <!-- Non catkin packages --> 
+  <!--
+    <run_depend>kobuki_description</run_depend>
+    <run_depend>move_base</run_depend>
+    <run_depend>map_server</run_depend>
+    -->
 
   <export>
     <nodelet plugin="${prefix}/plugins/nodelet_plugins.xml" />
