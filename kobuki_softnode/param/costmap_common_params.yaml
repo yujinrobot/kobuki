@@ -1,0 +1,17 @@
+max_obstacle_height: 0.60  # assume something like an arm is mounted on top of the robot
+obstacle_range: 2.5
+raytrace_range: 3.0
+robot_radius: 0.18
+inflation_radius: 0.50
+#observation_sources: []
+
+#scan: {data_type: LaserScan, topic: /scan, marking: true, clearing: false}
+
+# Current bump cloud configuration
+bump: {data_type: PointCloud2, topic: mobile_base/sensors/bumper_pointcloud, marking: true, clearing: false}
+
+# These were for the create, but I think weren't getting used. 
+# Can we merge to a common configuration - DJS?
+# scan: {data_type: LaserScan, topic: /scan, marking: true, clearing: true}
+# left_bump: {data_type: PointCloud2, topic: /bump_sensor_left, marking: true, clearing: true}
+# right_bump: {data_type: PointCloud2, topic: /bump_sensor_right, marking: true, clearing: true}
