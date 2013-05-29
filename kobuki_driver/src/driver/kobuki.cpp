@@ -206,17 +206,19 @@ void Kobuki::spin()
       }
       catch (const ecl::StandardException &e)
       {
+        // windows throws OpenError if not connected
         if (e.flag() == ecl::NotFoundError) {
           sig_info.emit("device does not (yet) available on this port, waiting...");
-          ecl::Sleep(5)(); // five seconds
-          is_connected = false;
-          is_alive = false;
-          continue;
+        } else if (e.flag() == ecl::OpenError) {
+          sig_info.emit("device failed to open, waiting... [" + e.what() + "]");
         } else {
-          // ultimately need some good way of handling here - even if just to throw sig_error.emit calls
-          // instead of rethrowing an unhandled exception
+          // This is bad - some unknown error we're not handling! But at least throw and show what error we came across.
           throw ecl::StandardException(LOC, e);
         }
+        ecl::Sleep(5)(); // five seconds
+        is_connected = false;
+        is_alive = false;
+        continue;
       }
     }
 
