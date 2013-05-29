@@ -20,6 +20,11 @@ target_link_libraries(kobuki_softnode ${catkin_LIBRARIES})
 add_library(softkobuki_nodelet src/nodelet/kobuki_nodelet.cpp)
 target_link_libraries(softkobuki_nodelet kobuki_softnode)
 
+
+install(TARGETS kobuki_softnode
+        DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+)
+
 install(TARGETS softkobuki_nodelet
         DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
