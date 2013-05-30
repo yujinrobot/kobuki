@@ -155,46 +155,6 @@ void Kobuki::spin()
     /*********************
      ** Checking Connection
      **********************/
-#ifdef ECL_IS_WIN32
-    /*
-     * The _access() or access()(deprecated) in Windows is not work as it of linux
-     * for checking existence of communication port. However _access() says
-     * "Access is denied" or "Invalid parameter" when a communication port is opened
-     * by someone.
-     *
-     * This had better be replaced by new scheme for Windows; To call serial.open(...)
-     * directly, and detect disconnection using WaitCommEvent in another thread
-     * owned by Serial object.
-     */
-	_access( parameters.device_port.c_str(), 0 );
-	int errnum = 0;
-	_get_errno(&errnum);
-	if( errnum != EACCES && errnum != EINVAL) {
-#else
-//    if( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
-#endif
-//      sig_error.emit("device does not exist.");
-//      is_connected = false;
-//      is_alive = false;
-//      event_manager.update(is_connected, is_alive);
-//
-//      if( serial.open() )
-//      {
-//        sig_info.emit("device is still open, closing it and will try to open it again.");
-//        serial.close();
-//      }
-//      //try_open();
-//      ecl::Sleep waiting(5); //for 5sec.
-#ifdef ECL_IS_WIN32
-      while( true ) {
-        _access( parameters.device_port.c_str(), 0 );
-        _get_errno(&errnum);
-        if( errnum == EACCES || errnum == EINVAL)
-        	break;
-      }
-	}
-#else
-#endif
     if ( !serial.open() ) {
       try {
         // this will throw exceptions - NotFoundError is the important one, handle it
