@@ -1,0 +1,8 @@
+<library path="lib/libkobuki_shooter_controller_nodelet">
+  <class name="kobuki_shooter/ShooterControllerNodelet" type="kobuki::ShooterControllerNodelet" base_class_type="nodelet::Nodelet">
+    <description>
+      Nodelet for the Kobuki Shooter controller
+    </description>
+  </class>
+</library>
+

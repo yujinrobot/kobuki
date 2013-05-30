@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package>
+  <name>kobuki_shooter</name>
+  <version>0.0.1</version>
+  <description>A controller to use Kobuki to shot things</description>
+  <maintainer email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</maintainer>
+  <license>BSD</license>
+  <url type="website">http://ros.org/wiki/kobuki_shooter</url>
+  <author email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <build_depend>ecl_threads</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>kobuki_msgs</build_depend>
+  <build_depend>nodelet</build_depend>
+  <build_depend>pluginlib</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>yocs_controllers</build_depend>
+  
+  <run_depend>ecl_threads</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>kobuki_msgs</run_depend>
+  <run_depend>nodelet</run_depend>
+  <run_depend>pluginlib</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>yocs_controllers</run_depend>
+
+  <export>
+    <nodelet plugin="${prefix}/plugins/nodelet_plugins.xml"/>
+  </export>
+</package>
