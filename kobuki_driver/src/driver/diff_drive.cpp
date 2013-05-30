@@ -165,8 +165,8 @@ void DiffDrive::velocityCommands(const double &vx, const double &wz) {
 
 void DiffDrive::velocityCommands(const short &cmd_speed, const short &cmd_radius) {
   velocity_mutex.lock();
-  speed = (double)cmd_speed;   // In [mm/s]
-  radius = (double)cmd_radius; // In [mm]
+  speed = static_cast<double>(cmd_speed);   // In [mm/s]
+  radius = static_cast<double>(cmd_radius); // In [mm]
   velocity_mutex.unlock();
   return;
 }
@@ -181,9 +181,9 @@ std::vector<short> DiffDrive::velocityCommands() {
 }
 
 short DiffDrive::bound(const double &value) {
-  if (value > (double)SHRT_MAX) return SHRT_MAX;
-  if (value < (double)SHRT_MIN) return SHRT_MIN;
-  return (short)value;
+  if (value > static_cast<double>(SHRT_MAX)) return SHRT_MAX;
+  if (value < static_cast<double>(SHRT_MIN)) return SHRT_MIN;
+  return static_cast<short>(value);
 }
 
 } // namespace kobuki
