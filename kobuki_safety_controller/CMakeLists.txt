@@ -8,8 +8,8 @@ catkin_package(
    CATKIN_DEPENDS roscpp nodelet pluginlib std_msgs geometry_msgs kobuki_msgs yocs_controllers ecl_threads
 )
 
-include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
-include_directories(include)
+include_directories(include
+                    ${catkin_INCLUDE_DIRS})
 
 add_library(kobuki_safety_controller_nodelet src/nodelet.cpp)
 target_link_libraries(kobuki_safety_controller_nodelet ${catkin_LIBRARIES})
