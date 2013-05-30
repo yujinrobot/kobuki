@@ -210,7 +210,7 @@ void Kobuki::spin()
         if (e.flag() == ecl::NotFoundError) {
           sig_info.emit("device does not (yet) available on this port, waiting...");
         } else if (e.flag() == ecl::OpenError) {
-          sig_info.emit("device failed to open, waiting... [" + e.what() + "]");
+          sig_info.emit("device failed to open, waiting... [" + std::string(e.what()) + "]");
         } else {
           // This is bad - some unknown error we're not handling! But at least throw and show what error we came across.
           throw ecl::StandardException(LOC, e);
