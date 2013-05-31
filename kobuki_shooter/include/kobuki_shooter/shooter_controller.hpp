@@ -105,6 +105,10 @@ public:
     sound_command_publisher_ = nh_.advertise<kobuki_msgs::Sound>("commands/sound", 1);
     velocity_command_publisher_ = nh_.advertise<geometry_msgs::Twist>("cmd_vel", 10);
 
+    nh_.param("resources_path", resources_path_, std::string("/"));
+    if (resources_path_[resources_path_.length() - 1] != '/')
+      resources_path_ += "/";
+
     shooting_cmd_vel_.reset(new geometry_msgs::Twist);
     return true;
   };
@@ -117,6 +121,7 @@ public:
 private:
   ros::NodeHandle nh_;
   std::string name_;
+  std::string resources_path_;
   ros::Subscriber enable_controller_subscriber_, disable_controller_subscriber_;
   ros::Subscriber bumper_event_subscriber_, cliff_event_subscriber_, wheel_event_subscriber_;
   ros::Subscriber button_events_subscriber_, reset_safety_states_subscriber_;
@@ -314,6 +319,8 @@ void ShooterController::cliffEventCB(const kobuki_msgs::CliffEventConstPtr msg)
       idle_ = true;
       stop();
       shooting_cmd_vel_->linear.x = 0.0;
+
+      system(("rosrun kobuki_shooter play_sound.bash " + resources_path_ + "scary.wav").c_str());
     }
   }
   else
@@ -377,6 +384,8 @@ void ShooterController::bumperEventCB(const kobuki_msgs::BumperEventConstPtr msg
       idle_ = true;
       stop();
       shooting_cmd_vel_->linear.x = 0.0;
+
+      system(("rosrun kobuki_shooter play_sound.bash " + resources_path_ + "sick.wav").c_str());
     }
   }
   else
@@ -424,6 +433,8 @@ void ShooterController::wheelEventCB(const kobuki_msgs::WheelDropEventConstPtr m
         idle_ = true;
         stop();
         shooting_cmd_vel_->linear.x = 0.0;
+
+        system(("rosrun kobuki_shooter play_sound.bash " + resources_path_ + "scary.wav").c_str());
       }
     }
     else
@@ -495,6 +506,8 @@ void ShooterController::buttonEventCB(const kobuki_msgs::DigitalInputEventConstP
       charging_ = false;
       shooting_ = true;
       ROS_WARN_STREAM("Fire! [" << name_ << "]");
+
+      system(("rosrun kobuki_shooter play_sound.bash " + resources_path_ + "watchout.wav").c_str());
     }
   }
 };
@@ -602,11 +615,11 @@ void ShooterController::turn(bool left)
   msg_->angular.y = 0.0;
   if (left)
   {
-    msg_->angular.z = 0.5;
+    msg_->angular.z = 1.0;
   }
   else
   {
-    msg_->angular.z = -0.5;
+    msg_->angular.z = -1.0;
   }
   velocity_command_publisher_.publish(msg_);
   return;
