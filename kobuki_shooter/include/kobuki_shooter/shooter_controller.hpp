@@ -42,6 +42,7 @@
 #include <yocs_controllers/default_controller.hpp>
 #include <std_msgs/Empty.h>
 #include <geometry_msgs/Twist.h>
+#include <kobuki_msgs/Sound.h>
 #include <kobuki_msgs/BumperEvent.h>
 #include <kobuki_msgs/CliffEvent.h>
 #include <kobuki_msgs/DigitalInputEvent.h>
@@ -101,6 +102,7 @@ public:
     reset_safety_states_subscriber_ = nh_.subscribe("reset", 10, &ShooterController::resetSafetyStatesCB, this);
     led_1_command_publisher_ = nh_.advertise<kobuki_msgs::Led>("commands/led1", 1);
     led_2_command_publisher_ = nh_.advertise<kobuki_msgs::Led>("commands/led2", 1);
+    sound_command_publisher_ = nh_.advertise<kobuki_msgs::Sound>("commands/sound", 1);
     velocity_command_publisher_ = nh_.advertise<geometry_msgs::Twist>("cmd_vel", 10);
 
     shooting_cmd_vel_.reset(new geometry_msgs::Twist);
@@ -118,7 +120,8 @@ private:
   ros::Subscriber enable_controller_subscriber_, disable_controller_subscriber_;
   ros::Subscriber bumper_event_subscriber_, cliff_event_subscriber_, wheel_event_subscriber_;
   ros::Subscriber button_events_subscriber_, reset_safety_states_subscriber_;
-  ros::Publisher led_1_command_publisher_, led_2_command_publisher_, velocity_command_publisher_;
+  ros::Publisher led_1_command_publisher_, led_2_command_publisher_, sound_command_publisher_;
+  ros::Publisher velocity_command_publisher_;
   bool wheel_left_dropped_, wheel_right_dropped_, wheel_dropped_;
   bool bumper_left_pressed_, bumper_center_pressed_, bumper_right_pressed_, bumper_pressed_;
   bool cliff_left_detected_, cliff_center_detected_, cliff_right_detected_, cliff_detected_;
@@ -193,6 +196,13 @@ private:
   double last_blink_time_;
   double blink_freq_;
   bool led_1_;
+
+  /**
+   * Play beeps at beep_freq_ rate
+   */
+  void beep();
+  double last_beep_time_;
+  double beep_freq_;
 
   /**
    * Increase Kobuki's shooting speed
@@ -541,6 +551,20 @@ void ShooterController::blink()
   return;
 }
 
+void ShooterController::beep()
+{
+  double now = ros::Time::now().toSec();
+  double delta_t = now - last_beep_time_;
+  if (delta_t > (1 / beep_freq_))
+  {
+    last_beep_time_ = now;
+    kobuki_msgs::SoundPtr msg(new kobuki_msgs::Sound);
+    msg->value = kobuki_msgs::Sound::BUTTON;
+    sound_command_publisher_.publish(msg);
+  }
+  return;
+}
+
 void ShooterController::charge()
 {
   if (shooting_cmd_vel_->linear.x == 0.0)
@@ -552,7 +576,11 @@ void ShooterController::charge()
     shooting_cmd_vel_->linear.x = shooting_cmd_vel_->linear.x * 1.1;
   }
   ROS_INFO_STREAM("Shooting speed now at " << shooting_cmd_vel_->linear.x << " m/s. [" << name_ << "]");
-  // TODO: play sound, which reflects charging level
+
+  // play sound, which reflects charging level
+  beep_freq_ = shooting_cmd_vel_->linear.x*20.0 + 0.4;
+  beep();
+
   // TODO: play with LEDs, which reflects charging level
   return;
 }

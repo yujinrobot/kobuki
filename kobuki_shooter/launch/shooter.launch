@@ -10,6 +10,7 @@
     <remap from="kobuki_shooter_controller/events/cliff" to="mobile_base/events/cliff"/>
     <remap from="kobuki_shooter_controller/events/wheel_drop" to="mobile_base/events/wheel_drop"/>
     <remap from="kobuki_shooter_controller/events/digital_input" to="mobile_base/events/digital_input"/>
+    <remap from="kobuki_shooter_controller/commands/sound" to="mobile_base/commands/sound"/>
     <remap from="kobuki_shooter_controller/commands/led1" to="mobile_base/commands/led1"/>
     <remap from="kobuki_shooter_controller/commands/led2" to="mobile_base/commands/led2"/>
     <remap from="kobuki_shooter_controller/cmd_vel" to="mobile_base/commands/velocity"/>
