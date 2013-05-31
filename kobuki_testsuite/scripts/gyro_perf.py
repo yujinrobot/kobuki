@@ -16,6 +16,7 @@ from geometry_msgs.msg import Pose2D
 
 from tf.transformations import euler_from_quaternion
 from math import degrees, radians
+from numpy import mod
 
 #from turtlebot_calibration.msg import ScanAngle
 from kobuki_testsuite.msg import ScanAngle
