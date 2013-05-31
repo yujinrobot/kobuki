@@ -8,8 +8,7 @@ catkin_package(
    CATKIN_DEPENDS roscpp nodelet pluginlib std_msgs kobuki_msgs yocs_controllers
 )
 
-include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
-include_directories(include)
+include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_library(bump_blink_controller_nodelet src/nodelet.cpp)
 target_link_libraries(bump_blink_controller_nodelet ${catkin_LIBRARIES})
