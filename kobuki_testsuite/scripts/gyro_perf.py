@@ -4,8 +4,6 @@
 import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
 
-from utils import wrap_to_pi
-
 import time
 from math import pi
 from kobuki_msgs.msg import ButtonEvent
@@ -21,6 +19,12 @@ from math import degrees, radians
 
 #from turtlebot_calibration.msg import ScanAngle
 from kobuki_testsuite.msg import ScanAngle
+
+def wrap_to_pi(x):
+    a = mod(mod(x,2*pi)+2*pi, 2*pi)
+    if (a > pi):
+      a -= 2*pi
+    return a
 
 class Tester(object):
   def __init__(self):
