@@ -1,0 +1,7 @@
+<launch>
+	<node pkg="kobuki_node" type="getYaw.py" name="getYaw">
+		<remap from="imu" to="/mobile_base/sensors/imu_data"/>
+		<remap from="angle" to="/mobile_base/sensors/gyro/angle"/>
+		<remap from="angle_rate" to="/mobile_base/sensors/gyro/angle_rate"/>
+	</node>
+</launch>

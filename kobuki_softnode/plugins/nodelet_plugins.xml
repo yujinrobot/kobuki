@@ -1,0 +1,8 @@
+<library path="lib/libsoftkobuki_nodelet">
+  <class name="kobuki_softnode/SoftKobukiNodelet" type="kobuki::SoftKobukiNodelet" base_class_type="nodelet::Nodelet">
+    <description>
+      Nodelet version of the soft Kobuki node
+    </description>
+  </class>
+</library>
+
