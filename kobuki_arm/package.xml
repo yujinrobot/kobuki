@@ -1,6 +1,6 @@
 <package>
   <name>kobuki_arm</name>
-  <version>0.3.8</version>
+  <version>0.3.9</version>
   <description>
     Experimental code for controlling an arm on top of Turtlebot (DO NOT USE)   
   </description>

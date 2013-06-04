@@ -1,11 +1,10 @@
 <?xml version="1.0"?>
 <package>
   <name>kobuki_softnode</name>
-  <version>0.0.0</version>
+  <version>0.3.9</version>
   <description>
     ROS nodelet for fake Kobuki.
   </description>
-
   
   <author email="jihoonl@yujinrobot.com">Jihoon Lee</author>
   <maintainer email="jihoonl@yujinrobot.com">Jihoon Lee</maintainer>
