@@ -137,6 +137,8 @@ public:
   //std::string getDebugStream() { return debug_stream.str(); }
   //std::ostringstream debug_stream;
 
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
 private:
   bool is_enabled, can_run;
 
