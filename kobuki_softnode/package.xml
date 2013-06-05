@@ -14,13 +14,17 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roscpp</build_depend>
+  <build_depend>geometry_msgs</build_depend>
   <build_depend>sensor_msgs</build_depend>
   <build_depend>kobuki_msgs</build_depend>
+  <build_depend>nav_msgs</build_depend>
   <build_depend>nodelet</build_depend>
   <build_depend>tf</build_depend>
   <run_depend>roscpp</run_depend>
+  <run_depend>geometry_msgs</run_depend>
   <run_depend>sensor_msgs</run_depend>
   <run_depend>kobuki_msgs</run_depend>
+  <run_depend>nav_msgs</run_depend>
   <run_depend>nodelet</run_depend>
   <run_depend>tf</run_depend>
   <run_depend>yujin_maps</run_depend>
