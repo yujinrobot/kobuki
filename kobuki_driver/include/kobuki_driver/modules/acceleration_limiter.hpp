@@ -72,8 +72,7 @@ public:
    *
    * What is the limit?
    *
-   * @param speed : ..
-   * @param radius : ..
+   * @param command : translation and angular velocity components in a 2-dim vector.
    */
   std::vector<double> limit(const std::vector<double> &command) { return limit(command[0], command[1]); }
 
