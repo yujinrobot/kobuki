@@ -69,76 +69,77 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00022"></a>00022 <span class="preprocessor">#include &lt;stdint.h&gt;</span>
 <a name="l00023"></a>00023 <span class="preprocessor">#include &lt;ecl/mobile_robot.hpp&gt;</span>
 <a name="l00024"></a>00024 <span class="preprocessor">#include &lt;ecl/threads/mutex.hpp&gt;</span>
-<a name="l00025"></a>00025 
-<a name="l00026"></a>00026 <span class="comment">/*****************************************************************************</span>
-<a name="l00027"></a>00027 <span class="comment">** Namespaces</span>
-<a name="l00028"></a>00028 <span class="comment">*****************************************************************************/</span>
-<a name="l00029"></a>00029 
-<a name="l00030"></a>00030 <span class="keyword">namespace </span>kobuki {
-<a name="l00031"></a>00031 
-<a name="l00032"></a>00032 <span class="comment">/*****************************************************************************</span>
-<a name="l00033"></a>00033 <span class="comment">** Interfaces</span>
-<a name="l00034"></a>00034 <span class="comment">*****************************************************************************/</span>
-<a name="l00035"></a>00035 
-<a name="l00036"></a><a class="code" href="classkobuki_1_1DiffDrive.html">00036</a> <span class="keyword">class </span><a class="code" href="classkobuki_1_1DiffDrive.html">DiffDrive</a> {
-<a name="l00037"></a>00037 <span class="keyword">public</span>:
-<a name="l00038"></a>00038   <a class="code" href="classkobuki_1_1DiffDrive.html#a5b3265fdb9be865c17e26bdacdfd6f07">DiffDrive</a>();
-<a name="l00039"></a><a class="code" href="classkobuki_1_1DiffDrive.html#ac114f4961247b3588377634b801c9d59">00039</a>   <span class="keyword">const</span> ecl::DifferentialDrive::Kinematics&amp; <a class="code" href="classkobuki_1_1DiffDrive.html#ac114f4961247b3588377634b801c9d59">kinematics</a>() { <span class="keywordflow">return</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a163c81a5f6489947408301867adbd240">diff_drive_kinematics</a>; }
-<a name="l00040"></a>00040   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a1655bb061ec059c98a646f7dcdecd949" title="Updates the odometry from firmware stamps and encoders.">update</a>(<span class="keyword">const</span> uint16_t &amp;time_stamp,
-<a name="l00041"></a>00041               <span class="keyword">const</span> uint16_t &amp;left_encoder,
-<a name="l00042"></a>00042               <span class="keyword">const</span> uint16_t &amp;right_encoder,
-<a name="l00043"></a>00043               ecl::Pose2D&lt;double&gt; &amp;pose_update,
-<a name="l00044"></a>00044               ecl::linear_algebra::Vector3d &amp;pose_update_rates);
-<a name="l00045"></a>00045   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1DiffDrive.html#aa2fcd8f4444fa80ec2ea58dbf32b5751">reset</a>(<span class="keyword">const</span> <span class="keywordtype">double</span>&amp; current_heading);
-<a name="l00046"></a>00046   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1DiffDrive.html#adbda4aac1c7fc982a3f4de3ea969118f">getWheelJointStates</a>(<span class="keywordtype">double</span> &amp;wheel_left_angle, <span class="keywordtype">double</span> &amp;wheel_left_angle_rate,
-<a name="l00047"></a>00047                             <span class="keywordtype">double</span> &amp;wheel_right_angle, <span class="keywordtype">double</span> &amp;wheel_right_angle_rate);
-<a name="l00048"></a>00048   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1DiffDrive.html#ac03a97b1ee8b36a7b7d02ded9f28dd8a">setVelocityCommands</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;vx, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;wz);
-<a name="l00049"></a>00049   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a6cce78209cb886b4fdd34e242d06e2d4">velocityCommands</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;vx, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;wz);
-<a name="l00050"></a>00050   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a6cce78209cb886b4fdd34e242d06e2d4">velocityCommands</a>(<span class="keyword">const</span> <span class="keywordtype">short</span> &amp;cmd_speed, <span class="keyword">const</span> <span class="keywordtype">short</span> &amp;cmd_radius);
-<a name="l00051"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a4cc6f20318958ef7c4c41150ab5b38b3">00051</a>   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a4cc6f20318958ef7c4c41150ab5b38b3">velocityCommands</a>(<span class="keyword">const</span> std::vector&lt;double&gt; &amp;cmd) { <a class="code" href="classkobuki_1_1DiffDrive.html#a4cc6f20318958ef7c4c41150ab5b38b3">velocityCommands</a>(cmd[0], cmd[1]); }
-<a name="l00052"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a197a541c09d043422da4961a916757d4">00052</a>   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a197a541c09d043422da4961a916757d4">velocityCommands</a>(<span class="keyword">const</span> std::vector&lt;short&gt;  &amp;cmd) { <a class="code" href="classkobuki_1_1DiffDrive.html#a197a541c09d043422da4961a916757d4">velocityCommands</a>(cmd[0], cmd[1]); }
-<a name="l00053"></a>00053 
-<a name="l00054"></a>00054   <span class="comment">/*********************</span>
-<a name="l00055"></a>00055 <span class="comment">  ** Command Accessors</span>
-<a name="l00056"></a>00056 <span class="comment">  **********************/</span>
-<a name="l00057"></a>00057   std::vector&lt;short&gt; <a class="code" href="classkobuki_1_1DiffDrive.html#a6cce78209cb886b4fdd34e242d06e2d4">velocityCommands</a>();
-<a name="l00058"></a>00058 
-<a name="l00059"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a5ae1e62efc9d2bc022e1ec153c00ef7c">00059</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a5ae1e62efc9d2bc022e1ec153c00ef7c">linearVelocity</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code" href="classkobuki_1_1DiffDrive.html#ac02cea6f6f4e072326be6df76b5b3adb">point_velocity</a>[0]; }
-<a name="l00060"></a><a class="code" href="classkobuki_1_1DiffDrive.html#adfc4ce4a5501c76292aad9d59d73cc74">00060</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#adfc4ce4a5501c76292aad9d59d73cc74">angularVelocity</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code" href="classkobuki_1_1DiffDrive.html#ac02cea6f6f4e072326be6df76b5b3adb">point_velocity</a>[1]; }
-<a name="l00061"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a91c8ef73aef454b10edc3364c864d677">00061</a>   std::vector&lt;double&gt; <a class="code" href="classkobuki_1_1DiffDrive.html#a91c8ef73aef454b10edc3364c864d677">pointVelocity</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code" href="classkobuki_1_1DiffDrive.html#ac02cea6f6f4e072326be6df76b5b3adb">point_velocity</a>; }
-<a name="l00062"></a>00062 
-<a name="l00063"></a>00063   <span class="comment">/*********************</span>
-<a name="l00064"></a>00064 <span class="comment">  ** Property Accessors</span>
-<a name="l00065"></a>00065 <span class="comment">  **********************/</span>
-<a name="l00066"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a32e069cb09848f2bf2c45f697b31a62f">00066</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a32e069cb09848f2bf2c45f697b31a62f">wheel_bias</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a5216bed924c0220609960542fa27a38d">bias</a>; }
-<a name="l00067"></a>00067 
-<a name="l00068"></a>00068 <span class="keyword">private</span>:
-<a name="l00069"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a8dc0a500edd3524833540839b1d145a6">00069</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a8dc0a500edd3524833540839b1d145a6">last_timestamp</a>;
-<a name="l00070"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a9cc7021c7beeb40e163f60d0260e8570">00070</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a48835379938377e577583e5cd70b97ce">last_velocity_left</a>, <a class="code" href="classkobuki_1_1DiffDrive.html#a9cc7021c7beeb40e163f60d0260e8570">last_velocity_right</a>;
-<a name="l00071"></a><a class="code" href="classkobuki_1_1DiffDrive.html#af8d700fcf943ae91ce7bb96c24edb7be">00071</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#af8d700fcf943ae91ce7bb96c24edb7be">last_diff_time</a>;
-<a name="l00072"></a>00072 
-<a name="l00073"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a5486e5f69560bf760c44893babcc03a4">00073</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> <a class="code" href="classkobuki_1_1DiffDrive.html#aae2baf5652d3cf5d17b9430df74460bc">last_tick_left</a>, <a class="code" href="classkobuki_1_1DiffDrive.html#a5486e5f69560bf760c44893babcc03a4">last_tick_right</a>;
-<a name="l00074"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a799258e6537987af4f1e2a3d1750e9a3">00074</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a3a5f3a028bad67a5dac076e3fc9d8d22">last_rad_left</a>, <a class="code" href="classkobuki_1_1DiffDrive.html#a799258e6537987af4f1e2a3d1750e9a3">last_rad_right</a>;
-<a name="l00075"></a>00075 
-<a name="l00076"></a>00076   <span class="comment">//double v, w; // In [m/s] and [rad/s]</span>
-<a name="l00077"></a><a class="code" href="classkobuki_1_1DiffDrive.html#ac02cea6f6f4e072326be6df76b5b3adb">00077</a>   std::vector&lt;double&gt; <a class="code" href="classkobuki_1_1DiffDrive.html#ac02cea6f6f4e072326be6df76b5b3adb">point_velocity</a>; <span class="comment">//(vx, wz), in [m/s] and [rad/s]</span>
-<a name="l00078"></a><a class="code" href="classkobuki_1_1DiffDrive.html#ad2507b8a204c5e8e02c25f40c1787eff">00078</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#ad2507b8a204c5e8e02c25f40c1787eff">radius</a>; <span class="comment">// In [mm]</span>
-<a name="l00079"></a><a class="code" href="classkobuki_1_1DiffDrive.html#ab035b44a28ff971feb1e8806c8ccca59">00079</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#ab035b44a28ff971feb1e8806c8ccca59">speed</a>;  <span class="comment">// In [mm/s]</span>
-<a name="l00080"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a5216bed924c0220609960542fa27a38d">00080</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a5216bed924c0220609960542fa27a38d">bias</a>; <span class="comment">//wheelbase, wheel_to_wheel, in [m]</span>
-<a name="l00081"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a8074f33732a3dd52f6ba2fc00223727d">00081</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a8074f33732a3dd52f6ba2fc00223727d">wheel_radius</a>;
-<a name="l00082"></a><a class="code" href="classkobuki_1_1DiffDrive.html#aa7fec6b3a36eec177d79b99cd065d20a">00082</a>   <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1DiffDrive.html#aa7fec6b3a36eec177d79b99cd065d20a">imu_heading_offset</a>;
-<a name="l00083"></a><a class="code" href="classkobuki_1_1DiffDrive.html#ac61d00b9dfa7e395e42e8440124c0d46">00083</a>   <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#ac61d00b9dfa7e395e42e8440124c0d46">tick_to_rad</a>;
-<a name="l00084"></a>00084 
-<a name="l00085"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a163c81a5f6489947408301867adbd240">00085</a>   ecl::DifferentialDrive::Kinematics <a class="code" href="classkobuki_1_1DiffDrive.html#a163c81a5f6489947408301867adbd240">diff_drive_kinematics</a>;
-<a name="l00086"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a7f9245868c140c829a98d5a94ffbeb3b">00086</a>   ecl::Mutex <a class="code" href="classkobuki_1_1DiffDrive.html#a7f9245868c140c829a98d5a94ffbeb3b">velocity_mutex</a>, <a class="code" href="classkobuki_1_1DiffDrive.html#a986e84bef0c53fb84096b2c36594f05e">state_mutex</a>;
-<a name="l00087"></a>00087 
-<a name="l00088"></a>00088   <span class="comment">// Utility</span>
-<a name="l00089"></a>00089   <span class="keywordtype">short</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a8fb421cd060423c97ef74ce95ad45e16">bound</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;value);
-<a name="l00090"></a>00090 };
-<a name="l00091"></a>00091 
-<a name="l00092"></a>00092 } <span class="comment">// namespace kobuki</span>
-<a name="l00093"></a>00093 
-<a name="l00094"></a>00094 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_DIFF_DRIVE_HPP_ */</span>
+<a name="l00025"></a>00025 <span class="preprocessor">#include &quot;../macros.hpp&quot;</span>
+<a name="l00026"></a>00026 
+<a name="l00027"></a>00027 <span class="comment">/*****************************************************************************</span>
+<a name="l00028"></a>00028 <span class="comment">** Namespaces</span>
+<a name="l00029"></a>00029 <span class="comment">*****************************************************************************/</span>
+<a name="l00030"></a>00030 
+<a name="l00031"></a>00031 <span class="keyword">namespace </span>kobuki {
+<a name="l00032"></a>00032 
+<a name="l00033"></a>00033 <span class="comment">/*****************************************************************************</span>
+<a name="l00034"></a>00034 <span class="comment">** Interfaces</span>
+<a name="l00035"></a>00035 <span class="comment">*****************************************************************************/</span>
+<a name="l00036"></a>00036 
+<a name="l00037"></a><a class="code" href="classkobuki_1_1DiffDrive.html">00037</a> <span class="keyword">class </span><a class="code" href="macros_8hpp.html#a4b92966a9fada0eb71fe09d15a768343">kobuki_PUBLIC</a> <a class="code" href="classkobuki_1_1DiffDrive.html">DiffDrive</a> {
+<a name="l00038"></a>00038 <span class="keyword">public</span>:
+<a name="l00039"></a>00039   <a class="code" href="classkobuki_1_1DiffDrive.html">DiffDrive</a>();
+<a name="l00040"></a><a class="code" href="classkobuki_1_1DiffDrive.html#ac114f4961247b3588377634b801c9d59">00040</a>   <span class="keyword">const</span> ecl::DifferentialDrive::Kinematics&amp; <a class="code" href="classkobuki_1_1DiffDrive.html#ac114f4961247b3588377634b801c9d59">kinematics</a>() { <span class="keywordflow">return</span> diff_drive_kinematics; }
+<a name="l00041"></a>00041   <span class="keywordtype">void</span> update(<span class="keyword">const</span> uint16_t &amp;time_stamp,
+<a name="l00042"></a>00042               <span class="keyword">const</span> uint16_t &amp;left_encoder,
+<a name="l00043"></a>00043               <span class="keyword">const</span> uint16_t &amp;right_encoder,
+<a name="l00044"></a>00044               ecl::Pose2D&lt;double&gt; &amp;pose_update,
+<a name="l00045"></a>00045               ecl::linear_algebra::Vector3d &amp;pose_update_rates);
+<a name="l00046"></a>00046   <span class="keywordtype">void</span> reset(<span class="keyword">const</span> <span class="keywordtype">double</span>&amp; current_heading);
+<a name="l00047"></a>00047   <span class="keywordtype">void</span> getWheelJointStates(<span class="keywordtype">double</span> &amp;wheel_left_angle, <span class="keywordtype">double</span> &amp;wheel_left_angle_rate,
+<a name="l00048"></a>00048                             <span class="keywordtype">double</span> &amp;wheel_right_angle, <span class="keywordtype">double</span> &amp;wheel_right_angle_rate);
+<a name="l00049"></a>00049   <span class="keywordtype">void</span> setVelocityCommands(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;vx, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;wz);
+<a name="l00050"></a>00050   <span class="keywordtype">void</span> velocityCommands(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;vx, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;wz);
+<a name="l00051"></a>00051   <span class="keywordtype">void</span> velocityCommands(<span class="keyword">const</span> <span class="keywordtype">short</span> &amp;cmd_speed, <span class="keyword">const</span> <span class="keywordtype">short</span> &amp;cmd_radius);
+<a name="l00052"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a4cc6f20318958ef7c4c41150ab5b38b3">00052</a>   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a4cc6f20318958ef7c4c41150ab5b38b3">velocityCommands</a>(<span class="keyword">const</span> std::vector&lt;double&gt; &amp;cmd) { <a class="code" href="classkobuki_1_1DiffDrive.html#a4cc6f20318958ef7c4c41150ab5b38b3">velocityCommands</a>(cmd[0], cmd[1]); }
+<a name="l00053"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a197a541c09d043422da4961a916757d4">00053</a>   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a197a541c09d043422da4961a916757d4">velocityCommands</a>(<span class="keyword">const</span> std::vector&lt;short&gt;  &amp;cmd) { <a class="code" href="classkobuki_1_1DiffDrive.html#a197a541c09d043422da4961a916757d4">velocityCommands</a>(cmd[0], cmd[1]); }
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055   <span class="comment">/*********************</span>
+<a name="l00056"></a>00056 <span class="comment">  ** Command Accessors</span>
+<a name="l00057"></a>00057 <span class="comment">  **********************/</span>
+<a name="l00058"></a>00058   std::vector&lt;short&gt; velocityCommands();
+<a name="l00059"></a>00059 
+<a name="l00060"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a5ae1e62efc9d2bc022e1ec153c00ef7c">00060</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a5ae1e62efc9d2bc022e1ec153c00ef7c">linearVelocity</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> point_velocity[0]; }
+<a name="l00061"></a><a class="code" href="classkobuki_1_1DiffDrive.html#adfc4ce4a5501c76292aad9d59d73cc74">00061</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#adfc4ce4a5501c76292aad9d59d73cc74">angularVelocity</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> point_velocity[1]; }
+<a name="l00062"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a91c8ef73aef454b10edc3364c864d677">00062</a>   std::vector&lt;double&gt; <a class="code" href="classkobuki_1_1DiffDrive.html#a91c8ef73aef454b10edc3364c864d677">pointVelocity</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> point_velocity; }
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064   <span class="comment">/*********************</span>
+<a name="l00065"></a>00065 <span class="comment">  ** Property Accessors</span>
+<a name="l00066"></a>00066 <span class="comment">  **********************/</span>
+<a name="l00067"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a32e069cb09848f2bf2c45f697b31a62f">00067</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a32e069cb09848f2bf2c45f697b31a62f">wheel_bias</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code" href="velocity__commands_8cpp.html#aa6231a5027112a1cf56c610e6d7d91c5">bias</a>; }
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069 <span class="keyword">private</span>:
+<a name="l00070"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a8dc0a500edd3524833540839b1d145a6">00070</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a8dc0a500edd3524833540839b1d145a6">last_timestamp</a>;
+<a name="l00071"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a9cc7021c7beeb40e163f60d0260e8570">00071</a>   <span class="keywordtype">double</span> last_velocity_left, <a class="code" href="classkobuki_1_1DiffDrive.html#a9cc7021c7beeb40e163f60d0260e8570">last_velocity_right</a>;
+<a name="l00072"></a><a class="code" href="classkobuki_1_1DiffDrive.html#af8d700fcf943ae91ce7bb96c24edb7be">00072</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#af8d700fcf943ae91ce7bb96c24edb7be">last_diff_time</a>;
+<a name="l00073"></a>00073 
+<a name="l00074"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a5486e5f69560bf760c44893babcc03a4">00074</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> last_tick_left, <a class="code" href="classkobuki_1_1DiffDrive.html#a5486e5f69560bf760c44893babcc03a4">last_tick_right</a>;
+<a name="l00075"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a799258e6537987af4f1e2a3d1750e9a3">00075</a>   <span class="keywordtype">double</span> last_rad_left, <a class="code" href="classkobuki_1_1DiffDrive.html#a799258e6537987af4f1e2a3d1750e9a3">last_rad_right</a>;
+<a name="l00076"></a>00076 
+<a name="l00077"></a>00077   <span class="comment">//double v, w; // In [m/s] and [rad/s]</span>
+<a name="l00078"></a><a class="code" href="classkobuki_1_1DiffDrive.html#ac02cea6f6f4e072326be6df76b5b3adb">00078</a>   std::vector&lt;double&gt; <a class="code" href="classkobuki_1_1DiffDrive.html#ac02cea6f6f4e072326be6df76b5b3adb">point_velocity</a>; <span class="comment">//(vx, wz), in [m/s] and [rad/s]</span>
+<a name="l00079"></a><a class="code" href="classkobuki_1_1DiffDrive.html#ad2507b8a204c5e8e02c25f40c1787eff">00079</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#ad2507b8a204c5e8e02c25f40c1787eff">radius</a>; <span class="comment">// In [mm]</span>
+<a name="l00080"></a><a class="code" href="classkobuki_1_1DiffDrive.html#ab035b44a28ff971feb1e8806c8ccca59">00080</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#ab035b44a28ff971feb1e8806c8ccca59">speed</a>;  <span class="comment">// In [mm/s]</span>
+<a name="l00081"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a5216bed924c0220609960542fa27a38d">00081</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a5216bed924c0220609960542fa27a38d">bias</a>; <span class="comment">//wheelbase, wheel_to_wheel, in [m]</span>
+<a name="l00082"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a8074f33732a3dd52f6ba2fc00223727d">00082</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#a8074f33732a3dd52f6ba2fc00223727d">wheel_radius</a>;
+<a name="l00083"></a><a class="code" href="classkobuki_1_1DiffDrive.html#aa7fec6b3a36eec177d79b99cd065d20a">00083</a>   <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1DiffDrive.html#aa7fec6b3a36eec177d79b99cd065d20a">imu_heading_offset</a>;
+<a name="l00084"></a><a class="code" href="classkobuki_1_1DiffDrive.html#ac61d00b9dfa7e395e42e8440124c0d46">00084</a>   <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1DiffDrive.html#ac61d00b9dfa7e395e42e8440124c0d46">tick_to_rad</a>;
+<a name="l00085"></a>00085 
+<a name="l00086"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a163c81a5f6489947408301867adbd240">00086</a>   ecl::DifferentialDrive::Kinematics <a class="code" href="classkobuki_1_1DiffDrive.html#a163c81a5f6489947408301867adbd240">diff_drive_kinematics</a>;
+<a name="l00087"></a><a class="code" href="classkobuki_1_1DiffDrive.html#a7f9245868c140c829a98d5a94ffbeb3b">00087</a>   ecl::Mutex <a class="code" href="classkobuki_1_1DiffDrive.html#a7f9245868c140c829a98d5a94ffbeb3b">velocity_mutex</a>, state_mutex;
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089   <span class="comment">// Utility</span>
+<a name="l00090"></a>00090   <span class="keywordtype">short</span> bound(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;value);
+<a name="l00091"></a>00091 };
+<a name="l00092"></a>00092 
+<a name="l00093"></a>00093 } <span class="comment">// namespace kobuki</span>
+<a name="l00094"></a>00094 
+<a name="l00095"></a>00095 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_DIFF_DRIVE_HPP_ */</span>
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -159,7 +160,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <younghoon.ju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Fri May 24 2013 20:32:16</small>
+<small>autogenerated on Thu Jun 6 2013 09:49:23</small>
 </div>
 </body>
 </html>

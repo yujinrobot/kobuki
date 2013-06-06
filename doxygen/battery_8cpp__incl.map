@@ -1,5 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$battery_8hpp.html" title="Human friendly batter indicator class." alt="" coords="5,83,296,112"/>
-<area shape="rect" id="node7" href="$core__sensors_8hpp.html" title="Core sensor packet payloads." alt="" coords="123,160,309,189"/>
-<area shape="rect" id="node9" href="$payload__base_8hpp.html" title="Base class for payloads." alt="" coords="173,237,403,267"/>
+<area shape="rect" id="node3" href="$battery_8hpp.html" title="Human friendly batter indicator class." alt="" coords="44,83,335,112"/>
+<area shape="rect" id="node7" href="$core__sensors_8hpp.html" title="Core sensor packet payloads." alt="" coords="96,160,283,189"/>
+<area shape="rect" id="node14" href="$macros_8hpp.html" title="Macros for kobuki_driver." alt="" coords="328,237,429,267"/>
+<area shape="rect" id="node9" href="$payload__base_8hpp.html" title="Base class for payloads." alt="" coords="75,237,304,267"/>
 </map>

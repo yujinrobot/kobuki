@@ -59,40 +59,42 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00009"></a>00009 
 <a name="l00010"></a>00010 <span class="preprocessor">#include &lt;iostream&gt;</span>
 <a name="l00011"></a>00011 <span class="preprocessor">#include &lt;<a class="code" href="kobuki_8hpp.html" title="Device driver core interface.">kobuki_driver/kobuki.hpp</a>&gt;</span>
-<a name="l00012"></a>00012 
-<a name="l00013"></a><a class="code" href="classKobukiManager.html">00013</a> <span class="keyword">class </span><a class="code" href="classKobukiManager.html">KobukiManager</a> {
-<a name="l00014"></a>00014 <span class="keyword">public</span>:
-<a name="l00015"></a><a class="code" href="classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa">00015</a>   <a class="code" href="classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa">KobukiManager</a>() {
-<a name="l00016"></a>00016     <a class="code" href="classkobuki_1_1Parameters.html" title="Parameter list and validator for the kobuki.">kobuki::Parameters</a> parameters;
-<a name="l00017"></a>00017     <span class="comment">// change the default device port from /dev/kobuki to /dev/ttyUSB0</span>
-<a name="l00018"></a>00018     parameters.<a class="code" href="classkobuki_1_1Parameters.html#a993217236ea68f063f5bc285414408e2" title="The serial device port name [/dev/kobuki].">device_port</a> = <span class="stringliteral">&quot;/dev/ttyUSB0&quot;</span>;
-<a name="l00019"></a>00019     <span class="comment">// Other parameters are typically happy enough as defaults</span>
-<a name="l00020"></a>00020     <span class="comment">// namespaces all sigslot connection names under this value, only important if you want to</span>
-<a name="l00021"></a>00021     parameters.<a class="code" href="classkobuki_1_1Parameters.html#a0717933338e84bc7907f7e8345e2347e" title="The first part of a sigslot connection namespace [&quot;/kobuki&quot;].">sigslots_namespace</a> = <span class="stringliteral">&quot;/kobuki&quot;</span>;
-<a name="l00022"></a>00022     <span class="comment">// Most people will prefer to do their own velocity smoothing/acceleration limiting.</span>
-<a name="l00023"></a>00023     <span class="comment">// If you wish to utilise kobuki&#39;s minimal acceleration limiter, set to true</span>
-<a name="l00024"></a>00024     parameters.<a class="code" href="classkobuki_1_1Parameters.html#ab6eaa092677b34a152c9a11dfd3ff56f" title="Enable or disable the acceleration limiter [true].">enable_acceleration_limiter</a> = <span class="keyword">false</span>;
-<a name="l00025"></a>00025     <span class="comment">// If your battery levels are showing significant variance from factory defaults, adjust thresholds.</span>
-<a name="l00026"></a>00026     <span class="comment">// This will affect the led on the front of the robot as well as when signals are emitted by the driver.</span>
-<a name="l00027"></a>00027     parameters.<a class="code" href="classkobuki_1_1Parameters.html#a0c7b04175141d702f520c4a963876143" title="Capacity voltage of the battery [16.5V].">battery_capacity</a> = 16.5;
-<a name="l00028"></a>00028     parameters.<a class="code" href="classkobuki_1_1Parameters.html#afbe3833926add7263db592c6b0116b36" title="Threshold for battery level warnings [14.0V].">battery_low</a> = 14.0;
-<a name="l00029"></a>00029     parameters.<a class="code" href="classkobuki_1_1Parameters.html#a6332cc2748b6f7095e1eb463a024289d" title="Threshold for battery level in danger of depletion [13.2V].">battery_dangerous</a> = 13.2;
-<a name="l00030"></a>00030 
-<a name="l00031"></a>00031     <span class="comment">// initialise - it will throw an exception if parameter validation or initialisation fails.</span>
-<a name="l00032"></a>00032     <span class="keywordflow">try</span> {
-<a name="l00033"></a>00033       <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>.<a class="code" href="classkobuki_1_1Kobuki.html#a0648c958434e641d4573721541099ee4">init</a>(parameters);
-<a name="l00034"></a>00034     } <span class="keywordflow">catch</span> ( ecl::StandardException &amp;e ) {
-<a name="l00035"></a>00035       std::cout &lt;&lt; e.what();
-<a name="l00036"></a>00036     }
-<a name="l00037"></a>00037   }
-<a name="l00038"></a>00038 <span class="keyword">private</span>:
-<a name="l00039"></a><a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">00039</a>   <a class="code" href="classkobuki_1_1Kobuki.html" title="The core kobuki driver class.">kobuki::Kobuki</a> <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>;
-<a name="l00040"></a>00040 };
-<a name="l00041"></a>00041 
-<a name="l00042"></a><a class="code" href="initialisation_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">00042</a> <span class="keywordtype">int</span> <a class="code" href="initialisation_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>() {
-<a name="l00043"></a>00043   <a class="code" href="classKobukiManager.html">KobukiManager</a> kobuki_manager;
-<a name="l00044"></a>00044   <span class="keywordflow">return</span> 0;
-<a name="l00045"></a>00045 }
+<a name="l00012"></a>00012 <span class="preprocessor">#include &lt;ecl/time.hpp&gt;</span>
+<a name="l00013"></a>00013 
+<a name="l00014"></a><a class="code" href="classKobukiManager.html">00014</a> <span class="keyword">class </span><a class="code" href="classKobukiManager.html">KobukiManager</a> {
+<a name="l00015"></a>00015 <span class="keyword">public</span>:
+<a name="l00016"></a><a class="code" href="classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa">00016</a>   <a class="code" href="classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa">KobukiManager</a>() {
+<a name="l00017"></a>00017     <a class="code" href="classkobuki_1_1Parameters.html" title="Parameter list and validator for the kobuki.">kobuki::Parameters</a> parameters;
+<a name="l00018"></a>00018     <span class="comment">// change the default device port from /dev/kobuki to /dev/ttyUSB0</span>
+<a name="l00019"></a>00019     parameters.<a class="code" href="classkobuki_1_1Parameters.html#a993217236ea68f063f5bc285414408e2" title="The serial device port name [/dev/kobuki].">device_port</a> = <span class="stringliteral">&quot;/dev/ttyUSB0&quot;</span>;
+<a name="l00020"></a>00020     <span class="comment">// Other parameters are typically happy enough as defaults</span>
+<a name="l00021"></a>00021     <span class="comment">// namespaces all sigslot connection names under this value, only important if you want to</span>
+<a name="l00022"></a>00022     parameters.<a class="code" href="classkobuki_1_1Parameters.html#a0717933338e84bc7907f7e8345e2347e" title="The first part of a sigslot connection namespace [&quot;/kobuki&quot;].">sigslots_namespace</a> = <span class="stringliteral">&quot;/kobuki&quot;</span>;
+<a name="l00023"></a>00023     <span class="comment">// Most people will prefer to do their own velocity smoothing/acceleration limiting.</span>
+<a name="l00024"></a>00024     <span class="comment">// If you wish to utilise kobuki&#39;s minimal acceleration limiter, set to true</span>
+<a name="l00025"></a>00025     parameters.<a class="code" href="classkobuki_1_1Parameters.html#ab6eaa092677b34a152c9a11dfd3ff56f" title="Enable or disable the acceleration limiter [true].">enable_acceleration_limiter</a> = <span class="keyword">false</span>;
+<a name="l00026"></a>00026     <span class="comment">// If your battery levels are showing significant variance from factory defaults, adjust thresholds.</span>
+<a name="l00027"></a>00027     <span class="comment">// This will affect the led on the front of the robot as well as when signals are emitted by the driver.</span>
+<a name="l00028"></a>00028     parameters.<a class="code" href="classkobuki_1_1Parameters.html#a0c7b04175141d702f520c4a963876143" title="Capacity voltage of the battery [16.5V].">battery_capacity</a> = 16.5;
+<a name="l00029"></a>00029     parameters.<a class="code" href="classkobuki_1_1Parameters.html#afbe3833926add7263db592c6b0116b36" title="Threshold for battery level warnings [14.0V].">battery_low</a> = 14.0;
+<a name="l00030"></a>00030     parameters.<a class="code" href="classkobuki_1_1Parameters.html#a6332cc2748b6f7095e1eb463a024289d" title="Threshold for battery level in danger of depletion [13.2V].">battery_dangerous</a> = 13.2;
+<a name="l00031"></a>00031 
+<a name="l00032"></a>00032     <span class="comment">// initialise - it will throw an exception if parameter validation or initialisation fails.</span>
+<a name="l00033"></a>00033     <span class="keywordflow">try</span> {
+<a name="l00034"></a>00034       <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>.<a class="code" href="classkobuki_1_1Kobuki.html#a0648c958434e641d4573721541099ee4">init</a>(parameters);
+<a name="l00035"></a>00035     } <span class="keywordflow">catch</span> ( ecl::StandardException &amp;e ) {
+<a name="l00036"></a>00036       std::cout &lt;&lt; e.what();
+<a name="l00037"></a>00037     }
+<a name="l00038"></a>00038   }
+<a name="l00039"></a>00039 <span class="keyword">private</span>:
+<a name="l00040"></a><a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">00040</a>   <a class="code" href="classkobuki_1_1Kobuki.html" title="The core kobuki driver class.">kobuki::Kobuki</a> <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>;
+<a name="l00041"></a>00041 };
+<a name="l00042"></a>00042 
+<a name="l00043"></a><a class="code" href="initialisation_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">00043</a> <span class="keywordtype">int</span> <a class="code" href="initialisation_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>() {
+<a name="l00044"></a>00044   <a class="code" href="classKobukiManager.html">KobukiManager</a> kobuki_manager;
+<a name="l00045"></a>00045   ecl::Sleep()(5);
+<a name="l00046"></a>00046   <span class="keywordflow">return</span> 0;
+<a name="l00047"></a>00047 }
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -113,7 +115,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <younghoon.ju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Fri May 24 2013 20:32:16</small>
+<small>autogenerated on Thu Jun 6 2013 09:49:23</small>
 </div>
 </body>
 </html>

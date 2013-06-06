@@ -1,5 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$core__sensors_8hpp.html" title="Core sensor packet payloads." alt="" coords="33,83,359,112"/>
-<area shape="rect" id="node12" href="$payload__headers_8hpp.html" title="Byte id&#39;s for the individual payload headers." alt="" coords="383,83,769,112"/>
+<area shape="rect" id="node3" href="$core__sensors_8hpp.html" title="Core sensor packet payloads." alt="" coords="109,83,435,112"/>
+<area shape="rect" id="node18" href="$payload__headers_8hpp.html" title="Byte id&#39;s for the individual payload headers." alt="" coords="459,83,845,112"/>
 <area shape="rect" id="node5" href="$payload__base_8hpp.html" title="Base class for payloads." alt="" coords="5,160,235,189"/>
+<area shape="rect" id="node11" href="$macros_8hpp.html" title="Macros for kobuki_driver." alt="" coords="315,160,416,189"/>
 </map>

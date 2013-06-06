@@ -69,128 +69,129 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00022"></a>00022 <span class="preprocessor">#include &lt;ecl/sigslots.hpp&gt;</span>
 <a name="l00023"></a>00023 
 <a name="l00024"></a>00024 <span class="preprocessor">#include &quot;<a class="code" href="core__sensors_8hpp.html" title="Core sensor packet payloads.">packets/core_sensors.hpp</a>&quot;</span>
-<a name="l00025"></a>00025 
-<a name="l00026"></a>00026 <span class="comment">/*****************************************************************************</span>
-<a name="l00027"></a>00027 <span class="comment">** Namespaces</span>
-<a name="l00028"></a>00028 <span class="comment">*****************************************************************************/</span>
-<a name="l00029"></a>00029 
-<a name="l00030"></a>00030 <span class="keyword">namespace </span>kobuki {
-<a name="l00031"></a>00031 
-<a name="l00032"></a>00032 <span class="comment">/*****************************************************************************</span>
-<a name="l00033"></a>00033 <span class="comment">** Event Structures</span>
-<a name="l00034"></a>00034 <span class="comment">*****************************************************************************/</span>
-<a name="l00035"></a>00035 
-<a name="l00036"></a><a class="code" href="structkobuki_1_1ButtonEvent.html">00036</a> <span class="keyword">struct </span><a class="code" href="structkobuki_1_1ButtonEvent.html">ButtonEvent</a> {
-<a name="l00037"></a><a class="code" href="structkobuki_1_1ButtonEvent.html#ad74db533b4ed915d35dcb4dcc3aa424d">00037</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1ButtonEvent.html#ad74db533b4ed915d35dcb4dcc3aa424d">State</a> {
-<a name="l00038"></a><a class="code" href="structkobuki_1_1ButtonEvent.html#ad74db533b4ed915d35dcb4dcc3aa424da9a45540769414c9ecc57b2e01d3d955c">00038</a>     <a class="code" href="structkobuki_1_1ButtonEvent.html#ad74db533b4ed915d35dcb4dcc3aa424da9a45540769414c9ecc57b2e01d3d955c">Released</a>,
-<a name="l00039"></a><a class="code" href="structkobuki_1_1ButtonEvent.html#ad74db533b4ed915d35dcb4dcc3aa424da028a011233cc9802321d6e1d05824a16">00039</a>     <a class="code" href="structkobuki_1_1ButtonEvent.html#ad74db533b4ed915d35dcb4dcc3aa424da028a011233cc9802321d6e1d05824a16">Pressed</a>
-<a name="l00040"></a>00040   } <a class="code" href="structkobuki_1_1ButtonEvent.html#a2f8795d1acf50424c79c05c5637b84db">state</a>;
-<a name="l00041"></a><a class="code" href="structkobuki_1_1ButtonEvent.html#acba7dc583983c29dbd937a14eee0a76a">00041</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1ButtonEvent.html#acba7dc583983c29dbd937a14eee0a76a">Button</a> {
-<a name="l00042"></a><a class="code" href="structkobuki_1_1ButtonEvent.html#acba7dc583983c29dbd937a14eee0a76aabd0529bfbdc2f7c2bc1733976dde3c5d">00042</a>     <a class="code" href="structkobuki_1_1ButtonEvent.html#acba7dc583983c29dbd937a14eee0a76aabd0529bfbdc2f7c2bc1733976dde3c5d">Button0</a>,
-<a name="l00043"></a><a class="code" href="structkobuki_1_1ButtonEvent.html#acba7dc583983c29dbd937a14eee0a76aa9cac9c2efc0ce41104eaec8f605e1284">00043</a>     <a class="code" href="structkobuki_1_1ButtonEvent.html#acba7dc583983c29dbd937a14eee0a76aa9cac9c2efc0ce41104eaec8f605e1284">Button1</a>,
-<a name="l00044"></a><a class="code" href="structkobuki_1_1ButtonEvent.html#acba7dc583983c29dbd937a14eee0a76aa5308a2534c9410cd39be7071dabbae08">00044</a>     <a class="code" href="structkobuki_1_1ButtonEvent.html#acba7dc583983c29dbd937a14eee0a76aa5308a2534c9410cd39be7071dabbae08">Button2</a>
-<a name="l00045"></a>00045   } <a class="code" href="structkobuki_1_1ButtonEvent.html#aac4f1a9cc793c2ab00da5aaa33ee1dde">button</a>;
-<a name="l00046"></a>00046 };
-<a name="l00047"></a>00047 
-<a name="l00048"></a><a class="code" href="structkobuki_1_1BumperEvent.html">00048</a> <span class="keyword">struct </span><a class="code" href="structkobuki_1_1BumperEvent.html">BumperEvent</a> {
-<a name="l00049"></a><a class="code" href="structkobuki_1_1BumperEvent.html#ae9874ebe03039f3f72a3e45edd3ef886">00049</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1BumperEvent.html#ae9874ebe03039f3f72a3e45edd3ef886">State</a> {
-<a name="l00050"></a><a class="code" href="structkobuki_1_1BumperEvent.html#ae9874ebe03039f3f72a3e45edd3ef886a2ded73833c827202a00e3c4df3b3512a">00050</a>     <a class="code" href="structkobuki_1_1BumperEvent.html#ae9874ebe03039f3f72a3e45edd3ef886a2ded73833c827202a00e3c4df3b3512a">Released</a>,
-<a name="l00051"></a><a class="code" href="structkobuki_1_1BumperEvent.html#ae9874ebe03039f3f72a3e45edd3ef886af99360117ccb93fa96e2255fd4eecdf9">00051</a>     <a class="code" href="structkobuki_1_1BumperEvent.html#ae9874ebe03039f3f72a3e45edd3ef886af99360117ccb93fa96e2255fd4eecdf9">Pressed</a>
-<a name="l00052"></a>00052   } <a class="code" href="structkobuki_1_1BumperEvent.html#a6bb2ddaebf68b76924481952ccd8e732">state</a>;
-<a name="l00053"></a><a class="code" href="structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1">00053</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1">Bumper</a> {
-<a name="l00054"></a><a class="code" href="structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1a5e84a68265721b7cc058549913ef31d1">00054</a>     <a class="code" href="structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1a5e84a68265721b7cc058549913ef31d1">Left</a>,
-<a name="l00055"></a><a class="code" href="structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1ac58cc2b91160d1416dfafe0a61c980a4">00055</a>     <a class="code" href="structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1ac58cc2b91160d1416dfafe0a61c980a4">Center</a>,
-<a name="l00056"></a><a class="code" href="structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1a37f5071bda055b38bafdefac64f7fa19">00056</a>     <a class="code" href="structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1a37f5071bda055b38bafdefac64f7fa19">Right</a>
-<a name="l00057"></a>00057   } <a class="code" href="structkobuki_1_1BumperEvent.html#af5950bf85bfbc384d36461e62848ba55">bumper</a>;
-<a name="l00058"></a>00058 };
-<a name="l00059"></a>00059 
-<a name="l00060"></a><a class="code" href="structkobuki_1_1CliffEvent.html">00060</a> <span class="keyword">struct </span><a class="code" href="structkobuki_1_1CliffEvent.html">CliffEvent</a> {
-<a name="l00061"></a><a class="code" href="structkobuki_1_1CliffEvent.html#a6c457c65d41d4a127d163d6db7af508f">00061</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1CliffEvent.html#a6c457c65d41d4a127d163d6db7af508f">State</a> {
-<a name="l00062"></a><a class="code" href="structkobuki_1_1CliffEvent.html#a6c457c65d41d4a127d163d6db7af508faca1c6bc71a15c972512da267cdf019aa">00062</a>     <a class="code" href="structkobuki_1_1CliffEvent.html#a6c457c65d41d4a127d163d6db7af508faca1c6bc71a15c972512da267cdf019aa">Floor</a>,
-<a name="l00063"></a><a class="code" href="structkobuki_1_1CliffEvent.html#a6c457c65d41d4a127d163d6db7af508fac76ddfee3738364447485771fa7803c9">00063</a>     <a class="code" href="classkobuki_1_1Cliff.html">Cliff</a>
-<a name="l00064"></a>00064   } <a class="code" href="structkobuki_1_1CliffEvent.html#af702c693bc99a63e5c7f61ed17bd2497">state</a>;
-<a name="l00065"></a><a class="code" href="structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175af">00065</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175af">Sensor</a> {
-<a name="l00066"></a><a class="code" href="structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175afa57d43d9460fd00550521648e4d2c0325">00066</a>     <a class="code" href="structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175afa57d43d9460fd00550521648e4d2c0325">Left</a>,
-<a name="l00067"></a><a class="code" href="structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175afaefc4c756505598bedf021910059ff170">00067</a>     <a class="code" href="structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175afaefc4c756505598bedf021910059ff170">Center</a>,
-<a name="l00068"></a><a class="code" href="structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175afa1ce20d32d968b34c4d1f06fbd8cc01fa">00068</a>     <a class="code" href="structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175afa1ce20d32d968b34c4d1f06fbd8cc01fa">Right</a>
-<a name="l00069"></a>00069   } <a class="code" href="structkobuki_1_1CliffEvent.html#a3e3bbbcc1b8841e4b140f459e9ad2708">sensor</a>;
-<a name="l00070"></a><a class="code" href="structkobuki_1_1CliffEvent.html#ae837b247e5ee75496c5d37a3dee33601">00070</a>   uint16_t <a class="code" href="structkobuki_1_1CliffEvent.html#ae837b247e5ee75496c5d37a3dee33601">bottom</a>;
-<a name="l00071"></a>00071 };
-<a name="l00072"></a>00072 
-<a name="l00073"></a><a class="code" href="structkobuki_1_1WheelEvent.html">00073</a> <span class="keyword">struct </span><a class="code" href="structkobuki_1_1WheelEvent.html">WheelEvent</a> {
-<a name="l00074"></a><a class="code" href="structkobuki_1_1WheelEvent.html#a89ff3c678c1f83bc31aa8bbcbb49cb83">00074</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1WheelEvent.html#a89ff3c678c1f83bc31aa8bbcbb49cb83">State</a> {
-<a name="l00075"></a><a class="code" href="structkobuki_1_1WheelEvent.html#a89ff3c678c1f83bc31aa8bbcbb49cb83ab840370376440e0a0ac801f11e3e0fb9">00075</a>     <a class="code" href="structkobuki_1_1WheelEvent.html#a89ff3c678c1f83bc31aa8bbcbb49cb83ab840370376440e0a0ac801f11e3e0fb9">Raised</a>,
-<a name="l00076"></a><a class="code" href="structkobuki_1_1WheelEvent.html#a89ff3c678c1f83bc31aa8bbcbb49cb83a15c51df8e5cca149dc1a0c928ada0f9a">00076</a>     <a class="code" href="structkobuki_1_1WheelEvent.html#a89ff3c678c1f83bc31aa8bbcbb49cb83a15c51df8e5cca149dc1a0c928ada0f9a">Dropped</a>
-<a name="l00077"></a>00077   } <a class="code" href="structkobuki_1_1WheelEvent.html#abc49fa25158af23f31bd0e8348fe2f4e">state</a>;
-<a name="l00078"></a><a class="code" href="structkobuki_1_1WheelEvent.html#a6fb0e7dbe75f3c76c7cebb9528f7b29c">00078</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1WheelEvent.html#a6fb0e7dbe75f3c76c7cebb9528f7b29c">Wheel</a> {
-<a name="l00079"></a><a class="code" href="structkobuki_1_1WheelEvent.html#a6fb0e7dbe75f3c76c7cebb9528f7b29cabdf0639b492ba969ef15c683fa831a0e">00079</a>     <a class="code" href="structkobuki_1_1WheelEvent.html#a6fb0e7dbe75f3c76c7cebb9528f7b29cabdf0639b492ba969ef15c683fa831a0e">Left</a>,
-<a name="l00080"></a><a class="code" href="structkobuki_1_1WheelEvent.html#a6fb0e7dbe75f3c76c7cebb9528f7b29ca526680cb145f42cfb300c2fdcb1d73d2">00080</a>     <a class="code" href="structkobuki_1_1WheelEvent.html#a6fb0e7dbe75f3c76c7cebb9528f7b29ca526680cb145f42cfb300c2fdcb1d73d2">Right</a>
-<a name="l00081"></a>00081   } <a class="code" href="structkobuki_1_1WheelEvent.html#a2c8867560bae32f5c74d2fa3da7acaae">wheel</a>;
-<a name="l00082"></a>00082 };
-<a name="l00083"></a>00083 
-<a name="l00084"></a><a class="code" href="structkobuki_1_1PowerEvent.html">00084</a> <span class="keyword">struct </span><a class="code" href="structkobuki_1_1PowerEvent.html">PowerEvent</a> {
-<a name="l00085"></a><a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7">00085</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7">Event</a> {
-<a name="l00086"></a><a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7ab5e7fd18a9a07a22f21ba9000fb69246">00086</a>     <a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7ab5e7fd18a9a07a22f21ba9000fb69246">Unplugged</a>         = 0,
-<a name="l00087"></a><a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7a89960e7b0f506f500ca8d1882c7371fe">00087</a>     <a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7a89960e7b0f506f500ca8d1882c7371fe">PluggedToAdapter</a>  = 1,
-<a name="l00088"></a><a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7ae4ad9a2a92e08de985f2457c4e9944dd">00088</a>     <a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7ae4ad9a2a92e08de985f2457c4e9944dd">PluggedToDockbase</a> = 2,
-<a name="l00089"></a><a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7afef2362f2e90ee4b7c5fd7f2d9e8c22c">00089</a>     <a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7afef2362f2e90ee4b7c5fd7f2d9e8c22c">ChargeCompleted</a>   = 3,
-<a name="l00090"></a><a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7ace9cd7aa86f957a3ce9c65f32e2efc36">00090</a>     <a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7ace9cd7aa86f957a3ce9c65f32e2efc36">BatteryLow</a>        = 4,
-<a name="l00091"></a><a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7a5ea106d2cf9cc442f452651a431c164f">00091</a>     <a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7a5ea106d2cf9cc442f452651a431c164f">BatteryCritical</a>   = 5
-<a name="l00092"></a>00092   } <a class="code" href="structkobuki_1_1PowerEvent.html#a69cd47f8f7316e75a4c55dfea2e34d29">event</a>;
-<a name="l00093"></a>00093 };
-<a name="l00094"></a>00094 
-<a name="l00095"></a><a class="code" href="structkobuki_1_1InputEvent.html">00095</a> <span class="keyword">struct </span><a class="code" href="structkobuki_1_1InputEvent.html">InputEvent</a> {
-<a name="l00096"></a><a class="code" href="structkobuki_1_1InputEvent.html#aca6f9a799c250a9e69d011e85bf6b0eb">00096</a>   <span class="keywordtype">bool</span> <a class="code" href="structkobuki_1_1InputEvent.html#aca6f9a799c250a9e69d011e85bf6b0eb">values</a>[4]; 
-<a name="l00097"></a>00097 };
-<a name="l00098"></a>00098 
-<a name="l00099"></a><a class="code" href="structkobuki_1_1RobotEvent.html">00099</a> <span class="keyword">struct </span><a class="code" href="structkobuki_1_1RobotEvent.html">RobotEvent</a> {
-<a name="l00100"></a><a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06">00100</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06">State</a> {
-<a name="l00101"></a><a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06a2d7440133b8c35765d5775aa7b533cf4">00101</a>     <a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06a2d7440133b8c35765d5775aa7b533cf4">Offline</a>,
-<a name="l00102"></a><a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06a5a4f31c47a458725cd579a8096863318">00102</a>     <a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06a5a4f31c47a458725cd579a8096863318">Online</a>,
-<a name="l00103"></a><a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06a106f74dcd5800d5ea7f5113505aa63bc">00103</a>     <a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06a106f74dcd5800d5ea7f5113505aa63bc">Unknown</a>  <span class="comment">// at startup</span>
-<a name="l00104"></a>00104   } <a class="code" href="structkobuki_1_1RobotEvent.html#ac9f74ad86313b2ecf97ea3fa17c1a474">state</a>;
-<a name="l00105"></a>00105 };
-<a name="l00106"></a>00106 
-<a name="l00107"></a>00107 <span class="comment">/*****************************************************************************</span>
-<a name="l00108"></a>00108 <span class="comment">** Interfaces</span>
-<a name="l00109"></a>00109 <span class="comment">*****************************************************************************/</span>
-<a name="l00110"></a>00110 
-<a name="l00111"></a><a class="code" href="classkobuki_1_1EventManager.html">00111</a> <span class="keyword">class </span><a class="code" href="classkobuki_1_1EventManager.html">EventManager</a> {
-<a name="l00112"></a>00112 <span class="keyword">public</span>:
-<a name="l00113"></a><a class="code" href="classkobuki_1_1EventManager.html#a2e29d28976acd117e32e5329851ce828">00113</a>   <a class="code" href="classkobuki_1_1EventManager.html#a2e29d28976acd117e32e5329851ce828">EventManager</a>() {
-<a name="l00114"></a>00114     <a class="code" href="classkobuki_1_1EventManager.html#a9f68520bebf0159b8e6e562d5e9dfd58">last_state</a>.<a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a58839aa82b503c19dba1e7a5558499fa">buttons</a>    = 0;
-<a name="l00115"></a>00115     <a class="code" href="classkobuki_1_1EventManager.html#a9f68520bebf0159b8e6e562d5e9dfd58">last_state</a>.<a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#adbb5a43e2e08dbf7827beb3ef52cef0e">bumper</a>     = 0;
-<a name="l00116"></a>00116     <a class="code" href="classkobuki_1_1EventManager.html#a9f68520bebf0159b8e6e562d5e9dfd58">last_state</a>.<a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#aed031d5acac9e297826cea0aaa48e3ef">cliff</a>      = 0;
-<a name="l00117"></a>00117     <a class="code" href="classkobuki_1_1EventManager.html#a9f68520bebf0159b8e6e562d5e9dfd58">last_state</a>.<a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a47fa534f8b8da4ef4dfed6ecdaa9e2e5">wheel_drop</a> = 0;
-<a name="l00118"></a>00118     <a class="code" href="classkobuki_1_1EventManager.html#a9f68520bebf0159b8e6e562d5e9dfd58">last_state</a>.<a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a880058d64a33e864c418ddcd353b325f">charger</a>    = 0;
-<a name="l00119"></a>00119     <a class="code" href="classkobuki_1_1EventManager.html#a9f68520bebf0159b8e6e562d5e9dfd58">last_state</a>.<a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a6e2d199ac9856efb0da581cac93b9efe">battery</a>    = 0;
-<a name="l00120"></a>00120     <a class="code" href="classkobuki_1_1EventManager.html#a113cde626a95791cbc8b8863077e1e74">last_digital_input</a>    = 0;
-<a name="l00121"></a>00121     <a class="code" href="classkobuki_1_1EventManager.html#a0470eec0bb89466ca26ac5b4d9e91db2">last_robot_state</a>      = <a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06a106f74dcd5800d5ea7f5113505aa63bc">RobotEvent::Unknown</a>;
-<a name="l00122"></a>00122   }
-<a name="l00123"></a>00123 
-<a name="l00124"></a>00124   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1EventManager.html#a1a5a6b8d26cd35c2904ff4ec1584359a">init</a>(<span class="keyword">const</span> std::string &amp;sigslots_namespace);
-<a name="l00125"></a>00125   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1EventManager.html#a0fdebc830c98b0a3fcb644da5b5b0281">update</a>(<span class="keyword">const</span> <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html">CoreSensors::Data</a> &amp;new_state, <span class="keyword">const</span> std::vector&lt;uint16_t&gt; &amp;cliff_data);
-<a name="l00126"></a>00126   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1EventManager.html#a0fdebc830c98b0a3fcb644da5b5b0281">update</a>(<span class="keyword">const</span> uint16_t &amp;digital_input);
-<a name="l00127"></a>00127   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1EventManager.html#a0fdebc830c98b0a3fcb644da5b5b0281">update</a>(<span class="keywordtype">bool</span> is_plugged, <span class="keywordtype">bool</span> is_alive);
-<a name="l00128"></a>00128 
-<a name="l00129"></a>00129 <span class="keyword">private</span>:
-<a name="l00130"></a><a class="code" href="classkobuki_1_1EventManager.html#a9f68520bebf0159b8e6e562d5e9dfd58">00130</a>   <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html">CoreSensors::Data</a> <a class="code" href="classkobuki_1_1EventManager.html#a9f68520bebf0159b8e6e562d5e9dfd58">last_state</a>;
-<a name="l00131"></a><a class="code" href="classkobuki_1_1EventManager.html#a113cde626a95791cbc8b8863077e1e74">00131</a>   uint16_t          <a class="code" href="classkobuki_1_1EventManager.html#a113cde626a95791cbc8b8863077e1e74">last_digital_input</a>;
-<a name="l00132"></a><a class="code" href="classkobuki_1_1EventManager.html#a0470eec0bb89466ca26ac5b4d9e91db2">00132</a>   <a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06">RobotEvent::State</a> <a class="code" href="classkobuki_1_1EventManager.html#a0470eec0bb89466ca26ac5b4d9e91db2">last_robot_state</a>;
-<a name="l00133"></a>00133 
-<a name="l00134"></a><a class="code" href="classkobuki_1_1EventManager.html#a818538874bdfe648aa3c984320d68156">00134</a>   ecl::Signal&lt;const ButtonEvent&amp;&gt; <a class="code" href="classkobuki_1_1EventManager.html#a818538874bdfe648aa3c984320d68156">sig_button_event</a>;
-<a name="l00135"></a><a class="code" href="classkobuki_1_1EventManager.html#a28bcb6091783304c04c48c7513f00753">00135</a>   ecl::Signal&lt;const BumperEvent&amp;&gt; <a class="code" href="classkobuki_1_1EventManager.html#a28bcb6091783304c04c48c7513f00753">sig_bumper_event</a>;
-<a name="l00136"></a><a class="code" href="classkobuki_1_1EventManager.html#a8179aadf1b43c51cc2726b2abcdf4548">00136</a>   ecl::Signal&lt;const CliffEvent&amp;&gt;  <a class="code" href="classkobuki_1_1EventManager.html#a8179aadf1b43c51cc2726b2abcdf4548">sig_cliff_event</a>;
-<a name="l00137"></a><a class="code" href="classkobuki_1_1EventManager.html#a426514536742471bdfac97e31169ced9">00137</a>   ecl::Signal&lt;const WheelEvent&amp;&gt;  <a class="code" href="classkobuki_1_1EventManager.html#a426514536742471bdfac97e31169ced9">sig_wheel_event</a>;
-<a name="l00138"></a><a class="code" href="classkobuki_1_1EventManager.html#a0b59c2eed3a2fc2cd671214a274b3428">00138</a>   ecl::Signal&lt;const PowerEvent&amp;&gt;  <a class="code" href="classkobuki_1_1EventManager.html#a0b59c2eed3a2fc2cd671214a274b3428">sig_power_event</a>;
-<a name="l00139"></a><a class="code" href="classkobuki_1_1EventManager.html#a2abcef7c5342d418a7310aa8a1bd4722">00139</a>   ecl::Signal&lt;const InputEvent&amp;&gt;  <a class="code" href="classkobuki_1_1EventManager.html#a2abcef7c5342d418a7310aa8a1bd4722">sig_input_event</a>;
-<a name="l00140"></a><a class="code" href="classkobuki_1_1EventManager.html#adb8b0238cbcdccca5d8528594443d436">00140</a>   ecl::Signal&lt;const RobotEvent&amp;&gt;  <a class="code" href="classkobuki_1_1EventManager.html#adb8b0238cbcdccca5d8528594443d436">sig_robot_event</a>;
-<a name="l00141"></a>00141 };
-<a name="l00142"></a>00142 
+<a name="l00025"></a>00025 <span class="preprocessor">#include &quot;<a class="code" href="macros_8hpp.html" title="Macros for kobuki_driver.">macros.hpp</a>&quot;</span>
+<a name="l00026"></a>00026 
+<a name="l00027"></a>00027 <span class="comment">/*****************************************************************************</span>
+<a name="l00028"></a>00028 <span class="comment">** Namespaces</span>
+<a name="l00029"></a>00029 <span class="comment">*****************************************************************************/</span>
+<a name="l00030"></a>00030 
+<a name="l00031"></a>00031 <span class="keyword">namespace </span>kobuki {
+<a name="l00032"></a>00032 
+<a name="l00033"></a>00033 <span class="comment">/*****************************************************************************</span>
+<a name="l00034"></a>00034 <span class="comment">** Event Structures</span>
+<a name="l00035"></a>00035 <span class="comment">*****************************************************************************/</span>
+<a name="l00036"></a>00036 
+<a name="l00037"></a><a class="code" href="structkobuki_1_1ButtonEvent.html">00037</a> <span class="keyword">struct </span><a class="code" href="structkobuki_1_1ButtonEvent.html">ButtonEvent</a> {
+<a name="l00038"></a><a class="code" href="structkobuki_1_1ButtonEvent.html#ad74db533b4ed915d35dcb4dcc3aa424d">00038</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1ButtonEvent.html#ad74db533b4ed915d35dcb4dcc3aa424d">State</a> {
+<a name="l00039"></a><a class="code" href="structkobuki_1_1ButtonEvent.html#ad74db533b4ed915d35dcb4dcc3aa424da9a45540769414c9ecc57b2e01d3d955c">00039</a>     <a class="code" href="structkobuki_1_1ButtonEvent.html#ad74db533b4ed915d35dcb4dcc3aa424da9a45540769414c9ecc57b2e01d3d955c">Released</a>,
+<a name="l00040"></a><a class="code" href="structkobuki_1_1ButtonEvent.html#ad74db533b4ed915d35dcb4dcc3aa424da028a011233cc9802321d6e1d05824a16">00040</a>     <a class="code" href="structkobuki_1_1ButtonEvent.html#ad74db533b4ed915d35dcb4dcc3aa424da028a011233cc9802321d6e1d05824a16">Pressed</a>
+<a name="l00041"></a>00041   } <a class="code" href="structkobuki_1_1ButtonEvent.html#a2f8795d1acf50424c79c05c5637b84db">state</a>;
+<a name="l00042"></a><a class="code" href="structkobuki_1_1ButtonEvent.html#acba7dc583983c29dbd937a14eee0a76a">00042</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1ButtonEvent.html#acba7dc583983c29dbd937a14eee0a76a">Button</a> {
+<a name="l00043"></a><a class="code" href="structkobuki_1_1ButtonEvent.html#acba7dc583983c29dbd937a14eee0a76aabd0529bfbdc2f7c2bc1733976dde3c5d">00043</a>     <a class="code" href="structkobuki_1_1ButtonEvent.html#acba7dc583983c29dbd937a14eee0a76aabd0529bfbdc2f7c2bc1733976dde3c5d">Button0</a>,
+<a name="l00044"></a><a class="code" href="structkobuki_1_1ButtonEvent.html#acba7dc583983c29dbd937a14eee0a76aa9cac9c2efc0ce41104eaec8f605e1284">00044</a>     <a class="code" href="structkobuki_1_1ButtonEvent.html#acba7dc583983c29dbd937a14eee0a76aa9cac9c2efc0ce41104eaec8f605e1284">Button1</a>,
+<a name="l00045"></a><a class="code" href="structkobuki_1_1ButtonEvent.html#acba7dc583983c29dbd937a14eee0a76aa5308a2534c9410cd39be7071dabbae08">00045</a>     <a class="code" href="structkobuki_1_1ButtonEvent.html#acba7dc583983c29dbd937a14eee0a76aa5308a2534c9410cd39be7071dabbae08">Button2</a>
+<a name="l00046"></a>00046   } <a class="code" href="structkobuki_1_1ButtonEvent.html#aac4f1a9cc793c2ab00da5aaa33ee1dde">button</a>;
+<a name="l00047"></a>00047 };
+<a name="l00048"></a>00048 
+<a name="l00049"></a><a class="code" href="structkobuki_1_1BumperEvent.html">00049</a> <span class="keyword">struct </span><a class="code" href="structkobuki_1_1BumperEvent.html">BumperEvent</a> {
+<a name="l00050"></a><a class="code" href="structkobuki_1_1BumperEvent.html#ae9874ebe03039f3f72a3e45edd3ef886">00050</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1BumperEvent.html#ae9874ebe03039f3f72a3e45edd3ef886">State</a> {
+<a name="l00051"></a><a class="code" href="structkobuki_1_1BumperEvent.html#ae9874ebe03039f3f72a3e45edd3ef886a2ded73833c827202a00e3c4df3b3512a">00051</a>     <a class="code" href="structkobuki_1_1BumperEvent.html#ae9874ebe03039f3f72a3e45edd3ef886a2ded73833c827202a00e3c4df3b3512a">Released</a>,
+<a name="l00052"></a><a class="code" href="structkobuki_1_1BumperEvent.html#ae9874ebe03039f3f72a3e45edd3ef886af99360117ccb93fa96e2255fd4eecdf9">00052</a>     <a class="code" href="structkobuki_1_1BumperEvent.html#ae9874ebe03039f3f72a3e45edd3ef886af99360117ccb93fa96e2255fd4eecdf9">Pressed</a>
+<a name="l00053"></a>00053   } <a class="code" href="structkobuki_1_1BumperEvent.html#a6bb2ddaebf68b76924481952ccd8e732">state</a>;
+<a name="l00054"></a><a class="code" href="structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1">00054</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1">Bumper</a> {
+<a name="l00055"></a><a class="code" href="structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1a5e84a68265721b7cc058549913ef31d1">00055</a>     <a class="code" href="structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1a5e84a68265721b7cc058549913ef31d1">Left</a>,
+<a name="l00056"></a><a class="code" href="structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1ac58cc2b91160d1416dfafe0a61c980a4">00056</a>     <a class="code" href="structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1ac58cc2b91160d1416dfafe0a61c980a4">Center</a>,
+<a name="l00057"></a><a class="code" href="structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1a37f5071bda055b38bafdefac64f7fa19">00057</a>     <a class="code" href="structkobuki_1_1BumperEvent.html#af0206bb099d512f2f597dca5d907ccf1a37f5071bda055b38bafdefac64f7fa19">Right</a>
+<a name="l00058"></a>00058   } <a class="code" href="structkobuki_1_1BumperEvent.html#af5950bf85bfbc384d36461e62848ba55">bumper</a>;
+<a name="l00059"></a>00059 };
+<a name="l00060"></a>00060 
+<a name="l00061"></a><a class="code" href="structkobuki_1_1CliffEvent.html">00061</a> <span class="keyword">struct </span><a class="code" href="structkobuki_1_1CliffEvent.html">CliffEvent</a> {
+<a name="l00062"></a><a class="code" href="structkobuki_1_1CliffEvent.html#a6c457c65d41d4a127d163d6db7af508f">00062</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1CliffEvent.html#a6c457c65d41d4a127d163d6db7af508f">State</a> {
+<a name="l00063"></a><a class="code" href="structkobuki_1_1CliffEvent.html#a6c457c65d41d4a127d163d6db7af508faca1c6bc71a15c972512da267cdf019aa">00063</a>     <a class="code" href="structkobuki_1_1CliffEvent.html#a6c457c65d41d4a127d163d6db7af508faca1c6bc71a15c972512da267cdf019aa">Floor</a>,
+<a name="l00064"></a><a class="code" href="structkobuki_1_1CliffEvent.html#a6c457c65d41d4a127d163d6db7af508fac76ddfee3738364447485771fa7803c9">00064</a>     <a class="code" href="classkobuki_1_1Cliff.html">Cliff</a>
+<a name="l00065"></a>00065   } <a class="code" href="structkobuki_1_1CliffEvent.html#af702c693bc99a63e5c7f61ed17bd2497">state</a>;
+<a name="l00066"></a><a class="code" href="structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175af">00066</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175af">Sensor</a> {
+<a name="l00067"></a><a class="code" href="structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175afa57d43d9460fd00550521648e4d2c0325">00067</a>     <a class="code" href="structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175afa57d43d9460fd00550521648e4d2c0325">Left</a>,
+<a name="l00068"></a><a class="code" href="structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175afaefc4c756505598bedf021910059ff170">00068</a>     <a class="code" href="structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175afaefc4c756505598bedf021910059ff170">Center</a>,
+<a name="l00069"></a><a class="code" href="structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175afa1ce20d32d968b34c4d1f06fbd8cc01fa">00069</a>     <a class="code" href="structkobuki_1_1CliffEvent.html#a35b0f0ad19aed5ba599fc999f70175afa1ce20d32d968b34c4d1f06fbd8cc01fa">Right</a>
+<a name="l00070"></a>00070   } <a class="code" href="structkobuki_1_1CliffEvent.html#a3e3bbbcc1b8841e4b140f459e9ad2708">sensor</a>;
+<a name="l00071"></a><a class="code" href="structkobuki_1_1CliffEvent.html#ae837b247e5ee75496c5d37a3dee33601">00071</a>   uint16_t <a class="code" href="structkobuki_1_1CliffEvent.html#ae837b247e5ee75496c5d37a3dee33601">bottom</a>;
+<a name="l00072"></a>00072 };
+<a name="l00073"></a>00073 
+<a name="l00074"></a><a class="code" href="structkobuki_1_1WheelEvent.html">00074</a> <span class="keyword">struct </span><a class="code" href="structkobuki_1_1WheelEvent.html">WheelEvent</a> {
+<a name="l00075"></a><a class="code" href="structkobuki_1_1WheelEvent.html#a89ff3c678c1f83bc31aa8bbcbb49cb83">00075</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1WheelEvent.html#a89ff3c678c1f83bc31aa8bbcbb49cb83">State</a> {
+<a name="l00076"></a><a class="code" href="structkobuki_1_1WheelEvent.html#a89ff3c678c1f83bc31aa8bbcbb49cb83ab840370376440e0a0ac801f11e3e0fb9">00076</a>     <a class="code" href="structkobuki_1_1WheelEvent.html#a89ff3c678c1f83bc31aa8bbcbb49cb83ab840370376440e0a0ac801f11e3e0fb9">Raised</a>,
+<a name="l00077"></a><a class="code" href="structkobuki_1_1WheelEvent.html#a89ff3c678c1f83bc31aa8bbcbb49cb83a15c51df8e5cca149dc1a0c928ada0f9a">00077</a>     <a class="code" href="structkobuki_1_1WheelEvent.html#a89ff3c678c1f83bc31aa8bbcbb49cb83a15c51df8e5cca149dc1a0c928ada0f9a">Dropped</a>
+<a name="l00078"></a>00078   } <a class="code" href="structkobuki_1_1WheelEvent.html#abc49fa25158af23f31bd0e8348fe2f4e">state</a>;
+<a name="l00079"></a><a class="code" href="structkobuki_1_1WheelEvent.html#a6fb0e7dbe75f3c76c7cebb9528f7b29c">00079</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1WheelEvent.html#a6fb0e7dbe75f3c76c7cebb9528f7b29c">Wheel</a> {
+<a name="l00080"></a><a class="code" href="structkobuki_1_1WheelEvent.html#a6fb0e7dbe75f3c76c7cebb9528f7b29cabdf0639b492ba969ef15c683fa831a0e">00080</a>     <a class="code" href="structkobuki_1_1WheelEvent.html#a6fb0e7dbe75f3c76c7cebb9528f7b29cabdf0639b492ba969ef15c683fa831a0e">Left</a>,
+<a name="l00081"></a><a class="code" href="structkobuki_1_1WheelEvent.html#a6fb0e7dbe75f3c76c7cebb9528f7b29ca526680cb145f42cfb300c2fdcb1d73d2">00081</a>     <a class="code" href="structkobuki_1_1WheelEvent.html#a6fb0e7dbe75f3c76c7cebb9528f7b29ca526680cb145f42cfb300c2fdcb1d73d2">Right</a>
+<a name="l00082"></a>00082   } <a class="code" href="structkobuki_1_1WheelEvent.html#a2c8867560bae32f5c74d2fa3da7acaae">wheel</a>;
+<a name="l00083"></a>00083 };
+<a name="l00084"></a>00084 
+<a name="l00085"></a><a class="code" href="structkobuki_1_1PowerEvent.html">00085</a> <span class="keyword">struct </span><a class="code" href="structkobuki_1_1PowerEvent.html">PowerEvent</a> {
+<a name="l00086"></a><a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7">00086</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7">Event</a> {
+<a name="l00087"></a><a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7ab5e7fd18a9a07a22f21ba9000fb69246">00087</a>     <a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7ab5e7fd18a9a07a22f21ba9000fb69246">Unplugged</a>         = 0,
+<a name="l00088"></a><a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7a89960e7b0f506f500ca8d1882c7371fe">00088</a>     <a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7a89960e7b0f506f500ca8d1882c7371fe">PluggedToAdapter</a>  = 1,
+<a name="l00089"></a><a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7ae4ad9a2a92e08de985f2457c4e9944dd">00089</a>     <a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7ae4ad9a2a92e08de985f2457c4e9944dd">PluggedToDockbase</a> = 2,
+<a name="l00090"></a><a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7afef2362f2e90ee4b7c5fd7f2d9e8c22c">00090</a>     <a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7afef2362f2e90ee4b7c5fd7f2d9e8c22c">ChargeCompleted</a>   = 3,
+<a name="l00091"></a><a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7ace9cd7aa86f957a3ce9c65f32e2efc36">00091</a>     <a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7ace9cd7aa86f957a3ce9c65f32e2efc36">BatteryLow</a>        = 4,
+<a name="l00092"></a><a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7a5ea106d2cf9cc442f452651a431c164f">00092</a>     <a class="code" href="structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7a5ea106d2cf9cc442f452651a431c164f">BatteryCritical</a>   = 5
+<a name="l00093"></a>00093   } <a class="code" href="structkobuki_1_1PowerEvent.html#a69cd47f8f7316e75a4c55dfea2e34d29">event</a>;
+<a name="l00094"></a>00094 };
+<a name="l00095"></a>00095 
+<a name="l00096"></a><a class="code" href="structkobuki_1_1InputEvent.html">00096</a> <span class="keyword">struct </span><a class="code" href="structkobuki_1_1InputEvent.html">InputEvent</a> {
+<a name="l00097"></a><a class="code" href="structkobuki_1_1InputEvent.html#aca6f9a799c250a9e69d011e85bf6b0eb">00097</a>   <span class="keywordtype">bool</span> <a class="code" href="structkobuki_1_1InputEvent.html#aca6f9a799c250a9e69d011e85bf6b0eb">values</a>[4]; 
+<a name="l00098"></a>00098 };
+<a name="l00099"></a>00099 
+<a name="l00100"></a><a class="code" href="structkobuki_1_1RobotEvent.html">00100</a> <span class="keyword">struct </span><a class="code" href="structkobuki_1_1RobotEvent.html">RobotEvent</a> {
+<a name="l00101"></a><a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06">00101</a>   <span class="keyword">enum</span> <a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06">State</a> {
+<a name="l00102"></a><a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06a2d7440133b8c35765d5775aa7b533cf4">00102</a>     <a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06a2d7440133b8c35765d5775aa7b533cf4">Offline</a>,
+<a name="l00103"></a><a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06a5a4f31c47a458725cd579a8096863318">00103</a>     <a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06a5a4f31c47a458725cd579a8096863318">Online</a>,
+<a name="l00104"></a><a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06a106f74dcd5800d5ea7f5113505aa63bc">00104</a>     <a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06a106f74dcd5800d5ea7f5113505aa63bc">Unknown</a>  <span class="comment">// at startup</span>
+<a name="l00105"></a>00105   } <a class="code" href="structkobuki_1_1RobotEvent.html#ac9f74ad86313b2ecf97ea3fa17c1a474">state</a>;
+<a name="l00106"></a>00106 };
+<a name="l00107"></a>00107 
+<a name="l00108"></a>00108 <span class="comment">/*****************************************************************************</span>
+<a name="l00109"></a>00109 <span class="comment">** Interfaces</span>
+<a name="l00110"></a>00110 <span class="comment">*****************************************************************************/</span>
+<a name="l00111"></a>00111 
+<a name="l00112"></a><a class="code" href="classkobuki_1_1EventManager.html">00112</a> <span class="keyword">class </span><a class="code" href="macros_8hpp.html#a4b92966a9fada0eb71fe09d15a768343">kobuki_PUBLIC</a> <a class="code" href="classkobuki_1_1EventManager.html">EventManager</a> {
+<a name="l00113"></a>00113 <span class="keyword">public</span>:
+<a name="l00114"></a><a class="code" href="classkobuki_1_1EventManager.html#a2e29d28976acd117e32e5329851ce828">00114</a>   <a class="code" href="classkobuki_1_1EventManager.html#a2e29d28976acd117e32e5329851ce828">EventManager</a>() {
+<a name="l00115"></a>00115     last_state.buttons    = 0;
+<a name="l00116"></a>00116     last_state.bumper     = 0;
+<a name="l00117"></a>00117     last_state.cliff      = 0;
+<a name="l00118"></a>00118     last_state.wheel_drop = 0;
+<a name="l00119"></a>00119     last_state.charger    = 0;
+<a name="l00120"></a>00120     last_state.battery    = 0;
+<a name="l00121"></a>00121     last_digital_input    = 0;
+<a name="l00122"></a>00122     last_robot_state      = <a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06a106f74dcd5800d5ea7f5113505aa63bc">RobotEvent::Unknown</a>;
+<a name="l00123"></a>00123   }
+<a name="l00124"></a>00124 
+<a name="l00125"></a>00125   <span class="keywordtype">void</span> init(<span class="keyword">const</span> std::string &amp;sigslots_namespace);
+<a name="l00126"></a>00126   <span class="keywordtype">void</span> update(<span class="keyword">const</span> <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html">CoreSensors::Data</a> &amp;new_state, <span class="keyword">const</span> std::vector&lt;uint16_t&gt; &amp;cliff_data);
+<a name="l00127"></a>00127   <span class="keywordtype">void</span> update(<span class="keyword">const</span> uint16_t &amp;digital_input);
+<a name="l00128"></a>00128   <span class="keywordtype">void</span> update(<span class="keywordtype">bool</span> is_plugged, <span class="keywordtype">bool</span> is_alive);
+<a name="l00129"></a>00129 
+<a name="l00130"></a>00130 <span class="keyword">private</span>:
+<a name="l00131"></a><a class="code" href="classkobuki_1_1EventManager.html#a9f68520bebf0159b8e6e562d5e9dfd58">00131</a>   <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html">CoreSensors::Data</a> <a class="code" href="classkobuki_1_1EventManager.html#a9f68520bebf0159b8e6e562d5e9dfd58">last_state</a>;
+<a name="l00132"></a><a class="code" href="classkobuki_1_1EventManager.html#a113cde626a95791cbc8b8863077e1e74">00132</a>   uint16_t          <a class="code" href="classkobuki_1_1EventManager.html#a113cde626a95791cbc8b8863077e1e74">last_digital_input</a>;
+<a name="l00133"></a><a class="code" href="classkobuki_1_1EventManager.html#a0470eec0bb89466ca26ac5b4d9e91db2">00133</a>   <a class="code" href="structkobuki_1_1RobotEvent.html#aa2da423ca872390312344a020400ec06">RobotEvent::State</a> <a class="code" href="classkobuki_1_1EventManager.html#a0470eec0bb89466ca26ac5b4d9e91db2">last_robot_state</a>;
+<a name="l00134"></a>00134 
+<a name="l00135"></a><a class="code" href="classkobuki_1_1EventManager.html#a818538874bdfe648aa3c984320d68156">00135</a>   ecl::Signal&lt;const ButtonEvent&amp;&gt; <a class="code" href="classkobuki_1_1EventManager.html#a818538874bdfe648aa3c984320d68156">sig_button_event</a>;
+<a name="l00136"></a><a class="code" href="classkobuki_1_1EventManager.html#a28bcb6091783304c04c48c7513f00753">00136</a>   ecl::Signal&lt;const BumperEvent&amp;&gt; <a class="code" href="classkobuki_1_1EventManager.html#a28bcb6091783304c04c48c7513f00753">sig_bumper_event</a>;
+<a name="l00137"></a><a class="code" href="classkobuki_1_1EventManager.html#a8179aadf1b43c51cc2726b2abcdf4548">00137</a>   ecl::Signal&lt;const CliffEvent&amp;&gt;  <a class="code" href="classkobuki_1_1EventManager.html#a8179aadf1b43c51cc2726b2abcdf4548">sig_cliff_event</a>;
+<a name="l00138"></a><a class="code" href="classkobuki_1_1EventManager.html#a426514536742471bdfac97e31169ced9">00138</a>   ecl::Signal&lt;const WheelEvent&amp;&gt;  <a class="code" href="classkobuki_1_1EventManager.html#a426514536742471bdfac97e31169ced9">sig_wheel_event</a>;
+<a name="l00139"></a><a class="code" href="classkobuki_1_1EventManager.html#a0b59c2eed3a2fc2cd671214a274b3428">00139</a>   ecl::Signal&lt;const PowerEvent&amp;&gt;  <a class="code" href="classkobuki_1_1EventManager.html#a0b59c2eed3a2fc2cd671214a274b3428">sig_power_event</a>;
+<a name="l00140"></a><a class="code" href="classkobuki_1_1EventManager.html#a2abcef7c5342d418a7310aa8a1bd4722">00140</a>   ecl::Signal&lt;const InputEvent&amp;&gt;  <a class="code" href="classkobuki_1_1EventManager.html#a2abcef7c5342d418a7310aa8a1bd4722">sig_input_event</a>;
+<a name="l00141"></a><a class="code" href="classkobuki_1_1EventManager.html#adb8b0238cbcdccca5d8528594443d436">00141</a>   ecl::Signal&lt;const RobotEvent&amp;&gt;  <a class="code" href="classkobuki_1_1EventManager.html#adb8b0238cbcdccca5d8528594443d436">sig_robot_event</a>;
+<a name="l00142"></a>00142 };
 <a name="l00143"></a>00143 
-<a name="l00144"></a>00144 } <span class="comment">// namespace kobuki</span>
-<a name="l00145"></a>00145 
-<a name="l00146"></a>00146 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_BUTTON_EVENT_HPP_ */</span>
+<a name="l00144"></a>00144 
+<a name="l00145"></a>00145 } <span class="comment">// namespace kobuki</span>
+<a name="l00146"></a>00146 
+<a name="l00147"></a>00147 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_BUTTON_EVENT_HPP_ */</span>
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -211,7 +212,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <younghoon.ju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Fri May 24 2013 20:32:16</small>
+<small>autogenerated on Thu Jun 6 2013 09:49:23</small>
 </div>
 </body>
 </html>

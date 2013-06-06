@@ -65,79 +65,80 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00018"></a>00018 <span class="comment">*****************************************************************************/</span>
 <a name="l00019"></a>00019 
 <a name="l00020"></a>00020 <span class="preprocessor">#include &quot;../packet_handler/payload_base.hpp&quot;</span>
-<a name="l00021"></a>00021 <span class="preprocessor">#include &lt;stdint.h&gt;</span>
-<a name="l00022"></a>00022 
-<a name="l00023"></a>00023 <span class="comment">/*****************************************************************************</span>
-<a name="l00024"></a>00024 <span class="comment">** Namespaces</span>
-<a name="l00025"></a>00025 <span class="comment">*****************************************************************************/</span>
-<a name="l00026"></a>00026 
-<a name="l00027"></a>00027 <span class="keyword">namespace </span>kobuki
-<a name="l00028"></a>00028 {
-<a name="l00029"></a>00029 
-<a name="l00030"></a>00030 <span class="comment">/*****************************************************************************</span>
-<a name="l00031"></a>00031 <span class="comment">** Interface</span>
-<a name="l00032"></a>00032 <span class="comment">*****************************************************************************/</span>
-<a name="l00033"></a>00033 
-<a name="l00034"></a><a class="code" href="classkobuki_1_1CoreSensors.html">00034</a> <span class="keyword">class </span><a class="code" href="classkobuki_1_1CoreSensors.html">CoreSensors</a> : <span class="keyword">public</span> packet_handler::payloadBase
-<a name="l00035"></a>00035 {
-<a name="l00036"></a>00036 <span class="keyword">public</span>:
-<a name="l00037"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html">00037</a>   <span class="keyword">struct </span><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html">Data</a> {
-<a name="l00038"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a2ef0c11257ef7a25c0691e87659e138b">00038</a>     uint16_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a2ef0c11257ef7a25c0691e87659e138b">time_stamp</a>;
-<a name="l00039"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#adbb5a43e2e08dbf7827beb3ef52cef0e">00039</a>     uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#adbb5a43e2e08dbf7827beb3ef52cef0e">bumper</a>;
-<a name="l00040"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a47fa534f8b8da4ef4dfed6ecdaa9e2e5">00040</a>     uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a47fa534f8b8da4ef4dfed6ecdaa9e2e5">wheel_drop</a>;
-<a name="l00041"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#aed031d5acac9e297826cea0aaa48e3ef">00041</a>     uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#aed031d5acac9e297826cea0aaa48e3ef">cliff</a>;
-<a name="l00042"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a9a2aee9ed43bb59570ab618f81016044">00042</a>     uint16_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a9a2aee9ed43bb59570ab618f81016044">left_encoder</a>;
-<a name="l00043"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#ab5d251034bca20f28ec57bde1441ca45">00043</a>     uint16_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#ab5d251034bca20f28ec57bde1441ca45">right_encoder</a>;
-<a name="l00044"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#ae98f21f55cbd5f271b34c2d954a80f88">00044</a>     <span class="keywordtype">char</span> <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#ae98f21f55cbd5f271b34c2d954a80f88">left_pwm</a>;
-<a name="l00045"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a7a32588b92f15eff9cef99ebe2d600b2">00045</a>     <span class="keywordtype">char</span> <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a7a32588b92f15eff9cef99ebe2d600b2">right_pwm</a>;
-<a name="l00046"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a58839aa82b503c19dba1e7a5558499fa">00046</a>     uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a58839aa82b503c19dba1e7a5558499fa">buttons</a>;
-<a name="l00047"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a880058d64a33e864c418ddcd353b325f">00047</a>     uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a880058d64a33e864c418ddcd353b325f">charger</a>;
-<a name="l00048"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a6e2d199ac9856efb0da581cac93b9efe">00048</a>     uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a6e2d199ac9856efb0da581cac93b9efe">battery</a>;
-<a name="l00049"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a567bd7f98ee1581ef222ae7e9d07d989">00049</a>     uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a567bd7f98ee1581ef222ae7e9d07d989">over_current</a>;
-<a name="l00050"></a>00050   } <a class="code" href="classkobuki_1_1CoreSensors.html#a174414fa517ca33f2a1c73cd8f6d7327">data</a>;
-<a name="l00051"></a>00051 
-<a name="l00052"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html">00052</a>   <span class="keyword">struct </span><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html">Flags</a> {
-<a name="l00053"></a>00053     <span class="comment">// buttons</span>
-<a name="l00054"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a4a9367bc7fbc0fe6b2b9e9ad965aab2d">00054</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a4a9367bc7fbc0fe6b2b9e9ad965aab2d">Button0</a> = 0x01;
-<a name="l00055"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a3e1fe80453d13cbd134e5ed344da0359">00055</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a3e1fe80453d13cbd134e5ed344da0359">Button1</a> = 0x02;
-<a name="l00056"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a1e2fe7dab37b90d731a01c82108a6ee7">00056</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a1e2fe7dab37b90d731a01c82108a6ee7">Button2</a> = 0x04;
-<a name="l00057"></a>00057 
-<a name="l00058"></a>00058     <span class="comment">// bumper</span>
-<a name="l00059"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#abd2dbde0aee87695348ee31e451469cf">00059</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#abd2dbde0aee87695348ee31e451469cf">LeftBumper</a>   = 0x04;
-<a name="l00060"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a29c7abed2265fa5acd0a5288ceaf831a">00060</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a29c7abed2265fa5acd0a5288ceaf831a">CenterBumper</a> = 0x02;
-<a name="l00061"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a46a0af0ca751224ee77ca8229dee8d74">00061</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a46a0af0ca751224ee77ca8229dee8d74">RightBumper</a>  = 0x01;
-<a name="l00062"></a>00062 
-<a name="l00063"></a>00063     <span class="comment">// cliff sensor</span>
-<a name="l00064"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#ad986a906de2deaf17381f5b6457bf0af">00064</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#ad986a906de2deaf17381f5b6457bf0af">LeftCliff</a>    = 0x04;
-<a name="l00065"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a1b5e6cb42d25bec2e9030341f4b8df4b">00065</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a1b5e6cb42d25bec2e9030341f4b8df4b">CenterCliff</a>  = 0x02;
-<a name="l00066"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a26c8b51ff04d0aa820b11362cde089a9">00066</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a26c8b51ff04d0aa820b11362cde089a9">RightCliff</a>   = 0x01;
-<a name="l00067"></a>00067 
-<a name="l00068"></a>00068     <span class="comment">// wheel drop sensor</span>
-<a name="l00069"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a081dcff8c1a2ca453fe3952c19cff4b5">00069</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a081dcff8c1a2ca453fe3952c19cff4b5">LeftWheel</a>    = 0x02;
-<a name="l00070"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#adcbe63546742933ef4f2e60ba2ba206b">00070</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#adcbe63546742933ef4f2e60ba2ba206b">RightWheel</a>   = 0x01;
-<a name="l00071"></a>00071 
-<a name="l00072"></a>00072     <span class="comment">// Charging source</span>
-<a name="l00073"></a>00073     <span class="comment">// - first four bits distinguish between adapter or docking base charging</span>
-<a name="l00074"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a3bc6161aa1184509c0fbeffec09f0c03">00074</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a3bc6161aa1184509c0fbeffec09f0c03">AdapterType</a>  = 0x10;
-<a name="l00075"></a>00075     <span class="comment">// - last 4 bits specified the charging status (see Battery.hpp for details)</span>
-<a name="l00076"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a839de6575f2dd008f7f11b8574ddccb9">00076</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a839de6575f2dd008f7f11b8574ddccb9">BatteryStateMask</a> = 0x0F;
-<a name="l00077"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a7478f59ea180abc589c314a9be8c6d52">00077</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a7478f59ea180abc589c314a9be8c6d52">Discharging</a>  = 0x00;
-<a name="l00078"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a37a146ce9d17489e29223cf8eda52731">00078</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a37a146ce9d17489e29223cf8eda52731">Charged</a>      = 0x02;
-<a name="l00079"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a944248c28c8097de503af120b1afe3e6">00079</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a944248c28c8097de503af120b1afe3e6">Charging</a>     = 0x06;
-<a name="l00080"></a>00080 
-<a name="l00081"></a>00081     <span class="comment">// wheel drop sensor</span>
-<a name="l00082"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a18f5b7c46447fa7a5661290ef052a863">00082</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a18f5b7c46447fa7a5661290ef052a863">LeftWheel_OC</a>    = 0x01;
-<a name="l00083"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#acd0f2a4e0f3bc264289ebc67f7ef4316">00083</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#acd0f2a4e0f3bc264289ebc67f7ef4316">RightWheel_OC</a>   = 0x02;
-<a name="l00084"></a>00084 
-<a name="l00085"></a>00085   };
-<a name="l00086"></a>00086 
-<a name="l00087"></a>00087   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1CoreSensors.html#a0be7c59b7aebbbf7c3bcc11b1521d9ed">serialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream);
-<a name="l00088"></a>00088   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1CoreSensors.html#a040a72096617002a0d0f93b848006ebc">deserialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream);
-<a name="l00089"></a>00089 };
-<a name="l00090"></a>00090 
-<a name="l00091"></a>00091 } <span class="comment">// namespace kobuki</span>
-<a name="l00092"></a>00092 
-<a name="l00093"></a>00093 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_CORE_SENSORS_HPP__ */</span>
+<a name="l00021"></a>00021 <span class="preprocessor">#include &quot;../macros.hpp&quot;</span>
+<a name="l00022"></a>00022 <span class="preprocessor">#include &lt;stdint.h&gt;</span>
+<a name="l00023"></a>00023 
+<a name="l00024"></a>00024 <span class="comment">/*****************************************************************************</span>
+<a name="l00025"></a>00025 <span class="comment">** Namespaces</span>
+<a name="l00026"></a>00026 <span class="comment">*****************************************************************************/</span>
+<a name="l00027"></a>00027 
+<a name="l00028"></a>00028 <span class="keyword">namespace </span>kobuki
+<a name="l00029"></a>00029 {
+<a name="l00030"></a>00030 
+<a name="l00031"></a>00031 <span class="comment">/*****************************************************************************</span>
+<a name="l00032"></a>00032 <span class="comment">** Interface</span>
+<a name="l00033"></a>00033 <span class="comment">*****************************************************************************/</span>
+<a name="l00034"></a>00034 
+<a name="l00035"></a><a class="code" href="classkobuki_1_1CoreSensors.html">00035</a> <span class="keyword">class </span><a class="code" href="macros_8hpp.html#a4b92966a9fada0eb71fe09d15a768343">kobuki_PUBLIC</a> <a class="code" href="classkobuki_1_1CoreSensors.html">CoreSensors</a> : <span class="keyword">public</span> packet_handler::payloadBase
+<a name="l00036"></a>00036 {
+<a name="l00037"></a>00037 <span class="keyword">public</span>:
+<a name="l00038"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html">00038</a>   <span class="keyword">struct </span><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html">Data</a> {
+<a name="l00039"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a2ef0c11257ef7a25c0691e87659e138b">00039</a>     uint16_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a2ef0c11257ef7a25c0691e87659e138b">time_stamp</a>;
+<a name="l00040"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#adbb5a43e2e08dbf7827beb3ef52cef0e">00040</a>     uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#adbb5a43e2e08dbf7827beb3ef52cef0e">bumper</a>;
+<a name="l00041"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a47fa534f8b8da4ef4dfed6ecdaa9e2e5">00041</a>     uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a47fa534f8b8da4ef4dfed6ecdaa9e2e5">wheel_drop</a>;
+<a name="l00042"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#aed031d5acac9e297826cea0aaa48e3ef">00042</a>     uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#aed031d5acac9e297826cea0aaa48e3ef">cliff</a>;
+<a name="l00043"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a9a2aee9ed43bb59570ab618f81016044">00043</a>     uint16_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a9a2aee9ed43bb59570ab618f81016044">left_encoder</a>;
+<a name="l00044"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#ab5d251034bca20f28ec57bde1441ca45">00044</a>     uint16_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#ab5d251034bca20f28ec57bde1441ca45">right_encoder</a>;
+<a name="l00045"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#ae98f21f55cbd5f271b34c2d954a80f88">00045</a>     <span class="keywordtype">char</span> <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#ae98f21f55cbd5f271b34c2d954a80f88">left_pwm</a>;
+<a name="l00046"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a7a32588b92f15eff9cef99ebe2d600b2">00046</a>     <span class="keywordtype">char</span> <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a7a32588b92f15eff9cef99ebe2d600b2">right_pwm</a>;
+<a name="l00047"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a58839aa82b503c19dba1e7a5558499fa">00047</a>     uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a58839aa82b503c19dba1e7a5558499fa">buttons</a>;
+<a name="l00048"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a880058d64a33e864c418ddcd353b325f">00048</a>     uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a880058d64a33e864c418ddcd353b325f">charger</a>;
+<a name="l00049"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a6e2d199ac9856efb0da581cac93b9efe">00049</a>     uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a6e2d199ac9856efb0da581cac93b9efe">battery</a>;
+<a name="l00050"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a567bd7f98ee1581ef222ae7e9d07d989">00050</a>     uint8_t <a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a567bd7f98ee1581ef222ae7e9d07d989">over_current</a>;
+<a name="l00051"></a>00051   } data;
+<a name="l00052"></a>00052 
+<a name="l00053"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html">00053</a>   <span class="keyword">struct </span><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html">Flags</a> {
+<a name="l00054"></a>00054     <span class="comment">// buttons</span>
+<a name="l00055"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a4a9367bc7fbc0fe6b2b9e9ad965aab2d">00055</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t Button0 = 0x01;
+<a name="l00056"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a3e1fe80453d13cbd134e5ed344da0359">00056</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t Button1 = 0x02;
+<a name="l00057"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a1e2fe7dab37b90d731a01c82108a6ee7">00057</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t Button2 = 0x04;
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059     <span class="comment">// bumper</span>
+<a name="l00060"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#abd2dbde0aee87695348ee31e451469cf">00060</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t LeftBumper   = 0x04;
+<a name="l00061"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a29c7abed2265fa5acd0a5288ceaf831a">00061</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t CenterBumper = 0x02;
+<a name="l00062"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a46a0af0ca751224ee77ca8229dee8d74">00062</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t RightBumper  = 0x01;
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064     <span class="comment">// cliff sensor</span>
+<a name="l00065"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#ad986a906de2deaf17381f5b6457bf0af">00065</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t LeftCliff    = 0x04;
+<a name="l00066"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a1b5e6cb42d25bec2e9030341f4b8df4b">00066</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t CenterCliff  = 0x02;
+<a name="l00067"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a26c8b51ff04d0aa820b11362cde089a9">00067</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t RightCliff   = 0x01;
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069     <span class="comment">// wheel drop sensor</span>
+<a name="l00070"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a081dcff8c1a2ca453fe3952c19cff4b5">00070</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t LeftWheel    = 0x02;
+<a name="l00071"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#adcbe63546742933ef4f2e60ba2ba206b">00071</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t RightWheel   = 0x01;
+<a name="l00072"></a>00072 
+<a name="l00073"></a>00073     <span class="comment">// Charging source</span>
+<a name="l00074"></a>00074     <span class="comment">// - first four bits distinguish between adapter or docking base charging</span>
+<a name="l00075"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a3bc6161aa1184509c0fbeffec09f0c03">00075</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t AdapterType  = 0x10;
+<a name="l00076"></a>00076     <span class="comment">// - last 4 bits specified the charging status (see Battery.hpp for details)</span>
+<a name="l00077"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a839de6575f2dd008f7f11b8574ddccb9">00077</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t BatteryStateMask = 0x0F;
+<a name="l00078"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a7478f59ea180abc589c314a9be8c6d52">00078</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t Discharging  = 0x00;
+<a name="l00079"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a37a146ce9d17489e29223cf8eda52731">00079</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t Charged      = 0x02;
+<a name="l00080"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a944248c28c8097de503af120b1afe3e6">00080</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t Charging     = 0x06;
+<a name="l00081"></a>00081 
+<a name="l00082"></a>00082     <span class="comment">// wheel drop sensor</span>
+<a name="l00083"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#a18f5b7c46447fa7a5661290ef052a863">00083</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t LeftWheel_OC    = 0x01;
+<a name="l00084"></a><a class="code" href="structkobuki_1_1CoreSensors_1_1Flags.html#acd0f2a4e0f3bc264289ebc67f7ef4316">00084</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t RightWheel_OC   = 0x02;
+<a name="l00085"></a>00085 
+<a name="l00086"></a>00086   };
+<a name="l00087"></a>00087 
+<a name="l00088"></a>00088   <span class="keywordtype">bool</span> serialise(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream);
+<a name="l00089"></a>00089   <span class="keywordtype">bool</span> deserialise(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream);
+<a name="l00090"></a>00090 };
+<a name="l00091"></a>00091 
+<a name="l00092"></a>00092 } <span class="comment">// namespace kobuki</span>
+<a name="l00093"></a>00093 
+<a name="l00094"></a>00094 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_CORE_SENSORS_HPP__ */</span>
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -158,7 +159,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <younghoon.ju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Fri May 24 2013 20:32:16</small>
+<small>autogenerated on Thu Jun 6 2013 09:49:23</small>
 </div>
 </body>
 </html>

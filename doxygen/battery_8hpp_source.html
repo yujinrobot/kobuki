@@ -66,50 +66,53 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00019"></a>00019 
 <a name="l00020"></a>00020 <span class="preprocessor">#include &lt;stdint.h&gt;</span>
 <a name="l00021"></a>00021 <span class="preprocessor">#include &quot;../packets/core_sensors.hpp&quot;</span>
-<a name="l00022"></a>00022 
-<a name="l00023"></a>00023 <span class="comment">/*****************************************************************************</span>
-<a name="l00024"></a>00024 <span class="comment">** Namespaces</span>
-<a name="l00025"></a>00025 <span class="comment">*****************************************************************************/</span>
-<a name="l00026"></a>00026 
-<a name="l00027"></a>00027 <span class="keyword">namespace </span>kobuki {
-<a name="l00028"></a>00028 
-<a name="l00029"></a>00029 <span class="comment">/*****************************************************************************</span>
-<a name="l00030"></a>00030 <span class="comment">** Interfaces</span>
-<a name="l00031"></a>00031 <span class="comment">*****************************************************************************/</span>
-<a name="l00032"></a>00032 
-<a name="l00039"></a><a class="code" href="classkobuki_1_1Battery.html">00039</a> <span class="keyword">class </span><a class="code" href="classkobuki_1_1Battery.html" title="Battery level module.">Battery</a> {
-<a name="l00040"></a>00040 <span class="keyword">public</span>:
-<a name="l00041"></a><a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0">00041</a>   <span class="keyword">enum</span> <a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0">Source</a> {
-<a name="l00042"></a><a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0ad628e552a21652f278dbc7ccdba11ba8">00042</a>     <a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0ad628e552a21652f278dbc7ccdba11ba8">None</a>,
-<a name="l00043"></a><a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0a2d556aa7a1d351b9192f93d692cc63d1">00043</a>     <a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0a2d556aa7a1d351b9192f93d692cc63d1">Adapter</a>,
-<a name="l00044"></a><a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0a763c5c8ee3861289e3b1954ec791adc7">00044</a>     <a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0a763c5c8ee3861289e3b1954ec791adc7">Dock</a>
-<a name="l00045"></a>00045   };
-<a name="l00046"></a><a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bc">00046</a>   <span class="keyword">enum</span> <a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bc">Level</a> {
-<a name="l00047"></a><a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bca27e3cf6d1fd3207e1d16ba4b808506ef">00047</a>     <a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bca27e3cf6d1fd3207e1d16ba4b808506ef">Dangerous</a>,
-<a name="l00048"></a><a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bcab7ef773b0f24a197a35f423d86bd0dda">00048</a>     <a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bcab7ef773b0f24a197a35f423d86bd0dda">Low</a>,
-<a name="l00049"></a><a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bca7019aea00963a0aeeaf36cf79025c7b3">00049</a>     <a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bca7019aea00963a0aeeaf36cf79025c7b3">Healthy</a>,
-<a name="l00050"></a><a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bca5de608fc8b682a60bb643a3bee2faec9">00050</a>     <a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bca5de608fc8b682a60bb643a3bee2faec9">Maximum</a>
-<a name="l00051"></a>00051   };
-<a name="l00052"></a><a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9">00052</a>   <span class="keyword">enum</span> <a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9">State</a> {
-<a name="l00053"></a><a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9a5aa69940e97eac18291c8f3af872cd35">00053</a>     <a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9a5aa69940e97eac18291c8f3af872cd35">Discharging</a>,
-<a name="l00054"></a><a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9a917ee4831cd7e9f2fc8344565abf85d7">00054</a>     <a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9a917ee4831cd7e9f2fc8344565abf85d7">Charged</a>,
-<a name="l00055"></a><a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9aa377027ac3172a35b47e17999b70efaa">00055</a>     <a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9aa377027ac3172a35b47e17999b70efaa">Charging</a>
-<a name="l00056"></a>00056   };
-<a name="l00057"></a>00057 
-<a name="l00058"></a><a class="code" href="classkobuki_1_1Battery.html#a81b6fb4f44756052f92b9747741ba846">00058</a>   <a class="code" href="classkobuki_1_1Battery.html#a81b6fb4f44756052f92b9747741ba846">Battery</a>() {} 
-<a name="l00059"></a>00059   <a class="code" href="classkobuki_1_1Battery.html#a81b6fb4f44756052f92b9747741ba846">Battery</a> (<span class="keyword">const</span> uint8_t &amp;new_voltage, <span class="keyword">const</span> uint8_t &amp;charger_flag);
-<a name="l00060"></a>00060   <a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bc">Level</a> <a class="code" href="classkobuki_1_1Battery.html#a447e440213e6db2d79e9bb670d7482d5">level</a>() <span class="keyword">const</span>;
-<a name="l00061"></a>00061   <span class="keywordtype">float</span> <a class="code" href="classkobuki_1_1Battery.html#aaf8c2336818dff5cded3f2f3dca331dc">percent</a>() <span class="keyword">const</span>;
-<a name="l00062"></a>00062 
-<a name="l00063"></a><a class="code" href="classkobuki_1_1Battery.html#ab52bd0243682d8f2b4f6a7b9fdb143d3">00063</a>   <span class="keyword">static</span> <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Battery.html#a0a8d941a6dec249504f5e3e03653fda2">capacity</a>, <a class="code" href="classkobuki_1_1Battery.html#ab52bd0243682d8f2b4f6a7b9fdb143d3">low</a>, <a class="code" href="classkobuki_1_1Battery.html#afed5fa95de7082b1d36e01bc7f551f56">dangerous</a>;
-<a name="l00064"></a><a class="code" href="classkobuki_1_1Battery.html#ac3a23c18283486ec3608f270f9800d8a">00064</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Battery.html#ac3a23c18283486ec3608f270f9800d8a">voltage</a>;
-<a name="l00065"></a><a class="code" href="classkobuki_1_1Battery.html#a07f603be1473dece5428d1296448ddd1">00065</a>   <a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9">State</a> <a class="code" href="classkobuki_1_1Battery.html#a07f603be1473dece5428d1296448ddd1">charging_state</a>;
-<a name="l00066"></a><a class="code" href="classkobuki_1_1Battery.html#ad92e6bb5868651fb1542a62276071a28">00066</a>   <a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0">Source</a> <a class="code" href="classkobuki_1_1Battery.html#ad92e6bb5868651fb1542a62276071a28">charging_source</a>;
-<a name="l00067"></a>00067 };
-<a name="l00068"></a>00068 
-<a name="l00069"></a>00069 } <span class="comment">// namespace kobuki</span>
-<a name="l00070"></a>00070 
-<a name="l00071"></a>00071 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_BATTERY_HPP_ */</span>
+<a name="l00022"></a>00022 <span class="preprocessor">#include &quot;../macros.hpp&quot;</span>
+<a name="l00023"></a>00023 
+<a name="l00024"></a>00024 <span class="comment">/*****************************************************************************</span>
+<a name="l00025"></a>00025 <span class="comment">** Namespaces</span>
+<a name="l00026"></a>00026 <span class="comment">*****************************************************************************/</span>
+<a name="l00027"></a>00027 
+<a name="l00028"></a>00028 <span class="keyword">namespace </span>kobuki {
+<a name="l00029"></a>00029 
+<a name="l00030"></a>00030 <span class="comment">/*****************************************************************************</span>
+<a name="l00031"></a>00031 <span class="comment">** Interfaces</span>
+<a name="l00032"></a>00032 <span class="comment">*****************************************************************************/</span>
+<a name="l00033"></a>00033 
+<a name="l00040"></a><a class="code" href="classkobuki_1_1Battery.html">00040</a> <span class="keyword">class </span><a class="code" href="macros_8hpp.html#a4b92966a9fada0eb71fe09d15a768343">kobuki_PUBLIC</a> <a class="code" href="classkobuki_1_1Battery.html" title="Battery level module.">Battery</a> {
+<a name="l00041"></a>00041 <span class="keyword">public</span>:
+<a name="l00042"></a><a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0">00042</a>   <span class="keyword">enum</span> <a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0">Source</a> {
+<a name="l00043"></a><a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0ad628e552a21652f278dbc7ccdba11ba8">00043</a>     <a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0ad628e552a21652f278dbc7ccdba11ba8">None</a>,
+<a name="l00044"></a><a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0a2d556aa7a1d351b9192f93d692cc63d1">00044</a>     <a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0a2d556aa7a1d351b9192f93d692cc63d1">Adapter</a>,
+<a name="l00045"></a><a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0a763c5c8ee3861289e3b1954ec791adc7">00045</a>     Dock
+<a name="l00046"></a>00046   };
+<a name="l00047"></a><a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bc">00047</a>   <span class="keyword">enum</span> <a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bc">Level</a> {
+<a name="l00048"></a><a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bca27e3cf6d1fd3207e1d16ba4b808506ef">00048</a>     <a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bca27e3cf6d1fd3207e1d16ba4b808506ef">Dangerous</a>,
+<a name="l00049"></a><a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bcab7ef773b0f24a197a35f423d86bd0dda">00049</a>     <a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bcab7ef773b0f24a197a35f423d86bd0dda">Low</a>,
+<a name="l00050"></a><a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bca7019aea00963a0aeeaf36cf79025c7b3">00050</a>     <a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bca7019aea00963a0aeeaf36cf79025c7b3">Healthy</a>,
+<a name="l00051"></a><a class="code" href="classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bca5de608fc8b682a60bb643a3bee2faec9">00051</a>     Maximum
+<a name="l00052"></a>00052   };
+<a name="l00053"></a><a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9">00053</a>   <span class="keyword">enum</span> <a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9">State</a> {
+<a name="l00054"></a><a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9a5aa69940e97eac18291c8f3af872cd35">00054</a>     <a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9a5aa69940e97eac18291c8f3af872cd35">Discharging</a>,
+<a name="l00055"></a><a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9a917ee4831cd7e9f2fc8344565abf85d7">00055</a>     <a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9a917ee4831cd7e9f2fc8344565abf85d7">Charged</a>,
+<a name="l00056"></a><a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9aa377027ac3172a35b47e17999b70efaa">00056</a>     Charging
+<a name="l00057"></a>00057   };
+<a name="l00058"></a>00058 
+<a name="l00059"></a><a class="code" href="classkobuki_1_1Battery.html#a81b6fb4f44756052f92b9747741ba846">00059</a>   <a class="code" href="classkobuki_1_1Battery.html#a81b6fb4f44756052f92b9747741ba846">Battery</a>() {} 
+<a name="l00060"></a>00060   <a class="code" href="classkobuki_1_1Battery.html" title="Battery level module.">Battery</a> (<span class="keyword">const</span> uint8_t &amp;new_voltage, <span class="keyword">const</span> uint8_t &amp;charger_flag);
+<a name="l00061"></a>00061   Level level() <span class="keyword">const</span>;
+<a name="l00062"></a>00062   <span class="keywordtype">float</span> percent() <span class="keyword">const</span>;
+<a name="l00063"></a>00063 
+<a name="l00064"></a><a class="code" href="classkobuki_1_1Battery.html#a0a8d941a6dec249504f5e3e03653fda2">00064</a>   <span class="keyword">static</span> <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Battery.html#a0a8d941a6dec249504f5e3e03653fda2">capacity</a>;
+<a name="l00065"></a><a class="code" href="classkobuki_1_1Battery.html#ab52bd0243682d8f2b4f6a7b9fdb143d3">00065</a>   <span class="keyword">static</span> <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Battery.html#ab52bd0243682d8f2b4f6a7b9fdb143d3">low</a>;
+<a name="l00066"></a><a class="code" href="classkobuki_1_1Battery.html#afed5fa95de7082b1d36e01bc7f551f56">00066</a>   <span class="keyword">static</span> <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Battery.html#afed5fa95de7082b1d36e01bc7f551f56">dangerous</a>;
+<a name="l00067"></a><a class="code" href="classkobuki_1_1Battery.html#ac3a23c18283486ec3608f270f9800d8a">00067</a>   <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Battery.html#ac3a23c18283486ec3608f270f9800d8a">voltage</a>;
+<a name="l00068"></a><a class="code" href="classkobuki_1_1Battery.html#a07f603be1473dece5428d1296448ddd1">00068</a>   <a class="code" href="classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9">State</a> <a class="code" href="classkobuki_1_1Battery.html#a07f603be1473dece5428d1296448ddd1">charging_state</a>;
+<a name="l00069"></a><a class="code" href="classkobuki_1_1Battery.html#ad92e6bb5868651fb1542a62276071a28">00069</a>   <a class="code" href="classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0">Source</a> <a class="code" href="classkobuki_1_1Battery.html#ad92e6bb5868651fb1542a62276071a28">charging_source</a>;
+<a name="l00070"></a>00070 };
+<a name="l00071"></a>00071 
+<a name="l00072"></a>00072 } <span class="comment">// namespace kobuki</span>
+<a name="l00073"></a>00073 
+<a name="l00074"></a>00074 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_BATTERY_HPP_ */</span>
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -130,7 +133,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <younghoon.ju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Fri May 24 2013 20:32:16</small>
+<small>autogenerated on Thu Jun 6 2013 09:49:23</small>
 </div>
 </body>
 </html>

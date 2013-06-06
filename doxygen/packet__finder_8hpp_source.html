@@ -67,79 +67,80 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00025"></a>00025 <span class="preprocessor">#include &lt;iomanip&gt;</span>
 <a name="l00026"></a>00026 <span class="preprocessor">#include &lt;ecl/containers.hpp&gt;</span>
 <a name="l00027"></a>00027 <span class="preprocessor">#include &lt;ecl/sigslots.hpp&gt;</span>
-<a name="l00028"></a>00028 
-<a name="l00029"></a>00029 <span class="comment">/*****************************************************************************</span>
-<a name="l00030"></a>00030 <span class="comment"> ** Namespaces</span>
-<a name="l00031"></a>00031 <span class="comment"> *****************************************************************************/</span>
-<a name="l00032"></a>00032 
-<a name="l00033"></a>00033 <span class="keyword">namespace </span>kobuki
-<a name="l00034"></a>00034 {
-<a name="l00035"></a>00035 
-<a name="l00036"></a>00036 <span class="comment">/*****************************************************************************</span>
-<a name="l00037"></a>00037 <span class="comment"> ** Using</span>
-<a name="l00038"></a>00038 <span class="comment"> *****************************************************************************/</span>
-<a name="l00039"></a>00039 
-<a name="l00040"></a>00040 <span class="comment">/*****************************************************************************</span>
-<a name="l00041"></a>00041 <span class="comment"> ** Interface</span>
-<a name="l00042"></a>00042 <span class="comment"> *****************************************************************************/</span>
-<a name="l00071"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html">00071</a> <span class="keyword">class </span><a class="code" href="classkobuki_1_1PacketFinderBase.html" title="Provides simple packet finder which may be consist of stx, etx, payload, ...">PacketFinderBase</a>
-<a name="l00072"></a>00072 {
-<a name="l00073"></a>00073 <span class="keyword">public</span>:
-<a name="l00074"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">00074</a>   <span class="keyword">typedef</span> ecl::PushAndPop&lt;unsigned char&gt; <a class="code" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">BufferType</a>;
-<a name="l00075"></a>00075 
-<a name="l00076"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8">00076</a>   <span class="keyword">enum</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8">packetFinderState</a>
-<a name="l00077"></a>00077   {
-<a name="l00078"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8ad650e76e8c85b6112140b86ddeb20929">00078</a>     <a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8ad650e76e8c85b6112140b86ddeb20929">clearBuffer</a> = 0,
-<a name="l00079"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8a03e0fbf274e46ddf14c038a4abad4189">00079</a>     <a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8a03e0fbf274e46ddf14c038a4abad4189">waitingForStx</a>,
-<a name="l00080"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8a7a2627559f357bf02ec088b2c884a055">00080</a>     <a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8a7a2627559f357bf02ec088b2c884a055">waitingForPayloadSize</a>,
-<a name="l00081"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8aab89bfaf9b37cacf36a932c317bdac7a">00081</a>     <a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8aab89bfaf9b37cacf36a932c317bdac7a">waitingForPayloadToEtx</a>,
-<a name="l00082"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8ad96841e57c961d3723996ce4b5b7fad5">00082</a>     <a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8ad96841e57c961d3723996ce4b5b7fad5">waitingForEtx</a>,
-<a name="l00083"></a>00083   };
-<a name="l00084"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a01a3037d83ed4f9bb3d22932d29a1dcc">00084</a>   <span class="keyword">enum</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8">packetFinderState</a> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a01a3037d83ed4f9bb3d22932d29a1dcc">state</a>;
-<a name="l00085"></a>00085 <span class="keyword">protected</span>:
-<a name="l00086"></a>00086 
-<a name="l00087"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#afd37d819afc24b5fbbbdfd21e4cda1ac">00087</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#afd37d819afc24b5fbbbdfd21e4cda1ac">size_stx</a>;
-<a name="l00088"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#adaf32c7b348c6f6c675edfefa1e6f1a5">00088</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#adaf32c7b348c6f6c675edfefa1e6f1a5">size_etx</a>;
-<a name="l00089"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a1fd3a110b4920103132e7e281251caca">00089</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a1fd3a110b4920103132e7e281251caca">size_length_field</a>;
-<a name="l00090"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a06d54c9254d3413fed606bf515183770">00090</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a06d54c9254d3413fed606bf515183770">variable_size_payload</a>;
-<a name="l00091"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#ab9981e768e5042c0efffd23df506c477">00091</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#ab9981e768e5042c0efffd23df506c477">size_max_payload</a>;
-<a name="l00092"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a0ab8932e3f01def929b43d2d8c68413d">00092</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a0ab8932e3f01def929b43d2d8c68413d">size_payload</a>;
-<a name="l00093"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a81db6ffbf2859173df7e917b44b32dba">00093</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a81db6ffbf2859173df7e917b44b32dba">size_checksum_field</a>;
-<a name="l00094"></a>00094 
-<a name="l00095"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a8deef4eaa35897578030892cb3265d02">00095</a>   <a class="code" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">BufferType</a> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a8deef4eaa35897578030892cb3265d02">STX</a>;
-<a name="l00096"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a024c93fd9228fa0598d6edebaf1e851c">00096</a>   <a class="code" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">BufferType</a> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a024c93fd9228fa0598d6edebaf1e851c">ETX</a>;
-<a name="l00097"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#aaa6673951c65a21948e94e6efbe41ff1">00097</a>   <a class="code" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">BufferType</a> <a class="code" href="classkobuki_1_1PacketFinderBase.html#aaa6673951c65a21948e94e6efbe41ff1">buffer</a>;
-<a name="l00098"></a>00098 
-<a name="l00099"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#ac1ebadd0a19b4d15edde603c35855563">00099</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#ac1ebadd0a19b4d15edde603c35855563">verbose</a>;
-<a name="l00100"></a>00100 
-<a name="l00101"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a7648848ba9116a55f8609b12f0249bd6">00101</a>   ecl::Signal&lt;const std::string&amp;&gt; <a class="code" href="classkobuki_1_1PacketFinderBase.html#a7648848ba9116a55f8609b12f0249bd6">sig_warn</a>, <a class="code" href="classkobuki_1_1PacketFinderBase.html#a84d10875989ea59314bfe87a95a98ca3">sig_error</a>;
-<a name="l00102"></a>00102 
-<a name="l00103"></a>00103 <span class="keyword">public</span>:
-<a name="l00104"></a>00104   <a class="code" href="classkobuki_1_1PacketFinderBase.html#a2af8577ace869ac685bbd3df818a43fd">PacketFinderBase</a>(); 
-<a name="l00106"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a31f82a805d1daf63ec3ee3e8586e3ad3">00106</a>   <span class="keyword">virtual</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a31f82a805d1daf63ec3ee3e8586e3ad3">~PacketFinderBase</a>() {};
-<a name="l00107"></a>00107 
-<a name="l00108"></a>00108   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a36345c2f2abf305954b882371ed9f9c3">configure</a>(<span class="keyword">const</span> std::string &amp;sigslots_namespace,
-<a name="l00109"></a>00109                  <span class="keyword">const</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">BufferType</a> &amp; putStx, <span class="keyword">const</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">BufferType</a> &amp; putEtx, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> sizeLengthField,
-<a name="l00110"></a>00110                  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> sizeMaxPayload, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> sizeChecksumField, <span class="keywordtype">bool</span> variableSizePayload);
-<a name="l00111"></a>00111   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#af6613761f5b02d1ea41aa9c8a5751a9a">clear</a>();
-<a name="l00112"></a>00112   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#aaf9a887ab7258cb32db3e92f0500a160">enableVerbose</a>();
-<a name="l00113"></a>00113   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#ae80fbedeba41baf3dd2f3db93c812b44">update</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * incoming, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numberOfIncoming);
-<a name="l00114"></a>00114   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#ae06705ce8c3471aa60a496099f68b27f">checkSum</a>();
-<a name="l00115"></a>00115   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#ac81c6f8d3f569447a6d0bc992060f37d">numberOfDataToRead</a>();
-<a name="l00116"></a>00116   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a3b59b2c70d61bf2180337eddfb0ae08c">getBuffer</a>(<a class="code" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">BufferType</a> &amp; bufferRef);
-<a name="l00117"></a>00117 
-<a name="l00118"></a>00118 <span class="keyword">protected</span>:
-<a name="l00119"></a>00119   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a7adc7edf0182921fd55787e5981198c3">WaitForStx</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> datum);
-<a name="l00120"></a>00120   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a3ef9d47f9a00dde9924d97f207c0f">waitForPayloadSize</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * incoming, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numberOfIncoming);
-<a name="l00121"></a>00121   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a211cc4e18d4b48e951539952cf3a0607">waitForEtx</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> incoming, <span class="keywordtype">bool</span> &amp; foundPacket);
-<a name="l00122"></a>00122   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a14e362e78ff9f5d584ee437b353580aa">waitForPayloadAndEtx</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * incoming, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numberOfIncoming, <span class="keywordtype">bool</span> &amp; foundPacket);
-<a name="l00123"></a>00123 };
-<a name="l00124"></a>00124 
-<a name="l00125"></a>00125 }
-<a name="l00126"></a>00126 ;
-<a name="l00127"></a>00127 <span class="comment">// namespace kobuki</span>
-<a name="l00128"></a>00128 
-<a name="l00129"></a>00129 <span class="preprocessor">#endif </span><span class="comment">/* PACKET_FINDER_HPP_ */</span>
+<a name="l00028"></a>00028 <span class="preprocessor">#include &quot;../macros.hpp&quot;</span>
+<a name="l00029"></a>00029 
+<a name="l00030"></a>00030 <span class="comment">/*****************************************************************************</span>
+<a name="l00031"></a>00031 <span class="comment"> ** Namespaces</span>
+<a name="l00032"></a>00032 <span class="comment"> *****************************************************************************/</span>
+<a name="l00033"></a>00033 
+<a name="l00034"></a>00034 <span class="keyword">namespace </span>kobuki
+<a name="l00035"></a>00035 {
+<a name="l00036"></a>00036 
+<a name="l00037"></a>00037 <span class="comment">/*****************************************************************************</span>
+<a name="l00038"></a>00038 <span class="comment"> ** Using</span>
+<a name="l00039"></a>00039 <span class="comment"> *****************************************************************************/</span>
+<a name="l00040"></a>00040 
+<a name="l00041"></a>00041 <span class="comment">/*****************************************************************************</span>
+<a name="l00042"></a>00042 <span class="comment"> ** Interface</span>
+<a name="l00043"></a>00043 <span class="comment"> *****************************************************************************/</span>
+<a name="l00072"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html">00072</a> <span class="keyword">class </span><a class="code" href="macros_8hpp.html#a4b92966a9fada0eb71fe09d15a768343">kobuki_PUBLIC</a> <a class="code" href="classkobuki_1_1PacketFinderBase.html" title="Provides simple packet finder which may be consist of stx, etx, payload, ...">PacketFinderBase</a>
+<a name="l00073"></a>00073 {
+<a name="l00074"></a>00074 <span class="keyword">public</span>:
+<a name="l00075"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">00075</a>   <span class="keyword">typedef</span> ecl::PushAndPop&lt;unsigned char&gt; <a class="code" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">BufferType</a>;
+<a name="l00076"></a>00076 
+<a name="l00077"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8">00077</a>   <span class="keyword">enum</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8">packetFinderState</a>
+<a name="l00078"></a>00078   {
+<a name="l00079"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8ad650e76e8c85b6112140b86ddeb20929">00079</a>     clearBuffer = 0,
+<a name="l00080"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8a03e0fbf274e46ddf14c038a4abad4189">00080</a>     <a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8a03e0fbf274e46ddf14c038a4abad4189">waitingForStx</a>,
+<a name="l00081"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8a7a2627559f357bf02ec088b2c884a055">00081</a>     <a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8a7a2627559f357bf02ec088b2c884a055">waitingForPayloadSize</a>,
+<a name="l00082"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8aab89bfaf9b37cacf36a932c317bdac7a">00082</a>     <a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8aab89bfaf9b37cacf36a932c317bdac7a">waitingForPayloadToEtx</a>,
+<a name="l00083"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8ad96841e57c961d3723996ce4b5b7fad5">00083</a>     <a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8ad96841e57c961d3723996ce4b5b7fad5">waitingForEtx</a>,
+<a name="l00084"></a>00084   };
+<a name="l00085"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a01a3037d83ed4f9bb3d22932d29a1dcc">00085</a>   <span class="keyword">enum</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8">packetFinderState</a> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a01a3037d83ed4f9bb3d22932d29a1dcc">state</a>;
+<a name="l00086"></a>00086 <span class="keyword">protected</span>:
+<a name="l00087"></a>00087 
+<a name="l00088"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#afd37d819afc24b5fbbbdfd21e4cda1ac">00088</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#afd37d819afc24b5fbbbdfd21e4cda1ac">size_stx</a>;
+<a name="l00089"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#adaf32c7b348c6f6c675edfefa1e6f1a5">00089</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#adaf32c7b348c6f6c675edfefa1e6f1a5">size_etx</a>;
+<a name="l00090"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a1fd3a110b4920103132e7e281251caca">00090</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a1fd3a110b4920103132e7e281251caca">size_length_field</a>;
+<a name="l00091"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a06d54c9254d3413fed606bf515183770">00091</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a06d54c9254d3413fed606bf515183770">variable_size_payload</a>;
+<a name="l00092"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#ab9981e768e5042c0efffd23df506c477">00092</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#ab9981e768e5042c0efffd23df506c477">size_max_payload</a>;
+<a name="l00093"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a0ab8932e3f01def929b43d2d8c68413d">00093</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a0ab8932e3f01def929b43d2d8c68413d">size_payload</a>;
+<a name="l00094"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a81db6ffbf2859173df7e917b44b32dba">00094</a>   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a81db6ffbf2859173df7e917b44b32dba">size_checksum_field</a>;
+<a name="l00095"></a>00095 
+<a name="l00096"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a8deef4eaa35897578030892cb3265d02">00096</a>   <a class="code" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">BufferType</a> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a8deef4eaa35897578030892cb3265d02">STX</a>;
+<a name="l00097"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a024c93fd9228fa0598d6edebaf1e851c">00097</a>   <a class="code" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">BufferType</a> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a024c93fd9228fa0598d6edebaf1e851c">ETX</a>;
+<a name="l00098"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#aaa6673951c65a21948e94e6efbe41ff1">00098</a>   <a class="code" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">BufferType</a> <a class="code" href="classkobuki_1_1PacketFinderBase.html#aaa6673951c65a21948e94e6efbe41ff1">buffer</a>;
+<a name="l00099"></a>00099 
+<a name="l00100"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#ac1ebadd0a19b4d15edde603c35855563">00100</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#ac1ebadd0a19b4d15edde603c35855563">verbose</a>;
+<a name="l00101"></a>00101 
+<a name="l00102"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a7648848ba9116a55f8609b12f0249bd6">00102</a>   ecl::Signal&lt;const std::string&amp;&gt; <a class="code" href="classkobuki_1_1PacketFinderBase.html#a7648848ba9116a55f8609b12f0249bd6">sig_warn</a>, sig_error;
+<a name="l00103"></a>00103 
+<a name="l00104"></a>00104 <span class="keyword">public</span>:
+<a name="l00105"></a>00105   <a class="code" href="classkobuki_1_1PacketFinderBase.html" title="Provides simple packet finder which may be consist of stx, etx, payload, ...">PacketFinderBase</a>(); 
+<a name="l00107"></a><a class="code" href="classkobuki_1_1PacketFinderBase.html#a31f82a805d1daf63ec3ee3e8586e3ad3">00107</a>   <span class="keyword">virtual</span> <a class="code" href="classkobuki_1_1PacketFinderBase.html#a31f82a805d1daf63ec3ee3e8586e3ad3">~PacketFinderBase</a>() {};
+<a name="l00108"></a>00108 
+<a name="l00109"></a>00109   <span class="keywordtype">void</span> configure(<span class="keyword">const</span> std::string &amp;sigslots_namespace,
+<a name="l00110"></a>00110                  <span class="keyword">const</span> BufferType &amp; putStx, <span class="keyword">const</span> BufferType &amp; putEtx, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> sizeLengthField,
+<a name="l00111"></a>00111                  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> sizeMaxPayload, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> sizeChecksumField, <span class="keywordtype">bool</span> variableSizePayload);
+<a name="l00112"></a>00112   <span class="keywordtype">void</span> clear();
+<a name="l00113"></a>00113   <span class="keywordtype">void</span> enableVerbose();
+<a name="l00114"></a>00114   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> update(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * incoming, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numberOfIncoming);
+<a name="l00115"></a>00115   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> checkSum();
+<a name="l00116"></a>00116   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numberOfDataToRead();
+<a name="l00117"></a>00117   <span class="keywordtype">void</span> getBuffer(BufferType &amp; bufferRef);
+<a name="l00118"></a>00118 
+<a name="l00119"></a>00119 <span class="keyword">protected</span>:
+<a name="l00120"></a>00120   <span class="keywordtype">bool</span> WaitForStx(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> datum);
+<a name="l00121"></a>00121   <span class="keywordtype">bool</span> waitForPayloadSize(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * incoming, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numberOfIncoming);
+<a name="l00122"></a>00122   <span class="keywordtype">bool</span> waitForEtx(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> incoming, <span class="keywordtype">bool</span> &amp; foundPacket);
+<a name="l00123"></a>00123   <span class="keywordtype">bool</span> waitForPayloadAndEtx(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * incoming, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numberOfIncoming, <span class="keywordtype">bool</span> &amp; foundPacket);
+<a name="l00124"></a>00124 };
+<a name="l00125"></a>00125 
+<a name="l00126"></a>00126 }
+<a name="l00127"></a>00127 ;
+<a name="l00128"></a>00128 <span class="comment">// namespace kobuki</span>
+<a name="l00129"></a>00129 
+<a name="l00130"></a>00130 <span class="preprocessor">#endif </span><span class="comment">/* PACKET_FINDER_HPP_ */</span>
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -160,7 +161,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <younghoon.ju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Fri May 24 2013 20:32:16</small>
+<small>autogenerated on Thu Jun 6 2013 09:49:23</small>
 </div>
 </body>
 </html>
