@@ -64,8 +64,6 @@ Kobuki::~Kobuki()
   disable();
   shutdown_requested = true; // thread's spin() will catch this and terminate
   thread.join();
-  thread.cancel();
-  serial.close();
   sig_debug.emit("Device: kobuki driver terminated.");
 }
 
