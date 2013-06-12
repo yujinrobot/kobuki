@@ -8,8 +8,8 @@ catkin_package(
    CATKIN_DEPENDS roscpp nodelet pluginlib pcl_ros kobuki_msgs
 )
 
-include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
-include_directories(include)
+include_directories(include
+                    ${catkin_INCLUDE_DIRS})
 
 add_library(kobuki_bumper2pc_nodelet src/kobuki_bumper2pc.cpp)
 target_link_libraries(kobuki_bumper2pc_nodelet ${catkin_LIBRARIES})
