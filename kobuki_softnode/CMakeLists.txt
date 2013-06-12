@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(kobuki_softnode)
 
-find_package(catkin REQUIRED COMPONENTS kobuki_msgs roscpp nodelet tf)
+find_package(catkin REQUIRED COMPONENTS nav_msgs sensor_msgs geometry_msgs kobuki_msgs roscpp nodelet tf)
 
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES kobuki_softnode softkobuki_nodelet
-   CATKIN_DEPENDS kobuki_msgs roscpp nodelet tf
+   CATKIN_DEPENDS nav_msgs sensor_msgs geometry_msgs kobuki_msgs roscpp nodelet tf
 )
 
 include_directories(SYSTEM ${catkin_INCLUDE_DIRS})

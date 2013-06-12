@@ -14,8 +14,7 @@ catkin_package(
                   ecl_exceptions ecl_sigslots ecl_streams ecl_threads
 )
 
-include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
-include_directories(include)
+include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_subdirectory(src)
 
