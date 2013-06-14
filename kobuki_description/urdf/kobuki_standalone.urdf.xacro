@@ -7,6 +7,6 @@
 
   <!-- Defines the kobuki component tag. -->
   <include filename="$(find kobuki_description)/urdf/kobuki.urdf.xacro" />
-
+  <include filename="$(find kobuki_description)/urdf/kobuki_gazebo.urdf.xacro" />
   <kobuki/>
 </robot>
