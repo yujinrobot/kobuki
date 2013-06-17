@@ -8,10 +8,6 @@
  -->
 <robot name="kobuki" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find kobuki_description)/urdf/common_properties.urdf.xacro"/>
-<!--   <xacro:include filename="$(find kobuki_description)/urdf/kobuki_gazebo.urdf.xacro"/> -->
-
-  <!-- Xacro properties -->
-  <xacro:property name="M_SCALE" value="0.001"/>
 
   <!-- Kobuki --> 
   <xacro:macro name="kobuki">   
@@ -47,14 +43,19 @@
         <origin xyz="0.0 0 0.05949" rpy="0 0 0"/>
       </collision>
       <inertial>
-        <mass value="2.4"/> <!-- 2.4/2.6 kg for small/big battery pack -->
         <origin xyz="0 0 0"/>
-        <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
-                 iyy="0.0001" iyz="0.0" 
-                 izz="0.0001" />
+        <mass value="2.4"/> <!-- 2.4/2.6 kg for small/big battery pack -->
+        <!-- http://en.wikipedia.org/wiki/List_of_moment_of_inertia_tensors
+             Assuming homogeneous mass distribution
+		         m=2.4; h=0.09; r=0.175; 
+		         ixx = 1/12*m*(3*r^2 + h^2)
+		         iyy = 1/12*m*(3*r^2 + h^2)
+		         izz = 1/2*m*r^2
+          -->
+        <inertia ixx="0.019995" ixy="0.0" ixz="0.0"
+                 iyy="0.019995" iyz="0.0" 
+                 izz="0.006125" />
       </inertial>
-<!--       <kobuki_sim/> -->
-<!--       <kobuki_bumpers/> -->
     </link>
     
     <joint name="wheel_left_joint" type="continuous">
@@ -106,7 +107,7 @@
       </collision>
       <inertial>
         <mass value="0.01" />
-        <origin xyz="0 0 0" />        
+        <origin xyz="0 0 0" />
         <inertia ixx="0.001" ixy="0.0" ixz="0.0"
                  iyy="0.001" iyz="0.0" 
                  izz="0.001" />
@@ -148,7 +149,7 @@
       </collision>      
       <inertial>
         <mass value="0.01" />
-        <origin xyz="0 0 0" />        
+        <origin xyz="0 0 0" />
         <inertia ixx="0.001" ixy="0.0" ixz="0.0"
                  iyy="0.001" iyz="0.0" 
                  izz="0.001" />
@@ -170,15 +171,14 @@
                  iyy="0.000001" iyz="0"
                  izz="0.0001"/>
       </inertial>
-<!--       <kobuki_sim_imu/> -->
     </link>
-	
-	  <joint name="cliff_sensor_left_joint" type="fixed">
-	    <origin xyz="0.08734 0.13601 0.0214" rpy="0 ${M_PI/2} 0" />
-	    <parent link="base_link"/>
-	    <child link="cliff_sensor_left_link" />
-	  </joint>
-	  <link name="cliff_sensor_left_link">
+
+    <joint name="cliff_sensor_left_joint" type="fixed">
+      <origin xyz="0.08734 0.13601 0.0214" rpy="0 ${M_PI/2} 0" />
+      <parent link="base_link"/>
+      <child link="cliff_sensor_left_link" />
+    </joint>
+    <link name="cliff_sensor_left_link">
       <inertial>
         <mass value="0.0001" />
         <origin xyz="0 0 0" />
@@ -186,14 +186,13 @@
                  iyy="0.0001" iyz="0.0" 
                  izz="0.0001" />
       </inertial>
-<!--       <kobuki_cliff_sensor_left/> -->
     </link>
-	
-	  <joint name="cliff_sensor_right_joint" type="fixed">
-	    <origin xyz="0.085 -0.13601 0.0214" rpy="0 ${M_PI/2} 0" />
-	    <parent link="base_link"/>
-	    <child link="cliff_sensor_right_link" />
-	  </joint>
+
+    <joint name="cliff_sensor_right_joint" type="fixed">
+      <origin xyz="0.085 -0.13601 0.0214" rpy="0 ${M_PI/2} 0" />
+      <parent link="base_link"/>
+      <child link="cliff_sensor_right_link" />
+    </joint>
     <link name="cliff_sensor_right_link">
       <inertial>
         <mass value="0.0001" />
@@ -202,7 +201,6 @@
                  iyy="0.0001" iyz="0.0" 
                  izz="0.0001" />
       </inertial>
-<!--       <kobuki_cliff_sensor_right/> -->
     </link>
     
     <joint name="cliff_sensor_front_joint" type="fixed">
@@ -218,7 +216,6 @@
                  iyy="0.0001" iyz="0.0" 
                  izz="0.0001" />
       </inertial>
-<!--       <kobuki_cliff_sensor_front/> -->
     </link>
   </xacro:macro>
 </robot>

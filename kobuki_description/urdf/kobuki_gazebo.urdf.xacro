@@ -2,31 +2,31 @@
 
 <robot>
   <gazebo reference="wheel_left_link">
-    <mu1 value="10"/>
-    <mu2 value="10"/>
-    <kp value="100000000.0"/>
-    <kd value="10000.0"/>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <kp>100000000.0</kp>
+    <kd>10000.0</kd>
   </gazebo>
 
   <gazebo reference="wheel_right_link">
-    <mu1 value="10"/>
-    <mu2 value="10"/>
-    <kp value="100000000.0"/>
-    <kd value="10000.0"/>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <kp>100000000.0</kp>
+    <kd>10000.0</kd>
   </gazebo>
   
   <gazebo reference="caster_front_link">
-    <mu1 value="0"/>
-    <mu2 value="0"/>
-    <kp value="100000000.0"/>
-    <kd value="10000.0"/>
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+    <kp>100000000.0</kp>
+    <kd>10000.0</kd>
   </gazebo>
   
   <gazebo reference="caster_back_link">
-    <mu1 value="0"/>
-    <mu2 value="0"/>
-    <kp value="100000000.0"/>
-    <kd value="10000.0"/>
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+    <kp>100000000.0</kp>
+    <kd>10000.0</kd>
   </gazebo>
   
   <gazebo reference="base_link">
