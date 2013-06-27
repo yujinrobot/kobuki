@@ -28,7 +28,7 @@
     <rosparam command="load" file="$(find turtlebot_bringup)/param/kobuki/diagnostics.yaml" />
   </node>
 
-  <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher">
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
     <param name="publish_frequency" type="double" value="30.0" />
   </node>
 </launch>
