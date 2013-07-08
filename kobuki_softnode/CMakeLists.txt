@@ -9,8 +9,7 @@ catkin_package(
    CATKIN_DEPENDS nav_msgs sensor_msgs geometry_msgs kobuki_msgs roscpp nodelet tf
 )
 
-include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
-include_directories(include)
+include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_library(kobuki_softnode src/library/fake_kobuki_ros.cpp
                             src/library/fake_kobuki.cpp
