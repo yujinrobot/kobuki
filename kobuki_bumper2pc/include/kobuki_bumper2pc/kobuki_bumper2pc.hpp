@@ -49,8 +49,7 @@
 #include <ros/ros.h>
 #include <nodelet/nodelet.h>
 
-#include <pcl/point_types.h>
-#include <pcl_ros/point_cloud.h>
+#include <sensor_msgs/PointCloud2.h>
 
 #include <kobuki_msgs/SensorState.h>
 
@@ -67,28 +66,34 @@ namespace kobuki_bumper2pc
 class Bumper2PcNodelet : public nodelet::Nodelet
 {
 public:
-  Bumper2PcNodelet() : FAR_AWAY(100), prev_bumper(0), prev_cliff(0) { }
+  Bumper2PcNodelet()
+    : P_INF_X(+100*sin(0.34906585)),
+      P_INF_Y(+100*cos(0.34906585)),
+      N_INF_Y(-100*cos(0.34906585)),
+      ZERO(0), prev_bumper(0), prev_cliff(0) { }
   ~Bumper2PcNodelet() { }
 
-  virtual void onInit();
-
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+  void onInit();
 
 private:
-  const double FAR_AWAY;  // somewhere out of reach from the robot
+  const float P_INF_X;  // somewhere out of reach from the robot (positive x)
+  const float P_INF_Y;  // somewhere out of reach from the robot (positive y)
+  const float N_INF_Y;  // somewhere out of reach from the robot (negative y)
+  const float ZERO;
 
   uint8_t prev_bumper;
   uint8_t prev_cliff;
 
-  double pointcloud_radius_;
-  double pointcloud_side_x_;
-  double pointcloud_side_y_;
+  float pc_radius_;
+  float pc_height_;
+  float p_side_x_;
+  float p_side_y_;
+  float n_side_y_;
 
   ros::Publisher  pointcloud_pub_;
-
   ros::Subscriber core_sensor_sub_;
 
-  pcl::PointCloud<pcl::PointXYZ> pointcloud_;
+  sensor_msgs::PointCloud2 pointcloud_;
 
   /**
    * @brief Core sensors state structure callback
