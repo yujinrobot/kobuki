@@ -11,7 +11,7 @@ catkin_package(
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_library(kobuki_bumper2pc_nodelet src/kobuki_bumper2pc.cpp)
-add_dependencies(kobuki_bumper2pc_nodelet sensor_msgs_gen_cpp kobuki_msgs_gen_cpp)
+add_dependencies(kobuki_bumper2pc_nodelet sensor_msgs_gencpp kobuki_msgs_gencpp)
 target_link_libraries(kobuki_bumper2pc_nodelet ${catkin_LIBRARIES})
 
 install(TARGETS kobuki_bumper2pc_nodelet
