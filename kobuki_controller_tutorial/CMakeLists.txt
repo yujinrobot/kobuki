@@ -20,6 +20,7 @@ include_directories(include
                     ${catkin_INCLUDE_DIRS})
 
 add_library(bump_blink_controller_nodelet src/nodelet.cpp)
+add_dependencies(bump_blink_controller_nodelet kobuki_msgs_gencpp)
 target_link_libraries(bump_blink_controller_nodelet ${catkin_LIBRARIES})
 
 install(TARGETS bump_blink_controller_nodelet
