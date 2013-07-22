@@ -66,7 +66,7 @@ DockDrive::DockDrive() :
   , min_abs_v(0.01)
   , min_abs_w(0.1)
 {
-  pose.setIdentity();
+//  pose.setIdentity();
 }
 
 DockDrive::~DockDrive(){;}
@@ -124,7 +124,7 @@ void DockDrive::update(const std::vector<unsigned char> &signal
    * pre processing
    *************************/
   //pose update
-  pose *= pose_update;
+//  pose *= pose_update;
 
   //dock_ir signals filtering
   past_signals.push_back(signal);
@@ -145,7 +145,7 @@ void DockDrive::update(const std::vector<unsigned char> &signal
    *************************/
   std::ostringstream debug_stream;
   // pose
-  debug_stream << pose;
+//  debug_stream << pose;
   // pose_update and pose_update_rates for debugging
   debug_stream << std::fixed << std::setprecision(4)
     << "[x: "    << std::setw(7) << pose_update.x()
