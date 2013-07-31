@@ -133,6 +133,7 @@
       <updateRate>50</updateRate>
       <bodyName>gyro_link</bodyName>
       <topicName>/mobile_base/sensors/imu_data</topicName>
+      <serviceName>imu/is_calibrated</serviceName>
       <gaussianNoise>${0.0017*0.0017}</gaussianNoise>
       <xyzOffsets>0 0 0</xyzOffsets> 
       <rpyOffsets>0 0 0</rpyOffsets>
@@ -141,6 +142,7 @@
 
   <gazebo>
     <plugin name="kobuki_controller" filename="libgazebo_ros_kobuki.so">
+      <publish_tf>0</publish_tf>
       <left_wheel_joint_name>wheel_left_joint</left_wheel_joint_name>
       <right_wheel_joint_name>wheel_right_joint</right_wheel_joint_name>
       <wheel_separation>.230</wheel_separation>
