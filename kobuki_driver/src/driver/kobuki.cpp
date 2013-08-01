@@ -90,10 +90,10 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_warn.connect(sigslots_namespace + std::string("/ros_warn"));
   sig_error.connect(sigslots_namespace + std::string("/ros_error"));
 
-  serial.block(4000); // blocks by default, but just to be clear!
   try {
     serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);  // this will throw exceptions - NotFoundError, OpenError
     is_connected = true;
+    serial.block(4000); // blocks by default, but just to be clear!
   }
   catch (const ecl::StandardException &e)
   {
@@ -158,6 +158,7 @@ void Kobuki::spin()
         serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
         sig_info.emit("device is connected.");
         is_connected = true;
+        serial.block(4000); // blocks by default, but just to be clear!
         event_manager.update(is_connected, is_alive);
         version_info_reminder = 10;
       }
