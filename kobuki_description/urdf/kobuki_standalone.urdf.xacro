@@ -6,7 +6,6 @@
        xmlns:xacro="http://ros.org/wiki/xacro">
 
   <!-- Defines the kobuki component tag. -->
-  <include filename="$(find kobuki_description)/urdf/kobuki.urdf.xacro" />
-  <include filename="$(find kobuki_description)/urdf/kobuki_gazebo.urdf.xacro" />
+  <xacro:include filename="$(find kobuki_description)/urdf/kobuki.urdf.xacro" />
   <kobuki/>
 </robot>
