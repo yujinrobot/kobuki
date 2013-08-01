@@ -158,6 +158,7 @@ void Kobuki::spin()
         serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
         sig_info.emit("device is connected.");
         is_connected = true;
+        serial.block(4000); // blocks by default, but just to be clear!
         event_manager.update(is_connected, is_alive);
         version_info_reminder = 10;
       }
