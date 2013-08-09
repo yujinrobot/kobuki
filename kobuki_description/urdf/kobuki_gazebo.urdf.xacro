@@ -1,160 +1,162 @@
 <?xml version="1.0"?>
 
-<robot>
-  <gazebo reference="wheel_left_link">
-    <mu1>1.0</mu1>
-    <mu2>1.0</mu2>
-    <kp>100000000.0</kp>
-    <kd>10000.0</kd>
-  </gazebo>
-
-  <gazebo reference="wheel_right_link">
-    <mu1>1.0</mu1>
-    <mu2>1.0</mu2>
-    <kp>100000000.0</kp>
-    <kd>10000.0</kd>
-  </gazebo>
-  
-  <gazebo reference="caster_front_link">
-    <mu1>0.0</mu1>
-    <mu2>0.0</mu2>
-    <kp>100000000.0</kp>
-    <kd>10000.0</kd>
-  </gazebo>
-  
-  <gazebo reference="caster_back_link">
-    <mu1>0.0</mu1>
-    <mu2>0.0</mu2>
-    <kp>100000000.0</kp>
-    <kd>10000.0</kd>
-  </gazebo>
-  
-  <gazebo reference="base_link">
-    <sensor type="contact" name="bumpers">
-      <always_on>1</always_on>
-      <update_rate>50.0</update_rate>
-      <visualize>true</visualize>
-      <contact>
-        <collision>base_footprint_geom_base_link</collision>
-      </contact>
-    </sensor>
-  </gazebo>
-
-  <gazebo reference="cliff_sensor_left_link">
-    <sensor type="ray" name="cliff_sensor_left">
-      <always_on>true</always_on>
-      <update_rate>50</update_rate>
-      <visualize>true</visualize>
-      <ray>
-        <scan>
-          <horizontal>
-            <samples>50</samples>
-            <resolution>1.0</resolution>
-            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
-            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
-          </horizontal>
-          <vertical>
-            <samples>50</samples>
-            <resolution>1.0</resolution>
-            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
-            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
-          </vertical>
-        </scan>
-        <range>
-          <min>0.01</min>
-          <max>0.15</max>
-          <resolution>1.0</resolution>
-        </range>
-      </ray>
-    </sensor>
-  </gazebo>
-
-  <gazebo reference="cliff_sensor_right_link">
-    <sensor type="ray" name="cliff_sensor_right">
-      <always_on>true</always_on>
-      <update_rate>50</update_rate>
-      <visualize>true</visualize>
-      <ray>
-        <scan>
-          <horizontal>
-            <samples>50</samples>
-            <resolution>1.0</resolution>
-            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
-            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
-          </horizontal>
-          <vertical>
-            <samples>50</samples>
-            <resolution>1.0</resolution>
-            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
-            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
-          </vertical>
-        </scan>
-        <range>
-          <min>0.01</min>
-          <max>0.15</max>
-          <resolution>1.0</resolution>
-        </range>
-      </ray>
-    </sensor>
-  </gazebo>
-
-  <gazebo reference="cliff_sensor_front_link">
-    <sensor type="ray" name="cliff_sensor_front">
-      <always_on>true</always_on>
-      <update_rate>50</update_rate>
-      <visualize>true</visualize>
-      <ray>
-        <scan>
-          <horizontal>
-            <samples>50</samples>
-            <resolution>1.0</resolution>
-            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
-            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
-          </horizontal>
-          <vertical>
-            <samples>50</samples>
-            <resolution>1.0</resolution>
-            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
-            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
-          </vertical>
-        </scan>
-        <range>
-          <min>0.01</min>
-          <max>0.15</max>
-          <resolution>1.0</resolution>
-        </range>
-      </ray>
-    </sensor>
-  </gazebo>
-
-  <gazebo>
-    <plugin name="imu_controller" filename="libgazebo_ros_imu.so">
-      <alwaysOn>true</alwaysOn>
-      <updateRate>50</updateRate>
-      <bodyName>gyro_link</bodyName>
-      <topicName>/mobile_base/sensors/imu_data</topicName>
-      <serviceName>imu/is_calibrated</serviceName>
-      <gaussianNoise>${0.0017*0.0017}</gaussianNoise>
-      <xyzOffsets>0 0 0</xyzOffsets> 
-      <rpyOffsets>0 0 0</rpyOffsets>
-    </plugin>
-  </gazebo>
-
-  <gazebo>
-    <plugin name="kobuki_controller" filename="libgazebo_ros_kobuki.so">
-      <publish_tf>0</publish_tf>
-      <left_wheel_joint_name>wheel_left_joint</left_wheel_joint_name>
-      <right_wheel_joint_name>wheel_right_joint</right_wheel_joint_name>
-      <wheel_separation>.230</wheel_separation>
-      <wheel_diameter>0.070</wheel_diameter>
-      <torque>1.0</torque>
-      <velocity_command_timeout>0.6</velocity_command_timeout>
-      <cliff_sensor_left_name>cliff_sensor_left</cliff_sensor_left_name>
-      <cliff_sensor_front_name>cliff_sensor_front</cliff_sensor_front_name>
-      <cliff_sensor_right_name>cliff_sensor_right</cliff_sensor_right_name>
-      <cliff_detection_threshold>0.04</cliff_detection_threshold>
-      <bumper_name>bumpers</bumper_name>
-      <base_collision_model_link>base_link</base_collision_model_link>
-    </plugin>
-  </gazebo>
+<robot name="kobuki_sim" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="kobuki_sim">
+	  <gazebo reference="wheel_left_link">
+	    <mu1>1.0</mu1>
+	    <mu2>1.0</mu2>
+	    <kp>100000000.0</kp>
+	    <kd>10000.0</kd>
+	  </gazebo>
+	
+	  <gazebo reference="wheel_right_link">
+	    <mu1>1.0</mu1>
+	    <mu2>1.0</mu2>
+	    <kp>100000000.0</kp>
+	    <kd>10000.0</kd>
+	  </gazebo>
+	  
+	  <gazebo reference="caster_front_link">
+	    <mu1>0.0</mu1>
+	    <mu2>0.0</mu2>
+	    <kp>100000000.0</kp>
+	    <kd>10000.0</kd>
+	  </gazebo>
+	  
+	  <gazebo reference="caster_back_link">
+	    <mu1>0.0</mu1>
+	    <mu2>0.0</mu2>
+	    <kp>100000000.0</kp>
+	    <kd>10000.0</kd>
+	  </gazebo>
+	  
+	  <gazebo reference="base_link">
+	    <sensor type="contact" name="bumpers">
+	      <always_on>1</always_on>
+	      <update_rate>50.0</update_rate>
+	      <visualize>true</visualize>
+	      <contact>
+	        <collision>base_footprint_geom_base_link</collision>
+	      </contact>
+	    </sensor>
+	  </gazebo>
+	
+	  <gazebo reference="cliff_sensor_left_link">
+	    <sensor type="ray" name="cliff_sensor_left">
+	      <always_on>true</always_on>
+	      <update_rate>50</update_rate>
+	      <visualize>true</visualize>
+	      <ray>
+	        <scan>
+	          <horizontal>
+	            <samples>50</samples>
+	            <resolution>1.0</resolution>
+	            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
+	            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
+	          </horizontal>
+	          <vertical>
+	            <samples>50</samples>
+	            <resolution>1.0</resolution>
+	            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
+	            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
+	          </vertical>
+	        </scan>
+	        <range>
+	          <min>0.01</min>
+	          <max>0.15</max>
+	          <resolution>1.0</resolution>
+	        </range>
+	      </ray>
+	    </sensor>
+	  </gazebo>
+	
+	  <gazebo reference="cliff_sensor_right_link">
+	    <sensor type="ray" name="cliff_sensor_right">
+	      <always_on>true</always_on>
+	      <update_rate>50</update_rate>
+	      <visualize>true</visualize>
+	      <ray>
+	        <scan>
+	          <horizontal>
+	            <samples>50</samples>
+	            <resolution>1.0</resolution>
+	            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
+	            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
+	          </horizontal>
+	          <vertical>
+	            <samples>50</samples>
+	            <resolution>1.0</resolution>
+	            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
+	            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
+	          </vertical>
+	        </scan>
+	        <range>
+	          <min>0.01</min>
+	          <max>0.15</max>
+	          <resolution>1.0</resolution>
+	        </range>
+	      </ray>
+	    </sensor>
+	  </gazebo>
+	
+	  <gazebo reference="cliff_sensor_front_link">
+	    <sensor type="ray" name="cliff_sensor_front">
+	      <always_on>true</always_on>
+	      <update_rate>50</update_rate>
+	      <visualize>true</visualize>
+	      <ray>
+	        <scan>
+	          <horizontal>
+	            <samples>50</samples>
+	            <resolution>1.0</resolution>
+	            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
+	            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
+	          </horizontal>
+	          <vertical>
+	            <samples>50</samples>
+	            <resolution>1.0</resolution>
+	            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
+	            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
+	          </vertical>
+	        </scan>
+	        <range>
+	          <min>0.01</min>
+	          <max>0.15</max>
+	          <resolution>1.0</resolution>
+	        </range>
+	      </ray>
+	    </sensor>
+	  </gazebo>
+	
+	  <gazebo>
+	    <plugin name="imu_controller" filename="libgazebo_ros_imu.so">
+	      <alwaysOn>true</alwaysOn>
+	      <updateRate>50</updateRate>
+	      <bodyName>gyro_link</bodyName>
+	      <topicName>/mobile_base/sensors/imu_data</topicName>
+	      <serviceName>imu/is_calibrated</serviceName>
+	      <gaussianNoise>${0.0017*0.0017}</gaussianNoise>
+	      <xyzOffsets>0 0 0</xyzOffsets> 
+	      <rpyOffsets>0 0 0</rpyOffsets>
+	    </plugin>
+	  </gazebo>
+	
+	  <gazebo>
+	    <plugin name="kobuki_controller" filename="libgazebo_ros_kobuki.so">
+	      <publish_tf>0</publish_tf>
+	      <left_wheel_joint_name>wheel_left_joint</left_wheel_joint_name>
+	      <right_wheel_joint_name>wheel_right_joint</right_wheel_joint_name>
+	      <wheel_separation>.230</wheel_separation>
+	      <wheel_diameter>0.070</wheel_diameter>
+	      <torque>1.0</torque>
+	      <velocity_command_timeout>0.6</velocity_command_timeout>
+	      <cliff_sensor_left_name>cliff_sensor_left</cliff_sensor_left_name>
+	      <cliff_sensor_front_name>cliff_sensor_front</cliff_sensor_front_name>
+	      <cliff_sensor_right_name>cliff_sensor_right</cliff_sensor_right_name>
+	      <cliff_detection_threshold>0.04</cliff_detection_threshold>
+	      <bumper_name>bumpers</bumper_name>
+	      <base_collision_model_link>base_link</base_collision_model_link>
+	    </plugin>
+	  </gazebo>
+  </xacro:macro>
 </robot>

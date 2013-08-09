@@ -218,5 +218,9 @@
                  izz="0.0001" />
       </inertial>
     </link>
+    
+    <!-- Kobuki Gazebo simulation details -->
+    <kobuki_sim/>
+    
   </xacro:macro>
 </robot>
