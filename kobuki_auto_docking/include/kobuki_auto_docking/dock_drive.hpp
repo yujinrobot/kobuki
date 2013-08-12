@@ -150,7 +150,6 @@ private:
 
   State state;
   std::string state_str, debug_str;
-//  ecl::Pose2D<double> pose;
   double vx, wz;
   std::vector<std::vector<unsigned char> > past_signals;
   int bump_remainder;
