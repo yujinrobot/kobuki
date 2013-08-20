@@ -44,18 +44,19 @@
         <origin xyz="0.0 0 0.05949" rpy="0 0 0"/>
       </collision>
       <inertial>
-        <origin xyz="0 0 0"/>
+        <!-- COM experimentally determined -->
+        <origin xyz="0.01 0 0"/>
         <mass value="2.4"/> <!-- 2.4/2.6 kg for small/big battery pack -->
-        <!-- http://en.wikipedia.org/wiki/List_of_moment_of_inertia_tensors
-             Assuming homogeneous mass distribution
-		         m=2.4; h=0.09; r=0.175; 
-		         ixx = 1/12*m*(3*r^2 + h^2)
-		         iyy = 1/12*m*(3*r^2 + h^2)
-		         izz = 1/2*m*r^2
+        <!-- Kobuki's inertia tensor is approximated by a cylinder with homogeneous mass distribution
+             More details: http://en.wikipedia.org/wiki/List_of_moment_of_inertia_tensors
+             m = 2.4 kg; h = 0.09 m; r = 0.175 m
+             ixx = 1/12 * m * (3 * r^2 + h^2)
+             iyy = 1/12 * m * (3 * r^2 + h^2)
+             izz = 1/2 * m * r^2 
           -->
         <inertia ixx="0.019995" ixy="0.0" ixz="0.0"
                  iyy="0.019995" iyz="0.0" 
-                 izz="0.006125" />
+                 izz="0.03675" />
       </inertial>
     </link>
     
@@ -80,7 +81,7 @@
       </collision>
       <inertial>
         <mass value="0.01" />
-        <origin xyz="0 0 0" />        
+        <origin xyz="0 0 0" />
         <inertia ixx="0.001" ixy="0.0" ixz="0.0"
                  iyy="0.001" iyz="0.0" 
                  izz="0.001" />
