@@ -28,7 +28,7 @@ publish_tf: true
 # Use imu readings for heading instead of encoders. That's the normal operation mode for Kobuki, as its
 # gyro is very reliable. Disable only if you want to fuse encoders and imu readings in a more sophisticated
 # way, for example filtering and fussing with robot_pose_ekf (bool, default: true)
-use_imu_heading: false
+use_imu_heading: true
 
 # Name of the odometry TF frame (string, default: odom)
 odom_frame: odom
