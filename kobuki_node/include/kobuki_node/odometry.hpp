@@ -58,7 +58,6 @@ private:
   bool use_imu_heading;
   tf::TransformBroadcaster odom_broadcaster;
   ros::Publisher odom_publisher;
-  double imu_heading_offset;
 
   void publishTransform(const geometry_msgs::Quaternion &odom_quat);
   void publishOdometry(const geometry_msgs::Quaternion &odom_quat, const ecl::linear_algebra::Vector3d &pose_update_rates);

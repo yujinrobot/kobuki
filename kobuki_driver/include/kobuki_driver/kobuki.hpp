@@ -124,7 +124,7 @@ public:
   ** Feedback
   **********************/
   void getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
-                            double &wheel_right_angle, double &wheel_right_angle_rate);
+                           double &wheel_right_angle, double &wheel_right_angle_rate);
   void updateOdometry(ecl::Pose2D<double> &pose_update,
                       ecl::linear_algebra::Vector3d &pose_update_rates);
 
@@ -159,6 +159,11 @@ private:
   **********************/
   DiffDrive diff_drive;
   bool is_enabled;
+
+  /*********************
+  ** Inertia
+  **********************/
+  double heading_offset;
 
   /*********************
   ** Driver Paramters

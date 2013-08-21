@@ -53,6 +53,7 @@ Kobuki::Kobuki() :
     , is_connected(false)
     , is_alive(false)
     , version_info_reminder(0)
+    , heading_offset(0.0/0.0)
 {
 }
 
@@ -234,6 +235,10 @@ void Kobuki::spin()
             break;
           case Header::Inertia:
             inertia.deserialise(data_buffer);
+
+            // Issue #274: use first imu reading as zero heading; update when reseting odometry
+            if (isnan(heading_offset) == true)
+              heading_offset = (static_cast<double>(inertia.data.angle) / 100.0) * ecl::pi / 180.0;
             break;
           case Header::Cliff:
             cliff.deserialise(data_buffer);
@@ -366,7 +371,7 @@ ecl::Angle<double> Kobuki::getHeading() const
   ecl::Angle<double> heading;
   // raw data angles are in hundredths of a degree, convert to radians.
   heading = (static_cast<double>(inertia.data.angle) / 100.0) * ecl::pi / 180.0;
-  return heading;
+  return ecl::wrap_angle(heading - heading_offset);
 }
 
 double Kobuki::getAngularVelocity() const
@@ -381,7 +386,10 @@ double Kobuki::getAngularVelocity() const
 
 void Kobuki::resetOdometry()
 {
-  diff_drive.reset(inertia.data.angle);
+  diff_drive.reset();
+
+  // Issue #274: use current imu reading as zero heading to emulate reseting gyro
+  heading_offset = (static_cast<double>(inertia.data.angle) / 100.0) * ecl::pi / 180.0;
 }
 
 void Kobuki::getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate, double &wheel_right_angle,

@@ -73,8 +73,6 @@ void Odometry::init(ros::NodeHandle& nh, const std::string& name) {
 
   pose.setIdentity();
 
-  imu_heading_offset = 0.0;
-
   odom_publisher = nh.advertise<nav_msgs::Odometry>("odom", 50); // topic name and queue size
 }
 
@@ -92,7 +90,7 @@ void Odometry::update(const ecl::Pose2D<double> &pose_update, ecl::linear_algebr
 
   if (use_imu_heading == true) {
     // Overwite with gyro heading data
-    pose.heading(ecl::wrap_angle(imu_heading - imu_heading_offset));
+    pose.heading(imu_heading);
     pose_update_rates[2] = imu_angular_velocity;
   }
 
