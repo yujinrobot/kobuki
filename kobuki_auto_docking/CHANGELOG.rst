@@ -15,4 +15,4 @@ Forthcoming
 Previous versions, bugfixing
 ============================
 
-Available in ROS wiki: http://ros.org/wiki/turtlebot/ChangeList
+Available in ROS wiki: http://ros.org/wiki/kobuki/ChangeList
