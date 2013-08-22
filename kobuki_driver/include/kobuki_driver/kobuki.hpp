@@ -102,16 +102,26 @@ public:
   void spin();
 
   /******************************************
-  ** User Friendly Api
+  ** Getters - Data Protection
   *******************************************/
+  void lockDataAccess();
+  void unlockDataAccess();
+
+  /******************************************
+  ** Getters - User Friendly Api
+  *******************************************/
+  /* Be sure to lock/unlock the data access (lockDataAccess and unlockDataAccess)
+   * around any getXXX calls - see the doxygen notes for lockDataAccess. */
   ecl::Angle<double> getHeading() const;
   double getAngularVelocity() const;
   VersionInfo versionInfo() const { return VersionInfo(firmware.data.version, hardware.data.version, unique_device_id.data.udid0, unique_device_id.data.udid1, unique_device_id.data.udid2); }
   Battery batteryStatus() const { return Battery(core_sensors.data.battery, core_sensors.data.charger); }
 
   /******************************************
-  ** Raw Data Api
+  ** Getters - Raw Data Api
   *******************************************/
+  /* Be sure to lock/unlock the data access (lockDataAccess and unlockDataAccess)
+   * around any getXXX calls - see the doxygen notes for lockDataAccess. */
   CoreSensors::Data getCoreSensorData() const { return core_sensors.data; }
   DockIR::Data getDockIRData() const { return dock_ir.data; }
   Cliff::Data getCliffData() const { return cliff.data; }
@@ -198,6 +208,10 @@ private:
   void sendBaseControlCommand();
   void sendCommand(Command command);
   ecl::Mutex command_mutex; // protection against the user calling the command functions from multiple threads
+  // data_mutex is protection against reading and writing data structures simultaneously as well as
+  // ensuring multiple get*** calls are synchronised to the same data update
+  // refer to https://github.com/yujinrobot/kobuki/issues/240
+  ecl::Mutex data_mutex;
   Command kobuki_command; // used to maintain some state about the command history
   Command::Buffer command_buffer;
 

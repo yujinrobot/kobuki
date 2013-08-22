@@ -230,7 +230,15 @@ bool KobukiRos::init(ros::NodeHandle& nh)
   // kobuki.printSigSlotConnections();
   return true;
 }
-
+/**
+ * This is a worker function that runs in a background thread initiated by
+ * the nodelet. It gathers diagnostics information from the kobuki driver,
+ * and broadcasts the results to the rest of the ros ecosystem.
+ *
+ * Note that the actual driver data is collected via the slot callbacks in this class.
+ *
+ * @return Bool : true/false if successfully updated or not (kobuki driver shutdown).
+ */
 bool KobukiRos::update()
 {
   if ( kobuki.isShutdown() )

@@ -127,6 +127,28 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
 /*****************************************************************************
  ** Implementation [Runtime]
  *****************************************************************************/
+/**
+ * Usually you should call the getXXX functions from within slot callbacks
+ * connected to this driver's signals. This ensures that data is not
+ * overwritten inbetween getXXX calls as it all happens in the serial device's
+ * reading thread (aye, convoluted - apologies for the multiple robot and multiple
+ * developer adhoc hacking over 4-5 years for hasty demos on pre-kobuki robots.
+ * This has generated such wonderful spaghetti ;).
+ *
+ * If instead you just want to poll kobuki, then you should lock and unlock
+ * the data access around any getXXX calls.
+ */
+void Kobuki::lockDataAccess() {
+  data_mutex.lock();
+}
+
+/**
+ * Unlock a previously locked data access privilege.
+ * @sa lockDataAccess()
+ */
+void Kobuki::unlockDataAccess() {
+  data_mutex.unlock();
+}
 
 /**
  * @brief Performs a scan looking for incoming data packets.
@@ -216,12 +238,13 @@ void Kobuki::spin()
       data_buffer.pop_front();
       data_buffer.pop_front();
 
+      lockDataAccess();
       while (data_buffer.size() > 1/*size of etx*/)
       {
-        //std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
-        //std::cout << "remains: " << data_buffer.size() << " | ";
-        //std::cout << "local_buffer: " << local_buffer.size() << " | ";
-        //std::cout << std::endl;
+//        std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
+//        std::cout << "remains: " << data_buffer.size() << " | ";
+//        std::cout << "local_buffer: " << local_buffer.size() << " | ";
+//        std::cout << std::endl;
         switch (data_buffer[0])
         {
           // these come with the streamed feedback
@@ -336,6 +359,7 @@ void Kobuki::spin()
             break;
         }
       }
+      unlockDataAccess();
 
       is_alive = true;
       event_manager.update(is_connected, is_alive);
