@@ -9,7 +9,9 @@
   <author email="jorge@yujinrobot.com">Jorge Santos Simon</author>
   <maintainer email="stonier@yujinrobot.com">Daniel Stonier</maintainer>
   <license>BSD</license>
-  <url>http://ros.org/wiki/kobuki_node</url>
+  <url type="bugtracker">https://github.com/yujinrobot/kobuki/issues</url>
+  <url type="repository">https://github.com/yujinrobot/kobuki</url>
+  <url type="website">http://ros.org/wiki/kobuki_node</url>
 
   <buildtool_depend>catkin</buildtool_depend>
 

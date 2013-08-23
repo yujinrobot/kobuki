@@ -7,7 +7,9 @@
   <author email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</author>
   <maintainer email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</maintainer>
   <license>BSD</license>
-  <url>http://ros.org/wiki/kobuki_controller_tutorial</url>
+  <url type="bugtracker">https://github.com/yujinrobot/kobuki/issues</url>
+  <url type="repository">https://github.com/yujinrobot/kobuki</url>
+  <url type="website">http://ros.org/wiki/kobuki_controller_tutorial</url>
 
   <buildtool_depend>catkin</buildtool_depend>
 
