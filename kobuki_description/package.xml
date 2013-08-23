@@ -12,8 +12,8 @@
   </description>
   <author email="stonier@yujinrobot.com">Daniel Stonier</author>
   <author email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</author>
-  <author email="younghoon.ju@yujinrobot.com">Younghun Ju</author>
-  <maintainer email="younghoon.ju@yujinrobot.com">Younghun Ju</maintainer>
+  <author email="yhju@yujinrobot.com">Younghun Ju</author>
+  <maintainer email="yhju@yujinrobot.com">Younghun Ju</maintainer>
   <license>BSD</license>
   <url>http://ros.org/wiki/kobuki_description</url>
 

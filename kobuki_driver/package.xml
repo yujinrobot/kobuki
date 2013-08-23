@@ -6,7 +6,7 @@
     Pure C++ driver library for Kobuki. This is for those who do not wish to use ROS on their systems.
   </description>
   <author email="stonier@yujinrobot.com">Daniel Stonier</author>
-  <author email="younghoon.ju@yujinrobot.com">Younghun Ju</author>
+  <author email="yhju@yujinrobot.com">Younghun Ju</author>
   <author email="jorge@yujinrobot.com">Jorge Santos Simon</author>
   <maintainer email="stonier@yujinrobot.com">Daniel Stonier</maintainer>
   <license>BSD</license>

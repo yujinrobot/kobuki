@@ -348,5 +348,4 @@ std::string DockDrive::binary(unsigned char number) const {
   return ret;
 }
 
-
 } // namespace kobuki

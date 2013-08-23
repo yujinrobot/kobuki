@@ -5,8 +5,8 @@
 	    Automatic docking for Kobuki:
 	    Users owning a docking station for Kobuki can use this tool to let Kobuki find its nest autonomously.
   </description>
-  <author email="younghoon.ju@yujinrobot.com">Younghun Ju</author>
-  <maintainer email="younghoon.ju@yujinrobot.com">Younghun Ju</maintainer>
+  <author email="yhju@yujinrobot.com">Younghun Ju</author>
+  <maintainer email="yhju@yujinrobot.com">Younghun Ju</maintainer>
   <license>BSD</license>
   <url>http://ros.org/wiki/kobuki_auto_docking</url>
 

@@ -7,8 +7,8 @@
 	    The special firmware for the FTDI chip (USB to serial converter) enables it to appear as 
 	    /dev/kobuki on the user's PC. 
   </description>
-  <author email="younghoon.ju@yujinrobot.com">Younghun Ju</author>
-  <maintainer email="younghoon.ju@yujinrobot.com">Younghun Ju</maintainer>
+  <author email="yhju@yujinrobot.com">Younghun Ju</author>
+  <maintainer email="yhju@yujinrobot.com">Younghun Ju</maintainer>
   <license>BSD</license>
   <url>http://ros.org/wiki/kobuki_ftdi</url>
 
