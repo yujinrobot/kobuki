@@ -2,7 +2,7 @@ var searchData=
 [
   ['imu_5fheading_5foffset',['imu_heading_offset',['../classkobuki_1_1DiffDrive.html#aa7fec6b3a36eec177d79b99cd065d20a',1,'kobuki::DiffDrive']]],
   ['inertia',['Inertia',['../classkobuki_1_1Inertia.html',1,'kobuki']]],
-  ['inertia',['inertia',['../classkobuki_1_1Kobuki.html#a2b867d6cda20d8fc21a36dbb4d6ba125',1,'kobuki::Kobuki::inertia()'],['../classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eae36a9397bdd2b3506cd80e4bf03f4d03',1,'kobuki::Header::Inertia()']]],
+  ['inertia',['Inertia',['../classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eae36a9397bdd2b3506cd80e4bf03f4d03',1,'kobuki::Header::Inertia()'],['../classkobuki_1_1Kobuki.html#a2b867d6cda20d8fc21a36dbb4d6ba125',1,'kobuki::Kobuki::inertia()']]],
   ['inertia_2ehpp',['inertia.hpp',['../inertia_8hpp.html',1,'']]],
   ['init',['init',['../classkobuki_1_1EventManager.html#a1a5a6b8d26cd35c2904ff4ec1584359a',1,'kobuki::EventManager::init()'],['../classkobuki_1_1Kobuki.html#a0648c958434e641d4573721541099ee4',1,'kobuki::Kobuki::init()'],['../classkobuki_1_1AccelerationLimiter.html#a0da69f213f2e3911ef235376bc3ab9a1',1,'kobuki::AccelerationLimiter::init()']]],
   ['initialisation_2ecpp',['initialisation.cpp',['../initialisation_8cpp.html',1,'']]],

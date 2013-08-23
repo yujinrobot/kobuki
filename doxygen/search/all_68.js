@@ -8,5 +8,6 @@ var searchData=
   ['header',['Header',['../classkobuki_1_1Header.html',1,'kobuki']]],
   ['header0',['header0',['../classkobuki_1_1Command.html#a619203f3cdf47bd574f868dea15376e9',1,'kobuki::Command']]],
   ['header1',['header1',['../classkobuki_1_1Command.html#a6d4b993120c36903186ca233c2fbf248',1,'kobuki::Command']]],
+  ['heading_5foffset',['heading_offset',['../classkobuki_1_1Kobuki.html#a13d29e78f65eb0eb459659b3afbf7685',1,'kobuki::Kobuki']]],
   ['healthy',['Healthy',['../classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bca7019aea00963a0aeeaf36cf79025c7b3',1,'kobuki::Battery']]]
 ];

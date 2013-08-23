@@ -34,5 +34,6 @@ var searchData=
   ['linear_5fdeceleration_5flimit',['linear_deceleration_limit',['../classkobuki_1_1Parameters.html#a508680b2d1079e83d80492af73aed9cd',1,'kobuki::Parameters']]],
   ['linear_5fdeceleration_5fmax',['linear_deceleration_max',['../classkobuki_1_1AccelerationLimiter.html#ab9d7e7921aa359762a4e62776fad2447',1,'kobuki::AccelerationLimiter']]],
   ['linearvelocity',['linearVelocity',['../classkobuki_1_1DiffDrive.html#a5ae1e62efc9d2bc022e1ec153c00ef7c',1,'kobuki::DiffDrive']]],
-  ['low',['low',['../classkobuki_1_1Battery.html#ab52bd0243682d8f2b4f6a7b9fdb143d3',1,'kobuki::Battery::low()'],['../classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bcab7ef773b0f24a197a35f423d86bd0dda',1,'kobuki::Battery::Low()']]]
+  ['lockdataaccess',['lockDataAccess',['../classkobuki_1_1Kobuki.html#af4b1e5a79539f8b88a3873d23dc542f6',1,'kobuki::Kobuki']]],
+  ['low',['Low',['../classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bcab7ef773b0f24a197a35f423d86bd0dda',1,'kobuki::Battery::Low()'],['../classkobuki_1_1Battery.html#ab52bd0243682d8f2b4f6a7b9fdb143d3',1,'kobuki::Battery::low()']]]
 ];

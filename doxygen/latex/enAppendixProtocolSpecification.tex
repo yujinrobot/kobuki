@@ -121,7 +121,7 @@ return cs ? false : true;
 5&{\itshape \-Reserved\/}&\\\cline{1-3}
 6&{\itshape \-Reserved\/}&\\\cline{1-3}
 7&{\itshape \-Reserved\/}&\\\cline{1-3}
-8&\-Set \-Power&\-Control external powers \\\cline{1-3}
+8&{\itshape \-Reserved\/}&\\\cline{1-3}
 9&\-Request \-Extra&\-Request extra informations \\\cline{1-3}
 10&{\itshape \-Reserved\/}&\\\cline{1-3}
 11&{\itshape \-Reserved\/}&\\\cline{1-3}
@@ -180,29 +180,6 @@ return cs ? false : true;
 
 
 \par
-\subsection{\-Set Power}\label{enAppendixProtocolSpecification_enSetPower}
-\-Control the external powers; 3.\-3\-V, 5\-V, 12\-V1\-A, 12\-V5\-A. \-It is identical role with external power part of \-General \-Purpose \-Output.
-
-\begin{TabularC}{6}
-\hline
-&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
-\-Header&\-Identifier&1&8&0x08&\-Fixed \\\cline{1-6}
-\-Length&\-Size of data field&1&2&0x02&\-Fixed \\\cline{1-6}
-\-Data&\-Power control flags&2&&&\-Set the flags to turn on external powers\par
-0x01 for external power 3.\-3\-V ch.\par
-0x02 for external power 5\-V ch.\par
-0x04 for external power 12\-V1\-A ch.\par
-0x08 for external power 12\-V5\-A ch. \\\cline{1-6}
-\end{TabularC}
-
-
-\begin{DoxyWarning}{\-Warning}
-\-This command is implemented on the kobuki with firmware, but not implemented yet on driver software(kobuki\-\_\-driver).
-\end{DoxyWarning}
-\begin{DoxySeeAlso}{\-See also}
-\doxyref{\-General \-Purpose \-Output}{p.}{enAppendixProtocolSpecification_enGeneralPurposeOutput}
-\end{DoxySeeAlso}
-\par
 \subsection{\-Request Extra}\label{enAppendixProtocolSpecification_enRequestExtra}
 \-Request extra data from robot. \-Especially version info of kobuki; \-Hardware \-Version, \-Firmware \-Version and \-Unique \-Deivce \-I\-Dentifier(\-U\-D\-I\-D)
 
@@ -241,8 +218,8 @@ return cs ? false : true;
 \-Set the flags to turn on external powers\par
 0x0010 for external power 3.\-3\-V ch.\par
 0x0020 for external power 5\-V ch.\par
-0x0040 for external power 12\-V1\-A ch.\par
-0x0080 for external power 12\-V5\-A ch.\par
+0x0040 for external power 12\-V/5\-A ch.\par
+0x0080 for external power 12\-V/1.\-5\-A ch.\par
 \par
 \-Set the flags to turn on \-L\-E\-Ds\par
 0x0100 for red colour of \-L\-E\-D1\par
@@ -253,9 +230,6 @@ return cs ? false : true;
 \end{TabularC}
 
 
-\begin{DoxySeeAlso}{\-See also}
-\doxyref{\-Set \-Power}{p.}{enAppendixProtocolSpecification_enSetPower}
-\end{DoxySeeAlso}
 \par
 \section{\-Feedback Packets}\label{enAppendixProtocolSpecification_enFeedbackPackets}
 \subsection{\-Feedback Identifier}\label{enAppendixProtocolSpecification_enFeedbackIdentifier}

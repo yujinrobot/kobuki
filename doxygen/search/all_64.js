@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['dangerous',['Dangerous',['../classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bca27e3cf6d1fd3207e1d16ba4b808506ef',1,'kobuki::Battery::Dangerous()'],['../classkobuki_1_1Battery.html#afed5fa95de7082b1d36e01bc7f551f56',1,'kobuki::Battery::dangerous()']]],
+  ['dangerous',['dangerous',['../classkobuki_1_1Battery.html#afed5fa95de7082b1d36e01bc7f551f56',1,'kobuki::Battery::dangerous()'],['../classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bca27e3cf6d1fd3207e1d16ba4b808506ef',1,'kobuki::Battery::Dangerous()']]],
   ['data',['Data',['../structkobuki_1_1Command_1_1Data.html',1,'kobuki::Command']]],
   ['data',['Data',['../structkobuki_1_1Hardware_1_1Data.html',1,'kobuki::Hardware']]],
   ['data',['Data',['../structkobuki_1_1Cliff_1_1Data.html',1,'kobuki::Cliff']]],
@@ -15,6 +15,7 @@ var searchData=
   ['data',['Data',['../structkobuki_1_1Eeprom_1_1Data.html',1,'kobuki::Eeprom']]],
   ['data',['Data',['../structkobuki_1_1UniqueDeviceID_1_1Data.html',1,'kobuki::UniqueDeviceID']]],
   ['data_5fbuffer',['data_buffer',['../classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d',1,'kobuki::Kobuki']]],
+  ['data_5fmutex',['data_mutex',['../classkobuki_1_1Kobuki.html#abb5b7aa70e7b2207f8e8a4412d7487f3',1,'kobuki::Kobuki']]],
   ['deserialise',['deserialise',['../classkobuki_1_1Command.html#a940dc54294dc2b6ca9305867229137de',1,'kobuki::Command::deserialise()'],['../classpacket__handler_1_1payloadBase.html#a42d7908c86387e88b4a8705b7647c093',1,'packet_handler::payloadBase::deserialise()'],['../classkobuki_1_1Cliff.html#ab4feb28d6b1863d7d1cd7b68d6963724',1,'kobuki::Cliff::deserialise()'],['../classkobuki_1_1CoreSensors.html#a040a72096617002a0d0f93b848006ebc',1,'kobuki::CoreSensors::deserialise()'],['../classkobuki_1_1Current.html#a0650572b8e343637d000a8c3682bed5d',1,'kobuki::Current::deserialise()'],['../classkobuki_1_1DockIR.html#acee0bd7f154a549d8d5a0f56aa9a6771',1,'kobuki::DockIR::deserialise()'],['../classkobuki_1_1Eeprom.html#ac60a5c8a4ba3b95dd21f9a671c416710',1,'kobuki::Eeprom::deserialise()'],['../classkobuki_1_1Firmware.html#af41cef6ff3dc0ed1e7b256681544e1a2',1,'kobuki::Firmware::deserialise()'],['../classkobuki_1_1GpInput.html#a28b4dbbd1a1df1b22cda86193dadd60e',1,'kobuki::GpInput::deserialise()'],['../classkobuki_1_1Hardware.html#a0e30a67914debe3e5de881720273c17b',1,'kobuki::Hardware::deserialise()'],['../classkobuki_1_1Inertia.html#a44d0ed2f43fd3598521fdb0104da3e5a',1,'kobuki::Inertia::deserialise()'],['../classkobuki_1_1ThreeAxisGyro.html#a65c15215e2769e7227c3f1f772a445b1',1,'kobuki::ThreeAxisGyro::deserialise()'],['../classkobuki_1_1UniqueDeviceID.html#ac3fefd5a6c768a52e96b1890afa41319',1,'kobuki::UniqueDeviceID::deserialise()']]],
   ['device_5fport',['device_port',['../classkobuki_1_1Parameters.html#a993217236ea68f063f5bc285414408e2',1,'kobuki::Parameters']]],
   ['diff_5fdrive',['diff_drive',['../classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210',1,'kobuki::Kobuki']]],
@@ -25,8 +26,8 @@ var searchData=
   ['diffdrive',['DiffDrive',['../classkobuki_1_1DiffDrive.html#a5b3265fdb9be865c17e26bdacdfd6f07',1,'kobuki::DiffDrive']]],
   ['digital_5finput',['digital_input',['../structkobuki_1_1GpInput_1_1Data.html#a4d91ec153b1310b7ef99af7f61850906',1,'kobuki::GpInput::Data']]],
   ['digital_5foutput_2ehpp',['digital_output.hpp',['../digital__output_8hpp.html',1,'']]],
-  ['digitaloutput',['DigitalOutput',['../structkobuki_1_1DigitalOutput.html#a49d350034a3a9347bcdb429e7e7f96fc',1,'kobuki::DigitalOutput']]],
   ['digitaloutput',['DigitalOutput',['../structkobuki_1_1DigitalOutput.html',1,'kobuki']]],
+  ['digitaloutput',['DigitalOutput',['../structkobuki_1_1DigitalOutput.html#a49d350034a3a9347bcdb429e7e7f96fc',1,'kobuki::DigitalOutput']]],
   ['disable',['disable',['../classkobuki_1_1Kobuki.html#a9e4447e3b2bb177155ee681daccdc274',1,'kobuki::Kobuki']]],
   ['discharging',['Discharging',['../classkobuki_1_1Battery.html#a4f0d2ed531577d543dde3ebbf4ad52a9a5aa69940e97eac18291c8f3af872cd35',1,'kobuki::Battery::Discharging()'],['../structkobuki_1_1CoreSensors_1_1Flags.html#a7478f59ea180abc589c314a9be8c6d52',1,'kobuki::CoreSensors::Flags::Discharging()']]],
   ['dock',['Dock',['../classkobuki_1_1Battery.html#a9856e66ddcde2ebbaa4409850f2291d0a763c5c8ee3861289e3b1954ec791adc7',1,'kobuki::Battery']]],

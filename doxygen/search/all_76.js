@@ -14,6 +14,6 @@ var searchData=
   ['version_5finfo_5freminder',['version_info_reminder',['../classkobuki_1_1Kobuki.html#ab07dc6fa02d48f837ea3755f3ac7b03c',1,'kobuki::Kobuki']]],
   ['versionflag',['VersionFlag',['../classkobuki_1_1Command.html#ada2fa96c4981badca48d892b743e6c22',1,'kobuki::Command']]],
   ['versioninfo',['VersionInfo',['../classkobuki_1_1VersionInfo.html',1,'kobuki']]],
-  ['versioninfo',['versionInfo',['../classkobuki_1_1Kobuki.html#a2b45e19fa61a2c542dcae5a7973dd28f',1,'kobuki::Kobuki::versionInfo()'],['../classkobuki_1_1VersionInfo.html#a4143ff4a98439ba1a8161dc5872f1eb3',1,'kobuki::VersionInfo::VersionInfo()']]],
+  ['versioninfo',['VersionInfo',['../classkobuki_1_1VersionInfo.html#a4143ff4a98439ba1a8161dc5872f1eb3',1,'kobuki::VersionInfo::VersionInfo()'],['../classkobuki_1_1Kobuki.html#a2b45e19fa61a2c542dcae5a7973dd28f',1,'kobuki::Kobuki::versionInfo()']]],
   ['voltage',['voltage',['../classkobuki_1_1Battery.html#ac3a23c18283486ec3608f270f9800d8a',1,'kobuki::Battery']]]
 ];
