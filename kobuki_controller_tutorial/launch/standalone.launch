@@ -1,0 +1,10 @@
+<!--
+  Standalone launcher for testing 
+ -->
+<launch>
+  <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
+  <node pkg="nodelet" type="nodelet" name="bump_blink_controller" args="load kobuki_controller_tutorial/BumpBlinkControllerNodelet mobile_base_nodelet_manager">
+    <remap from="bump_blink_controller/events/bumper" to="mobile_base/events/bumper"/>
+    <remap from="bump_blink_controller/commands/led1" to="mobile_base/commands/led1"/>
+  </node>
+</launch>
