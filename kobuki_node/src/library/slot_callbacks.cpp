@@ -97,13 +97,15 @@ void KobukiRos::publishSensorState()
 
 void KobukiRos::publishWheelState()
 {
+  // Take latest encoders and gyro data
   ecl::Pose2D<double> pose_update;
   ecl::linear_algebra::Vector3d pose_update_rates;
   kobuki.updateOdometry(pose_update, pose_update_rates);
   kobuki.getWheelJointStates(joint_states.position[0], joint_states.velocity[0],   // left wheel
                              joint_states.position[1], joint_states.velocity[1]);  // right wheel
 
-  odometry.update(pose_update, pose_update_rates);
+  // Update and publish odometry and joint states
+  odometry.update(pose_update, pose_update_rates, kobuki.getHeading(), kobuki.getAngularVelocity());
 
   if (ros::ok())
   {
@@ -126,12 +128,12 @@ void KobukiRos::publishInertia()
 
       msg->orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0, 0.0, kobuki.getHeading());
 
-      // set a very large covariance on unused dimensions (pitch and roll);
-      // set yaw covariance as very low, to make it dominate over the odometry heading
-      // 1: fill once, as its always the same;  2: cannot get better estimation?
+      // set a non-zero covariance on unused dimensions (pitch and roll); this is a requirement of robot_pose_ekf
+      // set yaw covariance as very low, to make it dominate over the odometry heading when combined
+      // 1: fill once, as its always the same;  2: using an invented value; cannot we get a realistic estimation?
       msg->orientation_covariance[0] = DBL_MAX;
       msg->orientation_covariance[4] = DBL_MAX;
-      msg->orientation_covariance[8] = 0.005;
+      msg->orientation_covariance[8] = 0.05;
 
       // fill angular velocity; we ignore acceleration for now
       msg->angular_velocity.z = kobuki.getAngularVelocity();
@@ -140,7 +142,7 @@ void KobukiRos::publishInertia()
       // roadmap claims that it will compute velocities in the future
       msg->angular_velocity_covariance[0] = DBL_MAX;
       msg->angular_velocity_covariance[4] = DBL_MAX;
-      msg->angular_velocity_covariance[8] = 0.005;
+      msg->angular_velocity_covariance[8] = 0.05;
 
       imu_data_publisher.publish(msg);
     }

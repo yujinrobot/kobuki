@@ -41,7 +41,8 @@ public:
   Odometry();
   void init(ros::NodeHandle& nh, const std::string& name);
   bool commandTimeout() const;
-  void update(const ecl::Pose2D<double> &pose_update, ecl::linear_algebra::Vector3d &pose_update_rates);
+  void update(const ecl::Pose2D<double> &pose_update, ecl::linear_algebra::Vector3d &pose_update_rates,
+              double imu_heading, double imu_angular_velocity);
   void resetOdometry() { pose.setIdentity(); }
   const ros::Duration& timeout() const { return cmd_vel_timeout; }
   void resetTimeout() { last_cmd_time = ros::Time::now(); }
@@ -54,6 +55,7 @@ private:
   ros::Duration cmd_vel_timeout;
   ros::Time last_cmd_time;
   bool publish_tf;
+  bool use_imu_heading;
   tf::TransformBroadcaster odom_broadcaster;
   ros::Publisher odom_publisher;
 

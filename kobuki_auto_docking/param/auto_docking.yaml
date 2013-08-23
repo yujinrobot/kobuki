@@ -1,0 +1,6 @@
+# Default parameters for auto docking
+
+# minimum linear velocity in m/s
+min_abs_v: 0.01
+# minimum angular velocity in rad/s
+min_abs_w: 0.1

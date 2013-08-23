@@ -21,8 +21,14 @@ battery_dangerous: 13.2
 # If a new command isn't received within this many seconds, the base is stopped (double, default: 0.6)
 cmd_vel_timeout: 0.6
 
-# Causes node to publish TF for odom to base_link, use only when no gyro exists (bool, default: False)
-publish_tf: false
+# Causes node to publish TF for odom_frame to base_frame. Disable only if you plan to use robot_pose_ekf
+(see use_imu_heading description) (bool, default: true)
+publish_tf: true
+
+# Use imu readings for heading instead of encoders. That's the normal operation mode for Kobuki, as its
+# gyro is very reliable. Disable only if you want to fuse encoders and imu readings in a more sophisticated
+# way, for example filtering and fussing with robot_pose_ekf (bool, default: true)
+use_imu_heading: true
 
 # Name of the odometry TF frame (string, default: odom)
 odom_frame: odom

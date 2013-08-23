@@ -43,9 +43,9 @@ public:
               const uint16_t &right_encoder,
               ecl::Pose2D<double> &pose_update,
               ecl::linear_algebra::Vector3d &pose_update_rates);
-  void reset(const double& current_heading);
+  void reset();
   void getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
-                            double &wheel_right_angle, double &wheel_right_angle_rate);
+                           double &wheel_right_angle, double &wheel_right_angle_rate);
   void setVelocityCommands(const double &vx, const double &wz);
   void velocityCommands(const double &vx, const double &wz);
   void velocityCommands(const short &cmd_speed, const short &cmd_radius);
