@@ -60,7 +60,7 @@ public:
   {
     if (!(byteStream.size() > 0))
     {
-      printf("kobuki_node: kobuki_fw: deserialise failed. empty byte stream.");
+      //ROS_WARN_STREAM("kobuki_node: kobuki_fw: deserialise failed. empty byte stream.");
       return false;
     }
 
