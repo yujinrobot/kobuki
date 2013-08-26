@@ -39,15 +39,14 @@ namespace kobuki
 class Current : public packet_handler::payloadBase
 {
 public:
+  Current() : packet_handler::payloadBase(false, 2) {};
   struct Data {
     Data() : current(2) {}
     std::vector<uint8_t> current;
   } data;
 
-  // methods
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    unsigned char length = 2;
     buildBytes(Header::Current, byteStream);
     buildBytes(length, byteStream);
     buildBytes(data.current[0], byteStream);
@@ -57,17 +56,21 @@ public:
 
   bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
+    if (!(byteStream.size() > length+2))
     {
       //ROS_WARN_STREAM("kobuki_node: kobuki_current: deserialise failed. empty byte stream.");
       return false;
     }
 
-    unsigned char header_id, length;
+    unsigned char header_id, length_packed;
     buildVariable(header_id, byteStream);
-    buildVariable(length, byteStream);
+    buildVariable(length_packed, byteStream);
+    if( header_id != Header::Current ) return false;
+    if( length_packed != length ) return false;
+
     buildVariable(data.current[0], byteStream);
     buildVariable(data.current[1], byteStream);
+
     return constrain();
   }
 

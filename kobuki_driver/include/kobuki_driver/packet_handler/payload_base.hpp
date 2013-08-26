@@ -45,10 +45,27 @@ public:
    */
   bool yes;
 
+  /**
+   * it indicates the type of derived packet. if packet type is dynamic, length of
+   * packet can be changed during communication session. Ohterwise can not.
+   */
+  const bool is_dynamic;
+
+  /**
+   * it indicates length of data part of packet, except header and length field.
+   * if packet is fixed type, this value should be matched with length field.
+   * if packet is dynamic type, this value indicates minimal value of length field.
+   */
+  const unsigned char length;
+
   /*
    * construct and destruct
    */
-  payloadBase() : yes(false) {};
+  payloadBase(const bool is_dynamic_ = false, const unsigned char length_ = 0 )
+    : yes(false)
+    , is_dynamic(is_dynamic_)
+    , length(length_)
+  {};
   virtual ~payloadBase() {};
 
   /*

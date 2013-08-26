@@ -34,6 +34,8 @@ namespace kobuki
 class UniqueDeviceID : public packet_handler::payloadBase
 {
 public:
+  UniqueDeviceID() : packet_handler::payloadBase(false, 12) {};
+
   struct Data {
     uint32_t udid0;
     uint32_t udid1;
@@ -43,7 +45,6 @@ public:
   // methods
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    unsigned char length = 12;
     buildBytes(Header::UniqueDeviceID, byteStream);
     buildBytes(length, byteStream);
     buildBytes(data.udid0, byteStream);
@@ -60,9 +61,12 @@ public:
       return false;
     }
 
-    unsigned char header_id, length;
+    unsigned char header_id, length_packed;
     buildVariable(header_id, byteStream);
-    buildVariable(length, byteStream);
+    buildVariable(length_packed, byteStream);
+    if( header_id != Header::UniqueDeviceID ) return false;
+    if( length_packed != length ) return false;
+
     buildVariable(data.udid0, byteStream);
     buildVariable(data.udid1, byteStream);
     buildVariable(data.udid2, byteStream);
@@ -78,7 +82,6 @@ public:
 
   void showMe()
   {
-    //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, acc[2], acc[1], acc[0] );
   }
 };
 

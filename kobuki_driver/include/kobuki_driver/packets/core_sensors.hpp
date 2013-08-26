@@ -35,6 +35,8 @@ namespace kobuki
 class kobuki_PUBLIC CoreSensors : public packet_handler::payloadBase
 {
 public:
+  CoreSensors() : packet_handler::payloadBase(false, 15) {};
+
   struct Data {
     uint16_t time_stamp;
     uint8_t bumper;
