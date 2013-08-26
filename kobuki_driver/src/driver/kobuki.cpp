@@ -285,8 +285,8 @@ void Kobuki::spin()
             firmware.deserialise(data_buffer);
             try
             {
-              // Check firmware/driver compatibility; mayor version must be the same
-              int version_match = firmware.check_mayor_version();
+              // Check firmware/driver compatibility; major version must be the same
+              int version_match = firmware.check_major_version();
               if (version_match < 0) {
                 sig_error.emit("Robot firmware is outdated and needs to be upgraded. Consult how-to on: " \
                                "http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware");

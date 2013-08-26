@@ -24,7 +24,7 @@
 ** Constants
 *****************************************************************************/
 
-#define CURRENT_FIRMWARE_MAYOR_VERSION  1
+#define CURRENT_FIRMWARE_MAJOR_VERSION  1
 #define CURRENT_FIRMWARE_MINOR_VERSION  1
 // patch number is ignored; don't need to be updated
 
@@ -106,17 +106,17 @@ public:
   std::string current_version()
   {
     std::stringstream ss;
-    ss << CURRENT_FIRMWARE_MAYOR_VERSION << "." << CURRENT_FIRMWARE_MINOR_VERSION << ".x";
+    ss << CURRENT_FIRMWARE_MAJOR_VERSION << "." << CURRENT_FIRMWARE_MINOR_VERSION << ".x";
 
     return std::string(ss.str());
   }
 
-  int check_mayor_version()
+  int check_major_version()
   {
-    // Return a negative value if firmware's mayor version is older than that of the driver,
-    // 0 if both are the same, and a positive value if firmware's mayor version is newer
+    // Return a negative value if firmware's major version is older than that of the driver,
+    // 0 if both are the same, and a positive value if firmware's major version is newer
     uint32_t flashed_version = ((data.version & 0x00FF0000) >> 16);
-    return flashed_version - CURRENT_FIRMWARE_MAYOR_VERSION;
+    return flashed_version - CURRENT_FIRMWARE_MAJOR_VERSION;
   }
 
   int check_minor_version()

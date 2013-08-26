@@ -53,7 +53,7 @@ public:
 
   static std::string toString(const uint32_t &version)
   {
-    // Convert an unsigned int into a string of type <mayor>.<minor>.<patch>; first byte is ignored
+    // Convert an unsigned int into a string of type <major>.<minor>.<patch>; first byte is ignored
     std::stringstream ss;
     ss << ((version & 0x00FF0000) >> 16) << "." << ((version & 0x0000FF00) >>  8) << "." << (version & 0x000000FF);
     return std::string(ss.str());
