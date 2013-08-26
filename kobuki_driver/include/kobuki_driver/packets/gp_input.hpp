@@ -48,12 +48,6 @@ public:
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
-    {
-      //ROS_WARN_STREAM("kobuki_node: kobuki_inertia: serialise failed. empty byte stream.");
-      return false;
-    }
-
     unsigned char length = 2 + 2*data.analog_input.size();
     buildBytes(Header::GpInput, byteStream);
     buildBytes(length, byteStream);

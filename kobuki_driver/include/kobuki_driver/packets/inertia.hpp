@@ -44,12 +44,6 @@ public:
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
-    {
-      //ROS_WARN_STREAM("kobuki_node: kobuki_inertia: serialise failed. empty byte stream.");
-      return false;
-    }
-
     unsigned char length = 7;
     buildBytes(Header::Inertia, byteStream);
     buildBytes(length, byteStream);

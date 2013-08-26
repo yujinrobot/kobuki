@@ -42,12 +42,6 @@ public:
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
-    {
-      printf("kobuki_node: kobuki_cliff: serialise failed. empty byte stream.");
-      return false;
-    }
-
     unsigned char length = 6;
     buildBytes(Header::Cliff, byteStream);
     buildBytes(length, byteStream);

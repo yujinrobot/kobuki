@@ -26,11 +26,6 @@ namespace kobuki {
 
 bool CoreSensors::serialise(ecl::PushAndPop<unsigned char> & byteStream)
 {
-  if (!(byteStream.size() > 0))
-  {
-    //ROS_WARN_STREAM("kobuki_node: kobuki_default: serialise failed. empty byte stream.");
-    return false;
-  }
   unsigned char length = 15;
   buildBytes(Header::CoreSensors, byteStream);
   buildBytes(length, byteStream);

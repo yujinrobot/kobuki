@@ -50,12 +50,6 @@ public:
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
-    {
-      //ROS_WARN_STREAM("kobuki_node: three_axis_gyro: serialise failed. empty byte stream.");
-      return false;
-    }
-
     unsigned char length = 2 + 2 * data.followed_data_length;
     buildBytes(Header::ThreeAxisGyro, byteStream);
     buildBytes(length, byteStream);

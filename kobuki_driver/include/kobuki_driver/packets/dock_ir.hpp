@@ -41,12 +41,6 @@ public:
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
-    {
-      printf("kobuki_node: kobuki_dock_ir: serialise failed. empty byte stream.");
-      return false;
-    }
-
     unsigned char length = 3;
     buildBytes(Header::DockInfraRed, byteStream);
     buildBytes(length, byteStream);

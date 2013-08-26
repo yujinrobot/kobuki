@@ -43,12 +43,6 @@ public:
   // methods
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
-    {
-      printf("kobuki_node: kobuki_udid: serialise failed. empty byte stream.");
-      return false;
-    }
-
     unsigned char length = 12;
     buildBytes(Header::UniqueDeviceID, byteStream);
     buildBytes(length, byteStream);
