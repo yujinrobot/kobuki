@@ -75,7 +75,7 @@ Payload is a consist of several sub-payloads.
 @subsubsection enStructureOfSubPayloads Structure Of Sub-Payloads
 
 @par
-Sub-payload can be divided into three parts, Header, Length and Data.
+Sub-payload can be divided into three parts; Header, Length and Data.
 
 @par
 <table>
@@ -401,7 +401,7 @@ This sub-payload will be sent by default.
 
 @subsection enCliffSensorData Cliff Sensor Data
 
-This sub-payload provides <a href="http://en.wikipedia.org/wiki/Analog-to-digital_converter">ADC</a> data of <a href="http://en.wikipedia.org/wiki/Position_sensitive_device">PSD</a>, which is facing the floor. <!-- part name is GP2Y0A51SK0F -->
+This sub-payload provides <a href="http://en.wikipedia.org/wiki/Analog-to-digital_converter">ADC</a> data of <a href="http://en.wikipedia.org/wiki/Position_sensitive_device">PSD</a> sensor, which is facing the floor. <!-- part name is GP2Y0A51SK0F -->
 
 This value is related with distance between sensor and floor surface. See the <a href="http://www.beck-elektronik.de/fileadmin/templates/beck_folder/opto/sensor/sharp/analog-gp2y0a51sk0f.pdf">datasheet</a> for more detailed information.
 
@@ -411,7 +411,7 @@ This data also available in the Cliff field of @ref enBasicSensorData , as a boo
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">5</td><td>0x05</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">6</td><td>0x06</td><td>Fixed</td></tr>
-<tr><th rowspan="3">Data</th><td>Right cliff sensor</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="3">ADC output of each PSD<br>Data range: 0 ~ 4095<br>Distance range: 2 ~ 15 cm<br>Distance is non-linear</td></tr>
+<tr><th rowspan="3">Data</th><td>Right cliff sensor</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="3">ADC output of each PSD<br>Data range: 0 ~ 4095 (0 ~ 3.3V)<br>Distance range: 2 ~ 15 cm<br>Distance is not linear w.r.t. ADC output.<br>See the <a href="http://www.beck-elektronik.de/fileadmin/templates/beck_folder/opto/sensor/sharp/analog-gp2y0a51sk0f.pdf">datasheet</a> for more detail.</td></tr>
 <tr><td>Central cliff sensor</td><td align="center">2</td><td align="center"></td><td></td></tr>
 <tr><td>Left cliff sensor</td><td align="center">2</td><td align="center"></td><td></td></tr>
 </table>
@@ -546,7 +546,7 @@ angular_velocity.z =   digit_to_dps * (short)raw_gyro_data.z;
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
 <tr><th rowspan="8">Data</th><td>Digital input</td><td align="center">2</td><td align="center"></td><td></td><td>Flag will be setted, when high voltage is applied<br>0x01 for digital input ch. 0<br>0x02 for digital input ch. 1<br>0x04 for digital input ch. 2<br>0x08 for input output ch. 3</td></tr>
-<tr><td>Analog input ch.0</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="4">12-bit ADC output of each channel<br>Data range: 0 ~ 4095(2^12-1)<br>Conversion voltage range: 0 ~ 3.3 V</td></tr>
+<tr><td>Analog input ch.0</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="4">12-bit ADC output of each channel<br>Data range: 0 ~ 4095(2^12-1)<br>Voltage range: 0 ~ 3.3 V</td></tr>
 <tr><td>Analog input ch.1</td><td align="center">2</td><td align="center"></td><td></td></tr>
 <tr><td>Analog input ch.2</td><td align="center">2</td><td align="center"></td><td></td></tr>
 <tr><td>Analog input ch.3</td><td align="center">2</td><td align="center"></td><td></td></tr>
