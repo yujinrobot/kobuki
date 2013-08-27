@@ -94,8 +94,11 @@ Classes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkobuki_1_1Inertia_1_1Data.html">Data</a></td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Inertia.html#a7d9f5700ec885009b07040c811bd3949">constrain</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Inertia.html#a44d0ed2f43fd3598521fdb0104da3e5a">deserialise</a> (ecl::PushAndPop&lt; unsigned char &gt; &amp;byteStream)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Inertia.html#afe90182c37d85e6e06db7966c3cae42d">Inertia</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Inertia.html#af929db04f4bfc0758aac60ab93cb78ca">serialise</a> (ecl::PushAndPop&lt; unsigned char &gt; &amp;byteStream)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Inertia.html#a716fa9729469c048f2207a5efc669395">showMe</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Inertia.html#a4e7cd61452228ec733c46c04b39a47e2">~Inertia</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -105,6 +108,24 @@ Public Attributes</h2></td></tr>
 <div class="textblock">
 <p>Definition at line <a class="el" href="inertia_8hpp_source.html#l00034">34</a> of file <a class="el" href="inertia_8hpp_source.html">inertia.hpp</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="afe90182c37d85e6e06db7966c3cae42d"></a><!-- doxytag: member="kobuki::Inertia::Inertia" ref="afe90182c37d85e6e06db7966c3cae42d" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classkobuki_1_1Inertia.html#afe90182c37d85e6e06db7966c3cae42d">kobuki::Inertia::Inertia</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="inertia_8hpp_source.html#l00037">37</a> of file <a class="el" href="inertia_8hpp_source.html">inertia.hpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a4e7cd61452228ec733c46c04b39a47e2"></a><!-- doxytag: member="kobuki::Inertia::~Inertia" ref="a4e7cd61452228ec733c46c04b39a47e2" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -119,11 +140,29 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="inertia_8hpp_source.html#l00043">43</a> of file <a class="el" href="inertia_8hpp_source.html">inertia.hpp</a>.</p>
+<p>Definition at line <a class="el" href="inertia_8hpp_source.html#l00044">44</a> of file <a class="el" href="inertia_8hpp_source.html">inertia.hpp</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a7d9f5700ec885009b07040c811bd3949"></a><!-- doxytag: member="kobuki::Inertia::constrain" ref="a7d9f5700ec885009b07040c811bd3949" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classkobuki_1_1Inertia.html#a7d9f5700ec885009b07040c811bd3949">kobuki::Inertia::constrain</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="inertia_8hpp_source.html#l00082">82</a> of file <a class="el" href="inertia_8hpp_source.html">inertia.hpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a44d0ed2f43fd3598521fdb0104da3e5a"></a><!-- doxytag: member="kobuki::Inertia::deserialise" ref="a44d0ed2f43fd3598521fdb0104da3e5a" args="(ecl::PushAndPop&lt; unsigned char &gt; &amp;byteStream)" -->
 <div class="memitem">
 <div class="memproto">
@@ -141,7 +180,7 @@ Public Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classpacket__handler_1_1payloadBase.html#a42d7908c86387e88b4a8705b7647c093">packet_handler::payloadBase</a>.</p>
 
-<p>Definition at line <a class="el" href="inertia_8hpp_source.html#l00064">64</a> of file <a class="el" href="inertia_8hpp_source.html">inertia.hpp</a>.</p>
+<p>Definition at line <a class="el" href="inertia_8hpp_source.html#l00058">58</a> of file <a class="el" href="inertia_8hpp_source.html">inertia.hpp</a>.</p>
 
 </div>
 </div>
@@ -162,7 +201,25 @@ Public Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classpacket__handler_1_1payloadBase.html#a6ef7b31bf2c88202403f07214f7b9423">packet_handler::payloadBase</a>.</p>
 
-<p>Definition at line <a class="el" href="inertia_8hpp_source.html#l00045">45</a> of file <a class="el" href="inertia_8hpp_source.html">inertia.hpp</a>.</p>
+<p>Definition at line <a class="el" href="inertia_8hpp_source.html#l00046">46</a> of file <a class="el" href="inertia_8hpp_source.html">inertia.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a716fa9729469c048f2207a5efc669395"></a><!-- doxytag: member="kobuki::Inertia::showMe" ref="a716fa9729469c048f2207a5efc669395" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classkobuki_1_1Inertia.html#a716fa9729469c048f2207a5efc669395">kobuki::Inertia::showMe</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="inertia_8hpp_source.html#l00087">87</a> of file <a class="el" href="inertia_8hpp_source.html">inertia.hpp</a>.</p>
 
 </div>
 </div>
@@ -203,7 +260,7 @@ Public Attributes</h2></td></tr>
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Fri Aug 23 2013 15:06:50</small>
+<small>autogenerated on Tue Aug 27 2013 15:31:48</small>
 </div>
 </body>
 </html>

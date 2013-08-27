@@ -51,7 +51,7 @@ Overview</h2>
 <p>The <a class="el" href="classkobuki_1_1Kobuki.html">kobuki driver</a> communicates with the robot by using predefined protocol. In general, the driver sends the commands to the robot and the robot sends some feedback data or sensor readings. These commands and feedback data are converted into bytestreams for communication via serial interface. The protocol specifies that rules and forms of bytestreams.</p>
 <h2><a class="anchor" id="enBytestream"></a>
 Structure of Bytestream</h2>
-<p>A bytestream can be devided into 4 fields; Headers, Length, Payload and Checksum.</p>
+<p>A bytestream can be divided into 4 fields; Headers, Length, Payload and Checksum.</p>
 <table class="doxtable">
 <tr align="center">
 <th>Name</th><td>Header 0</td><td>Header 1</td><td>Length</td><td>Payload</td><td>Checksum </td></tr>
@@ -94,7 +94,7 @@ Structure Of Payload</h4>
 </p>
 <h4><a class="anchor" id="enStructureOfSubPayloads"></a>
 Structure Of Sub-Payloads</h4>
-<dl class="user"><dt><b></b></dt><dd>Sub-payload can be devided into three parts, Header, Length and Data.</dd></dl>
+<dl class="user"><dt><b></b></dt><dd>Sub-payload can be divided into three parts, Header, Length and Data.</dd></dl>
 <dl class="user"><dt><b></b></dt><dd><table class="doxtable">
 <tr align="center">
 <th>Name</th><td>Header</td><td>Length</td><td>Data </td></tr>
@@ -139,17 +139,17 @@ Data Types</h2>
 <tr align="center">
 <th>Name</th><th>Description</th><th>Byte Length</th><th>Bit Length</th><th>Data Range</th><th colspan="2">C/C++ Identifier </th></tr>
 <tr align="center">
-<td>Unsigned Byte</td><td>8-bit unsigned integer</td><td>1</td><td>8</td><td>0~255</td><td>unsigend char</td><td>uint8_t </td></tr>
+<td>Unsigned Byte</td><td>8-bit unsigned integer</td><td>1</td><td>8</td><td>0~255</td><td>unsigned char</td><td>uint8_t </td></tr>
 <tr align="center">
-<td>Unsigned Short</td><td>16-bit unsigned integer</td><td>2</td><td>16</td><td>0~65,535</td><td>unsigend short</td><td>uint16_t </td></tr>
+<td>Unsigned Short</td><td>16-bit unsigned integer</td><td>2</td><td>16</td><td>0~65,535</td><td>unsigned short</td><td>uint16_t </td></tr>
 <tr align="center">
-<td>Unsigned Int</td><td>32-bit unsigned integer</td><td>4</td><td>32</td><td>0~4,294,967,295</td><td>unsigend int</td><td>uint32_t  </td></tr>
+<td>Unsigned Int</td><td>32-bit unsigned integer</td><td>4</td><td>32</td><td>0~4,294,967,295</td><td>unsigned int</td><td>uint32_t  </td></tr>
 </table>
 <p><br/>
 </p>
 <h3><a class="anchor" id="enSerializationDerialization"></a>
 Serialization-Deserialization</h3>
-<p><a href="http://en.wikipedia.org/wiki/Serialization">Serialization</a> is the process of converting a data sturcture into a bytestream. Deserialization is reversal process. Each data types are serialized and deserialized by `<a href="http://en.wikipedia.org/wiki/Least_significant_byte">LSB</a>-First Order`. It means Least Significant Bytes will comes first on the bytestream. For example, The integer number 2,864,434,397(0xAABBCCDD) can be serialized into: </p>
+<p><a href="http://en.wikipedia.org/wiki/Serialization">Serialization</a> is the process of converting a data structure into a bytestream. Deserialization is reversal process. Each data types are serialized and deserialized by `<a href="http://en.wikipedia.org/wiki/Least_significant_byte">LSB</a>-First Order`. It means Least Significant Bytes will comes first on the bytestream. For example, The integer number 2,864,434,397(0xAABBCCDD) can be serialized into: </p>
 <table class="doxtable">
 <tr>
 <td>0xDD</td><td>0xCC</td><td>0xBB</td><td>0xAA </td></tr>
@@ -222,7 +222,7 @@ Sound</h3>
 <tr>
 <th rowspan="2">Data</th><td>Note</td><td align="center">2</td><td align="center"></td><td></td><td><img class="formulaInl" alt="$\mbox{1/}(f \cdotp a)$" src="form_0.png"/>, where <img class="formulaInl" alt="$f$" src="form_1.png"/> is frequency of sound in Hz, and <img class="formulaInl" alt="$a$" src="form_2.png"/> is 0.00000275 </td></tr>
 <tr>
-<td>Duration</td><td align="center">1</td><td align="center"></td><td></td><td>Duration of playing note in mili-seconds </td></tr>
+<td>Duration</td><td align="center">1</td><td align="center"></td><td></td><td>Duration of playing note in milli-seconds </td></tr>
 </table>
 <dl class="warning"><dt><b>Warning:</b></dt><dd>This command is implemented on the kobuki with firmware, but not implemented yet on driver software(kobuki_driver).</dd></dl>
 <p><br/>
@@ -250,7 +250,7 @@ Sound Sequence</h3>
 </p>
 <h3><a class="anchor" id="enRequestExtra"></a>
 Request Extra</h3>
-<p>Request extra data from robot. Especially version info of kobuki; Hardware Version, Firmware Version and Unique Deivce IDentifier(UDID)</p>
+<p>Request extra data from robot. Especially version info of kobuki; Hardware Version, Firmware Version and Unique Device IDentifier(UDID)</p>
 <p>UDID is unique to device. so can be used to identify on multiple robots.</p>
 <table class="doxtable">
 <tr>
@@ -260,7 +260,7 @@ Request Extra</h3>
 <tr>
 <th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed </td></tr>
 <tr>
-<th>Data</th><td>Reqeust flags</td><td align="center">2</td><td align="center"></td><td></td><td>Set the flags to request extra data<br/>
+<th>Data</th><td>Request flags</td><td align="center">2</td><td align="center"></td><td></td><td>Set the flags to request extra data<br/>
 0x01 for Hardware Version<br/>
 0x02 for Firmware Version<br/>
 0x08 for Unique Device ID </td></tr>
@@ -405,7 +405,7 @@ Negative sign indicated backward direction </td></tr>
 <td>Battery</td><td align="center">1</td><td align="center"></td><td></td><td>Voltage of battery in 0.1 V<br/>
 Typically 16.7 V when fully charged </td></tr>
 <tr>
-<td>Over current flags</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when over current is detected<br/>
+<td>Overcurrent flags</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when overcurrent is detected<br/>
 0x01 for left wheel<br/>
 0x02 for right wheel </td></tr>
 </table>
@@ -676,7 +676,7 @@ Unique Device IDentifier(UDID)</h3>
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Fri Aug 23 2013 15:06:50</small>
+<small>autogenerated on Tue Aug 27 2013 15:31:47</small>
 </div>
 </body>
 </html>

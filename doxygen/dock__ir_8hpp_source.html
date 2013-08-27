@@ -81,61 +81,58 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00034"></a><a class="code" href="classkobuki_1_1DockIR.html">00034</a> <span class="keyword">class </span><a class="code" href="classkobuki_1_1DockIR.html">DockIR</a> : <span class="keyword">public</span> packet_handler::payloadBase
 <a name="l00035"></a>00035 {
 <a name="l00036"></a>00036 <span class="keyword">public</span>:
-<a name="l00037"></a><a class="code" href="structkobuki_1_1DockIR_1_1Data.html">00037</a>   <span class="keyword">struct </span><a class="code" href="structkobuki_1_1DockIR_1_1Data.html">Data</a> {
-<a name="l00038"></a><a class="code" href="structkobuki_1_1DockIR_1_1Data.html#a87dd6863a017a2eb0ddc7e321ad9476a">00038</a>     <a class="code" href="structkobuki_1_1DockIR_1_1Data.html#a87dd6863a017a2eb0ddc7e321ad9476a">Data</a>() : <a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">docking</a>(3) {}
-<a name="l00039"></a><a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">00039</a>     std::vector&lt;uint8_t&gt; <a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">docking</a>;
-<a name="l00040"></a>00040   } <a class="code" href="classkobuki_1_1DockIR.html#a59660363c145c44c9e10f4917f2d1cdd">data</a>;
-<a name="l00041"></a>00041 
-<a name="l00042"></a><a class="code" href="classkobuki_1_1DockIR.html#a128386a3799571a9aaa71565156ab9ff">00042</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1DockIR.html#a128386a3799571a9aaa71565156ab9ff">serialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
-<a name="l00043"></a>00043   {
-<a name="l00044"></a>00044     <span class="keywordflow">if</span> (!(byteStream.size() &gt; 0))
-<a name="l00045"></a>00045     {
-<a name="l00046"></a>00046       printf(<span class="stringliteral">&quot;kobuki_node: kobuki_dock_ir: serialise failed. empty byte stream.&quot;</span>);
-<a name="l00047"></a>00047       <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00048"></a>00048     }
-<a name="l00049"></a>00049 
-<a name="l00050"></a>00050     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> length = 3;
-<a name="l00051"></a>00051     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eabae79e6202055fb6d598e6ebaaad4ab6">Header::DockInfraRed</a>, byteStream);
-<a name="l00052"></a>00052     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length, byteStream);
-<a name="l00053"></a>00053     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1DockIR.html#a59660363c145c44c9e10f4917f2d1cdd">data</a>.<a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">docking</a>[0], byteStream);
-<a name="l00054"></a>00054     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1DockIR.html#a59660363c145c44c9e10f4917f2d1cdd">data</a>.<a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">docking</a>[1], byteStream);
-<a name="l00055"></a>00055     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1DockIR.html#a59660363c145c44c9e10f4917f2d1cdd">data</a>.<a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">docking</a>[2], byteStream);
-<a name="l00056"></a>00056     <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00057"></a>00057   }
-<a name="l00058"></a>00058 
-<a name="l00059"></a><a class="code" href="classkobuki_1_1DockIR.html#acee0bd7f154a549d8d5a0f56aa9a6771">00059</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1DockIR.html#acee0bd7f154a549d8d5a0f56aa9a6771">deserialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
-<a name="l00060"></a>00060   {
-<a name="l00061"></a>00061     <span class="keywordflow">if</span> (!(byteStream.size() &gt; 0))
-<a name="l00062"></a>00062     {
-<a name="l00063"></a>00063       printf(<span class="stringliteral">&quot;kobuki_node: kobuki_dock_ir: deserialise failed. empty byte stream.&quot;</span>);
-<a name="l00064"></a>00064       <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00065"></a>00065     }
+<a name="l00037"></a><a class="code" href="classkobuki_1_1DockIR.html#a132c7a441b679df3d614e9d007cf4046">00037</a>   <a class="code" href="classkobuki_1_1DockIR.html#a132c7a441b679df3d614e9d007cf4046">DockIR</a>() : packet_handler::<a class="code" href="classpacket__handler_1_1payloadBase.html#abeeed2c26820f45360f886fd4bd4a9f7">payloadBase</a>(false, 3) {};
+<a name="l00038"></a><a class="code" href="structkobuki_1_1DockIR_1_1Data.html">00038</a>   <span class="keyword">struct </span><a class="code" href="structkobuki_1_1DockIR_1_1Data.html">Data</a> {
+<a name="l00039"></a><a class="code" href="structkobuki_1_1DockIR_1_1Data.html#a87dd6863a017a2eb0ddc7e321ad9476a">00039</a>     <a class="code" href="structkobuki_1_1DockIR_1_1Data.html#a87dd6863a017a2eb0ddc7e321ad9476a">Data</a>() : <a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">docking</a>(3) {}
+<a name="l00040"></a><a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">00040</a>     std::vector&lt;uint8_t&gt; <a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">docking</a>;
+<a name="l00041"></a>00041   } <a class="code" href="classkobuki_1_1DockIR.html#a59660363c145c44c9e10f4917f2d1cdd">data</a>;
+<a name="l00042"></a>00042 
+<a name="l00043"></a><a class="code" href="classkobuki_1_1DockIR.html#a128386a3799571a9aaa71565156ab9ff">00043</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1DockIR.html#a128386a3799571a9aaa71565156ab9ff">serialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
+<a name="l00044"></a>00044   {
+<a name="l00045"></a>00045     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eabae79e6202055fb6d598e6ebaaad4ab6">Header::DockInfraRed</a>, byteStream);
+<a name="l00046"></a>00046     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2">length</a>, byteStream);
+<a name="l00047"></a>00047     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1DockIR.html#a59660363c145c44c9e10f4917f2d1cdd">data</a>.<a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">docking</a>[0], byteStream);
+<a name="l00048"></a>00048     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1DockIR.html#a59660363c145c44c9e10f4917f2d1cdd">data</a>.<a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">docking</a>[1], byteStream);
+<a name="l00049"></a>00049     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1DockIR.html#a59660363c145c44c9e10f4917f2d1cdd">data</a>.<a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">docking</a>[2], byteStream);
+<a name="l00050"></a>00050     <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00051"></a>00051   }
+<a name="l00052"></a>00052 
+<a name="l00053"></a><a class="code" href="classkobuki_1_1DockIR.html#acee0bd7f154a549d8d5a0f56aa9a6771">00053</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1DockIR.html#acee0bd7f154a549d8d5a0f56aa9a6771">deserialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
+<a name="l00054"></a>00054   {
+<a name="l00055"></a>00055     <span class="keywordflow">if</span> (!(byteStream.size() &gt; <a class="code" href="classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2">length</a>+2))
+<a name="l00056"></a>00056     {
+<a name="l00057"></a>00057       <span class="comment">//std::cout &lt;&lt; &quot;kobuki_node: kobuki_dock_ir: deserialise failed. not enough byte stream.&quot; &lt;&lt; std::endl;</span>
+<a name="l00058"></a>00058       <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00059"></a>00059     }
+<a name="l00060"></a>00060 
+<a name="l00061"></a>00061     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> header_id, length_packed;
+<a name="l00062"></a>00062     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(header_id, byteStream);
+<a name="l00063"></a>00063     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(length_packed, byteStream);
+<a name="l00064"></a>00064     <span class="keywordflow">if</span>( header_id != <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eabae79e6202055fb6d598e6ebaaad4ab6">Header::DockInfraRed</a> ) <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00065"></a>00065     <span class="keywordflow">if</span>( length_packed != <a class="code" href="classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2">length</a> ) <span class="keywordflow">return</span> <span class="keyword">false</span>;
 <a name="l00066"></a>00066 
-<a name="l00067"></a>00067     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> header_id, length;
-<a name="l00068"></a>00068     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(header_id, byteStream);
-<a name="l00069"></a>00069     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(length, byteStream);
-<a name="l00070"></a>00070     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(<a class="code" href="classkobuki_1_1DockIR.html#a59660363c145c44c9e10f4917f2d1cdd">data</a>.<a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">docking</a>[0], byteStream);
-<a name="l00071"></a>00071     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(<a class="code" href="classkobuki_1_1DockIR.html#a59660363c145c44c9e10f4917f2d1cdd">data</a>.<a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">docking</a>[1], byteStream);
-<a name="l00072"></a>00072     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(<a class="code" href="classkobuki_1_1DockIR.html#a59660363c145c44c9e10f4917f2d1cdd">data</a>.<a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">docking</a>[2], byteStream);
-<a name="l00073"></a>00073 
-<a name="l00074"></a>00074     <span class="comment">//showMe();</span>
-<a name="l00075"></a>00075     <span class="keywordflow">return</span> <a class="code" href="classkobuki_1_1DockIR.html#a37bc0f5d6e69b64728fc9e19dd580290">constrain</a>();
-<a name="l00076"></a>00076   }
-<a name="l00077"></a>00077 
-<a name="l00078"></a><a class="code" href="classkobuki_1_1DockIR.html#a37bc0f5d6e69b64728fc9e19dd580290">00078</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1DockIR.html#a37bc0f5d6e69b64728fc9e19dd580290">constrain</a>()
-<a name="l00079"></a>00079   {
-<a name="l00080"></a>00080     <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00081"></a>00081   }
-<a name="l00082"></a>00082 
-<a name="l00083"></a><a class="code" href="classkobuki_1_1DockIR.html#a4886b43df369e9815fa0b7431d33e54d">00083</a>   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1DockIR.html#a4886b43df369e9815fa0b7431d33e54d">showMe</a>()
-<a name="l00084"></a>00084   {
-<a name="l00085"></a>00085     <span class="comment">//printf(&quot;--[%02x || %03d | %03d | %03d]\n&quot;, data.bump, docking[2], docking[1], docking[0] );</span>
-<a name="l00086"></a>00086   }
-<a name="l00087"></a>00087 };
-<a name="l00088"></a>00088 
-<a name="l00089"></a>00089 } <span class="comment">// namespace kobuki</span>
-<a name="l00090"></a>00090 
-<a name="l00091"></a>00091 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_IR_DATA_HPP__ */</span>
+<a name="l00067"></a>00067     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(<a class="code" href="classkobuki_1_1DockIR.html#a59660363c145c44c9e10f4917f2d1cdd">data</a>.<a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">docking</a>[0], byteStream);
+<a name="l00068"></a>00068     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(<a class="code" href="classkobuki_1_1DockIR.html#a59660363c145c44c9e10f4917f2d1cdd">data</a>.<a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">docking</a>[1], byteStream);
+<a name="l00069"></a>00069     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(<a class="code" href="classkobuki_1_1DockIR.html#a59660363c145c44c9e10f4917f2d1cdd">data</a>.<a class="code" href="structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be">docking</a>[2], byteStream);
+<a name="l00070"></a>00070 
+<a name="l00071"></a>00071     <span class="comment">//showMe();</span>
+<a name="l00072"></a>00072     <span class="keywordflow">return</span> <a class="code" href="classkobuki_1_1DockIR.html#a37bc0f5d6e69b64728fc9e19dd580290">constrain</a>();
+<a name="l00073"></a>00073   }
+<a name="l00074"></a>00074 
+<a name="l00075"></a><a class="code" href="classkobuki_1_1DockIR.html#a37bc0f5d6e69b64728fc9e19dd580290">00075</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1DockIR.html#a37bc0f5d6e69b64728fc9e19dd580290">constrain</a>()
+<a name="l00076"></a>00076   {
+<a name="l00077"></a>00077     <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00078"></a>00078   }
+<a name="l00079"></a>00079 
+<a name="l00080"></a><a class="code" href="classkobuki_1_1DockIR.html#a4886b43df369e9815fa0b7431d33e54d">00080</a>   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1DockIR.html#a4886b43df369e9815fa0b7431d33e54d">showMe</a>()
+<a name="l00081"></a>00081   {
+<a name="l00082"></a>00082     <span class="comment">//printf(&quot;--[%02x || %03d | %03d | %03d]\n&quot;, data.bump, docking[2], docking[1], docking[0] );</span>
+<a name="l00083"></a>00083   }
+<a name="l00084"></a>00084 };
+<a name="l00085"></a>00085 
+<a name="l00086"></a>00086 } <span class="comment">// namespace kobuki</span>
+<a name="l00087"></a>00087 
+<a name="l00088"></a>00088 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_IR_DATA_HPP__ */</span>
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -156,7 +153,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Fri Aug 23 2013 15:06:50</small>
+<small>autogenerated on Tue Aug 27 2013 15:31:46</small>
 </div>
 </body>
 </html>

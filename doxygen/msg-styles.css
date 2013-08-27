@@ -31,6 +31,8 @@ a:hover {
 }
 .fancy-msg {
     width: auto;
+    font-size: 14px;
+    line-height: 16px;
     border: 1px solid #333;
     padding: 10px; 
     margin-bottom: 20px;
@@ -39,8 +41,8 @@ a:hover {
 .raw-msg {
     font-family: monospace;
     width: auto;
-    font-size: 12px;
-    line-height: 12px;
+    font-size: 14px;
+    line-height: 16px;
     padding: 5px; 
     border: 1px solid #333;
     margin-bottom: 20px;

@@ -8,7 +8,7 @@ var searchData=
   ['waitingforpayloadsize',['waitingForPayloadSize',['../classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8a7a2627559f357bf02ec088b2c884a055',1,'kobuki::PacketFinderBase']]],
   ['waitingforpayloadtoetx',['waitingForPayloadToEtx',['../classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8aab89bfaf9b37cacf36a932c317bdac7a',1,'kobuki::PacketFinderBase']]],
   ['waitingforstx',['waitingForStx',['../classkobuki_1_1PacketFinderBase.html#a95a1d9a9e4de9401769771b7240408e8a03e0fbf274e46ddf14c038a4abad4189',1,'kobuki::PacketFinderBase']]],
-  ['wheel',['wheel',['../structkobuki_1_1WheelEvent.html#a2c8867560bae32f5c74d2fa3da7acaae',1,'kobuki::WheelEvent::wheel()'],['../structkobuki_1_1WheelEvent.html#a6fb0e7dbe75f3c76c7cebb9528f7b29c',1,'kobuki::WheelEvent::Wheel()']]],
+  ['wheel',['Wheel',['../structkobuki_1_1WheelEvent.html#a6fb0e7dbe75f3c76c7cebb9528f7b29c',1,'kobuki::WheelEvent::Wheel()'],['../structkobuki_1_1WheelEvent.html#a2c8867560bae32f5c74d2fa3da7acaae',1,'kobuki::WheelEvent::wheel()']]],
   ['wheel_5fbias',['wheel_bias',['../classkobuki_1_1DiffDrive.html#a32e069cb09848f2bf2c45f697b31a62f',1,'kobuki::DiffDrive']]],
   ['wheel_5fdrop',['wheel_drop',['../structkobuki_1_1CoreSensors_1_1Data.html#a47fa534f8b8da4ef4dfed6ecdaa9e2e5',1,'kobuki::CoreSensors::Data']]],
   ['wheel_5fradius',['wheel_radius',['../classkobuki_1_1DiffDrive.html#a8074f33732a3dd52f6ba2fc00223727d',1,'kobuki::DiffDrive']]],

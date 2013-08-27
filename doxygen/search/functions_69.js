@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['inertia',['Inertia',['../classkobuki_1_1Inertia.html#afe90182c37d85e6e06db7966c3cae42d',1,'kobuki::Inertia']]],
   ['init',['init',['../classkobuki_1_1EventManager.html#a1a5a6b8d26cd35c2904ff4ec1584359a',1,'kobuki::EventManager::init()'],['../classkobuki_1_1Kobuki.html#a0648c958434e641d4573721541099ee4',1,'kobuki::Kobuki::init()'],['../classkobuki_1_1AccelerationLimiter.html#a0da69f213f2e3911ef235376bc3ab9a1',1,'kobuki::AccelerationLimiter::init()']]],
   ['isacquired',['isAcquired',['../classKobukiManager.html#a7aab020e5b0bce432047578ffa62b1c2',1,'KobukiManager']]],
   ['isalive',['isAlive',['../classkobuki_1_1Kobuki.html#a395e07e7e4c32117471c4ec8459b73c5',1,'kobuki::Kobuki']]],

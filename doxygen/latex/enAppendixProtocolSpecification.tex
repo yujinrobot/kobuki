@@ -1,6 +1,6 @@
 \section{\-Overview}\label{enAppendixVersionInfo_enOverview}
 \-The \doxyref{kobuki driver}{p.}{classkobuki_1_1Kobuki} communicates with the robot by using predefined protocol. \-In general, the driver sends the commands to the robot and the robot sends some feedback data or sensor readings. \-These commands and feedback data are converted into bytestreams for communication via serial interface. \-The protocol specifies that rules and forms of bytestreams.\section{\-Structure of Bytestream}\label{enAppendixProtocolSpecification_enBytestream}
-\-A bytestream can be devided into 4 fields; \-Headers, \-Length, \-Payload and \-Checksum.
+\-A bytestream can be divided into 4 fields; \-Headers, \-Length, \-Payload and \-Checksum.
 
 \begin{TabularC}{6}
 \hline
@@ -45,7 +45,7 @@
 \par
 \subsubsection{\-Structure Of Sub-\/\-Payloads}\label{enAppendixProtocolSpecification_enStructureOfSubPayloads}
 \begin{DoxyParagraph}{}
-\-Sub-\/payload can be devided into three parts, \-Header, \-Length and \-Data.
+\-Sub-\/payload can be divided into three parts, \-Header, \-Length and \-Data.
 \end{DoxyParagraph}
 \begin{DoxyParagraph}{}
 \begin{TabularC}{4}
@@ -92,15 +92,15 @@ return cs ? false : true;
 \-Data field in \-Sub-\/payload is a mixture of below three data types; byte, short and int. \begin{TabularC}{7}
 \hline
 \-Name&\-Description&\-Byte \-Length&\-Bit \-Length&\-Data \-Range&\-C/\-C++ \-Identifier \\\cline{1-6}
-\-Unsigned \-Byte&8-\/bit unsigned integer&1&8&0$\sim$255&unsigend char&uint8\-\_\-t \\\cline{1-7}
-\-Unsigned \-Short&16-\/bit unsigned integer&2&16&0$\sim$65,535&unsigend short&uint16\-\_\-t \\\cline{1-7}
-\-Unsigned \-Int&32-\/bit unsigned integer&4&32&0$\sim$4,294,967,295&unsigend int&uint32\-\_\-t  \\\cline{1-7}
+\-Unsigned \-Byte&8-\/bit unsigned integer&1&8&0$\sim$255&unsigned char&uint8\-\_\-t \\\cline{1-7}
+\-Unsigned \-Short&16-\/bit unsigned integer&2&16&0$\sim$65,535&unsigned short&uint16\-\_\-t \\\cline{1-7}
+\-Unsigned \-Int&32-\/bit unsigned integer&4&32&0$\sim$4,294,967,295&unsigned int&uint32\-\_\-t  \\\cline{1-7}
 \end{TabularC}
 
 
 \par
 \subsection{\-Serialization-\/\-Deserialization}\label{enAppendixProtocolSpecification_enSerializationDerialization}
-{\tt \-Serialization} is the process of converting a data sturcture into a bytestream. \-Deserialization is reversal process. \-Each data types are serialized and deserialized by `{\tt \-L\-S\-B}-\/\-First \-Order`. \-It means \-Least \-Significant \-Bytes will comes first on the bytestream. \-For example, \-The integer number 2,864,434,397(0x\-A\-A\-B\-B\-C\-C\-D\-D) can be serialized into\-: \begin{TabularC}{4}
+{\tt \-Serialization} is the process of converting a data structure into a bytestream. \-Deserialization is reversal process. \-Each data types are serialized and deserialized by `{\tt \-L\-S\-B}-\/\-First \-Order`. \-It means \-Least \-Significant \-Bytes will comes first on the bytestream. \-For example, \-The integer number 2,864,434,397(0x\-A\-A\-B\-B\-C\-C\-D\-D) can be serialized into\-: \begin{TabularC}{4}
 \hline
 0x\-D\-D&0x\-C\-C&0x\-B\-B&0x\-A\-A \\\cline{1-4}
 \end{TabularC}
@@ -153,7 +153,7 @@ return cs ? false : true;
 \-Header&\-Identifier&1&3&0x03&\-Fixed \\\cline{1-6}
 \-Length&\-Size of data field&1&3&0x03&\-Fixed \\\cline{1-6}
 \multirow{2}{\linewidth}{\-Data}&\-Note&2&&&$\mbox{1/}(f \cdotp a)$, where $f$ is frequency of sound in \-Hz, and $a$ is 0.\-00000275 \\\cline{2-6}
-&\-Duration&1&&&\-Duration of playing note in mili-\/seconds \\\cline{1-6}
+&\-Duration&1&&&\-Duration of playing note in milli-\/seconds \\\cline{1-6}
 \end{TabularC}
 
 
@@ -181,7 +181,7 @@ return cs ? false : true;
 
 \par
 \subsection{\-Request Extra}\label{enAppendixProtocolSpecification_enRequestExtra}
-\-Request extra data from robot. \-Especially version info of kobuki; \-Hardware \-Version, \-Firmware \-Version and \-Unique \-Deivce \-I\-Dentifier(\-U\-D\-I\-D)
+\-Request extra data from robot. \-Especially version info of kobuki; \-Hardware \-Version, \-Firmware \-Version and \-Unique \-Device \-I\-Dentifier(\-U\-D\-I\-D)
 
 \-U\-D\-I\-D is unique to device. so can be used to identify on multiple robots.
 
@@ -190,7 +190,7 @@ return cs ? false : true;
 &\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
 \-Header&\-Identifier&1&9&0x09&\-Fixed \\\cline{1-6}
 \-Length&\-Size of data field&1&2&0x02&\-Fixed \\\cline{1-6}
-\-Data&\-Reqeust flags&2&&&\-Set the flags to request extra data\par
+\-Data&\-Request flags&2&&&\-Set the flags to request extra data\par
 0x01 for \-Hardware \-Version\par
 0x02 for \-Firmware \-Version\par
 0x08 for \-Unique \-Device \-I\-D \\\cline{1-6}
@@ -302,7 +302,7 @@ return cs ? false : true;
 22 for \-A\-D\-A\-P\-T\-E\-R\-\_\-\-C\-H\-A\-R\-G\-I\-N\-G state \\\cline{1-6}
 \-Battery&1&&&\-Voltage of battery in 0.\-1 \-V\par
 \-Typically 16.\-7 \-V when fully charged \\\cline{1-5}
-\-Over current flags&1&&&\-Flag will be setted when over current is detected\par
+\-Overcurrent flags&1&&&\-Flag will be setted when overcurrent is detected\par
 0x01 for left wheel\par
 0x02 for right wheel \\\cline{1-5}
 \end{TabularC}

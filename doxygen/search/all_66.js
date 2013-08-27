@@ -1,7 +1,7 @@
 var searchData=
 [
   ['firmware',['Firmware',['../classkobuki_1_1Firmware.html',1,'kobuki']]],
-  ['firmware',['Firmware',['../classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea0164aceaf6a319f0666efbd463ada016',1,'kobuki::Header::Firmware()'],['../classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628',1,'kobuki::Kobuki::firmware()'],['../classkobuki_1_1VersionInfo.html#a2a856860d83b5556a945e35efc76b110',1,'kobuki::VersionInfo::firmware()'],['../classKobukiManager.html#add3c2b016571059102d52edcbf8b63ac',1,'KobukiManager::firmware()']]],
+  ['firmware',['Firmware',['../classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea0164aceaf6a319f0666efbd463ada016',1,'kobuki::Header::Firmware()'],['../classkobuki_1_1Firmware.html#a03e96b1d5b983dad37e0b5f9c4e4fa9f',1,'kobuki::Firmware::Firmware()'],['../classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628',1,'kobuki::Kobuki::firmware()'],['../classkobuki_1_1VersionInfo.html#a2a856860d83b5556a945e35efc76b110',1,'kobuki::VersionInfo::firmware()'],['../classKobukiManager.html#add3c2b016571059102d52edcbf8b63ac',1,'KobukiManager::firmware()']]],
   ['firmware_2ehpp',['firmware.hpp',['../firmware_8hpp.html',1,'']]],
   ['firmwareversion',['FirmwareVersion',['../classkobuki_1_1Command.html#ada2fa96c4981badca48d892b743e6c22a78ce305db278548e9e8a73fb4d329ec3',1,'kobuki::Command']]],
   ['flags',['Flags',['../structkobuki_1_1CoreSensors_1_1Flags.html',1,'kobuki::CoreSensors']]],

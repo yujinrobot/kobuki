@@ -71,7 +71,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00024"></a>00024 <span class="comment">** Constants</span>
 <a name="l00025"></a>00025 <span class="comment">*****************************************************************************/</span>
 <a name="l00026"></a>00026 
-<a name="l00027"></a><a class="code" href="firmware_8hpp.html#a2652da927add240ca3d62a8078f76c87">00027</a> <span class="preprocessor">#define CURRENT_FIRMWARE_MAYOR_VERSION  1</span>
+<a name="l00027"></a><a class="code" href="firmware_8hpp.html#a161d3871c6e5e161eb3065ca8d8e5669">00027</a> <span class="preprocessor">#define CURRENT_FIRMWARE_MAJOR_VERSION  1</span>
 <a name="l00028"></a><a class="code" href="firmware_8hpp.html#a6a95a673675b30a190e9513645e0a089">00028</a> <span class="preprocessor"></span><span class="preprocessor">#define CURRENT_FIRMWARE_MINOR_VERSION  1</span>
 <a name="l00029"></a>00029 <span class="preprocessor"></span><span class="comment">// patch number is ignored; don&#39;t need to be updated</span>
 <a name="l00030"></a>00030 
@@ -89,100 +89,96 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00042"></a><a class="code" href="classkobuki_1_1Firmware.html">00042</a> <span class="keyword">class </span><a class="code" href="classkobuki_1_1Firmware.html">Firmware</a> : <span class="keyword">public</span> packet_handler::payloadBase
 <a name="l00043"></a>00043 {
 <a name="l00044"></a>00044 <span class="keyword">public</span>:
-<a name="l00045"></a><a class="code" href="structkobuki_1_1Firmware_1_1Data.html">00045</a>   <span class="keyword">struct </span><a class="code" href="structkobuki_1_1Firmware_1_1Data.html">Data</a> {
-<a name="l00046"></a><a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">00046</a>     uint32_t <a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a>;
-<a name="l00047"></a>00047   } <a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>;
-<a name="l00048"></a>00048 
-<a name="l00049"></a>00049   <span class="comment">// methods</span>
-<a name="l00050"></a><a class="code" href="classkobuki_1_1Firmware.html#ad70e38096ca2ca1ceba11c825113bebf">00050</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Firmware.html#ad70e38096ca2ca1ceba11c825113bebf">serialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
-<a name="l00051"></a>00051   {
-<a name="l00052"></a>00052     <span class="keywordflow">if</span> (!(byteStream.size() &gt; 0))
-<a name="l00053"></a>00053     {
-<a name="l00054"></a>00054       printf(<span class="stringliteral">&quot;kobuki_node: kobuki_fw: serialise failed. empty byte stream.&quot;</span>);
-<a name="l00055"></a>00055       <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00056"></a>00056     }
-<a name="l00057"></a>00057 
-<a name="l00058"></a>00058     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> length = 4;
-<a name="l00059"></a>00059     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea0164aceaf6a319f0666efbd463ada016">Header::Firmware</a>, byteStream);
-<a name="l00060"></a>00060     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length, byteStream);
-<a name="l00061"></a>00061     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a>, byteStream);
-<a name="l00062"></a>00062     <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00063"></a>00063   }
-<a name="l00064"></a>00064 
-<a name="l00065"></a><a class="code" href="classkobuki_1_1Firmware.html#af41cef6ff3dc0ed1e7b256681544e1a2">00065</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Firmware.html#af41cef6ff3dc0ed1e7b256681544e1a2">deserialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
-<a name="l00066"></a>00066   {
-<a name="l00067"></a>00067     <span class="keywordflow">if</span> (!(byteStream.size() &gt; 0))
-<a name="l00068"></a>00068     {
-<a name="l00069"></a>00069       printf(<span class="stringliteral">&quot;kobuki_node: kobuki_fw: deserialise failed. empty byte stream.&quot;</span>);
-<a name="l00070"></a>00070       <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00071"></a>00071     }
-<a name="l00072"></a>00072 
-<a name="l00073"></a>00073     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> header_id = 0, length = 0;
-<a name="l00074"></a>00074     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(header_id, byteStream);
-<a name="l00075"></a>00075     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(length, byteStream);
-<a name="l00076"></a>00076 
-<a name="l00077"></a>00077     <span class="comment">// TODO First 3 firmware versions coded version number on 2 bytes, so we need convert manually to our new</span>
-<a name="l00078"></a>00078     <span class="comment">// 4 bytes system; remove this horrible, dirty hack as soon as we upgrade the firmware to 1.1.2 or 1.2.0</span>
-<a name="l00079"></a>00079     <span class="keywordflow">if</span> (length == 2)
-<a name="l00080"></a>00080     {
-<a name="l00081"></a>00081       uint16_t old_style_version = 0;
-<a name="l00082"></a>00082       <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(old_style_version, byteStream);
-<a name="l00083"></a>00083 
-<a name="l00084"></a>00084       <span class="keywordflow">if</span> (old_style_version == 123)
-<a name="l00085"></a>00085         <a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a> = 65536; <span class="comment">// 1.0.0</span>
-<a name="l00086"></a>00086       <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((old_style_version == 10100) || (old_style_version == 110))
-<a name="l00087"></a>00087         <a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a> = 65792; <span class="comment">// 1.1.0</span>
-<a name="l00088"></a>00088       <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((old_style_version == 10101) || (old_style_version == 111))
-<a name="l00089"></a>00089         <a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a> = 65793; <span class="comment">// 1.1.1</span>
-<a name="l00090"></a>00090     }
-<a name="l00091"></a>00091     <span class="keywordflow">else</span>
-<a name="l00092"></a>00092     {
-<a name="l00093"></a>00093       <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(<a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a>, byteStream);
-<a name="l00094"></a>00094     }
-<a name="l00095"></a>00095 
-<a name="l00096"></a>00096     <span class="comment">//showMe();</span>
-<a name="l00097"></a>00097     <span class="keywordflow">return</span> <a class="code" href="classkobuki_1_1Firmware.html#aaeb08ccc3b9a7626d070788f0357ecea">constrain</a>();
-<a name="l00098"></a>00098   }
-<a name="l00099"></a>00099 
-<a name="l00100"></a><a class="code" href="classkobuki_1_1Firmware.html#aaeb08ccc3b9a7626d070788f0357ecea">00100</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Firmware.html#aaeb08ccc3b9a7626d070788f0357ecea">constrain</a>()
-<a name="l00101"></a>00101   {
-<a name="l00102"></a>00102     <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00103"></a>00103   }
-<a name="l00104"></a>00104 
-<a name="l00105"></a><a class="code" href="classkobuki_1_1Firmware.html#aecb90a39a951c1b32b26bc77de60d029">00105</a>   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Firmware.html#aecb90a39a951c1b32b26bc77de60d029">showMe</a>()
-<a name="l00106"></a>00106   {
-<a name="l00107"></a>00107     <span class="comment">//printf(&quot;--[%02x || %03d | %03d | %03d]\n&quot;, data.bump, acc[2], acc[1], acc[0] );</span>
-<a name="l00108"></a>00108   }
-<a name="l00109"></a>00109 
-<a name="l00110"></a><a class="code" href="classkobuki_1_1Firmware.html#a644e63df3bb86a8da7eb81e206f19e70">00110</a>   std::string <a class="code" href="classkobuki_1_1Firmware.html#a644e63df3bb86a8da7eb81e206f19e70">current_version</a>()
-<a name="l00111"></a>00111   {
-<a name="l00112"></a>00112     std::stringstream ss;
-<a name="l00113"></a>00113     ss &lt;&lt; <a class="code" href="firmware_8hpp.html#a2652da927add240ca3d62a8078f76c87">CURRENT_FIRMWARE_MAYOR_VERSION</a> &lt;&lt; <span class="stringliteral">&quot;.&quot;</span> &lt;&lt; <a class="code" href="firmware_8hpp.html#a6a95a673675b30a190e9513645e0a089">CURRENT_FIRMWARE_MINOR_VERSION</a> &lt;&lt; <span class="stringliteral">&quot;.x&quot;</span>;
-<a name="l00114"></a>00114 
-<a name="l00115"></a>00115     <span class="keywordflow">return</span> std::string(ss.str());
-<a name="l00116"></a>00116   }
-<a name="l00117"></a>00117 
-<a name="l00118"></a><a class="code" href="classkobuki_1_1Firmware.html#ae7e92bb9a2a8833f6e17dee2796a64f0">00118</a>   <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1Firmware.html#ae7e92bb9a2a8833f6e17dee2796a64f0">check_mayor_version</a>()
-<a name="l00119"></a>00119   {
-<a name="l00120"></a>00120     <span class="comment">// Return a negative value if firmware&#39;s mayor version is older than that of the driver,</span>
-<a name="l00121"></a>00121     <span class="comment">// 0 if both are the same, and a positive value if firmware&#39;s mayor version is newer</span>
-<a name="l00122"></a>00122     uint32_t flashed_version = ((<a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a> &amp; 0x00FF0000) &gt;&gt; 16);
-<a name="l00123"></a>00123     <span class="keywordflow">return</span> flashed_version - <a class="code" href="firmware_8hpp.html#a2652da927add240ca3d62a8078f76c87">CURRENT_FIRMWARE_MAYOR_VERSION</a>;
-<a name="l00124"></a>00124   }
-<a name="l00125"></a>00125 
-<a name="l00126"></a><a class="code" href="classkobuki_1_1Firmware.html#a1b7c68777973d97d33b0ddc79188f617">00126</a>   <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1Firmware.html#a1b7c68777973d97d33b0ddc79188f617">check_minor_version</a>()
-<a name="l00127"></a>00127   {
-<a name="l00128"></a>00128     <span class="comment">// Return a negative value if firmware&#39;s minor version is older than that of the driver,</span>
-<a name="l00129"></a>00129     <span class="comment">// 0 if both are the same, and a positive value if firmware&#39;s minor version is newer</span>
-<a name="l00130"></a>00130     uint32_t flashed_version = ((<a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a> &amp; 0x0000FF00) &gt;&gt; 8);
-<a name="l00131"></a>00131     <span class="keywordflow">return</span> flashed_version - <a class="code" href="firmware_8hpp.html#a6a95a673675b30a190e9513645e0a089">CURRENT_FIRMWARE_MINOR_VERSION</a>;
-<a name="l00132"></a>00132   }
-<a name="l00133"></a>00133 };
+<a name="l00045"></a><a class="code" href="classkobuki_1_1Firmware.html#a03e96b1d5b983dad37e0b5f9c4e4fa9f">00045</a>   <a class="code" href="classkobuki_1_1Firmware.html#a03e96b1d5b983dad37e0b5f9c4e4fa9f">Firmware</a>() : packet_handler::<a class="code" href="classpacket__handler_1_1payloadBase.html#abeeed2c26820f45360f886fd4bd4a9f7">payloadBase</a>(true, 2) {};
+<a name="l00046"></a><a class="code" href="structkobuki_1_1Firmware_1_1Data.html">00046</a>   <span class="keyword">struct </span><a class="code" href="structkobuki_1_1Firmware_1_1Data.html">Data</a> {
+<a name="l00047"></a><a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">00047</a>     uint32_t <a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a>;
+<a name="l00048"></a>00048   } <a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>;
+<a name="l00049"></a>00049 
+<a name="l00050"></a>00050   <span class="comment">// methods</span>
+<a name="l00051"></a><a class="code" href="classkobuki_1_1Firmware.html#ad70e38096ca2ca1ceba11c825113bebf">00051</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Firmware.html#ad70e38096ca2ca1ceba11c825113bebf">serialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
+<a name="l00052"></a>00052   {
+<a name="l00053"></a>00053     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2">length</a> = 4;
+<a name="l00054"></a>00054     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea0164aceaf6a319f0666efbd463ada016">Header::Firmware</a>, byteStream);
+<a name="l00055"></a>00055     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length, byteStream);
+<a name="l00056"></a>00056     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a>, byteStream);
+<a name="l00057"></a>00057     <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00058"></a>00058   }
+<a name="l00059"></a>00059 
+<a name="l00060"></a><a class="code" href="classkobuki_1_1Firmware.html#af41cef6ff3dc0ed1e7b256681544e1a2">00060</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Firmware.html#af41cef6ff3dc0ed1e7b256681544e1a2">deserialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
+<a name="l00061"></a>00061   {
+<a name="l00062"></a>00062     <span class="keywordflow">if</span> (!(byteStream.size() &gt; <a class="code" href="classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2">length</a>+2))
+<a name="l00063"></a>00063     {
+<a name="l00064"></a>00064       <span class="comment">//std::cout &lt;&lt; &quot;kobuki_node: kobuki_fw: deserialise failed. not enough byte stream.&quot; &lt;&lt; std::endl;</span>
+<a name="l00065"></a>00065       <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00066"></a>00066     }
+<a name="l00067"></a>00067 
+<a name="l00068"></a>00068     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> header_id, length_packed;
+<a name="l00069"></a>00069     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(header_id, byteStream);
+<a name="l00070"></a>00070     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(length_packed, byteStream);
+<a name="l00071"></a>00071     <span class="keywordflow">if</span>( header_id != <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea0164aceaf6a319f0666efbd463ada016">Header::Firmware</a> ) <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00072"></a>00072     <span class="keywordflow">if</span>( length_packed != 2 and length_packed != 4) <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00073"></a>00073 
+<a name="l00074"></a>00074     <span class="comment">// TODO First 3 firmware versions coded version number on 2 bytes, so we need convert manually to our new</span>
+<a name="l00075"></a>00075     <span class="comment">// 4 bytes system; remove this horrible, dirty hack as soon as we upgrade the firmware to 1.1.2 or 1.2.0</span>
+<a name="l00076"></a>00076     <span class="keywordflow">if</span> (length_packed == 2)
+<a name="l00077"></a>00077     {
+<a name="l00078"></a>00078       uint16_t old_style_version = 0;
+<a name="l00079"></a>00079       <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(old_style_version, byteStream);
+<a name="l00080"></a>00080 
+<a name="l00081"></a>00081       <span class="keywordflow">if</span> (old_style_version == 123)
+<a name="l00082"></a>00082         <a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a> = 65536; <span class="comment">// 1.0.0</span>
+<a name="l00083"></a>00083       <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((old_style_version == 10100) || (old_style_version == 110))
+<a name="l00084"></a>00084         <a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a> = 65792; <span class="comment">// 1.1.0</span>
+<a name="l00085"></a>00085       <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((old_style_version == 10101) || (old_style_version == 111))
+<a name="l00086"></a>00086         <a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a> = 65793; <span class="comment">// 1.1.1</span>
+<a name="l00087"></a>00087     }
+<a name="l00088"></a>00088     <span class="keywordflow">else</span>
+<a name="l00089"></a>00089     {
+<a name="l00090"></a>00090       <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(<a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a>, byteStream);
+<a name="l00091"></a>00091     }
+<a name="l00092"></a>00092 
+<a name="l00093"></a>00093     <span class="comment">//showMe();</span>
+<a name="l00094"></a>00094     <span class="keywordflow">return</span> <a class="code" href="classkobuki_1_1Firmware.html#aaeb08ccc3b9a7626d070788f0357ecea">constrain</a>();
+<a name="l00095"></a>00095   }
+<a name="l00096"></a>00096 
+<a name="l00097"></a><a class="code" href="classkobuki_1_1Firmware.html#aaeb08ccc3b9a7626d070788f0357ecea">00097</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Firmware.html#aaeb08ccc3b9a7626d070788f0357ecea">constrain</a>()
+<a name="l00098"></a>00098   {
+<a name="l00099"></a>00099     <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00100"></a>00100   }
+<a name="l00101"></a>00101 
+<a name="l00102"></a><a class="code" href="classkobuki_1_1Firmware.html#aecb90a39a951c1b32b26bc77de60d029">00102</a>   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Firmware.html#aecb90a39a951c1b32b26bc77de60d029">showMe</a>()
+<a name="l00103"></a>00103   {
+<a name="l00104"></a>00104   }
+<a name="l00105"></a>00105 
+<a name="l00106"></a><a class="code" href="classkobuki_1_1Firmware.html#a644e63df3bb86a8da7eb81e206f19e70">00106</a>   std::string <a class="code" href="classkobuki_1_1Firmware.html#a644e63df3bb86a8da7eb81e206f19e70">current_version</a>()
+<a name="l00107"></a>00107   {
+<a name="l00108"></a>00108     std::stringstream ss;
+<a name="l00109"></a>00109     ss &lt;&lt; <a class="code" href="firmware_8hpp.html#a161d3871c6e5e161eb3065ca8d8e5669">CURRENT_FIRMWARE_MAJOR_VERSION</a> &lt;&lt; <span class="stringliteral">&quot;.&quot;</span> &lt;&lt; <a class="code" href="firmware_8hpp.html#a6a95a673675b30a190e9513645e0a089">CURRENT_FIRMWARE_MINOR_VERSION</a> &lt;&lt; <span class="stringliteral">&quot;.x&quot;</span>;
+<a name="l00110"></a>00110 
+<a name="l00111"></a>00111     <span class="keywordflow">return</span> std::string(ss.str());
+<a name="l00112"></a>00112   }
+<a name="l00113"></a>00113 
+<a name="l00114"></a><a class="code" href="classkobuki_1_1Firmware.html#a7a3014b781ce53ca8aabb3c3bef2abd0">00114</a>   <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1Firmware.html#a7a3014b781ce53ca8aabb3c3bef2abd0">check_major_version</a>()
+<a name="l00115"></a>00115   {
+<a name="l00116"></a>00116     <span class="comment">// Return a negative value if firmware&#39;s major version is older than that of the driver,</span>
+<a name="l00117"></a>00117     <span class="comment">// 0 if both are the same, and a positive value if firmware&#39;s major version is newer</span>
+<a name="l00118"></a>00118     uint32_t flashed_version = ((<a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a> &amp; 0x00FF0000) &gt;&gt; 16);
+<a name="l00119"></a>00119     <span class="keywordflow">return</span> flashed_version - <a class="code" href="firmware_8hpp.html#a161d3871c6e5e161eb3065ca8d8e5669">CURRENT_FIRMWARE_MAJOR_VERSION</a>;
+<a name="l00120"></a>00120   }
+<a name="l00121"></a>00121 
+<a name="l00122"></a><a class="code" href="classkobuki_1_1Firmware.html#a1b7c68777973d97d33b0ddc79188f617">00122</a>   <span class="keywordtype">int</span> <a class="code" href="classkobuki_1_1Firmware.html#a1b7c68777973d97d33b0ddc79188f617">check_minor_version</a>()
+<a name="l00123"></a>00123   {
+<a name="l00124"></a>00124     <span class="comment">// Return a negative value if firmware&#39;s minor version is older than that of the driver,</span>
+<a name="l00125"></a>00125     <span class="comment">// 0 if both are the same, and a positive value if firmware&#39;s minor version is newer</span>
+<a name="l00126"></a>00126     uint32_t flashed_version = ((<a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a> &amp; 0x0000FF00) &gt;&gt; 8);
+<a name="l00127"></a>00127     <span class="keywordflow">return</span> flashed_version - <a class="code" href="firmware_8hpp.html#a6a95a673675b30a190e9513645e0a089">CURRENT_FIRMWARE_MINOR_VERSION</a>;
+<a name="l00128"></a>00128   }
+<a name="l00129"></a>00129 };
+<a name="l00130"></a>00130 
+<a name="l00131"></a>00131 } <span class="comment">// namespace kobuki</span>
+<a name="l00132"></a>00132 
+<a name="l00133"></a>00133 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_FW_DATA_HPP__ */</span>
 <a name="l00134"></a>00134 
-<a name="l00135"></a>00135 } <span class="comment">// namespace kobuki</span>
-<a name="l00136"></a>00136 
-<a name="l00137"></a>00137 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_FW_DATA_HPP__ */</span>
-<a name="l00138"></a>00138 
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -203,7 +199,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Fri Aug 23 2013 15:06:50</small>
+<small>autogenerated on Tue Aug 27 2013 15:31:46</small>
 </div>
 </body>
 </html>

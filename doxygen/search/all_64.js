@@ -35,6 +35,7 @@ var searchData=
   ['dock_5fir_2ehpp',['dock_ir.hpp',['../dock__ir_8hpp.html',1,'']]],
   ['dockinfrared',['DockInfraRed',['../classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eabae79e6202055fb6d598e6ebaaad4ab6',1,'kobuki::Header']]],
   ['docking',['docking',['../structkobuki_1_1DockIR_1_1Data.html#afbd2446312c797f55a32c8f9077a09be',1,'kobuki::DockIR::Data']]],
+  ['dockir',['DockIR',['../classkobuki_1_1DockIR.html#a132c7a441b679df3d614e9d007cf4046',1,'kobuki::DockIR']]],
   ['dockir',['DockIR',['../classkobuki_1_1DockIR.html',1,'kobuki']]],
   ['dropped',['Dropped',['../structkobuki_1_1WheelEvent.html#a89ff3c678c1f83bc31aa8bbcbb49cb83a15c51df8e5cca149dc1a0c928ada0f9a',1,'kobuki::WheelEvent']]],
   ['dth',['dth',['../classKobukiManager.html#aae56a5aba9c5860a6a4c0825838578e5',1,'KobukiManager']]],

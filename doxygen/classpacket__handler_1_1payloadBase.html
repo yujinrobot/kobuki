@@ -95,11 +95,13 @@ Inheritance diagram for packet_handler::payloadBase:</div>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpacket__handler_1_1payloadBase.html#a42d7908c86387e88b4a8705b7647c093">deserialise</a> (ecl::PushAndPop&lt; unsigned char &gt; &amp;byteStream)=0</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpacket__handler_1_1payloadBase.html#a4c51ad34cba8ba6c15f71640263fe5cd">payloadBase</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpacket__handler_1_1payloadBase.html#abeeed2c26820f45360f886fd4bd4a9f7">payloadBase</a> (const bool is_dynamic_=false, const unsigned char length_=0)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpacket__handler_1_1payloadBase.html#a6ef7b31bf2c88202403f07214f7b9423">serialise</a> (ecl::PushAndPop&lt; unsigned char &gt; &amp;byteStream)=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpacket__handler_1_1payloadBase.html#a9fe1568cef0c03d0fc6395cfc05dce01">~payloadBase</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpacket__handler_1_1payloadBase.html#a7cd6484b02679b314f5412d1c5879bb0">is_dynamic</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2">length</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpacket__handler_1_1payloadBase.html#ace337f35fbb2b2ae1abffeb078a7cfd8">yes</a></td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -117,21 +119,32 @@ Protected Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="payload__base_8hpp_source.html#l00038">38</a> of file <a class="el" href="payload__base_8hpp_source.html">payload_base.hpp</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a4c51ad34cba8ba6c15f71640263fe5cd"></a><!-- doxytag: member="packet_handler::payloadBase::payloadBase" ref="a4c51ad34cba8ba6c15f71640263fe5cd" args="()" -->
+<a class="anchor" id="abeeed2c26820f45360f886fd4bd4a9f7"></a><!-- doxytag: member="packet_handler::payloadBase::payloadBase" ref="abeeed2c26820f45360f886fd4bd4a9f7" args="(const bool is_dynamic_=false, const unsigned char length_=0)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpacket__handler_1_1payloadBase.html#a4c51ad34cba8ba6c15f71640263fe5cd">packet_handler::payloadBase::payloadBase</a> </td>
+          <td class="memname"><a class="el" href="classpacket__handler_1_1payloadBase.html#abeeed2c26820f45360f886fd4bd4a9f7">packet_handler::payloadBase::payloadBase</a> </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td><code> [inline]</code></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>is_dynamic_</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned char&#160;</td>
+          <td class="paramname"><em>length_</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="payload__base_8hpp_source.html#l00051">51</a> of file <a class="el" href="payload__base_8hpp_source.html">payload_base.hpp</a>.</p>
+<p>Definition at line <a class="el" href="payload__base_8hpp_source.html#l00064">64</a> of file <a class="el" href="payload__base_8hpp_source.html">payload_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -149,7 +162,7 @@ Protected Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="payload__base_8hpp_source.html#l00052">52</a> of file <a class="el" href="payload__base_8hpp_source.html">payload_base.hpp</a>.</p>
+<p>Definition at line <a class="el" href="payload__base_8hpp_source.html#l00069">69</a> of file <a class="el" href="payload__base_8hpp_source.html">payload_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -181,7 +194,7 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="payload__base_8hpp_source.html#l00079">79</a> of file <a class="el" href="payload__base_8hpp_source.html">payload_base.hpp</a>.</p>
+<p>Definition at line <a class="el" href="payload__base_8hpp_source.html#l00096">96</a> of file <a class="el" href="payload__base_8hpp_source.html">payload_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -212,7 +225,7 @@ template&lt;&gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="payload__base_8hpp_source.html#l00113">113</a> of file <a class="el" href="payload__base_8hpp_source.html">payload_base.hpp</a>.</p>
+<p>Definition at line <a class="el" href="payload__base_8hpp_source.html#l00130">130</a> of file <a class="el" href="payload__base_8hpp_source.html">payload_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -243,7 +256,7 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="payload__base_8hpp_source.html#l00065">65</a> of file <a class="el" href="payload__base_8hpp_source.html">payload_base.hpp</a>.</p>
+<p>Definition at line <a class="el" href="payload__base_8hpp_source.html#l00082">82</a> of file <a class="el" href="payload__base_8hpp_source.html">payload_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -282,7 +295,7 @@ template&lt;&gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="payload__base_8hpp_source.html#l00096">96</a> of file <a class="el" href="payload__base_8hpp_source.html">payload_base.hpp</a>.</p>
+<p>Definition at line <a class="el" href="payload__base_8hpp_source.html#l00113">113</a> of file <a class="el" href="payload__base_8hpp_source.html">payload_base.hpp</a>.</p>
 
 </div>
 </div>
@@ -301,7 +314,7 @@ template&lt;&gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Implemented in <a class="el" href="classkobuki_1_1Command.html#a940dc54294dc2b6ca9305867229137de">kobuki::Command</a>, <a class="el" href="classkobuki_1_1CoreSensors.html#a040a72096617002a0d0f93b848006ebc">kobuki::CoreSensors</a>, <a class="el" href="classkobuki_1_1ThreeAxisGyro.html#a65c15215e2769e7227c3f1f772a445b1">kobuki::ThreeAxisGyro</a>, <a class="el" href="classkobuki_1_1GpInput.html#a28b4dbbd1a1df1b22cda86193dadd60e">kobuki::GpInput</a>, <a class="el" href="classkobuki_1_1Eeprom.html#ac60a5c8a4ba3b95dd21f9a671c416710">kobuki::Eeprom</a>, <a class="el" href="classkobuki_1_1Firmware.html#af41cef6ff3dc0ed1e7b256681544e1a2">kobuki::Firmware</a>, <a class="el" href="classkobuki_1_1Current.html#a0650572b8e343637d000a8c3682bed5d">kobuki::Current</a>, <a class="el" href="classkobuki_1_1Inertia.html#a44d0ed2f43fd3598521fdb0104da3e5a">kobuki::Inertia</a>, <a class="el" href="classkobuki_1_1UniqueDeviceID.html#ac3fefd5a6c768a52e96b1890afa41319">kobuki::UniqueDeviceID</a>, <a class="el" href="classkobuki_1_1Cliff.html#ab4feb28d6b1863d7d1cd7b68d6963724">kobuki::Cliff</a>, <a class="el" href="classkobuki_1_1DockIR.html#acee0bd7f154a549d8d5a0f56aa9a6771">kobuki::DockIR</a>, and <a class="el" href="classkobuki_1_1Hardware.html#a0e30a67914debe3e5de881720273c17b">kobuki::Hardware</a>.</p>
+<p>Implemented in <a class="el" href="classkobuki_1_1Command.html#a940dc54294dc2b6ca9305867229137de">kobuki::Command</a>, <a class="el" href="classkobuki_1_1CoreSensors.html#a040a72096617002a0d0f93b848006ebc">kobuki::CoreSensors</a>, <a class="el" href="classkobuki_1_1GpInput.html#a28b4dbbd1a1df1b22cda86193dadd60e">kobuki::GpInput</a>, <a class="el" href="classkobuki_1_1ThreeAxisGyro.html#a65c15215e2769e7227c3f1f772a445b1">kobuki::ThreeAxisGyro</a>, <a class="el" href="classkobuki_1_1Firmware.html#af41cef6ff3dc0ed1e7b256681544e1a2">kobuki::Firmware</a>, <a class="el" href="classkobuki_1_1Eeprom.html#ac60a5c8a4ba3b95dd21f9a671c416710">kobuki::Eeprom</a>, <a class="el" href="classkobuki_1_1Inertia.html#a44d0ed2f43fd3598521fdb0104da3e5a">kobuki::Inertia</a>, <a class="el" href="classkobuki_1_1Current.html#a0650572b8e343637d000a8c3682bed5d">kobuki::Current</a>, <a class="el" href="classkobuki_1_1UniqueDeviceID.html#ac3fefd5a6c768a52e96b1890afa41319">kobuki::UniqueDeviceID</a>, <a class="el" href="classkobuki_1_1Cliff.html#ab4feb28d6b1863d7d1cd7b68d6963724">kobuki::Cliff</a>, <a class="el" href="classkobuki_1_1DockIR.html#acee0bd7f154a549d8d5a0f56aa9a6771">kobuki::DockIR</a>, and <a class="el" href="classkobuki_1_1Hardware.html#a0e30a67914debe3e5de881720273c17b">kobuki::Hardware</a>.</p>
 
 </div>
 </div>
@@ -325,6 +338,38 @@ template&lt;&gt; </div>
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="a7cd6484b02679b314f5412d1c5879bb0"></a><!-- doxytag: member="packet_handler::payloadBase::is_dynamic" ref="a7cd6484b02679b314f5412d1c5879bb0" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const bool <a class="el" href="classpacket__handler_1_1payloadBase.html#a7cd6484b02679b314f5412d1c5879bb0">packet_handler::payloadBase::is_dynamic</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>it indicates the type of derived packet. if packet type is dynamic, length of packet can be changed during communication session. Ohterwise can not. </p>
+
+<p>Definition at line <a class="el" href="payload__base_8hpp_source.html#l00052">52</a> of file <a class="el" href="payload__base_8hpp_source.html">payload_base.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9f2de1035a4a8bf69fff0dca79bb01f2"></a><!-- doxytag: member="packet_handler::payloadBase::length" ref="a9f2de1035a4a8bf69fff0dca79bb01f2" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const unsigned char <a class="el" href="classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2">packet_handler::payloadBase::length</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>it indicates length of data part of packet, except header and length field. if packet is fixed type, this value should be matched with length field. if packet is dynamic type, this value indicates minimal value of length field. </p>
+
+<p>Definition at line <a class="el" href="payload__base_8hpp_source.html#l00059">59</a> of file <a class="el" href="payload__base_8hpp_source.html">payload_base.hpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ace337f35fbb2b2ae1abffeb078a7cfd8"></a><!-- doxytag: member="packet_handler::payloadBase::yes" ref="ace337f35fbb2b2ae1abffeb078a7cfd8" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -364,7 +409,7 @@ template&lt;&gt; </div>
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Fri Aug 23 2013 15:06:50</small>
+<small>autogenerated on Tue Aug 27 2013 15:31:48</small>
 </div>
 </body>
 </html>

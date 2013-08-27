@@ -81,72 +81,68 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00034"></a><a class="code" href="classkobuki_1_1Hardware.html">00034</a> <span class="keyword">class </span><a class="code" href="classkobuki_1_1Hardware.html">Hardware</a> : <span class="keyword">public</span> packet_handler::payloadBase
 <a name="l00035"></a>00035 {
 <a name="l00036"></a>00036 <span class="keyword">public</span>:
-<a name="l00037"></a><a class="code" href="structkobuki_1_1Hardware_1_1Data.html">00037</a>   <span class="keyword">struct </span><a class="code" href="structkobuki_1_1Hardware_1_1Data.html">Data</a> {
-<a name="l00038"></a><a class="code" href="structkobuki_1_1Hardware_1_1Data.html#ad8213b45a4780e33dfccc932f07aa0bc">00038</a>     uint32_t <a class="code" href="structkobuki_1_1Hardware_1_1Data.html#ad8213b45a4780e33dfccc932f07aa0bc">version</a>;
-<a name="l00039"></a>00039   } <a class="code" href="classkobuki_1_1Hardware.html#a08f54bcf8166af54f50edc60e9f0e7e7">data</a>;
-<a name="l00040"></a>00040 
-<a name="l00041"></a>00041   <span class="comment">// methods</span>
-<a name="l00042"></a><a class="code" href="classkobuki_1_1Hardware.html#a40d1460b39060fbc02684355922b2672">00042</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Hardware.html#a40d1460b39060fbc02684355922b2672">serialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
-<a name="l00043"></a>00043   {
-<a name="l00044"></a>00044     <span class="keywordflow">if</span> (!(byteStream.size() &gt; 0))
-<a name="l00045"></a>00045     {
-<a name="l00046"></a>00046       printf(<span class="stringliteral">&quot;kobuki_node: kobuki_hw: serialise failed. empty byte stream.&quot;</span>);
-<a name="l00047"></a>00047       <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00048"></a>00048     }
-<a name="l00049"></a>00049 
-<a name="l00050"></a>00050     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> length = 4;
-<a name="l00051"></a>00051     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eafb0bab4f1e5410d21e2727e9cb608f14">Header::Hardware</a>, byteStream);
-<a name="l00052"></a>00052     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length, byteStream);
-<a name="l00053"></a>00053     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Hardware.html#a08f54bcf8166af54f50edc60e9f0e7e7">data</a>.<a class="code" href="structkobuki_1_1Hardware_1_1Data.html#ad8213b45a4780e33dfccc932f07aa0bc">version</a>, byteStream);
-<a name="l00054"></a>00054     <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00055"></a>00055   }
-<a name="l00056"></a>00056 
-<a name="l00057"></a><a class="code" href="classkobuki_1_1Hardware.html#a0e30a67914debe3e5de881720273c17b">00057</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Hardware.html#a0e30a67914debe3e5de881720273c17b">deserialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
-<a name="l00058"></a>00058   {
-<a name="l00059"></a>00059     <span class="keywordflow">if</span> (!(byteStream.size() &gt; 0))
-<a name="l00060"></a>00060     {
-<a name="l00061"></a>00061       printf(<span class="stringliteral">&quot;kobuki_node: kobuki_hw: deserialise failed. empty byte stream.&quot;</span>);
-<a name="l00062"></a>00062       <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00063"></a>00063     }
-<a name="l00064"></a>00064 
-<a name="l00065"></a>00065     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> header_id = 0, length = 0;
-<a name="l00066"></a>00066     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(header_id, byteStream);
-<a name="l00067"></a>00067     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(length, byteStream);
-<a name="l00068"></a>00068 
-<a name="l00069"></a>00069     <span class="comment">// TODO First 3 firmware versions coded version number on 2 bytes, so we need convert manually to our new</span>
-<a name="l00070"></a>00070     <span class="comment">// 4 bytes system; remove this horrible, dirty hack as soon as we upgrade the firmware to 1.1.2 or 1.2.0</span>
-<a name="l00071"></a>00071     <span class="keywordflow">if</span> (length == 2)
-<a name="l00072"></a>00072     {
-<a name="l00073"></a>00073       uint16_t old_style_version = 0;
-<a name="l00074"></a>00074       <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(old_style_version, byteStream);
-<a name="l00075"></a>00075 
-<a name="l00076"></a>00076       <span class="keywordflow">if</span> (old_style_version == 104)
-<a name="l00077"></a>00077         <a class="code" href="classkobuki_1_1Hardware.html#a08f54bcf8166af54f50edc60e9f0e7e7">data</a>.<a class="code" href="structkobuki_1_1Hardware_1_1Data.html#ad8213b45a4780e33dfccc932f07aa0bc">version</a> = 0x00010004;<span class="comment">//65540; // 1.0.4</span>
-<a name="l00078"></a>00078     }
-<a name="l00079"></a>00079     <span class="keywordflow">else</span>
-<a name="l00080"></a>00080     {
-<a name="l00081"></a>00081       <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(<a class="code" href="classkobuki_1_1Hardware.html#a08f54bcf8166af54f50edc60e9f0e7e7">data</a>.<a class="code" href="structkobuki_1_1Hardware_1_1Data.html#ad8213b45a4780e33dfccc932f07aa0bc">version</a>, byteStream);
-<a name="l00082"></a>00082     }
-<a name="l00083"></a>00083 
-<a name="l00084"></a>00084     <span class="comment">//showMe();</span>
-<a name="l00085"></a>00085     <span class="keywordflow">return</span> <a class="code" href="classkobuki_1_1Hardware.html#a933e28e636de13f69587e331651e1da5">constrain</a>();
-<a name="l00086"></a>00086   }
-<a name="l00087"></a>00087 
-<a name="l00088"></a><a class="code" href="classkobuki_1_1Hardware.html#a933e28e636de13f69587e331651e1da5">00088</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Hardware.html#a933e28e636de13f69587e331651e1da5">constrain</a>()
-<a name="l00089"></a>00089   {
-<a name="l00090"></a>00090     <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00091"></a>00091   }
-<a name="l00092"></a>00092 
-<a name="l00093"></a><a class="code" href="classkobuki_1_1Hardware.html#a9db37be2dcff8eeab9a6a06dde07a4c3">00093</a>   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Hardware.html#a9db37be2dcff8eeab9a6a06dde07a4c3">showMe</a>()
-<a name="l00094"></a>00094   {
-<a name="l00095"></a>00095     <span class="comment">//printf(&quot;--[%02x || %03d | %03d | %03d]\n&quot;, data.bump, acc[2], acc[1], acc[0] );</span>
-<a name="l00096"></a>00096   }
-<a name="l00097"></a>00097 };
+<a name="l00037"></a><a class="code" href="classkobuki_1_1Hardware.html#a10a47329ad3a596fa372d0df38782193">00037</a>   <a class="code" href="classkobuki_1_1Hardware.html#a10a47329ad3a596fa372d0df38782193">Hardware</a>() : packet_handler::<a class="code" href="classpacket__handler_1_1payloadBase.html#abeeed2c26820f45360f886fd4bd4a9f7">payloadBase</a>(true, 2) {};
+<a name="l00038"></a><a class="code" href="structkobuki_1_1Hardware_1_1Data.html">00038</a>   <span class="keyword">struct </span><a class="code" href="structkobuki_1_1Hardware_1_1Data.html">Data</a> {
+<a name="l00039"></a><a class="code" href="structkobuki_1_1Hardware_1_1Data.html#ad8213b45a4780e33dfccc932f07aa0bc">00039</a>     uint32_t <a class="code" href="structkobuki_1_1Hardware_1_1Data.html#ad8213b45a4780e33dfccc932f07aa0bc">version</a>;
+<a name="l00040"></a>00040   } <a class="code" href="classkobuki_1_1Hardware.html#a08f54bcf8166af54f50edc60e9f0e7e7">data</a>;
+<a name="l00041"></a>00041 
+<a name="l00042"></a>00042   <span class="comment">// methods</span>
+<a name="l00043"></a><a class="code" href="classkobuki_1_1Hardware.html#a40d1460b39060fbc02684355922b2672">00043</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Hardware.html#a40d1460b39060fbc02684355922b2672">serialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
+<a name="l00044"></a>00044   {
+<a name="l00045"></a>00045     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2">length</a> = 4;
+<a name="l00046"></a>00046     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eafb0bab4f1e5410d21e2727e9cb608f14">Header::Hardware</a>, byteStream);
+<a name="l00047"></a>00047     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length, byteStream);
+<a name="l00048"></a>00048     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Hardware.html#a08f54bcf8166af54f50edc60e9f0e7e7">data</a>.<a class="code" href="structkobuki_1_1Hardware_1_1Data.html#ad8213b45a4780e33dfccc932f07aa0bc">version</a>, byteStream);
+<a name="l00049"></a>00049     <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00050"></a>00050   }
+<a name="l00051"></a>00051 
+<a name="l00052"></a><a class="code" href="classkobuki_1_1Hardware.html#a0e30a67914debe3e5de881720273c17b">00052</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Hardware.html#a0e30a67914debe3e5de881720273c17b">deserialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
+<a name="l00053"></a>00053   {
+<a name="l00054"></a>00054     <span class="keywordflow">if</span> (!(byteStream.size() &gt; <a class="code" href="classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2">length</a>+2))
+<a name="l00055"></a>00055     {
+<a name="l00056"></a>00056       <span class="comment">//std::cout &lt;&lt; &quot;kobuki_node: kobuki_hw: deserialise failed. not enough byte stream.&quot; &lt;&lt; std::endl;</span>
+<a name="l00057"></a>00057       <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00058"></a>00058     }
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> header_id, length_packed;
+<a name="l00061"></a>00061     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(header_id, byteStream);
+<a name="l00062"></a>00062     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(length_packed, byteStream);
+<a name="l00063"></a>00063     <span class="keywordflow">if</span>( header_id != <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eafb0bab4f1e5410d21e2727e9cb608f14">Header::Hardware</a> ) <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00064"></a>00064     <span class="keywordflow">if</span>( length_packed != 2 and length_packed != 4) <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00065"></a>00065 
+<a name="l00066"></a>00066     <span class="comment">// TODO First 3 firmware versions coded version number on 2 bytes, so we need convert manually to our new</span>
+<a name="l00067"></a>00067     <span class="comment">// 4 bytes system; remove this horrible, dirty hack as soon as we upgrade the firmware to 1.1.2 or 1.2.0</span>
+<a name="l00068"></a>00068     <span class="keywordflow">if</span> (length_packed == 2)
+<a name="l00069"></a>00069     {
+<a name="l00070"></a>00070       uint16_t old_style_version = 0;
+<a name="l00071"></a>00071       <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(old_style_version, byteStream);
+<a name="l00072"></a>00072 
+<a name="l00073"></a>00073       <span class="keywordflow">if</span> (old_style_version == 104)
+<a name="l00074"></a>00074         <a class="code" href="classkobuki_1_1Hardware.html#a08f54bcf8166af54f50edc60e9f0e7e7">data</a>.<a class="code" href="structkobuki_1_1Hardware_1_1Data.html#ad8213b45a4780e33dfccc932f07aa0bc">version</a> = 0x00010004;<span class="comment">//65540; // 1.0.4</span>
+<a name="l00075"></a>00075     }
+<a name="l00076"></a>00076     <span class="keywordflow">else</span>
+<a name="l00077"></a>00077     {
+<a name="l00078"></a>00078       <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(<a class="code" href="classkobuki_1_1Hardware.html#a08f54bcf8166af54f50edc60e9f0e7e7">data</a>.<a class="code" href="structkobuki_1_1Hardware_1_1Data.html#ad8213b45a4780e33dfccc932f07aa0bc">version</a>, byteStream);
+<a name="l00079"></a>00079     }
+<a name="l00080"></a>00080 
+<a name="l00081"></a>00081     <span class="comment">//showMe();</span>
+<a name="l00082"></a>00082     <span class="keywordflow">return</span> <a class="code" href="classkobuki_1_1Hardware.html#a933e28e636de13f69587e331651e1da5">constrain</a>();
+<a name="l00083"></a>00083   }
+<a name="l00084"></a>00084 
+<a name="l00085"></a><a class="code" href="classkobuki_1_1Hardware.html#a933e28e636de13f69587e331651e1da5">00085</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Hardware.html#a933e28e636de13f69587e331651e1da5">constrain</a>()
+<a name="l00086"></a>00086   {
+<a name="l00087"></a>00087     <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00088"></a>00088   }
+<a name="l00089"></a>00089 
+<a name="l00090"></a><a class="code" href="classkobuki_1_1Hardware.html#a9db37be2dcff8eeab9a6a06dde07a4c3">00090</a>   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Hardware.html#a9db37be2dcff8eeab9a6a06dde07a4c3">showMe</a>()
+<a name="l00091"></a>00091   {
+<a name="l00092"></a>00092   }
+<a name="l00093"></a>00093 };
+<a name="l00094"></a>00094 
+<a name="l00095"></a>00095 } <span class="comment">// namespace kobuki</span>
+<a name="l00096"></a>00096 
+<a name="l00097"></a>00097 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_HW_DATA_HPP__ */</span>
 <a name="l00098"></a>00098 
-<a name="l00099"></a>00099 } <span class="comment">// namespace kobuki</span>
-<a name="l00100"></a>00100 
-<a name="l00101"></a>00101 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_HW_DATA_HPP__ */</span>
-<a name="l00102"></a>00102 
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -167,7 +163,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Fri Aug 23 2013 15:06:50</small>
+<small>autogenerated on Tue Aug 27 2013 15:31:46</small>
 </div>
 </body>
 </html>

@@ -83,123 +83,131 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00041"></a>00041 
 <a name="l00046"></a><a class="code" href="classpacket__handler_1_1payloadBase.html#ace337f35fbb2b2ae1abffeb078a7cfd8">00046</a>   <span class="keywordtype">bool</span> <a class="code" href="classpacket__handler_1_1payloadBase.html#ace337f35fbb2b2ae1abffeb078a7cfd8">yes</a>;
 <a name="l00047"></a>00047 
-<a name="l00048"></a>00048   <span class="comment">/*</span>
-<a name="l00049"></a>00049 <span class="comment">   * construct and destruct</span>
-<a name="l00050"></a>00050 <span class="comment">   */</span>
-<a name="l00051"></a><a class="code" href="classpacket__handler_1_1payloadBase.html#a4c51ad34cba8ba6c15f71640263fe5cd">00051</a>   <a class="code" href="classpacket__handler_1_1payloadBase.html#a4c51ad34cba8ba6c15f71640263fe5cd">payloadBase</a>() : <a class="code" href="classpacket__handler_1_1payloadBase.html#ace337f35fbb2b2ae1abffeb078a7cfd8">yes</a>(false) {};
-<a name="l00052"></a><a class="code" href="classpacket__handler_1_1payloadBase.html#a9fe1568cef0c03d0fc6395cfc05dce01">00052</a>   <span class="keyword">virtual</span> <a class="code" href="classpacket__handler_1_1payloadBase.html#a9fe1568cef0c03d0fc6395cfc05dce01">~payloadBase</a>() {};
+<a name="l00052"></a><a class="code" href="classpacket__handler_1_1payloadBase.html#a7cd6484b02679b314f5412d1c5879bb0">00052</a>   <span class="keyword">const</span> <span class="keywordtype">bool</span> <a class="code" href="classpacket__handler_1_1payloadBase.html#a7cd6484b02679b314f5412d1c5879bb0">is_dynamic</a>;
 <a name="l00053"></a>00053 
-<a name="l00054"></a>00054   <span class="comment">/*</span>
-<a name="l00055"></a>00055 <span class="comment">   * serialisation</span>
-<a name="l00056"></a>00056 <span class="comment">   */</span>
-<a name="l00057"></a>00057   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classpacket__handler_1_1payloadBase.html#a6ef7b31bf2c88202403f07214f7b9423">serialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)=0;
-<a name="l00058"></a>00058   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classpacket__handler_1_1payloadBase.html#a42d7908c86387e88b4a8705b7647c093">deserialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)=0;
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060   <span class="comment">// utilities</span>
-<a name="l00061"></a>00061   <span class="comment">// todo; let&#39;s put more useful converters here. Or we may use generic converters</span>
-<a name="l00062"></a>00062 <span class="keyword">protected</span>:
-<a name="l00063"></a>00063   <span class="comment">// below funciton should be replaced wiht converter</span>
-<a name="l00064"></a>00064   <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
-<a name="l00065"></a><a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">00065</a>     <span class="keywordtype">void</span> <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(T &amp; V, ecl::PushAndPop&lt;unsigned char&gt; &amp; buffer)
-<a name="l00066"></a>00066     {
-<a name="l00067"></a>00067       <span class="keywordflow">if</span> (buffer.size() &lt; <span class="keyword">sizeof</span>(T))
-<a name="l00068"></a>00068         <span class="keywordflow">return</span>;
-<a name="l00069"></a>00069       V = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(buffer.pop_front());
+<a name="l00059"></a><a class="code" href="classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2">00059</a>   <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2">length</a>;
+<a name="l00060"></a>00060 
+<a name="l00061"></a>00061   <span class="comment">/*</span>
+<a name="l00062"></a>00062 <span class="comment">   * construct and destruct</span>
+<a name="l00063"></a>00063 <span class="comment">   */</span>
+<a name="l00064"></a><a class="code" href="classpacket__handler_1_1payloadBase.html#abeeed2c26820f45360f886fd4bd4a9f7">00064</a>   <a class="code" href="classpacket__handler_1_1payloadBase.html#abeeed2c26820f45360f886fd4bd4a9f7">payloadBase</a>(<span class="keyword">const</span> <span class="keywordtype">bool</span> is_dynamic_ = <span class="keyword">false</span>, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> length_ = 0 )
+<a name="l00065"></a>00065     : <a class="code" href="classpacket__handler_1_1payloadBase.html#ace337f35fbb2b2ae1abffeb078a7cfd8">yes</a>(false)
+<a name="l00066"></a>00066     , <a class="code" href="classpacket__handler_1_1payloadBase.html#a7cd6484b02679b314f5412d1c5879bb0">is_dynamic</a>(is_dynamic_)
+<a name="l00067"></a>00067     , <a class="code" href="classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2">length</a>(length_)
+<a name="l00068"></a>00068   {};
+<a name="l00069"></a><a class="code" href="classpacket__handler_1_1payloadBase.html#a9fe1568cef0c03d0fc6395cfc05dce01">00069</a>   <span class="keyword">virtual</span> <a class="code" href="classpacket__handler_1_1payloadBase.html#a9fe1568cef0c03d0fc6395cfc05dce01">~payloadBase</a>() {};
 <a name="l00070"></a>00070 
-<a name="l00071"></a>00071       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size_value(<span class="keyword">sizeof</span>(T));
-<a name="l00072"></a>00072       <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 1; i &lt; size_value; i++)
-<a name="l00073"></a>00073       {
-<a name="l00074"></a>00074         V |= ((<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(buffer.pop_front())) &lt;&lt; (8 * i));
-<a name="l00075"></a>00075       }
-<a name="l00076"></a>00076     }
-<a name="l00077"></a>00077 
-<a name="l00078"></a>00078   <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
-<a name="l00079"></a><a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">00079</a>     <span class="keywordtype">void</span> <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<span class="keyword">const</span> T &amp; V, ecl::PushAndPop&lt;unsigned char&gt; &amp; buffer)
-<a name="l00080"></a>00080     {
-<a name="l00081"></a>00081       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size_value(<span class="keyword">sizeof</span>(T));
-<a name="l00082"></a>00082       <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; size_value; i++)
-<a name="l00083"></a>00083       {
-<a name="l00084"></a>00084         buffer.push_back(static_cast&lt;unsigned char&gt;((V &gt;&gt; (i * 8)) &amp; 0xff));
-<a name="l00085"></a>00085       }
-<a name="l00086"></a>00086     }
-<a name="l00087"></a>00087 };
-<a name="l00088"></a>00088 
-<a name="l00095"></a>00095 <span class="keyword">template</span>&lt;&gt;
-<a name="l00096"></a><a class="code" href="classpacket__handler_1_1payloadBase.html#ab78ef94cab7542689a41647dd2d1e9bf">00096</a> <span class="keyword">inline</span>   <span class="keywordtype">void</span> payloadBase::buildVariable&lt;float&gt;(<span class="keywordtype">float</span> &amp; V, ecl::PushAndPop&lt;unsigned char&gt; &amp; buffer)
-<a name="l00097"></a>00097   {
-<a name="l00098"></a>00098     <span class="keywordflow">if</span> (buffer.size() &lt; 4)
-<a name="l00099"></a>00099       <span class="keywordflow">return</span>;
-<a name="l00100"></a>00100     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ui;
-<a name="l00101"></a>00101     ui = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(buffer.pop_front());
-<a name="l00102"></a>00102 
-<a name="l00103"></a>00103     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size_value(4);
-<a name="l00104"></a>00104     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 1; i &lt; size_value; i++)
-<a name="l00105"></a>00105     {
-<a name="l00106"></a>00106       ui |= ((<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(buffer.pop_front())) &lt;&lt; (8 * i));
-<a name="l00107"></a>00107     }
-<a name="l00108"></a>00108 
-<a name="l00109"></a>00109     V = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span>&amp;<span class="keyword">&gt;</span>(ui);
-<a name="l00110"></a>00110   }
-<a name="l00111"></a>00111 
+<a name="l00071"></a>00071   <span class="comment">/*</span>
+<a name="l00072"></a>00072 <span class="comment">   * serialisation</span>
+<a name="l00073"></a>00073 <span class="comment">   */</span>
+<a name="l00074"></a>00074   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classpacket__handler_1_1payloadBase.html#a6ef7b31bf2c88202403f07214f7b9423">serialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)=0;
+<a name="l00075"></a>00075   <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classpacket__handler_1_1payloadBase.html#a42d7908c86387e88b4a8705b7647c093">deserialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)=0;
+<a name="l00076"></a>00076 
+<a name="l00077"></a>00077   <span class="comment">// utilities</span>
+<a name="l00078"></a>00078   <span class="comment">// todo; let&#39;s put more useful converters here. Or we may use generic converters</span>
+<a name="l00079"></a>00079 <span class="keyword">protected</span>:
+<a name="l00080"></a>00080   <span class="comment">// below funciton should be replaced wiht converter</span>
+<a name="l00081"></a>00081   <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
+<a name="l00082"></a><a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">00082</a>     <span class="keywordtype">void</span> <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(T &amp; V, ecl::PushAndPop&lt;unsigned char&gt; &amp; buffer)
+<a name="l00083"></a>00083     {
+<a name="l00084"></a>00084       <span class="keywordflow">if</span> (buffer.size() &lt; <span class="keyword">sizeof</span>(T))
+<a name="l00085"></a>00085         <span class="keywordflow">return</span>;
+<a name="l00086"></a>00086       V = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(buffer.pop_front());
+<a name="l00087"></a>00087 
+<a name="l00088"></a>00088       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size_value(<span class="keyword">sizeof</span>(T));
+<a name="l00089"></a>00089       <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 1; i &lt; size_value; i++)
+<a name="l00090"></a>00090       {
+<a name="l00091"></a>00091         V |= ((<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(buffer.pop_front())) &lt;&lt; (8 * i));
+<a name="l00092"></a>00092       }
+<a name="l00093"></a>00093     }
+<a name="l00094"></a>00094 
+<a name="l00095"></a>00095   <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
+<a name="l00096"></a><a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">00096</a>     <span class="keywordtype">void</span> <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<span class="keyword">const</span> T &amp; V, ecl::PushAndPop&lt;unsigned char&gt; &amp; buffer)
+<a name="l00097"></a>00097     {
+<a name="l00098"></a>00098       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size_value(<span class="keyword">sizeof</span>(T));
+<a name="l00099"></a>00099       <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; size_value; i++)
+<a name="l00100"></a>00100       {
+<a name="l00101"></a>00101         buffer.push_back(static_cast&lt;unsigned char&gt;((V &gt;&gt; (i * 8)) &amp; 0xff));
+<a name="l00102"></a>00102       }
+<a name="l00103"></a>00103     }
+<a name="l00104"></a>00104 };
+<a name="l00105"></a>00105 
 <a name="l00112"></a>00112 <span class="keyword">template</span>&lt;&gt;
-<a name="l00113"></a><a class="code" href="classpacket__handler_1_1payloadBase.html#ab5a5a6d9681b917b857bef163225d955">00113</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> payloadBase::buildBytes&lt;float&gt;(<span class="keyword">const</span> <span class="keywordtype">float</span> &amp; V, ecl::PushAndPop&lt;unsigned char&gt; &amp; buffer)
+<a name="l00113"></a><a class="code" href="classpacket__handler_1_1payloadBase.html#ab78ef94cab7542689a41647dd2d1e9bf">00113</a> <span class="keyword">inline</span>   <span class="keywordtype">void</span> payloadBase::buildVariable&lt;float&gt;(<span class="keywordtype">float</span> &amp; V, ecl::PushAndPop&lt;unsigned char&gt; &amp; buffer)
 <a name="l00114"></a>00114   {
 <a name="l00115"></a>00115     <span class="keywordflow">if</span> (buffer.size() &lt; 4)
 <a name="l00116"></a>00116       <span class="keywordflow">return</span>;
-<a name="l00117"></a>00117     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size_value(4);
-<a name="l00118"></a>00118     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ui(reinterpret_cast&lt;const unsigned int&amp;&gt;(V));
-<a name="l00119"></a>00119     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; size_value; i++)
-<a name="l00120"></a>00120     {
-<a name="l00121"></a>00121       buffer.push_back(static_cast&lt;unsigned char&gt;((ui &gt;&gt; (i * 8)) &amp; 0xff));
-<a name="l00122"></a>00122     }
-<a name="l00123"></a>00123   }
-<a name="l00124"></a>00124 
-<a name="l00125"></a>00125 <span class="comment">//#define FRAC_MAX 9223372036854775807LL /* 2**63 - 1 */</span>
-<a name="l00126"></a>00126 <span class="comment">//</span>
-<a name="l00127"></a>00127 <span class="comment">//struct dbl_packed</span>
-<a name="l00128"></a>00128 <span class="comment">//{</span>
-<a name="l00129"></a>00129 <span class="comment">//    int exp;</span>
-<a name="l00130"></a>00130 <span class="comment">//    long long frac;</span>
-<a name="l00131"></a>00131 <span class="comment">//};</span>
-<a name="l00132"></a>00132 <span class="comment">//</span>
-<a name="l00133"></a>00133 <span class="comment">//void pack(double x, struct dbl_packed *r)</span>
-<a name="l00134"></a>00134 <span class="comment">//{</span>
-<a name="l00135"></a>00135 <span class="comment">//    double xf = fabs(frexp(x, &amp;r-&gt;exp)) - 0.5;</span>
-<a name="l00136"></a>00136 <span class="comment">//</span>
-<a name="l00137"></a>00137 <span class="comment">//    if (xf &lt; 0.0)</span>
-<a name="l00138"></a>00138 <span class="comment">//    {</span>
-<a name="l00139"></a>00139 <span class="comment">//        r-&gt;frac = 0;</span>
-<a name="l00140"></a>00140 <span class="comment">//        return;</span>
-<a name="l00141"></a>00141 <span class="comment">//    }</span>
-<a name="l00142"></a>00142 <span class="comment">//</span>
-<a name="l00143"></a>00143 <span class="comment">//    r-&gt;frac = 1 + (long long)(xf * 2.0 * (FRAC_MAX - 1));</span>
-<a name="l00144"></a>00144 <span class="comment">//</span>
-<a name="l00145"></a>00145 <span class="comment">//    if (x &lt; 0.0)</span>
-<a name="l00146"></a>00146 <span class="comment">//        r-&gt;frac = -r-&gt;frac;</span>
-<a name="l00147"></a>00147 <span class="comment">//}</span>
-<a name="l00148"></a>00148 <span class="comment">//</span>
-<a name="l00149"></a>00149 <span class="comment">//double unpack(const struct dbl_packed *p)</span>
-<a name="l00150"></a>00150 <span class="comment">//{</span>
-<a name="l00151"></a>00151 <span class="comment">//    double xf, x;</span>
-<a name="l00152"></a>00152 <span class="comment">//</span>
-<a name="l00153"></a>00153 <span class="comment">//    if (p-&gt;frac == 0)</span>
-<a name="l00154"></a>00154 <span class="comment">//        return 0.0;</span>
-<a name="l00155"></a>00155 <span class="comment">//</span>
-<a name="l00156"></a>00156 <span class="comment">//    xf = ((double)(llabs(p-&gt;frac) - 1) / (FRAC_MAX - 1)) / 2.0;</span>
-<a name="l00157"></a>00157 <span class="comment">//</span>
-<a name="l00158"></a>00158 <span class="comment">//    x = ldexp(xf + 0.5, p-&gt;exp);</span>
+<a name="l00117"></a>00117     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ui;
+<a name="l00118"></a>00118     ui = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(buffer.pop_front());
+<a name="l00119"></a>00119 
+<a name="l00120"></a>00120     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size_value(4);
+<a name="l00121"></a>00121     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 1; i &lt; size_value; i++)
+<a name="l00122"></a>00122     {
+<a name="l00123"></a>00123       ui |= ((<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span><span class="keyword">&gt;</span>(buffer.pop_front())) &lt;&lt; (8 * i));
+<a name="l00124"></a>00124     }
+<a name="l00125"></a>00125 
+<a name="l00126"></a>00126     V = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span>&amp;<span class="keyword">&gt;</span>(ui);
+<a name="l00127"></a>00127   }
+<a name="l00128"></a>00128 
+<a name="l00129"></a>00129 <span class="keyword">template</span>&lt;&gt;
+<a name="l00130"></a><a class="code" href="classpacket__handler_1_1payloadBase.html#ab5a5a6d9681b917b857bef163225d955">00130</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> payloadBase::buildBytes&lt;float&gt;(<span class="keyword">const</span> <span class="keywordtype">float</span> &amp; V, ecl::PushAndPop&lt;unsigned char&gt; &amp; buffer)
+<a name="l00131"></a>00131   {
+<a name="l00132"></a>00132     <span class="keywordflow">if</span> (buffer.size() &lt; 4)
+<a name="l00133"></a>00133       <span class="keywordflow">return</span>;
+<a name="l00134"></a>00134     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size_value(4);
+<a name="l00135"></a>00135     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ui(reinterpret_cast&lt;const unsigned int&amp;&gt;(V));
+<a name="l00136"></a>00136     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; size_value; i++)
+<a name="l00137"></a>00137     {
+<a name="l00138"></a>00138       buffer.push_back(static_cast&lt;unsigned char&gt;((ui &gt;&gt; (i * 8)) &amp; 0xff));
+<a name="l00139"></a>00139     }
+<a name="l00140"></a>00140   }
+<a name="l00141"></a>00141 
+<a name="l00142"></a>00142 <span class="comment">//#define FRAC_MAX 9223372036854775807LL /* 2**63 - 1 */</span>
+<a name="l00143"></a>00143 <span class="comment">//</span>
+<a name="l00144"></a>00144 <span class="comment">//struct dbl_packed</span>
+<a name="l00145"></a>00145 <span class="comment">//{</span>
+<a name="l00146"></a>00146 <span class="comment">//    int exp;</span>
+<a name="l00147"></a>00147 <span class="comment">//    long long frac;</span>
+<a name="l00148"></a>00148 <span class="comment">//};</span>
+<a name="l00149"></a>00149 <span class="comment">//</span>
+<a name="l00150"></a>00150 <span class="comment">//void pack(double x, struct dbl_packed *r)</span>
+<a name="l00151"></a>00151 <span class="comment">//{</span>
+<a name="l00152"></a>00152 <span class="comment">//    double xf = fabs(frexp(x, &amp;r-&gt;exp)) - 0.5;</span>
+<a name="l00153"></a>00153 <span class="comment">//</span>
+<a name="l00154"></a>00154 <span class="comment">//    if (xf &lt; 0.0)</span>
+<a name="l00155"></a>00155 <span class="comment">//    {</span>
+<a name="l00156"></a>00156 <span class="comment">//        r-&gt;frac = 0;</span>
+<a name="l00157"></a>00157 <span class="comment">//        return;</span>
+<a name="l00158"></a>00158 <span class="comment">//    }</span>
 <a name="l00159"></a>00159 <span class="comment">//</span>
-<a name="l00160"></a>00160 <span class="comment">//    if (p-&gt;frac &lt; 0)</span>
-<a name="l00161"></a>00161 <span class="comment">//        x = -x;</span>
-<a name="l00162"></a>00162 <span class="comment">//</span>
-<a name="l00163"></a>00163 <span class="comment">//    return x;</span>
+<a name="l00160"></a>00160 <span class="comment">//    r-&gt;frac = 1 + (long long)(xf * 2.0 * (FRAC_MAX - 1));</span>
+<a name="l00161"></a>00161 <span class="comment">//</span>
+<a name="l00162"></a>00162 <span class="comment">//    if (x &lt; 0.0)</span>
+<a name="l00163"></a>00163 <span class="comment">//        r-&gt;frac = -r-&gt;frac;</span>
 <a name="l00164"></a>00164 <span class="comment">//}</span>
-<a name="l00165"></a>00165 
-<a name="l00166"></a>00166 }
-<a name="l00167"></a>00167 ;
-<a name="l00168"></a>00168 <span class="comment">// namespace packet_handler</span>
-<a name="l00169"></a>00169 
-<a name="l00170"></a>00170 <span class="preprocessor">#endif </span><span class="comment">/* ROBOT_DATA_HPP_ */</span>
+<a name="l00165"></a>00165 <span class="comment">//</span>
+<a name="l00166"></a>00166 <span class="comment">//double unpack(const struct dbl_packed *p)</span>
+<a name="l00167"></a>00167 <span class="comment">//{</span>
+<a name="l00168"></a>00168 <span class="comment">//    double xf, x;</span>
+<a name="l00169"></a>00169 <span class="comment">//</span>
+<a name="l00170"></a>00170 <span class="comment">//    if (p-&gt;frac == 0)</span>
+<a name="l00171"></a>00171 <span class="comment">//        return 0.0;</span>
+<a name="l00172"></a>00172 <span class="comment">//</span>
+<a name="l00173"></a>00173 <span class="comment">//    xf = ((double)(llabs(p-&gt;frac) - 1) / (FRAC_MAX - 1)) / 2.0;</span>
+<a name="l00174"></a>00174 <span class="comment">//</span>
+<a name="l00175"></a>00175 <span class="comment">//    x = ldexp(xf + 0.5, p-&gt;exp);</span>
+<a name="l00176"></a>00176 <span class="comment">//</span>
+<a name="l00177"></a>00177 <span class="comment">//    if (p-&gt;frac &lt; 0)</span>
+<a name="l00178"></a>00178 <span class="comment">//        x = -x;</span>
+<a name="l00179"></a>00179 <span class="comment">//</span>
+<a name="l00180"></a>00180 <span class="comment">//    return x;</span>
+<a name="l00181"></a>00181 <span class="comment">//}</span>
+<a name="l00182"></a>00182 
+<a name="l00183"></a>00183 }
+<a name="l00184"></a>00184 ;
+<a name="l00185"></a>00185 <span class="comment">// namespace packet_handler</span>
+<a name="l00186"></a>00186 
+<a name="l00187"></a>00187 <span class="preprocessor">#endif </span><span class="comment">/* ROBOT_DATA_HPP_ */</span>
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -220,7 +228,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Fri Aug 23 2013 15:06:50</small>
+<small>autogenerated on Tue Aug 27 2013 15:31:46</small>
 </div>
 </body>
 </html>

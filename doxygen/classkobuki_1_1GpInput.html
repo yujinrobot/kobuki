@@ -94,8 +94,11 @@ Classes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkobuki_1_1GpInput_1_1Data.html">Data</a></td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1GpInput.html#a1aea6a6373295b1536d908d3e24ff639">constrain</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1GpInput.html#a28b4dbbd1a1df1b22cda86193dadd60e">deserialise</a> (ecl::PushAndPop&lt; unsigned char &gt; &amp;byteStream)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1GpInput.html#a30ff7258b931c84377ebc9fd22a9a0c0">GpInput</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1GpInput.html#a1593df2dfb3739e4b9c83144e744016f">serialise</a> (ecl::PushAndPop&lt; unsigned char &gt; &amp;byteStream)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1GpInput.html#ad9980323ec627e2059e6a275cedc0867">showMe</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structkobuki_1_1GpInput_1_1Data.html">kobuki::GpInput::Data</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1GpInput.html#a2d71bd6d91b21763677f4f37e37cfc85">data</a></td></tr>
@@ -103,7 +106,44 @@ Public Attributes</h2></td></tr>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
 <p>Definition at line <a class="el" href="gp__input_8hpp_source.html#l00035">35</a> of file <a class="el" href="gp__input_8hpp_source.html">gp_input.hpp</a>.</p>
-</div><hr/><h2>Member Function Documentation</h2>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a30ff7258b931c84377ebc9fd22a9a0c0"></a><!-- doxytag: member="kobuki::GpInput::GpInput" ref="a30ff7258b931c84377ebc9fd22a9a0c0" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classkobuki_1_1GpInput.html#a30ff7258b931c84377ebc9fd22a9a0c0">kobuki::GpInput::GpInput</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="gp__input_8hpp_source.html#l00038">38</a> of file <a class="el" href="gp__input_8hpp_source.html">gp_input.hpp</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a1aea6a6373295b1536d908d3e24ff639"></a><!-- doxytag: member="kobuki::GpInput::constrain" ref="a1aea6a6373295b1536d908d3e24ff639" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classkobuki_1_1GpInput.html#a1aea6a6373295b1536d908d3e24ff639">kobuki::GpInput::constrain</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="gp__input_8hpp_source.html#l00100">100</a> of file <a class="el" href="gp__input_8hpp_source.html">gp_input.hpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a28b4dbbd1a1df1b22cda86193dadd60e"></a><!-- doxytag: member="kobuki::GpInput::deserialise" ref="a28b4dbbd1a1df1b22cda86193dadd60e" args="(ecl::PushAndPop&lt; unsigned char &gt; &amp;byteStream)" -->
 <div class="memitem">
 <div class="memproto">
@@ -121,7 +161,7 @@ Public Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classpacket__handler_1_1payloadBase.html#a42d7908c86387e88b4a8705b7647c093">packet_handler::payloadBase</a>.</p>
 
-<p>Definition at line <a class="el" href="gp__input_8hpp_source.html#l00068">68</a> of file <a class="el" href="gp__input_8hpp_source.html">gp_input.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gp__input_8hpp_source.html#l00066">66</a> of file <a class="el" href="gp__input_8hpp_source.html">gp_input.hpp</a>.</p>
 
 </div>
 </div>
@@ -142,7 +182,25 @@ Public Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classpacket__handler_1_1payloadBase.html#a6ef7b31bf2c88202403f07214f7b9423">packet_handler::payloadBase</a>.</p>
 
-<p>Definition at line <a class="el" href="gp__input_8hpp_source.html#l00049">49</a> of file <a class="el" href="gp__input_8hpp_source.html">gp_input.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gp__input_8hpp_source.html#l00050">50</a> of file <a class="el" href="gp__input_8hpp_source.html">gp_input.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad9980323ec627e2059e6a275cedc0867"></a><!-- doxytag: member="kobuki::GpInput::showMe" ref="ad9980323ec627e2059e6a275cedc0867" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classkobuki_1_1GpInput.html#ad9980323ec627e2059e6a275cedc0867">kobuki::GpInput::showMe</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="gp__input_8hpp_source.html#l00105">105</a> of file <a class="el" href="gp__input_8hpp_source.html">gp_input.hpp</a>.</p>
 
 </div>
 </div>
@@ -183,7 +241,7 @@ Public Attributes</h2></td></tr>
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Fri Aug 23 2013 15:06:50</small>
+<small>autogenerated on Tue Aug 27 2013 15:31:47</small>
 </div>
 </body>
 </html>

@@ -27,6 +27,7 @@ var searchData=
   ['leftcliff',['LeftCliff',['../structkobuki_1_1CoreSensors_1_1Flags.html#ad986a906de2deaf17381f5b6457bf0af',1,'kobuki::CoreSensors::Flags']]],
   ['leftwheel',['LeftWheel',['../structkobuki_1_1CoreSensors_1_1Flags.html#a081dcff8c1a2ca453fe3952c19cff4b5',1,'kobuki::CoreSensors::Flags']]],
   ['leftwheel_5foc',['LeftWheel_OC',['../structkobuki_1_1CoreSensors_1_1Flags.html#a18f5b7c46447fa7a5661290ef052a863',1,'kobuki::CoreSensors::Flags']]],
+  ['length',['length',['../classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2',1,'packet_handler::payloadBase']]],
   ['level',['level',['../classkobuki_1_1Battery.html#a447e440213e6db2d79e9bb670d7482d5',1,'kobuki::Battery::level() const '],['../classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bc',1,'kobuki::Battery::Level()']]],
   ['limit',['limit',['../classkobuki_1_1AccelerationLimiter.html#abc759c954227e4874ecfd49b9624474f',1,'kobuki::AccelerationLimiter::limit(const std::vector&lt; double &gt; &amp;command)'],['../classkobuki_1_1AccelerationLimiter.html#aed8ff9cd14cf20788a46e8f27b918a31',1,'kobuki::AccelerationLimiter::limit(const double &amp;vx, const double &amp;wz)']]],
   ['linear_5facceleration_5flimit',['linear_acceleration_limit',['../classkobuki_1_1Parameters.html#a80f340ed5ef2c38e29dcc84bd808d8d8',1,'kobuki::Parameters']]],

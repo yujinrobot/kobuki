@@ -24,6 +24,6 @@ var searchData=
   ['gp_5finput_2ehpp',['gp_input.hpp',['../gp__input_8hpp.html',1,'']]],
   ['gp_5fout',['gp_out',['../structkobuki_1_1Command_1_1Data.html#a6455b2f01642efe3ca9c64be3491e2a9',1,'kobuki::Command::Data']]],
   ['gpinput',['GpInput',['../classkobuki_1_1GpInput.html',1,'kobuki']]],
-  ['gpinput',['GpInput',['../classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea1df38284e536a6b766c89847f5997cf7',1,'kobuki::Header']]],
+  ['gpinput',['GpInput',['../classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea1df38284e536a6b766c89847f5997cf7',1,'kobuki::Header::GpInput()'],['../classkobuki_1_1GpInput.html#a30ff7258b931c84377ebc9fd22a9a0c0',1,'kobuki::GpInput::GpInput()']]],
   ['green',['Green',['../namespacekobuki.html#a278fbe81cdc3dd93c2fde224fb013c26a497f2235fa1706bff294f9035126ba2b',1,'kobuki']]]
 ];

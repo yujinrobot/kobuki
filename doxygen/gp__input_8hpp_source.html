@@ -82,66 +82,77 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00035"></a><a class="code" href="classkobuki_1_1GpInput.html">00035</a> <span class="keyword">class </span><a class="code" href="classkobuki_1_1GpInput.html">GpInput</a> : <span class="keyword">public</span> packet_handler::payloadBase
 <a name="l00036"></a>00036 {
 <a name="l00037"></a>00037 <span class="keyword">public</span>:
-<a name="l00038"></a><a class="code" href="structkobuki_1_1GpInput_1_1Data.html">00038</a>   <span class="keyword">struct </span><a class="code" href="structkobuki_1_1GpInput_1_1Data.html">Data</a> {
-<a name="l00039"></a><a class="code" href="structkobuki_1_1GpInput_1_1Data.html#ab4e976ac66dee4f6fcfc6632a4d7080b">00039</a>     <a class="code" href="structkobuki_1_1GpInput_1_1Data.html#ab4e976ac66dee4f6fcfc6632a4d7080b">Data</a>() : <a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a5a77ebbf4e04790e65f1bfb9a935db70">analog_input</a>(4) {}
-<a name="l00040"></a><a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a4d91ec153b1310b7ef99af7f61850906">00040</a>     uint16_t <a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a4d91ec153b1310b7ef99af7f61850906">digital_input</a>;
-<a name="l00046"></a><a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a5a77ebbf4e04790e65f1bfb9a935db70">00046</a>     std::vector&lt;uint16_t&gt; <a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a5a77ebbf4e04790e65f1bfb9a935db70">analog_input</a>;
-<a name="l00047"></a>00047   } <a class="code" href="classkobuki_1_1GpInput.html#a2d71bd6d91b21763677f4f37e37cfc85">data</a>;
-<a name="l00048"></a>00048 
-<a name="l00049"></a><a class="code" href="classkobuki_1_1GpInput.html#a1593df2dfb3739e4b9c83144e744016f">00049</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1GpInput.html#a1593df2dfb3739e4b9c83144e744016f">serialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
-<a name="l00050"></a>00050   {
-<a name="l00051"></a>00051     <span class="keywordflow">if</span> (!(byteStream.size() &gt; 0))
-<a name="l00052"></a>00052     {
-<a name="l00053"></a>00053       <span class="comment">//ROS_WARN_STREAM(&quot;kobuki_node: kobuki_inertia: serialise failed. empty byte stream.&quot;);</span>
-<a name="l00054"></a>00054       <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00055"></a>00055     }
-<a name="l00056"></a>00056 
-<a name="l00057"></a>00057     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> length = 2 + 2*<a class="code" href="classkobuki_1_1GpInput.html#a2d71bd6d91b21763677f4f37e37cfc85">data</a>.<a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a5a77ebbf4e04790e65f1bfb9a935db70">analog_input</a>.size();
-<a name="l00058"></a>00058     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea1df38284e536a6b766c89847f5997cf7">Header::GpInput</a>, byteStream);
-<a name="l00059"></a>00059     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(length, byteStream);
-<a name="l00060"></a>00060     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1GpInput.html#a2d71bd6d91b21763677f4f37e37cfc85">data</a>.<a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a4d91ec153b1310b7ef99af7f61850906">digital_input</a>, byteStream);
-<a name="l00061"></a>00061     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classkobuki_1_1GpInput.html#a2d71bd6d91b21763677f4f37e37cfc85">data</a>.<a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a5a77ebbf4e04790e65f1bfb9a935db70">analog_input</a>.size(); ++i)
-<a name="l00062"></a>00062     {
-<a name="l00063"></a>00063       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1GpInput.html#a2d71bd6d91b21763677f4f37e37cfc85">data</a>.<a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a5a77ebbf4e04790e65f1bfb9a935db70">analog_input</a>[i], byteStream);
-<a name="l00064"></a>00064     }
-<a name="l00065"></a>00065     <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00066"></a>00066   }
-<a name="l00067"></a>00067 
-<a name="l00068"></a><a class="code" href="classkobuki_1_1GpInput.html#a28b4dbbd1a1df1b22cda86193dadd60e">00068</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1GpInput.html#a28b4dbbd1a1df1b22cda86193dadd60e">deserialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
-<a name="l00069"></a>00069   {
-<a name="l00070"></a>00070     <span class="keywordflow">if</span> (!(byteStream.size() &gt; 0))
-<a name="l00071"></a>00071     {
-<a name="l00072"></a>00072       <span class="comment">//ROS_WARN_STREAM(&quot;kobuki_node: kobuki_inertia: deserialise failed. empty byte stream.&quot;);</span>
-<a name="l00073"></a>00073       <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00074"></a>00074     }
-<a name="l00075"></a>00075 
-<a name="l00076"></a>00076     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> header_id, length;
-<a name="l00077"></a>00077     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(header_id, byteStream);
-<a name="l00078"></a>00078     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(length, byteStream);
-<a name="l00079"></a>00079     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(<a class="code" href="classkobuki_1_1GpInput.html#a2d71bd6d91b21763677f4f37e37cfc85">data</a>.<a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a4d91ec153b1310b7ef99af7f61850906">digital_input</a>, byteStream);
-<a name="l00080"></a>00080 
-<a name="l00081"></a>00081     <span class="comment">//for (unsigned int i = 0; i &lt; data.analog_input.size(); ++i)</span>
-<a name="l00082"></a>00082     <span class="comment">// It&#39;s actually sending 7 16bit variables.</span>
-<a name="l00083"></a>00083     <span class="comment">// 0-3 : the analog pin inputs</span>
-<a name="l00084"></a>00084     <span class="comment">// 4 : ???</span>
-<a name="l00085"></a>00085     <span class="comment">// 5-6 : 0</span>
-<a name="l00086"></a>00086     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; 4; ++i)
-<a name="l00087"></a>00087     {
-<a name="l00088"></a>00088       <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(<a class="code" href="classkobuki_1_1GpInput.html#a2d71bd6d91b21763677f4f37e37cfc85">data</a>.<a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a5a77ebbf4e04790e65f1bfb9a935db70">analog_input</a>[i], byteStream);
-<a name="l00089"></a>00089     }
-<a name="l00090"></a>00090     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; 3; ++i) {
-<a name="l00091"></a>00091       uint16_t dummy;
-<a name="l00092"></a>00092       <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(dummy, byteStream);
-<a name="l00093"></a>00093     }
-<a name="l00094"></a>00094     <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00095"></a>00095   }
-<a name="l00096"></a>00096 
-<a name="l00097"></a>00097 };
-<a name="l00098"></a>00098 
-<a name="l00099"></a>00099 } <span class="comment">// namespace kobuki</span>
-<a name="l00100"></a>00100 
-<a name="l00101"></a>00101 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_GP_INPUT_HPP__ */</span>
-<a name="l00102"></a>00102 
+<a name="l00038"></a><a class="code" href="classkobuki_1_1GpInput.html#a30ff7258b931c84377ebc9fd22a9a0c0">00038</a>   <a class="code" href="classkobuki_1_1GpInput.html#a30ff7258b931c84377ebc9fd22a9a0c0">GpInput</a>() : packet_handler::<a class="code" href="classpacket__handler_1_1payloadBase.html#abeeed2c26820f45360f886fd4bd4a9f7">payloadBase</a>(false, 16) {};
+<a name="l00039"></a><a class="code" href="structkobuki_1_1GpInput_1_1Data.html">00039</a>   <span class="keyword">struct </span><a class="code" href="structkobuki_1_1GpInput_1_1Data.html">Data</a> {
+<a name="l00040"></a><a class="code" href="structkobuki_1_1GpInput_1_1Data.html#ab4e976ac66dee4f6fcfc6632a4d7080b">00040</a>     <a class="code" href="structkobuki_1_1GpInput_1_1Data.html#ab4e976ac66dee4f6fcfc6632a4d7080b">Data</a>() : <a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a5a77ebbf4e04790e65f1bfb9a935db70">analog_input</a>(4) {}
+<a name="l00041"></a><a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a4d91ec153b1310b7ef99af7f61850906">00041</a>     uint16_t <a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a4d91ec153b1310b7ef99af7f61850906">digital_input</a>;
+<a name="l00047"></a><a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a5a77ebbf4e04790e65f1bfb9a935db70">00047</a>     std::vector&lt;uint16_t&gt; <a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a5a77ebbf4e04790e65f1bfb9a935db70">analog_input</a>;
+<a name="l00048"></a>00048   } <a class="code" href="classkobuki_1_1GpInput.html#a2d71bd6d91b21763677f4f37e37cfc85">data</a>;
+<a name="l00049"></a>00049 
+<a name="l00050"></a><a class="code" href="classkobuki_1_1GpInput.html#a1593df2dfb3739e4b9c83144e744016f">00050</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1GpInput.html#a1593df2dfb3739e4b9c83144e744016f">serialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
+<a name="l00051"></a>00051   {
+<a name="l00052"></a>00052     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea1df38284e536a6b766c89847f5997cf7">Header::GpInput</a>, byteStream);
+<a name="l00053"></a>00053     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2">length</a>, byteStream);
+<a name="l00054"></a>00054     <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1GpInput.html#a2d71bd6d91b21763677f4f37e37cfc85">data</a>.<a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a4d91ec153b1310b7ef99af7f61850906">digital_input</a>, byteStream);
+<a name="l00055"></a>00055     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classkobuki_1_1GpInput.html#a2d71bd6d91b21763677f4f37e37cfc85">data</a>.<a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a5a77ebbf4e04790e65f1bfb9a935db70">analog_input</a>.size(); ++i)
+<a name="l00056"></a>00056     {
+<a name="l00057"></a>00057       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(<a class="code" href="classkobuki_1_1GpInput.html#a2d71bd6d91b21763677f4f37e37cfc85">data</a>.<a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a5a77ebbf4e04790e65f1bfb9a935db70">analog_input</a>[i], byteStream);
+<a name="l00058"></a>00058     }
+<a name="l00059"></a>00059     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; 3; ++i)
+<a name="l00060"></a>00060     {
+<a name="l00061"></a>00061       <a class="code" href="classpacket__handler_1_1payloadBase.html#ab614ccfc29826da5758ae165cb7eabf6">buildBytes</a>(0x0000, byteStream); <span class="comment">//dummy</span>
+<a name="l00062"></a>00062     }
+<a name="l00063"></a>00063     <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00064"></a>00064   }
+<a name="l00065"></a>00065 
+<a name="l00066"></a><a class="code" href="classkobuki_1_1GpInput.html#a28b4dbbd1a1df1b22cda86193dadd60e">00066</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1GpInput.html#a28b4dbbd1a1df1b22cda86193dadd60e">deserialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
+<a name="l00067"></a>00067   {
+<a name="l00068"></a>00068     <span class="keywordflow">if</span> (!(byteStream.size() &gt; <a class="code" href="classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2">length</a>+2))
+<a name="l00069"></a>00069     {
+<a name="l00070"></a>00070       <span class="comment">//std::cout &lt;&lt; &quot;kobuki_node: kobuki_inertia: deserialise failed. not enough byte stream.&quot; &lt;&lt; std::endl;</span>
+<a name="l00071"></a>00071       <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00072"></a>00072     }
+<a name="l00073"></a>00073 
+<a name="l00074"></a>00074     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> header_id, length_packed;
+<a name="l00075"></a>00075     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(header_id, byteStream);
+<a name="l00076"></a>00076     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(length_packed, byteStream);
+<a name="l00077"></a>00077     <span class="keywordflow">if</span>( header_id != <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea1df38284e536a6b766c89847f5997cf7">Header::GpInput</a> ) <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00078"></a>00078     <span class="keywordflow">if</span>( length_packed != <a class="code" href="classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2">length</a> ) <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00079"></a>00079 
+<a name="l00080"></a>00080     <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(<a class="code" href="classkobuki_1_1GpInput.html#a2d71bd6d91b21763677f4f37e37cfc85">data</a>.<a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a4d91ec153b1310b7ef99af7f61850906">digital_input</a>, byteStream);
+<a name="l00081"></a>00081 
+<a name="l00082"></a>00082     <span class="comment">//for (unsigned int i = 0; i &lt; data.analog_input.size(); ++i)</span>
+<a name="l00083"></a>00083     <span class="comment">// It&#39;s actually sending seven 16-bit variables.</span>
+<a name="l00084"></a>00084     <span class="comment">// 0-3 : the analog pin inputs</span>
+<a name="l00085"></a>00085     <span class="comment">// 4 : ???</span>
+<a name="l00086"></a>00086     <span class="comment">// 5-6 : 0</span>
+<a name="l00087"></a>00087     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; 4; ++i)
+<a name="l00088"></a>00088     {
+<a name="l00089"></a>00089       <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(<a class="code" href="classkobuki_1_1GpInput.html#a2d71bd6d91b21763677f4f37e37cfc85">data</a>.<a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a5a77ebbf4e04790e65f1bfb9a935db70">analog_input</a>[i], byteStream);
+<a name="l00090"></a>00090     }
+<a name="l00091"></a>00091     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; 3; ++i) {
+<a name="l00092"></a>00092       uint16_t dummy;
+<a name="l00093"></a>00093       <a class="code" href="classpacket__handler_1_1payloadBase.html#a367c89d2f4ed8a587956f99e62cf865a">buildVariable</a>(dummy, byteStream);
+<a name="l00094"></a>00094     }
+<a name="l00095"></a>00095 
+<a name="l00096"></a>00096     <span class="comment">//showMe();</span>
+<a name="l00097"></a>00097     <span class="keywordflow">return</span> <a class="code" href="classkobuki_1_1GpInput.html#a1aea6a6373295b1536d908d3e24ff639">constrain</a>();
+<a name="l00098"></a>00098   }
+<a name="l00099"></a>00099 
+<a name="l00100"></a><a class="code" href="classkobuki_1_1GpInput.html#a1aea6a6373295b1536d908d3e24ff639">00100</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1GpInput.html#a1aea6a6373295b1536d908d3e24ff639">constrain</a>()
+<a name="l00101"></a>00101   {
+<a name="l00102"></a>00102     <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00103"></a>00103   }
+<a name="l00104"></a>00104 
+<a name="l00105"></a><a class="code" href="classkobuki_1_1GpInput.html#ad9980323ec627e2059e6a275cedc0867">00105</a>   <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1GpInput.html#ad9980323ec627e2059e6a275cedc0867">showMe</a>()
+<a name="l00106"></a>00106   {
+<a name="l00107"></a>00107   }
+<a name="l00108"></a>00108 };
+<a name="l00109"></a>00109 
+<a name="l00110"></a>00110 } <span class="comment">// namespace kobuki</span>
+<a name="l00111"></a>00111 
+<a name="l00112"></a>00112 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_GP_INPUT_HPP__ */</span>
+<a name="l00113"></a>00113 
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -162,7 +173,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Fri Aug 23 2013 15:06:50</small>
+<small>autogenerated on Tue Aug 27 2013 15:31:46</small>
 </div>
 </body>
 </html>
