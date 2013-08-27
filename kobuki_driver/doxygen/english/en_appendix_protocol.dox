@@ -41,7 +41,7 @@ Two bytes of headers, header 0 and hader 1, are fixed value for both bytestreams
 
 @subsection enLength Length
 
-Length indicated the length of following bytes that single bytestream hold. Default size of this field is 1 byte. Length can be used to distinguish each bytestreams. Minimum value of this field is 3.
+Length indicates the length of following bytes that single bytestream hold. Default size of this field is 1 byte. Length can be used to distinguish each bytestreams. Minimum value of this field is 3.
 
 <br>
 
@@ -327,7 +327,7 @@ Basic core sensor data. <!--Robot will sends this data periodically from power o
 <tr><td>Cliff</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when cliff is detected<br>0x01 for right cliff sensor<br>0x02 for central cliff sensor<br>0x04 for left cliff sensor</td></tr>
 <tr height="30"><td>Left encoder</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="2">Accumulated encoder data of left and right wheels in ticks<br>Increments of this value means forward direction<br>It circulates from 0 to 65535</td></tr>
 <tr height="30"><td>Right encoder</td><td align="center">2</td><td align="center"></td><td></td></tr>
-<tr height="30"><td>Left PWM</td><td align="center">1</td><td align="center"></td><td></td><td rowspan="2">PWM value that applied to left and right wheel motor<br>This data should be converted signed type to represent correctly<br>Negative sign indicated backward direction</td></tr>
+<tr height="30"><td>Left PWM</td><td align="center">1</td><td align="center"></td><td></td><td rowspan="2">PWM value that applied to left and right wheel motor<br>This data should be converted signed type to represent correctly<br>Negative sign indicates backward direction</td></tr>
 <tr height="30"><td>Right PWM</td><td align="center">1</td><td align="center"></td><td></td></tr>
 <tr><td>Button</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when button is pressed<br>0x01 for Button 0<br>0x02 for Button 1<br>0x04 for Button 2</td></tr>
 <tr><td>Charger</td><td align="center">1</td><td align="center"></td><td></td><td>0 for DISCHARGING state<br>2 for DOCKING_CHARGED state<br>6 for DOCKING_CHARGING state<br>18 for ADAPTER_CHARGED state<br>22 for ADAPTER_CHARGING state</td></tr>
