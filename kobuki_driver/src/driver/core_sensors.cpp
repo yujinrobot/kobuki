@@ -47,7 +47,7 @@ bool CoreSensors::deserialise(ecl::PushAndPop<unsigned char> & byteStream)
 {
   if (!(byteStream.size() > length+2))
   {
-    //ROS_WARN_STREAM("kobuki_node: kobuki_default: deserialise failed. empty byte stream.");
+    //std::cout << "kobuki_node: kobuki_default: deserialise failed. empty byte stream.");
     return false;
   }
 
