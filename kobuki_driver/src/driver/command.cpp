@@ -188,11 +188,6 @@ void Command::resetBuffer(Buffer& buffer) {
 
 bool Command::serialise(ecl::PushAndPop<unsigned char> & byteStream)
 {
-  if (!(byteStream.size() > 0))
-  {
-    //ROS_WARN_STREAM("kobuki_node: kobuki_command: serialise failed. empty byte stream.");
-    return false;
-  }
   // need to be sure we don't pass through an emum to the Trans'd buildBytes functions.
   unsigned char cmd = static_cast<unsigned char>(data.command);
   unsigned char length = 0;

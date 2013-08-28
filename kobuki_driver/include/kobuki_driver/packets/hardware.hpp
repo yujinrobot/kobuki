@@ -53,7 +53,7 @@ public:
   {
     if (!(byteStream.size() > length+2))
     {
-      //ROS_WARN_STREAM("kobuki_node: kobuki_hw: deserialise failed. empty byte stream.");
+      //std::cout << "kobuki_node: kobuki_hw: deserialise failed. not enough byte stream." << std::endl;
       return false;
     }
 
