@@ -163,7 +163,7 @@
 	      <torque>1.0</torque>
 	      <velocity_command_timeout>0.6</velocity_command_timeout>
 	      <cliff_sensor_left_name>cliff_sensor_left</cliff_sensor_left_name>
-	      <cliff_sensor_front_name>cliff_sensor_front</cliff_sensor_front_name>
+	      <cliff_sensor_center_name>cliff_sensor_front</cliff_sensor_center_name>
 	      <cliff_sensor_right_name>cliff_sensor_right</cliff_sensor_right_name>
 	      <cliff_detection_threshold>0.04</cliff_detection_threshold>
 	      <bumper_name>bumpers</bumper_name>
