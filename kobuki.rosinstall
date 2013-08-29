@@ -24,5 +24,6 @@
 
 - git: {local-name: yujin_ocs, version: hydro-devel, uri: 'https://github.com/yujinrobot/yujin_ocs.git'}
 - git: {local-name: kobuki_msgs, version: hydro-devel, uri: 'https://github.com/yujinrobot/kobuki_msgs.git'}
+- git: {local-name: kobuki_core, version: hydro-devel, uri: 'https://github.com/yujinrobot/kobuki_core.git'}
 - git: {local-name: kobuki, version: hydro-devel, uri: 'https://github.com/yujinrobot/kobuki.git'}
 - git: {local-name: xacro, version: hydro-devel, uri: 'https://github.com/ros/xacro.git'}
