@@ -55,7 +55,7 @@ public:
 
   bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
+    if (byteStream.size() < length+2)
     {
       //std::cout << "kobuki_node: kobuki_udid: deserialise failed. not enough byte stream." << std::endl;
       return false;

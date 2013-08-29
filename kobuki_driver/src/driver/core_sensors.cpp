@@ -45,7 +45,7 @@ bool CoreSensors::serialise(ecl::PushAndPop<unsigned char> & byteStream)
 }
 bool CoreSensors::deserialise(ecl::PushAndPop<unsigned char> & byteStream)
 {
-  if (!(byteStream.size() > length+2))
+  if (byteStream.size() < length+2)
   {
     //std::cout << "kobuki_node: kobuki_default: deserialise failed. not enough byte stream." << std::endl;
     return false;

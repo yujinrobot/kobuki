@@ -115,6 +115,7 @@ public:
   virtual bool checkSum();
   unsigned int numberOfDataToRead();
   void getBuffer(BufferType & bufferRef);
+  void getPayload(BufferType & bufferRef);
 
 protected:
   bool WaitForStx(const unsigned char datum);

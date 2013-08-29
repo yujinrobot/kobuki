@@ -58,7 +58,7 @@ public:
 
   bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > length+2))
+    if (byteStream.size() < length+2)
     {
       //std::cout << "kobuki_node: kobuki_eeprom: deserialise failed. not enough byte stream." << std::endl;
       return false;

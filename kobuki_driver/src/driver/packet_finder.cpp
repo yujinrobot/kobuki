@@ -112,6 +112,15 @@ void PacketFinderBase::getBuffer(BufferType & bufferRef)
   bufferRef = buffer;
 }
 
+void PacketFinderBase::getPayload(BufferType & bufferRef)
+{
+  bufferRef.clear();
+  bufferRef.resize( buffer.size() - size_stx - size_etx - size_length_field - size_checksum_field );
+  for (unsigned int i = size_stx + size_length_field; i < buffer.size() - size_etx - size_checksum_field; i++) {
+    bufferRef.push_back(buffer[i]);
+  }
+}
+
 /**
  * Checks for incoming packets.
  *

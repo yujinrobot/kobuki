@@ -241,20 +241,17 @@ void Kobuki::spin()
 
     if (packet_finder.update(buf, n)) // this clears packet finder's buffer and transfers important bytes into it
     {
-      packet_finder.getBuffer(data_buffer); // get a reference to packet finder's buffer.
       PacketFinder::BufferType local_buffer;
-      local_buffer = data_buffer; //copy it to local_buffer, debugging purpose.
+      packet_finder.getBuffer(local_buffer); // get a reference to packet finder's buffer.
       sig_raw_data_stream.emit(local_buffer);
 
-      // deserialise; first three bytes are not data.
-      data_buffer.pop_front();
-      data_buffer.pop_front();
-      data_buffer.pop_front();
+      packet_finder.getPayload(data_buffer);// get a reference to packet finder's buffer.
 
       lockDataAccess();
-      while (data_buffer.size() > 1/*size of etx*/)
+      while (data_buffer.size() > 0)
       {
         std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
+        std::cout << "length: " << (unsigned int)data_buffer[1] << " | ";
         std::cout << "remains: " << data_buffer.size() << " | ";
         std::cout << "local_buffer: " << local_buffer.size() << " | ";
         std::cout << std::endl;
@@ -262,39 +259,39 @@ void Kobuki::spin()
         {
           // these come with the streamed feedback
           case Header::CoreSensors:
-            core_sensors.deserialise(data_buffer);
+            if( !core_sensors.deserialise(data_buffer) ) { fixPayload(data_buffer); break; }
             event_manager.update(core_sensors.data, cliff.data.bottom);
             break;
           case Header::DockInfraRed:
-            dock_ir.deserialise(data_buffer);
+            if( !dock_ir.deserialise(data_buffer) ) { fixPayload(data_buffer); break; }
             break;
           case Header::Inertia:
-            inertia.deserialise(data_buffer);
+            if( !inertia.deserialise(data_buffer) ) { fixPayload(data_buffer); break; }
 
             // Issue #274: use first imu reading as zero heading; update when reseting odometry
             if (isnan(heading_offset) == true)
               heading_offset = (static_cast<double>(inertia.data.angle) / 100.0) * ecl::pi / 180.0;
             break;
           case Header::Cliff:
-            cliff.deserialise(data_buffer);
+            if( !cliff.deserialise(data_buffer) ) { fixPayload(data_buffer); break; }
             break;
           case Header::Current:
-            current.deserialise(data_buffer);
+            if( !current.deserialise(data_buffer) ) { fixPayload(data_buffer); break; }
             break;
           case Header::GpInput:
-            gp_input.deserialise(data_buffer);
+            if( !gp_input.deserialise(data_buffer) ) { fixPayload(data_buffer); break; }
             event_manager.update(gp_input.data.digital_input);
             break;
           case Header::ThreeAxisGyro:
-            three_axis_gyro.deserialise(data_buffer);
+            if( !three_axis_gyro.deserialise(data_buffer) ) { fixPayload(data_buffer); break; }
             break;
           // the rest are only included on request
           case Header::Hardware:
-            hardware.deserialise(data_buffer);
+            if( !hardware.deserialise(data_buffer) ) { fixPayload(data_buffer); break; }
             //sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));
             break;
           case Header::Firmware:
-            firmware.deserialise(data_buffer);
+            if( !firmware.deserialise(data_buffer) ) { fixPayload(data_buffer); break; }
             try
             {
               // Check firmware/driver compatibility; major version must be the same
@@ -334,7 +331,7 @@ void Kobuki::spin()
             }
             break;
           case Header::UniqueDeviceID:
-            unique_device_id.deserialise(data_buffer);
+            if( !unique_device_id.deserialise(data_buffer) ) { fixPayload(data_buffer); break; }
             sig_version_info.emit( VersionInfo( firmware.data.version, hardware.data.version
                 , unique_device_id.data.udid0, unique_device_id.data.udid1, unique_device_id.data.udid2 ));
             sig_info.emit("version info - Hardware: " + VersionInfo::toString(hardware.data.version)
@@ -342,42 +339,12 @@ void Kobuki::spin()
             version_info_reminder = 0;
             break;
           case Header::ControllerInfo:
-            controller_info.deserialise(data_buffer);
+            if( !controller_info.deserialise(data_buffer) ) { fixPayload(data_buffer); break; }
             sig_controller_info.emit();
             controller_info_reminder = 0;
             break;
-          default:
-            if (data_buffer.size() < 3 ) { /* minimum is 3, header_id, length, etx */
-              sig_error.emit("malformed subpayload detected.");
-              data_buffer.clear();
-            } else {
-              std::stringstream ostream;
-              unsigned int header_id = static_cast<unsigned int>(data_buffer.pop_front());
-              unsigned int length = static_cast<unsigned int>(data_buffer.pop_front());
-              unsigned int remains = data_buffer.size();
-              unsigned int to_pop;
-
-              ostream << "[" << header_id << "]";
-              ostream << "[" << length << "] ";
-
-              ostream << "[";
-              ostream << std::setfill('0') << std::uppercase;
-              ostream << std::hex << std::setw(2) << header_id << " " << std::dec;
-              ostream << std::hex << std::setw(2) << length << " " << std::dec;
-
-              if (remains < length) to_pop = remains;
-              else                  to_pop = length;
-
-              for (unsigned int i = 0; i < to_pop; i++ ) {
-                unsigned int byte = static_cast<unsigned int>(data_buffer.pop_front());
-                ostream << std::hex << std::setw(2) << byte << " " << std::dec;
-              }
-              ostream << "]";
-
-              if (remains < length) sig_error.emit("malformed sub-payload detected. "  + ostream.str());
-              else                  sig_debug.emit("unexpected sub-payload received. " + ostream.str());
-
-            }
+          default: // in the case of unknown or mal-formed sub-payload
+            fixPayload(data_buffer);
             break;
         }
       }
@@ -404,6 +371,41 @@ void Kobuki::spin()
   }
   sig_error.emit("Driver worker thread shutdown!");
 }
+
+void Kobuki::fixPayload(ecl::PushAndPop<unsigned char> & byteStream)
+{
+  if (byteStream.size() < 3 ) { /* minimum size of sub-payload is 3; header_id, length, data */
+    sig_error.emit("too small sub-payload detected.");
+    byteStream.clear();
+  } else {
+    std::stringstream ostream;
+    unsigned int header_id = static_cast<unsigned int>(byteStream.pop_front());
+    unsigned int length = static_cast<unsigned int>(byteStream.pop_front());
+    unsigned int remains = byteStream.size();
+    unsigned int to_pop;
+
+    ostream << "[" << header_id << "]";
+    ostream << "[" << length << "]";
+
+    ostream << "[";
+    ostream << std::setfill('0') << std::uppercase;
+    ostream << std::hex << std::setw(2) << header_id << " " << std::dec;
+    ostream << std::hex << std::setw(2) << length << " " << std::dec;
+
+    if (remains < length) to_pop = remains;
+    else                  to_pop = length;
+
+    for (unsigned int i = 0; i < to_pop; i++ ) {
+      unsigned int byte = static_cast<unsigned int>(byteStream.pop_front());
+      ostream << std::hex << std::setw(2) << byte << " " << std::dec;
+    }
+    ostream << "]";
+
+    if (remains < length) sig_error.emit("malformed sub-payload detected. "  + ostream.str());
+    else                  sig_debug.emit("unknown sub-payload detected. " + ostream.str());
+  }
+}
+
 
 /*****************************************************************************
  ** Implementation [Human Friendly Accessors]
