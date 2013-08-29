@@ -25,6 +25,7 @@
   <run_depend>kobuki_ftdi</run_depend>
   <run_depend>kobuki_keyop</run_depend>
   <run_depend>kobuki_node</run_depend>
+  <run_depend>kobuki_random_walker</run_depend>
   <run_depend>kobuki_safety_controller</run_depend>
   <run_depend>kobuki_testsuite</run_depend>
 
