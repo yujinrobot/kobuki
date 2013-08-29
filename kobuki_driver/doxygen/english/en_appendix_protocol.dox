@@ -180,6 +180,8 @@ Here are template functions to handle it on kobuki_deriver, @ref packet_handler:
 <tr><td align="center">10</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">11</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">12</td><td>General Purpose Output</td><td>Control general purpose outputs</td></tr>
+<tr><td align="center">13</td><td>Set Controller Gain</td><td>Set PID gain of wheel velocity controller</td></tr>
+<tr><td align="center">14</td><td>Get Controller Gain</td><td>Request current PID gain of wheel velocity controller</td></tr>
 </table>
 
 <br>
@@ -272,6 +274,40 @@ This command has multiple roles. It controls LEDs, digital outputs and external 
 <br>
 
 
+<!--- Set Controller Gain --->
+@subsection enSetControllerGain Set Controller Gain
+
+Set PID gain of wheel velocity controller of robot.
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">13</td><td>0x0D</td><td>Fixed</td></tr>
+<tr><th rowspan="4">Data</th><td>Type</td><td align="center">1</td><td align="center"></td><td></td><td>0 for factory-default PID gain<br>1 for user-configured PID gain</td></tr>
+<tr><td>P gain</td><td align="center">4</td><td align="center"></td><td></td><td>Kp * 1000</td></tr>
+<tr><td>I gain</td><td align="center">4</td><td align="center"></td><td></td><td>Ki * 1000</td></tr>
+<tr><td>D gain</td><td align="center">4</td><td align="center"></td><td></td><td>Kd * 1000</td></tr>
+</table>
+
+<br>
+
+
+<!--- Get Controller Gain --->
+@subsection enGetControllerGain Get Controller Gain
+
+Request PID gain of wheel velocity controller of robot.
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">14</td><td>0x0E</td><td>Fixed</td></tr>
+<tr><th>Data</th><td>unused</td><td align="center">1</td><td align="center"></td><td></td><td></td></tr>
+</table>
+
+<br>
+
+
+
 <!-----------------------------
          Feedback Packets
 ------------------------------->
@@ -307,6 +343,7 @@ Kobuki sends below default feedbacks periodically in 50 Hz, when it powered on.
 <tr><td align="center">18</td><td><i>Reserved</i></td><td></td><td></td></tr>
 <tr><td align="center">19</td><td>Unique Device IDentifier(UDID)</td><td>Unique number to identify robot</td><td>On request</td></tr>
 <tr><td align="center">20</td><td><i>Reserved</i></td><td></td><td></td></tr>
+<tr><td align="center">21</td><td>Controller Info</td><td>PID gain values of wheel velocity controller.</td><td>On request</td></tr>
 </table>
 
 <br>
@@ -581,6 +618,25 @@ This sub-payload will be sent on request.
 @sa @ref enRequestExtra
 
 <br>
+
+
+<!--- Controller Info --->
+@subsection enControllerInfo Controller Info
+
+Contains PID gain of wheel velocity controller of robot.
+
+<table>
+<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
+<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
+<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">21</td><td>0x15</td><td>Fixed</td></tr>
+<tr><th rowspan="4">Data</th><td>Type</td><td align="center">1</td><td align="center"></td><td></td><td>Current controller setup<br>0 for factory-default PID gain<br>1 for user-configured PID gain</td></tr>
+<tr><td>P gain</td><td align="center">4</td><td align="center"></td><td></td><td>Kp * 1000</td></tr>
+<tr><td>I gain</td><td align="center">4</td><td align="center"></td><td></td><td>Ki * 1000</td></tr>
+<tr><td>D gain</td><td align="center">4</td><td align="center"></td><td></td><td>Kd * 1000</td></tr>
+</table>
+
+<br>
+
 
 
 **/
