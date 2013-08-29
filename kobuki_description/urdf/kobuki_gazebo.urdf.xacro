@@ -36,7 +36,7 @@
 	      <update_rate>50.0</update_rate>
 	      <visualize>true</visualize>
 	      <contact>
-	        <collision>base_footprint_geom_base_link</collision>
+	        <collision>base_footprint_collision_base_link</collision>
 	      </contact>
 	    </sensor>
 	  </gazebo>
@@ -167,7 +167,6 @@
 	      <cliff_sensor_right_name>cliff_sensor_right</cliff_sensor_right_name>
 	      <cliff_detection_threshold>0.04</cliff_detection_threshold>
 	      <bumper_name>bumpers</bumper_name>
-	      <base_collision_model_link>base_link</base_collision_model_link>
         <imu_name>imu</imu_name>
 	    </plugin>
 	  </gazebo>
