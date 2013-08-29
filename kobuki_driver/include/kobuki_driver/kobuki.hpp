@@ -129,6 +129,7 @@ public:
   Inertia::Data getInertiaData() const { return inertia.data; }
   GpInput::Data getGpInputData() const { return gp_input.data; }
   ThreeAxisGyro::Data getRawInertiaData() const { return three_axis_gyro.data; }
+  ControllerInfo::Data getControllerInfoData() const { return controller_info.data; }
 
   /*********************
   ** Feedback
@@ -151,6 +152,9 @@ public:
   void setDigitalOutput(const DigitalOutput &digital_output);
   void setExternalPower(const DigitalOutput &digital_output);
   void playSoundSequence(const enum SoundSequences &number);
+  void setControllerGain(const unsigned char &type, const unsigned int &p_gain,
+                         const unsigned int &i_gain, const unsigned int &d_gain);
+  void getControllerGain();
 
   /*********************
   ** Debugging
@@ -199,6 +203,7 @@ private:
   Firmware firmware; // requestable
   UniqueDeviceID unique_device_id; // requestable
   ThreeAxisGyro three_axis_gyro;
+  ControllerInfo controller_info; // requestable
 
   ecl::Serial serial;
   PacketFinder packet_finder;
@@ -206,6 +211,7 @@ private:
   bool is_alive; // used as a flag set by the data stream watchdog
 
   int version_info_reminder;
+  int controller_info_reminder;
 
   /*********************
   ** Commands
@@ -228,7 +234,7 @@ private:
   /*********************
   ** Signals
   **********************/
-  ecl::Signal<> sig_stream_data;
+  ecl::Signal<> sig_stream_data, sig_controller_info;
   ecl::Signal<const VersionInfo&> sig_version_info;
   ecl::Signal<const std::string&> sig_debug, sig_info, sig_warn, sig_error;
   ecl::Signal<Command::Buffer&> sig_raw_data_command; // should be const, but pushnpop is not fully realised yet for const args in the formatters.

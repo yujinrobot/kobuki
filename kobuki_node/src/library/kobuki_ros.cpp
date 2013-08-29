@@ -61,6 +61,7 @@ namespace kobuki
 KobukiRos::KobukiRos(std::string& node_name) :
     name(node_name), cmd_vel_timed_out_(false), serial_timed_out_(false),
     slot_version_info(&KobukiRos::publishVersionInfo, *this),
+    slot_controller_info(&KobukiRos::publishControllerInfo, *this),
     slot_stream_data(&KobukiRos::processStreamData, *this),
     slot_button_event(&KobukiRos::publishButtonEvent, *this),
     slot_bumper_event(&KobukiRos::publishBumperEvent, *this),
@@ -111,6 +112,7 @@ bool KobukiRos::init(ros::NodeHandle& nh)
    **********************/
   slot_stream_data.connect(name + std::string("/stream_data"));
   slot_version_info.connect(name + std::string("/version_info"));
+  slot_controller_info.connect(name + std::string("/controller_info"));
   slot_button_event.connect(name + std::string("/button_event"));
   slot_bumper_event.connect(name + std::string("/bumper_event"));
   slot_cliff_event.connect(name + std::string("/cliff_event"));
@@ -305,6 +307,7 @@ void KobukiRos::advertiseTopics(ros::NodeHandle& nh)
   ** Kobuki Esoterics
   **********************/
   version_info_publisher = nh.advertise < kobuki_msgs::VersionInfo > ("version_info",  100, true); // latched publisher
+  controller_info_publisher = nh.advertise < kobuki_msgs::ControllerInfo > ("controller_info",  100, true); // latched publisher
   button_event_publisher = nh.advertise < kobuki_msgs::ButtonEvent > ("events/button", 100);
   bumper_event_publisher = nh.advertise < kobuki_msgs::BumperEvent > ("events/bumper", 100);
   cliff_event_publisher  = nh.advertise < kobuki_msgs::CliffEvent >  ("events/cliff",  100);
@@ -334,6 +337,7 @@ void KobukiRos::subscribeTopics(ros::NodeHandle& nh)
   sound_command_subscriber =  nh.subscribe(std::string("commands/sound"), 10, &KobukiRos::subscribeSoundCommand, this);
   reset_odometry_subscriber = nh.subscribe("commands/reset_odometry", 10, &KobukiRos::subscribeResetOdometry, this);
   motor_power_subscriber = nh.subscribe("commands/motor_power", 10, &KobukiRos::subscribeMotorPower, this);
+  controller_info_command_subscriber =  nh.subscribe(std::string("commands/controller_info"), 10, &KobukiRos::subscribeControllerInfoCommand, this);
 }
 
 
