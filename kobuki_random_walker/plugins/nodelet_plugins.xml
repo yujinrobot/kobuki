@@ -1,0 +1,9 @@
+<library path="lib/libkobuki_random_walker_nodelet">
+  <class name="kobuki_random_walker/RandomWalkerControllerNodelet"
+         type="kobuki::RandomWalkerControllerNodelet"
+         base_class_type="nodelet::Nodelet">
+    <description>
+      Nodelet the Kobuki's random walker controller
+    </description>
+  </class>
+</library>

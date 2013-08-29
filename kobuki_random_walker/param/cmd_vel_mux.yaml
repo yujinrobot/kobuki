@@ -1,0 +1,11 @@
+# cmd vel mux config
+subscribers:
+  - name:        "Safe reactive controller"
+    topic:       "safety_controller"
+    timeout:     0.2
+    priority:    1
+  - name:        "Random Walker"
+    topic:       "random_walker"
+    timeout:     0.2
+    priority:    0
+publisher:       "output/cmd_vel"
