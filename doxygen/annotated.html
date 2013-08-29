@@ -61,9 +61,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr><td class="indexkey"><a class="el" href="classkobuki_1_1Cliff.html">kobuki::Cliff</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="structkobuki_1_1CliffEvent.html">kobuki::CliffEvent</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td class="indexvalue"></td></tr>
+  <tr><td class="indexkey"><a class="el" href="classkobuki_1_1ControllerInfo.html">kobuki::ControllerInfo</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="classkobuki_1_1CoreSensors.html">kobuki::CoreSensors</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="classkobuki_1_1Current.html">kobuki::Current</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="structkobuki_1_1Command_1_1Data.html">kobuki::Command::Data</a></td><td class="indexvalue"><a class="el" href="structkobuki_1_1Command_1_1Data.html" title="Data structure containing data for commands.">Data</a> structure containing data for commands </td></tr>
+  <tr><td class="indexkey"><a class="el" href="structkobuki_1_1Eeprom_1_1Data.html">kobuki::Eeprom::Data</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="structkobuki_1_1Firmware_1_1Data.html">kobuki::Firmware::Data</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="structkobuki_1_1GpInput_1_1Data.html">kobuki::GpInput::Data</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="structkobuki_1_1Hardware_1_1Data.html">kobuki::Hardware::Data</a></td><td class="indexvalue"></td></tr>
@@ -71,10 +73,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr><td class="indexkey"><a class="el" href="structkobuki_1_1ThreeAxisGyro_1_1Data.html">kobuki::ThreeAxisGyro::Data</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="structkobuki_1_1UniqueDeviceID_1_1Data.html">kobuki::UniqueDeviceID::Data</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="structkobuki_1_1Cliff_1_1Data.html">kobuki::Cliff::Data</a></td><td class="indexvalue"></td></tr>
+  <tr><td class="indexkey"><a class="el" href="structkobuki_1_1ControllerInfo_1_1Data.html">kobuki::ControllerInfo::Data</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="structkobuki_1_1CoreSensors_1_1Data.html">kobuki::CoreSensors::Data</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="structkobuki_1_1Current_1_1Data.html">kobuki::Current::Data</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="structkobuki_1_1DockIR_1_1Data.html">kobuki::DockIR::Data</a></td><td class="indexvalue"></td></tr>
-  <tr><td class="indexkey"><a class="el" href="structkobuki_1_1Eeprom_1_1Data.html">kobuki::Eeprom::Data</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="classkobuki_1_1DiffDrive.html">kobuki::DiffDrive</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="structkobuki_1_1DigitalOutput.html">kobuki::DigitalOutput</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="classkobuki_1_1DockIR.html">kobuki::DockIR</a></td><td class="indexvalue"></td></tr>
@@ -88,7 +90,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr><td class="indexkey"><a class="el" href="classkobuki_1_1Inertia.html">kobuki::Inertia</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="structkobuki_1_1InputEvent.html">kobuki::InputEvent</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="classkobuki_1_1Kobuki.html">kobuki::Kobuki</a></td><td class="indexvalue">The core kobuki driver class </td></tr>
-  <tr><td class="indexkey"><a class="el" href="classKobukiManager.html">KobukiManager</a></td><td class="indexvalue"></td></tr>
+  <tr><td class="indexkey"><a class="el" href="classKobukiManager.html">KobukiManager</a></td><td class="indexvalue">Keyboard remote control for our robot core (mobile base) </td></tr>
   <tr><td class="indexkey"><a class="el" href="classkobuki_1_1PacketFinder.html">kobuki::PacketFinder</a></td><td class="indexvalue"></td></tr>
   <tr><td class="indexkey"><a class="el" href="classkobuki_1_1PacketFinderBase.html">kobuki::PacketFinderBase</a></td><td class="indexvalue">Provides simple packet finder which may be consist of stx, etx, payload, .. </td></tr>
   <tr><td class="indexkey"><a class="el" href="classkobuki_1_1Parameters.html">kobuki::Parameters</a></td><td class="indexvalue">Parameter list and validator for the kobuki </td></tr>
@@ -122,7 +124,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Tue Aug 27 2013 17:01:53</small>
+<small>autogenerated on Thu Aug 29 2013 18:37:03</small>
 </div>
 </body>
 </html>

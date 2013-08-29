@@ -1,15 +1,3 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classpacket__handler_1_1payloadBase.html" title="Provides base class for payloads." alt="" coords="7,299,199,328"/>
-<area shape="rect" id="node3" href="$classkobuki_1_1Cliff.html" title="kobuki::Cliff" alt="" coords="285,5,376,35"/>
-<area shape="rect" id="node5" href="$classkobuki_1_1Command.html" title="kobuki::Command" alt="" coords="267,59,395,88"/>
-<area shape="rect" id="node7" href="$classkobuki_1_1CoreSensors.html" title="kobuki::CoreSensors" alt="" coords="259,112,403,141"/>
-<area shape="rect" id="node9" href="$classkobuki_1_1Current.html" title="kobuki::Current" alt="" coords="276,165,385,195"/>
-<area shape="rect" id="node11" href="$classkobuki_1_1DockIR.html" title="kobuki::DockIR" alt="" coords="275,219,387,248"/>
-<area shape="rect" id="node13" href="$classkobuki_1_1Eeprom.html" title="kobuki::Eeprom" alt="" coords="275,272,387,301"/>
-<area shape="rect" id="node15" href="$classkobuki_1_1Firmware.html" title="kobuki::Firmware" alt="" coords="269,325,392,355"/>
-<area shape="rect" id="node17" href="$classkobuki_1_1GpInput.html" title="kobuki::GpInput" alt="" coords="273,379,388,408"/>
-<area shape="rect" id="node19" href="$classkobuki_1_1Hardware.html" title="kobuki::Hardware" alt="" coords="269,432,392,461"/>
-<area shape="rect" id="node21" href="$classkobuki_1_1Inertia.html" title="kobuki::Inertia" alt="" coords="279,485,383,515"/>
-<area shape="rect" id="node23" href="$classkobuki_1_1ThreeAxisGyro.html" title="kobuki::ThreeAxisGyro" alt="" coords="253,539,408,568"/>
-<area shape="rect" id="node25" href="$classkobuki_1_1UniqueDeviceID.html" title="kobuki::UniqueDeviceID" alt="" coords="249,592,412,621"/>
+<area shape="rect" id="node1" href="$classKobukiManager.html" title="Keyboard remote control for our robot core (mobile base)." alt="" coords="5,5,117,35"/>
 </map>

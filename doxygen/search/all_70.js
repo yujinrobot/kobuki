@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['p_5fgain',['p_gain',['../structkobuki_1_1Command_1_1Data.html#a24fcae3f22488d412639199dc1907dce',1,'kobuki::Command::Data::p_gain()'],['../structkobuki_1_1ControllerInfo_1_1Data.html#afe11ee8656d826da50c30d8b5ba93082',1,'kobuki::ControllerInfo::Data::p_gain()']]],
   ['packet_5ffinder',['packet_finder',['../classkobuki_1_1Kobuki.html#aa438e90f351c31b1ae6f9cdaddce6058',1,'kobuki::Kobuki']]],
   ['packet_5ffinder_2ecpp',['packet_finder.cpp',['../packet__finder_8cpp.html',1,'']]],
   ['packet_5ffinder_2ehpp',['packet_finder.hpp',['../packet__finder_8hpp.html',1,'']]],
@@ -18,16 +19,17 @@ var searchData=
   ['payloadbase',['payloadBase',['../classpacket__handler_1_1payloadBase.html#abeeed2c26820f45360f886fd4bd4a9f7',1,'packet_handler::payloadBase']]],
   ['payloadtype',['PayloadType',['../classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5e',1,'kobuki::Header']]],
   ['percent',['percent',['../classkobuki_1_1Battery.html#aaf8c2336818dff5cded3f2f3dca331dc',1,'kobuki::Battery']]],
-  ['playsoundsequence',['playSoundSequence',['../classkobuki_1_1Kobuki.html#afaf3bd9ab3e781fec84200041ed95f30',1,'kobuki::Kobuki::playSoundSequence()'],['../classkobuki_1_1Command.html#a9eb46f3f36573b8168252b13434a7260',1,'kobuki::Command::PlaySoundSequence()']]],
+  ['playsoundsequence',['PlaySoundSequence',['../classkobuki_1_1Command.html#a9eb46f3f36573b8168252b13434a7260',1,'kobuki::Command::PlaySoundSequence()'],['../classkobuki_1_1Kobuki.html#afaf3bd9ab3e781fec84200041ed95f30',1,'kobuki::Kobuki::playSoundSequence()']]],
   ['pluggedtoadapter',['PluggedToAdapter',['../structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7a89960e7b0f506f500ca8d1882c7371fe',1,'kobuki::PowerEvent']]],
   ['pluggedtodockbase',['PluggedToDockbase',['../structkobuki_1_1PowerEvent.html#a1f2a9a2f26540757d01f6430edcd75b7ae4ad9a2a92e08de985f2457c4e9944dd',1,'kobuki::PowerEvent']]],
   ['point_5fvelocity',['point_velocity',['../classkobuki_1_1DiffDrive.html#ac02cea6f6f4e072326be6df76b5b3adb',1,'kobuki::DiffDrive']]],
   ['pointvelocity',['pointVelocity',['../classkobuki_1_1DiffDrive.html#a91c8ef73aef454b10edc3364c864d677',1,'kobuki::DiffDrive']]],
-  ['pose',['pose',['../classKobukiManager.html#ad0ed629496ed8578df47bd15d4a1b3f6',1,'KobukiManager']]],
+  ['pose',['pose',['../classKobukiManager.html#aa854734e3ebf2638c3be4d93c162257f',1,'KobukiManager']]],
   ['powerevent',['PowerEvent',['../structkobuki_1_1PowerEvent.html',1,'kobuki']]],
   ['pressed',['Pressed',['../structkobuki_1_1ButtonEvent.html#ad74db533b4ed915d35dcb4dcc3aa424da028a011233cc9802321d6e1d05824a16',1,'kobuki::ButtonEvent::Pressed()'],['../structkobuki_1_1BumperEvent.html#ae9874ebe03039f3f72a3e45edd3ef886af99360117ccb93fa96e2255fd4eecdf9',1,'kobuki::BumperEvent::Pressed()']]],
   ['printsigslotconnections',['printSigSlotConnections',['../classkobuki_1_1Kobuki.html#a74865ce787f6dfc15e55fddf0646dccd',1,'kobuki::Kobuki']]],
+  ['processkeyboardinput',['processKeyboardInput',['../classKobukiManager.html#a5fe665b8559f87eb85c46b860bf040c3',1,'KobukiManager']]],
   ['processmotion',['processMotion',['../classKobukiManager.html#a3f21876cbc4f349b4ae711395c8c2dd3',1,'KobukiManager']]],
-  ['processstreamdata',['processStreamData',['../classKobukiManager.html#a8b7d112844422e6d0e1bb67acacfc6e5',1,'KobukiManager::processStreamData()'],['../classKobukiManager.html#a8b7d112844422e6d0e1bb67acacfc6e5',1,'KobukiManager::processStreamData()']]],
+  ['processstreamdata',['processStreamData',['../classKobukiManager.html#a8b7d112844422e6d0e1bb67acacfc6e5',1,'KobukiManager::processStreamData()'],['../classKobukiManager.html#a8b7d112844422e6d0e1bb67acacfc6e5',1,'KobukiManager::processStreamData()'],['../classKobukiManager.html#a8b7d112844422e6d0e1bb67acacfc6e5',1,'KobukiManager::processStreamData()']]],
   ['processversioninfo',['processVersionInfo',['../classKobukiManager.html#a40431417c3d7cf986620b1ae3f2c7146',1,'KobukiManager']]]
 ];

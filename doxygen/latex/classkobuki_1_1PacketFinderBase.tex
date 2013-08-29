@@ -47,6 +47,8 @@ void {\bf enable\-Verbose} ()
 \item 
 void {\bf get\-Buffer} ({\bf \-Buffer\-Type} \&buffer\-Ref)
 \item 
+void {\bf get\-Payload} ({\bf \-Buffer\-Type} \&buffer\-Ref)
+\item 
 unsigned int {\bf number\-Of\-Data\-To\-Read} ()
 \item 
 {\bf \-Packet\-Finder\-Base} ()
@@ -257,6 +259,17 @@ waiting\-For\-Etx\label{classkobuki_1_1PacketFinderBase_a95a1d9a9e4de9401769771b
 
 \-Definition at line 110 of file packet\-\_\-finder.\-cpp.
 
+\index{kobuki\-::\-Packet\-Finder\-Base@{kobuki\-::\-Packet\-Finder\-Base}!get\-Payload@{get\-Payload}}
+\index{get\-Payload@{get\-Payload}!kobuki::PacketFinderBase@{kobuki\-::\-Packet\-Finder\-Base}}
+\subsubsection[{get\-Payload}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Packet\-Finder\-Base\-::get\-Payload} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-Buffer\-Type} \&}]{buffer\-Ref}
+\end{DoxyParamCaption}
+)}\label{classkobuki_1_1PacketFinderBase_a3b7d8eb69f43f02a8cdbb9a908740bba}
+
+
+\-Definition at line 115 of file packet\-\_\-finder.\-cpp.
+
 \index{kobuki\-::\-Packet\-Finder\-Base@{kobuki\-::\-Packet\-Finder\-Base}!number\-Of\-Data\-To\-Read@{number\-Of\-Data\-To\-Read}}
 \index{number\-Of\-Data\-To\-Read@{number\-Of\-Data\-To\-Read}!kobuki::PacketFinderBase@{kobuki\-::\-Packet\-Finder\-Base}}
 \subsubsection[{number\-Of\-Data\-To\-Read}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int {\bf kobuki\-::\-Packet\-Finder\-Base\-::number\-Of\-Data\-To\-Read} (
@@ -290,7 +303,7 @@ bool \-: true if a valid incoming packet has been found.
 \end{DoxyReturn}
 
 
-\-Definition at line 122 of file packet\-\_\-finder.\-cpp.
+\-Definition at line 131 of file packet\-\_\-finder.\-cpp.
 
 \index{kobuki\-::\-Packet\-Finder\-Base@{kobuki\-::\-Packet\-Finder\-Base}!wait\-For\-Etx@{wait\-For\-Etx}}
 \index{wait\-For\-Etx@{wait\-For\-Etx}!kobuki::PacketFinderBase@{kobuki\-::\-Packet\-Finder\-Base}}
@@ -302,7 +315,7 @@ bool \-: true if a valid incoming packet has been found.
 )\hspace{0.3cm}{\ttfamily  [protected]}}\label{classkobuki_1_1PacketFinderBase_a211cc4e18d4b48e951539952cf3a0607}
 
 
-\-Definition at line 269 of file packet\-\_\-finder.\-cpp.
+\-Definition at line 278 of file packet\-\_\-finder.\-cpp.
 
 \index{kobuki\-::\-Packet\-Finder\-Base@{kobuki\-::\-Packet\-Finder\-Base}!wait\-For\-Payload\-And\-Etx@{wait\-For\-Payload\-And\-Etx}}
 \index{wait\-For\-Payload\-And\-Etx@{wait\-For\-Payload\-And\-Etx}!kobuki::PacketFinderBase@{kobuki\-::\-Packet\-Finder\-Base}}
@@ -315,7 +328,7 @@ bool \-: true if a valid incoming packet has been found.
 )\hspace{0.3cm}{\ttfamily  [protected]}}\label{classkobuki_1_1PacketFinderBase_a14e362e78ff9f5d584ee437b353580aa}
 
 
-\-Definition at line 304 of file packet\-\_\-finder.\-cpp.
+\-Definition at line 313 of file packet\-\_\-finder.\-cpp.
 
 \index{kobuki\-::\-Packet\-Finder\-Base@{kobuki\-::\-Packet\-Finder\-Base}!wait\-For\-Payload\-Size@{wait\-For\-Payload\-Size}}
 \index{wait\-For\-Payload\-Size@{wait\-For\-Payload\-Size}!kobuki::PacketFinderBase@{kobuki\-::\-Packet\-Finder\-Base}}
@@ -327,7 +340,7 @@ bool \-: true if a valid incoming packet has been found.
 )\hspace{0.3cm}{\ttfamily  [protected]}}\label{classkobuki_1_1PacketFinderBase_a95a3ef9d47f9a00dde9924d97f207c0f}
 
 
-\-Definition at line 216 of file packet\-\_\-finder.\-cpp.
+\-Definition at line 225 of file packet\-\_\-finder.\-cpp.
 
 \index{kobuki\-::\-Packet\-Finder\-Base@{kobuki\-::\-Packet\-Finder\-Base}!\-Wait\-For\-Stx@{\-Wait\-For\-Stx}}
 \index{\-Wait\-For\-Stx@{\-Wait\-For\-Stx}!kobuki::PacketFinderBase@{kobuki\-::\-Packet\-Finder\-Base}}
@@ -338,7 +351,7 @@ bool \-: true if a valid incoming packet has been found.
 )\hspace{0.3cm}{\ttfamily  [protected]}}\label{classkobuki_1_1PacketFinderBase_a7adc7edf0182921fd55787e5981198c3}
 
 
-\-Definition at line 195 of file packet\-\_\-finder.\-cpp.
+\-Definition at line 204 of file packet\-\_\-finder.\-cpp.
 
 
 

@@ -68,11 +68,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00021"></a>00021 <span class="comment">** Classes</span>
 <a name="l00022"></a>00022 <span class="comment">*****************************************************************************/</span>
 <a name="l00023"></a>00023 
-<a name="l00024"></a>00024 <span class="keyword">class </span><a class="code" href="classKobukiManager.html">KobukiManager</a> {
+<a name="l00024"></a>00024 <span class="keyword">class </span><a class="code" href="classKobukiManager.html" title="Keyboard remote control for our robot core (mobile base).">KobukiManager</a> {
 <a name="l00025"></a>00025 <span class="keyword">public</span>:
-<a name="l00026"></a><a class="code" href="classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa">00026</a>   <a class="code" href="classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa">KobukiManager</a>() :
+<a name="l00026"></a><a class="code" href="classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa">00026</a>   <a class="code" href="classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa" title="Default constructor, needs initialisation.">KobukiManager</a>() :
 <a name="l00027"></a>00027     <a class="code" href="classKobukiManager.html#ae27c93049cd6d6a5b8ab94ee16a5e1fa">dx</a>(0.0), <a class="code" href="classKobukiManager.html#aae56a5aba9c5860a6a4c0825838578e5">dth</a>(0.0),
-<a name="l00028"></a>00028     <a class="code" href="classKobukiManager.html#a932be6e61aa406bc1a33c12281bc4499">slot_stream_data</a>(&amp;<a class="code" href="classKobukiManager.html">KobukiManager</a>::<a class="code" href="classKobukiManager.html#a8b7d112844422e6d0e1bb67acacfc6e5">processStreamData</a>, *this)
+<a name="l00028"></a>00028     <a class="code" href="classKobukiManager.html#a932be6e61aa406bc1a33c12281bc4499">slot_stream_data</a>(&amp;<a class="code" href="classKobukiManager.html" title="Keyboard remote control for our robot core (mobile base).">KobukiManager</a>::<a class="code" href="classKobukiManager.html#a8b7d112844422e6d0e1bb67acacfc6e5">processStreamData</a>, *this)
 <a name="l00029"></a>00029   {
 <a name="l00030"></a>00030     <a class="code" href="classkobuki_1_1Parameters.html" title="Parameter list and validator for the kobuki.">kobuki::Parameters</a> parameters;
 <a name="l00031"></a>00031     parameters.<a class="code" href="classkobuki_1_1Parameters.html#a0717933338e84bc7907f7e8345e2347e" title="The first part of a sigslot connection namespace [&quot;/kobuki&quot;].">sigslots_namespace</a> = <span class="stringliteral">&quot;/kobuki&quot;</span>;
@@ -92,7 +92,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00045"></a>00045     ecl::Pose2D&lt;double&gt; pose_update;
 <a name="l00046"></a>00046     ecl::linear_algebra::Vector3d pose_update_rates;
 <a name="l00047"></a>00047     <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>.<a class="code" href="classkobuki_1_1Kobuki.html#a1c1cf4b6b10d5d18109430d764763544" title="Use the current sensor data (encoders and gyro) to calculate an update for the odometry.">updateOdometry</a>(pose_update, pose_update_rates);
-<a name="l00048"></a>00048     <a class="code" href="classKobukiManager.html#ad0ed629496ed8578df47bd15d4a1b3f6">pose</a> *= pose_update;
+<a name="l00048"></a>00048     <a class="code" href="classKobukiManager.html#aa854734e3ebf2638c3be4d93c162257f">pose</a> *= pose_update;
 <a name="l00049"></a>00049     <a class="code" href="classKobukiManager.html#ae27c93049cd6d6a5b8ab94ee16a5e1fa">dx</a> += pose_update.x();
 <a name="l00050"></a>00050     <a class="code" href="classKobukiManager.html#aae56a5aba9c5860a6a4c0825838578e5">dth</a> += pose_update.heading();
 <a name="l00051"></a>00051     <span class="comment">//std::cout &lt;&lt; dx &lt;&lt; &quot;, &quot; &lt;&lt; dth &lt;&lt; std::endl;</span>
@@ -108,13 +108,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00061"></a>00061     <span class="keywordflow">else</span> { <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>.<a class="code" href="classkobuki_1_1Kobuki.html#af016306e3114daf0c61ffbaae0b3d1a0">setBaseControl</a>(0.3, 0.0); <span class="keywordflow">return</span>; }
 <a name="l00062"></a>00062   }
 <a name="l00063"></a>00063 
-<a name="l00064"></a><a class="code" href="classKobukiManager.html#ac3d4fe90255dc0000d7c7d9dbfd991e4">00064</a>   ecl::Pose2D&lt;double&gt; <a class="code" href="classKobukiManager.html#ac3d4fe90255dc0000d7c7d9dbfd991e4">getPose</a>() {
-<a name="l00065"></a>00065     <span class="keywordflow">return</span> <a class="code" href="classKobukiManager.html#ad0ed629496ed8578df47bd15d4a1b3f6">pose</a>;
+<a name="l00064"></a><a class="code" href="classKobukiManager.html#a4f513249c501ce5020553588d732dd4e">00064</a>   ecl::Pose2D&lt;double&gt; <a class="code" href="classKobukiManager.html#a4f513249c501ce5020553588d732dd4e">getPose</a>() {
+<a name="l00065"></a>00065     <span class="keywordflow">return</span> <a class="code" href="classKobukiManager.html#aa854734e3ebf2638c3be4d93c162257f">pose</a>;
 <a name="l00066"></a>00066   }
 <a name="l00067"></a>00067 
 <a name="l00068"></a>00068 <span class="keyword">private</span>:
 <a name="l00069"></a><a class="code" href="classKobukiManager.html#ae27c93049cd6d6a5b8ab94ee16a5e1fa">00069</a>   <span class="keywordtype">double</span> <a class="code" href="classKobukiManager.html#ae27c93049cd6d6a5b8ab94ee16a5e1fa">dx</a>, <a class="code" href="classKobukiManager.html#aae56a5aba9c5860a6a4c0825838578e5">dth</a>;
-<a name="l00070"></a><a class="code" href="classKobukiManager.html#ad0ed629496ed8578df47bd15d4a1b3f6">00070</a>   ecl::Pose2D&lt;double&gt; <a class="code" href="classKobukiManager.html#ad0ed629496ed8578df47bd15d4a1b3f6">pose</a>;
+<a name="l00070"></a><a class="code" href="classKobukiManager.html#aa854734e3ebf2638c3be4d93c162257f">00070</a>   ecl::Pose2D&lt;double&gt; <a class="code" href="classKobukiManager.html#aa854734e3ebf2638c3be4d93c162257f">pose</a>;
 <a name="l00071"></a>00071   <a class="code" href="classkobuki_1_1Kobuki.html" title="The core kobuki driver class.">kobuki::Kobuki</a> <a class="code" href="classKobukiManager.html#aedbd8a41454f86c36938b15481688d4c">kobuki</a>;
 <a name="l00072"></a>00072   ecl::Slot&lt;&gt; <a class="code" href="classKobukiManager.html#a932be6e61aa406bc1a33c12281bc4499">slot_stream_data</a>;
 <a name="l00073"></a>00073 };
@@ -137,14 +137,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00090"></a>00090   signal(SIGINT, <a class="code" href="simple__loop_8cpp.html#a8ee3282bc313e547dbbb8d4f4010db61">signalHandler</a>);
 <a name="l00091"></a>00091 
 <a name="l00092"></a>00092   std::cout &lt;&lt; <span class="stringliteral">&quot;Demo : Example of simple control loop.&quot;</span> &lt;&lt; std::endl;
-<a name="l00093"></a>00093   <a class="code" href="classKobukiManager.html">KobukiManager</a> kobuki_manager;
+<a name="l00093"></a>00093   <a class="code" href="classKobukiManager.html" title="Keyboard remote control for our robot core (mobile base).">KobukiManager</a> kobuki_manager;
 <a name="l00094"></a>00094 
 <a name="l00095"></a>00095   ecl::Sleep sleep(1);
 <a name="l00096"></a>00096   ecl::Pose2D&lt;double&gt; pose;
 <a name="l00097"></a>00097   <span class="keywordflow">try</span> {
 <a name="l00098"></a>00098     <span class="keywordflow">while</span> (!<a class="code" href="simple__loop_8cpp.html#ad848ea54585ac98c0b4fc4c0fe4ef236">shutdown_req</a>){
 <a name="l00099"></a>00099       sleep();
-<a name="l00100"></a>00100       pose = kobuki_manager.<a class="code" href="classKobukiManager.html#ac3d4fe90255dc0000d7c7d9dbfd991e4">getPose</a>();
+<a name="l00100"></a>00100       pose = kobuki_manager.<a class="code" href="classKobukiManager.html#a4f513249c501ce5020553588d732dd4e">getPose</a>();
 <a name="l00101"></a>00101       std::cout &lt;&lt; <span class="stringliteral">&quot;current pose: [&quot;</span> &lt;&lt; pose.x() &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; pose.y() &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; pose.heading() &lt;&lt; <span class="stringliteral">&quot;]&quot;</span> &lt;&lt; std::endl;
 <a name="l00102"></a>00102     }
 <a name="l00103"></a>00103   } <span class="keywordflow">catch</span> ( ecl::StandardException &amp;e ) {
@@ -172,7 +172,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Tue Aug 27 2013 17:01:46</small>
+<small>autogenerated on Thu Aug 29 2013 18:36:58</small>
 </div>
 </body>
 </html>

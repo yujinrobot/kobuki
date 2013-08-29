@@ -114,6 +114,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1PacketFinderBase.html#a36345c2f2abf305954b882371ed9f9c3">configure</a> (const std::string &amp;sigslots_namespace, const <a class="el" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">BufferType</a> &amp;putStx, const <a class="el" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">BufferType</a> &amp;putEtx, unsigned int sizeLengthField, unsigned int sizeMaxPayload, unsigned int sizeChecksumField, bool variableSizePayload)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1PacketFinderBase.html#aaf9a887ab7258cb32db3e92f0500a160">enableVerbose</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1PacketFinderBase.html#a3b59b2c70d61bf2180337eddfb0ae08c">getBuffer</a> (<a class="el" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">BufferType</a> &amp;bufferRef)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1PacketFinderBase.html#a3b7d8eb69f43f02a8cdbb9a908740bba">getPayload</a> (<a class="el" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">BufferType</a> &amp;bufferRef)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1PacketFinderBase.html#ac81c6f8d3f569447a6d0bc992060f37d">numberOfDataToRead</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1PacketFinderBase.html#a2af8577ace869ac685bbd3df818a43fd">PacketFinderBase</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1PacketFinderBase.html#ae80fbedeba41baf3dd2f3db93c812b44">update</a> (const unsigned char *incoming, unsigned int numberOfIncoming)</td></tr>
@@ -376,6 +377,25 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a3b7d8eb69f43f02a8cdbb9a908740bba"></a><!-- doxytag: member="kobuki::PacketFinderBase::getPayload" ref="a3b7d8eb69f43f02a8cdbb9a908740bba" args="(BufferType &amp;bufferRef)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classkobuki_1_1PacketFinderBase.html#a3b7d8eb69f43f02a8cdbb9a908740bba">kobuki::PacketFinderBase::getPayload</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">BufferType</a> &amp;&#160;</td>
+          <td class="paramname"><em>bufferRef</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="packet__finder_8cpp_source.html#l00115">115</a> of file <a class="el" href="packet__finder_8cpp_source.html">packet_finder.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ac81c6f8d3f569447a6d0bc992060f37d"></a><!-- doxytag: member="kobuki::PacketFinderBase::numberOfDataToRead" ref="ac81c6f8d3f569447a6d0bc992060f37d" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -428,7 +448,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>bool : true if a valid incoming packet has been found. </dd></dl>
 
-<p>Definition at line <a class="el" href="packet__finder_8cpp_source.html#l00122">122</a> of file <a class="el" href="packet__finder_8cpp_source.html">packet_finder.cpp</a>.</p>
+<p>Definition at line <a class="el" href="packet__finder_8cpp_source.html#l00131">131</a> of file <a class="el" href="packet__finder_8cpp_source.html">packet_finder.cpp</a>.</p>
 
 </div>
 </div>
@@ -457,7 +477,7 @@ Protected Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="packet__finder_8cpp_source.html#l00269">269</a> of file <a class="el" href="packet__finder_8cpp_source.html">packet_finder.cpp</a>.</p>
+<p>Definition at line <a class="el" href="packet__finder_8cpp_source.html#l00278">278</a> of file <a class="el" href="packet__finder_8cpp_source.html">packet_finder.cpp</a>.</p>
 
 </div>
 </div>
@@ -492,7 +512,7 @@ Protected Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="packet__finder_8cpp_source.html#l00304">304</a> of file <a class="el" href="packet__finder_8cpp_source.html">packet_finder.cpp</a>.</p>
+<p>Definition at line <a class="el" href="packet__finder_8cpp_source.html#l00313">313</a> of file <a class="el" href="packet__finder_8cpp_source.html">packet_finder.cpp</a>.</p>
 
 </div>
 </div>
@@ -521,7 +541,7 @@ Protected Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="packet__finder_8cpp_source.html#l00216">216</a> of file <a class="el" href="packet__finder_8cpp_source.html">packet_finder.cpp</a>.</p>
+<p>Definition at line <a class="el" href="packet__finder_8cpp_source.html#l00225">225</a> of file <a class="el" href="packet__finder_8cpp_source.html">packet_finder.cpp</a>.</p>
 
 </div>
 </div>
@@ -540,7 +560,7 @@ Protected Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="packet__finder_8cpp_source.html#l00195">195</a> of file <a class="el" href="packet__finder_8cpp_source.html">packet_finder.cpp</a>.</p>
+<p>Definition at line <a class="el" href="packet__finder_8cpp_source.html#l00204">204</a> of file <a class="el" href="packet__finder_8cpp_source.html">packet_finder.cpp</a>.</p>
 
 </div>
 </div>
@@ -779,7 +799,7 @@ Protected Attributes</h2></td></tr>
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Tue Aug 27 2013 17:01:47</small>
+<small>autogenerated on Thu Aug 29 2013 18:36:59</small>
 </div>
 </body>
 </html>

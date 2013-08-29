@@ -26,5 +26,7 @@ var searchData=
   ['linear_5facceleration_5fmax',['linear_acceleration_max',['../classkobuki_1_1AccelerationLimiter.html#ae3590371d3d9ffe38481162d41ad7537',1,'kobuki::AccelerationLimiter']]],
   ['linear_5fdeceleration_5flimit',['linear_deceleration_limit',['../classkobuki_1_1Parameters.html#a508680b2d1079e83d80492af73aed9cd',1,'kobuki::Parameters']]],
   ['linear_5fdeceleration_5fmax',['linear_deceleration_max',['../classkobuki_1_1AccelerationLimiter.html#ab9d7e7921aa359762a4e62776fad2447',1,'kobuki::AccelerationLimiter']]],
+  ['linear_5fvel_5fmax',['linear_vel_max',['../classKobukiManager.html#a5a3929fb4a46bedf4f08f637a8882c60',1,'KobukiManager']]],
+  ['linear_5fvel_5fstep',['linear_vel_step',['../classKobukiManager.html#a223ade770dbe60095620431d8b34eb32',1,'KobukiManager']]],
   ['low',['low',['../classkobuki_1_1Battery.html#ab52bd0243682d8f2b4f6a7b9fdb143d3',1,'kobuki::Battery']]]
 ];

@@ -100,469 +100,503 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00053"></a>00053     , is_connected(false)
 <a name="l00054"></a>00054     , is_alive(false)
 <a name="l00055"></a>00055     , version_info_reminder(0)
-<a name="l00056"></a>00056     , heading_offset(0.0/0.0)
-<a name="l00057"></a>00057 {
-<a name="l00058"></a>00058 }
-<a name="l00059"></a>00059 
-<a name="l00063"></a><a class="code" href="classkobuki_1_1Kobuki.html#a22de83f3db0db6dff0647299bbc5f90e">00063</a> <a class="code" href="classkobuki_1_1Kobuki.html#a22de83f3db0db6dff0647299bbc5f90e">Kobuki::~Kobuki</a>()
-<a name="l00064"></a>00064 {
-<a name="l00065"></a>00065   <a class="code" href="classkobuki_1_1Kobuki.html#a9e4447e3b2bb177155ee681daccdc274">disable</a>();
-<a name="l00066"></a>00066   <a class="code" href="classkobuki_1_1Kobuki.html#aeb000976a20ed8f5eaf847c258527ace">shutdown_requested</a> = <span class="keyword">true</span>; <span class="comment">// thread&#39;s spin() will catch this and terminate</span>
-<a name="l00067"></a>00067   <a class="code" href="classkobuki_1_1Kobuki.html#a6330b66495007d2956a59a1931fde123">thread</a>.join();
-<a name="l00068"></a>00068   <a class="code" href="classkobuki_1_1Kobuki.html#aa3bb2d628f9a64aa4ec7bcfb7d911266">sig_debug</a>.emit(<span class="stringliteral">&quot;Device: kobuki driver terminated.&quot;</span>);
-<a name="l00069"></a>00069 }
-<a name="l00070"></a>00070 
-<a name="l00071"></a><a class="code" href="classkobuki_1_1Kobuki.html#a0648c958434e641d4573721541099ee4">00071</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a0648c958434e641d4573721541099ee4">Kobuki::init</a>(<a class="code" href="classkobuki_1_1Parameters.html" title="Parameter list and validator for the kobuki.">Parameters</a> &amp;parameters) <span class="keywordflow">throw</span> (ecl::StandardException)
-<a name="l00072"></a>00072 {
-<a name="l00073"></a>00073 
-<a name="l00074"></a>00074   <span class="keywordflow">if</span> (!parameters.validate())
-<a name="l00075"></a>00075   {
-<a name="l00076"></a>00076     <span class="keywordflow">throw</span> ecl::StandardException(LOC, ecl::ConfigurationError, <span class="stringliteral">&quot;Kobuki&#39;s parameter settings did not validate.&quot;</span>);
-<a name="l00077"></a>00077   }
-<a name="l00078"></a>00078   this-&gt;parameters = parameters;
-<a name="l00079"></a>00079   std::string sigslots_namespace = parameters.sigslots_namespace;
-<a name="l00080"></a>00080   event_manager.init(sigslots_namespace);
-<a name="l00081"></a>00081 
-<a name="l00082"></a>00082   <span class="comment">// connect signals</span>
-<a name="l00083"></a>00083   sig_version_info.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/version_info&quot;</span>));
-<a name="l00084"></a>00084   sig_stream_data.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/stream_data&quot;</span>));
-<a name="l00085"></a>00085   sig_raw_data_command.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/raw_data_command&quot;</span>));
-<a name="l00086"></a>00086   sig_raw_data_stream.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/raw_data_stream&quot;</span>));
-<a name="l00087"></a>00087   <span class="comment">//sig_serial_timeout.connect(sigslots_namespace+std::string(&quot;/serial_timeout&quot;));</span>
-<a name="l00088"></a>00088 
-<a name="l00089"></a>00089   sig_debug.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/ros_debug&quot;</span>));
-<a name="l00090"></a>00090   sig_info.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/ros_info&quot;</span>));
-<a name="l00091"></a>00091   sig_warn.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/ros_warn&quot;</span>));
-<a name="l00092"></a>00092   sig_error.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/ros_error&quot;</span>));
-<a name="l00093"></a>00093 
-<a name="l00094"></a>00094   <span class="keywordflow">try</span> {
-<a name="l00095"></a>00095     serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);  <span class="comment">// this will throw exceptions - NotFoundError, OpenError</span>
-<a name="l00096"></a>00096     is_connected = <span class="keyword">true</span>;
-<a name="l00097"></a>00097     serial.block(4000); <span class="comment">// blocks by default, but just to be clear!</span>
-<a name="l00098"></a>00098   }
-<a name="l00099"></a>00099   <span class="keywordflow">catch</span> (<span class="keyword">const</span> ecl::StandardException &amp;e)
-<a name="l00100"></a>00100   {
-<a name="l00101"></a>00101     <span class="keywordflow">if</span> (e.flag() == ecl::NotFoundError) {
-<a name="l00102"></a>00102       sig_warn.emit(<span class="stringliteral">&quot;device does not (yet) available, is the usb connected?.&quot;</span>); <span class="comment">// not a failure mode.</span>
-<a name="l00103"></a>00103     } <span class="keywordflow">else</span> {
-<a name="l00104"></a>00104       <span class="keywordflow">throw</span> ecl::StandardException(LOC, e);
-<a name="l00105"></a>00105     }
-<a name="l00106"></a>00106   }
-<a name="l00107"></a>00107 
-<a name="l00108"></a>00108   ecl::PushAndPop&lt;unsigned char&gt; stx(2, 0);
-<a name="l00109"></a>00109   ecl::PushAndPop&lt;unsigned char&gt; etx(1);
-<a name="l00110"></a>00110   stx.push_back(0xaa);
-<a name="l00111"></a>00111   stx.push_back(0x55);
-<a name="l00112"></a>00112   packet_finder.configure(sigslots_namespace, stx, etx, 1, 256, 1, <span class="keyword">true</span>);
-<a name="l00113"></a>00113   acceleration_limiter.init(parameters.enable_acceleration_limiter);
-<a name="l00114"></a>00114 
-<a name="l00115"></a>00115   <span class="comment">// in case the user changed these from the defaults</span>
-<a name="l00116"></a>00116   <a class="code" href="classkobuki_1_1Battery.html#a0a8d941a6dec249504f5e3e03653fda2">Battery::capacity</a> = parameters.battery_capacity;
-<a name="l00117"></a>00117   <a class="code" href="classkobuki_1_1Battery.html#ab52bd0243682d8f2b4f6a7b9fdb143d3">Battery::low</a> = parameters.battery_low;
-<a name="l00118"></a>00118   <a class="code" href="classkobuki_1_1Battery.html#afed5fa95de7082b1d36e01bc7f551f56">Battery::dangerous</a> = parameters.battery_dangerous;
-<a name="l00119"></a>00119 
-<a name="l00120"></a>00120   <span class="comment">/******************************************</span>
-<a name="l00121"></a>00121 <span class="comment">   ** Get Version Info Commands</span>
-<a name="l00122"></a>00122 <span class="comment">   *******************************************/</span>
-<a name="l00123"></a>00123   version_info_reminder = 10;
-<a name="l00124"></a>00124   sendCommand(<a class="code" href="classkobuki_1_1Command.html#af88113d4e2bb59857a1194d76d813c6c">Command::GetVersionInfo</a>());
-<a name="l00125"></a>00125   thread.start(&amp;<a class="code" href="classkobuki_1_1Kobuki.html#a6a4ff5d9a33ec16d705c9a8911d50649" title="Performs a scan looking for incoming data packets.">Kobuki::spin</a>, *<span class="keyword">this</span>);
-<a name="l00126"></a>00126 }
-<a name="l00127"></a>00127 
-<a name="l00128"></a>00128 <span class="comment">/*****************************************************************************</span>
-<a name="l00129"></a>00129 <span class="comment"> ** Implementation [Runtime]</span>
-<a name="l00130"></a>00130 <span class="comment"> *****************************************************************************/</span>
-<a name="l00142"></a><a class="code" href="classkobuki_1_1Kobuki.html#af4b1e5a79539f8b88a3873d23dc542f6">00142</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#af4b1e5a79539f8b88a3873d23dc542f6">Kobuki::lockDataAccess</a>() {
-<a name="l00143"></a>00143   <a class="code" href="classkobuki_1_1Kobuki.html#abb5b7aa70e7b2207f8e8a4412d7487f3">data_mutex</a>.lock();
-<a name="l00144"></a>00144 }
-<a name="l00145"></a>00145 
-<a name="l00150"></a><a class="code" href="classkobuki_1_1Kobuki.html#a4811744d8cf462525716c9a15d5fea71">00150</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a4811744d8cf462525716c9a15d5fea71">Kobuki::unlockDataAccess</a>() {
-<a name="l00151"></a>00151   <a class="code" href="classkobuki_1_1Kobuki.html#abb5b7aa70e7b2207f8e8a4412d7487f3">data_mutex</a>.unlock();
-<a name="l00152"></a>00152 }
-<a name="l00153"></a>00153 
-<a name="l00163"></a><a class="code" href="classkobuki_1_1Kobuki.html#a6a4ff5d9a33ec16d705c9a8911d50649">00163</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a6a4ff5d9a33ec16d705c9a8911d50649" title="Performs a scan looking for incoming data packets.">Kobuki::spin</a>()
-<a name="l00164"></a>00164 {
-<a name="l00165"></a>00165   ecl::TimeStamp last_signal_time;
-<a name="l00166"></a>00166   ecl::Duration timeout(0.1);
-<a name="l00167"></a>00167   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> buf[256];
-<a name="l00168"></a>00168 
-<a name="l00169"></a>00169   <span class="comment">/*********************</span>
-<a name="l00170"></a>00170 <span class="comment">   ** Simulation Params</span>
-<a name="l00171"></a>00171 <span class="comment">   **********************/</span>
-<a name="l00172"></a>00172 
-<a name="l00173"></a>00173   <span class="keywordflow">while</span> (!<a class="code" href="classkobuki_1_1Kobuki.html#aeb000976a20ed8f5eaf847c258527ace">shutdown_requested</a>)
-<a name="l00174"></a>00174   {
-<a name="l00175"></a>00175     <span class="comment">/*********************</span>
-<a name="l00176"></a>00176 <span class="comment">     ** Checking Connection</span>
-<a name="l00177"></a>00177 <span class="comment">     **********************/</span>
-<a name="l00178"></a>00178     <span class="keywordflow">if</span> ( !<a class="code" href="classkobuki_1_1Kobuki.html#a6fbdcfe7e8557c0c2d0480be3cdf7773">serial</a>.open() ) {
-<a name="l00179"></a>00179       <span class="keywordflow">try</span> {
-<a name="l00180"></a>00180         <span class="comment">// this will throw exceptions - NotFoundError is the important one, handle it</span>
-<a name="l00181"></a>00181         <a class="code" href="classkobuki_1_1Kobuki.html#a6fbdcfe7e8557c0c2d0480be3cdf7773">serial</a>.open(<a class="code" href="classkobuki_1_1Kobuki.html#a02ada66911213cd57bb2f5ac21937562">parameters</a>.<a class="code" href="classkobuki_1_1Parameters.html#a993217236ea68f063f5bc285414408e2" title="The serial device port name [/dev/kobuki].">device_port</a>, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
-<a name="l00182"></a>00182         <a class="code" href="classkobuki_1_1Kobuki.html#aa39b142b5f651d5831b9107c35e86330">sig_info</a>.emit(<span class="stringliteral">&quot;device is connected.&quot;</span>);
-<a name="l00183"></a>00183         <a class="code" href="classkobuki_1_1Kobuki.html#a0f521d6b02b875ca38c7a217d9856fd7">is_connected</a> = <span class="keyword">true</span>;
-<a name="l00184"></a>00184         <a class="code" href="classkobuki_1_1Kobuki.html#a6fbdcfe7e8557c0c2d0480be3cdf7773">serial</a>.block(4000); <span class="comment">// blocks by default, but just to be clear!</span>
-<a name="l00185"></a>00185         <a class="code" href="classkobuki_1_1Kobuki.html#afee2605f8166f479026d8977b2697dfa">event_manager</a>.<a class="code" href="classkobuki_1_1EventManager.html#a0fdebc830c98b0a3fcb644da5b5b0281">update</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a0f521d6b02b875ca38c7a217d9856fd7">is_connected</a>, <a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a>);
-<a name="l00186"></a>00186         <a class="code" href="classkobuki_1_1Kobuki.html#ab07dc6fa02d48f837ea3755f3ac7b03c">version_info_reminder</a> = 10;
-<a name="l00187"></a>00187       }
-<a name="l00188"></a>00188       <span class="keywordflow">catch</span> (<span class="keyword">const</span> ecl::StandardException &amp;e)
-<a name="l00189"></a>00189       {
-<a name="l00190"></a>00190         <span class="comment">// windows throws OpenError if not connected</span>
-<a name="l00191"></a>00191         <span class="keywordflow">if</span> (e.flag() == ecl::NotFoundError) {
-<a name="l00192"></a>00192           <a class="code" href="classkobuki_1_1Kobuki.html#aa39b142b5f651d5831b9107c35e86330">sig_info</a>.emit(<span class="stringliteral">&quot;device does not (yet) available on this port, waiting...&quot;</span>);
-<a name="l00193"></a>00193         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (e.flag() == ecl::OpenError) {
-<a name="l00194"></a>00194           <a class="code" href="classkobuki_1_1Kobuki.html#aa39b142b5f651d5831b9107c35e86330">sig_info</a>.emit(<span class="stringliteral">&quot;device failed to open, waiting... [&quot;</span> + std::string(e.what()) + <span class="stringliteral">&quot;]&quot;</span>);
-<a name="l00195"></a>00195         } <span class="keywordflow">else</span> {
-<a name="l00196"></a>00196           <span class="comment">// This is bad - some unknown error we&#39;re not handling! But at least throw and show what error we came across.</span>
-<a name="l00197"></a>00197           <span class="keywordflow">throw</span> ecl::StandardException(LOC, e);
-<a name="l00198"></a>00198         }
-<a name="l00199"></a>00199         ecl::Sleep(5)(); <span class="comment">// five seconds</span>
-<a name="l00200"></a>00200         <a class="code" href="classkobuki_1_1Kobuki.html#a0f521d6b02b875ca38c7a217d9856fd7">is_connected</a> = <span class="keyword">false</span>;
-<a name="l00201"></a>00201         <a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a> = <span class="keyword">false</span>;
-<a name="l00202"></a>00202         <span class="keywordflow">continue</span>;
-<a name="l00203"></a>00203       }
-<a name="l00204"></a>00204     }
-<a name="l00205"></a>00205 
-<a name="l00206"></a>00206     <span class="comment">/*********************</span>
-<a name="l00207"></a>00207 <span class="comment">     ** Read Incoming</span>
-<a name="l00208"></a>00208 <span class="comment">     **********************/</span>
-<a name="l00209"></a>00209     <span class="keywordtype">int</span> n = <a class="code" href="classkobuki_1_1Kobuki.html#a6fbdcfe7e8557c0c2d0480be3cdf7773">serial</a>.read((<span class="keywordtype">char</span>*)buf, <a class="code" href="classkobuki_1_1Kobuki.html#aa438e90f351c31b1ae6f9cdaddce6058">packet_finder</a>.<a class="code" href="classkobuki_1_1PacketFinderBase.html#ac81c6f8d3f569447a6d0bc992060f37d">numberOfDataToRead</a>());
-<a name="l00210"></a>00210     <span class="keywordflow">if</span> (n == 0)
-<a name="l00211"></a>00211     {
-<a name="l00212"></a>00212       <span class="keywordflow">if</span> (<a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a> &amp;&amp; ((ecl::TimeStamp() - last_signal_time) &gt; timeout))
-<a name="l00213"></a>00213       {
-<a name="l00214"></a>00214         <a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a> = <span class="keyword">false</span>;
-<a name="l00215"></a>00215         <a class="code" href="classkobuki_1_1Kobuki.html#ab07dc6fa02d48f837ea3755f3ac7b03c">version_info_reminder</a> = 10;
-<a name="l00216"></a>00216         <a class="code" href="classkobuki_1_1Kobuki.html#aa3bb2d628f9a64aa4ec7bcfb7d911266">sig_debug</a>.emit(<span class="stringliteral">&quot;Timed out while waiting for incoming bytes.&quot;</span>);
-<a name="l00217"></a>00217       }
-<a name="l00218"></a>00218       <a class="code" href="classkobuki_1_1Kobuki.html#afee2605f8166f479026d8977b2697dfa">event_manager</a>.<a class="code" href="classkobuki_1_1EventManager.html#a0fdebc830c98b0a3fcb644da5b5b0281">update</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a0f521d6b02b875ca38c7a217d9856fd7">is_connected</a>, <a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a>);
-<a name="l00219"></a>00219       <span class="keywordflow">continue</span>;
-<a name="l00220"></a>00220     }
-<a name="l00221"></a>00221     <span class="keywordflow">else</span>
-<a name="l00222"></a>00222     {
-<a name="l00223"></a>00223       std::ostringstream ostream;
-<a name="l00224"></a>00224       ostream &lt;&lt; <span class="stringliteral">&quot;kobuki_node : serial_read(&quot;</span> &lt;&lt; n &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>
-<a name="l00225"></a>00225         &lt;&lt; <span class="stringliteral">&quot;, packet_finder.numberOfDataToRead(&quot;</span> &lt;&lt; <a class="code" href="classkobuki_1_1Kobuki.html#aa438e90f351c31b1ae6f9cdaddce6058">packet_finder</a>.<a class="code" href="classkobuki_1_1PacketFinderBase.html#ac81c6f8d3f569447a6d0bc992060f37d">numberOfDataToRead</a>() &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>;
-<a name="l00226"></a>00226       <a class="code" href="classkobuki_1_1Kobuki.html#aa3bb2d628f9a64aa4ec7bcfb7d911266">sig_debug</a>.emit(ostream.str());
-<a name="l00227"></a>00227       <span class="comment">// might be useful to send this to a topic if there is subscribers</span>
-<a name="l00228"></a>00228     }
-<a name="l00229"></a>00229 
-<a name="l00230"></a>00230     <span class="keywordflow">if</span> (<a class="code" href="classkobuki_1_1Kobuki.html#aa438e90f351c31b1ae6f9cdaddce6058">packet_finder</a>.<a class="code" href="classkobuki_1_1PacketFinderBase.html#ae80fbedeba41baf3dd2f3db93c812b44">update</a>(buf, n)) <span class="comment">// this clears packet finder&#39;s buffer and transfers important bytes into it</span>
-<a name="l00231"></a>00231     {
-<a name="l00232"></a>00232       <a class="code" href="classkobuki_1_1Kobuki.html#aa438e90f351c31b1ae6f9cdaddce6058">packet_finder</a>.<a class="code" href="classkobuki_1_1PacketFinderBase.html#a3b59b2c70d61bf2180337eddfb0ae08c">getBuffer</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>); <span class="comment">// get a reference to packet finder&#39;s buffer.</span>
-<a name="l00233"></a>00233       <a class="code" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">PacketFinder::BufferType</a> local_buffer;
-<a name="l00234"></a>00234       local_buffer = <a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>; <span class="comment">//copy it to local_buffer, debugging purpose.</span>
-<a name="l00235"></a>00235       <a class="code" href="classkobuki_1_1Kobuki.html#a4752fa63c69f3fae94298a078769366e">sig_raw_data_stream</a>.emit(local_buffer);
-<a name="l00236"></a>00236 
-<a name="l00237"></a>00237       <span class="comment">// deserialise; first three bytes are not data.</span>
-<a name="l00238"></a>00238       <a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>.pop_front();
-<a name="l00239"></a>00239       <a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>.pop_front();
-<a name="l00240"></a>00240       <a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>.pop_front();
-<a name="l00241"></a>00241 
-<a name="l00242"></a>00242       <a class="code" href="classkobuki_1_1Kobuki.html#af4b1e5a79539f8b88a3873d23dc542f6">lockDataAccess</a>();
-<a name="l00243"></a>00243       <span class="keywordflow">while</span> (<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>.size() &gt; 1<span class="comment">/*size of etx*/</span>)
-<a name="l00244"></a>00244       {
-<a name="l00245"></a>00245 <span class="comment">//        std::cout &lt;&lt; &quot;header_id: &quot; &lt;&lt; (unsigned int)data_buffer[0] &lt;&lt; &quot; | &quot;;</span>
-<a name="l00246"></a>00246 <span class="comment">//        std::cout &lt;&lt; &quot;remains: &quot; &lt;&lt; data_buffer.size() &lt;&lt; &quot; | &quot;;</span>
-<a name="l00247"></a>00247 <span class="comment">//        std::cout &lt;&lt; &quot;local_buffer: &quot; &lt;&lt; local_buffer.size() &lt;&lt; &quot; | &quot;;</span>
-<a name="l00248"></a>00248 <span class="comment">//        std::cout &lt;&lt; std::endl;</span>
-<a name="l00249"></a>00249         <span class="keywordflow">switch</span> (<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>[0])
-<a name="l00250"></a>00250         {
-<a name="l00251"></a>00251           <span class="comment">// these come with the streamed feedback</span>
-<a name="l00252"></a>00252           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eaa12b8af31be594c67ae5b9fdead6956b">Header::CoreSensors</a>:
-<a name="l00253"></a>00253             <a class="code" href="classkobuki_1_1Kobuki.html#a76b781f33f5e4a7fcfffcfe05bf744ab">core_sensors</a>.<a class="code" href="classkobuki_1_1CoreSensors.html#a040a72096617002a0d0f93b848006ebc">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>);
-<a name="l00254"></a>00254             <a class="code" href="classkobuki_1_1Kobuki.html#afee2605f8166f479026d8977b2697dfa">event_manager</a>.<a class="code" href="classkobuki_1_1EventManager.html#a0fdebc830c98b0a3fcb644da5b5b0281">update</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a76b781f33f5e4a7fcfffcfe05bf744ab">core_sensors</a>.<a class="code" href="classkobuki_1_1CoreSensors.html#a174414fa517ca33f2a1c73cd8f6d7327">data</a>, <a class="code" href="classkobuki_1_1Kobuki.html#a39c45a62a2480ad7bfec13c390fa610f">cliff</a>.<a class="code" href="classkobuki_1_1Cliff.html#ad804a517936d044162b4fd1985b5b191">data</a>.<a class="code" href="structkobuki_1_1Cliff_1_1Data.html#addf367ef49803e8814f0e468d87b78ac">bottom</a>);
-<a name="l00255"></a>00255             <span class="keywordflow">break</span>;
-<a name="l00256"></a>00256           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eabae79e6202055fb6d598e6ebaaad4ab6">Header::DockInfraRed</a>:
-<a name="l00257"></a>00257             <a class="code" href="classkobuki_1_1Kobuki.html#a753915dbef81df0f85bd51dc20128255">dock_ir</a>.<a class="code" href="classkobuki_1_1DockIR.html#acee0bd7f154a549d8d5a0f56aa9a6771">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>);
-<a name="l00258"></a>00258             <span class="keywordflow">break</span>;
-<a name="l00259"></a>00259           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eae36a9397bdd2b3506cd80e4bf03f4d03">Header::Inertia</a>:
-<a name="l00260"></a>00260             <a class="code" href="classkobuki_1_1Kobuki.html#a2b867d6cda20d8fc21a36dbb4d6ba125">inertia</a>.<a class="code" href="classkobuki_1_1Inertia.html#a44d0ed2f43fd3598521fdb0104da3e5a">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>);
-<a name="l00261"></a>00261 
-<a name="l00262"></a>00262             <span class="comment">// Issue #274: use first imu reading as zero heading; update when reseting odometry</span>
-<a name="l00263"></a>00263             <span class="keywordflow">if</span> (isnan(<a class="code" href="classkobuki_1_1Kobuki.html#a13d29e78f65eb0eb459659b3afbf7685">heading_offset</a>) == <span class="keyword">true</span>)
-<a name="l00264"></a>00264               <a class="code" href="classkobuki_1_1Kobuki.html#a13d29e78f65eb0eb459659b3afbf7685">heading_offset</a> = (<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code" href="classkobuki_1_1Kobuki.html#a2b867d6cda20d8fc21a36dbb4d6ba125">inertia</a>.<a class="code" href="classkobuki_1_1Inertia.html#a2d6db1d11b3a160786a1784920fa5f99">data</a>.<a class="code" href="structkobuki_1_1Inertia_1_1Data.html#a482542389a45c932f36ce4cda902babc">angle</a>) / 100.0) * ecl::pi / 180.0;
-<a name="l00265"></a>00265             <span class="keywordflow">break</span>;
-<a name="l00266"></a>00266           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea272a26198f6b86a838b6ec1b9712897c">Header::Cliff</a>:
-<a name="l00267"></a>00267             <a class="code" href="classkobuki_1_1Kobuki.html#a39c45a62a2480ad7bfec13c390fa610f">cliff</a>.<a class="code" href="classkobuki_1_1Cliff.html#ab4feb28d6b1863d7d1cd7b68d6963724">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>);
-<a name="l00268"></a>00268             <span class="keywordflow">break</span>;
-<a name="l00269"></a>00269           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eae397464bbb1ed55fb4479c159e2407c7">Header::Current</a>:
-<a name="l00270"></a>00270             <a class="code" href="classkobuki_1_1Kobuki.html#af841f499eedcdd0d0a03f143f36d46ae">current</a>.<a class="code" href="classkobuki_1_1Current.html#a0650572b8e343637d000a8c3682bed5d">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>);
-<a name="l00271"></a>00271             <span class="keywordflow">break</span>;
-<a name="l00272"></a>00272           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea1df38284e536a6b766c89847f5997cf7">Header::GpInput</a>:
-<a name="l00273"></a>00273             <a class="code" href="classkobuki_1_1Kobuki.html#aa919d8b508b8fa9ac2b380e91d91fbe7">gp_input</a>.<a class="code" href="classkobuki_1_1GpInput.html#a28b4dbbd1a1df1b22cda86193dadd60e">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>);
-<a name="l00274"></a>00274             <a class="code" href="classkobuki_1_1Kobuki.html#afee2605f8166f479026d8977b2697dfa">event_manager</a>.<a class="code" href="classkobuki_1_1EventManager.html#a0fdebc830c98b0a3fcb644da5b5b0281">update</a>(<a class="code" href="classkobuki_1_1Kobuki.html#aa919d8b508b8fa9ac2b380e91d91fbe7">gp_input</a>.<a class="code" href="classkobuki_1_1GpInput.html#a2d71bd6d91b21763677f4f37e37cfc85">data</a>.<a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a4d91ec153b1310b7ef99af7f61850906">digital_input</a>);
-<a name="l00275"></a>00275             <span class="keywordflow">break</span>;
-<a name="l00276"></a>00276           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eaab049380666126745d8da2e4eac0e391">Header::ThreeAxisGyro</a>:
-<a name="l00277"></a>00277             <a class="code" href="classkobuki_1_1Kobuki.html#a416e41478d6941078d11f69f6a7a1207">three_axis_gyro</a>.<a class="code" href="classkobuki_1_1ThreeAxisGyro.html#a65c15215e2769e7227c3f1f772a445b1">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>);
-<a name="l00278"></a>00278             <span class="keywordflow">break</span>;
-<a name="l00279"></a>00279           <span class="comment">// the rest are only included on request</span>
-<a name="l00280"></a>00280           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eafb0bab4f1e5410d21e2727e9cb608f14">Header::Hardware</a>:
-<a name="l00281"></a>00281             <a class="code" href="classkobuki_1_1Kobuki.html#ab3b7838b614cca5f785e52c8ea160b8c">hardware</a>.<a class="code" href="classkobuki_1_1Hardware.html#a0e30a67914debe3e5de881720273c17b">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>);
-<a name="l00282"></a>00282             <span class="comment">//sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));</span>
-<a name="l00283"></a>00283             <span class="keywordflow">break</span>;
-<a name="l00284"></a>00284           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea0164aceaf6a319f0666efbd463ada016">Header::Firmware</a>:
-<a name="l00285"></a>00285             <a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#af41cef6ff3dc0ed1e7b256681544e1a2">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>);
-<a name="l00286"></a>00286             <span class="keywordflow">try</span>
-<a name="l00287"></a>00287             {
-<a name="l00288"></a>00288               <span class="comment">// Check firmware/driver compatibility; major version must be the same</span>
-<a name="l00289"></a>00289               <span class="keywordtype">int</span> version_match = <a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#a7a3014b781ce53ca8aabb3c3bef2abd0">check_major_version</a>();
-<a name="l00290"></a>00290               <span class="keywordflow">if</span> (version_match &lt; 0) {
-<a name="l00291"></a>00291                 <a class="code" href="classkobuki_1_1Kobuki.html#a60fc90929f8649468272cbdc1ca4ad6d">sig_error</a>.emit(<span class="stringliteral">&quot;Robot firmware is outdated and needs to be upgraded. Consult how-to on: &quot;</span> \
-<a name="l00292"></a>00292                                <span class="stringliteral">&quot;http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware&quot;</span>);
-<a name="l00293"></a>00293                 <a class="code" href="classkobuki_1_1Kobuki.html#a8365fa1b3e2dbe361fd51e855ac63681">sig_warn</a>.emit(<span class="stringliteral">&quot;version info - &quot;</span> + <a class="code" href="classkobuki_1_1VersionInfo.html#a223c4a16131bac02fccb92e10e38fdc1">VersionInfo::toString</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a>)
-<a name="l00294"></a>00294                         + <span class="stringliteral">&quot;; current version is &quot;</span> + <a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#a644e63df3bb86a8da7eb81e206f19e70">current_version</a>());
-<a name="l00295"></a>00295                 <a class="code" href="classkobuki_1_1Kobuki.html#aeb000976a20ed8f5eaf847c258527ace">shutdown_requested</a> = <span class="keyword">true</span>;
-<a name="l00296"></a>00296               }
-<a name="l00297"></a>00297               <span class="keywordflow">else</span> <span class="keywordflow">if</span> (version_match &gt; 0) {
-<a name="l00298"></a>00298                 <a class="code" href="classkobuki_1_1Kobuki.html#a60fc90929f8649468272cbdc1ca4ad6d">sig_error</a>.emit(<span class="stringliteral">&quot;Driver version isn&#39;t not compatible with robot firmware. Please upgrade driver&quot;</span>);
-<a name="l00299"></a>00299                 <a class="code" href="classkobuki_1_1Kobuki.html#aeb000976a20ed8f5eaf847c258527ace">shutdown_requested</a> = <span class="keyword">true</span>;
-<a name="l00300"></a>00300               }
-<a name="l00301"></a>00301               <span class="keywordflow">else</span>
-<a name="l00302"></a>00302               {
-<a name="l00303"></a>00303                 <span class="comment">// And minor version don&#39;t need to, but just make a suggestion</span>
-<a name="l00304"></a>00304                 version_match = <a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#a1b7c68777973d97d33b0ddc79188f617">check_minor_version</a>();
-<a name="l00305"></a>00305                 <span class="keywordflow">if</span> (version_match &lt; 0) {
-<a name="l00306"></a>00306                   <a class="code" href="classkobuki_1_1Kobuki.html#a8365fa1b3e2dbe361fd51e855ac63681">sig_warn</a>.emit(<span class="stringliteral">&quot;Robot firmware is outdated; we suggest you to upgrade it &quot;</span> \
-<a name="l00307"></a>00307                                 <span class="stringliteral">&quot;to benefit from the latest features. Consult how-to on: &quot;</span>  \
-<a name="l00308"></a>00308                                 <span class="stringliteral">&quot;http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware&quot;</span>);
-<a name="l00309"></a>00309                   <a class="code" href="classkobuki_1_1Kobuki.html#a8365fa1b3e2dbe361fd51e855ac63681">sig_warn</a>.emit(<span class="stringliteral">&quot;version info - &quot;</span> + <a class="code" href="classkobuki_1_1VersionInfo.html#a223c4a16131bac02fccb92e10e38fdc1">VersionInfo::toString</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a>)
-<a name="l00310"></a>00310                           + <span class="stringliteral">&quot;; current version is &quot;</span> + <a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#a644e63df3bb86a8da7eb81e206f19e70">current_version</a>());
-<a name="l00311"></a>00311                 }
-<a name="l00312"></a>00312                 <span class="keywordflow">else</span> <span class="keywordflow">if</span> (version_match &gt; 0) {
-<a name="l00313"></a>00313                   <span class="comment">// Driver version is outdated; maybe we should also suggest to upgrade it, but this is not a typical case</span>
-<a name="l00314"></a>00314                 }
-<a name="l00315"></a>00315               }
-<a name="l00316"></a>00316             }
-<a name="l00317"></a>00317             <span class="keywordflow">catch</span> (std::out_of_range&amp; e)
-<a name="l00318"></a>00318             {
-<a name="l00319"></a>00319               <span class="comment">// Wrong version hardcoded on firmware; lowest value is 10000</span>
-<a name="l00320"></a>00320               <a class="code" href="classkobuki_1_1Kobuki.html#a60fc90929f8649468272cbdc1ca4ad6d">sig_error</a>.emit(std::string(<span class="stringliteral">&quot;Invalid firmware version number: &quot;</span>).append(e.what()));
-<a name="l00321"></a>00321               <a class="code" href="classkobuki_1_1Kobuki.html#aeb000976a20ed8f5eaf847c258527ace">shutdown_requested</a> = <span class="keyword">true</span>;
-<a name="l00322"></a>00322             }
-<a name="l00323"></a>00323             <span class="keywordflow">break</span>;
-<a name="l00324"></a>00324           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea1f2b4cda9fba93a0d733eed65a2f0c0e">Header::UniqueDeviceID</a>:
-<a name="l00325"></a>00325             <a class="code" href="classkobuki_1_1Kobuki.html#acddbc6dc21324a02d2118322c5eb7167">unique_device_id</a>.<a class="code" href="classkobuki_1_1UniqueDeviceID.html#ac3fefd5a6c768a52e96b1890afa41319">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>);
-<a name="l00326"></a>00326             <a class="code" href="classkobuki_1_1Kobuki.html#af3c8487e4421094cc0eb38bfb621c414">sig_version_info</a>.emit( <a class="code" href="classkobuki_1_1VersionInfo.html">VersionInfo</a>( <a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a>, <a class="code" href="classkobuki_1_1Kobuki.html#ab3b7838b614cca5f785e52c8ea160b8c">hardware</a>.<a class="code" href="classkobuki_1_1Hardware.html#a08f54bcf8166af54f50edc60e9f0e7e7">data</a>.<a class="code" href="structkobuki_1_1Hardware_1_1Data.html#ad8213b45a4780e33dfccc932f07aa0bc">version</a>
-<a name="l00327"></a>00327                 , <a class="code" href="classkobuki_1_1Kobuki.html#acddbc6dc21324a02d2118322c5eb7167">unique_device_id</a>.<a class="code" href="classkobuki_1_1UniqueDeviceID.html#a4dccc63e08435b2cad91eed14d8ddf01">data</a>.<a class="code" href="structkobuki_1_1UniqueDeviceID_1_1Data.html#a288e270b6772a5eba47f967c2216e995">udid0</a>, <a class="code" href="classkobuki_1_1Kobuki.html#acddbc6dc21324a02d2118322c5eb7167">unique_device_id</a>.<a class="code" href="classkobuki_1_1UniqueDeviceID.html#a4dccc63e08435b2cad91eed14d8ddf01">data</a>.<a class="code" href="structkobuki_1_1UniqueDeviceID_1_1Data.html#a4839939a73f3e7d47f52b7399f6d8047">udid1</a>, <a class="code" href="classkobuki_1_1Kobuki.html#acddbc6dc21324a02d2118322c5eb7167">unique_device_id</a>.<a class="code" href="classkobuki_1_1UniqueDeviceID.html#a4dccc63e08435b2cad91eed14d8ddf01">data</a>.<a class="code" href="structkobuki_1_1UniqueDeviceID_1_1Data.html#ad8c475aafccda342e444fb6797a53de4">udid2</a> ));
-<a name="l00328"></a>00328             <a class="code" href="classkobuki_1_1Kobuki.html#aa39b142b5f651d5831b9107c35e86330">sig_info</a>.emit(<span class="stringliteral">&quot;version info - Hardware: &quot;</span> + <a class="code" href="classkobuki_1_1VersionInfo.html#a223c4a16131bac02fccb92e10e38fdc1">VersionInfo::toString</a>(<a class="code" href="classkobuki_1_1Kobuki.html#ab3b7838b614cca5f785e52c8ea160b8c">hardware</a>.<a class="code" href="classkobuki_1_1Hardware.html#a08f54bcf8166af54f50edc60e9f0e7e7">data</a>.<a class="code" href="structkobuki_1_1Hardware_1_1Data.html#ad8213b45a4780e33dfccc932f07aa0bc">version</a>)
-<a name="l00329"></a>00329                                      + <span class="stringliteral">&quot;. Firmware: &quot;</span> + <a class="code" href="classkobuki_1_1VersionInfo.html#a223c4a16131bac02fccb92e10e38fdc1">VersionInfo::toString</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a>));
-<a name="l00330"></a>00330             <a class="code" href="classkobuki_1_1Kobuki.html#ab07dc6fa02d48f837ea3755f3ac7b03c">version_info_reminder</a> = 0;
-<a name="l00331"></a>00331             <span class="keywordflow">break</span>;
-<a name="l00332"></a>00332           <span class="keywordflow">default</span>:
-<a name="l00333"></a>00333             <span class="keywordflow">if</span> (<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>.size() &lt; 3 ) { <span class="comment">/* minimum is 3, header_id, length, etx */</span>
-<a name="l00334"></a>00334               <a class="code" href="classkobuki_1_1Kobuki.html#a60fc90929f8649468272cbdc1ca4ad6d">sig_error</a>.emit(<span class="stringliteral">&quot;malformed subpayload detected.&quot;</span>);
-<a name="l00335"></a>00335               <a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>.clear();
-<a name="l00336"></a>00336             } <span class="keywordflow">else</span> {
-<a name="l00337"></a>00337               std::stringstream ostream;
-<a name="l00338"></a>00338               <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> header_id = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>.pop_front());
-<a name="l00339"></a>00339               <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> length = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>.pop_front());
-<a name="l00340"></a>00340               <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> remains = <a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>.size();
-<a name="l00341"></a>00341               <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> to_pop;
-<a name="l00342"></a>00342 
-<a name="l00343"></a>00343               ostream &lt;&lt; <span class="stringliteral">&quot;[&quot;</span> &lt;&lt; header_id &lt;&lt; <span class="stringliteral">&quot;]&quot;</span>;
-<a name="l00344"></a>00344               ostream &lt;&lt; <span class="stringliteral">&quot;[&quot;</span> &lt;&lt; length &lt;&lt; <span class="stringliteral">&quot;] &quot;</span>;
-<a name="l00345"></a>00345 
-<a name="l00346"></a>00346               ostream &lt;&lt; <span class="stringliteral">&quot;[&quot;</span>;
-<a name="l00347"></a>00347               ostream &lt;&lt; std::setfill(<span class="charliteral">&#39;0&#39;</span>) &lt;&lt; std::uppercase;
-<a name="l00348"></a>00348               ostream &lt;&lt; std::hex &lt;&lt; std::setw(2) &lt;&lt; header_id &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; std::dec;
-<a name="l00349"></a>00349               ostream &lt;&lt; std::hex &lt;&lt; std::setw(2) &lt;&lt; length &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; std::dec;
-<a name="l00350"></a>00350 
-<a name="l00351"></a>00351               <span class="keywordflow">if</span> (remains &lt; length) to_pop = remains;
-<a name="l00352"></a>00352               <span class="keywordflow">else</span>                  to_pop = length;
-<a name="l00353"></a>00353 
-<a name="l00354"></a>00354               <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; to_pop; i++ ) {
-<a name="l00355"></a>00355                 <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> byte = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>.pop_front());
-<a name="l00356"></a>00356                 ostream &lt;&lt; std::hex &lt;&lt; std::setw(2) &lt;&lt; byte &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; std::dec;
-<a name="l00357"></a>00357               }
-<a name="l00358"></a>00358               ostream &lt;&lt; <span class="stringliteral">&quot;]&quot;</span>;
-<a name="l00359"></a>00359 
-<a name="l00360"></a>00360               <span class="keywordflow">if</span> (remains &lt; length) <a class="code" href="classkobuki_1_1Kobuki.html#a60fc90929f8649468272cbdc1ca4ad6d">sig_error</a>.emit(<span class="stringliteral">&quot;malformed sub-payload detected. &quot;</span>  + ostream.str());
-<a name="l00361"></a>00361               <span class="keywordflow">else</span>                  <a class="code" href="classkobuki_1_1Kobuki.html#aa3bb2d628f9a64aa4ec7bcfb7d911266">sig_debug</a>.emit(<span class="stringliteral">&quot;unexpected sub-payload received. &quot;</span> + ostream.str());
-<a name="l00362"></a>00362 
-<a name="l00363"></a>00363             }
-<a name="l00364"></a>00364             <span class="keywordflow">break</span>;
-<a name="l00365"></a>00365         }
-<a name="l00366"></a>00366       }
-<a name="l00367"></a>00367       <a class="code" href="classkobuki_1_1Kobuki.html#a4811744d8cf462525716c9a15d5fea71">unlockDataAccess</a>();
-<a name="l00368"></a>00368 
-<a name="l00369"></a>00369       <a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a> = <span class="keyword">true</span>;
-<a name="l00370"></a>00370       <a class="code" href="classkobuki_1_1Kobuki.html#afee2605f8166f479026d8977b2697dfa">event_manager</a>.<a class="code" href="classkobuki_1_1EventManager.html#a0fdebc830c98b0a3fcb644da5b5b0281">update</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a0f521d6b02b875ca38c7a217d9856fd7">is_connected</a>, <a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a>);
-<a name="l00371"></a>00371       last_signal_time.stamp();
-<a name="l00372"></a>00372       <a class="code" href="classkobuki_1_1Kobuki.html#a780d7dacef70b02c22d1eae65be23411">sig_stream_data</a>.emit();
-<a name="l00373"></a>00373       <a class="code" href="classkobuki_1_1Kobuki.html#a78ca3419d9dc80e954f8feaecc2c0c0c">sendBaseControlCommand</a>(); <span class="comment">// send the command packet to mainboard;</span>
-<a name="l00374"></a>00374       <span class="keywordflow">if</span>( <a class="code" href="classkobuki_1_1Kobuki.html#ab07dc6fa02d48f837ea3755f3ac7b03c">version_info_reminder</a><span class="comment">/*--*/</span> &gt; 0 ) <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html#af88113d4e2bb59857a1194d76d813c6c">Command::GetVersionInfo</a>());
-<a name="l00375"></a>00375     }
-<a name="l00376"></a>00376     <span class="keywordflow">else</span>
-<a name="l00377"></a>00377     {
-<a name="l00378"></a>00378       <span class="comment">// watchdog</span>
-<a name="l00379"></a>00379       <span class="keywordflow">if</span> (<a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a> &amp;&amp; ((ecl::TimeStamp() - last_signal_time) &gt; timeout))
-<a name="l00380"></a>00380       {
-<a name="l00381"></a>00381         <a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a> = <span class="keyword">false</span>;
-<a name="l00382"></a>00382         <span class="comment">// do not call here the event manager update, as it generates a spurious offline state</span>
-<a name="l00383"></a>00383       }
-<a name="l00384"></a>00384     }
-<a name="l00385"></a>00385   }
-<a name="l00386"></a>00386   <a class="code" href="classkobuki_1_1Kobuki.html#a60fc90929f8649468272cbdc1ca4ad6d">sig_error</a>.emit(<span class="stringliteral">&quot;Driver worker thread shutdown!&quot;</span>);
-<a name="l00387"></a>00387 }
+<a name="l00056"></a>00056     , controller_info_reminder(0)
+<a name="l00057"></a>00057     , heading_offset(0.0/0.0)
+<a name="l00058"></a>00058 {
+<a name="l00059"></a>00059 }
+<a name="l00060"></a>00060 
+<a name="l00064"></a><a class="code" href="classkobuki_1_1Kobuki.html#a22de83f3db0db6dff0647299bbc5f90e">00064</a> <a class="code" href="classkobuki_1_1Kobuki.html#a22de83f3db0db6dff0647299bbc5f90e">Kobuki::~Kobuki</a>()
+<a name="l00065"></a>00065 {
+<a name="l00066"></a>00066   <a class="code" href="classkobuki_1_1Kobuki.html#a9e4447e3b2bb177155ee681daccdc274">disable</a>();
+<a name="l00067"></a>00067   <a class="code" href="classkobuki_1_1Kobuki.html#aeb000976a20ed8f5eaf847c258527ace">shutdown_requested</a> = <span class="keyword">true</span>; <span class="comment">// thread&#39;s spin() will catch this and terminate</span>
+<a name="l00068"></a>00068   <a class="code" href="classkobuki_1_1Kobuki.html#a6330b66495007d2956a59a1931fde123">thread</a>.join();
+<a name="l00069"></a>00069   <a class="code" href="classkobuki_1_1Kobuki.html#aa3bb2d628f9a64aa4ec7bcfb7d911266">sig_debug</a>.emit(<span class="stringliteral">&quot;Device: kobuki driver terminated.&quot;</span>);
+<a name="l00070"></a>00070 }
+<a name="l00071"></a>00071 
+<a name="l00072"></a><a class="code" href="classkobuki_1_1Kobuki.html#a0648c958434e641d4573721541099ee4">00072</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a0648c958434e641d4573721541099ee4">Kobuki::init</a>(<a class="code" href="classkobuki_1_1Parameters.html" title="Parameter list and validator for the kobuki.">Parameters</a> &amp;parameters) <span class="keywordflow">throw</span> (ecl::StandardException)
+<a name="l00073"></a>00073 {
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075   <span class="keywordflow">if</span> (!parameters.validate())
+<a name="l00076"></a>00076   {
+<a name="l00077"></a>00077     <span class="keywordflow">throw</span> ecl::StandardException(LOC, ecl::ConfigurationError, <span class="stringliteral">&quot;Kobuki&#39;s parameter settings did not validate.&quot;</span>);
+<a name="l00078"></a>00078   }
+<a name="l00079"></a>00079   this-&gt;parameters = parameters;
+<a name="l00080"></a>00080   std::string sigslots_namespace = parameters.sigslots_namespace;
+<a name="l00081"></a>00081   event_manager.init(sigslots_namespace);
+<a name="l00082"></a>00082 
+<a name="l00083"></a>00083   <span class="comment">// connect signals</span>
+<a name="l00084"></a>00084   sig_version_info.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/version_info&quot;</span>));
+<a name="l00085"></a>00085   sig_controller_info.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/controller_info&quot;</span>));
+<a name="l00086"></a>00086   sig_stream_data.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/stream_data&quot;</span>));
+<a name="l00087"></a>00087   sig_raw_data_command.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/raw_data_command&quot;</span>));
+<a name="l00088"></a>00088   sig_raw_data_stream.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/raw_data_stream&quot;</span>));
+<a name="l00089"></a>00089   <span class="comment">//sig_serial_timeout.connect(sigslots_namespace+std::string(&quot;/serial_timeout&quot;));</span>
+<a name="l00090"></a>00090 
+<a name="l00091"></a>00091   sig_debug.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/ros_debug&quot;</span>));
+<a name="l00092"></a>00092   sig_info.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/ros_info&quot;</span>));
+<a name="l00093"></a>00093   sig_warn.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/ros_warn&quot;</span>));
+<a name="l00094"></a>00094   sig_error.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/ros_error&quot;</span>));
+<a name="l00095"></a>00095   sig_named.connect(sigslots_namespace + std::string(<span class="stringliteral">&quot;/ros_named&quot;</span>));
+<a name="l00096"></a>00096 
+<a name="l00097"></a>00097   <span class="keywordflow">try</span> {
+<a name="l00098"></a>00098     serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);  <span class="comment">// this will throw exceptions - NotFoundError, OpenError</span>
+<a name="l00099"></a>00099     is_connected = <span class="keyword">true</span>;
+<a name="l00100"></a>00100     serial.block(4000); <span class="comment">// blocks by default, but just to be clear!</span>
+<a name="l00101"></a>00101   }
+<a name="l00102"></a>00102   <span class="keywordflow">catch</span> (<span class="keyword">const</span> ecl::StandardException &amp;e)
+<a name="l00103"></a>00103   {
+<a name="l00104"></a>00104     <span class="keywordflow">if</span> (e.flag() == ecl::NotFoundError) {
+<a name="l00105"></a>00105       sig_warn.emit(<span class="stringliteral">&quot;device does not (yet) available, is the usb connected?.&quot;</span>); <span class="comment">// not a failure mode.</span>
+<a name="l00106"></a>00106     } <span class="keywordflow">else</span> {
+<a name="l00107"></a>00107       <span class="keywordflow">throw</span> ecl::StandardException(LOC, e);
+<a name="l00108"></a>00108     }
+<a name="l00109"></a>00109   }
+<a name="l00110"></a>00110 
+<a name="l00111"></a>00111   ecl::PushAndPop&lt;unsigned char&gt; stx(2, 0);
+<a name="l00112"></a>00112   ecl::PushAndPop&lt;unsigned char&gt; etx(1);
+<a name="l00113"></a>00113   stx.push_back(0xaa);
+<a name="l00114"></a>00114   stx.push_back(0x55);
+<a name="l00115"></a>00115   packet_finder.configure(sigslots_namespace, stx, etx, 1, 256, 1, <span class="keyword">true</span>);
+<a name="l00116"></a>00116   acceleration_limiter.init(parameters.enable_acceleration_limiter);
+<a name="l00117"></a>00117 
+<a name="l00118"></a>00118   <span class="comment">// in case the user changed these from the defaults</span>
+<a name="l00119"></a>00119   <a class="code" href="classkobuki_1_1Battery.html#a0a8d941a6dec249504f5e3e03653fda2">Battery::capacity</a> = parameters.battery_capacity;
+<a name="l00120"></a>00120   <a class="code" href="classkobuki_1_1Battery.html#ab52bd0243682d8f2b4f6a7b9fdb143d3">Battery::low</a> = parameters.battery_low;
+<a name="l00121"></a>00121   <a class="code" href="classkobuki_1_1Battery.html#afed5fa95de7082b1d36e01bc7f551f56">Battery::dangerous</a> = parameters.battery_dangerous;
+<a name="l00122"></a>00122 
+<a name="l00123"></a>00123   <span class="comment">/******************************************</span>
+<a name="l00124"></a>00124 <span class="comment">   ** Get Version Info Commands</span>
+<a name="l00125"></a>00125 <span class="comment">   *******************************************/</span>
+<a name="l00126"></a>00126   version_info_reminder = 10;
+<a name="l00127"></a>00127   sendCommand(<a class="code" href="classkobuki_1_1Command.html#af88113d4e2bb59857a1194d76d813c6c">Command::GetVersionInfo</a>());
+<a name="l00128"></a>00128 
+<a name="l00129"></a>00129   <span class="comment">/******************************************</span>
+<a name="l00130"></a>00130 <span class="comment">   ** Get Controller Info Commands</span>
+<a name="l00131"></a>00131 <span class="comment">   *******************************************/</span>
+<a name="l00132"></a>00132   controller_info_reminder = 10;
+<a name="l00133"></a>00133   sendCommand(<a class="code" href="classkobuki_1_1Command.html#a36510619abf35df4c293bc06e9bfb44c">Command::GetControllerGain</a>());
+<a name="l00134"></a>00134   <span class="comment">//sig_controller_info.emit(); //emit default gain</span>
+<a name="l00135"></a>00135 
+<a name="l00136"></a>00136   thread.start(&amp;<a class="code" href="classkobuki_1_1Kobuki.html#a6a4ff5d9a33ec16d705c9a8911d50649" title="Performs a scan looking for incoming data packets.">Kobuki::spin</a>, *<span class="keyword">this</span>);
+<a name="l00137"></a>00137 }
+<a name="l00138"></a>00138 
+<a name="l00139"></a>00139 <span class="comment">/*****************************************************************************</span>
+<a name="l00140"></a>00140 <span class="comment"> ** Implementation [Runtime]</span>
+<a name="l00141"></a>00141 <span class="comment"> *****************************************************************************/</span>
+<a name="l00153"></a><a class="code" href="classkobuki_1_1Kobuki.html#af4b1e5a79539f8b88a3873d23dc542f6">00153</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#af4b1e5a79539f8b88a3873d23dc542f6">Kobuki::lockDataAccess</a>() {
+<a name="l00154"></a>00154   <a class="code" href="classkobuki_1_1Kobuki.html#abb5b7aa70e7b2207f8e8a4412d7487f3">data_mutex</a>.lock();
+<a name="l00155"></a>00155 }
+<a name="l00156"></a>00156 
+<a name="l00161"></a><a class="code" href="classkobuki_1_1Kobuki.html#a4811744d8cf462525716c9a15d5fea71">00161</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a4811744d8cf462525716c9a15d5fea71">Kobuki::unlockDataAccess</a>() {
+<a name="l00162"></a>00162   <a class="code" href="classkobuki_1_1Kobuki.html#abb5b7aa70e7b2207f8e8a4412d7487f3">data_mutex</a>.unlock();
+<a name="l00163"></a>00163 }
+<a name="l00164"></a>00164 
+<a name="l00174"></a><a class="code" href="classkobuki_1_1Kobuki.html#a6a4ff5d9a33ec16d705c9a8911d50649">00174</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a6a4ff5d9a33ec16d705c9a8911d50649" title="Performs a scan looking for incoming data packets.">Kobuki::spin</a>()
+<a name="l00175"></a>00175 {
+<a name="l00176"></a>00176   ecl::TimeStamp last_signal_time;
+<a name="l00177"></a>00177   ecl::Duration timeout(0.1);
+<a name="l00178"></a>00178   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> buf[256];
+<a name="l00179"></a>00179 
+<a name="l00180"></a>00180   <span class="comment">/*********************</span>
+<a name="l00181"></a>00181 <span class="comment">   ** Simulation Params</span>
+<a name="l00182"></a>00182 <span class="comment">   **********************/</span>
+<a name="l00183"></a>00183 
+<a name="l00184"></a>00184   <span class="keywordflow">while</span> (!<a class="code" href="classkobuki_1_1Kobuki.html#aeb000976a20ed8f5eaf847c258527ace">shutdown_requested</a>)
+<a name="l00185"></a>00185   {
+<a name="l00186"></a>00186     <span class="comment">/*********************</span>
+<a name="l00187"></a>00187 <span class="comment">     ** Checking Connection</span>
+<a name="l00188"></a>00188 <span class="comment">     **********************/</span>
+<a name="l00189"></a>00189     <span class="keywordflow">if</span> ( !<a class="code" href="classkobuki_1_1Kobuki.html#a6fbdcfe7e8557c0c2d0480be3cdf7773">serial</a>.open() ) {
+<a name="l00190"></a>00190       <span class="keywordflow">try</span> {
+<a name="l00191"></a>00191         <span class="comment">// this will throw exceptions - NotFoundError is the important one, handle it</span>
+<a name="l00192"></a>00192         <a class="code" href="classkobuki_1_1Kobuki.html#a6fbdcfe7e8557c0c2d0480be3cdf7773">serial</a>.open(<a class="code" href="classkobuki_1_1Kobuki.html#a02ada66911213cd57bb2f5ac21937562">parameters</a>.<a class="code" href="classkobuki_1_1Parameters.html#a993217236ea68f063f5bc285414408e2" title="The serial device port name [/dev/kobuki].">device_port</a>, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
+<a name="l00193"></a>00193         <a class="code" href="classkobuki_1_1Kobuki.html#aa39b142b5f651d5831b9107c35e86330">sig_info</a>.emit(<span class="stringliteral">&quot;device is connected.&quot;</span>);
+<a name="l00194"></a>00194         <a class="code" href="classkobuki_1_1Kobuki.html#a0f521d6b02b875ca38c7a217d9856fd7">is_connected</a> = <span class="keyword">true</span>;
+<a name="l00195"></a>00195         <a class="code" href="classkobuki_1_1Kobuki.html#a6fbdcfe7e8557c0c2d0480be3cdf7773">serial</a>.block(4000); <span class="comment">// blocks by default, but just to be clear!</span>
+<a name="l00196"></a>00196         <a class="code" href="classkobuki_1_1Kobuki.html#afee2605f8166f479026d8977b2697dfa">event_manager</a>.<a class="code" href="classkobuki_1_1EventManager.html#a0fdebc830c98b0a3fcb644da5b5b0281">update</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a0f521d6b02b875ca38c7a217d9856fd7">is_connected</a>, <a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a>);
+<a name="l00197"></a>00197         <a class="code" href="classkobuki_1_1Kobuki.html#ab07dc6fa02d48f837ea3755f3ac7b03c">version_info_reminder</a> = 10;
+<a name="l00198"></a>00198         <a class="code" href="classkobuki_1_1Kobuki.html#a76b2d89af496396759b93e4d1b08b47f">controller_info_reminder</a> = 10;
+<a name="l00199"></a>00199       }
+<a name="l00200"></a>00200       <span class="keywordflow">catch</span> (<span class="keyword">const</span> ecl::StandardException &amp;e)
+<a name="l00201"></a>00201       {
+<a name="l00202"></a>00202         <span class="comment">// windows throws OpenError if not connected</span>
+<a name="l00203"></a>00203         <span class="keywordflow">if</span> (e.flag() == ecl::NotFoundError) {
+<a name="l00204"></a>00204           <a class="code" href="classkobuki_1_1Kobuki.html#aa39b142b5f651d5831b9107c35e86330">sig_info</a>.emit(<span class="stringliteral">&quot;device does not (yet) available on this port, waiting...&quot;</span>);
+<a name="l00205"></a>00205         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (e.flag() == ecl::OpenError) {
+<a name="l00206"></a>00206           <a class="code" href="classkobuki_1_1Kobuki.html#aa39b142b5f651d5831b9107c35e86330">sig_info</a>.emit(<span class="stringliteral">&quot;device failed to open, waiting... [&quot;</span> + std::string(e.what()) + <span class="stringliteral">&quot;]&quot;</span>);
+<a name="l00207"></a>00207         } <span class="keywordflow">else</span> {
+<a name="l00208"></a>00208           <span class="comment">// This is bad - some unknown error we&#39;re not handling! But at least throw and show what error we came across.</span>
+<a name="l00209"></a>00209           <span class="keywordflow">throw</span> ecl::StandardException(LOC, e);
+<a name="l00210"></a>00210         }
+<a name="l00211"></a>00211         ecl::Sleep(5)(); <span class="comment">// five seconds</span>
+<a name="l00212"></a>00212         <a class="code" href="classkobuki_1_1Kobuki.html#a0f521d6b02b875ca38c7a217d9856fd7">is_connected</a> = <span class="keyword">false</span>;
+<a name="l00213"></a>00213         <a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a> = <span class="keyword">false</span>;
+<a name="l00214"></a>00214         <span class="keywordflow">continue</span>;
+<a name="l00215"></a>00215       }
+<a name="l00216"></a>00216     }
+<a name="l00217"></a>00217 
+<a name="l00218"></a>00218     <span class="comment">/*********************</span>
+<a name="l00219"></a>00219 <span class="comment">     ** Read Incoming</span>
+<a name="l00220"></a>00220 <span class="comment">     **********************/</span>
+<a name="l00221"></a>00221     <span class="keywordtype">int</span> n = <a class="code" href="classkobuki_1_1Kobuki.html#a6fbdcfe7e8557c0c2d0480be3cdf7773">serial</a>.read((<span class="keywordtype">char</span>*)buf, <a class="code" href="classkobuki_1_1Kobuki.html#aa438e90f351c31b1ae6f9cdaddce6058">packet_finder</a>.<a class="code" href="classkobuki_1_1PacketFinderBase.html#ac81c6f8d3f569447a6d0bc992060f37d">numberOfDataToRead</a>());
+<a name="l00222"></a>00222     <span class="keywordflow">if</span> (n == 0)
+<a name="l00223"></a>00223     {
+<a name="l00224"></a>00224       <span class="keywordflow">if</span> (<a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a> &amp;&amp; ((ecl::TimeStamp() - last_signal_time) &gt; timeout))
+<a name="l00225"></a>00225       {
+<a name="l00226"></a>00226         <a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a> = <span class="keyword">false</span>;
+<a name="l00227"></a>00227         <a class="code" href="classkobuki_1_1Kobuki.html#ab07dc6fa02d48f837ea3755f3ac7b03c">version_info_reminder</a> = 10;
+<a name="l00228"></a>00228         <a class="code" href="classkobuki_1_1Kobuki.html#a76b2d89af496396759b93e4d1b08b47f">controller_info_reminder</a> = 10;
+<a name="l00229"></a>00229         <a class="code" href="classkobuki_1_1Kobuki.html#aa3bb2d628f9a64aa4ec7bcfb7d911266">sig_debug</a>.emit(<span class="stringliteral">&quot;Timed out while waiting for incoming bytes.&quot;</span>);
+<a name="l00230"></a>00230       }
+<a name="l00231"></a>00231       <a class="code" href="classkobuki_1_1Kobuki.html#afee2605f8166f479026d8977b2697dfa">event_manager</a>.<a class="code" href="classkobuki_1_1EventManager.html#a0fdebc830c98b0a3fcb644da5b5b0281">update</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a0f521d6b02b875ca38c7a217d9856fd7">is_connected</a>, <a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a>);
+<a name="l00232"></a>00232       <span class="keywordflow">continue</span>;
+<a name="l00233"></a>00233     }
+<a name="l00234"></a>00234     <span class="keywordflow">else</span>
+<a name="l00235"></a>00235     {
+<a name="l00236"></a>00236       std::ostringstream ostream;
+<a name="l00237"></a>00237       ostream &lt;&lt; <span class="stringliteral">&quot;kobuki_node : serial_read(&quot;</span> &lt;&lt; n &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>
+<a name="l00238"></a>00238         &lt;&lt; <span class="stringliteral">&quot;, packet_finder.numberOfDataToRead(&quot;</span> &lt;&lt; <a class="code" href="classkobuki_1_1Kobuki.html#aa438e90f351c31b1ae6f9cdaddce6058">packet_finder</a>.<a class="code" href="classkobuki_1_1PacketFinderBase.html#ac81c6f8d3f569447a6d0bc992060f37d">numberOfDataToRead</a>() &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>;
+<a name="l00239"></a>00239       <span class="comment">//sig_debug.emit(ostream.str());</span>
+<a name="l00240"></a>00240       <a class="code" href="classkobuki_1_1Kobuki.html#ae2dbf1a75dff7a56936b9c3732bee94e">sig_named</a>.emit(<a class="code" href="classkobuki_1_1Kobuki.html#a1eba78f120487d8435329e8ac48e6d94">log</a>(<span class="stringliteral">&quot;debug&quot;</span>, <span class="stringliteral">&quot;serial&quot;</span>, ostream.str()));
+<a name="l00241"></a>00241       <span class="comment">// might be useful to send this to a topic if there is subscribers</span>
+<a name="l00242"></a>00242     }
+<a name="l00243"></a>00243 
+<a name="l00244"></a>00244     <span class="keywordflow">if</span> (<a class="code" href="classkobuki_1_1Kobuki.html#aa438e90f351c31b1ae6f9cdaddce6058">packet_finder</a>.<a class="code" href="classkobuki_1_1PacketFinderBase.html#ae80fbedeba41baf3dd2f3db93c812b44">update</a>(buf, n)) <span class="comment">// this clears packet finder&#39;s buffer and transfers important bytes into it</span>
+<a name="l00245"></a>00245     {
+<a name="l00246"></a>00246       <a class="code" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">PacketFinder::BufferType</a> local_buffer;
+<a name="l00247"></a>00247       <a class="code" href="classkobuki_1_1Kobuki.html#aa438e90f351c31b1ae6f9cdaddce6058">packet_finder</a>.<a class="code" href="classkobuki_1_1PacketFinderBase.html#a3b59b2c70d61bf2180337eddfb0ae08c">getBuffer</a>(local_buffer); <span class="comment">// get a reference to packet finder&#39;s buffer.</span>
+<a name="l00248"></a>00248       <a class="code" href="classkobuki_1_1Kobuki.html#a4752fa63c69f3fae94298a078769366e">sig_raw_data_stream</a>.emit(local_buffer);
+<a name="l00249"></a>00249 
+<a name="l00250"></a>00250       <a class="code" href="classkobuki_1_1Kobuki.html#aa438e90f351c31b1ae6f9cdaddce6058">packet_finder</a>.<a class="code" href="classkobuki_1_1PacketFinderBase.html#a3b7d8eb69f43f02a8cdbb9a908740bba">getPayload</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>);<span class="comment">// get a reference to packet finder&#39;s buffer.</span>
+<a name="l00251"></a>00251 
+<a name="l00252"></a>00252       <a class="code" href="classkobuki_1_1Kobuki.html#af4b1e5a79539f8b88a3873d23dc542f6">lockDataAccess</a>();
+<a name="l00253"></a>00253       <span class="keywordflow">while</span> (<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>.size() &gt; 0)
+<a name="l00254"></a>00254       {
+<a name="l00255"></a>00255         std::cout &lt;&lt; <span class="stringliteral">&quot;header_id: &quot;</span> &lt;&lt; (<span class="keywordtype">unsigned</span> int)<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>[0] &lt;&lt; <span class="stringliteral">&quot; | &quot;</span>;
+<a name="l00256"></a>00256         std::cout &lt;&lt; <span class="stringliteral">&quot;length: &quot;</span> &lt;&lt; (<span class="keywordtype">unsigned</span> int)<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>[1] &lt;&lt; <span class="stringliteral">&quot; | &quot;</span>;
+<a name="l00257"></a>00257         std::cout &lt;&lt; <span class="stringliteral">&quot;remains: &quot;</span> &lt;&lt; <a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>.size() &lt;&lt; <span class="stringliteral">&quot; | &quot;</span>;
+<a name="l00258"></a>00258         std::cout &lt;&lt; <span class="stringliteral">&quot;local_buffer: &quot;</span> &lt;&lt; local_buffer.size() &lt;&lt; <span class="stringliteral">&quot; | &quot;</span>;
+<a name="l00259"></a>00259         std::cout &lt;&lt; std::endl;
+<a name="l00260"></a>00260         <span class="keywordflow">switch</span> (<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>[0])
+<a name="l00261"></a>00261         {
+<a name="l00262"></a>00262           <span class="comment">// these come with the streamed feedback</span>
+<a name="l00263"></a>00263           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eaa12b8af31be594c67ae5b9fdead6956b">Header::CoreSensors</a>:
+<a name="l00264"></a>00264             <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#a76b781f33f5e4a7fcfffcfe05bf744ab">core_sensors</a>.<a class="code" href="classkobuki_1_1CoreSensors.html#a040a72096617002a0d0f93b848006ebc">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>) ) { <a class="code" href="classkobuki_1_1Kobuki.html#a8300b9e468ea77063421953a711b3eef">fixPayload</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>); <span class="keywordflow">break</span>; }
+<a name="l00265"></a>00265             <a class="code" href="classkobuki_1_1Kobuki.html#afee2605f8166f479026d8977b2697dfa">event_manager</a>.<a class="code" href="classkobuki_1_1EventManager.html#a0fdebc830c98b0a3fcb644da5b5b0281">update</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a76b781f33f5e4a7fcfffcfe05bf744ab">core_sensors</a>.<a class="code" href="classkobuki_1_1CoreSensors.html#a174414fa517ca33f2a1c73cd8f6d7327">data</a>, <a class="code" href="classkobuki_1_1Kobuki.html#a39c45a62a2480ad7bfec13c390fa610f">cliff</a>.<a class="code" href="classkobuki_1_1Cliff.html#ad804a517936d044162b4fd1985b5b191">data</a>.<a class="code" href="structkobuki_1_1Cliff_1_1Data.html#addf367ef49803e8814f0e468d87b78ac">bottom</a>);
+<a name="l00266"></a>00266             <span class="keywordflow">break</span>;
+<a name="l00267"></a>00267           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eabae79e6202055fb6d598e6ebaaad4ab6">Header::DockInfraRed</a>:
+<a name="l00268"></a>00268             <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#a753915dbef81df0f85bd51dc20128255">dock_ir</a>.<a class="code" href="classkobuki_1_1DockIR.html#acee0bd7f154a549d8d5a0f56aa9a6771">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>) ) { <a class="code" href="classkobuki_1_1Kobuki.html#a8300b9e468ea77063421953a711b3eef">fixPayload</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>); <span class="keywordflow">break</span>; }
+<a name="l00269"></a>00269             <span class="keywordflow">break</span>;
+<a name="l00270"></a>00270           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eae36a9397bdd2b3506cd80e4bf03f4d03">Header::Inertia</a>:
+<a name="l00271"></a>00271             <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#a2b867d6cda20d8fc21a36dbb4d6ba125">inertia</a>.<a class="code" href="classkobuki_1_1Inertia.html#a44d0ed2f43fd3598521fdb0104da3e5a">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>) ) { <a class="code" href="classkobuki_1_1Kobuki.html#a8300b9e468ea77063421953a711b3eef">fixPayload</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>); <span class="keywordflow">break</span>; }
+<a name="l00272"></a>00272 
+<a name="l00273"></a>00273             <span class="comment">// Issue #274: use first imu reading as zero heading; update when reseting odometry</span>
+<a name="l00274"></a>00274             <span class="keywordflow">if</span> (isnan(<a class="code" href="classkobuki_1_1Kobuki.html#a13d29e78f65eb0eb459659b3afbf7685">heading_offset</a>) == <span class="keyword">true</span>)
+<a name="l00275"></a>00275               <a class="code" href="classkobuki_1_1Kobuki.html#a13d29e78f65eb0eb459659b3afbf7685">heading_offset</a> = (<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code" href="classkobuki_1_1Kobuki.html#a2b867d6cda20d8fc21a36dbb4d6ba125">inertia</a>.<a class="code" href="classkobuki_1_1Inertia.html#a2d6db1d11b3a160786a1784920fa5f99">data</a>.<a class="code" href="structkobuki_1_1Inertia_1_1Data.html#a482542389a45c932f36ce4cda902babc">angle</a>) / 100.0) * ecl::pi / 180.0;
+<a name="l00276"></a>00276             <span class="keywordflow">break</span>;
+<a name="l00277"></a>00277           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea272a26198f6b86a838b6ec1b9712897c">Header::Cliff</a>:
+<a name="l00278"></a>00278             <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#a39c45a62a2480ad7bfec13c390fa610f">cliff</a>.<a class="code" href="classkobuki_1_1Cliff.html#ab4feb28d6b1863d7d1cd7b68d6963724">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>) ) { <a class="code" href="classkobuki_1_1Kobuki.html#a8300b9e468ea77063421953a711b3eef">fixPayload</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>); <span class="keywordflow">break</span>; }
+<a name="l00279"></a>00279             <span class="keywordflow">break</span>;
+<a name="l00280"></a>00280           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eae397464bbb1ed55fb4479c159e2407c7">Header::Current</a>:
+<a name="l00281"></a>00281             <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#af841f499eedcdd0d0a03f143f36d46ae">current</a>.<a class="code" href="classkobuki_1_1Current.html#a0650572b8e343637d000a8c3682bed5d">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>) ) { <a class="code" href="classkobuki_1_1Kobuki.html#a8300b9e468ea77063421953a711b3eef">fixPayload</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>); <span class="keywordflow">break</span>; }
+<a name="l00282"></a>00282             <span class="keywordflow">break</span>;
+<a name="l00283"></a>00283           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea1df38284e536a6b766c89847f5997cf7">Header::GpInput</a>:
+<a name="l00284"></a>00284             <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#aa919d8b508b8fa9ac2b380e91d91fbe7">gp_input</a>.<a class="code" href="classkobuki_1_1GpInput.html#a28b4dbbd1a1df1b22cda86193dadd60e">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>) ) { <a class="code" href="classkobuki_1_1Kobuki.html#a8300b9e468ea77063421953a711b3eef">fixPayload</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>); <span class="keywordflow">break</span>; }
+<a name="l00285"></a>00285             <a class="code" href="classkobuki_1_1Kobuki.html#afee2605f8166f479026d8977b2697dfa">event_manager</a>.<a class="code" href="classkobuki_1_1EventManager.html#a0fdebc830c98b0a3fcb644da5b5b0281">update</a>(<a class="code" href="classkobuki_1_1Kobuki.html#aa919d8b508b8fa9ac2b380e91d91fbe7">gp_input</a>.<a class="code" href="classkobuki_1_1GpInput.html#a2d71bd6d91b21763677f4f37e37cfc85">data</a>.<a class="code" href="structkobuki_1_1GpInput_1_1Data.html#a4d91ec153b1310b7ef99af7f61850906">digital_input</a>);
+<a name="l00286"></a>00286             <span class="keywordflow">break</span>;
+<a name="l00287"></a>00287           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eaab049380666126745d8da2e4eac0e391">Header::ThreeAxisGyro</a>:
+<a name="l00288"></a>00288             <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#a416e41478d6941078d11f69f6a7a1207">three_axis_gyro</a>.<a class="code" href="classkobuki_1_1ThreeAxisGyro.html#a65c15215e2769e7227c3f1f772a445b1">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>) ) { <a class="code" href="classkobuki_1_1Kobuki.html#a8300b9e468ea77063421953a711b3eef">fixPayload</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>); <span class="keywordflow">break</span>; }
+<a name="l00289"></a>00289             <span class="keywordflow">break</span>;
+<a name="l00290"></a>00290           <span class="comment">// the rest are only included on request</span>
+<a name="l00291"></a>00291           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eafb0bab4f1e5410d21e2727e9cb608f14">Header::Hardware</a>:
+<a name="l00292"></a>00292             <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#ab3b7838b614cca5f785e52c8ea160b8c">hardware</a>.<a class="code" href="classkobuki_1_1Hardware.html#a0e30a67914debe3e5de881720273c17b">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>) ) { <a class="code" href="classkobuki_1_1Kobuki.html#a8300b9e468ea77063421953a711b3eef">fixPayload</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>); <span class="keywordflow">break</span>; }
+<a name="l00293"></a>00293             <span class="comment">//sig_version_info.emit(VersionInfo(firmware.data.version, hardware.data.version));</span>
+<a name="l00294"></a>00294             <span class="keywordflow">break</span>;
+<a name="l00295"></a>00295           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea0164aceaf6a319f0666efbd463ada016">Header::Firmware</a>:
+<a name="l00296"></a>00296             <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#af41cef6ff3dc0ed1e7b256681544e1a2">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>) ) { <a class="code" href="classkobuki_1_1Kobuki.html#a8300b9e468ea77063421953a711b3eef">fixPayload</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>); <span class="keywordflow">break</span>; }
+<a name="l00297"></a>00297             <span class="keywordflow">try</span>
+<a name="l00298"></a>00298             {
+<a name="l00299"></a>00299               <span class="comment">// Check firmware/driver compatibility; major version must be the same</span>
+<a name="l00300"></a>00300               <span class="keywordtype">int</span> version_match = <a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#a7a3014b781ce53ca8aabb3c3bef2abd0">check_major_version</a>();
+<a name="l00301"></a>00301               <span class="keywordflow">if</span> (version_match &lt; 0) {
+<a name="l00302"></a>00302                 <a class="code" href="classkobuki_1_1Kobuki.html#a60fc90929f8649468272cbdc1ca4ad6d">sig_error</a>.emit(<span class="stringliteral">&quot;Robot firmware is outdated and needs to be upgraded. Consult how-to on: &quot;</span> \
+<a name="l00303"></a>00303                                <span class="stringliteral">&quot;http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware&quot;</span>);
+<a name="l00304"></a>00304                 <a class="code" href="classkobuki_1_1Kobuki.html#a8365fa1b3e2dbe361fd51e855ac63681">sig_warn</a>.emit(<span class="stringliteral">&quot;version info - &quot;</span> + <a class="code" href="classkobuki_1_1VersionInfo.html#a223c4a16131bac02fccb92e10e38fdc1">VersionInfo::toString</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a>)
+<a name="l00305"></a>00305                         + <span class="stringliteral">&quot;; current version is &quot;</span> + <a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#a644e63df3bb86a8da7eb81e206f19e70">current_version</a>());
+<a name="l00306"></a>00306                 <a class="code" href="classkobuki_1_1Kobuki.html#aeb000976a20ed8f5eaf847c258527ace">shutdown_requested</a> = <span class="keyword">true</span>;
+<a name="l00307"></a>00307               }
+<a name="l00308"></a>00308               <span class="keywordflow">else</span> <span class="keywordflow">if</span> (version_match &gt; 0) {
+<a name="l00309"></a>00309                 <a class="code" href="classkobuki_1_1Kobuki.html#a60fc90929f8649468272cbdc1ca4ad6d">sig_error</a>.emit(<span class="stringliteral">&quot;Driver version isn&#39;t not compatible with robot firmware. Please upgrade driver&quot;</span>);
+<a name="l00310"></a>00310                 <a class="code" href="classkobuki_1_1Kobuki.html#aeb000976a20ed8f5eaf847c258527ace">shutdown_requested</a> = <span class="keyword">true</span>;
+<a name="l00311"></a>00311               }
+<a name="l00312"></a>00312               <span class="keywordflow">else</span>
+<a name="l00313"></a>00313               {
+<a name="l00314"></a>00314                 <span class="comment">// And minor version don&#39;t need to, but just make a suggestion</span>
+<a name="l00315"></a>00315                 version_match = <a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#a1b7c68777973d97d33b0ddc79188f617">check_minor_version</a>();
+<a name="l00316"></a>00316                 <span class="keywordflow">if</span> (version_match &lt; 0) {
+<a name="l00317"></a>00317                   <a class="code" href="classkobuki_1_1Kobuki.html#a8365fa1b3e2dbe361fd51e855ac63681">sig_warn</a>.emit(<span class="stringliteral">&quot;Robot firmware is outdated; we suggest you to upgrade it &quot;</span> \
+<a name="l00318"></a>00318                                 <span class="stringliteral">&quot;to benefit from the latest features. Consult how-to on: &quot;</span>  \
+<a name="l00319"></a>00319                                 <span class="stringliteral">&quot;http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware&quot;</span>);
+<a name="l00320"></a>00320                   <a class="code" href="classkobuki_1_1Kobuki.html#a8365fa1b3e2dbe361fd51e855ac63681">sig_warn</a>.emit(<span class="stringliteral">&quot;version info - &quot;</span> + <a class="code" href="classkobuki_1_1VersionInfo.html#a223c4a16131bac02fccb92e10e38fdc1">VersionInfo::toString</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a>)
+<a name="l00321"></a>00321                           + <span class="stringliteral">&quot;; current version is &quot;</span> + <a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#a644e63df3bb86a8da7eb81e206f19e70">current_version</a>());
+<a name="l00322"></a>00322                 }
+<a name="l00323"></a>00323                 <span class="keywordflow">else</span> <span class="keywordflow">if</span> (version_match &gt; 0) {
+<a name="l00324"></a>00324                   <span class="comment">// Driver version is outdated; maybe we should also suggest to upgrade it, but this is not a typical case</span>
+<a name="l00325"></a>00325                 }
+<a name="l00326"></a>00326               }
+<a name="l00327"></a>00327             }
+<a name="l00328"></a>00328             <span class="keywordflow">catch</span> (std::out_of_range&amp; e)
+<a name="l00329"></a>00329             {
+<a name="l00330"></a>00330               <span class="comment">// Wrong version hardcoded on firmware; lowest value is 10000</span>
+<a name="l00331"></a>00331               <a class="code" href="classkobuki_1_1Kobuki.html#a60fc90929f8649468272cbdc1ca4ad6d">sig_error</a>.emit(std::string(<span class="stringliteral">&quot;Invalid firmware version number: &quot;</span>).append(e.what()));
+<a name="l00332"></a>00332               <a class="code" href="classkobuki_1_1Kobuki.html#aeb000976a20ed8f5eaf847c258527ace">shutdown_requested</a> = <span class="keyword">true</span>;
+<a name="l00333"></a>00333             }
+<a name="l00334"></a>00334             <span class="keywordflow">break</span>;
+<a name="l00335"></a>00335           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5ea1f2b4cda9fba93a0d733eed65a2f0c0e">Header::UniqueDeviceID</a>:
+<a name="l00336"></a>00336             <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#acddbc6dc21324a02d2118322c5eb7167">unique_device_id</a>.<a class="code" href="classkobuki_1_1UniqueDeviceID.html#ac3fefd5a6c768a52e96b1890afa41319">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>) ) { <a class="code" href="classkobuki_1_1Kobuki.html#a8300b9e468ea77063421953a711b3eef">fixPayload</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>); <span class="keywordflow">break</span>; }
+<a name="l00337"></a>00337             <a class="code" href="classkobuki_1_1Kobuki.html#af3c8487e4421094cc0eb38bfb621c414">sig_version_info</a>.emit( <a class="code" href="classkobuki_1_1VersionInfo.html">VersionInfo</a>( <a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a>, <a class="code" href="classkobuki_1_1Kobuki.html#ab3b7838b614cca5f785e52c8ea160b8c">hardware</a>.<a class="code" href="classkobuki_1_1Hardware.html#a08f54bcf8166af54f50edc60e9f0e7e7">data</a>.<a class="code" href="structkobuki_1_1Hardware_1_1Data.html#ad8213b45a4780e33dfccc932f07aa0bc">version</a>
+<a name="l00338"></a>00338                 , <a class="code" href="classkobuki_1_1Kobuki.html#acddbc6dc21324a02d2118322c5eb7167">unique_device_id</a>.<a class="code" href="classkobuki_1_1UniqueDeviceID.html#a4dccc63e08435b2cad91eed14d8ddf01">data</a>.<a class="code" href="structkobuki_1_1UniqueDeviceID_1_1Data.html#a288e270b6772a5eba47f967c2216e995">udid0</a>, <a class="code" href="classkobuki_1_1Kobuki.html#acddbc6dc21324a02d2118322c5eb7167">unique_device_id</a>.<a class="code" href="classkobuki_1_1UniqueDeviceID.html#a4dccc63e08435b2cad91eed14d8ddf01">data</a>.<a class="code" href="structkobuki_1_1UniqueDeviceID_1_1Data.html#a4839939a73f3e7d47f52b7399f6d8047">udid1</a>, <a class="code" href="classkobuki_1_1Kobuki.html#acddbc6dc21324a02d2118322c5eb7167">unique_device_id</a>.<a class="code" href="classkobuki_1_1UniqueDeviceID.html#a4dccc63e08435b2cad91eed14d8ddf01">data</a>.<a class="code" href="structkobuki_1_1UniqueDeviceID_1_1Data.html#ad8c475aafccda342e444fb6797a53de4">udid2</a> ));
+<a name="l00339"></a>00339             <a class="code" href="classkobuki_1_1Kobuki.html#aa39b142b5f651d5831b9107c35e86330">sig_info</a>.emit(<span class="stringliteral">&quot;version info - Hardware: &quot;</span> + <a class="code" href="classkobuki_1_1VersionInfo.html#a223c4a16131bac02fccb92e10e38fdc1">VersionInfo::toString</a>(<a class="code" href="classkobuki_1_1Kobuki.html#ab3b7838b614cca5f785e52c8ea160b8c">hardware</a>.<a class="code" href="classkobuki_1_1Hardware.html#a08f54bcf8166af54f50edc60e9f0e7e7">data</a>.<a class="code" href="structkobuki_1_1Hardware_1_1Data.html#ad8213b45a4780e33dfccc932f07aa0bc">version</a>)
+<a name="l00340"></a>00340                                      + <span class="stringliteral">&quot;. Firmware: &quot;</span> + <a class="code" href="classkobuki_1_1VersionInfo.html#a223c4a16131bac02fccb92e10e38fdc1">VersionInfo::toString</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a231eabfedb0cbda53a4fea9582a36628">firmware</a>.<a class="code" href="classkobuki_1_1Firmware.html#afd0dfe63b1cff495fabd7fbc61073b41">data</a>.<a class="code" href="structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c">version</a>));
+<a name="l00341"></a>00341             <a class="code" href="classkobuki_1_1Kobuki.html#ab07dc6fa02d48f837ea3755f3ac7b03c">version_info_reminder</a> = 0;
+<a name="l00342"></a>00342             <span class="keywordflow">break</span>;
+<a name="l00343"></a>00343           <span class="keywordflow">case</span> <a class="code" href="classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eafd5712665e6dddce0980268025626ad8">Header::ControllerInfo</a>:
+<a name="l00344"></a>00344             <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#a7891cb033fe02014b4bb01f26d318c9f">controller_info</a>.<a class="code" href="classkobuki_1_1ControllerInfo.html#a17904c2b90222d1f0b3230594edd57b7">deserialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>) ) { <a class="code" href="classkobuki_1_1Kobuki.html#a8300b9e468ea77063421953a711b3eef">fixPayload</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>); <span class="keywordflow">break</span>; }
+<a name="l00345"></a>00345             <a class="code" href="classkobuki_1_1Kobuki.html#ae8e96e11dbf111aac453911cbd7ba45c">sig_controller_info</a>.emit();
+<a name="l00346"></a>00346             <a class="code" href="classkobuki_1_1Kobuki.html#a76b2d89af496396759b93e4d1b08b47f">controller_info_reminder</a> = 0;
+<a name="l00347"></a>00347             <span class="keywordflow">break</span>;
+<a name="l00348"></a>00348           <span class="keywordflow">default</span>: <span class="comment">// in the case of unknown or mal-formed sub-payload</span>
+<a name="l00349"></a>00349             <a class="code" href="classkobuki_1_1Kobuki.html#a8300b9e468ea77063421953a711b3eef">fixPayload</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a>);
+<a name="l00350"></a>00350             <span class="keywordflow">break</span>;
+<a name="l00351"></a>00351         }
+<a name="l00352"></a>00352       }
+<a name="l00353"></a>00353       std::cout &lt;&lt; <span class="stringliteral">&quot;---&quot;</span> &lt;&lt; std::endl;
+<a name="l00354"></a>00354       <a class="code" href="classkobuki_1_1Kobuki.html#a4811744d8cf462525716c9a15d5fea71">unlockDataAccess</a>();
+<a name="l00355"></a>00355 
+<a name="l00356"></a>00356       <a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a> = <span class="keyword">true</span>;
+<a name="l00357"></a>00357       <a class="code" href="classkobuki_1_1Kobuki.html#afee2605f8166f479026d8977b2697dfa">event_manager</a>.<a class="code" href="classkobuki_1_1EventManager.html#a0fdebc830c98b0a3fcb644da5b5b0281">update</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a0f521d6b02b875ca38c7a217d9856fd7">is_connected</a>, <a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a>);
+<a name="l00358"></a>00358       last_signal_time.stamp();
+<a name="l00359"></a>00359       <a class="code" href="classkobuki_1_1Kobuki.html#a780d7dacef70b02c22d1eae65be23411">sig_stream_data</a>.emit();
+<a name="l00360"></a>00360       <a class="code" href="classkobuki_1_1Kobuki.html#a78ca3419d9dc80e954f8feaecc2c0c0c">sendBaseControlCommand</a>(); <span class="comment">// send the command packet to mainboard;</span>
+<a name="l00361"></a>00361       <span class="keywordflow">if</span>( <a class="code" href="classkobuki_1_1Kobuki.html#ab07dc6fa02d48f837ea3755f3ac7b03c">version_info_reminder</a><span class="comment">/*--*/</span> &gt; 0 ) <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html#af88113d4e2bb59857a1194d76d813c6c">Command::GetVersionInfo</a>());
+<a name="l00362"></a>00362       <span class="keywordflow">if</span>( <a class="code" href="classkobuki_1_1Kobuki.html#a76b2d89af496396759b93e4d1b08b47f">controller_info_reminder</a><span class="comment">/*--*/</span> &gt; 0 ) <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html#a36510619abf35df4c293bc06e9bfb44c">Command::GetControllerGain</a>());
+<a name="l00363"></a>00363     }
+<a name="l00364"></a>00364     <span class="keywordflow">else</span>
+<a name="l00365"></a>00365     {
+<a name="l00366"></a>00366       <span class="comment">// watchdog</span>
+<a name="l00367"></a>00367       <span class="keywordflow">if</span> (<a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a> &amp;&amp; ((ecl::TimeStamp() - last_signal_time) &gt; timeout))
+<a name="l00368"></a>00368       {
+<a name="l00369"></a>00369         <a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a> = <span class="keyword">false</span>;
+<a name="l00370"></a>00370         <span class="comment">// do not call here the event manager update, as it generates a spurious offline state</span>
+<a name="l00371"></a>00371       }
+<a name="l00372"></a>00372     }
+<a name="l00373"></a>00373   }
+<a name="l00374"></a>00374   <a class="code" href="classkobuki_1_1Kobuki.html#a60fc90929f8649468272cbdc1ca4ad6d">sig_error</a>.emit(<span class="stringliteral">&quot;Driver worker thread shutdown!&quot;</span>);
+<a name="l00375"></a>00375 }
+<a name="l00376"></a>00376 
+<a name="l00377"></a><a class="code" href="classkobuki_1_1Kobuki.html#a8300b9e468ea77063421953a711b3eef">00377</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a8300b9e468ea77063421953a711b3eef">Kobuki::fixPayload</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream)
+<a name="l00378"></a>00378 {
+<a name="l00379"></a>00379   <span class="keywordflow">if</span> (byteStream.size() &lt; 3 ) { <span class="comment">/* minimum size of sub-payload is 3; header_id, length, data */</span>
+<a name="l00380"></a>00380     <a class="code" href="classkobuki_1_1Kobuki.html#ae2dbf1a75dff7a56936b9c3732bee94e">sig_named</a>.emit(<a class="code" href="classkobuki_1_1Kobuki.html#a1eba78f120487d8435329e8ac48e6d94">log</a>(<span class="stringliteral">&quot;error&quot;</span>, <span class="stringliteral">&quot;packet&quot;</span>, <span class="stringliteral">&quot;too small sub-payload detected.&quot;</span>));
+<a name="l00381"></a>00381     byteStream.clear();
+<a name="l00382"></a>00382   } <span class="keywordflow">else</span> {
+<a name="l00383"></a>00383     std::stringstream ostream;
+<a name="l00384"></a>00384     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> header_id = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(byteStream.pop_front());
+<a name="l00385"></a>00385     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> length = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(byteStream.pop_front());
+<a name="l00386"></a>00386     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> remains = byteStream.size();
+<a name="l00387"></a>00387     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> to_pop;
 <a name="l00388"></a>00388 
-<a name="l00389"></a>00389 <span class="comment">/*****************************************************************************</span>
-<a name="l00390"></a>00390 <span class="comment"> ** Implementation [Human Friendly Accessors]</span>
-<a name="l00391"></a>00391 <span class="comment"> *****************************************************************************/</span>
-<a name="l00392"></a>00392 
-<a name="l00393"></a><a class="code" href="classkobuki_1_1Kobuki.html#af72c123e33ca1882f25800c9af5fb717">00393</a> ecl::Angle&lt;double&gt; <a class="code" href="classkobuki_1_1Kobuki.html#af72c123e33ca1882f25800c9af5fb717">Kobuki::getHeading</a>()<span class="keyword"> const</span>
-<a name="l00394"></a>00394 <span class="keyword"></span>{
-<a name="l00395"></a>00395   ecl::Angle&lt;double&gt; heading;
-<a name="l00396"></a>00396   <span class="comment">// raw data angles are in hundredths of a degree, convert to radians.</span>
-<a name="l00397"></a>00397   heading = (<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code" href="classkobuki_1_1Kobuki.html#a2b867d6cda20d8fc21a36dbb4d6ba125">inertia</a>.<a class="code" href="classkobuki_1_1Inertia.html#a2d6db1d11b3a160786a1784920fa5f99">data</a>.<a class="code" href="structkobuki_1_1Inertia_1_1Data.html#a482542389a45c932f36ce4cda902babc">angle</a>) / 100.0) * ecl::pi / 180.0;
-<a name="l00398"></a>00398   <span class="keywordflow">return</span> ecl::wrap_angle(heading - <a class="code" href="classkobuki_1_1Kobuki.html#a13d29e78f65eb0eb459659b3afbf7685">heading_offset</a>);
-<a name="l00399"></a>00399 }
-<a name="l00400"></a>00400 
-<a name="l00401"></a><a class="code" href="classkobuki_1_1Kobuki.html#a2a64a16a6c4b587627f5a304359ec641">00401</a> <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Kobuki.html#a2a64a16a6c4b587627f5a304359ec641">Kobuki::getAngularVelocity</a>()<span class="keyword"> const</span>
-<a name="l00402"></a>00402 <span class="keyword"></span>{
-<a name="l00403"></a>00403   <span class="comment">// raw data angles are in hundredths of a degree, convert to radians.</span>
-<a name="l00404"></a>00404   <span class="keywordflow">return</span> (static_cast&lt;double&gt;(<a class="code" href="classkobuki_1_1Kobuki.html#a2b867d6cda20d8fc21a36dbb4d6ba125">inertia</a>.<a class="code" href="classkobuki_1_1Inertia.html#a2d6db1d11b3a160786a1784920fa5f99">data</a>.<a class="code" href="structkobuki_1_1Inertia_1_1Data.html#af44f592fb74158c5bcf5b275c67fc3b4">angle_rate</a>) / 100.0) * ecl::pi / 180.0;
-<a name="l00405"></a>00405 }
-<a name="l00406"></a>00406 
-<a name="l00407"></a>00407 <span class="comment">/*****************************************************************************</span>
-<a name="l00408"></a>00408 <span class="comment"> ** Implementation [Raw Data Accessors]</span>
-<a name="l00409"></a>00409 <span class="comment"> *****************************************************************************/</span>
+<a name="l00389"></a>00389     ostream &lt;&lt; <span class="stringliteral">&quot;[&quot;</span> &lt;&lt; header_id &lt;&lt; <span class="stringliteral">&quot;]&quot;</span>;
+<a name="l00390"></a>00390     ostream &lt;&lt; <span class="stringliteral">&quot;[&quot;</span> &lt;&lt; length &lt;&lt; <span class="stringliteral">&quot;]&quot;</span>;
+<a name="l00391"></a>00391 
+<a name="l00392"></a>00392     ostream &lt;&lt; <span class="stringliteral">&quot;[&quot;</span>;
+<a name="l00393"></a>00393     ostream &lt;&lt; std::setfill(<span class="charliteral">&#39;0&#39;</span>) &lt;&lt; std::uppercase;
+<a name="l00394"></a>00394     ostream &lt;&lt; std::hex &lt;&lt; std::setw(2) &lt;&lt; header_id &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; std::dec;
+<a name="l00395"></a>00395     ostream &lt;&lt; std::hex &lt;&lt; std::setw(2) &lt;&lt; length &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; std::dec;
+<a name="l00396"></a>00396 
+<a name="l00397"></a>00397     <span class="keywordflow">if</span> (remains &lt; length) to_pop = remains;
+<a name="l00398"></a>00398     <span class="keywordflow">else</span>                  to_pop = length;
+<a name="l00399"></a>00399 
+<a name="l00400"></a>00400     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; to_pop; i++ ) {
+<a name="l00401"></a>00401       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> byte = <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(byteStream.pop_front());
+<a name="l00402"></a>00402       ostream &lt;&lt; std::hex &lt;&lt; std::setw(2) &lt;&lt; byte &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; std::dec;
+<a name="l00403"></a>00403     }
+<a name="l00404"></a>00404     ostream &lt;&lt; <span class="stringliteral">&quot;]&quot;</span>;
+<a name="l00405"></a>00405 
+<a name="l00406"></a>00406     <span class="keywordflow">if</span> (remains &lt; length) <a class="code" href="classkobuki_1_1Kobuki.html#ae2dbf1a75dff7a56936b9c3732bee94e">sig_named</a>.emit(<a class="code" href="classkobuki_1_1Kobuki.html#a1eba78f120487d8435329e8ac48e6d94">log</a>(<span class="stringliteral">&quot;error&quot;</span>, <span class="stringliteral">&quot;packet&quot;</span>, <span class="stringliteral">&quot;malformed sub-payload detected. &quot;</span>  + ostream.str()));
+<a name="l00407"></a>00407     <span class="keywordflow">else</span>                  <a class="code" href="classkobuki_1_1Kobuki.html#ae2dbf1a75dff7a56936b9c3732bee94e">sig_named</a>.emit(<a class="code" href="classkobuki_1_1Kobuki.html#a1eba78f120487d8435329e8ac48e6d94">log</a>(<span class="stringliteral">&quot;debug&quot;</span>, <span class="stringliteral">&quot;packet&quot;</span>, <span class="stringliteral">&quot;unknown sub-payload detected. &quot;</span> + ostream.str()));
+<a name="l00408"></a>00408   }
+<a name="l00409"></a>00409 }
 <a name="l00410"></a>00410 
-<a name="l00411"></a><a class="code" href="classkobuki_1_1Kobuki.html#a9a8e7a0dfa5c9fd447d2791217ca1bca">00411</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a9a8e7a0dfa5c9fd447d2791217ca1bca">Kobuki::resetOdometry</a>()
-<a name="l00412"></a>00412 {
-<a name="l00413"></a>00413   <a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#a30022287cb6e09ffec607422b9166e49">reset</a>();
-<a name="l00414"></a>00414 
-<a name="l00415"></a>00415   <span class="comment">// Issue #274: use current imu reading as zero heading to emulate reseting gyro</span>
-<a name="l00416"></a>00416   <a class="code" href="classkobuki_1_1Kobuki.html#a13d29e78f65eb0eb459659b3afbf7685">heading_offset</a> = (<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code" href="classkobuki_1_1Kobuki.html#a2b867d6cda20d8fc21a36dbb4d6ba125">inertia</a>.<a class="code" href="classkobuki_1_1Inertia.html#a2d6db1d11b3a160786a1784920fa5f99">data</a>.<a class="code" href="structkobuki_1_1Inertia_1_1Data.html#a482542389a45c932f36ce4cda902babc">angle</a>) / 100.0) * ecl::pi / 180.0;
-<a name="l00417"></a>00417 }
-<a name="l00418"></a>00418 
-<a name="l00419"></a><a class="code" href="classkobuki_1_1Kobuki.html#a70e163fcf282a169a1c1c7cbb8564294">00419</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a70e163fcf282a169a1c1c7cbb8564294">Kobuki::getWheelJointStates</a>(<span class="keywordtype">double</span> &amp;wheel_left_angle, <span class="keywordtype">double</span> &amp;wheel_left_angle_rate, <span class="keywordtype">double</span> &amp;wheel_right_angle,
-<a name="l00420"></a>00420                                  <span class="keywordtype">double</span> &amp;wheel_right_angle_rate)
-<a name="l00421"></a>00421 {
-<a name="l00422"></a>00422   <a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#adbda4aac1c7fc982a3f4de3ea969118f">getWheelJointStates</a>(wheel_left_angle, wheel_left_angle_rate, wheel_right_angle, wheel_right_angle_rate);
-<a name="l00423"></a>00423 }
-<a name="l00424"></a>00424 
-<a name="l00436"></a><a class="code" href="classkobuki_1_1Kobuki.html#a1c1cf4b6b10d5d18109430d764763544">00436</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a1c1cf4b6b10d5d18109430d764763544" title="Use the current sensor data (encoders and gyro) to calculate an update for the odometry.">Kobuki::updateOdometry</a>(ecl::Pose2D&lt;double&gt; &amp;pose_update, ecl::linear_algebra::Vector3d &amp;pose_update_rates)
-<a name="l00437"></a>00437 {
-<a name="l00438"></a>00438   <a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#a1655bb061ec059c98a646f7dcdecd949" title="Updates the odometry from firmware stamps and encoders.">update</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a76b781f33f5e4a7fcfffcfe05bf744ab">core_sensors</a>.<a class="code" href="classkobuki_1_1CoreSensors.html#a174414fa517ca33f2a1c73cd8f6d7327">data</a>.<a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a2ef0c11257ef7a25c0691e87659e138b">time_stamp</a>, <a class="code" href="classkobuki_1_1Kobuki.html#a76b781f33f5e4a7fcfffcfe05bf744ab">core_sensors</a>.<a class="code" href="classkobuki_1_1CoreSensors.html#a174414fa517ca33f2a1c73cd8f6d7327">data</a>.<a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a9a2aee9ed43bb59570ab618f81016044">left_encoder</a>, <a class="code" href="classkobuki_1_1Kobuki.html#a76b781f33f5e4a7fcfffcfe05bf744ab">core_sensors</a>.<a class="code" href="classkobuki_1_1CoreSensors.html#a174414fa517ca33f2a1c73cd8f6d7327">data</a>.<a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#ab5d251034bca20f28ec57bde1441ca45">right_encoder</a>,
-<a name="l00439"></a>00439                       pose_update, pose_update_rates);
+<a name="l00411"></a>00411 
+<a name="l00412"></a>00412 <span class="comment">/*****************************************************************************</span>
+<a name="l00413"></a>00413 <span class="comment"> ** Implementation [Human Friendly Accessors]</span>
+<a name="l00414"></a>00414 <span class="comment"> *****************************************************************************/</span>
+<a name="l00415"></a>00415 
+<a name="l00416"></a><a class="code" href="classkobuki_1_1Kobuki.html#af72c123e33ca1882f25800c9af5fb717">00416</a> ecl::Angle&lt;double&gt; <a class="code" href="classkobuki_1_1Kobuki.html#af72c123e33ca1882f25800c9af5fb717">Kobuki::getHeading</a>()<span class="keyword"> const</span>
+<a name="l00417"></a>00417 <span class="keyword"></span>{
+<a name="l00418"></a>00418   ecl::Angle&lt;double&gt; heading;
+<a name="l00419"></a>00419   <span class="comment">// raw data angles are in hundredths of a degree, convert to radians.</span>
+<a name="l00420"></a>00420   heading = (<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code" href="classkobuki_1_1Kobuki.html#a2b867d6cda20d8fc21a36dbb4d6ba125">inertia</a>.<a class="code" href="classkobuki_1_1Inertia.html#a2d6db1d11b3a160786a1784920fa5f99">data</a>.<a class="code" href="structkobuki_1_1Inertia_1_1Data.html#a482542389a45c932f36ce4cda902babc">angle</a>) / 100.0) * ecl::pi / 180.0;
+<a name="l00421"></a>00421   <span class="keywordflow">return</span> ecl::wrap_angle(heading - <a class="code" href="classkobuki_1_1Kobuki.html#a13d29e78f65eb0eb459659b3afbf7685">heading_offset</a>);
+<a name="l00422"></a>00422 }
+<a name="l00423"></a>00423 
+<a name="l00424"></a><a class="code" href="classkobuki_1_1Kobuki.html#a2a64a16a6c4b587627f5a304359ec641">00424</a> <span class="keywordtype">double</span> <a class="code" href="classkobuki_1_1Kobuki.html#a2a64a16a6c4b587627f5a304359ec641">Kobuki::getAngularVelocity</a>()<span class="keyword"> const</span>
+<a name="l00425"></a>00425 <span class="keyword"></span>{
+<a name="l00426"></a>00426   <span class="comment">// raw data angles are in hundredths of a degree, convert to radians.</span>
+<a name="l00427"></a>00427   <span class="keywordflow">return</span> (static_cast&lt;double&gt;(<a class="code" href="classkobuki_1_1Kobuki.html#a2b867d6cda20d8fc21a36dbb4d6ba125">inertia</a>.<a class="code" href="classkobuki_1_1Inertia.html#a2d6db1d11b3a160786a1784920fa5f99">data</a>.<a class="code" href="structkobuki_1_1Inertia_1_1Data.html#af44f592fb74158c5bcf5b275c67fc3b4">angle_rate</a>) / 100.0) * ecl::pi / 180.0;
+<a name="l00428"></a>00428 }
+<a name="l00429"></a>00429 
+<a name="l00430"></a>00430 <span class="comment">/*****************************************************************************</span>
+<a name="l00431"></a>00431 <span class="comment"> ** Implementation [Raw Data Accessors]</span>
+<a name="l00432"></a>00432 <span class="comment"> *****************************************************************************/</span>
+<a name="l00433"></a>00433 
+<a name="l00434"></a><a class="code" href="classkobuki_1_1Kobuki.html#a9a8e7a0dfa5c9fd447d2791217ca1bca">00434</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a9a8e7a0dfa5c9fd447d2791217ca1bca">Kobuki::resetOdometry</a>()
+<a name="l00435"></a>00435 {
+<a name="l00436"></a>00436   <a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#a30022287cb6e09ffec607422b9166e49">reset</a>();
+<a name="l00437"></a>00437 
+<a name="l00438"></a>00438   <span class="comment">// Issue #274: use current imu reading as zero heading to emulate reseting gyro</span>
+<a name="l00439"></a>00439   <a class="code" href="classkobuki_1_1Kobuki.html#a13d29e78f65eb0eb459659b3afbf7685">heading_offset</a> = (<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code" href="classkobuki_1_1Kobuki.html#a2b867d6cda20d8fc21a36dbb4d6ba125">inertia</a>.<a class="code" href="classkobuki_1_1Inertia.html#a2d6db1d11b3a160786a1784920fa5f99">data</a>.<a class="code" href="structkobuki_1_1Inertia_1_1Data.html#a482542389a45c932f36ce4cda902babc">angle</a>) / 100.0) * ecl::pi / 180.0;
 <a name="l00440"></a>00440 }
 <a name="l00441"></a>00441 
-<a name="l00442"></a>00442 <span class="comment">/*****************************************************************************</span>
-<a name="l00443"></a>00443 <span class="comment"> ** Commands</span>
-<a name="l00444"></a>00444 <span class="comment"> *****************************************************************************/</span>
-<a name="l00445"></a>00445 
-<a name="l00446"></a><a class="code" href="classkobuki_1_1Kobuki.html#acfa8adb823fe03d7223d41a13d8e66cf">00446</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#acfa8adb823fe03d7223d41a13d8e66cf">Kobuki::setLed</a>(<span class="keyword">const</span> <span class="keyword">enum</span> <a class="code" href="namespacekobuki.html#a33186680e911242fe0c7a511a12d1465">LedNumber</a> &amp;number, <span class="keyword">const</span> <span class="keyword">enum</span> <a class="code" href="namespacekobuki.html#a278fbe81cdc3dd93c2fde224fb013c26">LedColour</a> &amp;colour)
-<a name="l00447"></a>00447 {
-<a name="l00448"></a>00448   <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html#a90d62fd79acdef8204ef8df442b7c417">Command::SetLedArray</a>(number, colour, <a class="code" href="classkobuki_1_1Kobuki.html#a2ef8e78d7168a90faffaa516522f79bf">kobuki_command</a>.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>));
-<a name="l00449"></a>00449 }
-<a name="l00450"></a>00450 
-<a name="l00451"></a><a class="code" href="classkobuki_1_1Kobuki.html#a188d1db38aa059f96e3bfb0879b244f8">00451</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a188d1db38aa059f96e3bfb0879b244f8">Kobuki::setDigitalOutput</a>(<span class="keyword">const</span> <a class="code" href="structkobuki_1_1DigitalOutput.html">DigitalOutput</a> &amp;digital_output) {
-<a name="l00452"></a>00452   <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html#a4376a5a8b8be1107a56aca5a36fd61d8">Command::SetDigitalOutput</a>(digital_output, <a class="code" href="classkobuki_1_1Kobuki.html#a2ef8e78d7168a90faffaa516522f79bf">kobuki_command</a>.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>));
-<a name="l00453"></a>00453 }
-<a name="l00454"></a>00454 
-<a name="l00455"></a><a class="code" href="classkobuki_1_1Kobuki.html#a53a52a4a94507afe3ce30a0f6dfbefdf">00455</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a53a52a4a94507afe3ce30a0f6dfbefdf">Kobuki::setExternalPower</a>(<span class="keyword">const</span> <a class="code" href="structkobuki_1_1DigitalOutput.html">DigitalOutput</a> &amp;digital_output) {
-<a name="l00456"></a>00456   <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html#acc66a38299deaad48570040aa54d5bdc">Command::SetExternalPower</a>(digital_output, <a class="code" href="classkobuki_1_1Kobuki.html#a2ef8e78d7168a90faffaa516522f79bf">kobuki_command</a>.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>));
-<a name="l00457"></a>00457 }
-<a name="l00458"></a>00458 
-<a name="l00459"></a>00459 <span class="comment">//void Kobuki::playSound(const enum Sounds &amp;number)</span>
-<a name="l00460"></a>00460 <span class="comment">//{</span>
-<a name="l00461"></a>00461 <span class="comment">//  sendCommand(Command::PlaySound(number, kobuki_command.data));</span>
-<a name="l00462"></a>00462 <span class="comment">//}</span>
-<a name="l00463"></a>00463 
-<a name="l00464"></a><a class="code" href="classkobuki_1_1Kobuki.html#afaf3bd9ab3e781fec84200041ed95f30">00464</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#afaf3bd9ab3e781fec84200041ed95f30">Kobuki::playSoundSequence</a>(<span class="keyword">const</span> <span class="keyword">enum</span> <a class="code" href="namespacekobuki.html#a336129805a07def7a2c2b0be281e7ddd">SoundSequences</a> &amp;number)
-<a name="l00465"></a>00465 {
-<a name="l00466"></a>00466   <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html#a9eb46f3f36573b8168252b13434a7260">Command::PlaySoundSequence</a>(number, <a class="code" href="classkobuki_1_1Kobuki.html#a2ef8e78d7168a90faffaa516522f79bf">kobuki_command</a>.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>));
-<a name="l00467"></a>00467 }
+<a name="l00442"></a><a class="code" href="classkobuki_1_1Kobuki.html#a70e163fcf282a169a1c1c7cbb8564294">00442</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a70e163fcf282a169a1c1c7cbb8564294">Kobuki::getWheelJointStates</a>(<span class="keywordtype">double</span> &amp;wheel_left_angle, <span class="keywordtype">double</span> &amp;wheel_left_angle_rate, <span class="keywordtype">double</span> &amp;wheel_right_angle,
+<a name="l00443"></a>00443                                  <span class="keywordtype">double</span> &amp;wheel_right_angle_rate)
+<a name="l00444"></a>00444 {
+<a name="l00445"></a>00445   <a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#adbda4aac1c7fc982a3f4de3ea969118f">getWheelJointStates</a>(wheel_left_angle, wheel_left_angle_rate, wheel_right_angle, wheel_right_angle_rate);
+<a name="l00446"></a>00446 }
+<a name="l00447"></a>00447 
+<a name="l00459"></a><a class="code" href="classkobuki_1_1Kobuki.html#a1c1cf4b6b10d5d18109430d764763544">00459</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a1c1cf4b6b10d5d18109430d764763544" title="Use the current sensor data (encoders and gyro) to calculate an update for the odometry.">Kobuki::updateOdometry</a>(ecl::Pose2D&lt;double&gt; &amp;pose_update, ecl::linear_algebra::Vector3d &amp;pose_update_rates)
+<a name="l00460"></a>00460 {
+<a name="l00461"></a>00461   <a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#a1655bb061ec059c98a646f7dcdecd949" title="Updates the odometry from firmware stamps and encoders.">update</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a76b781f33f5e4a7fcfffcfe05bf744ab">core_sensors</a>.<a class="code" href="classkobuki_1_1CoreSensors.html#a174414fa517ca33f2a1c73cd8f6d7327">data</a>.<a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a2ef0c11257ef7a25c0691e87659e138b">time_stamp</a>, <a class="code" href="classkobuki_1_1Kobuki.html#a76b781f33f5e4a7fcfffcfe05bf744ab">core_sensors</a>.<a class="code" href="classkobuki_1_1CoreSensors.html#a174414fa517ca33f2a1c73cd8f6d7327">data</a>.<a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#a9a2aee9ed43bb59570ab618f81016044">left_encoder</a>, <a class="code" href="classkobuki_1_1Kobuki.html#a76b781f33f5e4a7fcfffcfe05bf744ab">core_sensors</a>.<a class="code" href="classkobuki_1_1CoreSensors.html#a174414fa517ca33f2a1c73cd8f6d7327">data</a>.<a class="code" href="structkobuki_1_1CoreSensors_1_1Data.html#ab5d251034bca20f28ec57bde1441ca45">right_encoder</a>,
+<a name="l00462"></a>00462                       pose_update, pose_update_rates);
+<a name="l00463"></a>00463 }
+<a name="l00464"></a>00464 
+<a name="l00465"></a>00465 <span class="comment">/*****************************************************************************</span>
+<a name="l00466"></a>00466 <span class="comment"> ** Commands</span>
+<a name="l00467"></a>00467 <span class="comment"> *****************************************************************************/</span>
 <a name="l00468"></a>00468 
-<a name="l00469"></a><a class="code" href="classkobuki_1_1Kobuki.html#af016306e3114daf0c61ffbaae0b3d1a0">00469</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#af016306e3114daf0c61ffbaae0b3d1a0">Kobuki::setBaseControl</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;linear_velocity, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angular_velocity)
+<a name="l00469"></a><a class="code" href="classkobuki_1_1Kobuki.html#acfa8adb823fe03d7223d41a13d8e66cf">00469</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#acfa8adb823fe03d7223d41a13d8e66cf">Kobuki::setLed</a>(<span class="keyword">const</span> <span class="keyword">enum</span> <a class="code" href="namespacekobuki.html#a33186680e911242fe0c7a511a12d1465">LedNumber</a> &amp;number, <span class="keyword">const</span> <span class="keyword">enum</span> <a class="code" href="namespacekobuki.html#a278fbe81cdc3dd93c2fde224fb013c26">LedColour</a> &amp;colour)
 <a name="l00470"></a>00470 {
-<a name="l00471"></a>00471   <a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#ac03a97b1ee8b36a7b7d02ded9f28dd8a">setVelocityCommands</a>(linear_velocity, angular_velocity);
+<a name="l00471"></a>00471   <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html#a90d62fd79acdef8204ef8df442b7c417">Command::SetLedArray</a>(number, colour, <a class="code" href="classkobuki_1_1Kobuki.html#a2ef8e78d7168a90faffaa516522f79bf">kobuki_command</a>.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>));
 <a name="l00472"></a>00472 }
 <a name="l00473"></a>00473 
-<a name="l00474"></a><a class="code" href="classkobuki_1_1Kobuki.html#a78ca3419d9dc80e954f8feaecc2c0c0c">00474</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a78ca3419d9dc80e954f8feaecc2c0c0c">Kobuki::sendBaseControlCommand</a>()
-<a name="l00475"></a>00475 {
-<a name="l00476"></a>00476   <span class="keywordflow">if</span>( <a class="code" href="classkobuki_1_1Kobuki.html#ac5a6df7edf64e09a33f9f3c680eadf1b">acceleration_limiter</a>.<a class="code" href="classkobuki_1_1AccelerationLimiter.html#aa5d776b407c07f62efe4c343426415d9">isEnabled</a>() ) {
-<a name="l00477"></a>00477     <a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#a74a496205059a0acd9b89b69309cab74">velocityCommands</a>(<a class="code" href="classkobuki_1_1Kobuki.html#ac5a6df7edf64e09a33f9f3c680eadf1b">acceleration_limiter</a>.<a class="code" href="classkobuki_1_1AccelerationLimiter.html#abc759c954227e4874ecfd49b9624474f" title="Limits the input velocity commands if gatekeeper is enabled.">limit</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#a91c8ef73aef454b10edc3364c864d677">pointVelocity</a>()));
-<a name="l00478"></a>00478   } <span class="keywordflow">else</span> {
-<a name="l00479"></a>00479     <a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#a74a496205059a0acd9b89b69309cab74">velocityCommands</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#a91c8ef73aef454b10edc3364c864d677">pointVelocity</a>());
-<a name="l00480"></a>00480   }
-<a name="l00481"></a>00481   std::vector&lt;short&gt; velocity_commands = <a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#a74a496205059a0acd9b89b69309cab74">velocityCommands</a>();
-<a name="l00482"></a>00482   <span class="comment">//std::cout &lt;&lt; &quot;speed: &quot; &lt;&lt; velocity_commands[0] &lt;&lt; &quot;, radius: &quot; &lt;&lt; velocity_commands[1] &lt;&lt; std::endl;</span>
-<a name="l00483"></a>00483   <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html#ad5156efc2b7de9b519f822cf990e201d">Command::SetVelocityControl</a>(velocity_commands[0], velocity_commands[1]));
-<a name="l00484"></a>00484 }
-<a name="l00485"></a>00485 
-<a name="l00496"></a><a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e">00496</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">Kobuki::sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html">Command</a> command)
-<a name="l00497"></a>00497 {
-<a name="l00498"></a>00498   <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a> || !<a class="code" href="classkobuki_1_1Kobuki.html#a0f521d6b02b875ca38c7a217d9856fd7">is_connected</a> ) {
-<a name="l00499"></a>00499     <span class="comment">//need to do something</span>
-<a name="l00500"></a>00500     <a class="code" href="classkobuki_1_1Kobuki.html#aa3bb2d628f9a64aa4ec7bcfb7d911266">sig_debug</a>.emit(<span class="stringliteral">&quot;Device state is not ready yet.&quot;</span>);
-<a name="l00501"></a>00501     <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a>     ) <a class="code" href="classkobuki_1_1Kobuki.html#aa3bb2d628f9a64aa4ec7bcfb7d911266">sig_debug</a>.emit(<span class="stringliteral">&quot; - Device is not alive.&quot;</span>);
-<a name="l00502"></a>00502     <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#a0f521d6b02b875ca38c7a217d9856fd7">is_connected</a> ) <a class="code" href="classkobuki_1_1Kobuki.html#aa3bb2d628f9a64aa4ec7bcfb7d911266">sig_debug</a>.emit(<span class="stringliteral">&quot; - Device is not connected.&quot;</span>);
-<a name="l00503"></a>00503     <span class="comment">//std::cout &lt;&lt; is_enabled &lt;&lt; &quot;, &quot; &lt;&lt; is_alive &lt;&lt; &quot;, &quot; &lt;&lt; is_connected &lt;&lt; std::endl;</span>
-<a name="l00504"></a>00504     <span class="keywordflow">return</span>;
-<a name="l00505"></a>00505   }
-<a name="l00506"></a>00506   <a class="code" href="classkobuki_1_1Kobuki.html#af40490e786d8ec95719a10172c1eef3e">command_mutex</a>.lock();
-<a name="l00507"></a>00507   <a class="code" href="classkobuki_1_1Kobuki.html#a2ef8e78d7168a90faffaa516522f79bf">kobuki_command</a>.<a class="code" href="classkobuki_1_1Command.html#a92e11a248177d836d59dca61b2730018">resetBuffer</a>(<a class="code" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a>);
-<a name="l00508"></a>00508 
-<a name="l00509"></a>00509   <span class="keywordflow">if</span> (!command.<a class="code" href="classkobuki_1_1Command.html#a735d4fe3925e2ca28dee437b61ce8398">serialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a>))
-<a name="l00510"></a>00510   {
-<a name="l00511"></a>00511     <a class="code" href="classkobuki_1_1Kobuki.html#a60fc90929f8649468272cbdc1ca4ad6d">sig_error</a>.emit(<span class="stringliteral">&quot;command serialise failed.&quot;</span>);
-<a name="l00512"></a>00512   }
-<a name="l00513"></a>00513   <a class="code" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a>[2] = <a class="code" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a>.size() - 3;
-<a name="l00514"></a>00514   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> checksum = 0;
-<a name="l00515"></a>00515   <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 2; i &lt; <a class="code" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a>.size(); i++)
-<a name="l00516"></a>00516     checksum ^= (<a class="code" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a>[i]);
-<a name="l00517"></a>00517 
-<a name="l00518"></a>00518   <a class="code" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a>.push_back(checksum);
-<a name="l00519"></a>00519   <span class="comment">//check_device();</span>
-<a name="l00520"></a>00520   <a class="code" href="classkobuki_1_1Kobuki.html#a6fbdcfe7e8557c0c2d0480be3cdf7773">serial</a>.write((<span class="keyword">const</span> <span class="keywordtype">char</span>*)&amp;<a class="code" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a>[0], command_buffer.size());
-<a name="l00521"></a>00521 
-<a name="l00522"></a>00522   <a class="code" href="classkobuki_1_1Kobuki.html#a9fa84f5f2d6bf182a5b5f38a8be0d47c">sig_raw_data_command</a>.emit(command_buffer);
-<a name="l00523"></a>00523   <a class="code" href="classkobuki_1_1Kobuki.html#af40490e786d8ec95719a10172c1eef3e">command_mutex</a>.unlock();
-<a name="l00524"></a>00524 }
-<a name="l00525"></a>00525 
-<a name="l00526"></a><a class="code" href="classkobuki_1_1Kobuki.html#afa7f47487ef0224c1ce79f2d70de233b">00526</a> <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Kobuki.html#afa7f47487ef0224c1ce79f2d70de233b">Kobuki::enable</a>()
-<a name="l00527"></a>00527 {
-<a name="l00528"></a>00528   <a class="code" href="classkobuki_1_1Kobuki.html#a817e0f9b75c591fac8753280f88442e6">is_enabled</a> = <span class="keyword">true</span>;
-<a name="l00529"></a>00529   <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00530"></a>00530 }
-<a name="l00531"></a>00531 
-<a name="l00532"></a><a class="code" href="classkobuki_1_1Kobuki.html#a9e4447e3b2bb177155ee681daccdc274">00532</a> <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Kobuki.html#a9e4447e3b2bb177155ee681daccdc274">Kobuki::disable</a>()
-<a name="l00533"></a>00533 {
-<a name="l00534"></a>00534   <a class="code" href="classkobuki_1_1Kobuki.html#af016306e3114daf0c61ffbaae0b3d1a0">setBaseControl</a>(0.0f, 0.0f);
-<a name="l00535"></a>00535   <a class="code" href="classkobuki_1_1Kobuki.html#a78ca3419d9dc80e954f8feaecc2c0c0c">sendBaseControlCommand</a>();
-<a name="l00536"></a>00536   <a class="code" href="classkobuki_1_1Kobuki.html#a817e0f9b75c591fac8753280f88442e6">is_enabled</a> = <span class="keyword">false</span>;
-<a name="l00537"></a>00537   <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00538"></a>00538 }
-<a name="l00539"></a>00539 
-<a name="l00548"></a><a class="code" href="classkobuki_1_1Kobuki.html#a74865ce787f6dfc15e55fddf0646dccd">00548</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a74865ce787f6dfc15e55fddf0646dccd" title="Print a list of all relevant sigslot connections.">Kobuki::printSigSlotConnections</a>()<span class="keyword"> const </span>{
-<a name="l00549"></a>00549 
-<a name="l00550"></a>00550   std::cout &lt;&lt; <span class="stringliteral">&quot;========== Void ==========&quot;</span> &lt;&lt; std::endl;
-<a name="l00551"></a>00551   ecl::SigSlotsManager&lt;&gt;::printStatistics();
-<a name="l00552"></a>00552   std::cout &lt;&lt; <span class="stringliteral">&quot;========= String =========&quot;</span> &lt;&lt; std::endl;
-<a name="l00553"></a>00553   ecl::SigSlotsManager&lt;const std::string&amp;&gt;::printStatistics();
-<a name="l00554"></a>00554   std::cout &lt;&lt; <span class="stringliteral">&quot;====== Button Event ======&quot;</span> &lt;&lt; std::endl;
-<a name="l00555"></a>00555   ecl::SigSlotsManager&lt;const ButtonEvent&amp;&gt;::printStatistics();
-<a name="l00556"></a>00556   std::cout &lt;&lt; <span class="stringliteral">&quot;====== Bumper Event ======&quot;</span> &lt;&lt; std::endl;
-<a name="l00557"></a>00557   ecl::SigSlotsManager&lt;const BumperEvent&amp;&gt;::printStatistics();
-<a name="l00558"></a>00558   std::cout &lt;&lt; <span class="stringliteral">&quot;====== Cliff Event =======&quot;</span> &lt;&lt; std::endl;
-<a name="l00559"></a>00559   ecl::SigSlotsManager&lt;const CliffEvent&amp;&gt;::printStatistics();
-<a name="l00560"></a>00560   std::cout &lt;&lt; <span class="stringliteral">&quot;====== Wheel Event =======&quot;</span> &lt;&lt; std::endl;
-<a name="l00561"></a>00561   ecl::SigSlotsManager&lt;const WheelEvent&amp;&gt;::printStatistics();
-<a name="l00562"></a>00562   std::cout &lt;&lt; <span class="stringliteral">&quot;====== Power Event =======&quot;</span> &lt;&lt; std::endl;
-<a name="l00563"></a>00563   ecl::SigSlotsManager&lt;const PowerEvent&amp;&gt;::printStatistics();
-<a name="l00564"></a>00564   std::cout &lt;&lt; <span class="stringliteral">&quot;====== Input Event =======&quot;</span> &lt;&lt; std::endl;
-<a name="l00565"></a>00565   ecl::SigSlotsManager&lt;const InputEvent&amp;&gt;::printStatistics();
-<a name="l00566"></a>00566   std::cout &lt;&lt; <span class="stringliteral">&quot;====== Robot Event =======&quot;</span> &lt;&lt; std::endl;
-<a name="l00567"></a>00567   ecl::SigSlotsManager&lt;const RobotEvent&amp;&gt;::printStatistics();
-<a name="l00568"></a>00568   std::cout &lt;&lt; <span class="stringliteral">&quot;====== VersionInfo =======&quot;</span> &lt;&lt; std::endl;
-<a name="l00569"></a>00569   ecl::SigSlotsManager&lt;const VersionInfo&amp;&gt;::printStatistics();
-<a name="l00570"></a>00570   std::cout &lt;&lt; <span class="stringliteral">&quot;===== Command Buffer =====&quot;</span> &lt;&lt; std::endl;
-<a name="l00571"></a>00571   ecl::SigSlotsManager&lt;const Command::Buffer&amp;&gt;::printStatistics();
+<a name="l00474"></a><a class="code" href="classkobuki_1_1Kobuki.html#a188d1db38aa059f96e3bfb0879b244f8">00474</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a188d1db38aa059f96e3bfb0879b244f8">Kobuki::setDigitalOutput</a>(<span class="keyword">const</span> <a class="code" href="structkobuki_1_1DigitalOutput.html">DigitalOutput</a> &amp;digital_output) {
+<a name="l00475"></a>00475   <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html#a4376a5a8b8be1107a56aca5a36fd61d8">Command::SetDigitalOutput</a>(digital_output, <a class="code" href="classkobuki_1_1Kobuki.html#a2ef8e78d7168a90faffaa516522f79bf">kobuki_command</a>.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>));
+<a name="l00476"></a>00476 }
+<a name="l00477"></a>00477 
+<a name="l00478"></a><a class="code" href="classkobuki_1_1Kobuki.html#a53a52a4a94507afe3ce30a0f6dfbefdf">00478</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a53a52a4a94507afe3ce30a0f6dfbefdf">Kobuki::setExternalPower</a>(<span class="keyword">const</span> <a class="code" href="structkobuki_1_1DigitalOutput.html">DigitalOutput</a> &amp;digital_output) {
+<a name="l00479"></a>00479   <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html#acc66a38299deaad48570040aa54d5bdc">Command::SetExternalPower</a>(digital_output, <a class="code" href="classkobuki_1_1Kobuki.html#a2ef8e78d7168a90faffaa516522f79bf">kobuki_command</a>.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>));
+<a name="l00480"></a>00480 }
+<a name="l00481"></a>00481 
+<a name="l00482"></a>00482 <span class="comment">//void Kobuki::playSound(const enum Sounds &amp;number)</span>
+<a name="l00483"></a>00483 <span class="comment">//{</span>
+<a name="l00484"></a>00484 <span class="comment">//  sendCommand(Command::PlaySound(number, kobuki_command.data));</span>
+<a name="l00485"></a>00485 <span class="comment">//}</span>
+<a name="l00486"></a>00486 
+<a name="l00487"></a><a class="code" href="classkobuki_1_1Kobuki.html#afaf3bd9ab3e781fec84200041ed95f30">00487</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#afaf3bd9ab3e781fec84200041ed95f30">Kobuki::playSoundSequence</a>(<span class="keyword">const</span> <span class="keyword">enum</span> <a class="code" href="namespacekobuki.html#a336129805a07def7a2c2b0be281e7ddd">SoundSequences</a> &amp;number)
+<a name="l00488"></a>00488 {
+<a name="l00489"></a>00489   <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html#a9eb46f3f36573b8168252b13434a7260">Command::PlaySoundSequence</a>(number, <a class="code" href="classkobuki_1_1Kobuki.html#a2ef8e78d7168a90faffaa516522f79bf">kobuki_command</a>.<a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>));
+<a name="l00490"></a>00490 }
+<a name="l00491"></a>00491 
+<a name="l00492"></a><a class="code" href="classkobuki_1_1Kobuki.html#a6974e63106792b4d252729b71057acca">00492</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a6974e63106792b4d252729b71057acca">Kobuki::setControllerGain</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> &amp;type, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;p_gain,
+<a name="l00493"></a>00493                                <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;i_gain, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;d_gain)
+<a name="l00494"></a>00494 {
+<a name="l00495"></a>00495   <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html#a2f29d1c7d5d458d191132d531f3b406b">Command::SetControllerGain</a>(type, p_gain, i_gain, d_gain));
+<a name="l00496"></a>00496 }
+<a name="l00497"></a>00497 
+<a name="l00498"></a><a class="code" href="classkobuki_1_1Kobuki.html#aa16ae15cbb4c07de8bd553e14f93852e">00498</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#aa16ae15cbb4c07de8bd553e14f93852e">Kobuki::getControllerGain</a>()
+<a name="l00499"></a>00499 {
+<a name="l00500"></a>00500   <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html#a36510619abf35df4c293bc06e9bfb44c">Command::GetControllerGain</a>());
+<a name="l00501"></a>00501 }
+<a name="l00502"></a>00502 
+<a name="l00503"></a><a class="code" href="classkobuki_1_1Kobuki.html#af016306e3114daf0c61ffbaae0b3d1a0">00503</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#af016306e3114daf0c61ffbaae0b3d1a0">Kobuki::setBaseControl</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;linear_velocity, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angular_velocity)
+<a name="l00504"></a>00504 {
+<a name="l00505"></a>00505   <a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#ac03a97b1ee8b36a7b7d02ded9f28dd8a">setVelocityCommands</a>(linear_velocity, angular_velocity);
+<a name="l00506"></a>00506 }
+<a name="l00507"></a>00507 
+<a name="l00508"></a><a class="code" href="classkobuki_1_1Kobuki.html#a78ca3419d9dc80e954f8feaecc2c0c0c">00508</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a78ca3419d9dc80e954f8feaecc2c0c0c">Kobuki::sendBaseControlCommand</a>()
+<a name="l00509"></a>00509 {
+<a name="l00510"></a>00510   <span class="keywordflow">if</span>( <a class="code" href="classkobuki_1_1Kobuki.html#ac5a6df7edf64e09a33f9f3c680eadf1b">acceleration_limiter</a>.<a class="code" href="classkobuki_1_1AccelerationLimiter.html#aa5d776b407c07f62efe4c343426415d9">isEnabled</a>() ) {
+<a name="l00511"></a>00511     <a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#a74a496205059a0acd9b89b69309cab74">velocityCommands</a>(<a class="code" href="classkobuki_1_1Kobuki.html#ac5a6df7edf64e09a33f9f3c680eadf1b">acceleration_limiter</a>.<a class="code" href="classkobuki_1_1AccelerationLimiter.html#abc759c954227e4874ecfd49b9624474f" title="Limits the input velocity commands if gatekeeper is enabled.">limit</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#a91c8ef73aef454b10edc3364c864d677">pointVelocity</a>()));
+<a name="l00512"></a>00512   } <span class="keywordflow">else</span> {
+<a name="l00513"></a>00513     <a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#a74a496205059a0acd9b89b69309cab74">velocityCommands</a>(<a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#a91c8ef73aef454b10edc3364c864d677">pointVelocity</a>());
+<a name="l00514"></a>00514   }
+<a name="l00515"></a>00515   std::vector&lt;short&gt; velocity_commands = <a class="code" href="classkobuki_1_1Kobuki.html#a31467a3683f79790e30ba2fe5a597210">diff_drive</a>.<a class="code" href="classkobuki_1_1DiffDrive.html#a74a496205059a0acd9b89b69309cab74">velocityCommands</a>();
+<a name="l00516"></a>00516   <span class="comment">//std::cout &lt;&lt; &quot;speed: &quot; &lt;&lt; velocity_commands[0] &lt;&lt; &quot;, radius: &quot; &lt;&lt; velocity_commands[1] &lt;&lt; std::endl;</span>
+<a name="l00517"></a>00517   <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html#ad5156efc2b7de9b519f822cf990e201d">Command::SetVelocityControl</a>(velocity_commands[0], velocity_commands[1]));
+<a name="l00518"></a>00518 }
+<a name="l00519"></a>00519 
+<a name="l00530"></a><a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e">00530</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e" title="Send the prepared command to the serial port.">Kobuki::sendCommand</a>(<a class="code" href="classkobuki_1_1Command.html">Command</a> command)
+<a name="l00531"></a>00531 {
+<a name="l00532"></a>00532   <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a> || !<a class="code" href="classkobuki_1_1Kobuki.html#a0f521d6b02b875ca38c7a217d9856fd7">is_connected</a> ) {
+<a name="l00533"></a>00533     <span class="comment">//need to do something</span>
+<a name="l00534"></a>00534     <a class="code" href="classkobuki_1_1Kobuki.html#aa3bb2d628f9a64aa4ec7bcfb7d911266">sig_debug</a>.emit(<span class="stringliteral">&quot;Device state is not ready yet.&quot;</span>);
+<a name="l00535"></a>00535     <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#acba33ca9f76f440202fd20b3579c9c9e">is_alive</a>     ) <a class="code" href="classkobuki_1_1Kobuki.html#aa3bb2d628f9a64aa4ec7bcfb7d911266">sig_debug</a>.emit(<span class="stringliteral">&quot; - Device is not alive.&quot;</span>);
+<a name="l00536"></a>00536     <span class="keywordflow">if</span>( !<a class="code" href="classkobuki_1_1Kobuki.html#a0f521d6b02b875ca38c7a217d9856fd7">is_connected</a> ) <a class="code" href="classkobuki_1_1Kobuki.html#aa3bb2d628f9a64aa4ec7bcfb7d911266">sig_debug</a>.emit(<span class="stringliteral">&quot; - Device is not connected.&quot;</span>);
+<a name="l00537"></a>00537     <span class="comment">//std::cout &lt;&lt; is_enabled &lt;&lt; &quot;, &quot; &lt;&lt; is_alive &lt;&lt; &quot;, &quot; &lt;&lt; is_connected &lt;&lt; std::endl;</span>
+<a name="l00538"></a>00538     <span class="keywordflow">return</span>;
+<a name="l00539"></a>00539   }
+<a name="l00540"></a>00540   <a class="code" href="classkobuki_1_1Kobuki.html#af40490e786d8ec95719a10172c1eef3e">command_mutex</a>.lock();
+<a name="l00541"></a>00541   <a class="code" href="classkobuki_1_1Kobuki.html#a2ef8e78d7168a90faffaa516522f79bf">kobuki_command</a>.<a class="code" href="classkobuki_1_1Command.html#a92e11a248177d836d59dca61b2730018">resetBuffer</a>(<a class="code" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a>);
+<a name="l00542"></a>00542 
+<a name="l00543"></a>00543   <span class="keywordflow">if</span> (!command.<a class="code" href="classkobuki_1_1Command.html#a735d4fe3925e2ca28dee437b61ce8398">serialise</a>(<a class="code" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a>))
+<a name="l00544"></a>00544   {
+<a name="l00545"></a>00545     <a class="code" href="classkobuki_1_1Kobuki.html#a60fc90929f8649468272cbdc1ca4ad6d">sig_error</a>.emit(<span class="stringliteral">&quot;command serialise failed.&quot;</span>);
+<a name="l00546"></a>00546   }
+<a name="l00547"></a>00547   <a class="code" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a>[2] = <a class="code" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a>.size() - 3;
+<a name="l00548"></a>00548   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> checksum = 0;
+<a name="l00549"></a>00549   <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 2; i &lt; <a class="code" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a>.size(); i++)
+<a name="l00550"></a>00550     checksum ^= (<a class="code" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a>[i]);
+<a name="l00551"></a>00551 
+<a name="l00552"></a>00552   <a class="code" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a>.push_back(checksum);
+<a name="l00553"></a>00553   <span class="comment">//check_device();</span>
+<a name="l00554"></a>00554   <a class="code" href="classkobuki_1_1Kobuki.html#a6fbdcfe7e8557c0c2d0480be3cdf7773">serial</a>.write((<span class="keyword">const</span> <span class="keywordtype">char</span>*)&amp;<a class="code" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a>[0], command_buffer.size());
+<a name="l00555"></a>00555 
+<a name="l00556"></a>00556   <a class="code" href="classkobuki_1_1Kobuki.html#a9fa84f5f2d6bf182a5b5f38a8be0d47c">sig_raw_data_command</a>.emit(command_buffer);
+<a name="l00557"></a>00557   <a class="code" href="classkobuki_1_1Kobuki.html#af40490e786d8ec95719a10172c1eef3e">command_mutex</a>.unlock();
+<a name="l00558"></a>00558 }
+<a name="l00559"></a>00559 
+<a name="l00560"></a><a class="code" href="classkobuki_1_1Kobuki.html#afa7f47487ef0224c1ce79f2d70de233b">00560</a> <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Kobuki.html#afa7f47487ef0224c1ce79f2d70de233b">Kobuki::enable</a>()
+<a name="l00561"></a>00561 {
+<a name="l00562"></a>00562   <a class="code" href="classkobuki_1_1Kobuki.html#a817e0f9b75c591fac8753280f88442e6">is_enabled</a> = <span class="keyword">true</span>;
+<a name="l00563"></a>00563   <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00564"></a>00564 }
+<a name="l00565"></a>00565 
+<a name="l00566"></a><a class="code" href="classkobuki_1_1Kobuki.html#a9e4447e3b2bb177155ee681daccdc274">00566</a> <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Kobuki.html#a9e4447e3b2bb177155ee681daccdc274">Kobuki::disable</a>()
+<a name="l00567"></a>00567 {
+<a name="l00568"></a>00568   <a class="code" href="classkobuki_1_1Kobuki.html#af016306e3114daf0c61ffbaae0b3d1a0">setBaseControl</a>(0.0f, 0.0f);
+<a name="l00569"></a>00569   <a class="code" href="classkobuki_1_1Kobuki.html#a78ca3419d9dc80e954f8feaecc2c0c0c">sendBaseControlCommand</a>();
+<a name="l00570"></a>00570   <a class="code" href="classkobuki_1_1Kobuki.html#a817e0f9b75c591fac8753280f88442e6">is_enabled</a> = <span class="keyword">false</span>;
+<a name="l00571"></a>00571   <span class="keywordflow">return</span> <span class="keyword">true</span>;
 <a name="l00572"></a>00572 }
 <a name="l00573"></a>00573 
-<a name="l00574"></a>00574 } <span class="comment">// namespace kobuki</span>
+<a name="l00582"></a><a class="code" href="classkobuki_1_1Kobuki.html#a74865ce787f6dfc15e55fddf0646dccd">00582</a> <span class="keywordtype">void</span> <a class="code" href="classkobuki_1_1Kobuki.html#a74865ce787f6dfc15e55fddf0646dccd" title="Print a list of all relevant sigslot connections.">Kobuki::printSigSlotConnections</a>()<span class="keyword"> const </span>{
+<a name="l00583"></a>00583 
+<a name="l00584"></a>00584   std::cout &lt;&lt; <span class="stringliteral">&quot;========== Void ==========&quot;</span> &lt;&lt; std::endl;
+<a name="l00585"></a>00585   ecl::SigSlotsManager&lt;&gt;::printStatistics();
+<a name="l00586"></a>00586   std::cout &lt;&lt; <span class="stringliteral">&quot;========= String =========&quot;</span> &lt;&lt; std::endl;
+<a name="l00587"></a>00587   ecl::SigSlotsManager&lt;const std::string&amp;&gt;::printStatistics();
+<a name="l00588"></a>00588   std::cout &lt;&lt; <span class="stringliteral">&quot;====== Button Event ======&quot;</span> &lt;&lt; std::endl;
+<a name="l00589"></a>00589   ecl::SigSlotsManager&lt;const ButtonEvent&amp;&gt;::printStatistics();
+<a name="l00590"></a>00590   std::cout &lt;&lt; <span class="stringliteral">&quot;====== Bumper Event ======&quot;</span> &lt;&lt; std::endl;
+<a name="l00591"></a>00591   ecl::SigSlotsManager&lt;const BumperEvent&amp;&gt;::printStatistics();
+<a name="l00592"></a>00592   std::cout &lt;&lt; <span class="stringliteral">&quot;====== Cliff Event =======&quot;</span> &lt;&lt; std::endl;
+<a name="l00593"></a>00593   ecl::SigSlotsManager&lt;const CliffEvent&amp;&gt;::printStatistics();
+<a name="l00594"></a>00594   std::cout &lt;&lt; <span class="stringliteral">&quot;====== Wheel Event =======&quot;</span> &lt;&lt; std::endl;
+<a name="l00595"></a>00595   ecl::SigSlotsManager&lt;const WheelEvent&amp;&gt;::printStatistics();
+<a name="l00596"></a>00596   std::cout &lt;&lt; <span class="stringliteral">&quot;====== Power Event =======&quot;</span> &lt;&lt; std::endl;
+<a name="l00597"></a>00597   ecl::SigSlotsManager&lt;const PowerEvent&amp;&gt;::printStatistics();
+<a name="l00598"></a>00598   std::cout &lt;&lt; <span class="stringliteral">&quot;====== Input Event =======&quot;</span> &lt;&lt; std::endl;
+<a name="l00599"></a>00599   ecl::SigSlotsManager&lt;const InputEvent&amp;&gt;::printStatistics();
+<a name="l00600"></a>00600   std::cout &lt;&lt; <span class="stringliteral">&quot;====== Robot Event =======&quot;</span> &lt;&lt; std::endl;
+<a name="l00601"></a>00601   ecl::SigSlotsManager&lt;const RobotEvent&amp;&gt;::printStatistics();
+<a name="l00602"></a>00602   std::cout &lt;&lt; <span class="stringliteral">&quot;====== VersionInfo =======&quot;</span> &lt;&lt; std::endl;
+<a name="l00603"></a>00603   ecl::SigSlotsManager&lt;const VersionInfo&amp;&gt;::printStatistics();
+<a name="l00604"></a>00604   std::cout &lt;&lt; <span class="stringliteral">&quot;===== Command Buffer =====&quot;</span> &lt;&lt; std::endl;
+<a name="l00605"></a>00605   ecl::SigSlotsManager&lt;const Command::Buffer&amp;&gt;::printStatistics();
+<a name="l00606"></a>00606 }
+<a name="l00607"></a>00607 
+<a name="l00608"></a>00608 } <span class="comment">// namespace kobuki</span>
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -583,7 +617,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Tue Aug 27 2013 17:01:45</small>
+<small>autogenerated on Thu Aug 29 2013 18:36:58</small>
 </div>
 </body>
 </html>

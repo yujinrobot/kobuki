@@ -6,5 +6,6 @@ var searchData=
   ['verbose',['verbose',['../classkobuki_1_1PacketFinderBase.html#ac1ebadd0a19b4d15edde603c35855563',1,'kobuki::PacketFinderBase']]],
   ['version',['version',['../structkobuki_1_1Firmware_1_1Data.html#aa1755f72354675dcd3dcda77eb6d055c',1,'kobuki::Firmware::Data::version()'],['../structkobuki_1_1Hardware_1_1Data.html#ad8213b45a4780e33dfccc932f07aa0bc',1,'kobuki::Hardware::Data::version()']]],
   ['version_5finfo_5freminder',['version_info_reminder',['../classkobuki_1_1Kobuki.html#ab07dc6fa02d48f837ea3755f3ac7b03c',1,'kobuki::Kobuki']]],
-  ['voltage',['voltage',['../classkobuki_1_1Battery.html#ac3a23c18283486ec3608f270f9800d8a',1,'kobuki::Battery']]]
+  ['voltage',['voltage',['../classkobuki_1_1Battery.html#ac3a23c18283486ec3608f270f9800d8a',1,'kobuki::Battery']]],
+  ['vx',['vx',['../classKobukiManager.html#a8cd29df6791201832b94af21cb6796c2',1,'KobukiManager']]]
 ];

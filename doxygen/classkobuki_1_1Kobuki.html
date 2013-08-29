@@ -90,8 +90,11 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classkobuki_1_1Battery.html">Battery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#ada9c8b518d41ceaf9326de577eec2d2b">batteryStatus</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a9e4447e3b2bb177155ee681daccdc274">disable</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#afa7f47487ef0224c1ce79f2d70de233b">enable</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a8300b9e468ea77063421953a711b3eef">fixPayload</a> (ecl::PushAndPop&lt; unsigned char &gt; &amp;byteStream)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a2a64a16a6c4b587627f5a304359ec641">getAngularVelocity</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkobuki_1_1Cliff_1_1Data.html">Cliff::Data</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a75ed69becc3058d2a9525cfbe81aabe1">getCliffData</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#aa16ae15cbb4c07de8bd553e14f93852e">getControllerGain</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkobuki_1_1ControllerInfo_1_1Data.html">ControllerInfo::Data</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a3d9d8cd87fd98bce6adda4f3e9530b41">getControllerInfoData</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkobuki_1_1CoreSensors_1_1Data.html">CoreSensors::Data</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a33ff3a81a9a43c025da6efb21dc0ac9b">getCoreSensorData</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkobuki_1_1Current_1_1Data.html">Current::Data</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a7e32d9b2879ed4fa50a233bb4fed8413">getCurrentData</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkobuki_1_1DockIR_1_1Data.html">DockIR::Data</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a8af97d7fdc4bd55f1172e5b9b421f343">getDockIRData</a> () const </td></tr>
@@ -111,6 +114,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a list of all relevant sigslot connections.  <a href="#a74865ce787f6dfc15e55fddf0646dccd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a9a8e7a0dfa5c9fd447d2791217ca1bca">resetOdometry</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#af016306e3114daf0c61ffbaae0b3d1a0">setBaseControl</a> (const double &amp;linear_velocity, const double &amp;angular_velocity)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a6974e63106792b4d252729b71057acca">setControllerGain</a> (const unsigned char &amp;type, const unsigned int &amp;p_gain, const unsigned int &amp;i_gain, const unsigned int &amp;d_gain)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a188d1db38aa059f96e3bfb0879b244f8">setDigitalOutput</a> (const <a class="el" href="structkobuki_1_1DigitalOutput.html">DigitalOutput</a> &amp;digital_output)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a53a52a4a94507afe3ce30a0f6dfbefdf">setExternalPower</a> (const <a class="el" href="structkobuki_1_1DigitalOutput.html">DigitalOutput</a> &amp;digital_output)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#acfa8adb823fe03d7223d41a13d8e66cf">setLed</a> (const enum <a class="el" href="namespacekobuki.html#a33186680e911242fe0c7a511a12d1465">LedNumber</a> &amp;number, const enum <a class="el" href="namespacekobuki.html#a278fbe81cdc3dd93c2fde224fb013c26">LedColour</a> &amp;colour)</td></tr>
@@ -124,6 +128,9 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a22de83f3db0db6dff0647299bbc5f90e">~Kobuki</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a1eba78f120487d8435329e8ac48e6d94">log</a> (std::string msg)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#ac4a953899d74f6eb56b33af25bf7ff9a">log</a> (std::string level, std::string msg)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a2a0246d757ab0a2bb53e06dfde77e8ab">log</a> (std::string level, std::string name, std::string msg)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a78ca3419d9dc80e954f8feaecc2c0c0c">sendBaseControlCommand</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a417ab3236c96d0ea4d9c8dfc40ba8a6e">sendCommand</a> (<a class="el" href="classkobuki_1_1Command.html">Command</a> command)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Send the prepared command to the serial port.  <a href="#a417ab3236c96d0ea4d9c8dfc40ba8a6e"></a><br/></td></tr>
@@ -133,6 +140,8 @@ Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classkobuki_1_1Cliff.html">Cliff</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a39c45a62a2480ad7bfec13c390fa610f">cliff</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classkobuki_1_1Command.html#addaf13fee8c86fd78c085255eec58318">Command::Buffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#afa6b9c7df7155fe1ca2e9154af773ca8">command_buffer</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">ecl::Mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#af40490e786d8ec95719a10172c1eef3e">command_mutex</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classkobuki_1_1ControllerInfo.html">ControllerInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a7891cb033fe02014b4bb01f26d318c9f">controller_info</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a76b2d89af496396759b93e4d1b08b47f">controller_info_reminder</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classkobuki_1_1CoreSensors.html">CoreSensors</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a76b781f33f5e4a7fcfffcfe05bf744ab">core_sensors</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classkobuki_1_1Current.html">Current</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#af841f499eedcdd0d0a03f143f36d46ae">current</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">PacketFinder::BufferType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a65d6583aa72e37ee6622ad00e669234d">data_buffer</a></td></tr>
@@ -153,9 +162,12 @@ Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classkobuki_1_1Parameters.html">Parameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a02ada66911213cd57bb2f5ac21937562">parameters</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">ecl::Serial&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a6fbdcfe7e8557c0c2d0480be3cdf7773">serial</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#aeb000976a20ed8f5eaf847c258527ace">shutdown_requested</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">ecl::Signal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#ae8e96e11dbf111aac453911cbd7ba45c">sig_controller_info</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">ecl::Signal&lt; const std::string &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#aa3bb2d628f9a64aa4ec7bcfb7d911266">sig_debug</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">ecl::Signal&lt; const std::string &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a60fc90929f8649468272cbdc1ca4ad6d">sig_error</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">ecl::Signal&lt; const std::string &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#aa39b142b5f651d5831b9107c35e86330">sig_info</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">ecl::Signal&lt; const std::vector<br class="typebreak"/>
+&lt; std::string &gt; &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#ae2dbf1a75dff7a56936b9c3732bee94e">sig_named</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">ecl::Signal&lt; <a class="el" href="classkobuki_1_1Command.html#addaf13fee8c86fd78c085255eec58318">Command::Buffer</a> &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a9fa84f5f2d6bf182a5b5f38a8be0d47c">sig_raw_data_command</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">ecl::Signal<br class="typebreak"/>
 &lt; <a class="el" href="classkobuki_1_1PacketFinderBase.html#a7a548c36c0c0c85a290bf63d54f8211b">PacketFinder::BufferType</a> &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Kobuki.html#a4752fa63c69f3fae94298a078769366e">sig_raw_data_stream</a></td></tr>
@@ -206,7 +218,7 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Shutdown the driver - make sure we wait for the thread to finish. </p>
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00063">63</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00064">64</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -225,7 +237,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00118">118</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00123">123</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -244,7 +256,7 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Disable power to the motors. </p>
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00532">532</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00566">566</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -263,7 +275,26 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Enable power to the motors. </p>
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00526">526</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00560">560</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8300b9e468ea77063421953a711b3eef"></a><!-- doxytag: member="kobuki::Kobuki::fixPayload" ref="a8300b9e468ea77063421953a711b3eef" args="(ecl::PushAndPop&lt; unsigned char &gt; &amp;byteStream)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classkobuki_1_1Kobuki.html#a8300b9e468ea77063421953a711b3eef">kobuki::Kobuki::fixPayload</a> </td>
+          <td>(</td>
+          <td class="paramtype">ecl::PushAndPop&lt; unsigned char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>byteStream</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00377">377</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -281,7 +312,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00401">401</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00424">424</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -299,7 +330,43 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00127">127</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00132">132</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa16ae15cbb4c07de8bd553e14f93852e"></a><!-- doxytag: member="kobuki::Kobuki::getControllerGain" ref="aa16ae15cbb4c07de8bd553e14f93852e" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classkobuki_1_1Kobuki.html#aa16ae15cbb4c07de8bd553e14f93852e">kobuki::Kobuki::getControllerGain</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00498">498</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3d9d8cd87fd98bce6adda4f3e9530b41"></a><!-- doxytag: member="kobuki::Kobuki::getControllerInfoData" ref="a3d9d8cd87fd98bce6adda4f3e9530b41" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structkobuki_1_1ControllerInfo_1_1Data.html">ControllerInfo::Data</a> <a class="el" href="classkobuki_1_1Kobuki.html#a3d9d8cd87fd98bce6adda4f3e9530b41">kobuki::Kobuki::getControllerInfoData</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00137">137</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -317,7 +384,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00125">125</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00130">130</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -335,7 +402,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00128">128</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00133">133</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -353,7 +420,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00126">126</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00131">131</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -371,7 +438,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00130">130</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00135">135</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -389,7 +456,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00393">393</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00416">416</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -407,7 +474,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00129">129</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00134">134</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -425,7 +492,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00131">131</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00136">136</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -466,7 +533,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00419">419</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00442">442</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -485,7 +552,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00071">71</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00072">72</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -562,7 +629,90 @@ Private Attributes</h2></td></tr>
 <p>Usually you should call the getXXX functions from within slot callbacks connected to this driver's signals. This ensures that data is not overwritten inbetween getXXX calls as it all happens in the serial device's reading thread (aye, convoluted - apologies for the multiple robot and multiple developer adhoc hacking over 4-5 years for hasty demos on pre-kobuki robots. This has generated such wonderful spaghetti ;).</p>
 <p>If instead you just want to poll kobuki, then you should lock and unlock the data access around any getXXX calls. </p>
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00142">142</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00153">153</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1eba78f120487d8435329e8ac48e6d94"></a><!-- doxytag: member="kobuki::Kobuki::log" ref="a1eba78f120487d8435329e8ac48e6d94" args="(std::string msg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::string&gt; <a class="el" href="classkobuki_1_1Kobuki.html#a1eba78f120487d8435329e8ac48e6d94">kobuki::Kobuki::log</a> </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>msg</em></td><td>)</td>
+          <td><code> [inline, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00242">242</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac4a953899d74f6eb56b33af25bf7ff9a"></a><!-- doxytag: member="kobuki::Kobuki::log" ref="ac4a953899d74f6eb56b33af25bf7ff9a" args="(std::string level, std::string msg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::string&gt; <a class="el" href="classkobuki_1_1Kobuki.html#a1eba78f120487d8435329e8ac48e6d94">kobuki::Kobuki::log</a> </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>msg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [inline, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00243">243</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2a0246d757ab0a2bb53e06dfde77e8ab"></a><!-- doxytag: member="kobuki::Kobuki::log" ref="a2a0246d757ab0a2bb53e06dfde77e8ab" args="(std::string level, std::string name, std::string msg)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::string&gt; <a class="el" href="classkobuki_1_1Kobuki.html#a1eba78f120487d8435329e8ac48e6d94">kobuki::Kobuki::log</a> </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>msg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [inline, private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00244">244</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -581,7 +731,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00464">464</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00487">487</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -602,7 +752,7 @@ Private Attributes</h2></td></tr>
 <p>Print a list of all relevant sigslot connections. </p>
 <p>This includes both the kobuki driver signals as well as externally connected slots. Useful for when you need to check if any of your connections are dangling (often happens when you typo the name of the sigslots connection). </p>
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00548">548</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00582">582</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -620,7 +770,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00411">411</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00434">434</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -638,7 +788,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00474">474</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00508">508</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -666,7 +816,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00496">496</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00530">530</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -695,7 +845,48 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00469">469</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00503">503</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6974e63106792b4d252729b71057acca"></a><!-- doxytag: member="kobuki::Kobuki::setControllerGain" ref="a6974e63106792b4d252729b71057acca" args="(const unsigned char &amp;type, const unsigned int &amp;p_gain, const unsigned int &amp;i_gain, const unsigned int &amp;d_gain)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classkobuki_1_1Kobuki.html#a6974e63106792b4d252729b71057acca">kobuki::Kobuki::setControllerGain</a> </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned char &amp;&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>p_gain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>i_gain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>d_gain</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00492">492</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -714,7 +905,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00451">451</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00474">474</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -733,7 +924,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00455">455</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00478">478</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -762,7 +953,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00446">446</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00469">469</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -803,7 +994,7 @@ Private Attributes</h2></td></tr>
 <p>Sits on the device waiting for incoming and then parses it, and signals that an update has occured.</p>
 <p>Or, if in simulation, just loopsback the motor devices. </p>
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00163">163</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00174">174</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -823,7 +1014,7 @@ Private Attributes</h2></td></tr>
 <p>Unlock a previously locked data access privilege. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classkobuki_1_1Kobuki.html#af4b1e5a79539f8b88a3873d23dc542f6">lockDataAccess()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00150">150</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00161">161</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -863,7 +1054,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00436">436</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8cpp_source.html#l00459">459</a> of file <a class="el" href="kobuki_8cpp_source.html">kobuki.cpp</a>.</p>
 
 </div>
 </div>
@@ -881,7 +1072,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00117">117</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00122">122</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -897,7 +1088,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00187">187</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00196">196</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -912,7 +1103,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00195">195</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00204">204</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -927,7 +1118,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00221">221</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00232">232</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -942,7 +1133,37 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00215">215</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00226">226</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7891cb033fe02014b4bb01f26d318c9f"></a><!-- doxytag: member="kobuki::Kobuki::controller_info" ref="a7891cb033fe02014b4bb01f26d318c9f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classkobuki_1_1ControllerInfo.html">ControllerInfo</a> <a class="el" href="classkobuki_1_1Kobuki.html#a7891cb033fe02014b4bb01f26d318c9f">kobuki::Kobuki::controller_info</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00211">211</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a76b2d89af496396759b93e4d1b08b47f"></a><!-- doxytag: member="kobuki::Kobuki::controller_info_reminder" ref="a76b2d89af496396759b93e4d1b08b47f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classkobuki_1_1Kobuki.html#a76b2d89af496396759b93e4d1b08b47f">kobuki::Kobuki::controller_info_reminder</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00219">219</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -957,7 +1178,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00192">192</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00201">201</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -972,7 +1193,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00196">196</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00205">205</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -987,7 +1208,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00205">205</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00215">215</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1002,7 +1223,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00219">219</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00230">230</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1017,7 +1238,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00170">170</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00179">179</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1032,7 +1253,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00194">194</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00203">203</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1047,7 +1268,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00226">226</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00237">237</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1062,7 +1283,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00199">199</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00208">208</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1077,7 +1298,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00197">197</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00206">206</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1092,7 +1313,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00198">198</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00207">207</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1107,7 +1328,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00176">176</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00185">185</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1122,7 +1343,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00193">193</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00202">202</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1137,7 +1358,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00206">206</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00216">216</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1152,7 +1373,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00182">182</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00191">191</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1167,7 +1388,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00171">171</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00180">180</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1182,7 +1403,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00220">220</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00231">231</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1197,7 +1418,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00204">204</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00214">214</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1212,7 +1433,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00181">181</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00190">190</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1227,7 +1448,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00203">203</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00213">213</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1242,7 +1463,22 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00165">165</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00174">174</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae8e96e11dbf111aac453911cbd7ba45c"></a><!-- doxytag: member="kobuki::Kobuki::sig_controller_info" ref="ae8e96e11dbf111aac453911cbd7ba45c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ecl::Signal <a class="el" href="classkobuki_1_1Kobuki.html#ae8e96e11dbf111aac453911cbd7ba45c">kobuki::Kobuki::sig_controller_info</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00255">255</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1257,7 +1493,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00233">233</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00257">257</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1272,7 +1508,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00233">233</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00257">257</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1287,7 +1523,22 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00233">233</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00257">257</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae2dbf1a75dff7a56936b9c3732bee94e"></a><!-- doxytag: member="kobuki::Kobuki::sig_named" ref="ae2dbf1a75dff7a56936b9c3732bee94e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ecl::Signal&lt;const std::vector&lt;std::string&gt;&amp;&gt; <a class="el" href="classkobuki_1_1Kobuki.html#ae2dbf1a75dff7a56936b9c3732bee94e">kobuki::Kobuki::sig_named</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00258">258</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1302,7 +1553,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00234">234</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00259">259</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1317,7 +1568,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00235">235</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00260">260</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1332,7 +1583,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00231">231</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00255">255</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1347,7 +1598,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00232">232</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00256">256</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1362,7 +1613,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00233">233</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00257">257</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1377,7 +1628,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00164">164</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00173">173</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1392,7 +1643,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00201">201</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00210">210</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1407,7 +1658,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00200">200</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00209">209</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1422,7 +1673,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00208">208</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kobuki_8hpp_source.html#l00218">218</a> of file <a class="el" href="kobuki_8hpp_source.html">kobuki.hpp</a>.</p>
 
 </div>
 </div>
@@ -1450,7 +1701,7 @@ Private Attributes</h2></td></tr>
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Tue Aug 27 2013 17:01:47</small>
+<small>autogenerated on Thu Aug 29 2013 18:36:59</small>
 </div>
 </body>
 </html>

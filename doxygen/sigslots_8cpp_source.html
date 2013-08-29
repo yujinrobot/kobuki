@@ -66,10 +66,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00016"></a>00016 <span class="comment">** Classes</span>
 <a name="l00017"></a>00017 <span class="comment">*****************************************************************************/</span>
 <a name="l00018"></a>00018 
-<a name="l00019"></a>00019 <span class="keyword">class </span><a class="code" href="classKobukiManager.html">KobukiManager</a> {
+<a name="l00019"></a>00019 <span class="keyword">class </span><a class="code" href="classKobukiManager.html" title="Keyboard remote control for our robot core (mobile base).">KobukiManager</a> {
 <a name="l00020"></a>00020 <span class="keyword">public</span>:
-<a name="l00021"></a><a class="code" href="classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa">00021</a>   <a class="code" href="classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa">KobukiManager</a>() :
-<a name="l00022"></a>00022       <a class="code" href="classKobukiManager.html#a932be6e61aa406bc1a33c12281bc4499">slot_stream_data</a>(&amp;<a class="code" href="classKobukiManager.html">KobukiManager</a>::<a class="code" href="classKobukiManager.html#a8b7d112844422e6d0e1bb67acacfc6e5">processStreamData</a>, *this) <span class="comment">// establish the callback</span>
+<a name="l00021"></a><a class="code" href="classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa">00021</a>   <a class="code" href="classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa" title="Default constructor, needs initialisation.">KobukiManager</a>() :
+<a name="l00022"></a>00022       <a class="code" href="classKobukiManager.html#a932be6e61aa406bc1a33c12281bc4499">slot_stream_data</a>(&amp;<a class="code" href="classKobukiManager.html" title="Keyboard remote control for our robot core (mobile base).">KobukiManager</a>::<a class="code" href="classKobukiManager.html#a8b7d112844422e6d0e1bb67acacfc6e5">processStreamData</a>, *this) <span class="comment">// establish the callback</span>
 <a name="l00023"></a>00023   {
 <a name="l00024"></a>00024     <a class="code" href="classkobuki_1_1Parameters.html" title="Parameter list and validator for the kobuki.">kobuki::Parameters</a> parameters;
 <a name="l00025"></a>00025     parameters.<a class="code" href="classkobuki_1_1Parameters.html#a0717933338e84bc7907f7e8345e2347e" title="The first part of a sigslot connection namespace [&quot;/kobuki&quot;].">sigslots_namespace</a> = <span class="stringliteral">&quot;/mobile_base&quot;</span>; <span class="comment">// configure the first part of the sigslot namespace</span>
@@ -79,7 +79,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00029"></a>00029     <a class="code" href="classKobukiManager.html#a932be6e61aa406bc1a33c12281bc4499">slot_stream_data</a>.connect(<span class="stringliteral">&quot;/mobile_base/stream_data&quot;</span>);
 <a name="l00030"></a>00030   }
 <a name="l00031"></a>00031 
-<a name="l00032"></a><a class="code" href="classKobukiManager.html#aa2a9199cb862ebc899996a9eef3214c6">00032</a>   <span class="keywordtype">void</span> <a class="code" href="classKobukiManager.html#aa2a9199cb862ebc899996a9eef3214c6">spin</a>() {
+<a name="l00032"></a><a class="code" href="classKobukiManager.html#aa2a9199cb862ebc899996a9eef3214c6">00032</a>   <span class="keywordtype">void</span> <a class="code" href="classKobukiManager.html#aa2a9199cb862ebc899996a9eef3214c6" title="Worker thread loop; sends current velocity command at a fixed rate.">spin</a>() {
 <a name="l00033"></a>00033     ecl::Sleep sleep(1);
 <a name="l00034"></a>00034     <span class="keywordflow">while</span> ( <span class="keyword">true</span> ) {
 <a name="l00035"></a>00035       sleep();
@@ -108,8 +108,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00058"></a>00058 <span class="comment">*****************************************************************************/</span>
 <a name="l00059"></a>00059 
 <a name="l00060"></a><a class="code" href="sigslots_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">00060</a> <span class="keywordtype">int</span> <a class="code" href="initialisation_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>() {
-<a name="l00061"></a>00061   <a class="code" href="classKobukiManager.html">KobukiManager</a> kobuki_manager;
-<a name="l00062"></a>00062   kobuki_manager.<a class="code" href="classKobukiManager.html#aa2a9199cb862ebc899996a9eef3214c6">spin</a>();
+<a name="l00061"></a>00061   <a class="code" href="classKobukiManager.html" title="Keyboard remote control for our robot core (mobile base).">KobukiManager</a> kobuki_manager;
+<a name="l00062"></a>00062   kobuki_manager.<a class="code" href="classKobukiManager.html#aa2a9199cb862ebc899996a9eef3214c6" title="Worker thread loop; sends current velocity command at a fixed rate.">spin</a>();
 <a name="l00063"></a>00063   <span class="keywordflow">return</span> 0;
 <a name="l00064"></a>00064 }
 </pre></div></div><!-- contents -->
@@ -132,7 +132,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Tue Aug 27 2013 17:01:46</small>
+<small>autogenerated on Thu Aug 29 2013 18:36:58</small>
 </div>
 </body>
 </html>

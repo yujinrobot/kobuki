@@ -45,7 +45,7 @@
 \par
 \subsubsection{\-Structure Of Sub-\/\-Payloads}\label{enAppendixProtocolSpecification_enStructureOfSubPayloads}
 \begin{DoxyParagraph}{}
-\-Sub-\/payload can be divided into three parts, \-Header, \-Length and \-Data.
+\-Sub-\/payload can be divided into three parts; \-Header, \-Length and \-Data.
 \end{DoxyParagraph}
 \begin{DoxyParagraph}{}
 \begin{TabularC}{4}
@@ -126,6 +126,8 @@ return cs ? false : true;
 10&{\itshape \-Reserved\/}&\\\cline{1-3}
 11&{\itshape \-Reserved\/}&\\\cline{1-3}
 12&\-General \-Purpose \-Output&\-Control general purpose outputs \\\cline{1-3}
+13&\-Set \-Controller \-Gain&\-Set \-P\-I\-D gain of wheel velocity controller \\\cline{1-3}
+14&\-Get \-Controller \-Gain&\-Request current \-P\-I\-D gain of wheel velocity controller \\\cline{1-3}
 \end{TabularC}
 
 
@@ -231,6 +233,36 @@ return cs ? false : true;
 
 
 \par
+\subsection{\-Set Controller Gain}\label{enAppendixProtocolSpecification_enSetControllerGain}
+\-Set \-P\-I\-D gain of wheel velocity controller of robot.
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&1&0x01&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&13&0x0\-D&\-Fixed \\\cline{1-6}
+\multirow{4}{\linewidth}{\-Data}&\-Type&1&&&0 for factory-\/default \-P\-I\-D gain\par
+1 for user-\/configured \-P\-I\-D gain \\\cline{1-2}\cline{4-6}
+&\-P gain&4&&&\-Kp $\ast$ 1000 \\\cline{1-1}\cline{3-6}
+&\-I gain&4&&&\-Ki $\ast$ 1000 \\\cline{2-6}
+&\-D gain&4&&&\-Kd $\ast$ 1000 \\\cline{1-6}
+\end{TabularC}
+
+
+\par
+\subsection{\-Get Controller Gain}\label{enAppendixProtocolSpecification_enGetControllerGain}
+\-Request \-P\-I\-D gain of wheel velocity controller of robot.
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&1&0x01&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&14&0x0\-E&\-Fixed \\\cline{1-6}
+\-Data&unused&1&&&\\\cline{1-6}
+\end{TabularC}
+
+
+\par
 \section{\-Feedback Packets}\label{enAppendixProtocolSpecification_enFeedbackPackets}
 \subsection{\-Feedback Identifier}\label{enAppendixProtocolSpecification_enFeedbackIdentifier}
 \-Kobuki sends below default feedbacks periodically in 50 \-Hz, when it powered on.
@@ -258,6 +290,7 @@ return cs ? false : true;
 18&{\itshape \-Reserved\/}&&\\\cline{1-4}
 19&\-Unique \-Device \-I\-Dentifier(\-U\-D\-I\-D)&\-Unique number to identify robot&\-On request \\\cline{1-4}
 20&{\itshape \-Reserved\/}&&\\\cline{1-4}
+21&\-Controller \-Info&\-P\-I\-D gain values of wheel velocity controller.&\-On request \\\cline{1-4}
 \end{TabularC}
 
 
@@ -354,7 +387,7 @@ ox10 for \-F\-A\-R\-\_\-\-L\-E\-F\-T state\par
 \end{DoxyNote}
 \par
 \subsection{\-Cliff Sensor Data}\label{enAppendixProtocolSpecification_enCliffSensorData}
-\-This sub-\/payload provides {\tt \-A\-D\-C} data of {\tt \-P\-S\-D}, which is facing the floor.
+\-This sub-\/payload provides {\tt \-A\-D\-C} data of {\tt \-P\-S\-D} sensor, which is facing the floor.
 
 \-This value is related with distance between sensor and floor surface. \-See the {\tt datasheet} for more detailed information.
 
@@ -366,9 +399,10 @@ ox10 for \-F\-A\-R\-\_\-\-L\-E\-F\-T state\par
 \-Header&\-Identifier&1&5&0x05&\-Fixed \\\cline{1-6}
 \-Length&\-Size of data field&1&6&0x06&\-Fixed \\\cline{1-6}
 \multirow{3}{\linewidth}{\-Data}&\-Right cliff sensor&2&&&\multirow{3}{\linewidth}{\-A\-D\-C output of each \-P\-S\-D\par
-\-Data range\-: 0 $\sim$ 4095\par
+\-Data range\-: 0 $\sim$ 4095 (0 $\sim$ 3.\-3\-V)\par
 \-Distance range\-: 2 $\sim$ 15 cm\par
-\-Distance is non-\/linear }\\\cline{1-1}\cline{3-6}
+\-Distance is not linear w.\-r.\-t. \-A\-D\-C output.\par
+\-See the {\tt datasheet} for more detail. }\\\cline{1-1}\cline{3-6}
 &&\-Central cliff sensor&2&&&\\\cline{2-7}
 &&\-Left cliff sensor&2&&&\\\cline{1-7}
 \end{TabularC}
@@ -499,7 +533,7 @@ angular_velocity.z =   digit_to_dps * (short)raw_gyro_data.z;
 0x08 for input output ch. 3 \\\cline{1-6}
 &\-Analog input ch.\-0&2&&&\multirow{4}{\linewidth}{12-\/bit \-A\-D\-C output of each channel\par
 \-Data range\-: 0 $\sim$ 4095(2$^\wedge$12-\/1)\par
-\-Conversion voltage range\-: 0 $\sim$ 3.\-3 \-V }\\\cline{1-5}\cline{4-6}
+\-Voltage range\-: 0 $\sim$ 3.\-3 \-V }\\\cline{1-5}\cline{4-6}
 &&\-Analog input ch.\-1&2&&&\\\cline{1-4}\cline{3-7}
 &&\-Analog input ch.\-2&2&&&\\\cline{1-3}\cline{2-7}
 &&\-Analog input ch.\-3&2&&&\\\cline{1-2}\cline{1-1}\cline{3-7}
@@ -533,5 +567,23 @@ angular_velocity.z =   digit_to_dps * (short)raw_gyro_data.z;
 \begin{DoxySeeAlso}{\-See also}
 \doxyref{\-Request \-Extra}{p.}{enAppendixProtocolSpecification_enRequestExtra}
 \end{DoxySeeAlso}
+\par
+\subsection{\-Controller Info}\label{enAppendixProtocolSpecification_enControllerInfo}
+\-Contains \-P\-I\-D gain of wheel velocity controller of robot.
+
+\begin{TabularC}{6}
+\hline
+&\-Name&\-Size&\-Value&\-Value in \-Hex&\-Description \\\cline{1-6}
+\-Header&\-Identifier&1&1&0x01&\-Fixed \\\cline{1-6}
+\-Length&\-Size of data field&1&21&0x15&\-Fixed \\\cline{1-6}
+\multirow{4}{\linewidth}{\-Data}&\-Type&1&&&\-Current controller setup\par
+0 for factory-\/default \-P\-I\-D gain\par
+1 for user-\/configured \-P\-I\-D gain \\\cline{1-2}\cline{4-6}
+&\-P gain&4&&&\-Kp $\ast$ 1000 \\\cline{1-1}\cline{3-6}
+&\-I gain&4&&&\-Ki $\ast$ 1000 \\\cline{2-6}
+&\-D gain&4&&&\-Kd $\ast$ 1000 \\\cline{1-6}
+\end{TabularC}
+
+
 \par
  

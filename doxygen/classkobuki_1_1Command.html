@@ -109,7 +109,10 @@ Public Types</h2></td></tr>
 <br/>
 &#160;&#160;<a class="el" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a502c1e106a77d0087ad67d82fd6aadf9">ChangeFrame</a> =  10, 
 <a class="el" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490af0c1f3e40a5b8985b51762e1cf291eff">RequestEeprom</a> =  11, 
-<a class="el" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490ae2094f7bf83d07b161f4bf983c604ab4">SetDigitalOut</a> =  12
+<a class="el" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490ae2094f7bf83d07b161f4bf983c604ab4">SetDigitalOut</a> =  12, 
+<a class="el" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a827b51271d59da73667ae53007a2896a">SetController</a> =  13, 
+<br/>
+&#160;&#160;<a class="el" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a817ab42962b1209952a142686536ba54">GetController</a> =  14
 <br/>
  }</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#ada2fa96c4981badca48d892b743e6c22">VersionFlag</a> { <a class="el" href="classkobuki_1_1Command.html#ada2fa96c4981badca48d892b743e6c22a753e0778ef2f6ae36128bb310f559399">HardwareVersion</a> =  0x01, 
@@ -124,8 +127,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#a7d4f39193e39ca14c062b5d92aa4e310">~Command</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classkobuki_1_1Command.html">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#a36510619abf35df4c293bc06e9bfb44c">GetControllerGain</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classkobuki_1_1Command.html">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#af88113d4e2bb59857a1194d76d813c6c">GetVersionInfo</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classkobuki_1_1Command.html">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#a9eb46f3f36573b8168252b13434a7260">PlaySoundSequence</a> (const enum <a class="el" href="namespacekobuki.html#a336129805a07def7a2c2b0be281e7ddd">SoundSequences</a> &amp;number, <a class="el" href="structkobuki_1_1Command_1_1Data.html">Command::Data</a> &amp;current_data)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classkobuki_1_1Command.html">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#a2f29d1c7d5d458d191132d531f3b406b">SetControllerGain</a> (const unsigned char &amp;type, const unsigned int &amp;p_gain, const unsigned int &amp;d_gain, const unsigned int &amp;i_gain)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classkobuki_1_1Command.html">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#a4376a5a8b8be1107a56aca5a36fd61d8">SetDigitalOutput</a> (const <a class="el" href="structkobuki_1_1DigitalOutput.html">DigitalOutput</a> &amp;digital_output, <a class="el" href="structkobuki_1_1Command_1_1Data.html">Command::Data</a> &amp;current_data)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classkobuki_1_1Command.html">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#acc66a38299deaad48570040aa54d5bdc">SetExternalPower</a> (const <a class="el" href="structkobuki_1_1DigitalOutput.html">DigitalOutput</a> &amp;digital_output, <a class="el" href="structkobuki_1_1Command_1_1Data.html">Command::Data</a> &amp;current_data)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classkobuki_1_1Command.html">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#a90d62fd79acdef8204ef8df442b7c417">SetLedArray</a> (const enum <a class="el" href="namespacekobuki.html#a33186680e911242fe0c7a511a12d1465">LedNumber</a> &amp;number, const enum <a class="el" href="namespacekobuki.html#a278fbe81cdc3dd93c2fde224fb013c26">LedColour</a> &amp;colour, <a class="el" href="structkobuki_1_1Command_1_1Data.html">Command::Data</a> &amp;current_data)</td></tr>
@@ -200,6 +205,10 @@ Static Private Attributes</h2></td></tr>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a998d9a902269d9cfbc140c3a675f0490ae2094f7bf83d07b161f4bf983c604ab4"></a><!-- doxytag: member="SetDigitalOut" ref="a998d9a902269d9cfbc140c3a675f0490ae2094f7bf83d07b161f4bf983c604ab4" args="" -->SetDigitalOut</em>&nbsp;</td><td>
 </td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a998d9a902269d9cfbc140c3a675f0490a827b51271d59da73667ae53007a2896a"></a><!-- doxytag: member="SetController" ref="a998d9a902269d9cfbc140c3a675f0490a827b51271d59da73667ae53007a2896a" args="" -->SetController</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a998d9a902269d9cfbc140c3a675f0490a817ab42962b1209952a142686536ba54"></a><!-- doxytag: member="GetController" ref="a998d9a902269d9cfbc140c3a675f0490a817ab42962b1209952a142686536ba54" args="" -->GetController</em>&nbsp;</td><td>
+</td></tr>
 </table>
 </dd>
 </dl>
@@ -248,7 +257,7 @@ Static Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="command_8hpp_source.html#l00101">101</a> of file <a class="el" href="command_8hpp_source.html">command.hpp</a>.</p>
+<p>Definition at line <a class="el" href="command_8hpp_source.html#l00111">111</a> of file <a class="el" href="command_8hpp_source.html">command.hpp</a>.</p>
 
 </div>
 </div>
@@ -271,7 +280,25 @@ Static Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classpacket__handler_1_1payloadBase.html#a42d7908c86387e88b4a8705b7647c093">packet_handler::payloadBase</a>.</p>
 
-<p>Definition at line <a class="el" href="command_8hpp_source.html#l00115">115</a> of file <a class="el" href="command_8hpp_source.html">command.hpp</a>.</p>
+<p>Definition at line <a class="el" href="command_8hpp_source.html#l00130">130</a> of file <a class="el" href="command_8hpp_source.html">command.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a36510619abf35df4c293bc06e9bfb44c"></a><!-- doxytag: member="kobuki::Command::GetControllerGain" ref="a36510619abf35df4c293bc06e9bfb44c" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classkobuki_1_1Command.html">Command</a> <a class="el" href="classkobuki_1_1Command.html#a36510619abf35df4c293bc06e9bfb44c">kobuki::Command::GetControllerGain</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="command_8cpp_source.html#l00188">188</a> of file <a class="el" href="command_8cpp_source.html">command.cpp</a>.</p>
 
 </div>
 </div>
@@ -338,7 +365,7 @@ Static Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Clears the command buffer and resets the header. </p>
 
-<p>Definition at line <a class="el" href="command_8cpp_source.html#l00181">181</a> of file <a class="el" href="command_8cpp_source.html">command.cpp</a>.</p>
+<p>Definition at line <a class="el" href="command_8cpp_source.html#l00202">202</a> of file <a class="el" href="command_8cpp_source.html">command.cpp</a>.</p>
 
 </div>
 </div>
@@ -359,7 +386,48 @@ Static Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classpacket__handler_1_1payloadBase.html#a6ef7b31bf2c88202403f07214f7b9423">packet_handler::payloadBase</a>.</p>
 
-<p>Definition at line <a class="el" href="command_8cpp_source.html#l00189">189</a> of file <a class="el" href="command_8cpp_source.html">command.cpp</a>.</p>
+<p>Definition at line <a class="el" href="command_8cpp_source.html#l00210">210</a> of file <a class="el" href="command_8cpp_source.html">command.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2f29d1c7d5d458d191132d531f3b406b"></a><!-- doxytag: member="kobuki::Command::SetControllerGain" ref="a2f29d1c7d5d458d191132d531f3b406b" args="(const unsigned char &amp;type, const unsigned int &amp;p_gain, const unsigned int &amp;d_gain, const unsigned int &amp;i_gain)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classkobuki_1_1Command.html">Command</a> <a class="el" href="classkobuki_1_1Command.html#a2f29d1c7d5d458d191132d531f3b406b">kobuki::Command::SetControllerGain</a> </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned char &amp;&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>p_gain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>d_gain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>i_gain</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="command_8cpp_source.html#l00176">176</a> of file <a class="el" href="command_8cpp_source.html">command.cpp</a>.</p>
 
 </div>
 </div>
@@ -542,7 +610,7 @@ Static Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="command_8cpp_source.html#l00166">166</a> of file <a class="el" href="command_8cpp_source.html">command.cpp</a>.</p>
+<p>Definition at line <a class="el" href="command_8cpp_source.html#l00167">167</a> of file <a class="el" href="command_8cpp_source.html">command.cpp</a>.</p>
 
 </div>
 </div>
@@ -558,7 +626,7 @@ Static Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="command_8hpp_source.html#l00111">111</a> of file <a class="el" href="command_8hpp_source.html">command.hpp</a>.</p>
+<p>Definition at line <a class="el" href="command_8hpp_source.html#l00126">126</a> of file <a class="el" href="command_8hpp_source.html">command.hpp</a>.</p>
 
 </div>
 </div>
@@ -573,7 +641,7 @@ Static Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="command_8hpp_source.html#l00118">118</a> of file <a class="el" href="command_8hpp_source.html">command.hpp</a>.</p>
+<p>Definition at line <a class="el" href="command_8hpp_source.html#l00133">133</a> of file <a class="el" href="command_8hpp_source.html">command.hpp</a>.</p>
 
 </div>
 </div>
@@ -588,7 +656,7 @@ Static Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="command_8hpp_source.html#l00119">119</a> of file <a class="el" href="command_8hpp_source.html">command.hpp</a>.</p>
+<p>Definition at line <a class="el" href="command_8hpp_source.html#l00134">134</a> of file <a class="el" href="command_8hpp_source.html">command.hpp</a>.</p>
 
 </div>
 </div>
@@ -616,7 +684,7 @@ Static Private Attributes</h2></td></tr>
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Tue Aug 27 2013 17:01:46</small>
+<small>autogenerated on Thu Aug 29 2013 18:36:59</small>
 </div>
 </body>
 </html>

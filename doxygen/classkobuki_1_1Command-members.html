@@ -71,6 +71,8 @@ This is the complete list of members for <a class="el" href="classkobuki_1_1Comm
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a></td><td><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1Command.html#a940dc54294dc2b6ca9305867229137de">deserialise</a>(ecl::PushAndPop&lt; unsigned char &gt; &amp;byteStream)</td><td><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td><code> [inline, virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1Command.html#ada2fa96c4981badca48d892b743e6c22a78ce305db278548e9e8a73fb4d329ec3">FirmwareVersion</a> enum value</td><td><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a817ab42962b1209952a142686536ba54">GetController</a> enum value</td><td><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classkobuki_1_1Command.html#a36510619abf35df4c293bc06e9bfb44c">GetControllerGain</a>()</td><td><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td><code> [static]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1Command.html#af88113d4e2bb59857a1194d76d813c6c">GetVersionInfo</a>()</td><td><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td><code> [static]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1Command.html#ada2fa96c4981badca48d892b743e6c22a753e0778ef2f6ae36128bb310f559399">HardwareVersion</a> enum value</td><td><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1Command.html#a619203f3cdf47bd574f868dea15376e9">header0</a></td><td><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td><code> [private, static]</code></td></tr>
@@ -84,6 +86,8 @@ This is the complete list of members for <a class="el" href="classkobuki_1_1Comm
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490ae647768d925db095981032a07fd916f4">RequestExtra</a> enum value</td><td><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1Command.html#a92e11a248177d836d59dca61b2730018">resetBuffer</a>(Buffer &amp;buffer)</td><td><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1Command.html#a735d4fe3925e2ca28dee437b61ce8398">serialise</a>(ecl::PushAndPop&lt; unsigned char &gt; &amp;byteStream)</td><td><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td><code> [virtual]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a827b51271d59da73667ae53007a2896a">SetController</a> enum value</td><td><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classkobuki_1_1Command.html#a2f29d1c7d5d458d191132d531f3b406b">SetControllerGain</a>(const unsigned char &amp;type, const unsigned int &amp;p_gain, const unsigned int &amp;d_gain, const unsigned int &amp;i_gain)</td><td><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td><code> [static]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490ae2094f7bf83d07b161f4bf983c604ab4">SetDigitalOut</a> enum value</td><td><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1Command.html#a4376a5a8b8be1107a56aca5a36fd61d8">SetDigitalOutput</a>(const DigitalOutput &amp;digital_output, Command::Data &amp;current_data)</td><td><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td><code> [static]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classkobuki_1_1Command.html#acc66a38299deaad48570040aa54d5bdc">SetExternalPower</a>(const DigitalOutput &amp;digital_output, Command::Data &amp;current_data)</td><td><a class="el" href="classkobuki_1_1Command.html">kobuki::Command</a></td><td><code> [static]</code></td></tr>
@@ -117,7 +121,7 @@ This is the complete list of members for <a class="el" href="classkobuki_1_1Comm
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Tue Aug 27 2013 17:01:46</small>
+<small>autogenerated on Thu Aug 29 2013 18:36:59</small>
 </div>
 </body>
 </html>

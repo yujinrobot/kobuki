@@ -1,3 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classkobuki_1_1Parameters.html" title="Parameter list and validator for the kobuki." alt="" coords="7,5,140,35"/>
+<area shape="rect" id="node1" href="$classkobuki_1_1PacketFinderBase.html" title="Provides simple packet finder which may be consist of stx, etx, payload, ..." alt="" coords="7,5,180,35"/>
+<area shape="rect" id="node3" href="$classkobuki_1_1PacketFinder.html" title="kobuki::PacketFinder" alt="" coords="231,5,375,35"/>
 </map>

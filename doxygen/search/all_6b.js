@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['key_5ffile_5fdescriptor',['key_file_descriptor',['../classKobukiManager.html#a19de82ae84137213a53e50ea58218a32',1,'KobukiManager']]],
+  ['keyboardinputloop',['keyboardInputLoop',['../classKobukiManager.html#a93e46f006e5b29c16fc2b0329beae38c',1,'KobukiManager']]],
   ['kinematics',['kinematics',['../classkobuki_1_1DiffDrive.html#ac114f4961247b3588377634b801c9d59',1,'kobuki::DiffDrive']]],
   ['ko_5fappendix_2edox',['ko_appendix.dox',['../ko__appendix_8dox.html',1,'']]],
   ['ko_5fembedded_5fboard_2edox',['ko_embedded_board.dox',['../ko__embedded__board_8dox.html',1,'']]],
@@ -18,5 +20,5 @@ var searchData=
   ['kobuki_5fcommand',['kobuki_command',['../classkobuki_1_1Kobuki.html#a2ef8e78d7168a90faffaa516522f79bf',1,'kobuki::Kobuki']]],
   ['kobuki_5flocal',['kobuki_LOCAL',['../macros_8hpp.html#a006a4ca34f6e83bce1e10abd9e29c84e',1,'macros.hpp']]],
   ['kobuki_5fpublic',['kobuki_PUBLIC',['../macros_8hpp.html#a4b92966a9fada0eb71fe09d15a768343',1,'macros.hpp']]],
-  ['kobukimanager',['KobukiManager',['../classKobukiManager.html',1,'KobukiManager'],['../classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa',1,'KobukiManager::KobukiManager()'],['../classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa',1,'KobukiManager::KobukiManager()'],['../classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa',1,'KobukiManager::KobukiManager()'],['../classKobukiManager.html#a26c5c2dba94d25134a9e07cf200081b4',1,'KobukiManager::KobukiManager(const std::string &amp;device_port)']]]
+  ['kobukimanager',['KobukiManager',['../classKobukiManager.html',1,'KobukiManager'],['../classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa',1,'KobukiManager::KobukiManager()'],['../classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa',1,'KobukiManager::KobukiManager()'],['../classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa',1,'KobukiManager::KobukiManager()'],['../classKobukiManager.html#af719c61bfe21c8c3e35320edba20f7aa',1,'KobukiManager::KobukiManager()'],['../classKobukiManager.html#a26c5c2dba94d25134a9e07cf200081b4',1,'KobukiManager::KobukiManager(const std::string &amp;device_port)']]]
 ];

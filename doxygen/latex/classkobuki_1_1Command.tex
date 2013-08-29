@@ -35,7 +35,10 @@ enum {\bf \-Name} \{ \*
 \*
 {\bf \-Change\-Frame} =  10, 
 {\bf \-Request\-Eeprom} =  11, 
-{\bf \-Set\-Digital\-Out} =  12
+{\bf \-Set\-Digital\-Out} =  12, 
+{\bf \-Set\-Controller} =  13, 
+\*
+{\bf \-Get\-Controller} =  14
  \}
 \item 
 enum {\bf \-Version\-Flag} \{ {\bf \-Hardware\-Version} =  0x01, 
@@ -57,9 +60,13 @@ virtual {\bf $\sim$\-Command} ()
 \subsection*{\-Static \-Public \-Member \-Functions}
 \begin{DoxyCompactItemize}
 \item 
+static {\bf \-Command} {\bf \-Get\-Controller\-Gain} ()
+\item 
 static {\bf \-Command} {\bf \-Get\-Version\-Info} ()
 \item 
 static {\bf \-Command} {\bf \-Play\-Sound\-Sequence} (const enum {\bf \-Sound\-Sequences} \&number, {\bf \-Command\-::\-Data} \&current\-\_\-data)
+\item 
+static {\bf \-Command} {\bf \-Set\-Controller\-Gain} (const unsigned char \&type, const unsigned int \&p\-\_\-gain, const unsigned int \&d\-\_\-gain, const unsigned int \&i\-\_\-gain)
 \item 
 static {\bf \-Command} {\bf \-Set\-Digital\-Output} (const {\bf \-Digital\-Output} \&digital\-\_\-output, {\bf \-Command\-::\-Data} \&current\-\_\-data)
 \item 
@@ -130,6 +137,10 @@ static const unsigned char {\bf header1} = 0x55
 \-Request\-Eeprom\label{classkobuki_1_1Command_a998d9a902269d9cfbc140c3a675f0490af0c1f3e40a5b8985b51762e1cf291eff}
 }]\index{\-Set\-Digital\-Out@{\-Set\-Digital\-Out}!kobuki\-::\-Command@{kobuki\-::\-Command}}\index{kobuki\-::\-Command@{kobuki\-::\-Command}!\-Set\-Digital\-Out@{\-Set\-Digital\-Out}}\item[{\em 
 \-Set\-Digital\-Out\label{classkobuki_1_1Command_a998d9a902269d9cfbc140c3a675f0490ae2094f7bf83d07b161f4bf983c604ab4}
+}]\index{\-Set\-Controller@{\-Set\-Controller}!kobuki\-::\-Command@{kobuki\-::\-Command}}\index{kobuki\-::\-Command@{kobuki\-::\-Command}!\-Set\-Controller@{\-Set\-Controller}}\item[{\em 
+\-Set\-Controller\label{classkobuki_1_1Command_a998d9a902269d9cfbc140c3a675f0490a827b51271d59da73667ae53007a2896a}
+}]\index{\-Get\-Controller@{\-Get\-Controller}!kobuki\-::\-Command@{kobuki\-::\-Command}}\index{kobuki\-::\-Command@{kobuki\-::\-Command}!\-Get\-Controller@{\-Get\-Controller}}\item[{\em 
+\-Get\-Controller\label{classkobuki_1_1Command_a998d9a902269d9cfbc140c3a675f0490a817ab42962b1209952a142686536ba54}
 }]\end{description}
 \end{Desc}
 
@@ -168,7 +179,7 @@ static const unsigned char {\bf header1} = 0x55
 )\hspace{0.3cm}{\ttfamily  [inline, virtual]}}\label{classkobuki_1_1Command_a7d4f39193e39ca14c062b5d92aa4e310}
 
 
-\-Definition at line 101 of file command.\-hpp.
+\-Definition at line 111 of file command.\-hpp.
 
 
 
@@ -186,7 +197,18 @@ static const unsigned char {\bf header1} = 0x55
 
 
 
-\-Definition at line 115 of file command.\-hpp.
+\-Definition at line 130 of file command.\-hpp.
+
+\index{kobuki\-::\-Command@{kobuki\-::\-Command}!\-Get\-Controller\-Gain@{\-Get\-Controller\-Gain}}
+\index{\-Get\-Controller\-Gain@{\-Get\-Controller\-Gain}!kobuki::Command@{kobuki\-::\-Command}}
+\subsubsection[{\-Get\-Controller\-Gain}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Command} {\bf kobuki\-::\-Command\-::\-Get\-Controller\-Gain} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [static]}}\label{classkobuki_1_1Command_a36510619abf35df4c293bc06e9bfb44c}
+
+
+\-Definition at line 188 of file command.\-cpp.
 
 \index{kobuki\-::\-Command@{kobuki\-::\-Command}!\-Get\-Version\-Info@{\-Get\-Version\-Info}}
 \index{\-Get\-Version\-Info@{\-Get\-Version\-Info}!kobuki::Command@{kobuki\-::\-Command}}
@@ -220,7 +242,7 @@ static const unsigned char {\bf header1} = 0x55
 )}\label{classkobuki_1_1Command_a92e11a248177d836d59dca61b2730018}
 \-Clears the command buffer and resets the header. 
 
-\-Definition at line 181 of file command.\-cpp.
+\-Definition at line 202 of file command.\-cpp.
 
 \index{kobuki\-::\-Command@{kobuki\-::\-Command}!serialise@{serialise}}
 \index{serialise@{serialise}!kobuki::Command@{kobuki\-::\-Command}}
@@ -235,7 +257,21 @@ static const unsigned char {\bf header1} = 0x55
 
 
 
-\-Definition at line 189 of file command.\-cpp.
+\-Definition at line 210 of file command.\-cpp.
+
+\index{kobuki\-::\-Command@{kobuki\-::\-Command}!\-Set\-Controller\-Gain@{\-Set\-Controller\-Gain}}
+\index{\-Set\-Controller\-Gain@{\-Set\-Controller\-Gain}!kobuki::Command@{kobuki\-::\-Command}}
+\subsubsection[{\-Set\-Controller\-Gain}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Command} {\bf kobuki\-::\-Command\-::\-Set\-Controller\-Gain} (
+\begin{DoxyParamCaption}
+\item[{const unsigned char \&}]{type, }
+\item[{const unsigned int \&}]{p\-\_\-gain, }
+\item[{const unsigned int \&}]{d\-\_\-gain, }
+\item[{const unsigned int \&}]{i\-\_\-gain}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [static]}}\label{classkobuki_1_1Command_a2f29d1c7d5d458d191132d531f3b406b}
+
+
+\-Definition at line 176 of file command.\-cpp.
 
 \index{kobuki\-::\-Command@{kobuki\-::\-Command}!\-Set\-Digital\-Output@{\-Set\-Digital\-Output}}
 \index{\-Set\-Digital\-Output@{\-Set\-Digital\-Output}!kobuki::Command@{kobuki\-::\-Command}}
@@ -359,7 +395,7 @@ static const unsigned char {\bf header1} = 0x55
 )\hspace{0.3cm}{\ttfamily  [static]}}\label{classkobuki_1_1Command_aff87b6a6fa0607fd423da88b7a7bd706}
 
 
-\-Definition at line 166 of file command.\-cpp.
+\-Definition at line 167 of file command.\-cpp.
 
 
 
@@ -369,21 +405,21 @@ static const unsigned char {\bf header1} = 0x55
 \subsubsection[{data}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Data} {\bf kobuki\-::\-Command\-::data}}\label{classkobuki_1_1Command_aa9a2396aa4648c377ec0058730b0787b}
 
 
-\-Definition at line 111 of file command.\-hpp.
+\-Definition at line 126 of file command.\-hpp.
 
 \index{kobuki\-::\-Command@{kobuki\-::\-Command}!header0@{header0}}
 \index{header0@{header0}!kobuki::Command@{kobuki\-::\-Command}}
 \subsubsection[{header0}]{\setlength{\rightskip}{0pt plus 5cm}const unsigned char {\bf kobuki\-::\-Command\-::header0} = 0xaa\hspace{0.3cm}{\ttfamily  [static, private]}}\label{classkobuki_1_1Command_a619203f3cdf47bd574f868dea15376e9}
 
 
-\-Definition at line 118 of file command.\-hpp.
+\-Definition at line 133 of file command.\-hpp.
 
 \index{kobuki\-::\-Command@{kobuki\-::\-Command}!header1@{header1}}
 \index{header1@{header1}!kobuki::Command@{kobuki\-::\-Command}}
 \subsubsection[{header1}]{\setlength{\rightskip}{0pt plus 5cm}const unsigned char {\bf kobuki\-::\-Command\-::header1} = 0x55\hspace{0.3cm}{\ttfamily  [static, private]}}\label{classkobuki_1_1Command_a6d4b993120c36903186ca233c2fbf248}
 
 
-\-Definition at line 119 of file command.\-hpp.
+\-Definition at line 134 of file command.\-hpp.
 
 
 

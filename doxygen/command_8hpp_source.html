@@ -87,7 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00043"></a><a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490">00043</a>   <span class="keyword">enum</span> <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490">Name</a>
 <a name="l00044"></a>00044   {
 <a name="l00045"></a><a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a1270714ddc55c2c0847b642823ddbbae">00045</a>     BaseControl = 1, Sound = 3, SoundSequence = 4, RequestExtra = 9, ChangeFrame = 10, RequestEeprom = 11,
-<a name="l00046"></a><a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490ae2094f7bf83d07b161f4bf983c604ab4">00046</a>     SetDigitalOut = 12
+<a name="l00046"></a><a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490ae2094f7bf83d07b161f4bf983c604ab4">00046</a>     SetDigitalOut = 12, SetController = 13, GetController = 14
 <a name="l00047"></a>00047   };
 <a name="l00048"></a>00048 
 <a name="l00049"></a><a class="code" href="classkobuki_1_1Command.html#ada2fa96c4981badca48d892b743e6c22">00049</a>   <span class="keyword">enum</span> <a class="code" href="classkobuki_1_1Command.html#ada2fa96c4981badca48d892b743e6c22">VersionFlag</a>
@@ -97,64 +97,79 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00053"></a>00053 
 <a name="l00066"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html">00066</a>   <span class="keyword">struct </span><a class="code" href="structkobuki_1_1Command_1_1Data.html" title="Data structure containing data for commands.">Data</a>
 <a name="l00067"></a>00067   {
-<a name="l00068"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#a656ba136485c301b1c6e61812d4d5b26">00068</a>     <a class="code" href="structkobuki_1_1Command_1_1Data.html" title="Data structure containing data for commands.">Data</a>() :
-<a name="l00069"></a>00069         command(BaseControl), <a class="code" href="velocity__commands_8cpp.html#a6dc6e6f3c75c509ce943163afb5dade7">speed</a>(0), <a class="code" href="velocity__commands_8cpp.html#a3f67c53b80389c5f53961936edba04c9">radius</a>(0), request_flags(0), gp_out(0x00f0) <span class="comment">// set all the power pins high, others low.</span>
-<a name="l00070"></a>00070     {
-<a name="l00071"></a>00071     }
-<a name="l00072"></a>00072 
-<a name="l00073"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#ac9490c50436e23bf5637317c89e4dff5">00073</a>     <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490">Name</a> <a class="code" href="structkobuki_1_1Command_1_1Data.html#ac9490c50436e23bf5637317c89e4dff5">command</a>;
-<a name="l00074"></a>00074 
-<a name="l00075"></a>00075     <span class="comment">// BaseControl</span>
-<a name="l00076"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#aa8dca8b284b4d2f6bca8c62d06363b14">00076</a>     int16_t <a class="code" href="structkobuki_1_1Command_1_1Data.html#aa8dca8b284b4d2f6bca8c62d06363b14">speed</a>;
-<a name="l00077"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#a119d3f5bfc5ce07d4e1d275963790053">00077</a>     int16_t <a class="code" href="structkobuki_1_1Command_1_1Data.html#a119d3f5bfc5ce07d4e1d275963790053">radius</a>;
-<a name="l00078"></a>00078 
-<a name="l00079"></a>00079     <span class="comment">// Sound - not yet implemented</span>
-<a name="l00080"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#ad168a40d28679febe6ca598ccc9b9b84">00080</a>     uint16_t <a class="code" href="structkobuki_1_1Command_1_1Data.html#ad168a40d28679febe6ca598ccc9b9b84">note</a>;
-<a name="l00081"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#a74b7821f305bf842734fdef2fba643f2">00081</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="structkobuki_1_1Command_1_1Data.html#a74b7821f305bf842734fdef2fba643f2">duration</a>;
-<a name="l00082"></a>00082 
-<a name="l00083"></a>00083     <span class="comment">// SoundSequence</span>
-<a name="l00084"></a>00084     <span class="comment">// 0 - turning on, 1 - turn off, 2 - recharge start, 3 - press button,</span>
-<a name="l00085"></a>00085     <span class="comment">// 4 - error sound, 5 - start cleaning, 6 - cleaning end</span>
-<a name="l00086"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#a6e2363137b38213de976495eb8648d5f">00086</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="structkobuki_1_1Command_1_1Data.html#a6e2363137b38213de976495eb8648d5f">segment_name</a>;
-<a name="l00087"></a>00087 
-<a name="l00088"></a>00088     <span class="comment">// RequestExtra (version flags)</span>
-<a name="l00089"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#aa5817272bf53d12beaec3cbe4a7ed8ed">00089</a>     uint16_t <a class="code" href="structkobuki_1_1Command_1_1Data.html#aa5817272bf53d12beaec3cbe4a7ed8ed">request_flags</a>;
-<a name="l00090"></a>00090 
-<a name="l00091"></a>00091     <span class="comment">// ChangeFrame &amp; RequestEeprom</span>
-<a name="l00092"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#a11680a7d1e2c5cd0329ef03a1e089d5d">00092</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="structkobuki_1_1Command_1_1Data.html#a11680a7d1e2c5cd0329ef03a1e089d5d">frame_id</a>;
-<a name="l00093"></a>00093 
-<a name="l00094"></a>00094     <span class="comment">// SetDigitalOut</span>
-<a name="l00095"></a>00095     <span class="comment">// 0x000f - digital output pins 0-3 (0x0001, 0x0002, 0x0004, 0x0008)</span>
-<a name="l00096"></a>00096     <span class="comment">// 0x00f0 - external power breakers (3.3V, 5V, 12V 12V1A) (0x0010, 0x0020, 0x0040, 0x0080)</span>
-<a name="l00097"></a>00097     <span class="comment">// 0x0f00 - led array (red1, green1, red2, green2) ( 0x0100, 0x0200, 0x0400, 0x0800)</span>
-<a name="l00098"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#a6455b2f01642efe3ca9c64be3491e2a9">00098</a>     uint16_t <a class="code" href="structkobuki_1_1Command_1_1Data.html#a6455b2f01642efe3ca9c64be3491e2a9">gp_out</a>;
-<a name="l00099"></a>00099   };
+<a name="l00068"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#a656ba136485c301b1c6e61812d4d5b26">00068</a>     <a class="code" href="structkobuki_1_1Command_1_1Data.html" title="Data structure containing data for commands.">Data</a>()
+<a name="l00069"></a>00069       : command(BaseControl), <a class="code" href="velocity__commands_8cpp.html#a6dc6e6f3c75c509ce943163afb5dade7">speed</a>(0), <a class="code" href="velocity__commands_8cpp.html#a3f67c53b80389c5f53961936edba04c9">radius</a>(0), request_flags(0), gp_out(0x00f0) <span class="comment">// set all the power pins high, others low.</span>
+<a name="l00070"></a>00070       , type(0), p_gain(1000), i_gain(1000), d_gain(1000)
+<a name="l00071"></a>00071     {
+<a name="l00072"></a>00072     }
+<a name="l00073"></a>00073 
+<a name="l00074"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#ac9490c50436e23bf5637317c89e4dff5">00074</a>     <a class="code" href="classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490">Name</a> <a class="code" href="structkobuki_1_1Command_1_1Data.html#ac9490c50436e23bf5637317c89e4dff5">command</a>;
+<a name="l00075"></a>00075 
+<a name="l00076"></a>00076     <span class="comment">// BaseControl</span>
+<a name="l00077"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#aa8dca8b284b4d2f6bca8c62d06363b14">00077</a>     int16_t <a class="code" href="structkobuki_1_1Command_1_1Data.html#aa8dca8b284b4d2f6bca8c62d06363b14">speed</a>;
+<a name="l00078"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#a119d3f5bfc5ce07d4e1d275963790053">00078</a>     int16_t <a class="code" href="structkobuki_1_1Command_1_1Data.html#a119d3f5bfc5ce07d4e1d275963790053">radius</a>;
+<a name="l00079"></a>00079 
+<a name="l00080"></a>00080     <span class="comment">// Sound - not yet implemented</span>
+<a name="l00081"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#ad168a40d28679febe6ca598ccc9b9b84">00081</a>     uint16_t <a class="code" href="structkobuki_1_1Command_1_1Data.html#ad168a40d28679febe6ca598ccc9b9b84">note</a>;
+<a name="l00082"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#a74b7821f305bf842734fdef2fba643f2">00082</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="structkobuki_1_1Command_1_1Data.html#a74b7821f305bf842734fdef2fba643f2">duration</a>;
+<a name="l00083"></a>00083 
+<a name="l00084"></a>00084     <span class="comment">// SoundSequence</span>
+<a name="l00085"></a>00085     <span class="comment">// 0 - turning on, 1 - turn off, 2 - recharge start, 3 - press button,</span>
+<a name="l00086"></a>00086     <span class="comment">// 4 - error sound, 5 - start cleaning, 6 - cleaning end</span>
+<a name="l00087"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#a6e2363137b38213de976495eb8648d5f">00087</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="structkobuki_1_1Command_1_1Data.html#a6e2363137b38213de976495eb8648d5f">segment_name</a>;
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089     <span class="comment">// RequestExtra (version flags)</span>
+<a name="l00090"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#aa5817272bf53d12beaec3cbe4a7ed8ed">00090</a>     uint16_t <a class="code" href="structkobuki_1_1Command_1_1Data.html#aa5817272bf53d12beaec3cbe4a7ed8ed">request_flags</a>;
+<a name="l00091"></a>00091 
+<a name="l00092"></a>00092     <span class="comment">// ChangeFrame &amp; RequestEeprom</span>
+<a name="l00093"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#a11680a7d1e2c5cd0329ef03a1e089d5d">00093</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="structkobuki_1_1Command_1_1Data.html#a11680a7d1e2c5cd0329ef03a1e089d5d">frame_id</a>;
+<a name="l00094"></a>00094 
+<a name="l00095"></a>00095     <span class="comment">// SetDigitalOut</span>
+<a name="l00096"></a>00096     <span class="comment">// 0x000f - digital output pins 0-3 (0x0001, 0x0002, 0x0004, 0x0008)</span>
+<a name="l00097"></a>00097     <span class="comment">// 0x00f0 - external power breakers (3.3V, 5V, 12V 12V1A) (0x0010, 0x0020, 0x0040, 0x0080)</span>
+<a name="l00098"></a>00098     <span class="comment">// 0x0f00 - led array (red1, green1, red2, green2) ( 0x0100, 0x0200, 0x0400, 0x0800)</span>
+<a name="l00099"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#a6455b2f01642efe3ca9c64be3491e2a9">00099</a>     uint16_t <a class="code" href="structkobuki_1_1Command_1_1Data.html#a6455b2f01642efe3ca9c64be3491e2a9">gp_out</a>;
 <a name="l00100"></a>00100 
-<a name="l00101"></a><a class="code" href="classkobuki_1_1Command.html#a7d4f39193e39ca14c062b5d92aa4e310">00101</a>   <span class="keyword">virtual</span> <a class="code" href="classkobuki_1_1Command.html#a7d4f39193e39ca14c062b5d92aa4e310">~Command</a>() {}
-<a name="l00102"></a>00102 
-<a name="l00103"></a>00103   <span class="keyword">static</span> <a class="code" href="classkobuki_1_1Command.html">Command</a> SetLedArray(<span class="keyword">const</span> <span class="keyword">enum</span> <a class="code" href="namespacekobuki.html#a33186680e911242fe0c7a511a12d1465">LedNumber</a> &amp;number, <span class="keyword">const</span> <span class="keyword">enum</span> <a class="code" href="namespacekobuki.html#a278fbe81cdc3dd93c2fde224fb013c26">LedColour</a> &amp;colour, <a class="code" href="structkobuki_1_1Command_1_1Data.html" title="Data structure containing data for commands.">Command::Data</a> &amp;current_data);
-<a name="l00104"></a>00104   <span class="keyword">static</span> <a class="code" href="classkobuki_1_1Command.html">Command</a> SetDigitalOutput(<span class="keyword">const</span> <a class="code" href="structkobuki_1_1DigitalOutput.html">DigitalOutput</a> &amp;digital_output, <a class="code" href="structkobuki_1_1Command_1_1Data.html" title="Data structure containing data for commands.">Command::Data</a> &amp;current_data);
-<a name="l00105"></a>00105   <span class="keyword">static</span> <a class="code" href="classkobuki_1_1Command.html">Command</a> SetExternalPower(<span class="keyword">const</span> <a class="code" href="structkobuki_1_1DigitalOutput.html">DigitalOutput</a> &amp;digital_output, <a class="code" href="structkobuki_1_1Command_1_1Data.html" title="Data structure containing data for commands.">Command::Data</a> &amp;current_data);
-<a name="l00106"></a>00106   <span class="keyword">static</span> <a class="code" href="classkobuki_1_1Command.html">Command</a> PlaySoundSequence(<span class="keyword">const</span> <span class="keyword">enum</span> <a class="code" href="namespacekobuki.html#a336129805a07def7a2c2b0be281e7ddd">SoundSequences</a> &amp;number, <a class="code" href="structkobuki_1_1Command_1_1Data.html" title="Data structure containing data for commands.">Command::Data</a> &amp;current_data);
-<a name="l00107"></a>00107   <span class="keyword">static</span> <a class="code" href="classkobuki_1_1Command.html">Command</a> GetVersionInfo();
-<a name="l00108"></a>00108   <span class="keyword">static</span> <a class="code" href="classkobuki_1_1Command.html">Command</a> SetVelocityControl(<a class="code" href="classkobuki_1_1DiffDrive.html">DiffDrive</a>&amp; diff_drive);
-<a name="l00109"></a>00109   <span class="keyword">static</span> <a class="code" href="classkobuki_1_1Command.html">Command</a> SetVelocityControl(<span class="keyword">const</span> int16_t &amp;<a class="code" href="velocity__commands_8cpp.html#a6dc6e6f3c75c509ce943163afb5dade7">speed</a>, <span class="keyword">const</span> int16_t &amp;<a class="code" href="velocity__commands_8cpp.html#a3f67c53b80389c5f53961936edba04c9">radius</a>);
+<a name="l00101"></a>00101     <span class="comment">// SetControllerGain</span>
+<a name="l00102"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#af8f1b9426d4315cba2730875579b543f">00102</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="structkobuki_1_1Command_1_1Data.html#af8f1b9426d4315cba2730875579b543f">type</a>;
+<a name="l00103"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#a24fcae3f22488d412639199dc1907dce">00103</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structkobuki_1_1Command_1_1Data.html#a24fcae3f22488d412639199dc1907dce">p_gain</a>;
+<a name="l00104"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#aad4d91a2b44bba8b2de08ff01d217f04">00104</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structkobuki_1_1Command_1_1Data.html#aad4d91a2b44bba8b2de08ff01d217f04">i_gain</a>;
+<a name="l00105"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#a30ea87f09e4ea88a4efffb04c76fc2d2">00105</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structkobuki_1_1Command_1_1Data.html#a30ea87f09e4ea88a4efffb04c76fc2d2">d_gain</a>;
+<a name="l00106"></a>00106 
+<a name="l00107"></a>00107     <span class="comment">// SetControllerGain</span>
+<a name="l00108"></a><a class="code" href="structkobuki_1_1Command_1_1Data.html#ad9f88322e56d06cca433be590734ffd3">00108</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="structkobuki_1_1Command_1_1Data.html#ad9f88322e56d06cca433be590734ffd3">reserved</a>;
+<a name="l00109"></a>00109   };
 <a name="l00110"></a>00110 
-<a name="l00111"></a><a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">00111</a>   <a class="code" href="structkobuki_1_1Command_1_1Data.html" title="Data structure containing data for commands.">Data</a> <a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>;
+<a name="l00111"></a><a class="code" href="classkobuki_1_1Command.html#a7d4f39193e39ca14c062b5d92aa4e310">00111</a>   <span class="keyword">virtual</span> <a class="code" href="classkobuki_1_1Command.html#a7d4f39193e39ca14c062b5d92aa4e310">~Command</a>() {}
 <a name="l00112"></a>00112 
-<a name="l00113"></a>00113   <span class="keywordtype">void</span> resetBuffer(<a class="code" href="classkobuki_1_1Command.html#addaf13fee8c86fd78c085255eec58318">Buffer</a> &amp;buffer);
-<a name="l00114"></a>00114   <span class="keywordtype">bool</span> serialise(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream);
-<a name="l00115"></a><a class="code" href="classkobuki_1_1Command.html#a940dc54294dc2b6ca9305867229137de">00115</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Command.html#a940dc54294dc2b6ca9305867229137de">deserialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream) { <span class="keywordflow">return</span> <span class="keyword">true</span>; } 
-<a name="l00117"></a>00117 <span class="keyword">private</span>:
-<a name="l00118"></a><a class="code" href="classkobuki_1_1Command.html#a619203f3cdf47bd574f868dea15376e9">00118</a>   <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="classkobuki_1_1Command.html#a619203f3cdf47bd574f868dea15376e9">header0</a>;
-<a name="l00119"></a><a class="code" href="classkobuki_1_1Command.html#a6d4b993120c36903186ca233c2fbf248">00119</a>   <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="classkobuki_1_1Command.html#a6d4b993120c36903186ca233c2fbf248">header1</a>;
-<a name="l00120"></a>00120 
-<a name="l00121"></a>00121 };
-<a name="l00122"></a>00122 
-<a name="l00123"></a>00123 } <span class="comment">// namespace kobuki</span>
-<a name="l00124"></a>00124 
-<a name="l00125"></a>00125 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_COMMAND_DATA_HPP__ */</span>
-<a name="l00126"></a>00126 
+<a name="l00113"></a>00113   <span class="keyword">static</span> <a class="code" href="classkobuki_1_1Command.html">Command</a> SetLedArray(<span class="keyword">const</span> <span class="keyword">enum</span> <a class="code" href="namespacekobuki.html#a33186680e911242fe0c7a511a12d1465">LedNumber</a> &amp;number, <span class="keyword">const</span> <span class="keyword">enum</span> <a class="code" href="namespacekobuki.html#a278fbe81cdc3dd93c2fde224fb013c26">LedColour</a> &amp;colour, <a class="code" href="structkobuki_1_1Command_1_1Data.html" title="Data structure containing data for commands.">Command::Data</a> &amp;current_data);
+<a name="l00114"></a>00114   <span class="keyword">static</span> <a class="code" href="classkobuki_1_1Command.html">Command</a> SetDigitalOutput(<span class="keyword">const</span> <a class="code" href="structkobuki_1_1DigitalOutput.html">DigitalOutput</a> &amp;digital_output, <a class="code" href="structkobuki_1_1Command_1_1Data.html" title="Data structure containing data for commands.">Command::Data</a> &amp;current_data);
+<a name="l00115"></a>00115   <span class="keyword">static</span> <a class="code" href="classkobuki_1_1Command.html">Command</a> SetExternalPower(<span class="keyword">const</span> <a class="code" href="structkobuki_1_1DigitalOutput.html">DigitalOutput</a> &amp;digital_output, <a class="code" href="structkobuki_1_1Command_1_1Data.html" title="Data structure containing data for commands.">Command::Data</a> &amp;current_data);
+<a name="l00116"></a>00116   <span class="keyword">static</span> <a class="code" href="classkobuki_1_1Command.html">Command</a> PlaySoundSequence(<span class="keyword">const</span> <span class="keyword">enum</span> <a class="code" href="namespacekobuki.html#a336129805a07def7a2c2b0be281e7ddd">SoundSequences</a> &amp;number, <a class="code" href="structkobuki_1_1Command_1_1Data.html" title="Data structure containing data for commands.">Command::Data</a> &amp;current_data);
+<a name="l00117"></a>00117   <span class="keyword">static</span> <a class="code" href="classkobuki_1_1Command.html">Command</a> GetVersionInfo();
+<a name="l00118"></a>00118   <span class="keyword">static</span> <a class="code" href="classkobuki_1_1Command.html">Command</a> SetVelocityControl(<a class="code" href="classkobuki_1_1DiffDrive.html">DiffDrive</a>&amp; diff_drive);
+<a name="l00119"></a>00119   <span class="keyword">static</span> <a class="code" href="classkobuki_1_1Command.html">Command</a> SetVelocityControl(<span class="keyword">const</span> int16_t &amp;<a class="code" href="velocity__commands_8cpp.html#a6dc6e6f3c75c509ce943163afb5dade7">speed</a>, <span class="keyword">const</span> int16_t &amp;<a class="code" href="velocity__commands_8cpp.html#a3f67c53b80389c5f53961936edba04c9">radius</a>);
+<a name="l00120"></a>00120   <span class="keyword">static</span> <a class="code" href="classkobuki_1_1Command.html">Command</a> SetControllerGain(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> &amp;type,
+<a name="l00121"></a>00121                                    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;p_gain,
+<a name="l00122"></a>00122                                    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;d_gain,
+<a name="l00123"></a>00123                                    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;i_gain);
+<a name="l00124"></a>00124   <span class="keyword">static</span> <a class="code" href="classkobuki_1_1Command.html">Command</a> GetControllerGain();
+<a name="l00125"></a>00125 
+<a name="l00126"></a><a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">00126</a>   <a class="code" href="structkobuki_1_1Command_1_1Data.html" title="Data structure containing data for commands.">Data</a> <a class="code" href="classkobuki_1_1Command.html#aa9a2396aa4648c377ec0058730b0787b">data</a>;
+<a name="l00127"></a>00127 
+<a name="l00128"></a>00128   <span class="keywordtype">void</span> resetBuffer(<a class="code" href="classkobuki_1_1Command.html#addaf13fee8c86fd78c085255eec58318">Buffer</a> &amp;buffer);
+<a name="l00129"></a>00129   <span class="keywordtype">bool</span> serialise(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream);
+<a name="l00130"></a><a class="code" href="classkobuki_1_1Command.html#a940dc54294dc2b6ca9305867229137de">00130</a>   <span class="keywordtype">bool</span> <a class="code" href="classkobuki_1_1Command.html#a940dc54294dc2b6ca9305867229137de">deserialise</a>(ecl::PushAndPop&lt;unsigned char&gt; &amp; byteStream) { <span class="keywordflow">return</span> <span class="keyword">true</span>; } 
+<a name="l00132"></a>00132 <span class="keyword">private</span>:
+<a name="l00133"></a><a class="code" href="classkobuki_1_1Command.html#a619203f3cdf47bd574f868dea15376e9">00133</a>   <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="classkobuki_1_1Command.html#a619203f3cdf47bd574f868dea15376e9">header0</a>;
+<a name="l00134"></a><a class="code" href="classkobuki_1_1Command.html#a6d4b993120c36903186ca233c2fbf248">00134</a>   <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="classkobuki_1_1Command.html#a6d4b993120c36903186ca233c2fbf248">header1</a>;
+<a name="l00135"></a>00135 
+<a name="l00136"></a>00136 };
+<a name="l00137"></a>00137 
+<a name="l00138"></a>00138 } <span class="comment">// namespace kobuki</span>
+<a name="l00139"></a>00139 
+<a name="l00140"></a>00140 <span class="preprocessor">#endif </span><span class="comment">/* KOBUKI_COMMAND_DATA_HPP__ */</span>
+<a name="l00141"></a>00141 
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -175,7 +190,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Tue Aug 27 2013 17:01:45</small>
+<small>autogenerated on Thu Aug 29 2013 18:36:57</small>
 </div>
 </body>
 </html>

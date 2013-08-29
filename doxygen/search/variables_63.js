@@ -14,6 +14,8 @@ var searchData=
   ['command_5fmutex',['command_mutex',['../classkobuki_1_1Kobuki.html#af40490e786d8ec95719a10172c1eef3e',1,'kobuki::Kobuki']]],
   ['command_5fvx',['command_vx',['../classkobuki_1_1AccelerationLimiter.html#abff130d8f74eaa85b69ba14c8a6ca943',1,'kobuki::AccelerationLimiter']]],
   ['command_5fwz',['command_wz',['../classkobuki_1_1AccelerationLimiter.html#a3ca42c02d3638bf014015afc0b666bba',1,'kobuki::AccelerationLimiter']]],
+  ['controller_5finfo',['controller_info',['../classkobuki_1_1Kobuki.html#a7891cb033fe02014b4bb01f26d318c9f',1,'kobuki::Kobuki']]],
+  ['controller_5finfo_5freminder',['controller_info_reminder',['../classkobuki_1_1Kobuki.html#a76b2d89af496396759b93e4d1b08b47f',1,'kobuki::Kobuki']]],
   ['core_5fsensors',['core_sensors',['../classkobuki_1_1Kobuki.html#a76b781f33f5e4a7fcfffcfe05bf744ab',1,'kobuki::Kobuki']]],
   ['current',['current',['../classkobuki_1_1Kobuki.html#af841f499eedcdd0d0a03f143f36d46ae',1,'kobuki::Kobuki::current()'],['../structkobuki_1_1Current_1_1Data.html#ab7ee84124d14a12f12698dc7b83765ab',1,'kobuki::Current::Data::current()']]]
 ];

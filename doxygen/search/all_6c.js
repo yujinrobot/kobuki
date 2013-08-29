@@ -28,13 +28,16 @@ var searchData=
   ['leftwheel',['LeftWheel',['../structkobuki_1_1CoreSensors_1_1Flags.html#a081dcff8c1a2ca453fe3952c19cff4b5',1,'kobuki::CoreSensors::Flags']]],
   ['leftwheel_5foc',['LeftWheel_OC',['../structkobuki_1_1CoreSensors_1_1Flags.html#a18f5b7c46447fa7a5661290ef052a863',1,'kobuki::CoreSensors::Flags']]],
   ['length',['length',['../classpacket__handler_1_1payloadBase.html#a9f2de1035a4a8bf69fff0dca79bb01f2',1,'packet_handler::payloadBase']]],
-  ['level',['level',['../classkobuki_1_1Battery.html#a447e440213e6db2d79e9bb670d7482d5',1,'kobuki::Battery::level() const '],['../classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bc',1,'kobuki::Battery::Level()']]],
+  ['level',['Level',['../classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bc',1,'kobuki::Battery::Level()'],['../classkobuki_1_1Battery.html#a447e440213e6db2d79e9bb670d7482d5',1,'kobuki::Battery::level() const ']]],
   ['limit',['limit',['../classkobuki_1_1AccelerationLimiter.html#abc759c954227e4874ecfd49b9624474f',1,'kobuki::AccelerationLimiter::limit(const std::vector&lt; double &gt; &amp;command)'],['../classkobuki_1_1AccelerationLimiter.html#aed8ff9cd14cf20788a46e8f27b918a31',1,'kobuki::AccelerationLimiter::limit(const double &amp;vx, const double &amp;wz)']]],
   ['linear_5facceleration_5flimit',['linear_acceleration_limit',['../classkobuki_1_1Parameters.html#a80f340ed5ef2c38e29dcc84bd808d8d8',1,'kobuki::Parameters']]],
   ['linear_5facceleration_5fmax',['linear_acceleration_max',['../classkobuki_1_1AccelerationLimiter.html#ae3590371d3d9ffe38481162d41ad7537',1,'kobuki::AccelerationLimiter']]],
   ['linear_5fdeceleration_5flimit',['linear_deceleration_limit',['../classkobuki_1_1Parameters.html#a508680b2d1079e83d80492af73aed9cd',1,'kobuki::Parameters']]],
   ['linear_5fdeceleration_5fmax',['linear_deceleration_max',['../classkobuki_1_1AccelerationLimiter.html#ab9d7e7921aa359762a4e62776fad2447',1,'kobuki::AccelerationLimiter']]],
+  ['linear_5fvel_5fmax',['linear_vel_max',['../classKobukiManager.html#a5a3929fb4a46bedf4f08f637a8882c60',1,'KobukiManager']]],
+  ['linear_5fvel_5fstep',['linear_vel_step',['../classKobukiManager.html#a223ade770dbe60095620431d8b34eb32',1,'KobukiManager']]],
   ['linearvelocity',['linearVelocity',['../classkobuki_1_1DiffDrive.html#a5ae1e62efc9d2bc022e1ec153c00ef7c',1,'kobuki::DiffDrive']]],
   ['lockdataaccess',['lockDataAccess',['../classkobuki_1_1Kobuki.html#af4b1e5a79539f8b88a3873d23dc542f6',1,'kobuki::Kobuki']]],
-  ['low',['Low',['../classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bcab7ef773b0f24a197a35f423d86bd0dda',1,'kobuki::Battery::Low()'],['../classkobuki_1_1Battery.html#ab52bd0243682d8f2b4f6a7b9fdb143d3',1,'kobuki::Battery::low()']]]
+  ['log',['log',['../classkobuki_1_1Kobuki.html#a1eba78f120487d8435329e8ac48e6d94',1,'kobuki::Kobuki::log(std::string msg)'],['../classkobuki_1_1Kobuki.html#ac4a953899d74f6eb56b33af25bf7ff9a',1,'kobuki::Kobuki::log(std::string level, std::string msg)'],['../classkobuki_1_1Kobuki.html#a2a0246d757ab0a2bb53e06dfde77e8ab',1,'kobuki::Kobuki::log(std::string level, std::string name, std::string msg)']]],
+  ['low',['low',['../classkobuki_1_1Battery.html#ab52bd0243682d8f2b4f6a7b9fdb143d3',1,'kobuki::Battery::low()'],['../classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bcab7ef773b0f24a197a35f423d86bd0dda',1,'kobuki::Battery::Low()']]]
 ];
