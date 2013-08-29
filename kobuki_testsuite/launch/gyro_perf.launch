@@ -1,0 +1,16 @@
+<launch>
+  <node pkg="kobuki_testsuite" type="gyro_perf.py" name="second" output="screen">
+    <remap from="odom"      to="/odom" />
+    <remap from="angle_abs" to="/scan_angle" />
+    <remap from="cmd_vel"   to="/mobile_base/commands/velocity" />
+    <remap from="sound"     to="/mobile_base/commands/sound" />
+    <remap from="imu_data"  to="/mobile_base/sensors/imu_data" />
+    <remap from="button"    to="/mobile_base/events/button" />
+    <param name="command_vx" value="0.0" />
+    <param name="command_wz" value="5" />  <!-- 5 deg/s -->
+    <param name="max_sample" value="100" />
+    <param name="test_angle" value="360" />
+    <param name="use_button" value="false" />
+  </node>
+</launch>
+

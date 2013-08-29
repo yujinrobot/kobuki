@@ -1,13 +1,15 @@
 <package>
   <name>kobuki_keyop</name>
-  <version>0.3.6</version>
+  <version>0.4.0</version>
   <description>
     Keyboard teleoperation for Kobuki: relays commands from a keyboard to Kobuki.
   </description>
   <author email="stonier@yujinrobot.com">Daniel Stonier</author>
   <maintainer email="stonier@yujinrobot.com">Daniel Stonier</maintainer>
   <license>BSD</license>
-  <url>http://ros.org/wiki/kobuki_keyop</url>
+  <url type="bugtracker">https://github.com/yujinrobot/kobuki/issues</url>
+  <url type="repository">https://github.com/yujinrobot/kobuki</url>
+  <url type="website">http://ros.org/wiki/kobuki_keyop</url>
 
   <buildtool_depend>catkin</buildtool_depend>
 

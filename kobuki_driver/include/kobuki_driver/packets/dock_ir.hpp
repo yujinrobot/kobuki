@@ -34,6 +34,7 @@ namespace kobuki
 class DockIR : public packet_handler::payloadBase
 {
 public:
+  DockIR() : packet_handler::payloadBase(false, 3) {};
   struct Data {
     Data() : docking(3) {}
     std::vector<uint8_t> docking;
@@ -41,13 +42,6 @@ public:
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
-    {
-      printf("kobuki_node: kobuki_dock_ir: serialise failed. empty byte stream.");
-      return false;
-    }
-
-    unsigned char length = 3;
     buildBytes(Header::DockInfraRed, byteStream);
     buildBytes(length, byteStream);
     buildBytes(data.docking[0], byteStream);
@@ -58,15 +52,18 @@ public:
 
   bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
+    if (byteStream.size() < length+2)
     {
-      printf("kobuki_node: kobuki_dock_ir: deserialise failed. empty byte stream.");
+      //std::cout << "kobuki_node: kobuki_dock_ir: deserialise failed. not enough byte stream." << std::endl;
       return false;
     }
 
-    unsigned char header_id, length;
+    unsigned char header_id, length_packed;
     buildVariable(header_id, byteStream);
-    buildVariable(length, byteStream);
+    buildVariable(length_packed, byteStream);
+    if( header_id != Header::DockInfraRed ) return false;
+    if( length_packed != length ) return false;
+
     buildVariable(data.docking[0], byteStream);
     buildVariable(data.docking[1], byteStream);
     buildVariable(data.docking[2], byteStream);

@@ -18,9 +18,11 @@
 *****************************************************************************/
 
 #include <vector>
+#include <climits>
 #include <stdint.h>
 #include <ecl/mobile_robot.hpp>
 #include <ecl/threads/mutex.hpp>
+#include "../macros.hpp"
 
 /*****************************************************************************
 ** Namespaces
@@ -32,7 +34,7 @@ namespace kobuki {
 ** Interfaces
 *****************************************************************************/
 
-class DiffDrive {
+class kobuki_PUBLIC DiffDrive {
 public:
   DiffDrive();
   const ecl::DifferentialDrive::Kinematics& kinematics() { return diff_drive_kinematics; }
@@ -41,9 +43,9 @@ public:
               const uint16_t &right_encoder,
               ecl::Pose2D<double> &pose_update,
               ecl::linear_algebra::Vector3d &pose_update_rates);
-  void reset(const double& current_heading);
+  void reset();
   void getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
-                            double &wheel_right_angle, double &wheel_right_angle_rate);
+                           double &wheel_right_angle, double &wheel_right_angle_rate);
   void setVelocityCommands(const double &vx, const double &wz);
   void velocityCommands(const double &vx, const double &wz);
   void velocityCommands(const short &cmd_speed, const short &cmd_radius);
@@ -69,9 +71,10 @@ private:
   unsigned short last_tick_left, last_tick_right;
   double last_rad_left, last_rad_right;
 
+  //double v, w; // in [m/s] and [rad/s]
   std::vector<double> point_velocity; // (vx, wz), in [m/s] and [rad/s]
-  short radius; // in [mm]
-  short speed;  // in [mm/s]
+  double radius; // in [mm]
+  double speed;  // in [mm/s]
   double bias; //wheelbase, wheel_to_wheel, in [m]
   double wheel_radius; // in [m]
   int imu_heading_offset;
@@ -79,6 +82,9 @@ private:
 
   ecl::DifferentialDrive::Kinematics diff_drive_kinematics;
   ecl::Mutex velocity_mutex, state_mutex;
+
+  // Utility
+  short bound(const double &value);
 };
 
 } // namespace kobuki

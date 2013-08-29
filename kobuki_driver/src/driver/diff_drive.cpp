@@ -30,11 +30,10 @@ DiffDrive::DiffDrive() :
   last_rad_left(0.0),
   last_rad_right(0.0),
 //  v(0.0), w(0.0), // command velocities, in [m/s] and [rad/s]
-  radius(0), speed(0), // command velocities, in [mm] and [mm/s]
+  radius(0.0), speed(0.0), // command velocities, in [mm] and [mm/s]
   point_velocity(2,0.0), // command velocities, in [m/s] and [rad/s]
   bias(0.23), // wheelbase, wheel_to_wheel, in [m]
   wheel_radius(0.035), // radius of main wheel, in [m]
-  imu_heading_offset(0),
   tick_to_rad(0.002436916871363930187454f),
   diff_drive_kinematics(bias, wheel_radius)
 {}
@@ -51,10 +50,10 @@ DiffDrive::DiffDrive() :
  * @param pose_update_rates
  */
 void DiffDrive::update(const uint16_t &time_stamp,
-            const uint16_t &left_encoder,
-            const uint16_t &right_encoder,
-            ecl::Pose2D<double> &pose_update,
-            ecl::linear_algebra::Vector3d &pose_update_rates) {
+                       const uint16_t &left_encoder,
+                       const uint16_t &right_encoder,
+                       ecl::Pose2D<double> &pose_update,
+                       ecl::linear_algebra::Vector3d &pose_update_rates) {
   state_mutex.lock();
   static bool init_l = false;
   static bool init_r = false;
@@ -103,18 +102,17 @@ void DiffDrive::update(const uint16_t &time_stamp,
   state_mutex.unlock();
 }
 
-void DiffDrive::reset(const double& current_heading) {
+void DiffDrive::reset() {
   state_mutex.lock();
   last_rad_left = 0.0;
   last_rad_right = 0.0;
   last_velocity_left = 0.0;
   last_velocity_right = 0.0;
-  imu_heading_offset = current_heading;
   state_mutex.unlock();
 }
 
 void DiffDrive::getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
-                          double &wheel_right_angle, double &wheel_right_angle_rate) {
+                                    double &wheel_right_angle, double &wheel_right_angle_rate) {
   state_mutex.lock();
   wheel_left_angle = last_rad_left;
   wheel_right_angle = last_rad_right;
@@ -140,26 +138,26 @@ void DiffDrive::velocityCommands(const double &vx, const double &wz) {
 
   // Special Case #1 : Straight Run
   if( std::abs(wz) < epsilon ) {
-    radius = 0;
-    speed  = (short)(1000.0f * vx);
+    radius = 0.0f;
+    speed  = 1000.0f * vx;
     velocity_mutex.unlock();
     return;
   }
 
-  radius = (short)(vx * 1000.0f / wz);
+  radius = vx * 1000.0f / wz;
   // Special Case #2 : Pure Rotation or Radius is less than or equal to 1.0 mm
-  if( std::abs(vx) < epsilon || std::abs(radius) <= 1 ) {
-    speed  = (short)(1000.0f * bias * wz / 2.0f);
-    radius = 1;
+  if( std::abs(vx) < epsilon || std::abs(radius) <= 1.0f ) {
+    speed  = 1000.0f * bias * wz / 2.0f;
+    radius = 1.0f;
     velocity_mutex.unlock();
     return;
   }
 
   // General Case :
-  if( radius > 0 ) {
-    speed  = (short)((radius + 1000.0f * bias / 2.0f) * wz);
+  if( radius > 0.0f ) {
+    speed  = (radius + 1000.0f * bias / 2.0f) * wz;
   } else {
-    speed  = (short)((radius - 1000.0f * bias / 2.0f) * wz);
+    speed  = (radius - 1000.0f * bias / 2.0f) * wz;
   }
   velocity_mutex.unlock();
   return;
@@ -167,8 +165,8 @@ void DiffDrive::velocityCommands(const double &vx, const double &wz) {
 
 void DiffDrive::velocityCommands(const short &cmd_speed, const short &cmd_radius) {
   velocity_mutex.lock();
-  speed = cmd_speed;   // In [mm/s]
-  radius = cmd_radius; // In [mm]
+  speed = static_cast<double>(cmd_speed);   // In [mm/s]
+  radius = static_cast<double>(cmd_radius); // In [mm]
   velocity_mutex.unlock();
   return;
 }
@@ -176,8 +174,8 @@ void DiffDrive::velocityCommands(const short &cmd_speed, const short &cmd_radius
 std::vector<short> DiffDrive::velocityCommands() {
   velocity_mutex.lock();
   std::vector<short> cmd(2);
-  cmd[0] = speed;  // In [mm/s]
-  cmd[1] = radius; // In [mm]
+  cmd[0] = bound(speed);  // In [mm/s]
+  cmd[1] = bound(radius); // In [mm]
   velocity_mutex.unlock();
   return cmd;
 }
@@ -186,5 +184,10 @@ std::vector<double> DiffDrive::pointVelocity() const {
   return point_velocity;
 }
 
+short DiffDrive::bound(const double &value) {
+  if (value > static_cast<double>(SHRT_MAX)) return SHRT_MAX;
+  if (value < static_cast<double>(SHRT_MIN)) return SHRT_MIN;
+  return static_cast<short>(value);
+}
 
 } // namespace kobuki

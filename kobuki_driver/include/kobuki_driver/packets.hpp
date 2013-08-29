@@ -27,6 +27,7 @@
 #include "packets/hardware.hpp"
 #include "packets/unique_device_id.hpp"
 #include "packets/three_axis_gyro.hpp"
+#include "packets/controller_info.hpp"
 
 
 #endif /* KOBUKI_PACKETS_HPP_ */

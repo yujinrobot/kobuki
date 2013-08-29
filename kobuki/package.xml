@@ -1,22 +1,26 @@
 <package>
   <name>kobuki</name>
-  <version>0.3.6</version>
+  <version>0.4.0</version>
   <description>
     Software for Kobuki, Yujin Robot's mobile research base.
   </description>
-  <author email="stonier@rnd.yujinrobot.com">Daniel Stonier</author>
-  <author email="younghoon.ju@rnd.yujinrobot.com">Younghoon Ju</author>
-  <author email="jorge@rnd.yujinrobot.com">Jorge Santos Simon</author>
-  <author email="marcus.liebhardt@rnd.yujinrobot.com">Marcus Liebhardt</author>
-  <maintainer email="stonier@rnd.yujinrobot.com">Daniel Stonier</maintainer>
+  <author email="stonier@yujinrobot.com">Daniel Stonier</author>
+  <author email="yhju@yujinrobot.com">Younghun Ju</author>
+  <author email="jorge@yujinrobot.com">Jorge Santos Simon</author>
+  <author email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</author>
+  <maintainer email="stonier@yujinrobot.com">Daniel Stonier</maintainer>
   <license>BSD</license>
-  <url>http://ros.org/wiki/kobuki</url>
+  <url type="bugtracker">https://github.com/yujinrobot/kobuki/issues</url>
+  <url type="repository">https://github.com/yujinrobot/kobuki</url>
+  <url type="website">http://ros.org/wiki/kobuki</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
 
   <run_depend>kobuki_arm</run_depend>
   <run_depend>kobuki_auto_docking</run_depend>
   <run_depend>kobuki_bumper2pc</run_depend>
   <run_depend>kobuki_controller_tutorial</run_depend>
-  <!-- <run_depend>kobuki_description</run_depend> --> <!-- cannot be catkinized still due to xacro package -->
+  <run_depend>kobuki_description</run_depend> 
   <run_depend>kobuki_driver</run_depend>
   <run_depend>kobuki_ftdi</run_depend>
   <run_depend>kobuki_keyop</run_depend>

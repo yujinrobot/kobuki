@@ -1,6 +1,6 @@
 <package>
   <name>kobuki_description</name>
-  <version>0.3.0</version>
+  <version>0.4.0</version>
   <description>
       Description of the Kobuki model.
       Provides the model description of Kobuki for simulation and visualisation. The files in this 
@@ -12,10 +12,12 @@
   </description>
   <author email="stonier@yujinrobot.com">Daniel Stonier</author>
   <author email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</author>
-  <author email="younghoon.ju@yujinrobot.com">Younghun Ju</author>
-  <maintainer email="younghoon.ju@yujinrobot.com">Younghun Ju</maintainer>
+  <author email="yhju@yujinrobot.com">Younghun Ju</author>
+  <maintainer email="yhju@yujinrobot.com">Younghun Ju</maintainer>
   <license>BSD</license>
-  <url>http://ros.org/wiki/kobuki_description</url>
+  <url type="bugtracker">https://github.com/yujinrobot/kobuki/issues</url>
+  <url type="repository">https://github.com/yujinrobot/kobuki</url>
+  <url type="website">http://ros.org/wiki/kobuki_description</url>
 
   <buildtool_depend>catkin</buildtool_depend>
 

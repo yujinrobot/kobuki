@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <kobuki_driver/kobuki.hpp>
+#include <ecl/time.hpp>
 
 class KobukiManager {
 public:
@@ -41,5 +42,6 @@ private:
 
 int main() {
   KobukiManager kobuki_manager;
+  ecl::Sleep()(5);
   return 0;
 }

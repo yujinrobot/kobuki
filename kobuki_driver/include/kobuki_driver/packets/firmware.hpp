@@ -24,8 +24,8 @@
 ** Constants
 *****************************************************************************/
 
-#define CURRENT_FIRMWARE_MAYOR_VERSION  1
-#define CURRENT_FIRMWARE_MINOR_VERSION  1
+#define CURRENT_FIRMWARE_MAJOR_VERSION  1
+#define CURRENT_FIRMWARE_MINOR_VERSION  2
 // patch number is ignored; don't need to be updated
 
 /*****************************************************************************
@@ -42,6 +42,7 @@ namespace kobuki
 class Firmware : public packet_handler::payloadBase
 {
 public:
+  Firmware() : packet_handler::payloadBase(true, 2) {};
   struct Data {
     uint32_t version;
   } data;
@@ -49,12 +50,6 @@ public:
   // methods
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
-    {
-      printf("kobuki_node: kobuki_fw: serialise failed. empty byte stream.");
-      return false;
-    }
-
     unsigned char length = 4;
     buildBytes(Header::Firmware, byteStream);
     buildBytes(length, byteStream);
@@ -64,19 +59,21 @@ public:
 
   bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
+    if (byteStream.size() < length+2)
     {
-      printf("kobuki_node: kobuki_fw: deserialise failed. empty byte stream.");
+      //std::cout << "kobuki_node: kobuki_fw: deserialise failed. not enough byte stream." << std::endl;
       return false;
     }
 
-    unsigned char header_id = 0, length = 0;
+    unsigned char header_id, length_packed;
     buildVariable(header_id, byteStream);
-    buildVariable(length, byteStream);
+    buildVariable(length_packed, byteStream);
+    if( header_id != Header::Firmware ) return false;
+    if( length_packed != 2 and length_packed != 4) return false;
 
     // TODO First 3 firmware versions coded version number on 2 bytes, so we need convert manually to our new
     // 4 bytes system; remove this horrible, dirty hack as soon as we upgrade the firmware to 1.1.2 or 1.2.0
-    if (length == 2)
+    if (length_packed == 2)
     {
       uint16_t old_style_version = 0;
       buildVariable(old_style_version, byteStream);
@@ -104,23 +101,22 @@ public:
 
   void showMe()
   {
-    //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, acc[2], acc[1], acc[0] );
   }
 
   std::string current_version()
   {
     std::stringstream ss;
-    ss << CURRENT_FIRMWARE_MAYOR_VERSION << "." << CURRENT_FIRMWARE_MINOR_VERSION << ".x";
+    ss << CURRENT_FIRMWARE_MAJOR_VERSION << "." << CURRENT_FIRMWARE_MINOR_VERSION << ".x";
 
     return std::string(ss.str());
   }
 
-  int check_mayor_version()
+  int check_major_version()
   {
-    // Return a negative value if firmware's mayor version is older than that of the driver,
-    // 0 if both are the same, and a positive value if firmware's mayor version is newer
+    // Return a negative value if firmware's major version is older than that of the driver,
+    // 0 if both are the same, and a positive value if firmware's major version is newer
     uint32_t flashed_version = ((data.version & 0x00FF0000) >> 16);
-    return flashed_version - CURRENT_FIRMWARE_MAYOR_VERSION;
+    return flashed_version - CURRENT_FIRMWARE_MAJOR_VERSION;
   }
 
   int check_minor_version()

@@ -1,16 +1,18 @@
 <package>
   <name>kobuki_driver</name>
-  <version>0.3.6</version>
+  <version>0.4.0</version>
   <description>
     C++ driver library for Kobuki:
     Pure C++ driver library for Kobuki. This is for those who do not wish to use ROS on their systems.
   </description>
   <author email="stonier@yujinrobot.com">Daniel Stonier</author>
-  <author email="younghoon.ju@yujinrobot.com">Younghun Ju</author>
+  <author email="yhju@yujinrobot.com">Younghun Ju</author>
   <author email="jorge@yujinrobot.com">Jorge Santos Simon</author>
   <maintainer email="stonier@yujinrobot.com">Daniel Stonier</maintainer>
   <license>BSD</license>
-  <url>http://ros.org/wiki/kobuki_driver</url>
+  <url type="bugtracker">https://github.com/yujinrobot/kobuki/issues</url>
+  <url type="repository">https://github.com/yujinrobot/kobuki</url>
+  <url type="website">http://ros.org/wiki/kobuki_driver</url>
 
   <buildtool_depend>catkin</buildtool_depend>
 

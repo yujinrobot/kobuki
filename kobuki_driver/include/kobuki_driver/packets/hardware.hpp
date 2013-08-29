@@ -34,6 +34,7 @@ namespace kobuki
 class Hardware : public packet_handler::payloadBase
 {
 public:
+  Hardware() : packet_handler::payloadBase(true, 2) {};
   struct Data {
     uint32_t version;
   } data;
@@ -41,12 +42,6 @@ public:
   // methods
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
-    {
-      printf("kobuki_node: kobuki_hw: serialise failed. empty byte stream.");
-      return false;
-    }
-
     unsigned char length = 4;
     buildBytes(Header::Hardware, byteStream);
     buildBytes(length, byteStream);
@@ -56,19 +51,21 @@ public:
 
   bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
+    if (byteStream.size() < length+2)
     {
-      printf("kobuki_node: kobuki_hw: deserialise failed. empty byte stream.");
+      //std::cout << "kobuki_node: kobuki_hw: deserialise failed. not enough byte stream." << std::endl;
       return false;
     }
 
-    unsigned char header_id = 0, length = 0;
+    unsigned char header_id, length_packed;
     buildVariable(header_id, byteStream);
-    buildVariable(length, byteStream);
+    buildVariable(length_packed, byteStream);
+    if( header_id != Header::Hardware ) return false;
+    if( length_packed != 2 and length_packed != 4) return false;
 
     // TODO First 3 firmware versions coded version number on 2 bytes, so we need convert manually to our new
     // 4 bytes system; remove this horrible, dirty hack as soon as we upgrade the firmware to 1.1.2 or 1.2.0
-    if (length == 2)
+    if (length_packed == 2)
     {
       uint16_t old_style_version = 0;
       buildVariable(old_style_version, byteStream);
@@ -92,7 +89,6 @@ public:
 
   void showMe()
   {
-    //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, acc[2], acc[1], acc[0] );
   }
 };
 
