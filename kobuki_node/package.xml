@@ -1,0 +1,78 @@
+<package>
+  <name>kobuki_node</name>
+  <version>0.4.0</version>
+  <description>
+      ROS nodelet for Kobuki: ROS wrapper for the Kobuki driver.
+  </description>
+  <author email="stonier@yujinrobot.com">Daniel Stonier</author>
+  <author email="yhju@yujinrobot.com">Younghun Ju</author>
+  <author email="jorge@yujinrobot.com">Jorge Santos Simon</author>
+  <maintainer email="stonier@yujinrobot.com">Daniel Stonier</maintainer>
+  <license>BSD</license>
+  <url type="bugtracker">https://github.com/yujinrobot/kobuki/issues</url>
+  <url type="repository">https://github.com/yujinrobot/kobuki</url>
+  <url type="website">http://ros.org/wiki/kobuki_node</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- Ros -->
+  <build_depend>roscpp</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>nav_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>angles</build_depend>
+  <build_depend>diagnostic_updater</build_depend>
+  <build_depend>diagnostic_msgs</build_depend>
+  <build_depend>nodelet</build_depend>
+  <build_depend>pluginlib</build_depend>
+
+  <!--  Kobuki -->
+  <build_depend>kobuki_msgs</build_depend>
+  <build_depend>kobuki_driver</build_depend>
+  <build_depend>kobuki_keyop</build_depend>
+  <build_depend>kobuki_safety_controller</build_depend>
+
+  <!-- Ecl -->
+  <build_depend>ecl_exceptions</build_depend>
+  <build_depend>ecl_sigslots</build_depend>
+  <build_depend>ecl_streams</build_depend>
+  <build_depend>ecl_threads</build_depend>
+
+   <!--  For Tests -->
+  <build_depend>rospy</build_depend>
+
+
+  <!-- Ros -->
+  <run_depend>roscpp</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>nav_msgs</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>tf</run_depend>
+  <run_depend>angles</run_depend>
+  <run_depend>diagnostic_updater</run_depend>
+  <run_depend>diagnostic_msgs</run_depend>
+  <run_depend>nodelet</run_depend>
+  <run_depend>pluginlib</run_depend>
+
+  <!--  Kobuki -->
+  <run_depend>kobuki_msgs</run_depend>
+  <run_depend>kobuki_driver</run_depend>
+  <run_depend>kobuki_keyop</run_depend>
+  <run_depend>kobuki_safety_controller</run_depend>
+
+  <!-- Ecl -->
+  <run_depend>ecl_exceptions</run_depend>
+  <run_depend>ecl_sigslots</run_depend>
+  <run_depend>ecl_streams</run_depend>
+  <run_depend>ecl_threads</run_depend>
+
+   <!--  For Tests -->
+  <run_depend>rospy</run_depend>
+  
+  <export>
+    <nodelet plugin="${prefix}/plugins/nodelet_plugins.xml" />
+  </export>
+</package>

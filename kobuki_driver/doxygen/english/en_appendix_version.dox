@@ -1,0 +1,48 @@
+/**
+
+@page enAppendixVersionInfo Appendix : Version Info
+
+@tableofcontents
+
+<!-----------------------------
+         Overview
+------------------------------->
+
+@section enOverview Overview
+
+If you want to know version information of kobuki for compatibility checking and introspection, you can just run version_info program.
+
+@section enBuild Build
+
+If you build kobuki_driver package, the version_info program will be built automatically. Source code is located at src/tools/version_info.cpp
+
+@verbatim
+$ cd kobuki_driver
+$ make
+@endverbatim
+
+@section enBeforeRunning Before running
+
+Before the running the version_info program, make sure that robot is connected and appeared as /dev/kobuki. See <a href="http://www.ros.org/wiki/kobuki_ftdi">kobuki_ftdi</a> for more detail.
+
+@verbatim
+$ ll /dev/kobuki 
+lrwxrwxrwx 1 root root 7 Jan 25 18:19 /dev/kobuki -> ttyUSB0
+@endverbatim
+
+@section enRunning Running
+
+The version_info program retrieve and print the version information of kobuki, including hardware, firmware and software version numbers. And Unique Device IDentifier(UDID) also. 
+
+@verbatim
+$ ./bin/version_info 
+Version Info:
+ * Hardware Version: 1.0.4
+ * Firmware Version: 1.1.4
+ * Software Version: 0.0.0
+ * Unique Device ID: 736034612-892621875-1125147971
+@endverbatim
+
+@warning Software version is not implemented yet. 
+
+**/

@@ -1,0 +1,15 @@
+<!--
+  Standalone launcher for running a default Kobuki
+ -->
+<launch>
+  <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
+  <node pkg="nodelet" type="nodelet" name="mobile_base" args="load kobuki_node/KobukiNodelet mobile_base_nodelet_manager">
+    <rosparam file="$(find kobuki_node)/param/base.yaml" command="load"/>
+    <remap from="mobile_base/odom" to="odom"/>
+    <remap from="mobile_base/joint_states" to="joint_states"/>
+  </node>
+  
+  <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
+    <rosparam command="load" file="$(find kobuki_node)/param/diagnostics.yaml" />
+  </node>
+</launch>

@@ -1,0 +1,15 @@
+/**
+
+@page enFtdiGuide Working with FTDI
+
+@section ftdiOverview Overview
+
+Kobuki provides two different interfaces for communication with host(e.g. Netbook), USB and Serial port. But underlying scheme is same. It is <a href="http://en.wikipedia.org/wiki/RS-232">RS-232</a> <a href="http://en.wikipedia.org/wiki/Serial_communication">serial communication</a>.
+
+Kobuki has `USB to serial converter` internally, <a href="http://www.ftdichip.com">FTDI</a>'s <a href="http://www.ftdichip.com/Products/ICs/FT232R.htm">FT232R</a>. By using this chip, kobuki and host can communicate over USB interface.
+
+@section ftdiDetailedInformation Detailed Infomartion
+
+More detailed desciptions can be found in the <a href="http://ros.org/doc/groovy/api/kobuki_ftdi/html/">code api</a> of <a href="http://www.ros.org/wiki/kobuki_ftdi">kobuki_ftdi</a>.
+
+**/

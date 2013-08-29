@@ -1,0 +1,47 @@
+/**
+
+@page enInstallationWindowsGuide Instllation - Windows
+
+@section Overview
+
+This section describes the installation process for Windows.
+Support for the different windows compilers/architectures may not
+be complete - if you wish support for a different compiler or 
+architecture, please contact us on the 
+<a href="https://groups.google.com/a/yujinrobot.com/forum/#!forum/kobuki-users">kobuki users mailing list</a>.
+We'd be happy to provide support and advice.
+
+@subsection who Target audience
+
+Windows people who want to run kobuki on windows, either from
+a pre-compiled sdk, or with an sdk built from scratch themselves.
+
+@section precompiledSDK Pre-Compiled SDK
+
+@subsection sdkDownload Download
+
+You can download the latest sdk bundle from:
+
+http://files.yujinrobot.com/kobuki/windows/
+
+@subsection About
+
+The sdk includes headers and dlls for both kobuki and its dependencies (Eigen and ECL).
+They are bundled as a zip archive which can be extracted anywhere on your hard drive.
+
+@subsection Usage
+
+When starting a visual studio or express project for kobuki, simply ensure you have added 
+include, lib, bin directories from the sdk appropriately in the project settings. Everything
+else should be straightforward. Note that the kobuki driver is not an executable. It provides a
+dll api from which you can construct your own controller program for kobuki. Simple examples
+and walkthroughs can be found elsewhere in this documentation.
+
+@section compilingSDK Compiling your own SDK
+
+Todo : the instructions for this are quite advanced and require
+the win-ros build environment (even though we're not compiling ros
+libraries specifically). This will come shortly once some artifacts
+in the build process have been cleared out.
+
+**/

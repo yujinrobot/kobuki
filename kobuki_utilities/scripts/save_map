@@ -1,9 +1,0 @@
-#!/bin/bash
-
-echo $#
-if [ $# -lt 1 ]; then
-  echo "Usage: save_map <name>"
-  exit 1
-fi
-
-rosrun map_server map_saver -f $1 map:=/kobuki/map

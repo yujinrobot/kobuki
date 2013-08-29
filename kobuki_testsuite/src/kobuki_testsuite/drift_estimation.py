@@ -9,7 +9,6 @@
 
 import math
 import threading
-import roslib; roslib.load_manifest('kobuki_qtestsuite')
 import PyKDL
 import rospy
 from sensor_msgs.msg import LaserScan, Imu

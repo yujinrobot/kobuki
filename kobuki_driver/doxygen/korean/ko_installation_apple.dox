@@ -1,0 +1,11 @@
+/**
+
+@page enInstallationAppleGuide Installation - Apple
+
+This is currently untested and unsupported. The work required to run it on apple should not be significant though - the 
+libraries are largely compatible (with the possible exception of some porting needed for the time functions).
+
+If you would like to do this, please contact the maintainers of the project, we are happy to help.
+
+
+**/

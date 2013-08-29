@@ -1,0 +1,19 @@
+<!--
+  Standalone auto-docking launcher with basic kobuki mobile base. 
+ -->
+<launch>
+  <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
+  <node pkg="nodelet" type="nodelet" name="mobile_base" args="load kobuki_node/KobukiNodelet mobile_base_nodelet_manager">
+    <rosparam file="$(find kobuki_node)/param/base.yaml" command="load"/>
+    <remap from="mobile_base/odom" to="odom"/>
+    <remap from="mobile_base/joint_states" to="joint_states"/>
+  </node>
+  <node pkg="nodelet" type="nodelet" name="dock_drive" args="load kobuki_auto_docking/AutoDockingNodelet mobile_base_nodelet_manager">
+    <rosparam file="$(find kobuki_auto_docking)/param/auto_docking.yaml" command="load"/>
+    <remap from="dock_drive/odom" to="odom"/>
+    <remap from="dock_drive/core" to="mobile_base/sensors/core"/>
+    <remap from="dock_drive/dock_ir" to="mobile_base/sensors/dock_ir"/>
+    <remap from="dock_drive/motor_power" to="mobile_base/commands/motor_power"/>
+    <remap from="dock_drive/velocity" to="mobile_base/commands/velocity"/>
+  </node>
+</launch>

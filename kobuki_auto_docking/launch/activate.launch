@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="kobuki_auto_docking" type="DockDriveActionClient.py" name="dock_drive_client_py"/>
+</launch>

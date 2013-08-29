@@ -1,0 +1,28 @@
+##############################################################################
+#
+# Kobuki ROS install file. It only install catkinized packages
+#
+# Before rosinstalling, make sure you installed:
+#
+# Latest build tools
+#   sudo apt-get install ros-groovy-catkin
+#
+# Kobuki FTDI (Firmware Updates)
+#   sudo apt-get install libftdi-dev
+#
+# ROS debs
+#   sudo apt-get install ros-groovy-geometry-msgs ros-groovy-sensor-msgs ros-groovy-nav-msgs ros-groovy-tf
+#   sudo apt-get install ros-groovy-rviz ros-groovy-nodelet ros-groovy-robot-state-publisher ros-groovy-diagnostic-msgs
+#   sudo apt-get install ros-groovy-dynamic-reconfigure ros-groovy-pcl ros-groovy-pcl-ros ros-groovy-pcl-msgs ros-groovy-diagnostics
+#
+# Ecl dependency
+#   sudo apt-get install ros-groovy-ecl-threads ros-groovy-ecl-devices ros-groovy-ecl-streams ros-groovy-ecl-mobile-robot ros-groovy-ecl-sigslots 
+#
+##############################################################################
+
+# Kobuki / Yujin stacks
+
+- git: {local-name: yujin_ocs, version: hydro-devel, uri: 'https://github.com/yujinrobot/yujin_ocs.git'}
+- git: {local-name: kobuki_msgs, version: hydro-devel, uri: 'https://github.com/yujinrobot/kobuki_msgs.git'}
+- git: {local-name: kobuki, version: hydro-devel, uri: 'https://github.com/yujinrobot/kobuki.git'}
+- git: {local-name: xacro, version: hydro-devel, uri: 'https://github.com/ros/xacro.git'}

@@ -1,42 +1,10 @@
-/*
- * Copyright (c) 2012, Yujin Robot.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of Yujin Robot nor the names of its
- *       contributors may be used to endorse or promote products derived from
- *       this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
 /**
- * @file /include/kobuki_driver/packet_finder.hhpp
+ * @file include/kobuki_driver/packet_handler/payload_base.hpp
  *
- * Originally from the yujin control system suite (where it also has some
- * unit tests).
+ * @brief Base class for payloads.
  *
- * Currently quite rough, could possibly be made general.
- *
- * @date Jan, 2011
- *
- * @author jakan2
+ * License: BSD
+ *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE
  **/
 /*****************************************************************************
  ** Ifdefs
@@ -64,7 +32,7 @@ namespace packet_handler
  *****************************************************************************/
 /**
  * @brief
- * Provides simple packet finder which may be consist of stx, etx, payload, ...
+ * Provides base class for payloads.
  *
  */
 class payloadBase
@@ -77,10 +45,27 @@ public:
    */
   bool yes;
 
+  /**
+   * it indicates the type of derived packet. if packet type is dynamic, length of
+   * packet can be changed during communication session. Ohterwise can not.
+   */
+  const bool is_dynamic;
+
+  /**
+   * it indicates length of data part of packet, except header and length field.
+   * if packet is fixed type, this value should be matched with length field.
+   * if packet is dynamic type, this value indicates minimal value of length field.
+   */
+  const unsigned char length;
+
   /*
    * construct and destruct
    */
-  payloadBase() : yes(false) {};
+  payloadBase(const bool is_dynamic_ = false, const unsigned char length_ = 0 )
+    : yes(false)
+    , is_dynamic(is_dynamic_)
+    , length(length_)
+  {};
   virtual ~payloadBase() {};
 
   /*
@@ -108,7 +93,7 @@ protected:
     }
 
   template<typename T>
-    void buildBytes(T & V, ecl::PushAndPop<unsigned char> & buffer)
+    void buildBytes(const T & V, ecl::PushAndPop<unsigned char> & buffer)
     {
       unsigned int size_value(sizeof(T));
       for (unsigned int i = 0; i < size_value; i++)
@@ -142,12 +127,12 @@ inline   void payloadBase::buildVariable<float>(float & V, ecl::PushAndPop<unsig
   }
 
 template<>
-inline void payloadBase::buildBytes<float>(float & V, ecl::PushAndPop<unsigned char> & buffer)
+inline void payloadBase::buildBytes<float>(const float & V, ecl::PushAndPop<unsigned char> & buffer)
   {
     if (buffer.size() < 4)
       return;
     unsigned int size_value(4);
-    unsigned int ui(reinterpret_cast<unsigned int&>(V));
+    unsigned int ui(reinterpret_cast<const unsigned int&>(V));
     for (unsigned int i = 0; i < size_value; i++)
     {
       buffer.push_back(static_cast<unsigned char>((ui >> (i * 8)) & 0xff));

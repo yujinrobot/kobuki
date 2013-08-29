@@ -1,0 +1,245 @@
+/**
+@page lsusbdataGuide Usb Data
+
+@section ourChip Our Chip
+
+Important notes about our chip.
+
+- Part name: <a href="http://www.ftdichip.com/Products/ICs/FT232R.htm">FTDI FT232R</a>
+- It is chip type TYPE_R (refer to iInterface = FT232R on lsusb output) 
+- It is not self powered, bus powered
+- Requires 90mA of power
+
+@section lsusb_output Results from lsusb
+
+@verbatim
+$ sudo lsusb
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 002 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+ ...
+Bus 004 Device 006: ID 0403:6001 Future Technology Devices International, Ltd FT232 USB-Serial (UART) IC
+$ sudo lsusb -v -s 004:006
+@endverbatim
+
+- Vendor Id: 0x0403
+- Product Id: 0x6001
+- Self Powered: 0
+- Remote Wakeup: 1
+- Use Serial: 1
+- In Iso: 0
+- Out Iso: 0
+- Suspend: 0
+- Max Power: 45 (in ftdi units -> *2 = 90mA in engineering units)
+
+And from `sudo lsusb -v -s 004:006`
+
+@verbatim
+$ sudo lsusb -v -s 004:006
+
+Bus 004 Device 006: ID 0403:6001 Future Technology Devices International, Ltd FT232 USB-Serial (UART) IC
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass            0 (Defined at Interface level)
+  bDeviceSubClass         0 
+  bDeviceProtocol         0 
+  bMaxPacketSize0         8
+  idVendor           0x0403 Future Technology Devices International, Ltd
+  idProduct          0x6001 FT232 USB-Serial (UART) IC
+  bcdDevice            6.00
+  iManufacturer           1 FTDI
+  iProduct                2 FT232R USB UART
+  iSerial                 3 A6005hoK
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength           32
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0 
+    bmAttributes         0xa0
+      (Bus Powered)
+      Remote Wakeup
+    MaxPower               90mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           2
+      bInterfaceClass       255 Vendor Specific Class
+      bInterfaceSubClass    255 Vendor Specific Subclass
+      bInterfaceProtocol    255 Vendor Specific Protocol
+      iInterface              2 FT232R USB UART
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x02  EP 2 OUT
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               0
+Device Status:     0x0000
+  (Bus Powered)
+@endverbatim
+
+@section udevadm_output Results from udevadm
+
+
+@verbatim
+$ sudo udevadm info -a -n /dev/ttyUSB0
+
+Udevadm info starts with the device specified by the devpath and then
+walks up the chain of parent devices. It prints for every device
+found, all possible attributes in the udev rules key format.
+A rule to match, can be composed by the attributes of the device
+and the attributes from one single parent device.
+
+  looking at device '/devices/pci0000:00/0000:00:11.0/0000:02:00.0/usb2/2-1/2-1:1.0/ttyUSB0/tty/ttyUSB0':
+    KERNEL=="ttyUSB0"
+    SUBSYSTEM=="tty"
+    DRIVER==""
+
+  looking at parent device '/devices/pci0000:00/0000:00:11.0/0000:02:00.0/usb2/2-1/2-1:1.0/ttyUSB0':
+    KERNELS=="ttyUSB0"
+    SUBSYSTEMS=="usb-serial"
+    DRIVERS=="ftdi_sio"
+    ATTRS{latency_timer}=="1"
+    ATTRS{port_number}=="0"
+
+  looking at parent device '/devices/pci0000:00/0000:00:11.0/0000:02:00.0/usb2/2-1/2-1:1.0':
+    KERNELS=="2-1:1.0"
+    SUBSYSTEMS=="usb"
+    DRIVERS=="ftdi_sio"
+    ATTRS{bInterfaceNumber}=="00"
+    ATTRS{bAlternateSetting}==" 0"
+    ATTRS{bNumEndpoints}=="02"
+    ATTRS{bInterfaceClass}=="ff"
+    ATTRS{bInterfaceSubClass}=="ff"
+    ATTRS{bInterfaceProtocol}=="ff"
+    ATTRS{supports_autosuspend}=="1"
+    ATTRS{interface}=="iClebo Kobuki"
+
+  looking at parent device '/devices/pci0000:00/0000:00:11.0/0000:02:00.0/usb2/2-1':
+    KERNELS=="2-1"
+    SUBSYSTEMS=="usb"
+    DRIVERS=="usb"
+    ATTRS{configuration}==""
+    ATTRS{bNumInterfaces}==" 1"
+    ATTRS{bConfigurationValue}=="1"
+    ATTRS{bmAttributes}=="a0"
+    ATTRS{bMaxPower}==" 90mA"
+    ATTRS{urbnum}=="16"
+    ATTRS{idVendor}=="0403"
+    ATTRS{idProduct}=="6001"
+    ATTRS{bcdDevice}=="0600"
+    ATTRS{bDeviceClass}=="00"
+    ATTRS{bDeviceSubClass}=="00"
+    ATTRS{bDeviceProtocol}=="00"
+    ATTRS{bNumConfigurations}=="1"
+    ATTRS{bMaxPacketSize0}=="8"
+    ATTRS{speed}=="12"
+    ATTRS{busnum}=="2"
+    ATTRS{devnum}=="7"
+    ATTRS{devpath}=="1"
+    ATTRS{version}==" 2.00"
+    ATTRS{maxchild}=="0"
+    ATTRS{quirks}=="0x0"
+    ATTRS{avoid_reset_quirk}=="0"
+    ATTRS{authorized}=="1"
+    ATTRS{manufacturer}=="Yujin Robot"
+    ATTRS{product}=="iClebo Kobuki"
+    ATTRS{serial}=="kobuki_A601D8NC"
+
+  looking at parent device '/devices/pci0000:00/0000:00:11.0/0000:02:00.0/usb2':
+    KERNELS=="usb2"
+    SUBSYSTEMS=="usb"
+    DRIVERS=="usb"
+    ATTRS{configuration}==""
+    ATTRS{bNumInterfaces}==" 1"
+    ATTRS{bConfigurationValue}=="1"
+    ATTRS{bmAttributes}=="e0"
+    ATTRS{bMaxPower}=="  0mA"
+    ATTRS{urbnum}=="711"
+    ATTRS{idVendor}=="1d6b"
+    ATTRS{idProduct}=="0001"
+    ATTRS{bcdDevice}=="0302"
+    ATTRS{bDeviceClass}=="09"
+    ATTRS{bDeviceSubClass}=="00"
+    ATTRS{bDeviceProtocol}=="00"
+    ATTRS{bNumConfigurations}=="1"
+    ATTRS{bMaxPacketSize0}=="64"
+    ATTRS{speed}=="12"
+    ATTRS{busnum}=="2"
+    ATTRS{devnum}=="1"
+    ATTRS{devpath}=="0"
+    ATTRS{version}==" 1.10"
+    ATTRS{maxchild}=="2"
+    ATTRS{quirks}=="0x0"
+    ATTRS{avoid_reset_quirk}=="0"
+    ATTRS{authorized}=="1"
+    ATTRS{manufacturer}=="Linux 3.2.0-35-generic uhci_hcd"
+    ATTRS{product}=="UHCI Host Controller"
+    ATTRS{serial}=="0000:02:00.0"
+    ATTRS{authorized_default}=="1"
+
+  looking at parent device '/devices/pci0000:00/0000:00:11.0/0000:02:00.0':
+    KERNELS=="0000:02:00.0"
+    SUBSYSTEMS=="pci"
+    DRIVERS=="uhci_hcd"
+    ATTRS{vendor}=="0x8086"
+    ATTRS{device}=="0x7112"
+    ATTRS{subsystem_vendor}=="0x15ad"
+    ATTRS{subsystem_device}=="0x1976"
+    ATTRS{class}=="0x0c0300"
+    ATTRS{irq}=="18"
+    ATTRS{local_cpus}=="00000000,00000000,00000000,00000000,00000000,00000000,00000000,000000ff"
+    ATTRS{local_cpulist}=="0-7"
+    ATTRS{numa_node}=="-1"
+    ATTRS{dma_mask_bits}=="32"
+    ATTRS{consistent_dma_mask_bits}=="32"
+    ATTRS{enable}=="1"
+    ATTRS{broken_parity_status}=="0"
+    ATTRS{msi_bus}==""
+
+  looking at parent device '/devices/pci0000:00/0000:00:11.0':
+    KERNELS=="0000:00:11.0"
+    SUBSYSTEMS=="pci"
+    DRIVERS==""
+    ATTRS{vendor}=="0x15ad"
+    ATTRS{device}=="0x0790"
+    ATTRS{subsystem_vendor}=="0x15ad"
+    ATTRS{subsystem_device}=="0x0790"
+    ATTRS{class}=="0x060401"
+    ATTRS{irq}=="0"
+    ATTRS{local_cpus}=="00000000,00000000,00000000,00000000,00000000,00000000,00000000,000000ff"
+    ATTRS{local_cpulist}=="0-7"
+    ATTRS{numa_node}=="-1"
+    ATTRS{dma_mask_bits}=="32"
+    ATTRS{consistent_dma_mask_bits}=="32"
+    ATTRS{enable}=="1"
+    ATTRS{broken_parity_status}=="0"
+    ATTRS{msi_bus}=="1"
+
+  looking at parent device '/devices/pci0000:00':
+    KERNELS=="pci0000:00"
+    SUBSYSTEMS==""
+    DRIVERS==""
+
+@endverbatim
+
+**/

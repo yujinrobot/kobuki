@@ -1,0 +1,14 @@
+<!--
+  Raw keyop configuration for working with the default kobuki launcher (minimal.launch). 
+ -->
+<launch>
+  <node pkg="kobuki_keyop" type="keyop" name="keyop" output="screen">
+    <remap from="keyop/motor_power" to="mobile_base/commands/motor_power"/>
+    <remap from="keyop/cmd_vel" to="mobile_base/commands/velocity"/>
+    <param name="linear_vel_step"  value="0.05" type="double"/>
+    <param name="linear_vel_max"   value="1.5"  type="double"/>
+    <param name="angular_vel_step" value="0.33" type="double"/>
+    <param name="angular_vel_max"  value="6.6"  type="double"/>
+    <param name="wait_for_connection_" value="true" type="bool"/>
+  </node>
+</launch>

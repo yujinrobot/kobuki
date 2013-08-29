@@ -1,0 +1,35 @@
+<!--
+  Keyop configuration for working with the default kobuki launcher (minimal.launch). 
+ -->
+<launch>
+  <node pkg="nodelet" type="nodelet" name="cmd_vel_mux" args="load cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
+    <param name="yaml_cfg_file" value="$(find kobuki_keyop)/param/keyop_mux.yaml"/>
+    <remap from="cmd_vel_mux/output" to="mobile_base/commands/velocity"/>
+  </node>
+  
+  <node pkg="nodelet" type="nodelet" name="kobuki_safety_controller" args="load kobuki_safety_controller/SafetyControllerNodelet mobile_base_nodelet_manager">
+    <remap from="kobuki_safety_controller/cmd_vel" to="cmd_vel_mux/safety_controller"/>
+    <remap from="kobuki_safety_controller/events/bumper" to="mobile_base/events/bumper"/>
+    <remap from="kobuki_safety_controller/events/cliff" to="mobile_base/events/cliff"/>
+    <remap from="kobuki_safety_controller/events/wheel_drop" to="mobile_base/events/wheel_drop"/>
+  </node>
+  
+  <node pkg="nodelet" type="nodelet" name="keyop_vel_smoother" args="load yocs_velocity_smoother/VelocitySmootherNodelet mobile_base_nodelet_manager">
+    <rosparam file="$(find kobuki_keyop)/param/keyop_smoother.yaml" command="load"/>
+    <remap from="keyop_vel_smoother/smooth_cmd_vel" to="cmd_vel_mux/keyboard_teleop"/>
+
+    <!-- Robot velocity feedbacks; use the one configured as base default -->
+    <remap from="keyop_vel_smoother/odometry" to="odom"/>
+    <remap from="keyop_vel_smoother/robot_cmd_vel" to="mobile_base/commands/velocity"/>
+  </node>
+  
+  <node pkg="kobuki_keyop" type="keyop" name="keyop" output="screen">
+    <remap from="keyop/motor_power" to="mobile_base/commands/motor_power"/>
+    <remap from="keyop/cmd_vel" to="keyop_vel_smoother/raw_cmd_vel"/>
+    <param name="linear_vel_step"  value="0.05" type="double"/>
+    <param name="linear_vel_max"   value="1.5"  type="double"/>
+    <param name="angular_vel_step" value="0.33" type="double"/>
+    <param name="angular_vel_max"  value="6.6"  type="double"/>
+    <param name="wait_for_connection_" value="true" type="bool"/>
+  </node>
+</launch>

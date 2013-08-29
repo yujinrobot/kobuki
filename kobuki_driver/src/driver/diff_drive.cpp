@@ -1,34 +1,10 @@
-/*
- * Copyright (c) 2012, Yujin Robot.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of Yujin Robot nor the names of its
- *       contributors may be used to endorse or promote products derived from
- *       this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
 /**
  * @file /kobuki_driver/src/driver/diff_drive.cpp
  *
+ * @brief Differential drive abstraction (brought in from ycs).
+ *
+ * License: BSD
+ *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE
  **/
 
 /*****************************************************************************
@@ -53,17 +29,14 @@ DiffDrive::DiffDrive() :
   last_tick_right(0),
   last_rad_left(0.0),
   last_rad_right(0.0),
-  v(0), w(0),
-  radius(0), speed(0),
-  bias(0.23), //wheelbase, wheel_to_wheel, in [m]
-  wheel_radius(0.035),
-  imu_heading_offset(0),
-  tick_to_rad( 0.002436916871363930187454f)
+//  v(0.0), w(0.0), // command velocities, in [m/s] and [rad/s]
+  radius(0.0), speed(0.0), // command velocities, in [mm] and [mm/s]
+  point_velocity(2,0.0), // command velocities, in [m/s] and [rad/s]
+  bias(0.23), // wheelbase, wheel_to_wheel, in [m]
+  wheel_radius(0.035), // radius of main wheel, in [m]
+  tick_to_rad(0.002436916871363930187454f),
+  diff_drive_kinematics(bias, wheel_radius)
 {}
-
-void DiffDrive::init() {
-  diff_drive_kinematics.reset(new ecl::DifferentialDrive::Kinematics(bias, wheel_radius));
-}
 
 /**
  * @brief Updates the odometry from firmware stamps and encoders.
@@ -77,10 +50,11 @@ void DiffDrive::init() {
  * @param pose_update_rates
  */
 void DiffDrive::update(const uint16_t &time_stamp,
-            const uint16_t &left_encoder,
-            const uint16_t &right_encoder,
-            ecl::Pose2D<double> &pose_update,
-            ecl::linear_algebra::Vector3d &pose_update_rates) {
+                       const uint16_t &left_encoder,
+                       const uint16_t &right_encoder,
+                       ecl::Pose2D<double> &pose_update,
+                       ecl::linear_algebra::Vector3d &pose_update_rates) {
+  state_mutex.lock();
   static bool init_l = false;
   static bool init_r = false;
   double left_diff_ticks = 0.0f;
@@ -110,7 +84,7 @@ void DiffDrive::update(const uint16_t &time_stamp,
   last_rad_right += tick_to_rad * right_diff_ticks;
 
   // TODO this line and the last statements are really ugly; refactor, put in another place
-  pose_update = diff_drive_kinematics->forward(tick_to_rad * left_diff_ticks, tick_to_rad * right_diff_ticks);
+  pose_update = diff_drive_kinematics.forward(tick_to_rad * left_diff_ticks, tick_to_rad * right_diff_ticks);
 
   if (curr_timestamp != last_timestamp)
   {
@@ -125,54 +99,89 @@ void DiffDrive::update(const uint16_t &time_stamp,
   pose_update_rates << pose_update.x()/last_diff_time,
                        pose_update.y()/last_diff_time,
                        pose_update.heading()/last_diff_time;
+  state_mutex.unlock();
 }
 
-void DiffDrive::reset(const double& current_heading) {
+void DiffDrive::reset() {
+  state_mutex.lock();
   last_rad_left = 0.0;
   last_rad_right = 0.0;
   last_velocity_left = 0.0;
   last_velocity_right = 0.0;
-  imu_heading_offset = current_heading;
+  state_mutex.unlock();
 }
 
 void DiffDrive::getWheelJointStates(double &wheel_left_angle, double &wheel_left_angle_rate,
-                          double &wheel_right_angle, double &wheel_right_angle_rate) const {
+                                    double &wheel_right_angle, double &wheel_right_angle_rate) {
+  state_mutex.lock();
   wheel_left_angle = last_rad_left;
   wheel_right_angle = last_rad_right;
   wheel_left_angle_rate = last_velocity_left;
   wheel_right_angle_rate = last_velocity_right;
+  state_mutex.unlock();
+}
+
+void DiffDrive::setVelocityCommands(const double &vx, const double &wz) {
+  // vx: in m/s
+  // wz: in rad/s
+  point_velocity[0]=vx;
+  point_velocity[1]=wz;
 }
 
 void DiffDrive::velocityCommands(const double &vx, const double &wz) {
   // vx: in m/s
   // wz: in rad/s
+  velocity_mutex.lock();
   const double epsilon = 0.0001;
-  if ( std::abs(wz) < epsilon ) {
-    radius = 0;
-  } else if ( (std::abs(vx) < epsilon ) && ( wz > epsilon ) ) {
-    radius = 1;
-  } else if ((std::abs(vx) < epsilon ) && ( wz < -1*epsilon ) ) {
-    radius = -1;
-  } else {
-    radius = (short)(vx * 1000.0f / wz);
+
+  // Special Case #1 : Straight Run
+  if( std::abs(wz) < epsilon ) {
+    radius = 0.0f;
+    speed  = 1000.0f * vx;
+    velocity_mutex.unlock();
+    return;
   }
-  if ( vx < 0.0 ) {
-    speed = (short)(1000.0f * std::min(vx + bias * wz / 2.0f, vx - bias * wz / 2.0f));
-  } else {
-    speed = (short)(1000.0f * std::max(vx + bias * wz / 2.0f, vx - bias * wz / 2.0f));
+
+  radius = vx * 1000.0f / wz;
+  // Special Case #2 : Pure Rotation or Radius is less than or equal to 1.0 mm
+  if( std::abs(vx) < epsilon || std::abs(radius) <= 1.0f ) {
+    speed  = 1000.0f * bias * wz / 2.0f;
+    radius = 1.0f;
+    velocity_mutex.unlock();
+    return;
   }
+
+  // General Case :
+  if( radius > 0.0f ) {
+    speed  = (radius + 1000.0f * bias / 2.0f) * wz;
+  } else {
+    speed  = (radius - 1000.0f * bias / 2.0f) * wz;
+  }
+  velocity_mutex.unlock();
+  return;
 }
 
 void DiffDrive::velocityCommands(const short &cmd_speed, const short &cmd_radius) {
-  speed = cmd_speed; //in mm/s
-  radius = cmd_radius; //in mm/s
+  velocity_mutex.lock();
+  speed = static_cast<double>(cmd_speed);   // In [mm/s]
+  radius = static_cast<double>(cmd_radius); // In [mm]
+  velocity_mutex.unlock();
+  return;
 }
 
-std::vector<short> DiffDrive::velocityCommands() const {
+std::vector<short> DiffDrive::velocityCommands() {
+  velocity_mutex.lock();
   std::vector<short> cmd(2);
-  cmd[0] = speed;
-  cmd[1] = radius;
+  cmd[0] = bound(speed);  // In [mm/s]
+  cmd[1] = bound(radius); // In [mm]
+  velocity_mutex.unlock();
   return cmd;
+}
+
+short DiffDrive::bound(const double &value) {
+  if (value > static_cast<double>(SHRT_MAX)) return SHRT_MAX;
+  if (value < static_cast<double>(SHRT_MIN)) return SHRT_MIN;
+  return static_cast<short>(value);
 }
 
 } // namespace kobuki

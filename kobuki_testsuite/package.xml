@@ -1,0 +1,29 @@
+<package>
+  <name>kobuki_testsuite</name>
+  <version>0.4.0</version>
+  <description>
+    Kobuki test suite: this package provides tools to thoroughly test Kobuki's hardware.
+  </description>
+  <author email="jorge@yujinrobot.com">Jorge Santos Simon</author>
+  <maintainer email="jorge@yujinrobot.com">Jorge Santos Simon</maintainer>
+  <license>BSD</license>
+  <url type="bugtracker">https://github.com/yujinrobot/kobuki/issues</url>
+  <url type="repository">https://github.com/yujinrobot/kobuki</url>
+  <url type="website">http://ros.org/wiki/kobuki_testsuite</url>
+ 
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>python_orocos_kdl</build_depend>
+  <build_depend>kobuki_node</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
+
+  <run_depend>python_orocos_kdl</run_depend>
+  <run_depend>kobuki_node</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>message_runtime</run_depend>
+</package>

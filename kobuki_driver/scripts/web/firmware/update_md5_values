@@ -1,0 +1,3 @@
+#!/bin/bash
+
+md5sum kobuki_firmware* > MD5SUMS

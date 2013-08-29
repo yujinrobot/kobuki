@@ -1,0 +1,135 @@
+/**
+
+@page enInstallationLinuxGuide Installation - Linux
+
+@section Overview
+
+This section describes the installation process for Linux.
+
+@subsection who Target audience
+
+Linux people who want to compile Kobuki driver, but not use ros
+
+
+@section Procedure 
+
+@subsection prereq Prerequirements
+
+We use wstool to manage our workspace, so first install it:
+
+@code
+  sudo apt-get install python-wstool
+@endcode
+
+Starting with version 0.3.0, the Kobuki driver is a catkin package, so first of all you need to install catkin dependencies:
+
+- <i>CMake</i>      - A cross-platform, open-source build system.
+- <i>Python</i>     - Python is a general-purpose, interpreted high-level programming language.
+- <i>catkin_pkg</i> - A Python runtime library for catkin.
+- <i>empy</i>       - A Python template library.
+- <i>nose</i>       - A Python testing framework.
+
+You can resolve these dependencies on Ubuntu with this command:
+
+@code
+  sudo apt-get install cmake python-catkin-pkg python-empy python-nose python-setuptools build-essential
+@endcode
+
+If you are <b>not</b> on Ubuntu you can install Python packages from <a href="http://pypi.python.org/pypi">PyPi</a> via pip. 
+
+Refer to the <a href="http://ros.org/doc/groovy/api/catkin/html/">Catkin documentation</a> for more details.
+
+@subsection catkin Catkin workspace 
+
+Next we must prepare a catkin workspace. Here we explain the manual way, completely independent from ROS tools (apart from catkin itself):
+
+@code
+  # Create a workspace directory tree somewhere in you file system
+  mkdir -p ~/kobuki_ws/src
+  mkdir -p ~/kobuki_ws/build
+  cd ~/kobuki_ws/src
+  # Clone catkin repository
+  git clone https://github.com/ros/catkin.git
+  # These instructions have been tested with catkin version 0.5.63, so we suggest to use that version
+  cd catkin ; git checkout 0.5.63 ; cd ..
+  # We need this file on src directory
+  cp catkin/cmake/toplevel.cmake CMakeLists.txt
+@endcode
+
+Now we add the required repositories with wstool. For groovy type:
+
+@code
+  wstool init
+  wstool set kobuki --git -v groovy-devel https://github.com/yujinrobot/kobuki.git
+  wstool merge https://raw.github.com/stonier/ecl_core/groovy-devel/ecl.rosinstall
+@endcode
+
+and for hydro:
+
+@code
+  wstool init
+  wstool set kobuki --git -v hydro-devel https://github.com/yujinrobot/kobuki.git
+  wstool merge https://raw.github.com/stonier/ecl_core/hydro-devel/ecl.rosinstall
+@endcode
+
+And finally download the code:
+@code
+  wstool update
+@endcode
+
+@subsection config Configure and compile Kobuki driver 
+
+Kobuki driver depends on <a href="http://www.ros.org/wiki/ecl/">ECL libraries</a>, which in turn depends on
+<a href="http://eigen.tuxfamily.org/">Eigen libraries</a>, so we install them:
+
+@code
+  sudo apt-get install libeigen3-dev 
+@endcode
+
+We are ready to configure our workspace. Note that we pass a white list to cmake to avoid compiling all but the Kobuki
+driver and its required packages. The tricky command just reads the white list file, replaces line breaks by semicolons
+and adds double quotes to the list to avoid problems with white spaces and tabs. Note also that we change the installed
+software location to <i>../install</i> (the default is <i>/usr/local</i>). Feel free to change it to wherever you want.
+
+\warning White list packages parsing is sensitive, so be careful if for any reason you need to modify this file. Do
+         not add extra characters other than package names, spaces, tabs and line breaks. It also must be exhaustive,
+         including all upstream dependencies.
+
+@code
+  cd ~/kobuki_ws/build
+  KOBUKI_DRIVER_LOCATION=../install
+  KOBUKI_DRIVER_PACKAGES="`sed -n -e ":a" -e "$ s/\n/;/gp;N;b a" ../src/kobuki/kobuki_driver/catkin_whitelist`"
+  cmake ../src -DCATKIN_WHITELIST_PACKAGES=$KOBUKI_DRIVER_PACKAGES -DCMAKE_INSTALL_PREFIX=$KOBUKI_DRIVER_LOCATION
+@endcode
+
+If all went well, you are ready to compile and install
+
+@code
+  make
+  # Optional step, if you want to install the binaries, headers and extra files to KOBUKI_DRIVER_LOCATION
+  make install 
+@endcode
+
+@subsection test Testing your installation
+
+Assuming you executed <i>make install</i>, you can test your installation by executing some of the demo and test
+programs provided with Kobuki driver. Unless you specified a Linux standard installation path, as <i>/usr</i> or
+<i>/usr/local</i>, for the <i>KOBUKI_DRIVER_LOCATION</i>, you must point your <i>LD_LIBRARY_PATH</i> variable to
+the installed libraries. For example, if you type the following commands, the robot should move making squares:
+
+@code
+  export LD_LIBRARY_PATH=$KOBUKI_DRIVER_LOCATION/lib
+  $KOBUKI_DRIVER_LOCATION/lib/kobuki_driver/demo_kobuki_simple_loop
+@endcode
+
+
+@section crossc Cross compiling
+
+We still have not prepared proper cross-compiling documentation, but we will be happy to help you meanwhile.
+
+@section support Additional support
+
+Do not hesitate to ask on <a href="mailto:kobuki-users@yujinrobot.com">Kobuki users list</a> if you need additional
+support.
+
+**/

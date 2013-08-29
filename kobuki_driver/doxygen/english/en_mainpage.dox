@@ -1,0 +1,45 @@
+/**
+@page enMainPage Main Page
+
+@section Overview
+
+The kobuki driver is a simple c++ library that allows interfacing to the kobuki mobile research base. Before
+
+@subsection who Target Users
+
+This documentation is targeted for users creating a custom robot on top of kobuki using either posix/win32 or
+an apple operating system. If that is you, you are in the right place - proceed to the guides below.
+If you're interested in developing a driver for a custom unsupported platform (e.g. vxworks) then you'll want
+to check the serial protocol reference in the @ref enAppendixProtocolSpecification "appendix".
+
+Alternatively, if you're using a <i>kobuki reference platform</i>, check one of the links below.
+
+- <i>Turtlebot</i> : refer to the documentation for <a href="http://ros.org/wiki/turtlebot">turtlebot</a>.
+- <i>Ros on Kobuki</i> : refer to the documentation for the <a href="http://ros.org/wiki/kobuki">kobuki node</a>.
+- <i>Other</i> : if you would like your platform listed here, contact the maintainers of this project.
+
+@subsection design Design
+
+Firstly, note that the library isn't designed to run your control loop. Robots are quite varied - everything from something really
+simple running on very minimal embedded resources to a fully fledged system. There is also a wide variety of architectures that a
+driver must neatly integrate with, so we have left the decision on how to design and integrate the driver up to
+the user. To that end, the driver is simply a library of classes, simple functions and callback oriented
+@ref enSigslotsGuide "sigslots".
+
+We have a simple implementation in the guides below and a more detailed implementation can be found for the
+<a href="http://ros.org/wiki/kobuki">kobuki_node</a> that runs within the ros framework.
+
+@section Guides
+
+- @ref enInstallationLinuxGuide "Installation (Linux)"
+- @ref enInstallationWindowsGuide "Installation (Windows)"
+- @ref enInstallationAppleGuide "Installation (Apple)"
+- @ref enFtdiGuide "Ftdi Serial Device"
+- @ref enGettingStartedGuide "Getting Started"
+- @ref enSigslotsGuide "Sigslots"
+- @ref enSimpleExample "Simple Control Loop Example"
+- @ref enEmbeddedBoardTutorial "Embedded Board Tutorial"
+- @ref enAppendixProtocolSpecification "Appendix : Protocol Specification"
+- @ref enAppendixVersionInfo "Appendix : Version Info"
+
+*/

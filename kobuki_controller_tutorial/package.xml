@@ -1,0 +1,33 @@
+<package>
+  <name>kobuki_controller_tutorial</name>
+  <version>0.4.0</version>
+  <description>
+    Code for the Kobuki controller tutorial.
+  </description>
+  <author email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</author>
+  <maintainer email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</maintainer>
+  <license>BSD</license>
+  <url type="bugtracker">https://github.com/yujinrobot/kobuki/issues</url>
+  <url type="repository">https://github.com/yujinrobot/kobuki</url>
+  <url type="website">http://ros.org/wiki/kobuki_controller_tutorial</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>nodelet</build_depend>
+  <build_depend>pluginlib</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>kobuki_msgs</build_depend>
+  <build_depend>yocs_controllers</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>nodelet</run_depend>
+  <run_depend>pluginlib</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>kobuki_msgs</run_depend>
+  <run_depend>yocs_controllers</run_depend>
+  
+  <export>
+    <nodelet plugin="${prefix}/plugins/nodelet_plugins.xml"/>
+  </export>
+</package>

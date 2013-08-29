@@ -1,0 +1,8 @@
+<library path="lib/libkobuki_auto_docking_nodelet">
+  <class name="kobuki_auto_docking/AutoDockingNodelet" type="kobuki::AutoDockingNodelet" base_class_type="nodelet::Nodelet">
+    <description>
+      Nodelet version of the auto docking controller
+    </description>
+  </class>
+</library>
+

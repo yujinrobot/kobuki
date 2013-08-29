@@ -1,35 +1,10 @@
-/*
- * Copyright (c) 2012, Yujin Robot.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of Yujin Robot nor the names of its
- *       contributors may be used to endorse or promote products derived from
- *       this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
 /**
- * @file /include/kobuki_driver/modules/current.hpp
+ * @file include/kobuki_driver/packets/current.hpp
  *
- * Module for handling of current level packet payloads.
+ * @brief Current level packet payloads.
+ *
+ * License: BSD
+ *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE
  */
 /*****************************************************************************
 ** Preprocessor
@@ -64,21 +39,14 @@ namespace kobuki
 class Current : public packet_handler::payloadBase
 {
 public:
+  Current() : packet_handler::payloadBase(false, 2) {};
   struct Data {
     Data() : current(2) {}
     std::vector<uint8_t> current;
   } data;
 
-  // methods
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
-    {
-      printf("kobuki_node: kobuki_current: serialise failed. empty byte stream.");
-      return false;
-    }
-
-    unsigned char length = 2;
     buildBytes(Header::Current, byteStream);
     buildBytes(length, byteStream);
     buildBytes(data.current[0], byteStream);
@@ -88,17 +56,21 @@ public:
 
   bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
+    if (byteStream.size() < length+2)
     {
-      printf("kobuki_node: kobuki_current: deserialise failed. empty byte stream.");
+      //std::cout << "kobuki_node: kobuki_current: deserialise failed. not enough byte stream." << std::endl;
       return false;
     }
 
-    unsigned char header_id, length;
+    unsigned char header_id, length_packed;
     buildVariable(header_id, byteStream);
-    buildVariable(length, byteStream);
+    buildVariable(length_packed, byteStream);
+    if( header_id != Header::Current ) return false;
+    if( length_packed != length ) return false;
+
     buildVariable(data.current[0], byteStream);
     buildVariable(data.current[1], byteStream);
+
     return constrain();
   }
 

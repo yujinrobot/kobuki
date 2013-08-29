@@ -1,0 +1,8 @@
+<library path="lib/libbump_blink_controller_nodelet">
+  <class name="kobuki_controller_tutorial/BumpBlinkControllerNodelet" type="kobuki::BumpBlinkControllerNodelet" base_class_type="nodelet::Nodelet">
+    <description>
+      Nodelet for a simple blink when bump controller
+    </description>
+  </class>
+</library>
+

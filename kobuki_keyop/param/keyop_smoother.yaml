@@ -1,0 +1,11 @@
+# Mandatory parameters
+speed_lim_v: 0.8
+speed_lim_w: 5.4
+
+accel_lim_v: 1.0
+accel_lim_w: 7.0
+
+# Optional parameters
+frequency: 20.0
+decel_factor: 1.0
+

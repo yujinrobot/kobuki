@@ -1,8 +1,11 @@
 /**
- * @file /kobuki_driver/src/driver/command.cpp
+ * @file src/driver/command.cpp
  *
  * @brief Implementation of the command packets.
- **/
+ *
+ * License: BSD
+ *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_driver/LICENSE
+**/
 
 /*****************************************************************************
 ** Includes
@@ -15,6 +18,13 @@
 *****************************************************************************/
 
 namespace kobuki {
+
+/*****************************************************************************
+** Static variables initialization
+*****************************************************************************/
+
+const unsigned char Command::header0 = 0xaa;
+const unsigned char Command::header1 = 0x55;
 
 /*****************************************************************************
 ** Implementation [Command Generators]
@@ -65,6 +75,9 @@ Command Command::SetLedArray(const enum LedNumber &number, const enum LedColour 
  *
  * They set the last 4 bits on the data.gp_out variable.
  *
+ * @todo could use far better documentation here/example here.
+ *
+ * @param digital_output : mask and value to send
  * @param current_data : need to store settings as the gp_output command is a combo command
  * @return Command : the command to send down the wire.
  */
@@ -93,6 +106,9 @@ Command Command::SetDigitalOutput(const DigitalOutput &digital_output, Command::
  *
  * They set the second 4 bits(0x00f0) on the data.gp_out variable.
  *
+ * @todo could use far better documentation here/example here.
+ *
+ * @param digital_output : mask and value to send
  * @param current_data : need to store settings as the gp_output command is a combo command
  * @return Command : the command to send down the wire.
  */
@@ -138,20 +154,42 @@ Command Command::GetVersionInfo()
   return outgoing;
 }
 
-Command Command::SetVelocityControl(const DiffDrive& diff_drive)
+Command Command::SetVelocityControl(DiffDrive& diff_drive)
 {
   Command outgoing;
-  outgoing.data.speed = diff_drive.commandSpeed();
-  outgoing.data.radius = diff_drive.commandRadius();
+  std::vector<short> velocity_commands = diff_drive.velocityCommands();
+  outgoing.data.speed = velocity_commands[0];
+  outgoing.data.radius = velocity_commands[1];
   outgoing.data.command = Command::BaseControl;
   return outgoing;
 }
+
 Command Command::SetVelocityControl(const int16_t &speed, const int16_t &radius)
 {
   Command outgoing;
   outgoing.data.speed = speed;
   outgoing.data.radius = radius;
   outgoing.data.command = Command::BaseControl;
+  return outgoing;
+}
+
+Command Command::SetControllerGain(const unsigned char &type, const unsigned int &p_gain,
+                                   const unsigned int &i_gain, const unsigned int &d_gain)
+{
+  Command outgoing;
+  outgoing.data.type = type;
+  outgoing.data.p_gain = p_gain;
+  outgoing.data.i_gain = i_gain;
+  outgoing.data.d_gain = d_gain;
+  outgoing.data.command = Command::SetController;
+  return outgoing;
+}
+
+Command Command::GetControllerGain()
+{
+  Command outgoing;
+  outgoing.data.command = Command::GetController;
+  outgoing.data.reserved = 0;
   return outgoing;
 }
 
@@ -171,11 +209,6 @@ void Command::resetBuffer(Buffer& buffer) {
 
 bool Command::serialise(ecl::PushAndPop<unsigned char> & byteStream)
 {
-  if (!(byteStream.size() > 0))
-  {
-    //ROS_WARN_STREAM("kobuki_node: kobuki_command: serialise failed. empty byte stream.");
-    return false;
-  }
   // need to be sure we don't pass through an emum to the Trans'd buildBytes functions.
   unsigned char cmd = static_cast<unsigned char>(data.command);
   unsigned char length = 0;
@@ -220,6 +253,19 @@ bool Command::serialise(ecl::PushAndPop<unsigned char> & byteStream)
       buildBytes(data.gp_out, byteStream);
       break;
     }
+    case SetController:
+      buildBytes(cmd, byteStream);
+      buildBytes(length=13, byteStream);
+      buildBytes(data.type, byteStream);
+      buildBytes(data.p_gain, byteStream);
+      buildBytes(data.i_gain, byteStream);
+      buildBytes(data.d_gain, byteStream);
+      break;
+    case GetController:
+      buildBytes(cmd, byteStream);
+      buildBytes(length=1, byteStream);
+      buildBytes(data.reserved, byteStream);
+      break;
     default:
       return false;
       break;
