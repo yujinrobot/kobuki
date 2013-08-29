@@ -74,6 +74,7 @@ KobukiRos::KobukiRos(std::string& node_name) :
     slot_info(&KobukiRos::rosInfo, *this),
     slot_warn(&KobukiRos::rosWarn, *this),
     slot_error(&KobukiRos::rosError, *this),
+    slot_named(&KobukiRos::rosNamed, *this),
     slot_raw_data_command(&KobukiRos::publishRawDataCommand, *this),
     slot_raw_data_stream(&KobukiRos::publishRawDataStream, *this)
 {
@@ -124,6 +125,7 @@ bool KobukiRos::init(ros::NodeHandle& nh)
   slot_info.connect(name + std::string("/ros_info"));
   slot_warn.connect(name + std::string("/ros_warn"));
   slot_error.connect(name + std::string("/ros_error"));
+  slot_named.connect(name + std::string("/ros_named"));
   slot_raw_data_command.connect(name + std::string("/raw_data_command"));
   slot_raw_data_stream.connect(name + std::string("/raw_data_stream"));
 

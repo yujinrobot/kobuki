@@ -92,6 +92,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_info.connect(sigslots_namespace + std::string("/ros_info"));
   sig_warn.connect(sigslots_namespace + std::string("/ros_warn"));
   sig_error.connect(sigslots_namespace + std::string("/ros_error"));
+  sig_named.connect(sigslots_namespace + std::string("/ros_named"));
 
   try {
     serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);  // this will throw exceptions - NotFoundError, OpenError
@@ -235,7 +236,8 @@ void Kobuki::spin()
       std::ostringstream ostream;
       ostream << "kobuki_node : serial_read(" << n << ")"
         << ", packet_finder.numberOfDataToRead(" << packet_finder.numberOfDataToRead() << ")";
-      sig_debug.emit(ostream.str());
+      //sig_debug.emit(ostream.str());
+      sig_named.emit(log("debug", "serial", ostream.str()));
       // might be useful to send this to a topic if there is subscribers
     }
 
@@ -375,7 +377,7 @@ void Kobuki::spin()
 void Kobuki::fixPayload(ecl::PushAndPop<unsigned char> & byteStream)
 {
   if (byteStream.size() < 3 ) { /* minimum size of sub-payload is 3; header_id, length, data */
-    sig_error.emit("too small sub-payload detected.");
+    sig_named.emit(log("error", "packet", "too small sub-payload detected."));
     byteStream.clear();
   } else {
     std::stringstream ostream;
@@ -401,8 +403,8 @@ void Kobuki::fixPayload(ecl::PushAndPop<unsigned char> & byteStream)
     }
     ostream << "]";
 
-    if (remains < length) sig_error.emit("malformed sub-payload detected. "  + ostream.str());
-    else                  sig_debug.emit("unknown sub-payload detected. " + ostream.str());
+    if (remains < length) sig_named.emit(log("error", "packet", "malformed sub-payload detected. "  + ostream.str()));
+    else                  sig_named.emit(log("debug", "packet", "unknown sub-payload detected. " + ostream.str()));
   }
 }
 
