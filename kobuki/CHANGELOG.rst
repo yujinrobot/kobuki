@@ -2,6 +2,9 @@
 Changelog for package kobuki
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.5.0 (2013-08-29)
 ------------------
 * adds eclipse project files

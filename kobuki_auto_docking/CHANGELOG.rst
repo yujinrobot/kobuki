@@ -2,6 +2,10 @@
 Changelog for package kobuki_auto_docking
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* ros and non-ros stack split, driver, ftdi and auto-docking (partial) gone to kobuki_core, refs `#232 <https://github.com/yujinrobot/kobuki/issues/232>`_
+
 0.5.0 (2013-08-29)
 ------------------
 * Added extra url info on all packages.

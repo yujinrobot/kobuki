@@ -2,6 +2,9 @@
 Changelog for package kobuki_node
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.5.0 (2013-08-29)
 ------------------
 * Added new interface about custom PID gain setting.

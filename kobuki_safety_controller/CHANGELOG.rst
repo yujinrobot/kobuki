@@ -2,6 +2,9 @@
 Changelog for package kobuki_safety_controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.5.0 (2013-08-29)
 ------------------
 * Added extra url info on all packages.

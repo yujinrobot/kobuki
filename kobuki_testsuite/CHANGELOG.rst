@@ -2,6 +2,9 @@
 Changelog for package kobuki_testsuite
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.5.0 (2013-08-29)
 ------------------
 * adds extra url info to kobuki_testsuite

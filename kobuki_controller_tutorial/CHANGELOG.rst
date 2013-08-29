@@ -2,6 +2,9 @@
 Changelog for package kobuki_controller_tutorial
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.5.0 (2013-08-29)
 ------------------
 * kobuki : Added extra url info on all packages.

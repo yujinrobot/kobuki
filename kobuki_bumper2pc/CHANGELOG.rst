@@ -2,6 +2,9 @@
 Changelog for package kobuki_bumper2pc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.5.0 (2013-08-29)
 ------------------
 * kobuki : Added extra url info on all packages.
