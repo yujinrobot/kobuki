@@ -157,9 +157,9 @@ public:
   void setDigitalOutput(const DigitalOutput &digital_output);
   void setExternalPower(const DigitalOutput &digital_output);
   void playSoundSequence(const enum SoundSequences &number);
-  void setControllerGain(const unsigned char &type, const unsigned int &p_gain,
+  bool setControllerGain(const unsigned char &type, const unsigned int &p_gain,
                          const unsigned int &i_gain, const unsigned int &d_gain);
-  void getControllerGain();
+  bool getControllerGain();
 
   /*********************
   ** Debugging

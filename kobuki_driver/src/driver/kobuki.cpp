@@ -301,8 +301,8 @@ void Kobuki::spin()
               if (version_match < 0) {
                 sig_error.emit("Robot firmware is outdated and needs to be upgraded. Consult how-to on: " \
                                "http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware");
-                sig_warn.emit("version info - " + VersionInfo::toString(firmware.data.version)
-                        + "; current version is " + firmware.current_version());
+                sig_error.emit("Robot firmware version is " + VersionInfo::toString(firmware.data.version)
+                             + "; latest version is " + firmware.current_version());
                 shutdown_requested = true;
               }
               else if (version_match > 0) {
@@ -317,8 +317,8 @@ void Kobuki::spin()
                   sig_warn.emit("Robot firmware is outdated; we suggest you to upgrade it " \
                                 "to benefit from the latest features. Consult how-to on: "  \
                                 "http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware");
-                  sig_warn.emit("version info - " + VersionInfo::toString(firmware.data.version)
-                          + "; current version is " + firmware.current_version());
+                  sig_warn.emit("Robot firmware version is " + VersionInfo::toString(firmware.data.version)
+                              + "; latest version is " + firmware.current_version());
                 }
                 else if (version_match > 0) {
                   // Driver version is outdated; maybe we should also suggest to upgrade it, but this is not a typical case
@@ -336,7 +336,7 @@ void Kobuki::spin()
             if( !unique_device_id.deserialise(data_buffer) ) { fixPayload(data_buffer); break; }
             sig_version_info.emit( VersionInfo( firmware.data.version, hardware.data.version
                 , unique_device_id.data.udid0, unique_device_id.data.udid1, unique_device_id.data.udid2 ));
-            sig_info.emit("version info - Hardware: " + VersionInfo::toString(hardware.data.version)
+            sig_info.emit("Version info - Hardware: " + VersionInfo::toString(hardware.data.version)
                                      + ". Firmware: " + VersionInfo::toString(firmware.data.version));
             version_info_reminder = 0;
             break;
@@ -489,15 +489,33 @@ void Kobuki::playSoundSequence(const enum SoundSequences &number)
   sendCommand(Command::PlaySoundSequence(number, kobuki_command.data));
 }
 
-void Kobuki::setControllerGain(const unsigned char &type, const unsigned int &p_gain,
+bool Kobuki::setControllerGain(const unsigned char &type, const unsigned int &p_gain,
                                const unsigned int &i_gain, const unsigned int &d_gain)
 {
+  if ((firmware.flashed_major_version() < 2) && (firmware.flashed_minor_version() < 2)) {
+    sig_warn.emit("Robot firmware doesn't support this function, so you must upgrade it. " \
+                  "Consult how-to on: http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware");
+    sig_warn.emit("Robot firmware version is " + VersionInfo::toString(firmware.data.version)
+                + "; latest version is " + firmware.current_version());
+    return false;
+  }
+
   sendCommand(Command::SetControllerGain(type, p_gain, i_gain, d_gain));
+  return true;
 }
 
-void Kobuki::getControllerGain()
+bool Kobuki::getControllerGain()
 {
+  if ((firmware.flashed_major_version() < 2) && (firmware.flashed_minor_version() < 2)) {
+    sig_warn.emit("Robot firmware doesn't support this function, so you must upgrade it. " \
+                  "Consult how-to on: http://kobuki.yujinrobot.com/documentation/howtos/upgrading-firmware");
+    sig_warn.emit("Robot firmware version is " + VersionInfo::toString(firmware.data.version)
+                + "; latest version is " + firmware.current_version());
+    return false;
+  }
+
   sendCommand(Command::GetControllerGain());
+  return true;
 }
 
 void Kobuki::setBaseControl(const double &linear_velocity, const double &angular_velocity)

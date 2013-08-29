@@ -111,6 +111,20 @@ public:
     return std::string(ss.str());
   }
 
+  std::string flashed_version()
+  {
+    std::stringstream ss;
+    ss << flashed_major_version() << "." << flashed_minor_version() << "." << (data.version & 0x000000FF);
+
+    return std::string(ss.str());
+  }
+
+  int current_major_version() { return CURRENT_FIRMWARE_MAJOR_VERSION; }
+  int current_minor_version() { return CURRENT_FIRMWARE_MINOR_VERSION; }
+
+  int flashed_major_version() { return ((data.version & 0x00FF0000) >> 16); }
+  int flashed_minor_version() { return ((data.version & 0x0000FF00) >> 8);  }
+
   int check_major_version()
   {
     // Return a negative value if firmware's major version is older than that of the driver,
