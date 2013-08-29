@@ -163,12 +163,33 @@ Command Command::SetVelocityControl(DiffDrive& diff_drive)
   outgoing.data.command = Command::BaseControl;
   return outgoing;
 }
+
 Command Command::SetVelocityControl(const int16_t &speed, const int16_t &radius)
 {
   Command outgoing;
   outgoing.data.speed = speed;
   outgoing.data.radius = radius;
   outgoing.data.command = Command::BaseControl;
+  return outgoing;
+}
+
+Command Command::SetControllerGain(const unsigned char &type, const unsigned int &p_gain,
+                                   const unsigned int &i_gain, const unsigned int &d_gain)
+{
+  Command outgoing;
+  outgoing.data.type = type;
+  outgoing.data.p_gain = p_gain;
+  outgoing.data.i_gain = i_gain;
+  outgoing.data.d_gain = d_gain;
+  outgoing.data.command = Command::SetController;
+  return outgoing;
+}
+
+Command Command::GetControllerGain()
+{
+  Command outgoing;
+  outgoing.data.command = Command::GetController;
+  outgoing.data.reserved = 0;
   return outgoing;
 }
 
@@ -188,11 +209,6 @@ void Command::resetBuffer(Buffer& buffer) {
 
 bool Command::serialise(ecl::PushAndPop<unsigned char> & byteStream)
 {
-  if (!(byteStream.size() > 0))
-  {
-    //ROS_WARN_STREAM("kobuki_node: kobuki_command: serialise failed. empty byte stream.");
-    return false;
-  }
   // need to be sure we don't pass through an emum to the Trans'd buildBytes functions.
   unsigned char cmd = static_cast<unsigned char>(data.command);
   unsigned char length = 0;
@@ -237,6 +253,19 @@ bool Command::serialise(ecl::PushAndPop<unsigned char> & byteStream)
       buildBytes(data.gp_out, byteStream);
       break;
     }
+    case SetController:
+      buildBytes(cmd, byteStream);
+      buildBytes(length=13, byteStream);
+      buildBytes(data.type, byteStream);
+      buildBytes(data.p_gain, byteStream);
+      buildBytes(data.i_gain, byteStream);
+      buildBytes(data.d_gain, byteStream);
+      break;
+    case GetController:
+      buildBytes(cmd, byteStream);
+      buildBytes(length=1, byteStream);
+      buildBytes(data.reserved, byteStream);
+      break;
     default:
       return false;
       break;

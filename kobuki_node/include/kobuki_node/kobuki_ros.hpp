@@ -58,6 +58,7 @@
 #include <kobuki_msgs/ButtonEvent.h>
 #include <kobuki_msgs/BumperEvent.h>
 #include <kobuki_msgs/CliffEvent.h>
+#include <kobuki_msgs/ControllerInfo.h>
 #include <kobuki_msgs/DigitalOutput.h>
 #include <kobuki_msgs/DigitalInputEvent.h>
 #include <kobuki_msgs/ExternalPower.h>
@@ -103,13 +104,14 @@ private:
   /*********************
    ** Ros Comms
    **********************/
-  ros::Publisher version_info_publisher;
+  ros::Publisher version_info_publisher, controller_info_publisher;
   ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher, dock_ir_publisher, raw_imu_data_publisher;
   ros::Publisher button_event_publisher, input_event_publisher, robot_event_publisher;
   ros::Publisher bumper_event_publisher, cliff_event_publisher, wheel_event_publisher, power_event_publisher;
   ros::Publisher raw_data_command_publisher, raw_data_stream_publisher, raw_control_command_publisher;
 
   ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber, external_power_command_subscriber;
+  ros::Subscriber controller_info_command_subscriber;
   ros::Subscriber led1_command_subscriber, led2_command_subscriber, sound_command_subscriber;
   ros::Subscriber motor_power_subscriber, reset_odometry_subscriber;
 
@@ -127,12 +129,14 @@ private:
   void subscribeResetOdometry(const std_msgs::EmptyConstPtr);
   void subscribeSoundCommand(const kobuki_msgs::SoundConstPtr);
   void subscribeMotorPower(const kobuki_msgs::MotorPowerConstPtr msg);
+  void subscribeControllerInfoCommand(const kobuki_msgs::ControllerInfoConstPtr msg);
 
   /*********************
    ** SigSlots
    **********************/
   ecl::Slot<const VersionInfo&> slot_version_info;
   ecl::Slot<> slot_stream_data;
+  ecl::Slot<> slot_controller_info;
   ecl::Slot<const ButtonEvent&> slot_button_event;
   ecl::Slot<const BumperEvent&> slot_bumper_event;
   ecl::Slot<const CliffEvent&>  slot_cliff_event;
@@ -141,6 +145,7 @@ private:
   ecl::Slot<const InputEvent&>  slot_input_event;
   ecl::Slot<const RobotEvent&>  slot_robot_event;
   ecl::Slot<const std::string&> slot_debug, slot_info, slot_warn, slot_error;
+  ecl::Slot<const std::vector<std::string>&> slot_named;
   ecl::Slot<Command::Buffer&> slot_raw_data_command;
   ecl::Slot<PacketFinder::BufferType&> slot_raw_data_stream;
   ecl::Slot<const std::vector<short>&> slot_raw_control_command;
@@ -155,6 +160,7 @@ private:
   void publishSensorState();
   void publishDockIRData();
   void publishVersionInfo(const VersionInfo &version_info);
+  void publishControllerInfo();
   void publishButtonEvent(const ButtonEvent &event);
   void publishBumperEvent(const BumperEvent &event);
   void publishCliffEvent(const CliffEvent &event);
@@ -169,6 +175,24 @@ private:
   void rosInfo(const std::string &msg) { ROS_INFO_STREAM("Kobuki : " << msg); }
   void rosWarn(const std::string &msg) { ROS_WARN_STREAM("Kobuki : " << msg); }
   void rosError(const std::string &msg) { ROS_ERROR_STREAM("Kobuki : " << msg); }
+  void rosNamed(const std::vector<std::string> &msgs) {
+    if (msgs.size()==0) return;
+    if (msgs.size()==1) { ROS_INFO_STREAM("Kobuki : " << msgs[0]); }
+    if (msgs.size()==2) {
+      if      (msgs[0] == "debug") { ROS_DEBUG_STREAM("Kobuki : " << msgs[1]); }
+      else if (msgs[0] == "info" ) { ROS_INFO_STREAM ("Kobuki : " << msgs[1]); }
+      else if (msgs[0] == "warn" ) { ROS_WARN_STREAM ("Kobuki : " << msgs[1]); }
+      else if (msgs[0] == "error") { ROS_ERROR_STREAM("Kobuki : " << msgs[1]); }
+      else if (msgs[0] == "fatal") { ROS_FATAL_STREAM("Kobuki : " << msgs[1]); }
+    }
+    if (msgs.size()==3) {
+      if      (msgs[0] == "debug") { ROS_DEBUG_STREAM_NAMED(msgs[1], "Kobuki : " << msgs[2]); }
+      else if (msgs[0] == "info" ) { ROS_INFO_STREAM_NAMED (msgs[1], "Kobuki : " << msgs[2]); }
+      else if (msgs[0] == "warn" ) { ROS_WARN_STREAM_NAMED (msgs[1], "Kobuki : " << msgs[2]); }
+      else if (msgs[0] == "error") { ROS_ERROR_STREAM_NAMED(msgs[1], "Kobuki : " << msgs[2]); }
+      else if (msgs[0] == "fatal") { ROS_FATAL_STREAM_NAMED(msgs[1], "Kobuki : " << msgs[2]); }
+    }
+  }
 
   void publishRawDataCommand(Command::Buffer &buffer);
   void publishRawDataStream(PacketFinder::BufferType &buffer);

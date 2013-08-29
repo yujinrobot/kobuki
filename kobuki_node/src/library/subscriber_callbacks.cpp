@@ -225,4 +225,17 @@ void KobukiRos::subscribeMotorPower(const kobuki_msgs::MotorPowerConstPtr msg)
   }
 }
 
+void KobukiRos::subscribeControllerInfoCommand(const kobuki_msgs::ControllerInfoConstPtr msg)
+{
+  if( msg->p_gain < 0.0f ||  msg->i_gain < 0.0f ||  msg->d_gain < 0.0f) {
+    ROS_ERROR_STREAM("Kobuki : All controller gains should be positive. [" << name << "]");
+    return;
+  }
+  kobuki.setControllerGain(msg->type,
+                           static_cast<unsigned int>(msg->p_gain*1000.0f),
+                           static_cast<unsigned int>(msg->i_gain*1000.0f),
+                           static_cast<unsigned int>(msg->d_gain*1000.0f));
+  return;
+}
+
 } // namespace kobuki

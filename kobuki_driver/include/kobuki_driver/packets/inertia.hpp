@@ -34,6 +34,7 @@ namespace kobuki
 class Inertia : public packet_handler::payloadBase
 {
 public:
+  Inertia() : packet_handler::payloadBase(false, 7) {};
   struct Data {
     int16_t angle;
     int16_t angle_rate;
@@ -44,13 +45,6 @@ public:
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
-    {
-      //ROS_WARN_STREAM("kobuki_node: kobuki_inertia: serialise failed. empty byte stream.");
-      return false;
-    }
-
-    unsigned char length = 7;
     buildBytes(Header::Inertia, byteStream);
     buildBytes(length, byteStream);
     buildBytes(data.angle, byteStream);
@@ -63,22 +57,35 @@ public:
 
   bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
+    if (byteStream.size() < length+2)
     {
-      //ROS_WARN_STREAM("kobuki_node: kobuki_inertia: deserialise failed. empty byte stream.");
+      //std::cout << "kobuki_node: kobuki_inertia: deserialise failed. not enough byte stream." << std::endl;
       return false;
     }
 
-    unsigned char header_id, length;
+    unsigned char header_id, length_packed;
     buildVariable(header_id, byteStream);
-    buildVariable(length, byteStream);
+    buildVariable(length_packed, byteStream);
+    if( header_id != Header::Inertia ) return false;
+    if( length_packed != length ) return false;
+
     buildVariable(data.angle, byteStream);
     buildVariable(data.angle_rate, byteStream);
     buildVariable(data.acc[0], byteStream);
     buildVariable(data.acc[1], byteStream);
     buildVariable(data.acc[2], byteStream);
 
+    //showMe();
+    return constrain();
+  }
+
+  bool constrain()
+  {
     return true;
+  }
+
+  void showMe()
+  {
   }
 };
 

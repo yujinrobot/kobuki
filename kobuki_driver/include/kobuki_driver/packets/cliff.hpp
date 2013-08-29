@@ -35,6 +35,8 @@ namespace kobuki
 class Cliff : public packet_handler::payloadBase
 {
 public:
+  Cliff() : packet_handler::payloadBase(false, 6) {};
+
   struct Data {
     Data() : bottom(3) {}
     std::vector<uint16_t> bottom;
@@ -42,13 +44,6 @@ public:
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
-    {
-      printf("kobuki_node: kobuki_cliff: serialise failed. empty byte stream.");
-      return false;
-    }
-
-    unsigned char length = 6;
     buildBytes(Header::Cliff, byteStream);
     buildBytes(length, byteStream);
     buildBytes(data.bottom[0], byteStream);
@@ -59,15 +54,18 @@ public:
 
   bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
+    if (byteStream.size() < length+2)
     {
-      printf("kobuki_node: kobuki_cliff: deserialise failed. empty byte stream.");
+      //std::cout << "kobuki_node: kobuki_cliff: deserialise failed. not enough byte stream." << std::endl;
       return false;
     }
 
-    unsigned char header_id, length;
+    unsigned char header_id, length_packed;
     buildVariable(header_id, byteStream);
-    buildVariable(length, byteStream);
+    buildVariable(length_packed, byteStream);
+    if( header_id != Header::Cliff ) return false;
+    if( length_packed != length ) return false;
+
     buildVariable(data.bottom[0], byteStream);
     buildVariable(data.bottom[1], byteStream);
     buildVariable(data.bottom[2], byteStream);

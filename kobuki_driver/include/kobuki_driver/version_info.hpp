@@ -20,6 +20,7 @@
 #include <string>
 #include <sstream>
 #include <stdint.h>
+#include "macros.hpp"
 
 /*****************************************************************************
 ** Namespaces
@@ -33,7 +34,7 @@ namespace kobuki {
 /**
  * Class holding version info for the kobuki driver.
  */
-class VersionInfo {
+class kobuki_PUBLIC VersionInfo {
 public:
   VersionInfo(const uint32_t &fw, const uint32_t &hw, const uint32_t udid0_, const uint32_t udid1_, const uint32_t udid2_ ) :
     firmware(fw),
@@ -52,7 +53,7 @@ public:
 
   static std::string toString(const uint32_t &version)
   {
-    // Convert an unsigned int into a string of type <mayor>.<minor>.<patch>; first byte is ignored
+    // Convert an unsigned int into a string of type <major>.<minor>.<patch>; first byte is ignored
     std::stringstream ss;
     ss << ((version & 0x00FF0000) >> 16) << "." << ((version & 0x0000FF00) >>  8) << "." << (version & 0x000000FF);
     return std::string(ss.str());

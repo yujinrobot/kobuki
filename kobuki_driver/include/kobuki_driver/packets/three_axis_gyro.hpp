@@ -1,6 +1,6 @@
 /**
  * @file /include/kobuki_driver/packets/three_axis_gyro.hpp
- * @author Younghun Ju <younghoon.ju@rnd.yujinrobot.com> <yhju83@gmail.com>
+ * @author Younghun Ju <yhju@yujinrobot.com> <yhju83@gmail.com>
  * @brief Module for handling of three_axis_gyro packet payloads.
  *
  * License: BSD
@@ -40,6 +40,7 @@ namespace kobuki
 class ThreeAxisGyro : public packet_handler::payloadBase
 {
 public:
+  ThreeAxisGyro() : packet_handler::payloadBase(true, 4) {};
   struct Data {
     unsigned char frame_id;
     unsigned char followed_data_length;
@@ -50,12 +51,6 @@ public:
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
-    {
-      //ROS_WARN_STREAM("kobuki_node: three_axis_gyro: serialise failed. empty byte stream.");
-      return false;
-    }
-
     unsigned char length = 2 + 2 * data.followed_data_length;
     buildBytes(Header::ThreeAxisGyro, byteStream);
     buildBytes(length, byteStream);
@@ -68,21 +63,36 @@ public:
 
   bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
+    if (byteStream.size() < length+2)
     {
-      //ROS_WARN_STREAM("kobuki_node: three_axis_gyro: deserialise failed. empty byte stream.");
+      //std::cout << "kobuki_node: three_axis_gyro: deserialise failed. not enough byte stream." << std::endl;
       return false;
     }
 
-    unsigned char header_id, length;
+    unsigned char header_id, length_packed;
     buildVariable(header_id, byteStream);
-    buildVariable(length, byteStream);
+    buildVariable(length_packed, byteStream);
+    if( header_id != Header::ThreeAxisGyro ) return false;
+    if( length > length_packed ) return false;
+
     buildVariable(data.frame_id, byteStream);
     buildVariable(data.followed_data_length, byteStream);
+    if( length_packed != 2 + 2 * data.followed_data_length ) return false;
+
     for (unsigned int i=0; i<data.followed_data_length; i++)
       buildVariable(data.data[i], byteStream);
 
+    //showMe();
+    return constrain();
+  }
+
+  bool constrain()
+  {
     return true;
+  }
+
+  void showMe()
+  {
   }
 };
 

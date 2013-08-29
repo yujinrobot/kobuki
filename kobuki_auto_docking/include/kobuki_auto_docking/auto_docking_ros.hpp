@@ -30,7 +30,6 @@
 #include <nav_msgs/Odometry.h>
 #include <kobuki_msgs/SensorState.h>
 #include <kobuki_msgs/DockInfraRed.h>
-#include <kobuki_msgs/MotorPower.h>
 
 #include <sstream>
 #include <vector>
@@ -91,8 +90,6 @@ private:
               const kobuki_msgs::SensorStateConstPtr& core,
               const kobuki_msgs::DockInfraRedConstPtr& ir);
   void debugCb(const std_msgs::StringConstPtr& msg);
-
-  void toggleMotor(const bool& on_off);
 };
 
 } //namespace kobuki

@@ -35,7 +35,7 @@ public:
   // Service Payloads
   Hardware = 10, Firmware = 11, ThreeAxisGyro = 13, Eeprom = 15, GpInput = 16,
 
-  UniqueDeviceID = 19, Reserved = 20
+  UniqueDeviceID = 19, Reserved = 20, ControllerInfo = 21
   };
 };
 

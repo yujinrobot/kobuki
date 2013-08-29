@@ -16,9 +16,11 @@
   
   <node pkg="nodelet" type="nodelet" name="keyop_vel_smoother" args="load yocs_velocity_smoother/VelocitySmootherNodelet mobile_base_nodelet_manager">
     <rosparam file="$(find kobuki_keyop)/param/keyop_smoother.yaml" command="load"/>
-<!--     <remap from="keyop_vel_smoother/raw_cmd_vel" to="raw_cmd_vel"/> -->
-    <remap from="keyop_vel_smoother/odometry" to="odom"/>
     <remap from="keyop_vel_smoother/smooth_cmd_vel" to="cmd_vel_mux/keyboard_teleop"/>
+
+    <!-- Robot velocity feedbacks; use the one configured as base default -->
+    <remap from="keyop_vel_smoother/odometry" to="odom"/>
+    <remap from="keyop_vel_smoother/robot_cmd_vel" to="mobile_base/commands/velocity"/>
   </node>
   
   <node pkg="kobuki_keyop" type="keyop" name="keyop" output="screen">

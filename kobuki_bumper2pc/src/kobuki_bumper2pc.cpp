@@ -13,64 +13,59 @@
 
 #include <pluginlib/class_list_macros.h>
 
-#include "../include/kobuki_bumper2pc/kobuki_bumper2pc.hpp"
+#include "kobuki_bumper2pc/kobuki_bumper2pc.hpp"
 
 namespace kobuki_bumper2pc
 {
 
-void Bumper2PcNodelet::cliffEventCB(const kobuki_msgs::CliffEvent::ConstPtr& msg)
+void Bumper2PcNodelet::coreSensorCB(const kobuki_msgs::SensorState::ConstPtr& msg)
 {
   if (pointcloud_pub_.getNumSubscribers() == 0)
     return;
 
-  // We replicate the sensors order of bumper/cliff event messages: LEFT = 0, CENTER = 1 and RIGHT = 2
-  switch (msg->sensor)
-  {
-    case kobuki_msgs::CliffEvent::LEFT:
-      pointcloud_[msg->sensor].x = (msg->state == kobuki_msgs::CliffEvent::CLIFF)? +pointcloud_side_x_: 99;
-      pointcloud_[msg->sensor].y = (msg->state == kobuki_msgs::CliffEvent::CLIFF)? +pointcloud_side_y_: 99;
-      break;
-    case kobuki_msgs::CliffEvent::CENTER:       // y-coordinate is always 0
-      pointcloud_[msg->sensor].x = (msg->state == kobuki_msgs::CliffEvent::CLIFF)? +pointcloud_radius_: 99;
-      break;
-    case kobuki_msgs::CliffEvent::RIGHT:
-      pointcloud_[msg->sensor].x = (msg->state == kobuki_msgs::CliffEvent::CLIFF)? +pointcloud_side_x_: 99;
-      pointcloud_[msg->sensor].y = (msg->state == kobuki_msgs::CliffEvent::CLIFF)? -pointcloud_side_y_: 99;
-      break;
-    default:
-      // This cannot happen unless CliffEvent message changes
-      ROS_WARN("Unknown sensor id (%d); ignoring", msg->sensor);
-      break;
-  }
-
-  pointcloud_pub_.publish(pointcloud_);
-}
-
-void Bumper2PcNodelet::bumperEventCB(const kobuki_msgs::BumperEvent::ConstPtr& msg)
-{
-  if (pointcloud_pub_.getNumSubscribers() == 0)
+  // We publish just one "no events" pc and stop spamming when bumper/cliff conditions disappear
+  if (! msg->bumper && ! msg->cliff && ! prev_bumper && ! prev_cliff)
     return;
 
+  prev_bumper = msg->bumper;
+  prev_cliff  = msg->cliff;
+
   // We replicate the sensors order of bumper/cliff event messages: LEFT = 0, CENTER = 1 and RIGHT = 2
-  switch (msg->bumper)
+  if ((msg->bumper & kobuki_msgs::SensorState::BUMPER_LEFT) ||
+      (msg->cliff  & kobuki_msgs::SensorState::CLIFF_LEFT))
   {
-    case kobuki_msgs::BumperEvent::LEFT:
-      pointcloud_[msg->bumper].x = (msg->state == kobuki_msgs::BumperEvent::PRESSED)? +pointcloud_side_x_: 99;
-      pointcloud_[msg->bumper].y = (msg->state == kobuki_msgs::BumperEvent::PRESSED)? +pointcloud_side_y_: 99;
-      break;
-    case kobuki_msgs::BumperEvent::CENTER:       // y-coordinate is always 0
-      pointcloud_[msg->bumper].x = (msg->state == kobuki_msgs::BumperEvent::PRESSED)? +pointcloud_radius_: 99;
-      break;
-    case kobuki_msgs::BumperEvent::RIGHT:
-      pointcloud_[msg->bumper].x = (msg->state == kobuki_msgs::BumperEvent::PRESSED)? +pointcloud_side_x_: 99;
-      pointcloud_[msg->bumper].y = (msg->state == kobuki_msgs::BumperEvent::PRESSED)? -pointcloud_side_y_: 99;
-      break;
-    default:
-      // This cannot happen unless BumperEvent message changes
-      ROS_WARN("Unknown sensor id (%d); ignoring", msg->bumper);
-      break;
+    memcpy(&pointcloud_.data[0 * pointcloud_.point_step + pointcloud_.fields[0].offset], &p_side_x_, sizeof(float));
+    memcpy(&pointcloud_.data[0 * pointcloud_.point_step + pointcloud_.fields[1].offset], &p_side_y_, sizeof(float));
+  }
+  else
+  {
+    memcpy(&pointcloud_.data[0 * pointcloud_.point_step + pointcloud_.fields[0].offset], &P_INF_X, sizeof(float));
+    memcpy(&pointcloud_.data[0 * pointcloud_.point_step + pointcloud_.fields[1].offset], &P_INF_Y, sizeof(float));
   }
 
+  if ((msg->bumper & kobuki_msgs::SensorState::BUMPER_CENTRE) ||
+      (msg->cliff  & kobuki_msgs::SensorState::CLIFF_CENTRE))
+  {
+    memcpy(&pointcloud_.data[1 * pointcloud_.point_step + pointcloud_.fields[0].offset], &pc_radius_, sizeof(float));
+  }
+  else
+  {
+    memcpy(&pointcloud_.data[1 * pointcloud_.point_step + pointcloud_.fields[0].offset], &P_INF_X, sizeof(float));
+  }
+
+  if ((msg->bumper & kobuki_msgs::SensorState::BUMPER_RIGHT) ||
+      (msg->cliff  & kobuki_msgs::SensorState::CLIFF_RIGHT))
+  {
+    memcpy(&pointcloud_.data[2 * pointcloud_.point_step + pointcloud_.fields[0].offset], &p_side_x_, sizeof(float));
+    memcpy(&pointcloud_.data[2 * pointcloud_.point_step + pointcloud_.fields[1].offset], &n_side_y_, sizeof(float));
+  }
+  else
+  {
+    memcpy(&pointcloud_.data[2 * pointcloud_.point_step + pointcloud_.fields[0].offset], &P_INF_X, sizeof(float));
+    memcpy(&pointcloud_.data[2 * pointcloud_.point_step + pointcloud_.fields[1].offset], &N_INF_Y, sizeof(float));
+  }
+
+  pointcloud_.header.stamp = msg->header.stamp;
   pointcloud_pub_.publish(pointcloud_);
 }
 
@@ -83,23 +78,56 @@ void Bumper2PcNodelet::onInit()
   // it's too low, costmap will ignore this pointcloud (the robot footprint runs over the hit obstacle),
   // but if it's too big, hit obstacles will be mapped too far from the robot and the navigation around
   // them will probably fail.
-  nh.param("pointcloud_radius", pointcloud_radius_, 0.25);
-  pointcloud_side_x_ = pointcloud_radius_*sin(0.34906585); // 20 degrees
-  pointcloud_side_y_ = pointcloud_radius_*cos(0.34906585);
+  double r, h;
+  nh.param("pointcloud_radius", r, 0.25); pc_radius_ = r;
+  nh.param("pointcloud_height", h, 0.04); pc_height_ = h;
 
-  pointcloud_.resize(3);
+  // Lateral points x/y coordinates; we need to store float values to memcopy later
+  p_side_x_ = + pc_radius_*sin(0.34906585); // 20 degrees from vertical
+  p_side_y_ = + pc_radius_*cos(0.34906585); // 20 degrees from vertical
+  n_side_y_ = - pc_radius_*cos(0.34906585); // 20 degrees from vertical
+
+  // Prepare constant parts of the pointcloud message to be  published
   pointcloud_.header.frame_id = "/base_link";
+  pointcloud_.width  = 3;
+  pointcloud_.height = 1;
+  pointcloud_.fields.resize(3);
 
-  // bumper/cliff "points" fix coordinates (the others depend on sensor activation/deactivation)
-  pointcloud_[0].x = pointcloud_[1].y = pointcloud_[2].x = 0.0;   // +π/2, 0 and -π/2 from x-axis
-  pointcloud_[0].z = pointcloud_[1].z = pointcloud_[2].z = 0.015; // z: elevation from base frame
+  // Set x/y/z as the only fields
+  pointcloud_.fields[0].name = "x";
+  pointcloud_.fields[1].name = "y";
+  pointcloud_.fields[2].name = "z";
 
-  pointcloud_pub_  = nh.advertise < pcl::PointCloud <pcl::PointXYZ> > ("pointcloud", 10);
+  int offset = 0;
+  // All offsets are *4, as all field data types are float32
+  for (size_t d = 0; d < pointcloud_.fields.size(); ++d, offset += 4)
+  {
+    pointcloud_.fields[d].count    = 1;
+    pointcloud_.fields[d].offset   = offset;
+    pointcloud_.fields[d].datatype = sensor_msgs::PointField::FLOAT32;
+  }
 
-  cliff_event_sub_  = nh.subscribe("cliff_events",  10, &Bumper2PcNodelet::cliffEventCB,  this);
-  bumper_event_sub_ = nh.subscribe("bumper_events", 10, &Bumper2PcNodelet::bumperEventCB, this);
+  pointcloud_.point_step = offset;
+  pointcloud_.row_step   = pointcloud_.point_step * pointcloud_.width;
 
-  ROS_INFO("Bumper/cliff pointcloud configured at distance %f from base frame", pointcloud_radius_);
+  pointcloud_.data.resize(3 * pointcloud_.point_step);
+  pointcloud_.is_bigendian = false;
+  pointcloud_.is_dense     = true;
+
+  // Bumper/cliff "points" fix coordinates (the others depend on sensor activation/deactivation)
+
+  // y: always 0 for central bumper
+  memcpy(&pointcloud_.data[1 * pointcloud_.point_step + pointcloud_.fields[1].offset], &ZERO, sizeof(float));
+
+  // z: constant elevation from base frame
+  memcpy(&pointcloud_.data[0 * pointcloud_.point_step + pointcloud_.fields[2].offset], &pc_height_, sizeof(float));
+  memcpy(&pointcloud_.data[1 * pointcloud_.point_step + pointcloud_.fields[2].offset], &pc_height_, sizeof(float));
+  memcpy(&pointcloud_.data[2 * pointcloud_.point_step + pointcloud_.fields[2].offset], &pc_height_, sizeof(float));
+
+  pointcloud_pub_  = nh.advertise <sensor_msgs::PointCloud2> ("pointcloud", 10);
+  core_sensor_sub_ = nh.subscribe("core_sensors", 10, &Bumper2PcNodelet::coreSensorCB, this);
+
+  ROS_INFO("Bumper/cliff pointcloud configured at distance %f and height %f from base frame", pc_radius_, pc_height_);
 }
 
 } // namespace kobuki_bumper2pc

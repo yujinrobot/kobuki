@@ -8,8 +8,7 @@ catkin_package(
    CATKIN_DEPENDS geometry_msgs std_srvs std_msgs roscpp ecl_exceptions ecl_threads ecl_time kobuki_msgs
 )
 
-include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
-include_directories(include)
+include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_subdirectory(src)
 

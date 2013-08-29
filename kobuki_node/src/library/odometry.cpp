@@ -26,7 +26,8 @@ namespace kobuki {
 Odometry::Odometry () :
   odom_frame("odom"),
   base_frame("base_footprint"),
-  publish_tf(false)
+  use_imu_heading(true),
+  publish_tf(true)
 {};
 
 void Odometry::init(ros::NodeHandle& nh, const std::string& name) {
@@ -57,6 +58,16 @@ void Odometry::init(ros::NodeHandle& nh, const std::string& name) {
     }
   }
 
+  if (!nh.getParam("use_imu_heading", use_imu_heading)) {
+    ROS_WARN_STREAM("Kobuki : no param server setting for use_imu_heading, using default [" << use_imu_heading << "][" << name << "].");
+  } else {
+    if ( use_imu_heading ) {
+      ROS_INFO_STREAM("Kobuki : using imu data for heading [" << name << "].");
+    } else {
+      ROS_INFO_STREAM("Kobuki : using encoders for heading (see robot_pose_ekf) [" << name << "].");
+    }
+  }
+
   odom_trans.header.frame_id = odom_frame;
   odom_trans.child_frame_id = base_frame;
 
@@ -73,8 +84,15 @@ bool Odometry::commandTimeout() const {
   }
 }
 
-void Odometry::update(const ecl::Pose2D<double> &pose_update, ecl::linear_algebra::Vector3d &pose_update_rates) {
+void Odometry::update(const ecl::Pose2D<double> &pose_update, ecl::linear_algebra::Vector3d &pose_update_rates,
+                      double imu_heading, double imu_angular_velocity) {
   pose *= pose_update;
+
+  if (use_imu_heading == true) {
+    // Overwite with gyro heading data
+    pose.heading(imu_heading);
+    pose_update_rates[2] = imu_angular_velocity;
+  }
 
   //since all ros tf odometry is 6DOF we'll need a quaternion created from yaw
   geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(pose.heading());
@@ -129,9 +147,9 @@ void Odometry::publishOdometry(const geometry_msgs::Quaternion &odom_quat,
   // by the imu, as the later takes much better measures
   odom->pose.covariance[0]  = 0.1;
   odom->pose.covariance[7]  = 0.1;
-  odom->pose.covariance[35] = 0.2;
+  odom->pose.covariance[35] = use_imu_heading ? 0.05 : 0.2;
 
-  odom->pose.covariance[14] = DBL_MAX; // set a very large covariance on unused
+  odom->pose.covariance[14] = DBL_MAX; // set a non-zero covariance on unused
   odom->pose.covariance[21] = DBL_MAX; // dimensions (z, pitch and roll); this
   odom->pose.covariance[28] = DBL_MAX; // is a requirement of robot_pose_ekf
 

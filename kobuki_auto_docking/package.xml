@@ -1,14 +1,16 @@
 <package>
   <name>kobuki_auto_docking</name>
-  <version>0.3.6</version>
+  <version>0.4.0</version>
   <description>
 	    Automatic docking for Kobuki:
 	    Users owning a docking station for Kobuki can use this tool to let Kobuki find its nest autonomously.
   </description>
-  <author email="younghoon.ju@yujinrobot.com">Younghun Ju</author>
-  <maintainer email="younghoon.ju@yujinrobot.com">Younghun Ju</maintainer>
+  <author email="yhju@yujinrobot.com">Younghun Ju</author>
+  <maintainer email="yhju@yujinrobot.com">Younghun Ju</maintainer>
   <license>BSD</license>
-  <url>http://ros.org/wiki/kobuki_auto_docking</url>
+  <url type="bugtracker">https://github.com/yujinrobot/kobuki/issues</url>
+  <url type="repository">https://github.com/yujinrobot/kobuki</url>
+  <url type="website">http://ros.org/wiki/kobuki_auto_docking</url>
 
   <buildtool_depend>catkin</buildtool_depend>
 
