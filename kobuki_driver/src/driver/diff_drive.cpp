@@ -124,8 +124,10 @@ void DiffDrive::getWheelJointStates(double &wheel_left_angle, double &wheel_left
 void DiffDrive::setVelocityCommands(const double &vx, const double &wz) {
   // vx: in m/s
   // wz: in rad/s
-  point_velocity[0]=vx;
-  point_velocity[1]=wz;
+  std::vector<double> cmd_vel;
+  cmd_vel.push_back(vx);
+  cmd_vel.push_back(wz);
+  point_velocity = cmd_vel;
 }
 
 void DiffDrive::velocityCommands(const double &vx, const double &wz) {
@@ -176,6 +178,10 @@ std::vector<short> DiffDrive::velocityCommands() {
   cmd[1] = bound(radius); // In [mm]
   velocity_mutex.unlock();
   return cmd;
+}
+
+std::vector<double> DiffDrive::pointVelocity() const {
+  return point_velocity;
 }
 
 short DiffDrive::bound(const double &value) {
