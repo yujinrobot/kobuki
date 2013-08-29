@@ -25,7 +25,7 @@
 *****************************************************************************/
 
 #define CURRENT_FIRMWARE_MAJOR_VERSION  1
-#define CURRENT_FIRMWARE_MINOR_VERSION  1
+#define CURRENT_FIRMWARE_MINOR_VERSION  2
 // patch number is ignored; don't need to be updated
 
 /*****************************************************************************
