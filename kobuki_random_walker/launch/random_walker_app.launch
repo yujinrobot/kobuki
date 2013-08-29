@@ -1,0 +1,22 @@
+<!--
+  Random Walker App
+  
+  Launches:
+    * random_walker_controller
+  
+  Requires kobuki_node/minimal.launch to be started before.
+ -->
+<launch>  
+  <node pkg="nodelet" type="nodelet" name="kobuki_random_walker_controller"
+        args="load kobuki_random_walker/RandomWalkerControllerNodelet mobile_base_nodelet_manager">
+    <param name="update_rate"                                       value="10.0"/>
+    <param name="linear_velocity"                                   value="0.1"/>
+    <param name="angular_velocity"                                  value="0.5"/>
+    <remap from="kobuki_random_walker_controller/events/bumper"     to="mobile_base/events/bumper"/>
+    <remap from="kobuki_random_walker_controller/events/cliff"      to="mobile_base/events/cliff"/>
+    <remap from="kobuki_random_walker_controller/events/wheel_drop" to="mobile_base/events/wheel_drop"/>
+    <remap from="kobuki_random_walker_controller/commands/led1"     to="mobile_base/commands/led1"/>
+    <remap from="kobuki_random_walker_controller/commands/led2"     to="mobile_base/commands/led2"/>
+    <remap from="kobuki_random_walker_controller/commands/velocity" to="mobile_base/commands/velocity"/>
+  </node>
+</launch>
