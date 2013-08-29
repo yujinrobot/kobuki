@@ -10,5 +10,7 @@ var searchData=
   ['controllerinfo',['ControllerInfo',['../classkobuki_1_1ControllerInfo.html#a2fa77c48da9cc3967ec446bb3f732bce',1,'kobuki::ControllerInfo']]],
   ['coresensors',['CoreSensors',['../classkobuki_1_1CoreSensors.html#a9de815407107efb65aab990def8b4cb9',1,'kobuki::CoreSensors']]],
   ['current',['Current',['../classkobuki_1_1Current.html#ac4847b0c579eb47042b925930ef38f10',1,'kobuki::Current']]],
+  ['current_5fmajor_5fversion',['current_major_version',['../classkobuki_1_1Firmware.html#a4b02729cc8428388429fa3b98b0cb80c',1,'kobuki::Firmware']]],
+  ['current_5fminor_5fversion',['current_minor_version',['../classkobuki_1_1Firmware.html#afd6ad0359b533c57ba6848082977cbed',1,'kobuki::Firmware']]],
   ['current_5fversion',['current_version',['../classkobuki_1_1Firmware.html#a644e63df3bb86a8da7eb81e206f19e70',1,'kobuki::Firmware']]]
 ];

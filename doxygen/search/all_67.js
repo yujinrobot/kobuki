@@ -4,7 +4,7 @@ var searchData=
   ['getbuffer',['getBuffer',['../classkobuki_1_1PacketFinderBase.html#a3b59b2c70d61bf2180337eddfb0ae08c',1,'kobuki::PacketFinderBase']]],
   ['getcliffdata',['getCliffData',['../classkobuki_1_1Kobuki.html#a75ed69becc3058d2a9525cfbe81aabe1',1,'kobuki::Kobuki']]],
   ['getcontroller',['GetController',['../classkobuki_1_1Command.html#a998d9a902269d9cfbc140c3a675f0490a817ab42962b1209952a142686536ba54',1,'kobuki::Command']]],
-  ['getcontrollergain',['GetControllerGain',['../classkobuki_1_1Command.html#a36510619abf35df4c293bc06e9bfb44c',1,'kobuki::Command::GetControllerGain()'],['../classkobuki_1_1Kobuki.html#aa16ae15cbb4c07de8bd553e14f93852e',1,'kobuki::Kobuki::getControllerGain()']]],
+  ['getcontrollergain',['GetControllerGain',['../classkobuki_1_1Command.html#a36510619abf35df4c293bc06e9bfb44c',1,'kobuki::Command::GetControllerGain()'],['../classkobuki_1_1Kobuki.html#acdc18337219b79cf202c3b4178ff62fa',1,'kobuki::Kobuki::getControllerGain()']]],
   ['getcontrollerinfodata',['getControllerInfoData',['../classkobuki_1_1Kobuki.html#a3d9d8cd87fd98bce6adda4f3e9530b41',1,'kobuki::Kobuki']]],
   ['getcoresensordata',['getCoreSensorData',['../classkobuki_1_1Kobuki.html#a33ff3a81a9a43c025da6efb21dc0ac9b',1,'kobuki::Kobuki']]],
   ['getcurrentdata',['getCurrentData',['../classkobuki_1_1Kobuki.html#a7e32d9b2879ed4fa50a233bb4fed8413',1,'kobuki::Kobuki']]],

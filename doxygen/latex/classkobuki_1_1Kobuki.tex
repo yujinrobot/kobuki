@@ -24,7 +24,7 @@ double {\bf get\-Angular\-Velocity} () const
 \item 
 {\bf \-Cliff\-::\-Data} {\bf get\-Cliff\-Data} () const 
 \item 
-void {\bf get\-Controller\-Gain} ()
+bool {\bf get\-Controller\-Gain} ()
 \item 
 {\bf \-Controller\-Info\-::\-Data} {\bf get\-Controller\-Info\-Data} () const 
 \item 
@@ -64,7 +64,7 @@ void {\bf reset\-Odometry} ()
 \item 
 void {\bf set\-Base\-Control} (const double \&linear\-\_\-velocity, const double \&angular\-\_\-velocity)
 \item 
-void {\bf set\-Controller\-Gain} (const unsigned char \&type, const unsigned int \&p\-\_\-gain, const unsigned int \&i\-\_\-gain, const unsigned int \&d\-\_\-gain)
+bool {\bf set\-Controller\-Gain} (const unsigned char \&type, const unsigned int \&p\-\_\-gain, const unsigned int \&i\-\_\-gain, const unsigned int \&d\-\_\-gain)
 \item 
 void {\bf set\-Digital\-Output} (const {\bf \-Digital\-Output} \&digital\-\_\-output)
 \item 
@@ -239,7 +239,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )}\label{classkobuki_1_1Kobuki_a9e4447e3b2bb177155ee681daccdc274}
 \-Disable power to the motors. 
 
-\-Definition at line 566 of file kobuki.\-cpp.
+\-Definition at line 584 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!enable@{enable}}
 \index{enable@{enable}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -250,7 +250,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )}\label{classkobuki_1_1Kobuki_afa7f47487ef0224c1ce79f2d70de233b}
 \-Enable power to the motors. 
 
-\-Definition at line 560 of file kobuki.\-cpp.
+\-Definition at line 578 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!fix\-Payload@{fix\-Payload}}
 \index{fix\-Payload@{fix\-Payload}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -287,14 +287,14 @@ int {\bf version\-\_\-info\-\_\-reminder}
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!get\-Controller\-Gain@{get\-Controller\-Gain}}
 \index{get\-Controller\-Gain@{get\-Controller\-Gain}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
-\subsubsection[{get\-Controller\-Gain}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Kobuki\-::get\-Controller\-Gain} (
+\subsubsection[{get\-Controller\-Gain}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf kobuki\-::\-Kobuki\-::get\-Controller\-Gain} (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)}\label{classkobuki_1_1Kobuki_aa16ae15cbb4c07de8bd553e14f93852e}
+)}\label{classkobuki_1_1Kobuki_acdc18337219b79cf202c3b4178ff62fa}
 
 
-\-Definition at line 498 of file kobuki.\-cpp.
+\-Definition at line 507 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!get\-Controller\-Info\-Data@{get\-Controller\-Info\-Data}}
 \index{get\-Controller\-Info\-Data@{get\-Controller\-Info\-Data}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -515,7 +515,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 
 \-This includes both the kobuki driver signals as well as externally connected slots. \-Useful for when you need to check if any of your connections are dangling (often happens when you typo the name of the sigslots connection). 
 
-\-Definition at line 582 of file kobuki.\-cpp.
+\-Definition at line 600 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!reset\-Odometry@{reset\-Odometry}}
 \index{reset\-Odometry@{reset\-Odometry}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -537,7 +537,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a78ca3419d9dc80e954f8feaecc2c0c0c}
 
 
-\-Definition at line 508 of file kobuki.\-cpp.
+\-Definition at line 526 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!send\-Command@{send\-Command}}
 \index{send\-Command@{send\-Command}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -559,7 +559,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 \end{DoxyParams}
 
 
-\-Definition at line 530 of file kobuki.\-cpp.
+\-Definition at line 548 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!set\-Base\-Control@{set\-Base\-Control}}
 \index{set\-Base\-Control@{set\-Base\-Control}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -571,18 +571,18 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )}\label{classkobuki_1_1Kobuki_af016306e3114daf0c61ffbaae0b3d1a0}
 
 
-\-Definition at line 503 of file kobuki.\-cpp.
+\-Definition at line 521 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!set\-Controller\-Gain@{set\-Controller\-Gain}}
 \index{set\-Controller\-Gain@{set\-Controller\-Gain}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
-\subsubsection[{set\-Controller\-Gain}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf kobuki\-::\-Kobuki\-::set\-Controller\-Gain} (
+\subsubsection[{set\-Controller\-Gain}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf kobuki\-::\-Kobuki\-::set\-Controller\-Gain} (
 \begin{DoxyParamCaption}
 \item[{const unsigned char \&}]{type, }
 \item[{const unsigned int \&}]{p\-\_\-gain, }
 \item[{const unsigned int \&}]{i\-\_\-gain, }
 \item[{const unsigned int \&}]{d\-\_\-gain}
 \end{DoxyParamCaption}
-)}\label{classkobuki_1_1Kobuki_a6974e63106792b4d252729b71057acca}
+)}\label{classkobuki_1_1Kobuki_a823260e89ce7e35fe1c721e3be1ec832}
 
 
 \-Definition at line 492 of file kobuki.\-cpp.

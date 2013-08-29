@@ -35,8 +35,8 @@ var searchData=
   ['controller_5finfo',['controller_info',['../classkobuki_1_1Kobuki.html#a7891cb033fe02014b4bb01f26d318c9f',1,'kobuki::Kobuki']]],
   ['controller_5finfo_2ehpp',['controller_info.hpp',['../controller__info_8hpp.html',1,'']]],
   ['controller_5finfo_5freminder',['controller_info_reminder',['../classkobuki_1_1Kobuki.html#a76b2d89af496396759b93e4d1b08b47f',1,'kobuki::Kobuki']]],
-  ['controllerinfo',['ControllerInfo',['../classkobuki_1_1ControllerInfo.html',1,'kobuki']]],
   ['controllerinfo',['ControllerInfo',['../classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eafd5712665e6dddce0980268025626ad8',1,'kobuki::Header::ControllerInfo()'],['../classkobuki_1_1ControllerInfo.html#a2fa77c48da9cc3967ec446bb3f732bce',1,'kobuki::ControllerInfo::ControllerInfo()']]],
+  ['controllerinfo',['ControllerInfo',['../classkobuki_1_1ControllerInfo.html',1,'kobuki']]],
   ['core_5fsensors',['core_sensors',['../classkobuki_1_1Kobuki.html#a76b781f33f5e4a7fcfffcfe05bf744ab',1,'kobuki::Kobuki']]],
   ['core_5fsensors_2ecpp',['core_sensors.cpp',['../core__sensors_8cpp.html',1,'']]],
   ['core_5fsensors_2ehpp',['core_sensors.hpp',['../core__sensors_8hpp.html',1,'']]],
@@ -47,5 +47,7 @@ var searchData=
   ['current_2ehpp',['current.hpp',['../current_8hpp.html',1,'']]],
   ['current_5ffirmware_5fmajor_5fversion',['CURRENT_FIRMWARE_MAJOR_VERSION',['../firmware_8hpp.html#a161d3871c6e5e161eb3065ca8d8e5669',1,'firmware.hpp']]],
   ['current_5ffirmware_5fminor_5fversion',['CURRENT_FIRMWARE_MINOR_VERSION',['../firmware_8hpp.html#a6a95a673675b30a190e9513645e0a089',1,'firmware.hpp']]],
+  ['current_5fmajor_5fversion',['current_major_version',['../classkobuki_1_1Firmware.html#a4b02729cc8428388429fa3b98b0cb80c',1,'kobuki::Firmware']]],
+  ['current_5fminor_5fversion',['current_minor_version',['../classkobuki_1_1Firmware.html#afd6ad0359b533c57ba6848082977cbed',1,'kobuki::Firmware']]],
   ['current_5fversion',['current_version',['../classkobuki_1_1Firmware.html#a644e63df3bb86a8da7eb81e206f19e70',1,'kobuki::Firmware']]]
 ];

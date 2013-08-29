@@ -28,11 +28,21 @@ int {\bf check\-\_\-minor\-\_\-version} ()
 \item 
 bool {\bf constrain} ()
 \item 
+int {\bf current\-\_\-major\-\_\-version} ()
+\item 
+int {\bf current\-\_\-minor\-\_\-version} ()
+\item 
 std\-::string {\bf current\-\_\-version} ()
 \item 
 bool {\bf deserialise} (ecl\-::\-Push\-And\-Pop$<$ unsigned char $>$ \&byte\-Stream)
 \item 
 {\bf \-Firmware} ()
+\item 
+int {\bf flashed\-\_\-major\-\_\-version} ()
+\item 
+int {\bf flashed\-\_\-minor\-\_\-version} ()
+\item 
+std\-::string {\bf flashed\-\_\-version} ()
 \item 
 bool {\bf serialise} (ecl\-::\-Push\-And\-Pop$<$ unsigned char $>$ \&byte\-Stream)
 \item 
@@ -76,7 +86,7 @@ struct {\bf kobuki\-::\-Firmware\-::\-Data} {\bf data}
 )\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Firmware_a7a3014b781ce53ca8aabb3c3bef2abd0}
 
 
-\-Definition at line 114 of file firmware.\-hpp.
+\-Definition at line 128 of file firmware.\-hpp.
 
 \index{kobuki\-::\-Firmware@{kobuki\-::\-Firmware}!check\-\_\-minor\-\_\-version@{check\-\_\-minor\-\_\-version}}
 \index{check\-\_\-minor\-\_\-version@{check\-\_\-minor\-\_\-version}!kobuki::Firmware@{kobuki\-::\-Firmware}}
@@ -87,7 +97,7 @@ struct {\bf kobuki\-::\-Firmware\-::\-Data} {\bf data}
 )\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Firmware_a1b7c68777973d97d33b0ddc79188f617}
 
 
-\-Definition at line 122 of file firmware.\-hpp.
+\-Definition at line 136 of file firmware.\-hpp.
 
 \index{kobuki\-::\-Firmware@{kobuki\-::\-Firmware}!constrain@{constrain}}
 \index{constrain@{constrain}!kobuki::Firmware@{kobuki\-::\-Firmware}}
@@ -99,6 +109,28 @@ struct {\bf kobuki\-::\-Firmware\-::\-Data} {\bf data}
 
 
 \-Definition at line 97 of file firmware.\-hpp.
+
+\index{kobuki\-::\-Firmware@{kobuki\-::\-Firmware}!current\-\_\-major\-\_\-version@{current\-\_\-major\-\_\-version}}
+\index{current\-\_\-major\-\_\-version@{current\-\_\-major\-\_\-version}!kobuki::Firmware@{kobuki\-::\-Firmware}}
+\subsubsection[{current\-\_\-major\-\_\-version}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf kobuki\-::\-Firmware\-::current\-\_\-major\-\_\-version} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Firmware_a4b02729cc8428388429fa3b98b0cb80c}
+
+
+\-Definition at line 122 of file firmware.\-hpp.
+
+\index{kobuki\-::\-Firmware@{kobuki\-::\-Firmware}!current\-\_\-minor\-\_\-version@{current\-\_\-minor\-\_\-version}}
+\index{current\-\_\-minor\-\_\-version@{current\-\_\-minor\-\_\-version}!kobuki::Firmware@{kobuki\-::\-Firmware}}
+\subsubsection[{current\-\_\-minor\-\_\-version}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf kobuki\-::\-Firmware\-::current\-\_\-minor\-\_\-version} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Firmware_afd6ad0359b533c57ba6848082977cbed}
+
+
+\-Definition at line 123 of file firmware.\-hpp.
 
 \index{kobuki\-::\-Firmware@{kobuki\-::\-Firmware}!current\-\_\-version@{current\-\_\-version}}
 \index{current\-\_\-version@{current\-\_\-version}!kobuki::Firmware@{kobuki\-::\-Firmware}}
@@ -125,6 +157,39 @@ struct {\bf kobuki\-::\-Firmware\-::\-Data} {\bf data}
 
 
 \-Definition at line 60 of file firmware.\-hpp.
+
+\index{kobuki\-::\-Firmware@{kobuki\-::\-Firmware}!flashed\-\_\-major\-\_\-version@{flashed\-\_\-major\-\_\-version}}
+\index{flashed\-\_\-major\-\_\-version@{flashed\-\_\-major\-\_\-version}!kobuki::Firmware@{kobuki\-::\-Firmware}}
+\subsubsection[{flashed\-\_\-major\-\_\-version}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf kobuki\-::\-Firmware\-::flashed\-\_\-major\-\_\-version} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Firmware_aa801cb4d68ae7205cb94876ce5bfc50c}
+
+
+\-Definition at line 125 of file firmware.\-hpp.
+
+\index{kobuki\-::\-Firmware@{kobuki\-::\-Firmware}!flashed\-\_\-minor\-\_\-version@{flashed\-\_\-minor\-\_\-version}}
+\index{flashed\-\_\-minor\-\_\-version@{flashed\-\_\-minor\-\_\-version}!kobuki::Firmware@{kobuki\-::\-Firmware}}
+\subsubsection[{flashed\-\_\-minor\-\_\-version}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf kobuki\-::\-Firmware\-::flashed\-\_\-minor\-\_\-version} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Firmware_acf051500b8b1dd95e2bc7405c69f7eb4}
+
+
+\-Definition at line 126 of file firmware.\-hpp.
+
+\index{kobuki\-::\-Firmware@{kobuki\-::\-Firmware}!flashed\-\_\-version@{flashed\-\_\-version}}
+\index{flashed\-\_\-version@{flashed\-\_\-version}!kobuki::Firmware@{kobuki\-::\-Firmware}}
+\subsubsection[{flashed\-\_\-version}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string {\bf kobuki\-::\-Firmware\-::flashed\-\_\-version} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  [inline]}}\label{classkobuki_1_1Firmware_aa6a8b2fe4cf7951915d7877609143650}
+
+
+\-Definition at line 114 of file firmware.\-hpp.
 
 \index{kobuki\-::\-Firmware@{kobuki\-::\-Firmware}!serialise@{serialise}}
 \index{serialise@{serialise}!kobuki::Firmware@{kobuki\-::\-Firmware}}

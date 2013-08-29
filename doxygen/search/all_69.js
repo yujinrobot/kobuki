@@ -5,7 +5,7 @@ var searchData=
   ['incrementangularvelocity',['incrementAngularVelocity',['../classKobukiManager.html#a49b7a023dddea3e50d8b76d90259ac4b',1,'KobukiManager']]],
   ['incrementlinearvelocity',['incrementLinearVelocity',['../classKobukiManager.html#abe39dbe23677c150e14a2a0d88510b71',1,'KobukiManager']]],
   ['inertia',['Inertia',['../classkobuki_1_1Inertia.html',1,'kobuki']]],
-  ['inertia',['Inertia',['../classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eae36a9397bdd2b3506cd80e4bf03f4d03',1,'kobuki::Header::Inertia()'],['../classkobuki_1_1Inertia.html#afe90182c37d85e6e06db7966c3cae42d',1,'kobuki::Inertia::Inertia()'],['../classkobuki_1_1Kobuki.html#a2b867d6cda20d8fc21a36dbb4d6ba125',1,'kobuki::Kobuki::inertia()']]],
+  ['inertia',['inertia',['../classkobuki_1_1Kobuki.html#a2b867d6cda20d8fc21a36dbb4d6ba125',1,'kobuki::Kobuki::inertia()'],['../classkobuki_1_1Header.html#a55431e92a8bbabeab7f9b7fda27eea5eae36a9397bdd2b3506cd80e4bf03f4d03',1,'kobuki::Header::Inertia()'],['../classkobuki_1_1Inertia.html#afe90182c37d85e6e06db7966c3cae42d',1,'kobuki::Inertia::Inertia()']]],
   ['inertia_2ehpp',['inertia.hpp',['../inertia_8hpp.html',1,'']]],
   ['init',['init',['../classkobuki_1_1EventManager.html#a1a5a6b8d26cd35c2904ff4ec1584359a',1,'kobuki::EventManager::init()'],['../classkobuki_1_1Kobuki.html#a0648c958434e641d4573721541099ee4',1,'kobuki::Kobuki::init()'],['../classkobuki_1_1AccelerationLimiter.html#a0da69f213f2e3911ef235376bc3ab9a1',1,'kobuki::AccelerationLimiter::init()'],['../classKobukiManager.html#a30d91e3e20693dbfa3dbf1a09ed29c19',1,'KobukiManager::init()']]],
   ['initialisation_2ecpp',['initialisation.cpp',['../initialisation_8cpp.html',1,'']]],

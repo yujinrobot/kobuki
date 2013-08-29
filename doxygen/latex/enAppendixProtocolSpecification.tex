@@ -243,9 +243,9 @@ return cs ? false : true;
 \-Length&\-Size of data field&1&13&0x0\-D&\-Fixed \\\cline{1-6}
 \multirow{4}{\linewidth}{\-Data}&\-Type&1&&&0 for factory-\/default \-P\-I\-D gain\par
 1 for user-\/configured \-P\-I\-D gain \\\cline{1-2}\cline{4-6}
-&\-P gain&4&&&\-Kp $\ast$ 1000 \\\cline{1-1}\cline{3-6}
-&\-I gain&4&&&\-Ki $\ast$ 1000 \\\cline{2-6}
-&\-D gain&4&&&\-Kd $\ast$ 1000 \\\cline{1-6}
+&\-P gain&4&&&\-Kp $\ast$ 1000 (default\-: 100$\ast$1000) \\\cline{1-1}\cline{3-6}
+&\-I gain&4&&&\-Ki $\ast$ 1000 (default\-: 0.\-1$\ast$1000) \\\cline{2-6}
+&\-D gain&4&&&\-Kd $\ast$ 1000 (default\-: 2$\ast$1000) \\\cline{1-6}
 \end{TabularC}
 
 
@@ -579,9 +579,9 @@ angular_velocity.z =   digit_to_dps * (short)raw_gyro_data.z;
 \multirow{4}{\linewidth}{\-Data}&\-Type&1&&&\-Current controller setup\par
 0 for factory-\/default \-P\-I\-D gain\par
 1 for user-\/configured \-P\-I\-D gain \\\cline{1-2}\cline{4-6}
-&\-P gain&4&&&\-Kp $\ast$ 1000 \\\cline{1-1}\cline{3-6}
-&\-I gain&4&&&\-Ki $\ast$ 1000 \\\cline{2-6}
-&\-D gain&4&&&\-Kd $\ast$ 1000 \\\cline{1-6}
+&\-P gain&4&&&\-Kp $\ast$ 1000 (default\-: 100$\ast$1000) \\\cline{1-1}\cline{3-6}
+&\-I gain&4&&&\-Ki $\ast$ 1000 (default\-: 0.\-1$\ast$1000) \\\cline{2-6}
+&\-D gain&4&&&\-Kd $\ast$ 1000 (default\-: 2$\ast$1000) \\\cline{1-6}
 \end{TabularC}
 
 
