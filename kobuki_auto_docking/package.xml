@@ -27,6 +27,7 @@
   <build_depend>geometry_msgs</build_depend>
   <build_depend>actionlib_msgs</build_depend>
   <build_depend>kobuki_msgs</build_depend>
+  <build_depend>kobuki_dock_drive</build_depend>
 
   <build_depend>ecl_threads</build_depend>
   <build_depend>ecl_geometry</build_depend>
@@ -45,6 +46,7 @@
   <run_depend>geometry_msgs</run_depend>
   <run_depend>actionlib_msgs</run_depend>
   <run_depend>kobuki_msgs</run_depend>
+  <run_depend>kobuki_dock_drive</run_depend>
 
   <run_depend>ecl_threads</run_depend>
   <run_depend>ecl_geometry</run_depend>

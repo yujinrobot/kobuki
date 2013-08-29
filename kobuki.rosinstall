@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Kobuki ROS install file. It only install catkinized packages
+# Kobuki ROS install file. 
 #
 # Before rosinstalling, make sure you installed:
 #
@@ -26,4 +26,3 @@
 - git: {local-name: kobuki_msgs, version: hydro-devel, uri: 'https://github.com/yujinrobot/kobuki_msgs.git'}
 - git: {local-name: kobuki_core, version: hydro-devel, uri: 'https://github.com/yujinrobot/kobuki_core.git'}
 - git: {local-name: kobuki, version: hydro-devel, uri: 'https://github.com/yujinrobot/kobuki.git'}
-#- git: {local-name: xacro, version: hydro-devel, uri: 'https://github.com/ros/xacro.git'}

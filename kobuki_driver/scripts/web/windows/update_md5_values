@@ -1,3 +1,0 @@
-#!/bin/bash
-
-md5sum sdk-kobuki-*.*.*-* > MD5SUMS

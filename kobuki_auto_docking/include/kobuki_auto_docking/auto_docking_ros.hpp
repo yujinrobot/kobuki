@@ -38,7 +38,7 @@
 #include <kdl/frames.hpp>
 #include <kdl_conversions/kdl_msg.h>
 
-#include "dock_drive.hpp"
+#include <kobuki_dock_drive/dock_drive.hpp>
 
 namespace kobuki 
 {
