@@ -244,6 +244,22 @@ void KobukiRos::publishVersionInfo(const VersionInfo &version_info)
   }
 }
 
+void KobukiRos::publishControllerInfo()
+{
+  if (ros::ok())
+  {
+    kobuki_msgs::ControllerInfoPtr msg(new kobuki_msgs::ControllerInfo);
+    ControllerInfo::Data data = kobuki.getControllerInfoData();
+
+    msg->type = data.type;
+    msg->p_gain = static_cast<float>(data.p_gain) * 0.001f;;
+    msg->i_gain = static_cast<float>(data.i_gain) * 0.001f;;
+    msg->d_gain = static_cast<float>(data.d_gain) * 0.001f;;
+
+    controller_info_publisher.publish(msg);
+  }
+}
+
 /*****************************************************************************
 ** Events
 *****************************************************************************/

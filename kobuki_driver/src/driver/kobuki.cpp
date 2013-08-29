@@ -53,6 +53,7 @@ Kobuki::Kobuki() :
     , is_connected(false)
     , is_alive(false)
     , version_info_reminder(0)
+    , controller_info_reminder(0)
     , heading_offset(0.0/0.0)
 {
 }
@@ -81,6 +82,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
 
   // connect signals
   sig_version_info.connect(sigslots_namespace + std::string("/version_info"));
+  sig_controller_info.connect(sigslots_namespace + std::string("/controller_info"));
   sig_stream_data.connect(sigslots_namespace + std::string("/stream_data"));
   sig_raw_data_command.connect(sigslots_namespace + std::string("/raw_data_command"));
   sig_raw_data_stream.connect(sigslots_namespace + std::string("/raw_data_stream"));
@@ -122,6 +124,14 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
    *******************************************/
   version_info_reminder = 10;
   sendCommand(Command::GetVersionInfo());
+
+  /******************************************
+   ** Get Controller Info Commands
+   *******************************************/
+  controller_info_reminder = 10;
+  sendCommand(Command::GetControllerGain());
+  //sig_controller_info.emit(); //emit default gain
+
   thread.start(&Kobuki::spin, *this);
 }
 
@@ -184,6 +194,7 @@ void Kobuki::spin()
         serial.block(4000); // blocks by default, but just to be clear!
         event_manager.update(is_connected, is_alive);
         version_info_reminder = 10;
+        controller_info_reminder = 10;
       }
       catch (const ecl::StandardException &e)
       {
@@ -213,6 +224,7 @@ void Kobuki::spin()
       {
         is_alive = false;
         version_info_reminder = 10;
+        controller_info_reminder = 10;
         sig_debug.emit("Timed out while waiting for incoming bytes.");
       }
       event_manager.update(is_connected, is_alive);
@@ -242,10 +254,10 @@ void Kobuki::spin()
       lockDataAccess();
       while (data_buffer.size() > 1/*size of etx*/)
       {
-//        std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
-//        std::cout << "remains: " << data_buffer.size() << " | ";
-//        std::cout << "local_buffer: " << local_buffer.size() << " | ";
-//        std::cout << std::endl;
+        std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
+        std::cout << "remains: " << data_buffer.size() << " | ";
+        std::cout << "local_buffer: " << local_buffer.size() << " | ";
+        std::cout << std::endl;
         switch (data_buffer[0])
         {
           // these come with the streamed feedback
@@ -329,6 +341,11 @@ void Kobuki::spin()
                                      + ". Firmware: " + VersionInfo::toString(firmware.data.version));
             version_info_reminder = 0;
             break;
+          case Header::ControllerInfo:
+            controller_info.deserialise(data_buffer);
+            sig_controller_info.emit();
+            controller_info_reminder = 0;
+            break;
           default:
             if (data_buffer.size() < 3 ) { /* minimum is 3, header_id, length, etx */
               sig_error.emit("malformed subpayload detected.");
@@ -364,6 +381,7 @@ void Kobuki::spin()
             break;
         }
       }
+      std::cout << "---" << std::endl;
       unlockDataAccess();
 
       is_alive = true;
@@ -372,6 +390,7 @@ void Kobuki::spin()
       sig_stream_data.emit();
       sendBaseControlCommand(); // send the command packet to mainboard;
       if( version_info_reminder/*--*/ > 0 ) sendCommand(Command::GetVersionInfo());
+      if( controller_info_reminder/*--*/ > 0 ) sendCommand(Command::GetControllerGain());
     }
     else
     {
@@ -464,6 +483,17 @@ void Kobuki::setExternalPower(const DigitalOutput &digital_output) {
 void Kobuki::playSoundSequence(const enum SoundSequences &number)
 {
   sendCommand(Command::PlaySoundSequence(number, kobuki_command.data));
+}
+
+void Kobuki::setControllerGain(const unsigned char &type, const unsigned int &p_gain,
+                               const unsigned int &i_gain, const unsigned int &d_gain)
+{
+  sendCommand(Command::SetControllerGain(type, p_gain, i_gain, d_gain));
+}
+
+void Kobuki::getControllerGain()
+{
+  sendCommand(Command::GetControllerGain());
 }
 
 void Kobuki::setBaseControl(const double &linear_velocity, const double &angular_velocity)
