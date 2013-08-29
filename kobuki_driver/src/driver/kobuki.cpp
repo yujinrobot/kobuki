@@ -55,6 +55,7 @@ Kobuki::Kobuki() :
     , version_info_reminder(0)
     , controller_info_reminder(0)
     , heading_offset(0.0/0.0)
+    , velocity_commands_debug(4, 0)
 {
 }
 
@@ -86,6 +87,7 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_stream_data.connect(sigslots_namespace + std::string("/stream_data"));
   sig_raw_data_command.connect(sigslots_namespace + std::string("/raw_data_command"));
   sig_raw_data_stream.connect(sigslots_namespace + std::string("/raw_data_stream"));
+  sig_raw_control_command.connect(sigslots_namespace + std::string("/raw_control_command"));
   //sig_serial_timeout.connect(sigslots_namespace+std::string("/serial_timeout"));
 
   sig_debug.connect(sigslots_namespace + std::string("/ros_debug"));
@@ -525,14 +527,22 @@ void Kobuki::setBaseControl(const double &linear_velocity, const double &angular
 
 void Kobuki::sendBaseControlCommand()
 {
+  std::vector<double> velocity_commands_received;
   if( acceleration_limiter.isEnabled() ) {
-    diff_drive.velocityCommands(acceleration_limiter.limit(diff_drive.pointVelocity()));
+    velocity_commands_received=acceleration_limiter.limit(diff_drive.pointVelocity());
   } else {
-    diff_drive.velocityCommands(diff_drive.pointVelocity());
+    velocity_commands_received=diff_drive.pointVelocity();
   }
+  diff_drive.velocityCommands(velocity_commands_received);
   std::vector<short> velocity_commands = diff_drive.velocityCommands();
   //std::cout << "speed: " << velocity_commands[0] << ", radius: " << velocity_commands[1] << std::endl;
   sendCommand(Command::SetVelocityControl(velocity_commands[0], velocity_commands[1]));
+
+  //experimental; send raw control command and received command velocity
+  velocity_commands_debug=velocity_commands;
+  velocity_commands_debug.push_back((short)(velocity_commands_received[0]*1000.0));
+  velocity_commands_debug.push_back((short)(velocity_commands_received[1]*1000.0));
+  sig_raw_control_command.emit(velocity_commands_debug);
 }
 
 /**

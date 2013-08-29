@@ -76,7 +76,8 @@ KobukiRos::KobukiRos(std::string& node_name) :
     slot_error(&KobukiRos::rosError, *this),
     slot_named(&KobukiRos::rosNamed, *this),
     slot_raw_data_command(&KobukiRos::publishRawDataCommand, *this),
-    slot_raw_data_stream(&KobukiRos::publishRawDataStream, *this)
+    slot_raw_data_stream(&KobukiRos::publishRawDataStream, *this),
+    slot_raw_control_command(&KobukiRos::publishRawControlCommand, *this)
 {
   updater.setHardwareID("Kobuki");
   updater.add(battery_diagnostics);
@@ -128,6 +129,7 @@ bool KobukiRos::init(ros::NodeHandle& nh)
   slot_named.connect(name + std::string("/ros_named"));
   slot_raw_data_command.connect(name + std::string("/raw_data_command"));
   slot_raw_data_stream.connect(name + std::string("/raw_data_stream"));
+  slot_raw_control_command.connect(name + std::string("/raw_control_command"));
 
   /*********************
    ** Driver Parameters
@@ -323,6 +325,7 @@ void KobukiRos::advertiseTopics(ros::NodeHandle& nh)
   raw_imu_data_publisher = nh.advertise < sensor_msgs::Imu > ("sensors/imu_data_raw", 100);
   raw_data_command_publisher = nh.advertise< std_msgs::String > ("debug/raw_data_command", 100);
   raw_data_stream_publisher = nh.advertise< std_msgs::String > ("debug/raw_data_stream", 100);
+  raw_control_command_publisher = nh.advertise< std_msgs::Int16MultiArray > ("debug/raw_control_command", 100);
 }
 
 /**
