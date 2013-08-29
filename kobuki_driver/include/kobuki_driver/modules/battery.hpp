@@ -19,6 +19,7 @@
 
 #include <stdint.h>
 #include "../packets/core_sensors.hpp"
+#include "../macros.hpp"
 
 /*****************************************************************************
 ** Namespaces
@@ -36,7 +37,7 @@ namespace kobuki {
  * Currently hard codes the battery status. It might be useful to provide
  * some configurable parameters for this module in the future.
  **/
-class Battery {
+class kobuki_PUBLIC Battery {
 public:
   enum Source {
     None,
@@ -60,7 +61,9 @@ public:
   Level level() const;
   float percent() const;
 
-  static double capacity, low, dangerous;
+  static double capacity;
+  static double low;
+  static double dangerous;
   double voltage;
   State charging_state;
   Source charging_source;

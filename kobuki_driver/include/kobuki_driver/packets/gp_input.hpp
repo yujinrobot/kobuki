@@ -35,6 +35,7 @@ namespace kobuki
 class GpInput : public packet_handler::payloadBase
 {
 public:
+  GpInput() : packet_handler::payloadBase(false, 16) {};
   struct Data {
     Data() : analog_input(4) {}
     uint16_t digital_input;
@@ -48,13 +49,6 @@ public:
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
-    {
-      //ROS_WARN_STREAM("kobuki_node: kobuki_inertia: serialise failed. empty byte stream.");
-      return false;
-    }
-
-    unsigned char length = 2 + 2*data.analog_input.size();
     buildBytes(Header::GpInput, byteStream);
     buildBytes(length, byteStream);
     buildBytes(data.digital_input, byteStream);
@@ -62,24 +56,31 @@ public:
     {
       buildBytes(data.analog_input[i], byteStream);
     }
+    for (unsigned int i = 0; i < 3; ++i)
+    {
+      buildBytes(0x0000, byteStream); //dummy
+    }
     return true;
   }
 
   bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
+    if (byteStream.size() < length+2)
     {
-      //ROS_WARN_STREAM("kobuki_node: kobuki_inertia: deserialise failed. empty byte stream.");
+      //std::cout << "kobuki_node: kobuki_inertia: deserialise failed. not enough byte stream." << std::endl;
       return false;
     }
 
-    unsigned char header_id, length;
+    unsigned char header_id, length_packed;
     buildVariable(header_id, byteStream);
-    buildVariable(length, byteStream);
+    buildVariable(length_packed, byteStream);
+    if( header_id != Header::GpInput ) return false;
+    if( length_packed != length ) return false;
+
     buildVariable(data.digital_input, byteStream);
 
     //for (unsigned int i = 0; i < data.analog_input.size(); ++i)
-    // It's actually sending 7 16bit variables.
+    // It's actually sending seven 16-bit variables.
     // 0-3 : the analog pin inputs
     // 4 : ???
     // 5-6 : 0
@@ -91,9 +92,19 @@ public:
       uint16_t dummy;
       buildVariable(dummy, byteStream);
     }
+
+    //showMe();
+    return constrain();
+  }
+
+  bool constrain()
+  {
     return true;
   }
 
+  void showMe()
+  {
+  }
 };
 
 } // namespace kobuki

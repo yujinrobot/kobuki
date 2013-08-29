@@ -37,6 +37,7 @@ namespace kobuki
 class Eeprom : public packet_handler::payloadBase
 {
 public:
+  Eeprom() : packet_handler::payloadBase(false, 17) {};
   struct Data {
     Data() : tmp_eeprom(16) {}
     uint8_t tmp_frame_id;
@@ -45,13 +46,6 @@ public:
 
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
-    {
-      //ROS_WARN_STREAM("kobuki_node: kobuki_eeprom: serialise failed. empty byte stream.");
-      return false;
-    }
-
-    unsigned char length 1 + data.emp_eeprom.size();
     buildBytes(Header::Eeprom, byteStream);
     buildBytes(length, byteStream);
     buildBytes(data.tmp_frame_id, byteStream);
@@ -64,22 +58,35 @@ public:
 
   bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
+    if (byteStream.size() < length+2)
     {
-      //ROS_WARN_STREAM("kobuki_node: kobuki_eeprom: deserialise failed. empty byte stream.");
+      //std::cout << "kobuki_node: kobuki_eeprom: deserialise failed. not enough byte stream." << std::endl;
       return false;
     }
 
-    unsigned char header_id, length;
+    unsigned char header_id, length_packed;
     buildVariable(header_id, byteStream);
-    buildVariable(length, byteStream);
+    buildVariable(length_packed, byteStream);
+    if( header_id != Header::Eeprom ) return false;
+    if( length_packed != length ) return false;
+
     buildVariable(data.tmp_frame_id, byteStream);
     for (unsigned int i = 0; i < data.tmp_eeprom.size(); ++i)
     {
       buildVariable(data.tmp_eeprom[i], byteStream);
     }
 
+    //showMe();
+    return constrain();
+  }
+
+  bool constrain()
+  {
     return true;
+  }
+
+  void showMe()
+  {
   }
 };
 

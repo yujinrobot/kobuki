@@ -10,8 +10,8 @@ catkin_package(
                   ecl_threads ecl_geometry ecl_linear_algebra kobuki_msgs
 )
 
-include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
-include_directories(include)
+include_directories(include
+                    ${catkin_INCLUDE_DIRS})
 
 add_library(kobuki_auto_docking_ros src/auto_docking_ros.cpp src/dock_drive.cpp)
 add_library(kobuki_auto_docking_nodelet src/nodelet.cpp)

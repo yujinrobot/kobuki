@@ -8,8 +8,7 @@ catkin_package(
    CATKIN_DEPENDS ecl_mobile_robot ecl_converters ecl_devices ecl_geometry ecl_sigslots ecl_time ecl_command_line
 )
 
-include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
-include_directories(include)
+include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_subdirectory(src)
 

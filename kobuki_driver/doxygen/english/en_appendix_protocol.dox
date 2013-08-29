@@ -19,7 +19,7 @@ The @ref kobuki::Kobuki "kobuki driver" communicates with the robot by using pre
 
 @section enBytestream Structure of Bytestream
 
-A bytestream can be devided into 4 fields; Headers, Length, Payload and Checksum.
+A bytestream can be divided into 4 fields; Headers, Length, Payload and Checksum.
 
 <table>
 <tr align="center"><th>Name</th><td>Header 0</td><td>Header 1</td><td>Length</td><td>Payload</td><td>Checksum</td>
@@ -41,7 +41,7 @@ Two bytes of headers, header 0 and hader 1, are fixed value for both bytestreams
 
 @subsection enLength Length
 
-Length indicated the length of following bytes that single bytestream hold. Default size of this field is 1 byte. Length can be used to distinguish each bytestreams. Minimum value of this field is 3.
+Length indicates the length of following bytes that single bytestream hold. Default size of this field is 1 byte. Length can be used to distinguish each bytestreams. Minimum value of this field is 3.
 
 <br>
 
@@ -75,7 +75,7 @@ Payload is a consist of several sub-payloads.
 @subsubsection enStructureOfSubPayloads Structure Of Sub-Payloads
 
 @par
-Sub-payload can be devided into three parts, Header, Length and Data.
+Sub-payload can be divided into three parts; Header, Length and Data.
 
 @par
 <table>
@@ -133,9 +133,9 @@ Theoretical minimum length of entire packet(bytestream) is 7.
 Data field in Sub-payload is a mixture of below three data types; byte, short and int.
 <table>
 <tr align="center"><th>Name</th><th>Description</th><th>Byte Length</th><th>Bit Length</th><th>Data Range</th><th colspan="2">C/C++ Identifier</th></tr>
-<tr align="center"><td>Unsigned Byte</td><td>8-bit unsigned integer</td><td>1</td><td>8</td><td>0~255</td><td>unsigend char</td><td>uint8_t</td></tr>
-<tr align="center"><td>Unsigned Short</td><td>16-bit unsigned integer</td><td>2</td><td>16</td><td>0~65,535</td><td>unsigend short</td><td>uint16_t</td></tr>
-<tr align="center"><td>Unsigned Int</td><td>32-bit unsigned integer</td><td>4</td><td>32</td><td>0~4,294,967,295</td><td>unsigend int</td><td>uint32_t</td>	</tr>
+<tr align="center"><td>Unsigned Byte</td><td>8-bit unsigned integer</td><td>1</td><td>8</td><td>0~255</td><td>unsigned char</td><td>uint8_t</td></tr>
+<tr align="center"><td>Unsigned Short</td><td>16-bit unsigned integer</td><td>2</td><td>16</td><td>0~65,535</td><td>unsigned short</td><td>uint16_t</td></tr>
+<tr align="center"><td>Unsigned Int</td><td>32-bit unsigned integer</td><td>4</td><td>32</td><td>0~4,294,967,295</td><td>unsigned int</td><td>uint32_t</td>	</tr>
 </table>
 
 <br>
@@ -145,7 +145,7 @@ Data field in Sub-payload is a mixture of below three data types; byte, short an
 @subsection enSerializationDerialization Serialization-Deserialization
 <!--or encodigns?-->
 
-<a href="http://en.wikipedia.org/wiki/Serialization">Serialization</a> is the process of converting a data sturcture into a bytestream. Deserialization is reversal process. Each data types are serialized and deserialized by `<a href="http://en.wikipedia.org/wiki/Least_significant_byte">LSB</a>-First Order`. It means Least Significant Bytes will comes first on the bytestream. For example, The integer number 2,864,434,397(0xAABBCCDD) can be serialized <!-- or encoded?--> into:
+<a href="http://en.wikipedia.org/wiki/Serialization">Serialization</a> is the process of converting a data structure into a bytestream. Deserialization is reversal process. Each data types are serialized and deserialized by `<a href="http://en.wikipedia.org/wiki/Least_significant_byte">LSB</a>-First Order`. It means Least Significant Bytes will comes first on the bytestream. For example, The integer number 2,864,434,397(0xAABBCCDD) can be serialized <!-- or encoded?--> into:
 <table>
 <tr><td>0xDD</td><td>0xCC</td><td>0xBB</td><td>0xAA</td></tr>
 </table>
@@ -175,7 +175,7 @@ Here are template functions to handle it on kobuki_deriver, @ref packet_handler:
 <tr><td align="center">5</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">6</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">7</td><td><i>Reserved</i></td><td></td></tr>
-<tr><td align="center">8</td><td>Set Power</td><td>Control external powers</td></tr>
+<tr><td align="center">8</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">9</td><td>Request Extra</td><td>Request extra informations</td></tr>
 <tr><td align="center">10</td><td><i>Reserved</i></td><td></td></tr>
 <tr><td align="center">11</td><td><i>Reserved</i></td><td></td></tr>
@@ -211,7 +211,7 @@ Play custom sounds with note and duration.
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">3</td><td>0x03</td><td>Fixed</td></tr>
 <tr><th rowspan="2">Data</th><td>Note</td><td align="center">2</td><td align="center"></td><td></td><td><!--1/(f*a)-->\f$\mbox{1/}(f \cdotp a)\f$, where \f$f\f$ is frequency of sound in Hz, and \f$a\f$ is 0.00000275</td></tr>
-<tr><td>Duration</td><td align="center">1</td><td align="center"></td><td></td><td>Duration of playing note in mili-seconds</td></tr>
+<tr><td>Duration</td><td align="center">1</td><td align="center"></td><td></td><td>Duration of playing note in milli-seconds</td></tr>
 </table>
 
 @warning
@@ -236,34 +236,10 @@ Play predefined sounds by its index.
 <br>
 
 
-
-
-
-<!--- Set Power --->
-@subsection enSetPower Set Power
-
-Control the external powers; 3.3V, 5V, 12V1A, 12V5A.
-It is identical role with external power part of General Purpose Output.
-
-<table>
-<tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
-<tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">8</td><td>0x08</td><td>Fixed</td></tr>
-<tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
-<tr><th>Data</th><td>Power control flags</td><td align="center">2</td><td align="center"></td><td></td><td>Set the flags to turn on external powers<br>0x01 for external power 3.3V ch.<br>0x02 for external power 5V ch.<br>0x04 for external power 12V1A ch.<br>0x08 for external power 12V5A ch.</td></tr>
-</table>
-
-@warning
-This command is implemented on the kobuki with firmware, but not implemented yet on driver software(kobuki_driver).
-
-@sa @ref enGeneralPurposeOutput
-
-<br>
-
-
 <!--- Request Extra --->
 @subsection enRequestExtra Request Extra
 
-Request extra data from robot. Especially version info of kobuki; Hardware Version, Firmware Version and Unique Deivce IDentifier(UDID)
+Request extra data from robot. Especially version info of kobuki; Hardware Version, Firmware Version and Unique Device IDentifier(UDID)
 
 UDID is unique to device. so can be used to identify on multiple robots.
 
@@ -271,7 +247,7 @@ UDID is unique to device. so can be used to identify on multiple robots.
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">9</td><td>0x09</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
-<tr><th>Data</th><td>Reqeust flags</td><td align="center">2</td><td align="center"></td><td></td><td>Set the flags to request extra data<br>0x01 for Hardware Version<br>0x02 for Firmware Version<br>0x08 for Unique Device ID</td></tr>
+<tr><th>Data</th><td>Request flags</td><td align="center">2</td><td align="center"></td><td></td><td>Set the flags to request extra data<br>0x01 for Hardware Version<br>0x02 for Firmware Version<br>0x08 for Unique Device ID</td></tr>
 </table>
 
 @sa @ref enHardwareVersion @ref enFirmwareVersion,  @ref enUniqueDeviceIDentifier
@@ -290,10 +266,8 @@ This command has multiple roles. It controls LEDs, digital outputs and external 
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">12</td><td>0x0C</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">2</td><td>0x02</td><td>Fixed</td></tr>
-<tr><th>Data</th><td>Digital output flags</td><td align="center">2</td><td align="center"></td><td></td><td>Set the flags to set high on output pins of expansion port<br>0x0001 for digital output ch. 0<br>0x0002 for digital output ch. 1<br>0x0004 for digital output ch. 2<br>0x0008 for digital output ch. 3<br><br>Set the flags to turn on external powers<br>0x0010 for external power 3.3V ch.<br>0x0020 for external power 5V ch.<br>0x0040 for external power 12V1A ch.<br>0x0080 for external power 12V5A ch.<br><br>Set the flags to turn on LEDs<br>0x0100 for red colour of LED1<br>0x0200 for green colour of LED1<br>0x0400 for red colour of LED2<br>0x0800 for green colour of LED2<br></td></tr>
+<tr><th>Data</th><td>Digital output flags</td><td align="center">2</td><td align="center"></td><td></td><td>Set the flags to set high on output pins of expansion port<br>0x0001 for digital output ch. 0<br>0x0002 for digital output ch. 1<br>0x0004 for digital output ch. 2<br>0x0008 for digital output ch. 3<br><br>Set the flags to turn on external powers<br>0x0010 for external power 3.3V ch.<br>0x0020 for external power 5V ch.<br>0x0040 for external power 12V/5A ch.<br>0x0080 for external power 12V/1.5A ch.<br><br>Set the flags to turn on LEDs<br>0x0100 for red colour of LED1<br>0x0200 for green colour of LED1<br>0x0400 for red colour of LED2<br>0x0800 for green colour of LED2<br></td></tr>
 </table>
-
-@sa @ref enSetPower
 
 <br>
 
@@ -353,12 +327,12 @@ Basic core sensor data. <!--Robot will sends this data periodically from power o
 <tr><td>Cliff</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when cliff is detected<br>0x01 for right cliff sensor<br>0x02 for central cliff sensor<br>0x04 for left cliff sensor</td></tr>
 <tr height="30"><td>Left encoder</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="2">Accumulated encoder data of left and right wheels in ticks<br>Increments of this value means forward direction<br>It circulates from 0 to 65535</td></tr>
 <tr height="30"><td>Right encoder</td><td align="center">2</td><td align="center"></td><td></td></tr>
-<tr height="30"><td>Left PWM</td><td align="center">1</td><td align="center"></td><td></td><td rowspan="2">PWM value that applied to left and right wheel motor<br>This data should be converted signed type to represent correctly<br>Negative sign indicated backward direction</td></tr>
+<tr height="30"><td>Left PWM</td><td align="center">1</td><td align="center"></td><td></td><td rowspan="2">PWM value that applied to left and right wheel motor<br>This data should be converted signed type to represent correctly<br>Negative sign indicates backward direction</td></tr>
 <tr height="30"><td>Right PWM</td><td align="center">1</td><td align="center"></td><td></td></tr>
 <tr><td>Button</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when button is pressed<br>0x01 for Button 0<br>0x02 for Button 1<br>0x04 for Button 2</td></tr>
 <tr><td>Charger</td><td align="center">1</td><td align="center"></td><td></td><td>0 for DISCHARGING state<br>2 for DOCKING_CHARGED state<br>6 for DOCKING_CHARGING state<br>18 for ADAPTER_CHARGED state<br>22 for ADAPTER_CHARGING state</td></tr>
 <tr><td>Battery</td><td align="center">1</td><td align="center"></td><td></td><td>Voltage of battery in 0.1 V<br>Typically 16.7 V when fully charged</td></tr>
-<tr><td>Over current flags</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when over current is detected<br>0x01 for left wheel<br>0x02 for right wheel</td></tr>
+<tr><td>Overcurrent flags</td><td align="center">1</td><td align="center"></td><td></td><td>Flag will be setted when overcurrent is detected<br>0x01 for left wheel<br>0x02 for right wheel</td></tr>
 </table>
 
 @note
@@ -427,7 +401,7 @@ This sub-payload will be sent by default.
 
 @subsection enCliffSensorData Cliff Sensor Data
 
-This sub-payload provides <a href="http://en.wikipedia.org/wiki/Analog-to-digital_converter">ADC</a> data of <a href="http://en.wikipedia.org/wiki/Position_sensitive_device">PSD</a>, which is facing the floor. <!-- part name is GP2Y0A51SK0F -->
+This sub-payload provides <a href="http://en.wikipedia.org/wiki/Analog-to-digital_converter">ADC</a> data of <a href="http://en.wikipedia.org/wiki/Position_sensitive_device">PSD</a> sensor, which is facing the floor. <!-- part name is GP2Y0A51SK0F -->
 
 This value is related with distance between sensor and floor surface. See the <a href="http://www.beck-elektronik.de/fileadmin/templates/beck_folder/opto/sensor/sharp/analog-gp2y0a51sk0f.pdf">datasheet</a> for more detailed information.
 
@@ -437,7 +411,7 @@ This data also available in the Cliff field of @ref enBasicSensorData , as a boo
 <tr><th></th><th>Name</th><th width="40">Size</th><th width="40">Value</th><th>Value in Hex</th><th>Description</th></tr>
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">5</td><td>0x05</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">6</td><td>0x06</td><td>Fixed</td></tr>
-<tr><th rowspan="3">Data</th><td>Right cliff sensor</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="3">ADC output of each PSD<br>Data range: 0 ~ 4095<br>Distance range: 2 ~ 15 cm<br>Distance is non-linear</td></tr>
+<tr><th rowspan="3">Data</th><td>Right cliff sensor</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="3">ADC output of each PSD<br>Data range: 0 ~ 4095 (0 ~ 3.3V)<br>Distance range: 2 ~ 15 cm<br>Distance is not linear w.r.t. ADC output.<br>See the <a href="http://www.beck-elektronik.de/fileadmin/templates/beck_folder/opto/sensor/sharp/analog-gp2y0a51sk0f.pdf">datasheet</a> for more detail.</td></tr>
 <tr><td>Central cliff sensor</td><td align="center">2</td><td align="center"></td><td></td></tr>
 <tr><td>Left cliff sensor</td><td align="center">2</td><td align="center"></td><td></td></tr>
 </table>
@@ -572,7 +546,7 @@ angular_velocity.z =   digit_to_dps * (short)raw_gyro_data.z;
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">16</td><td>0x10</td><td>Fixed</td></tr>
 <tr><th rowspan="8">Data</th><td>Digital input</td><td align="center">2</td><td align="center"></td><td></td><td>Flag will be setted, when high voltage is applied<br>0x01 for digital input ch. 0<br>0x02 for digital input ch. 1<br>0x04 for digital input ch. 2<br>0x08 for input output ch. 3</td></tr>
-<tr><td>Analog input ch.0</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="4">12-bit ADC output of each channel<br>Data range: 0 ~ 4095(2^12-1)<br>Conversion voltage range: 0 ~ 3.3 V</td></tr>
+<tr><td>Analog input ch.0</td><td align="center">2</td><td align="center"></td><td></td><td rowspan="4">12-bit ADC output of each channel<br>Data range: 0 ~ 4095(2^12-1)<br>Voltage range: 0 ~ 3.3 V</td></tr>
 <tr><td>Analog input ch.1</td><td align="center">2</td><td align="center"></td><td></td></tr>
 <tr><td>Analog input ch.2</td><td align="center">2</td><td align="center"></td><td></td></tr>
 <tr><td>Analog input ch.3</td><td align="center">2</td><td align="center"></td><td></td></tr>

@@ -1,6 +1,6 @@
 /**
  * @file /include/kobuki_driver/packets/unique_device_id.hpp
- * @author Younghun Ju <younghoon.ju@rnd.yujinrobot.com> <yhju83@gmail.com>
+ * @author Younghun Ju <yhju@yujinrobot.com> <yhju83@gmail.com>
  * @brief Module for handling of unique device id request packet payloads.
  *
  * License: BSD
@@ -34,6 +34,8 @@ namespace kobuki
 class UniqueDeviceID : public packet_handler::payloadBase
 {
 public:
+  UniqueDeviceID() : packet_handler::payloadBase(false, 12) {};
+
   struct Data {
     uint32_t udid0;
     uint32_t udid1;
@@ -43,13 +45,6 @@ public:
   // methods
   bool serialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
-    {
-      printf("kobuki_node: kobuki_udid: serialise failed. empty byte stream.");
-      return false;
-    }
-
-    unsigned char length = 12;
     buildBytes(Header::UniqueDeviceID, byteStream);
     buildBytes(length, byteStream);
     buildBytes(data.udid0, byteStream);
@@ -60,15 +55,18 @@ public:
 
   bool deserialise(ecl::PushAndPop<unsigned char> & byteStream)
   {
-    if (!(byteStream.size() > 0))
+    if (byteStream.size() < length+2)
     {
-      printf("kobuki_node: kobuki_udid: deserialise failed. empty byte stream.");
+      //std::cout << "kobuki_node: kobuki_udid: deserialise failed. not enough byte stream." << std::endl;
       return false;
     }
 
-    unsigned char header_id, length;
+    unsigned char header_id, length_packed;
     buildVariable(header_id, byteStream);
-    buildVariable(length, byteStream);
+    buildVariable(length_packed, byteStream);
+    if( header_id != Header::UniqueDeviceID ) return false;
+    if( length_packed != length ) return false;
+
     buildVariable(data.udid0, byteStream);
     buildVariable(data.udid1, byteStream);
     buildVariable(data.udid2, byteStream);
@@ -84,7 +82,6 @@ public:
 
   void showMe()
   {
-    //printf("--[%02x || %03d | %03d | %03d]\n", data.bump, acc[2], acc[1], acc[0] );
   }
 };
 

@@ -15,8 +15,7 @@ catkin_package(
    DEPENDS libusb-dev libftdi-dev ftdi-eeprom
 )
 
-include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
-include_directories(include)
+include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_subdirectory(src)
 

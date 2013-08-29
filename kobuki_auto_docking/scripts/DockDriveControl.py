@@ -32,7 +32,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-# Author: Younghun Ju <younghoon.hju@rnd.yujinrobot.com> <yhju83@gmail.com>
+# Author: Younghun Ju <yhju@yujinrobot.com> <yhju83@gmail.com>
 
 import roslib; roslib.load_manifest('kobuki_auto_docking')
 import rospy

@@ -57,6 +57,7 @@
 #include <kobuki_msgs/ButtonEvent.h>
 #include <kobuki_msgs/BumperEvent.h>
 #include <kobuki_msgs/CliffEvent.h>
+#include <kobuki_msgs/ControllerInfo.h>
 #include <kobuki_msgs/DigitalOutput.h>
 #include <kobuki_msgs/DigitalInputEvent.h>
 #include <kobuki_msgs/ExternalPower.h>
@@ -102,13 +103,14 @@ private:
   /*********************
    ** Ros Comms
    **********************/
-  ros::Publisher version_info_publisher;
+  ros::Publisher version_info_publisher, controller_info_publisher;
   ros::Publisher imu_data_publisher, sensor_state_publisher, joint_state_publisher, dock_ir_publisher, raw_imu_data_publisher;
   ros::Publisher button_event_publisher, input_event_publisher, robot_event_publisher;
   ros::Publisher bumper_event_publisher, cliff_event_publisher, wheel_event_publisher, power_event_publisher;
   ros::Publisher raw_data_command_publisher, raw_data_stream_publisher;
 
   ros::Subscriber velocity_command_subscriber, digital_output_command_subscriber, external_power_command_subscriber;
+  ros::Subscriber controller_info_command_subscriber;
   ros::Subscriber led1_command_subscriber, led2_command_subscriber, sound_command_subscriber;
   ros::Subscriber motor_power_subscriber, reset_odometry_subscriber;
 
@@ -126,12 +128,14 @@ private:
   void subscribeResetOdometry(const std_msgs::EmptyConstPtr);
   void subscribeSoundCommand(const kobuki_msgs::SoundConstPtr);
   void subscribeMotorPower(const kobuki_msgs::MotorPowerConstPtr msg);
+  void subscribeControllerInfoCommand(const kobuki_msgs::ControllerInfoConstPtr msg);
 
   /*********************
    ** SigSlots
    **********************/
   ecl::Slot<const VersionInfo&> slot_version_info;
   ecl::Slot<> slot_stream_data;
+  ecl::Slot<> slot_controller_info;
   ecl::Slot<const ButtonEvent&> slot_button_event;
   ecl::Slot<const BumperEvent&> slot_bumper_event;
   ecl::Slot<const CliffEvent&>  slot_cliff_event;
@@ -153,6 +157,7 @@ private:
   void publishSensorState();
   void publishDockIRData();
   void publishVersionInfo(const VersionInfo &version_info);
+  void publishControllerInfo();
   void publishButtonEvent(const ButtonEvent &event);
   void publishBumperEvent(const BumperEvent &event);
   void publishCliffEvent(const CliffEvent &event);

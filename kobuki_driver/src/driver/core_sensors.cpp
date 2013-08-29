@@ -26,12 +26,6 @@ namespace kobuki {
 
 bool CoreSensors::serialise(ecl::PushAndPop<unsigned char> & byteStream)
 {
-  if (!(byteStream.size() > 0))
-  {
-    //ROS_WARN_STREAM("kobuki_node: kobuki_default: serialise failed. empty byte stream.");
-    return false;
-  }
-  unsigned char length = 15;
   buildBytes(Header::CoreSensors, byteStream);
   buildBytes(length, byteStream);
   buildBytes(data.time_stamp, byteStream);	//2
@@ -51,15 +45,18 @@ bool CoreSensors::serialise(ecl::PushAndPop<unsigned char> & byteStream)
 }
 bool CoreSensors::deserialise(ecl::PushAndPop<unsigned char> & byteStream)
 {
-  if (!(byteStream.size() > 0))
+  if (byteStream.size() < length+2)
   {
-    //ROS_WARN_STREAM("kobuki_node: kobuki_default: deserialise failed. empty byte stream.");
+    //std::cout << "kobuki_node: kobuki_default: deserialise failed. not enough byte stream." << std::endl;
     return false;
   }
 
-  unsigned char header_id, length;
+  unsigned char header_id, length_packed;
   buildVariable(header_id, byteStream);
-  buildVariable(length, byteStream);
+  buildVariable(length_packed, byteStream);
+  if( header_id != Header::CoreSensors ) return false;
+  if( length_packed != length ) return false;
+
   buildVariable(data.time_stamp, byteStream);
   buildVariable(data.bumper, byteStream);
   buildVariable(data.wheel_drop, byteStream);

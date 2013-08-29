@@ -12,7 +12,6 @@ from math import degrees, radians
 ##############################################################################
 # Ros Imports
 ##############################################################################
-import roslib; roslib.load_manifest('kobuki_testsuite')
 import rospy
 from tf.transformations import euler_from_quaternion
 from geometry_msgs.msg import Twist
