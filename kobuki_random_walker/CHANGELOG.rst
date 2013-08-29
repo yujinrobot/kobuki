@@ -2,14 +2,9 @@
 Changelog for package kobuki_random_walker
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.4.x - hydro, unstable
-=======================
-
-Forthcoming
------------
-
-0.4.0 (2013-08-09)
+0.5.0 (2013-08-29)
 ------------------
+* adds new random walker controller
 
 
 Previous versions, bugfixing

@@ -2,11 +2,12 @@
 Changelog for package kobuki_controller_tutorial
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.4.x - hydro, unstable
-=======================
-
-Forthcoming
------------
+0.5.0 (2013-08-29)
+------------------
+* kobuki : Added extra url info on all packages.
+* adds standalone launcher for testing
+* Fix URL to the previous changelog wiki
+* Changelogs at package level
 
 0.4.0 (2013-08-09)
 ------------------
