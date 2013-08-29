@@ -252,11 +252,11 @@ void Kobuki::spin()
       lockDataAccess();
       while (data_buffer.size() > 0)
       {
-        std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
-        std::cout << "length: " << (unsigned int)data_buffer[1] << " | ";
-        std::cout << "remains: " << data_buffer.size() << " | ";
-        std::cout << "local_buffer: " << local_buffer.size() << " | ";
-        std::cout << std::endl;
+        //std::cout << "header_id: " << (unsigned int)data_buffer[0] << " | ";
+        //std::cout << "length: " << (unsigned int)data_buffer[1] << " | ";
+        //std::cout << "remains: " << data_buffer.size() << " | ";
+        //std::cout << "local_buffer: " << local_buffer.size() << " | ";
+        //std::cout << std::endl;
         switch (data_buffer[0])
         {
           // these come with the streamed feedback
@@ -350,7 +350,7 @@ void Kobuki::spin()
             break;
         }
       }
-      std::cout << "---" << std::endl;
+      //std::cout << "---" << std::endl;
       unlockDataAccess();
 
       is_alive = true;
