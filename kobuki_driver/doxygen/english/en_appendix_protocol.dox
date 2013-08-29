@@ -284,9 +284,9 @@ Set PID gain of wheel velocity controller of robot.
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">13</td><td>0x0D</td><td>Fixed</td></tr>
 <tr><th rowspan="4">Data</th><td>Type</td><td align="center">1</td><td align="center"></td><td></td><td>0 for factory-default PID gain<br>1 for user-configured PID gain</td></tr>
-<tr><td>P gain</td><td align="center">4</td><td align="center"></td><td></td><td>Kp * 1000</td></tr>
-<tr><td>I gain</td><td align="center">4</td><td align="center"></td><td></td><td>Ki * 1000</td></tr>
-<tr><td>D gain</td><td align="center">4</td><td align="center"></td><td></td><td>Kd * 1000</td></tr>
+<tr><td>P gain</td><td align="center">4</td><td align="center"></td><td></td><td>Kp * 1000 (default: 100*1000)</td></tr>
+<tr><td>I gain</td><td align="center">4</td><td align="center"></td><td></td><td>Ki * 1000 (default: 0.1*1000)</td></tr>
+<tr><td>D gain</td><td align="center">4</td><td align="center"></td><td></td><td>Kd * 1000 (default: 2*1000)</td></tr>
 </table>
 
 <br>
@@ -630,9 +630,9 @@ Contains PID gain of wheel velocity controller of robot.
 <tr><th>Header</th><td>Identifier</td><td align="center">1</td><td align="center">1</td><td>0x01</td><td>Fixed</td></tr>
 <tr><th>Length</th><td>Size of data field</td><td align="center">1</td><td align="center">21</td><td>0x15</td><td>Fixed</td></tr>
 <tr><th rowspan="4">Data</th><td>Type</td><td align="center">1</td><td align="center"></td><td></td><td>Current controller setup<br>0 for factory-default PID gain<br>1 for user-configured PID gain</td></tr>
-<tr><td>P gain</td><td align="center">4</td><td align="center"></td><td></td><td>Kp * 1000</td></tr>
-<tr><td>I gain</td><td align="center">4</td><td align="center"></td><td></td><td>Ki * 1000</td></tr>
-<tr><td>D gain</td><td align="center">4</td><td align="center"></td><td></td><td>Kd * 1000</td></tr>
+<tr><td>P gain</td><td align="center">4</td><td align="center"></td><td></td><td>Kp * 1000 (default: 100*1000)</td></tr>
+<tr><td>I gain</td><td align="center">4</td><td align="center"></td><td></td><td>Ki * 1000 (default: 0.1*1000)</td></tr>
+<tr><td>D gain</td><td align="center">4</td><td align="center"></td><td></td><td>Kd * 1000 (default: 2*1000)</td></tr>
 </table>
 
 <br>
