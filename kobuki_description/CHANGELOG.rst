@@ -2,8 +2,10 @@
 Changelog for package kobuki_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.3 (2013-08-30)
+------------------
+* disables vertical rays for the cliff sensors
+* slightly increases collision model for the base
 
 0.5.0 (2013-08-29)
 ------------------

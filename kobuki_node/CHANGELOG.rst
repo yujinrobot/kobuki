@@ -2,8 +2,9 @@
 Changelog for package kobuki_node
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.3 (2013-08-30)
+------------------
+* adds view robot launcher
 
 0.5.0 (2013-08-29)
 ------------------

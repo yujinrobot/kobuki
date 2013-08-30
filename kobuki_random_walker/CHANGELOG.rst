@@ -2,8 +2,9 @@
 Changelog for package kobuki_random_walker
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.3 (2013-08-30)
+------------------
+* removes log output
 
 0.5.0 (2013-08-29)
 ------------------

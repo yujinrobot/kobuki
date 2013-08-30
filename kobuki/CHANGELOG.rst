@@ -2,8 +2,9 @@
 Changelog for package kobuki
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.3 (2013-08-30)
+------------------
+* ros and non-ros stack split, driver, ftdi and auto-docking (partial) gone to kobuki_core
 
 0.5.0 (2013-08-29)
 ------------------
