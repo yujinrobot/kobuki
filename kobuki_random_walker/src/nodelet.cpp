@@ -4,7 +4,7 @@
  * @brief Nodelet implementation of the BumpBlinkController
  *
  * License: BSD
- *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_random_walker/LICENSE
+ *   https://raw.github.com/yujinrobot/kobuki/hydro-devel/kobuki_random_walker/LICENSE
  **/
 
 /*****************************************************************************
