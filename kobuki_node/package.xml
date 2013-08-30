@@ -71,6 +71,7 @@
 
    <!--  For Tests -->
   <run_depend>rospy</run_depend>
+  <run_depend>rviz</run_depend>
   
   <export>
     <nodelet plugin="${prefix}/plugins/nodelet_plugins.xml" />
