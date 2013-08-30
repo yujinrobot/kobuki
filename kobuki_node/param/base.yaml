@@ -1,4 +1,3 @@
-
 ##############################################################################
 # Firmware Source
 ##############################################################################
@@ -22,7 +21,7 @@ battery_dangerous: 13.2
 cmd_vel_timeout: 0.6
 
 # Causes node to publish TF for odom_frame to base_frame. Disable only if you plan to use robot_pose_ekf
-(see use_imu_heading description) (bool, default: true)
+# (see use_imu_heading description) (bool, default: true)
 publish_tf: true
 
 # Use imu readings for heading instead of encoders. That's the normal operation mode for Kobuki, as its
