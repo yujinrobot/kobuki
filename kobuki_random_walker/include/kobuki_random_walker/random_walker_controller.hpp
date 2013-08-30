@@ -4,7 +4,7 @@
  * @brief A controller implementing a simple random walker algorithm
  *
  * License: BSD
- *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_random_walker/LICENSE
+ *   https://raw.github.com/yujinrobot/kobuki/hydro-devel/kobuki_random_walker/LICENSE
  **/
 
 /*****************************************************************************

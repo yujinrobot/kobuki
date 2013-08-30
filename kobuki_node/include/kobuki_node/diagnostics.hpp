@@ -4,7 +4,7 @@
  * @brief Diagnostics for the kobuki node.
  *
  * License: BSD
- *   https://raw.github.com/yujinrobot/kobuki/master/kobuki_node/LICENSE
+ *   https://raw.github.com/yujinrobot/kobuki/hydro-devel/kobuki_node/LICENSE
  **/
 /*****************************************************************************
 ** Ifdefs
