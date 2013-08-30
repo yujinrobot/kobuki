@@ -409,8 +409,6 @@ void RandomWalkerController::spin()
       turning_ = true;
       ROS_INFO_STREAM("Will rotate " << turning_direction_ * turning_duration_.toSec() * vel_ang_ / M_PI * 180
                       << " degrees. [" << name_ << "]");
-      ROS_INFO_STREAM("turning_direction: " << turning_direction_
-                      << " turning_duration: " << turning_duration_ <<" [" << name_ << "]");
     }
 
     if (turning_)

@@ -54,12 +54,14 @@
 	            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
 	            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
 	          </horizontal>
-	          <vertical>
-	            <samples>50</samples>
-	            <resolution>1.0</resolution>
-	            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
-	            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
-	          </vertical>
+<!--            Can't use vertical rays until this bug is resolved: -->
+<!--            https://bitbucket.org/osrf/gazebo/issue/509/vertical-sensor-doesnt-works -->
+<!-- 	          <vertical> -->
+<!-- 	            <samples>50</samples> -->
+<!-- 	            <resolution>1.0</resolution> -->
+<!-- 	            <min_angle>-0.0436</min_angle>  -2.5 degree -->
+<!-- 	            <max_angle>0.0436</max_angle> 2.5 degree -->
+<!-- 	          </vertical> -->
 	        </scan>
 	        <range>
 	          <min>0.01</min>
@@ -83,12 +85,14 @@
 	            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
 	            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
 	          </horizontal>
-	          <vertical>
-	            <samples>50</samples>
-	            <resolution>1.0</resolution>
-	            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
-	            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
-	          </vertical>
+<!--            Can't use vertical rays until this bug is resolved: -->
+<!--            https://bitbucket.org/osrf/gazebo/issue/509/vertical-sensor-doesnt-works -->
+<!-- 	          <vertical> -->
+<!-- 	            <samples>50</samples> -->
+<!-- 	            <resolution>1.0</resolution> -->
+<!-- 	            <min_angle>-0.0436</min_angle>  -2.5 degree -->
+<!-- 	            <max_angle>0.0436</max_angle> 2.5 degree -->
+<!-- 	          </vertical> -->
 	        </scan>
 	        <range>
 	          <min>0.01</min>
@@ -112,12 +116,14 @@
 	            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
 	            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
 	          </horizontal>
-	          <vertical>
-	            <samples>50</samples>
-	            <resolution>1.0</resolution>
-	            <min_angle>-0.0436</min_angle>  <!-- -2.5 degree -->
-	            <max_angle>0.0436</max_angle> <!-- 2.5 degree -->
-	          </vertical>
+<!-- 	          Can't use vertical rays until this bug is resolved: -->
+<!--            https://bitbucket.org/osrf/gazebo/issue/509/vertical-sensor-doesnt-works -->
+<!-- 	          <vertical> -->
+<!-- 	            <samples>50</samples> -->
+<!-- 	            <resolution>1.0</resolution> -->
+<!-- 	            <min_angle>-0.0436</min_angle>  -2.5 degree -->
+<!-- 	            <max_angle>0.0436</max_angle> 2.5 degree -->
+<!-- 	          </vertical> -->
 	        </scan>
 	        <range>
 	          <min>0.01</min>

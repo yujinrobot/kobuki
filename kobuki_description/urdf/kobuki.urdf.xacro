@@ -39,7 +39,7 @@
       </visual>
       <collision>
         <geometry>
-          <cylinder length="0.10938" radius="0.176"/>
+          <cylinder length="0.10938" radius="0.178"/>
         </geometry>
         <origin xyz="0.0 0 0.05949" rpy="0 0 0"/>
       </collision>
