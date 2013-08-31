@@ -163,6 +163,9 @@ ecl\-::\-Signal$<$ const std\-::string \& $>$ {\bf sig\-\_\-info}
 ecl\-::\-Signal$<$ const std\-::vector\*
 $<$ std\-::string $>$ \& $>$ {\bf sig\-\_\-named}
 \item 
+ecl\-::\-Signal$<$ const std\-::vector\*
+$<$ short $>$ \& $>$ {\bf sig\-\_\-raw\-\_\-control\-\_\-command}
+\item 
 ecl\-::\-Signal$<$ {\bf \-Command\-::\-Buffer} \& $>$ {\bf sig\-\_\-raw\-\_\-data\-\_\-command}
 \item 
 ecl\-::\-Signal\*
@@ -179,6 +182,8 @@ ecl\-::\-Thread {\bf thread}
 {\bf \-Three\-Axis\-Gyro} {\bf three\-\_\-axis\-\_\-gyro}
 \item 
 {\bf \-Unique\-Device\-I\-D} {\bf unique\-\_\-device\-\_\-id}
+\item 
+std\-::vector$<$ short $>$ {\bf velocity\-\_\-commands\-\_\-debug}
 \item 
 int {\bf version\-\_\-info\-\_\-reminder}
 \end{DoxyCompactItemize}
@@ -214,7 +219,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )}\label{classkobuki_1_1Kobuki_a22de83f3db0db6dff0647299bbc5f90e}
 \-Shutdown the driver -\/ make sure we wait for the thread to finish. 
 
-\-Definition at line 64 of file kobuki.\-cpp.
+\-Definition at line 65 of file kobuki.\-cpp.
 
 
 
@@ -239,7 +244,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )}\label{classkobuki_1_1Kobuki_a9e4447e3b2bb177155ee681daccdc274}
 \-Disable power to the motors. 
 
-\-Definition at line 584 of file kobuki.\-cpp.
+\-Definition at line 594 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!enable@{enable}}
 \index{enable@{enable}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -250,7 +255,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )}\label{classkobuki_1_1Kobuki_afa7f47487ef0224c1ce79f2d70de233b}
 \-Enable power to the motors. 
 
-\-Definition at line 578 of file kobuki.\-cpp.
+\-Definition at line 588 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!fix\-Payload@{fix\-Payload}}
 \index{fix\-Payload@{fix\-Payload}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -261,7 +266,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )}\label{classkobuki_1_1Kobuki_a8300b9e468ea77063421953a711b3eef}
 
 
-\-Definition at line 377 of file kobuki.\-cpp.
+\-Definition at line 379 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!get\-Angular\-Velocity@{get\-Angular\-Velocity}}
 \index{get\-Angular\-Velocity@{get\-Angular\-Velocity}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -272,7 +277,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 ) const}\label{classkobuki_1_1Kobuki_a2a64a16a6c4b587627f5a304359ec641}
 
 
-\-Definition at line 424 of file kobuki.\-cpp.
+\-Definition at line 426 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!get\-Cliff\-Data@{get\-Cliff\-Data}}
 \index{get\-Cliff\-Data@{get\-Cliff\-Data}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -294,7 +299,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )}\label{classkobuki_1_1Kobuki_acdc18337219b79cf202c3b4178ff62fa}
 
 
-\-Definition at line 507 of file kobuki.\-cpp.
+\-Definition at line 509 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!get\-Controller\-Info\-Data@{get\-Controller\-Info\-Data}}
 \index{get\-Controller\-Info\-Data@{get\-Controller\-Info\-Data}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -360,7 +365,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 ) const}\label{classkobuki_1_1Kobuki_af72c123e33ca1882f25800c9af5fb717}
 
 
-\-Definition at line 416 of file kobuki.\-cpp.
+\-Definition at line 418 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!get\-Inertia\-Data@{get\-Inertia\-Data}}
 \index{get\-Inertia\-Data@{get\-Inertia\-Data}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -396,7 +401,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )}\label{classkobuki_1_1Kobuki_a70e163fcf282a169a1c1c7cbb8564294}
 
 
-\-Definition at line 442 of file kobuki.\-cpp.
+\-Definition at line 444 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!init@{init}}
 \index{init@{init}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -407,7 +412,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )  throw (ecl\-::\-Standard\-Exception)}\label{classkobuki_1_1Kobuki_a0648c958434e641d4573721541099ee4}
 
 
-\-Definition at line 72 of file kobuki.\-cpp.
+\-Definition at line 73 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!is\-Alive@{is\-Alive}}
 \index{is\-Alive@{is\-Alive}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -453,7 +458,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 
 \-If instead you just want to poll kobuki, then you should lock and unlock the data access around any get\-X\-X\-X calls. 
 
-\-Definition at line 153 of file kobuki.\-cpp.
+\-Definition at line 155 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!log@{log}}
 \index{log@{log}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -464,7 +469,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )\hspace{0.3cm}{\ttfamily  [inline, private]}}\label{classkobuki_1_1Kobuki_a1eba78f120487d8435329e8ac48e6d94}
 
 
-\-Definition at line 242 of file kobuki.\-hpp.
+\-Definition at line 243 of file kobuki.\-hpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!log@{log}}
 \index{log@{log}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -476,7 +481,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )\hspace{0.3cm}{\ttfamily  [inline, private]}}\label{classkobuki_1_1Kobuki_ac4a953899d74f6eb56b33af25bf7ff9a}
 
 
-\-Definition at line 243 of file kobuki.\-hpp.
+\-Definition at line 244 of file kobuki.\-hpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!log@{log}}
 \index{log@{log}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -489,7 +494,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )\hspace{0.3cm}{\ttfamily  [inline, private]}}\label{classkobuki_1_1Kobuki_a2a0246d757ab0a2bb53e06dfde77e8ab}
 
 
-\-Definition at line 244 of file kobuki.\-hpp.
+\-Definition at line 245 of file kobuki.\-hpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!play\-Sound\-Sequence@{play\-Sound\-Sequence}}
 \index{play\-Sound\-Sequence@{play\-Sound\-Sequence}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -500,7 +505,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )}\label{classkobuki_1_1Kobuki_afaf3bd9ab3e781fec84200041ed95f30}
 
 
-\-Definition at line 487 of file kobuki.\-cpp.
+\-Definition at line 489 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!print\-Sig\-Slot\-Connections@{print\-Sig\-Slot\-Connections}}
 \index{print\-Sig\-Slot\-Connections@{print\-Sig\-Slot\-Connections}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -515,7 +520,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 
 \-This includes both the kobuki driver signals as well as externally connected slots. \-Useful for when you need to check if any of your connections are dangling (often happens when you typo the name of the sigslots connection). 
 
-\-Definition at line 600 of file kobuki.\-cpp.
+\-Definition at line 610 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!reset\-Odometry@{reset\-Odometry}}
 \index{reset\-Odometry@{reset\-Odometry}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -526,7 +531,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )}\label{classkobuki_1_1Kobuki_a9a8e7a0dfa5c9fd447d2791217ca1bca}
 
 
-\-Definition at line 434 of file kobuki.\-cpp.
+\-Definition at line 436 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!send\-Base\-Control\-Command@{send\-Base\-Control\-Command}}
 \index{send\-Base\-Control\-Command@{send\-Base\-Control\-Command}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -537,7 +542,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a78ca3419d9dc80e954f8feaecc2c0c0c}
 
 
-\-Definition at line 526 of file kobuki.\-cpp.
+\-Definition at line 528 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!send\-Command@{send\-Command}}
 \index{send\-Command@{send\-Command}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -559,7 +564,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 \end{DoxyParams}
 
 
-\-Definition at line 548 of file kobuki.\-cpp.
+\-Definition at line 558 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!set\-Base\-Control@{set\-Base\-Control}}
 \index{set\-Base\-Control@{set\-Base\-Control}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -571,7 +576,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )}\label{classkobuki_1_1Kobuki_af016306e3114daf0c61ffbaae0b3d1a0}
 
 
-\-Definition at line 521 of file kobuki.\-cpp.
+\-Definition at line 523 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!set\-Controller\-Gain@{set\-Controller\-Gain}}
 \index{set\-Controller\-Gain@{set\-Controller\-Gain}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -585,7 +590,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )}\label{classkobuki_1_1Kobuki_a823260e89ce7e35fe1c721e3be1ec832}
 
 
-\-Definition at line 492 of file kobuki.\-cpp.
+\-Definition at line 494 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!set\-Digital\-Output@{set\-Digital\-Output}}
 \index{set\-Digital\-Output@{set\-Digital\-Output}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -596,7 +601,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )}\label{classkobuki_1_1Kobuki_a188d1db38aa059f96e3bfb0879b244f8}
 
 
-\-Definition at line 474 of file kobuki.\-cpp.
+\-Definition at line 476 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!set\-External\-Power@{set\-External\-Power}}
 \index{set\-External\-Power@{set\-External\-Power}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -607,7 +612,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )}\label{classkobuki_1_1Kobuki_a53a52a4a94507afe3ce30a0f6dfbefdf}
 
 
-\-Definition at line 478 of file kobuki.\-cpp.
+\-Definition at line 480 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!set\-Led@{set\-Led}}
 \index{set\-Led@{set\-Led}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -619,7 +624,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 )}\label{classkobuki_1_1Kobuki_acfa8adb823fe03d7223d41a13d8e66cf}
 
 
-\-Definition at line 469 of file kobuki.\-cpp.
+\-Definition at line 471 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!shutdown@{shutdown}}
 \index{shutdown@{shutdown}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -647,7 +652,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 
 \-Or, if in simulation, just loopsback the motor devices. 
 
-\-Definition at line 174 of file kobuki.\-cpp.
+\-Definition at line 176 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!unlock\-Data\-Access@{unlock\-Data\-Access}}
 \index{unlock\-Data\-Access@{unlock\-Data\-Access}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -661,7 +666,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 \end{DoxySeeAlso}
 
 
-\-Definition at line 161 of file kobuki.\-cpp.
+\-Definition at line 163 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!update\-Odometry@{update\-Odometry}}
 \index{update\-Odometry@{update\-Odometry}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -688,7 +693,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 \end{DoxyParams}
 
 
-\-Definition at line 459 of file kobuki.\-cpp.
+\-Definition at line 461 of file kobuki.\-cpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!version\-Info@{version\-Info}}
 \index{version\-Info@{version\-Info}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -793,7 +798,7 @@ int {\bf version\-\_\-info\-\_\-reminder}
 \subsubsection[{event\-\_\-manager}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Event\-Manager} {\bf kobuki\-::\-Kobuki\-::event\-\_\-manager}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_afee2605f8166f479026d8977b2697dfa}
 
 
-\-Definition at line 237 of file kobuki.\-hpp.
+\-Definition at line 238 of file kobuki.\-hpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!firmware@{firmware}}
 \index{firmware@{firmware}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -891,70 +896,77 @@ int {\bf version\-\_\-info\-\_\-reminder}
 \subsubsection[{sig\-\_\-controller\-\_\-info}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal {\bf kobuki\-::\-Kobuki\-::sig\-\_\-controller\-\_\-info}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_ae8e96e11dbf111aac453911cbd7ba45c}
 
 
-\-Definition at line 255 of file kobuki.\-hpp.
+\-Definition at line 256 of file kobuki.\-hpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-debug@{sig\-\_\-debug}}
 \index{sig\-\_\-debug@{sig\-\_\-debug}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
 \subsubsection[{sig\-\_\-debug}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal$<$const std\-::string\&$>$ {\bf kobuki\-::\-Kobuki\-::sig\-\_\-debug}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_aa3bb2d628f9a64aa4ec7bcfb7d911266}
 
 
-\-Definition at line 257 of file kobuki.\-hpp.
+\-Definition at line 258 of file kobuki.\-hpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-error@{sig\-\_\-error}}
 \index{sig\-\_\-error@{sig\-\_\-error}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
 \subsubsection[{sig\-\_\-error}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal$<$const std\-::string\&$>$ {\bf kobuki\-::\-Kobuki\-::sig\-\_\-error}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a60fc90929f8649468272cbdc1ca4ad6d}
 
 
-\-Definition at line 257 of file kobuki.\-hpp.
+\-Definition at line 258 of file kobuki.\-hpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-info@{sig\-\_\-info}}
 \index{sig\-\_\-info@{sig\-\_\-info}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
 \subsubsection[{sig\-\_\-info}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal$<$const std\-::string\&$>$ {\bf kobuki\-::\-Kobuki\-::sig\-\_\-info}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_aa39b142b5f651d5831b9107c35e86330}
 
 
-\-Definition at line 257 of file kobuki.\-hpp.
+\-Definition at line 258 of file kobuki.\-hpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-named@{sig\-\_\-named}}
 \index{sig\-\_\-named@{sig\-\_\-named}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
 \subsubsection[{sig\-\_\-named}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal$<$const std\-::vector$<$std\-::string$>$\&$>$ {\bf kobuki\-::\-Kobuki\-::sig\-\_\-named}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_ae2dbf1a75dff7a56936b9c3732bee94e}
 
 
-\-Definition at line 258 of file kobuki.\-hpp.
+\-Definition at line 259 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-raw\-\_\-control\-\_\-command@{sig\-\_\-raw\-\_\-control\-\_\-command}}
+\index{sig\-\_\-raw\-\_\-control\-\_\-command@{sig\-\_\-raw\-\_\-control\-\_\-command}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{sig\-\_\-raw\-\_\-control\-\_\-command}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal$<$const std\-::vector$<$short$>$\&$>$ {\bf kobuki\-::\-Kobuki\-::sig\-\_\-raw\-\_\-control\-\_\-command}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a55d4149f90f900574e4639f543e09675}
+
+
+\-Definition at line 262 of file kobuki.\-hpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-raw\-\_\-data\-\_\-command@{sig\-\_\-raw\-\_\-data\-\_\-command}}
 \index{sig\-\_\-raw\-\_\-data\-\_\-command@{sig\-\_\-raw\-\_\-data\-\_\-command}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
 \subsubsection[{sig\-\_\-raw\-\_\-data\-\_\-command}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal$<${\bf \-Command\-::\-Buffer}\&$>$ {\bf kobuki\-::\-Kobuki\-::sig\-\_\-raw\-\_\-data\-\_\-command}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a9fa84f5f2d6bf182a5b5f38a8be0d47c}
 
 
-\-Definition at line 259 of file kobuki.\-hpp.
+\-Definition at line 260 of file kobuki.\-hpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-raw\-\_\-data\-\_\-stream@{sig\-\_\-raw\-\_\-data\-\_\-stream}}
 \index{sig\-\_\-raw\-\_\-data\-\_\-stream@{sig\-\_\-raw\-\_\-data\-\_\-stream}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
 \subsubsection[{sig\-\_\-raw\-\_\-data\-\_\-stream}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal$<${\bf \-Packet\-Finder\-::\-Buffer\-Type}\&$>$ {\bf kobuki\-::\-Kobuki\-::sig\-\_\-raw\-\_\-data\-\_\-stream}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a4752fa63c69f3fae94298a078769366e}
 
 
-\-Definition at line 260 of file kobuki.\-hpp.
+\-Definition at line 261 of file kobuki.\-hpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-stream\-\_\-data@{sig\-\_\-stream\-\_\-data}}
 \index{sig\-\_\-stream\-\_\-data@{sig\-\_\-stream\-\_\-data}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
 \subsubsection[{sig\-\_\-stream\-\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal {\bf kobuki\-::\-Kobuki\-::sig\-\_\-stream\-\_\-data}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a780d7dacef70b02c22d1eae65be23411}
 
 
-\-Definition at line 255 of file kobuki.\-hpp.
+\-Definition at line 256 of file kobuki.\-hpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-version\-\_\-info@{sig\-\_\-version\-\_\-info}}
 \index{sig\-\_\-version\-\_\-info@{sig\-\_\-version\-\_\-info}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
 \subsubsection[{sig\-\_\-version\-\_\-info}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal$<$const {\bf \-Version\-Info}\&$>$ {\bf kobuki\-::\-Kobuki\-::sig\-\_\-version\-\_\-info}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_af3c8487e4421094cc0eb38bfb621c414}
 
 
-\-Definition at line 256 of file kobuki.\-hpp.
+\-Definition at line 257 of file kobuki.\-hpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!sig\-\_\-warn@{sig\-\_\-warn}}
 \index{sig\-\_\-warn@{sig\-\_\-warn}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
 \subsubsection[{sig\-\_\-warn}]{\setlength{\rightskip}{0pt plus 5cm}ecl\-::\-Signal$<$const std\-::string\&$>$ {\bf kobuki\-::\-Kobuki\-::sig\-\_\-warn}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a8365fa1b3e2dbe361fd51e855ac63681}
 
 
-\-Definition at line 257 of file kobuki.\-hpp.
+\-Definition at line 258 of file kobuki.\-hpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!thread@{thread}}
 \index{thread@{thread}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
@@ -976,6 +988,13 @@ int {\bf version\-\_\-info\-\_\-reminder}
 
 
 \-Definition at line 209 of file kobuki.\-hpp.
+
+\index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!velocity\-\_\-commands\-\_\-debug@{velocity\-\_\-commands\-\_\-debug}}
+\index{velocity\-\_\-commands\-\_\-debug@{velocity\-\_\-commands\-\_\-debug}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}
+\subsubsection[{velocity\-\_\-commands\-\_\-debug}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$short$>$ {\bf kobuki\-::\-Kobuki\-::velocity\-\_\-commands\-\_\-debug}\hspace{0.3cm}{\ttfamily  [private]}}\label{classkobuki_1_1Kobuki_a524dbda310ab7d97c0e86b3189cb1938}
+
+
+\-Definition at line 233 of file kobuki.\-hpp.
 
 \index{kobuki\-::\-Kobuki@{kobuki\-::\-Kobuki}!version\-\_\-info\-\_\-reminder@{version\-\_\-info\-\_\-reminder}}
 \index{version\-\_\-info\-\_\-reminder@{version\-\_\-info\-\_\-reminder}!kobuki::Kobuki@{kobuki\-::\-Kobuki}}

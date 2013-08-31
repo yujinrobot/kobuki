@@ -16,6 +16,5 @@ var searchData=
   ['angular_5fdeceleration_5flimit',['angular_deceleration_limit',['../classkobuki_1_1Parameters.html#a2aa21b58334b3e115f0f583115c852a0',1,'kobuki::Parameters']]],
   ['angular_5fdeceleration_5fmax',['angular_deceleration_max',['../classkobuki_1_1AccelerationLimiter.html#a7724a492b34cd65562411d08c12aa222',1,'kobuki::AccelerationLimiter']]],
   ['angular_5fvel_5fmax',['angular_vel_max',['../classKobukiManager.html#a8408167196dcf0cc63ce92fa1c3ecd5d',1,'KobukiManager']]],
-  ['angular_5fvel_5fstep',['angular_vel_step',['../classKobukiManager.html#abadd804c057bd66d7703d99bd0389fa2',1,'KobukiManager']]],
-  ['angularvelocity',['angularVelocity',['../classkobuki_1_1DiffDrive.html#adfc4ce4a5501c76292aad9d59d73cc74',1,'kobuki::DiffDrive']]]
+  ['angular_5fvel_5fstep',['angular_vel_step',['../classKobukiManager.html#abadd804c057bd66d7703d99bd0389fa2',1,'KobukiManager']]]
 ];

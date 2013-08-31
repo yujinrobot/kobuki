@@ -130,7 +130,7 @@ Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classkobuki_1_1Command.html">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#a36510619abf35df4c293bc06e9bfb44c">GetControllerGain</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classkobuki_1_1Command.html">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#af88113d4e2bb59857a1194d76d813c6c">GetVersionInfo</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classkobuki_1_1Command.html">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#a9eb46f3f36573b8168252b13434a7260">PlaySoundSequence</a> (const enum <a class="el" href="namespacekobuki.html#a336129805a07def7a2c2b0be281e7ddd">SoundSequences</a> &amp;number, <a class="el" href="structkobuki_1_1Command_1_1Data.html">Command::Data</a> &amp;current_data)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classkobuki_1_1Command.html">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#a2f29d1c7d5d458d191132d531f3b406b">SetControllerGain</a> (const unsigned char &amp;type, const unsigned int &amp;p_gain, const unsigned int &amp;d_gain, const unsigned int &amp;i_gain)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classkobuki_1_1Command.html">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#a536a0b1af4fa171375d8227d2d0ca27e">SetControllerGain</a> (const unsigned char &amp;type, const unsigned int &amp;p_gain, const unsigned int &amp;i_gain, const unsigned int &amp;d_gain)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classkobuki_1_1Command.html">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#a4376a5a8b8be1107a56aca5a36fd61d8">SetDigitalOutput</a> (const <a class="el" href="structkobuki_1_1DigitalOutput.html">DigitalOutput</a> &amp;digital_output, <a class="el" href="structkobuki_1_1Command_1_1Data.html">Command::Data</a> &amp;current_data)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classkobuki_1_1Command.html">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#acc66a38299deaad48570040aa54d5bdc">SetExternalPower</a> (const <a class="el" href="structkobuki_1_1DigitalOutput.html">DigitalOutput</a> &amp;digital_output, <a class="el" href="structkobuki_1_1Command_1_1Data.html">Command::Data</a> &amp;current_data)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classkobuki_1_1Command.html">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkobuki_1_1Command.html#a90d62fd79acdef8204ef8df442b7c417">SetLedArray</a> (const enum <a class="el" href="namespacekobuki.html#a33186680e911242fe0c7a511a12d1465">LedNumber</a> &amp;number, const enum <a class="el" href="namespacekobuki.html#a278fbe81cdc3dd93c2fde224fb013c26">LedColour</a> &amp;colour, <a class="el" href="structkobuki_1_1Command_1_1Data.html">Command::Data</a> &amp;current_data)</td></tr>
@@ -390,12 +390,12 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a2f29d1c7d5d458d191132d531f3b406b"></a><!-- doxytag: member="kobuki::Command::SetControllerGain" ref="a2f29d1c7d5d458d191132d531f3b406b" args="(const unsigned char &amp;type, const unsigned int &amp;p_gain, const unsigned int &amp;d_gain, const unsigned int &amp;i_gain)" -->
+<a class="anchor" id="a536a0b1af4fa171375d8227d2d0ca27e"></a><!-- doxytag: member="kobuki::Command::SetControllerGain" ref="a536a0b1af4fa171375d8227d2d0ca27e" args="(const unsigned char &amp;type, const unsigned int &amp;p_gain, const unsigned int &amp;i_gain, const unsigned int &amp;d_gain)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classkobuki_1_1Command.html">Command</a> <a class="el" href="classkobuki_1_1Command.html#a2f29d1c7d5d458d191132d531f3b406b">kobuki::Command::SetControllerGain</a> </td>
+          <td class="memname"><a class="el" href="classkobuki_1_1Command.html">Command</a> <a class="el" href="classkobuki_1_1Command.html#a536a0b1af4fa171375d8227d2d0ca27e">kobuki::Command::SetControllerGain</a> </td>
           <td>(</td>
           <td class="paramtype">const unsigned char &amp;&#160;</td>
           <td class="paramname"><em>type</em>, </td>
@@ -410,13 +410,13 @@ Static Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const unsigned int &amp;&#160;</td>
-          <td class="paramname"><em>d_gain</em>, </td>
+          <td class="paramname"><em>i_gain</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const unsigned int &amp;&#160;</td>
-          <td class="paramname"><em>i_gain</em>&#160;</td>
+          <td class="paramname"><em>d_gain</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -684,7 +684,7 @@ Static Private Attributes</h2></td></tr>
 <hr size="1"><div style="align: right;">
 <a href="http://ros.org/wiki/kobuki_driver">kobuki_driver</a><br />
 Author(s): Daniel Stonier <stonier@yujinrobot.com>, Younghun Ju <yhju@yujinrobot.com>, Jorge Santos Simon <jorge@yujinrobot.com></br />
-<small>autogenerated on Thu Aug 29 2013 19:47:56</small>
+<small>autogenerated on Sat Aug 31 2013 22:14:03</small>
 </div>
 </body>
 </html>

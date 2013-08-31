@@ -25,6 +25,6 @@
 <area shape="rect" id="node132" href="$hardware_8hpp.html" title="Hardware version request packet payloads." alt="" coords="2521,392,2671,421"/>
 <area shape="rect" id="node136" href="$unique__device__id_8hpp.html" title="Module for handling of unique device id request packet payloads." alt="" coords="2695,392,2892,421"/>
 <area shape="rect" id="node140" href="$three__axis__gyro_8hpp.html" title="Module for handling of three_axis_gyro packet payloads." alt="" coords="2916,392,3105,421"/>
-<area shape="rect" id="node144" href="$controller__info_8hpp.html" title="Docking infrared sensor packet payloads." alt="" coords="3129,392,3308,421"/>
+<area shape="rect" id="node144" href="$controller__info_8hpp.html" title="Controller info packet payloads." alt="" coords="3129,392,3308,421"/>
 <area shape="rect" id="node107" href="$payload__headers_8hpp.html" title="Byte id&#39;s for the individual payload headers." alt="" coords="2777,469,3025,499"/>
 </map>

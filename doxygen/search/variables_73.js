@@ -15,6 +15,7 @@ var searchData=
   ['sig_5finput_5fevent',['sig_input_event',['../classkobuki_1_1EventManager.html#a2abcef7c5342d418a7310aa8a1bd4722',1,'kobuki::EventManager']]],
   ['sig_5fnamed',['sig_named',['../classkobuki_1_1Kobuki.html#ae2dbf1a75dff7a56936b9c3732bee94e',1,'kobuki::Kobuki']]],
   ['sig_5fpower_5fevent',['sig_power_event',['../classkobuki_1_1EventManager.html#a0b59c2eed3a2fc2cd671214a274b3428',1,'kobuki::EventManager']]],
+  ['sig_5fraw_5fcontrol_5fcommand',['sig_raw_control_command',['../classkobuki_1_1Kobuki.html#a55d4149f90f900574e4639f543e09675',1,'kobuki::Kobuki']]],
   ['sig_5fraw_5fdata_5fcommand',['sig_raw_data_command',['../classkobuki_1_1Kobuki.html#a9fa84f5f2d6bf182a5b5f38a8be0d47c',1,'kobuki::Kobuki']]],
   ['sig_5fraw_5fdata_5fstream',['sig_raw_data_stream',['../classkobuki_1_1Kobuki.html#a4752fa63c69f3fae94298a078769366e',1,'kobuki::Kobuki']]],
   ['sig_5frobot_5fevent',['sig_robot_event',['../classkobuki_1_1EventManager.html#adb8b0238cbcdccca5d8528594443d436',1,'kobuki::EventManager']]],

@@ -36,7 +36,6 @@ var searchData=
   ['linear_5fdeceleration_5fmax',['linear_deceleration_max',['../classkobuki_1_1AccelerationLimiter.html#ab9d7e7921aa359762a4e62776fad2447',1,'kobuki::AccelerationLimiter']]],
   ['linear_5fvel_5fmax',['linear_vel_max',['../classKobukiManager.html#a5a3929fb4a46bedf4f08f637a8882c60',1,'KobukiManager']]],
   ['linear_5fvel_5fstep',['linear_vel_step',['../classKobukiManager.html#a223ade770dbe60095620431d8b34eb32',1,'KobukiManager']]],
-  ['linearvelocity',['linearVelocity',['../classkobuki_1_1DiffDrive.html#a5ae1e62efc9d2bc022e1ec153c00ef7c',1,'kobuki::DiffDrive']]],
   ['lockdataaccess',['lockDataAccess',['../classkobuki_1_1Kobuki.html#af4b1e5a79539f8b88a3873d23dc542f6',1,'kobuki::Kobuki']]],
   ['log',['log',['../classkobuki_1_1Kobuki.html#a1eba78f120487d8435329e8ac48e6d94',1,'kobuki::Kobuki::log(std::string msg)'],['../classkobuki_1_1Kobuki.html#ac4a953899d74f6eb56b33af25bf7ff9a',1,'kobuki::Kobuki::log(std::string level, std::string msg)'],['../classkobuki_1_1Kobuki.html#a2a0246d757ab0a2bb53e06dfde77e8ab',1,'kobuki::Kobuki::log(std::string level, std::string name, std::string msg)']]],
   ['low',['low',['../classkobuki_1_1Battery.html#ab52bd0243682d8f2b4f6a7b9fdb143d3',1,'kobuki::Battery::low()'],['../classkobuki_1_1Battery.html#a7fafe88eea07992dc471dd41ba63e1bcab7ef773b0f24a197a35f423d86bd0dda',1,'kobuki::Battery::Low()']]]
