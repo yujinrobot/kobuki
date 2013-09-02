@@ -34,9 +34,12 @@ install(TARGETS kobuki_random_walker_nodelet
         
 install(DIRECTORY include/${PROJECT_NAME}/
         DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
-        
+
+install(DIRECTORY param
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+
 install(DIRECTORY plugins
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
-        
+
 install(DIRECTORY launch
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
