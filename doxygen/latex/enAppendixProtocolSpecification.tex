@@ -133,7 +133,23 @@ return cs ? false : true;
 
 \par
 \subsection{\-Base Control}\label{enAppendixProtocolSpecification_enBaseControl}
-\-Control wheel motors to moving robot. \-Robot will follow the arc, which radius is {\bfseries $<$\-Radius$>$} mm, with {\bfseries $<$\-Velocity$>$} mm/s.
+\-Control wheel motors to moving robot. \-Robot will follow the arc line, which radius is {\bfseries $<$\-Radius$>$} mm, with {\bfseries $<$\-Speed$>$} mm/s. \-Positive \-Radius indicates center of arc line that robot follows is located at the left side of the robot. \-Negative is opposite.\par
+
+
+ \-But actual value of \-Speed field is little bit different. \-Here is conversion table.
+
+\begin{TabularC}{3}
+\hline
+\-Motion&\-Speed(mm/s)&\-Radius(mm) \\\cline{1-3}
+\-Pure \-Translation&\-Speed&0 \\\cline{1-3}
+\-Pure \-Rotation&w{\bfseries $^{\mbox{i)}}$ } $\ast$ b{\bfseries $^{\mbox{ii)}}$ } / 2&1 \\\cline{1-3}
+\multirow{2}{\linewidth}{\-Translation + \-Rotation}&\-Speed $\ast$ ( \-Radius + b{\bfseries $^{\mbox{ii)}}$ } / 2 ) / \-Radius, if \-Radius $>$ 1\par
+\-Speed $\ast$ ( \-Radius -\/ b{\bfseries $^{\mbox{ii)}}$ } / 2 ) / \-Radius, if \-Radius $<$ -\/1&\-Radius \\\cline{2-3}
+\end{TabularC}
+{\bfseries i)} w is rotation speed of the robot, in [rad/s].\par
+ {\bfseries ii)} b is {\itshape bias\/} or {\itshape wheelbase\/}, that indicates the length between the center of the wheels. \-Fixed at 230 mm.\par
+ \par
+
 
 \begin{TabularC}{6}
 \hline
@@ -342,8 +358,11 @@ return cs ? false : true;
 
 
 \begin{DoxyNote}{\-Note}
-\-This sub-\/payload will be sent by default.
+\-This sub-\/payload will be sent by default. 
 \end{DoxyNote}
+\begin{DoxySeeAlso}{\-See also}
+\doxyref{\-Appendix \-: \-Kobuki \-Parameters}{p.}{enAppendixKobukiParameters} -\/ necessary parameters for conversion of encoder ticks to robot pose.
+\end{DoxySeeAlso}
 \par
 \subsection{\-Docking I\-R}\label{enAppendixProtocolSpecification_enDockingIR}
 \-Signals from the docking station.

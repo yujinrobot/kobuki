@@ -5,6 +5,6 @@
 <area shape="rect" id="node9" href="$initialisation_8cpp.html" title="Demo program for kobuki initialisation." alt="" coords="115,237,229,267"/>
 <area shape="rect" id="node11" href="$sigslots_8cpp.html" title="Example/test program for kobuki sigslots." alt="" coords="253,237,344,267"/>
 <area shape="rect" id="node13" href="$simple__loop_8cpp.html" title="Example/test program with simple loop." alt="" coords="368,237,483,267"/>
-<area shape="rect" id="node15" href="$simple__keyop_8cpp.html" title="simple_keyop.cpp" alt="" coords="507,237,632,267"/>
+<area shape="rect" id="node15" href="$simple__keyop_8cpp.html" title="Tools/utility program to control robot by keyboard." alt="" coords="507,237,632,267"/>
 <area shape="rect" id="node17" href="$version__info_8cpp.html" title="Tools/utility program to retriving version info. of kobuki." alt="" coords="656,237,773,267"/>
 </map>
