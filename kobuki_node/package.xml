@@ -52,6 +52,7 @@
   <run_depend>std_msgs</run_depend>
   <run_depend>tf</run_depend>
   <run_depend>angles</run_depend>
+  <run_depend>diagnostic_aggregator</run_depend>
   <run_depend>diagnostic_updater</run_depend>
   <run_depend>diagnostic_msgs</run_depend>
   <run_depend>nodelet</run_depend>
