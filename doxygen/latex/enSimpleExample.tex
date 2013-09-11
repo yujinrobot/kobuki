@@ -252,11 +252,15 @@ int main(int argc, char** argv)
 
   ecl::Sleep sleep(1);
   ecl::Pose2D<double> pose;
-  while (!shutdown_req){
-    sleep();
-    pose = kobuki_manager.getPose();
-    std::cout << "current pose: [" << pose.x() << ", " << pose.y() << ", " << 
-      pose.heading() << "]" << std::endl;
+  try {
+    while (!shutdown_req){
+      sleep();
+      pose = kobuki_manager.getPose();
+      std::cout << "current pose: [" << pose.x() << ", " << pose.y() << ", " <<
+       pose.heading() << "]" << std::endl;
+    }
+  } catch ( ecl::StandardException &e ) {
+    std::cout << e.what();
   }
   return 0;
 }
