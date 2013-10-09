@@ -31,6 +31,7 @@
   <!--  Kobuki -->
   <build_depend>kobuki_msgs</build_depend>
   <build_depend>kobuki_driver</build_depend>
+  <build_depend>kobuki_ftdi</build_depend>
   <build_depend>kobuki_keyop</build_depend>
   <build_depend>kobuki_safety_controller</build_depend>
 
@@ -61,6 +62,7 @@
   <!--  Kobuki -->
   <run_depend>kobuki_msgs</run_depend>
   <run_depend>kobuki_driver</run_depend>
+  <run_depend>kobuki_ftdi</run_depend>
   <run_depend>kobuki_keyop</run_depend>
   <run_depend>kobuki_safety_controller</run_depend>
 
