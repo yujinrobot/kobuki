@@ -66,6 +66,7 @@ int main() {
 \item \doxyref{kobuki\-::\-Kobuki\-::get\-Gp\-Input\-Data}{p.}{classkobuki_1_1Kobuki_a2ab9631196aa4211b9b6b1634ab9b5f5}
 \item \doxyref{kobuki\-::\-Kobuki\-::get\-Inertia\-Data}{p.}{classkobuki_1_1Kobuki_a7dd63be4984cc95c72aa2fa9dcd0f9d1}
 \item \doxyref{kobuki\-::\-Kobuki\-::get\-Raw\-Inertia\-Data}{p.}{classkobuki_1_1Kobuki_ae3d74aafb393b426069b196e04b09574}
+\item \doxyref{kobuki\-::\-Kobuki\-::get\-Controller\-Info\-Data}{p.}{classkobuki_1_1Kobuki_a3d9d8cd87fd98bce6adda4f3e9530b41}
 \end{DoxyItemize}
 
 \-The gyro provides both filtered yaw angle as well as unfiltered 3-\/axis inertial data hence the two calls above.\subsection{\-Processed Data and Status}\label{enGettingStartedGuide_kobukiProcessedData}
@@ -93,5 +94,7 @@ int main() {
 \item \doxyref{kobuki\-::\-Kobuki\-::set\-Digital\-Output}{p.}{classkobuki_1_1Kobuki_a188d1db38aa059f96e3bfb0879b244f8}
 \item \doxyref{kobuki\-::\-Kobuki\-::set\-External\-Power}{p.}{classkobuki_1_1Kobuki_a53a52a4a94507afe3ce30a0f6dfbefdf}
 \item \doxyref{kobuki\-::\-Kobuki\-::play\-Sound\-Sequence}{p.}{classkobuki_1_1Kobuki_afaf3bd9ab3e781fec84200041ed95f30}
+\item \doxyref{kobuki\-::\-Kobuki\-::set\-Controller\-Gain}{p.}{classkobuki_1_1Kobuki_a823260e89ce7e35fe1c721e3be1ec832}
+\item \doxyref{kobuki\-::\-Kobuki\-::get\-Controller\-Gain}{p.}{classkobuki_1_1Kobuki_acdc18337219b79cf202c3b4178ff62fa}
 \end{DoxyItemize}\subsection{\-The Differential Drive Module}\label{enGettingStartedGuide_differentialDriverModule}
 \-The final function of importance is the \doxyref{kobuki\-::\-Kobuki\-::update\-Odometry}{p.}{classkobuki_1_1Kobuki_a1c1cf4b6b10d5d18109430d764763544} method. \-This updates the current odometry state of the robot, fusing encoder and gyro heading data with the previous known state. \-For deterministic odometry, it is important this method is called each time a new data packet from the kobuki arrives. \-Refer to the \doxyref{simple control loop example}{p.}{enSimpleExample} for more information and working code to illustrate. 
