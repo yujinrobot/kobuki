@@ -10,7 +10,7 @@
  -->
 <launch>
   <node pkg="nodelet" type="nodelet" name="cmd_vel_mux"
-        args="load cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
+        args="load yocs_cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
     <param name="yaml_cfg_file"  value="$(find kobuki_random_walker)/param/cmd_vel_mux.yaml"/>
     <remap from="cmd_vel_mux/output/cmd_vel"                        to="mobile_base/commands/velocity"/>
   </node>
