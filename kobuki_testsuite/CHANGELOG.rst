@@ -2,6 +2,14 @@
 Changelog for package kobuki_testsuite
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.5.5 (2013-10-11)
+------------------
+* New script: test_slow_drive.sh
+  Moves following a 90cm radius circle while publishing accumulated and
+  average error on angular velocity, using gyroscope data as reference.
+  Useful for testing passive wheels configurations.
+  See https://github.com/yujinrobot/kobuki/issues/202 for more details
+
 0.5.4 (2013-09-06)
 ------------------
 

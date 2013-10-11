@@ -2,6 +2,10 @@
 Changelog for package kobuki_keyop
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.5.5 (2013-10-11)
+------------------
+* Rename cmd_vel_mux as yocs_cmd_vel_mux.
+
 0.5.4 (2013-09-06)
 ------------------
 
