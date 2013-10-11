@@ -1,0 +1,8 @@
+%YAML 1.1
+---
+name: kobuki_differential_mobile_base_w_tf
+spec_version: 1
+spec_type: provider
+description: 'Implements DifferentialMobileBase capability on Kobuki with extra publishing of TF.'
+implements: std_capabilities/DifferentialMobileBase
+launch_file: 'launch/kobuki_differential_mobile_base_w_tf.launch'
