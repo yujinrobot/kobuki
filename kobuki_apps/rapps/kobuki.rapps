@@ -1,0 +1,3 @@
+apps:
+#  - kobuki_apps/auto_docking
+  - kobuki_apps/random_walker
