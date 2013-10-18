@@ -1,0 +1,10 @@
+%YAML 1.1
+---
+name: KobukiLED2
+spec_version: 1
+spec_type: semantic_interface
+description: "Control Kobuki's LED 2"
+redefines: 'kobuki_capabilities/LED'
+remappings:
+  topics:
+    'led': '/mobile_base/commands/led2'

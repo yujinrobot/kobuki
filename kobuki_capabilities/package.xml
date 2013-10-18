@@ -19,11 +19,15 @@
   <run_depend>std_capabilities</run_depend>
 
   <export>
-    <capability_provider>
-      providers/kobuki_differential_mobile_base.yaml
-    </capability_provider>
-    <capability_provider>
-      providers/kobuki_differential_mobile_base_w_tf.yaml
-    </capability_provider>
+    <capability_interface>interfaces/KobukiBringup.yaml</capability_interface>
+    <capability_interface>interfaces/LED.yaml</capability_interface>
+    <semantic_capability_interface>interfaces/KobukiLED1.yaml</semantic_capability_interface>
+    <semantic_capability_interface>interfaces/KobukiLED2.yaml</semantic_capability_interface>
+    <capability_provider>providers/kobuki_bringup.yaml</capability_provider>
+    <capability_provider>providers/kobuki_led.yaml</capability_provider>
+    <capability_provider>providers/kobuki_led1.yaml</capability_provider>
+    <capability_provider>providers/kobuki_led2.yaml</capability_provider>
+    <capability_provider>providers/kobuki_differential_mobile_base.yaml</capability_provider>
+    <capability_provider>providers/kobuki_differential_mobile_base_w_tf.yaml</capability_provider>
   </export>
 </package>

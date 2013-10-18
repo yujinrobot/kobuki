@@ -1,0 +1,21 @@
+<launch>
+    <arg name="test_case" default="minimal" />
+    <arg name="debug" default="false" />
+
+    <node pkg="capabilities" name="capability_server" type="capability_server" required="true">
+      <env name="ROS_PACKAGE_PATH"
+             value="$(find capabilities)/test/unit/discovery_workspaces/$(arg test_case):$(env ROS_PACKAGE_PATH)" />
+        <param name="debug" value="true" if="$(arg debug)" />
+        <!-- default providers -->
+        <param name="defaults/kobuki_capabilities/KobukiBringup"
+               value="kobuki_capabilities/kobuki_bringup" />
+        <param name="defaults/kobuki_capabilities/LED"
+               value="kobuki_capabilities/kobuki_led" />
+        <param name="defaults/kobuki_capabilities/KobukiLED1"
+               value="kobuki_capabilities/kobuki_led1" />
+        <param name="defaults/kobuki_capabilities/KobukiLED2"
+               value="kobuki_capabilities/kobuki_led2" />
+        <param name="defaults/std_capabilities/DifferentialMobileBase"
+               value="kobuki_capabilities/kobuki_differential_mobile_base" />
+    </node>
+</launch>
