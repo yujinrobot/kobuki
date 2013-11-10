@@ -5,7 +5,9 @@ spec_version: 1
 spec_type: provider
 description: "Implements the LED capability for Kobuki's LED 1."
 implements: kobuki_capabilities/KobukiLED1
-launch_file: 'launch/kobuki_led1.launch'
 depends_on:
-    'kobuki_capabilities/KobukiBringup':
-        provider: 'kobuki_capabilities/kobuki_bringup'
+  'kobuki_capabilities/KobukiBringup':
+    provider: 'kobuki_capabilities/kobuki_bringup'
+remappings:
+  topics:
+    '/kobuki_led1': '/mobile_base/commands/led1'

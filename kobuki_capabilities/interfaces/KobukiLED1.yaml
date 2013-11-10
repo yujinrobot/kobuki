@@ -7,4 +7,4 @@ description: "Control Kobuki's LED 1"
 redefines: 'kobuki_capabilities/LED'
 remappings:
   topics:
-    'led': '/mobile_base/commands/led1'
+    '/led': '/kobuki_led1'

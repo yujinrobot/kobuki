@@ -7,6 +7,6 @@ description: "Control an LED's colour"
 interface:
   topics:
     requires:
-      'led':
+      '/led':
         type: 'kobuki_msgs/Led'
         description: "Command message to set the LED's colour - green, orange, red, black (off)"
