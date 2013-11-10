@@ -15,11 +15,11 @@ required_capabilities:
     interface:
       topics:
         requires:
-          'mobile_base/commands/led1': 'kobuki_random_walker_controller/commands/led1'
+          '/kobuki_led1': 'kobuki_random_walker_controller/commands/led1'
         provides: []
   - name: kobuki_capabilities/KobukiLED2
     interface:
       topics:
         requires:
-          'mobile_base/commands/led2': 'kobuki_random_walker_controller/commands/led2'
+          '/kobuki_led2': 'kobuki_random_walker_controller/commands/led2'
         provides: []

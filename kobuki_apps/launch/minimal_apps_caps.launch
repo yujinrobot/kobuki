@@ -1,5 +1,5 @@
 <launch>
-  <!-- capability serverr -->
+  <!-- capability server -->
   <include file="$(find kobuki_capabilities)/launch/capability_server.launch"/>
   
   <!-- app manager -->
