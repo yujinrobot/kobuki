@@ -107,7 +107,6 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
                             const kobuki_msgs::DockInfraRedConstPtr& ir)
 {
   //process and run
-  if (self->dock_.isEnabled()) {
     //conversions
     KDL::Rotation rot;
     tf::quaternionMsgToKDL( odom->pose.pose.orientation, rot );
@@ -135,7 +134,6 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
       cmd_vel->angular.z = self->dock_.getWZ();
       velocity_commander_.publish(cmd_vel);
     }
-  }
 
   //action server execution
   if( as_.isActive() ) {
