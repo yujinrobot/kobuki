@@ -47,6 +47,7 @@
   <run_depend>actionlib_msgs</run_depend>
   <run_depend>kobuki_msgs</run_depend>
   <run_depend>kobuki_dock_drive</run_depend>
+  <run_depend>yocs_cmd_vel_mux</run_depend>
 
   <run_depend>ecl_threads</run_depend>
   <run_depend>ecl_geometry</run_depend>

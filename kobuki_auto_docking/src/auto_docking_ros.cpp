@@ -107,7 +107,7 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
                             const kobuki_msgs::DockInfraRedConstPtr& ir)
 {
   //process and run
-  if (self->dock_.isEnabled()) {
+  if(self->dock_.isEnabled()) {
     //conversions
     KDL::Rotation rot;
     tf::quaternionMsgToKDL( odom->pose.pose.orientation, rot );
@@ -139,7 +139,7 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
 
   //action server execution
   if( as_.isActive() ) {
-    if ( dock_.getState() == dock_.DONE ) {
+    if ( dock_.getState() == RobotDockingState::DONE ) {
       result_.text = "Arrived on docking station successfully.";
       as_.setSucceeded(result_);
       ROS_INFO_STREAM( "[" << name_ << "]: Arrived on docking station successfully.");

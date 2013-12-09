@@ -30,6 +30,7 @@
   <run_depend>roscpp</run_depend>
   <run_depend>std_msgs</run_depend>
   <run_depend>yocs_controllers</run_depend>
+  <run_depend>yocs_cmd_vel_mux</run_depend>
   
   <export>
     <nodelet plugin="${prefix}/plugins/nodelet_plugins.xml"/>
