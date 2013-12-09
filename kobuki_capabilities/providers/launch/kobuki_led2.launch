@@ -1,4 +1,0 @@
-<launch>
-  <!-- nothing to do, functionality is implemented by the KobukiBringup provider -->
-  <node pkg="kobuki_capabilities" type="idle_node.py" name="kobuki_led2" />
-</launch>

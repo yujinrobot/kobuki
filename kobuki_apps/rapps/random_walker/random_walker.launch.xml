@@ -1,5 +1,4 @@
 <launch>
-<!--   <include file="$(find kobuki_random_walker)/launch/random_walker_app.launch"/> -->
   <node pkg="nodelet" type="nodelet" name="kobuki_random_walker_controller"
         args="load kobuki_random_walker/RandomWalkerControllerNodelet /mobile_base_nodelet_manager">
     <param name="update_rate"                                       value="10.0"/>
