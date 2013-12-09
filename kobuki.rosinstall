@@ -27,3 +27,8 @@
 - git: {local-name: kobuki_msgs, version: hydro-devel, uri: 'https://github.com/yujinrobot/kobuki_msgs.git'}
 - git: {local-name: kobuki_core, version: hydro-devel, uri: 'https://github.com/yujinrobot/kobuki_core.git'}
 - git: {local-name: kobuki, version: hydro-devel, uri: 'https://github.com/yujinrobot/kobuki.git'}
+
+# ROCON stacks
+- git: {local-name: capabilities, version: master, uri: 'https://github.com/robotics-in-concert/capabilities.git'}
+- git: {local-name: std_capabilities, version: initial_specs, uri: 'https://github.com/robotics-in-concert/std_capabilities.git'}
+- git: {local-name: rocon_app_platform, version: hydro-devel, uri: 'https://github.com/robotics-in-concert/rocon_app_platform.git'}
