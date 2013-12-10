@@ -15,7 +15,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <!-- Ros -->
+  <!-- ROS -->
   <build_depend>roscpp</build_depend>
   <build_depend>geometry_msgs</build_depend>
   <build_depend>sensor_msgs</build_depend>
@@ -28,24 +28,25 @@
   <build_depend>nodelet</build_depend>
   <build_depend>pluginlib</build_depend>
 
-  <!--  Kobuki -->
+  <!-- Kobuki -->
   <build_depend>kobuki_msgs</build_depend>
   <build_depend>kobuki_driver</build_depend>
   <build_depend>kobuki_ftdi</build_depend>
   <build_depend>kobuki_keyop</build_depend>
   <build_depend>kobuki_safety_controller</build_depend>
 
-  <!-- Ecl -->
+  <!-- ECL -->
   <build_depend>ecl_exceptions</build_depend>
   <build_depend>ecl_sigslots</build_depend>
   <build_depend>ecl_streams</build_depend>
   <build_depend>ecl_threads</build_depend>
 
-   <!--  For Tests -->
+  <!-- For Tests -->
   <build_depend>rospy</build_depend>
 
 
-  <!-- Ros -->
+  <!-- ROS -->
+  <run_depend>capabilities</run_depend>
   <run_depend>roscpp</run_depend>
   <run_depend>geometry_msgs</run_depend>
   <run_depend>sensor_msgs</run_depend>
@@ -59,20 +60,26 @@
   <run_depend>nodelet</run_depend>
   <run_depend>pluginlib</run_depend>
 
-  <!--  Kobuki -->
+  <!-- Kobuki -->
+  <run_depend>kobuki_capabilities</run_depend>
+  <run_depend>kobuki_apps</run_depend>
   <run_depend>kobuki_msgs</run_depend>
   <run_depend>kobuki_driver</run_depend>
   <run_depend>kobuki_ftdi</run_depend>
   <run_depend>kobuki_keyop</run_depend>
   <run_depend>kobuki_safety_controller</run_depend>
 
-  <!-- Ecl -->
+  <!-- ECL -->
   <run_depend>ecl_exceptions</run_depend>
   <run_depend>ecl_sigslots</run_depend>
   <run_depend>ecl_streams</run_depend>
   <run_depend>ecl_threads</run_depend>
 
-   <!--  For Tests -->
+  <!-- ROCON -->
+  <run_depend>rocon_app_manager</run_depend>
+  <run_depend>rocon_apps</run_depend>
+
+  <!-- For Tests -->
   <run_depend>rospy</run_depend>
   <run_depend>rviz</run_depend>
   

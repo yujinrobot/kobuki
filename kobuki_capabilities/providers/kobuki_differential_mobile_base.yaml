@@ -1,0 +1,15 @@
+%YAML 1.1
+---
+name: kobuki_differential_mobile_base
+spec_version: 1
+spec_type: provider
+description: 'Implements DifferentialMobileBase capability for Kobuki.'
+implements: std_capabilities/DifferentialMobileBase
+depends_on:
+  'kobuki_capabilities/KobukiBringup':
+    provider: 'kobuki_capabilities/kobuki_bringup'
+remappings:
+  topics:
+    '/cmd_vel': '/mobile_base/commands/velocity'
+    '/odom': '/mobile_base/odom'
+    '/joint_states': '/mobile_base/joint_states'

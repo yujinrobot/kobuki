@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+  <name>kobuki_apps</name>
+  <version>0.1.0</version>
+  <description>Robot apps for Kobuki</description>
+  
+  <maintainer email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</maintainer>
+  <author email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</author>
+  
+  <license>BSD</license>
+  
+  <url type="website">http://ros.org/wiki/kobuki_apps</url>
+  <url type="repository">https://github.com/yujinrobot/kobuki</url>
+  <url type="bugtracker">https://github.com/yujinrobot/kobuki/issues</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <run_depend>kobuki_auto_docking</run_depend>
+  <run_depend>kobuki_random_walker_controller</run_depend>
+  <run_depend>nodelet</run_depend>
+</package>

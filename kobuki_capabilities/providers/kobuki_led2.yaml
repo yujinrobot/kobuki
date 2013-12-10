@@ -1,0 +1,13 @@
+%YAML 1.1
+---
+name: kobuki_led2
+spec_version: 1
+spec_type: provider
+description: "Implements the LED capability for Kobuki's LED 2."
+implements: kobuki_capabilities/KobukiLED2
+depends_on:
+  'kobuki_capabilities/KobukiBringup':
+    provider: 'kobuki_capabilities/kobuki_bringup'
+remappings:
+  topics:
+    '/kobuki_led2': '/mobile_base/commands/led2'

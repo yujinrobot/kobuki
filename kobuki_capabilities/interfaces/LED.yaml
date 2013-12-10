@@ -1,0 +1,12 @@
+%YAML 1.1
+---
+name: LED
+spec_version: 1
+spec_type: interface
+description: "Control an LED's colour"
+interface:
+  topics:
+    requires:
+      '/led':
+        type: 'kobuki_msgs/Led'
+        description: "Command message to set the LED's colour - green, orange, red, black (off)"

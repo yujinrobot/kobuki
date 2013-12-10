@@ -1,0 +1,8 @@
+%YAML 1.1
+---
+name: kobuki_bringup
+spec_version: 1
+spec_type: provider
+description: "Brings Kobuki into action"
+implements: kobuki_capabilities/KobukiBringup
+launch_file: 'launch/kobuki_bringup.launch'
