@@ -1,7 +1,0 @@
-<!--
-  Use this for visualise Kobuki in RViz
-  Requires Kobuki to be running already, i.e. kobuki_node/robot_with_tf.launch
- -->
-<launch>
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kobuki_node)/rviz/robot.rviz"/>
-</launch>
