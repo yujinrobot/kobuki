@@ -14,7 +14,7 @@
 
 \par
 \subsection{\-Header}\label{enAppendixProtocolSpecification_enHeader}
-\-Two bytes of headers, header 0 and hader 1, are fixed value for both bytestreams, commands and feedback data. \-This headers are used to detect the starting point of bytestream.
+\-Two bytes of headers, header 0 and header 1, are fixed value for both bytestreams, commands and feedback data. \-This headers are used to detect the starting point of bytestream.
 
 \par
 \subsection{\-Length}\label{enAppendixProtocolSpecification_enLength}
@@ -216,7 +216,7 @@ return cs ? false : true;
 
 
 \begin{DoxySeeAlso}{\-See also}
-\doxyref{\-Hardware \-Version}{p.}{enAppendixProtocolSpecification_enHardwareVersion} \doxyref{\-Firmware \-Version}{p.}{enAppendixProtocolSpecification_enFirmwareVersion}, \doxyref{\-Unique \-Device \-I\-Dentifier(\-U\-D\-I\-D)}{p.}{enAppendixProtocolSpecification_enUniqueDeviceIDentifier}
+\doxyref{\-Hardware \-Version}{p.}{enAppendixProtocolSpecification_enHardwareVersion}, \doxyref{\-Firmware \-Version}{p.}{enAppendixProtocolSpecification_enFirmwareVersion}, \doxyref{\-Unique \-Device \-I\-Dentifier(\-U\-D\-I\-D)}{p.}{enAppendixProtocolSpecification_enUniqueDeviceIDentifier}
 \end{DoxySeeAlso}
 \par
 \subsection{\-General Purpose Output}\label{enAppendixProtocolSpecification_enGeneralPurposeOutput}
@@ -386,7 +386,7 @@ ox10 for \-F\-A\-R\-\_\-\-L\-E\-F\-T state\par
 
 \-Kobuki's docking station has 3 {\tt \-I\-R} emitters. \-The emitted \-I\-R lights cover three regions in front of the docking station\-: left, central and right, each divided in two sub-\/fields\-: near and far. \-Each beam encodes this information, so the robot knows at any moment in which region and sub-\/field he is. \-Also, as regions and fields are independently identified, they can be overlap on its borders.  \par
 \subsection{\-Inertial Sensor Data}\label{enAppendixProtocolSpecification_enInertialSensorData}
-\-Inertial sensor data. \-Only 1 axis gyro data only available.
+\-Inertial sensor data. \-Z-\/axis gyro data only available.
 
 \begin{TabularC}{6}
 \hline
