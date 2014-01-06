@@ -2,9 +2,12 @@
   Standalone launcher for running a default Kobuki
  -->
 <launch>
+  <arg name="kobuki_publish_tf" default="true"/> <!-- Publish base_footprint - odom transforms (usually good thing to have for localisation) -->
+
   <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
   <node pkg="nodelet" type="nodelet" name="mobile_base" args="load kobuki_node/KobukiNodelet mobile_base_nodelet_manager">
     <rosparam file="$(find kobuki_node)/param/base.yaml" command="load"/>
+    <param name="publish_tf" value="$(arg kobuki_publish_tf)"/>
     <remap from="mobile_base/odom" to="odom"/>
     <remap from="mobile_base/joint_states" to="joint_states"/>
   </node>
