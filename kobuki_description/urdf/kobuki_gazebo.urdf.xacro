@@ -5,32 +5,42 @@
 	  <gazebo reference="wheel_left_link">
 	    <mu1>1.0</mu1>
 	    <mu2>1.0</mu2>
-	    <kp>100000000.0</kp>
-	    <kd>10000.0</kd>
+	    <kp>1000000.0</kp>
+	    <kd>100.0</kd>
+	    <minDepth>0.001</minDepth>
+	    <maxVel>1.0</maxVel>
 	  </gazebo>
 	
 	  <gazebo reference="wheel_right_link">
 	    <mu1>1.0</mu1>
 	    <mu2>1.0</mu2>
-	    <kp>100000000.0</kp>
-	    <kd>10000.0</kd>
+	    <kp>1000000.0</kp>
+	    <kd>100.0</kd>
+	    <minDepth>0.001</minDepth>
+	    <maxVel>1.0</maxVel>
 	  </gazebo>
 	  
 	  <gazebo reference="caster_front_link">
 	    <mu1>0.0</mu1>
 	    <mu2>0.0</mu2>
-	    <kp>100000000.0</kp>
-	    <kd>10000.0</kd>
+	    <kp>1000000.0</kp>
+	    <kd>100.0</kd>
+	    <minDepth>0.001</minDepth>
+	    <maxVel>1.0</maxVel>
 	  </gazebo>
 	  
 	  <gazebo reference="caster_back_link">
 	    <mu1>0.0</mu1>
 	    <mu2>0.0</mu2>
-	    <kp>100000000.0</kp>
-	    <kd>10000.0</kd>
+	    <kp>1000000.0</kp>
+	    <kd>100.0</kd>
+	    <minDepth>0.001</minDepth>
+	    <maxVel>1.0</maxVel>
 	  </gazebo>
 	  
 	  <gazebo reference="base_link">
+	    <mu1>0.0</mu1>
+	    <mu2>0.0</mu2>
 	    <sensor type="contact" name="bumpers">
 	      <always_on>1</always_on>
 	      <update_rate>50.0</update_rate>
@@ -166,7 +176,7 @@
 	      <right_wheel_joint_name>wheel_right_joint</right_wheel_joint_name>
 	      <wheel_separation>.230</wheel_separation>
 	      <wheel_diameter>0.070</wheel_diameter>
-	      <torque>1.0</torque>
+	      <torque>2.0</torque>
 	      <velocity_command_timeout>0.6</velocity_command_timeout>
 	      <cliff_sensor_left_name>cliff_sensor_left</cliff_sensor_left_name>
 	      <cliff_sensor_center_name>cliff_sensor_front</cliff_sensor_center_name>
