@@ -5,32 +5,42 @@
 	  <gazebo reference="wheel_left_link">
 	    <mu1>1.0</mu1>
 	    <mu2>1.0</mu2>
-	    <kp>100000000.0</kp>
-	    <kd>10000.0</kd>
+	    <kp>1000000.0</kp>
+	    <kd>100.0</kd>
+	    <minDepth>0.001</minDepth>
+	    <maxVel>1.0</maxVel>
 	  </gazebo>
 	
 	  <gazebo reference="wheel_right_link">
 	    <mu1>1.0</mu1>
 	    <mu2>1.0</mu2>
-	    <kp>100000000.0</kp>
-	    <kd>10000.0</kd>
+	    <kp>1000000.0</kp>
+	    <kd>100.0</kd>
+	    <minDepth>0.001</minDepth>
+	    <maxVel>1.0</maxVel>
 	  </gazebo>
 	  
 	  <gazebo reference="caster_front_link">
 	    <mu1>0.0</mu1>
 	    <mu2>0.0</mu2>
-	    <kp>100000000.0</kp>
-	    <kd>10000.0</kd>
+	    <kp>1000000.0</kp>
+	    <kd>100.0</kd>
+	    <minDepth>0.001</minDepth>
+	    <maxVel>1.0</maxVel>
 	  </gazebo>
 	  
 	  <gazebo reference="caster_back_link">
 	    <mu1>0.0</mu1>
 	    <mu2>0.0</mu2>
-	    <kp>100000000.0</kp>
-	    <kd>10000.0</kd>
+	    <kp>1000000.0</kp>
+	    <kd>100.0</kd>
+	    <minDepth>0.001</minDepth>
+	    <maxVel>1.0</maxVel>
 	  </gazebo>
 	  
 	  <gazebo reference="base_link">
+	    <mu1>0.3</mu1>
+	    <mu2>0.3</mu2>
 	    <sensor type="contact" name="bumpers">
 	      <always_on>1</always_on>
 	      <update_rate>50.0</update_rate>
