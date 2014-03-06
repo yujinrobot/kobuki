@@ -1,5 +1,0 @@
-# Kobuki apps
-
-apps:
-#  - name: kobuki_apps/auto_docking # not fully tested yet
-  - name: kobuki_apps/random_walker
