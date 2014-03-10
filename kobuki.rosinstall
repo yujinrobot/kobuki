@@ -5,18 +5,18 @@
 # Before rosinstalling, make sure you installed:
 #
 # Latest build tools
-#   sudo apt-get install ros-groovy-catkin
+#   sudo apt-get install ros-hydro-catkin
 #
 # Kobuki FTDI (Firmware Updates)
 #   sudo apt-get install libftdi-dev
 #
 # ROS debs
-#   sudo apt-get install ros-groovy-geometry-msgs ros-groovy-sensor-msgs ros-groovy-nav-msgs ros-groovy-tf
-#   sudo apt-get install ros-groovy-rviz ros-groovy-nodelet ros-groovy-robot-state-publisher ros-groovy-diagnostic-msgs
-#   sudo apt-get install ros-groovy-dynamic-reconfigure ros-groovy-pcl ros-groovy-pcl-ros ros-groovy-pcl-msgs ros-groovy-diagnostics
+#   sudo apt-get install ros-hydro-geometry-msgs ros-hydro-sensor-msgs ros-hydro-nav-msgs ros-hydro-tf
+#   sudo apt-get install ros-hydro-rviz ros-hydro-nodelet ros-hydro-robot-state-publisher ros-hydro-diagnostic-msgs
+#   sudo apt-get install ros-hydro-dynamic-reconfigure ros-hydro-pcl ros-hydro-pcl-ros ros-hydro-pcl-msgs ros-hydro-diagnostics
 #
 # Ecl dependency
-#   sudo apt-get install ros-groovy-ecl-threads ros-groovy-ecl-devices ros-groovy-ecl-streams ros-groovy-ecl-mobile-robot ros-groovy-ecl-sigslots 
+#   sudo apt-get install ros-hydro-ecl-threads ros-hydro-ecl-devices ros-hydro-ecl-streams ros-hydro-ecl-mobile-robot ros-hydro-ecl-sigslots 
 #
 ##############################################################################
 
