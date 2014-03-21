@@ -1,13 +1,15 @@
 <launch>
-  <!-- capability server -->
   <arg name="test_case" default="minimal" />
   <arg name="debug" default="false" />
-
-  <node pkg="capabilities" name="capability_server" type="capability_server" required="true">
+  <arg name="capability_server_name" default="lala_server"/>
+  <arg name="capability_server_nodelet_manager_name" default="lala_nodelet_manager" />
+  
+  <node pkg="capabilities" name="$(arg capability_server_name)" type="capability_server" required="true">
     <env name="ROS_PACKAGE_PATH"
          value="$(find capabilities)/test/unit/discovery_workspaces/$(arg test_case):$(env ROS_PACKAGE_PATH)" />
     <param name="debug" value="true" if="$(arg debug)" />
-    <!-- default providers -->
+    <param name="nodelet_manager_name" value="$(arg capability_server_nodelet_manager_name)" />
+    default providers
     <param name="defaults/minimal_pkg/Minimal"
            value="minimal_pkg/minimal" />
     <param name="defaults/minimal_pkg/SpecificMinimal"
@@ -36,7 +38,7 @@
       - 'std_capabilities/RobotStatePublisher'
     </rosparam>
   </node>
-  
+
   <!-- app manager -->
   <arg name="robot_name" default="$(optenv ROBOT_NAME kobuki)"/>
   <arg name="robot_type" default="$(optenv ROBOT_TYPE kobuki)"/>
@@ -56,5 +58,6 @@
     <arg name="gateway_watch_loop_period" value="$(arg gateway_watch_loop_period)"/>
     <arg name="disable_uuids" value="true"/>
     <arg name="hub_whitelist" value="$(arg hub_whitelist)"/>
+    <arg name="capability_server_name" value="$(arg capability_server_name)"/>
   </include>
 </launch>
