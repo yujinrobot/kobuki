@@ -4,10 +4,10 @@ name: kobuki_led
 spec_version: 1
 spec_type: provider
 description: "Implements the LED capability for Kobuki's default LED, i.e. LED 1."
-implements: kobuki_capabilities/LED
+implements: kobuki_capabilities/KobukiLED
 depends_on:
   'kobuki_capabilities/KobukiBringup':
     provider: 'kobuki_capabilities/kobuki_bringup'
 remappings:
   topics:
-    '/led': '/mobile_base/commands/led1'
+    '/kobuki_led': '/mobile_base/commands/led1'

@@ -1,0 +1,12 @@
+%YAML 1.1
+---
+name: KobukiCliffDetection
+spec_version: 1
+spec_type: interface
+description: "Detects cliffs"
+interface:
+  topics:
+    provides:
+      '/kobuki_cliff_event':
+        type: 'kobuki_msgs/CliffEvent'
+        description: "Event is sent when the cliff sensors detect a cliff"

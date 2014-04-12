@@ -1,0 +1,12 @@
+%YAML 1.1
+---
+name: KobukiBumper
+spec_version: 1
+spec_type: interface
+description: "Detects bumps"
+interface:
+  topics:
+    provides:
+      '/kobuki_bumper_event':
+        type: 'kobuki_msgs/BumperEvent'
+        description: "Event is sent when the bumper sensor is pressed or released"
