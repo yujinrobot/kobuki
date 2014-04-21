@@ -48,10 +48,11 @@ namespace kobuki
 class KobukiNodelet : public nodelet::Nodelet
 {
 public:
-  KobukiNodelet(){};
+  KobukiNodelet() : shutdown_requested_(false) {};
   ~KobukiNodelet()
   {
     NODELET_DEBUG_STREAM("Kobuki : waiting for update thread to finish.");
+    shutdown_requested_ = true;
     update_thread_.join();
   }
   virtual void onInit()
@@ -74,7 +75,7 @@ private:
   void update()
   {
     ros::Rate spin_rate(10);
-    while (ros::ok() && kobuki_->update())
+    while (!shutdown_requested_ && ros::ok() && kobuki_->update())
     {
       spin_rate.sleep();
     }
@@ -82,6 +83,7 @@ private:
 
   boost::shared_ptr<KobukiRos> kobuki_;
   ecl::Thread update_thread_;
+  bool shutdown_requested_;
 };
 
 } // namespace kobuki
