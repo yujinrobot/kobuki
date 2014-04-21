@@ -1,6 +1,6 @@
 <launch>
   <arg name="debug" default="false" />
-  <arg name="capability_server_name" default="capability_server_"/>
+  <arg name="capability_server_name" default="capability_server"/>
   <arg name="capability_server_nodelet_manager_name" default="capability_server_nodelet_manager" />
   
   <node pkg="capabilities" name="$(arg capability_server_name)" type="capability_server" required="true">
