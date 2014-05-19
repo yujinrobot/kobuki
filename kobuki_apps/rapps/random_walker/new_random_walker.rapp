@@ -1,4 +1,4 @@
-display:          Random Walker
+display:          New Random Walker
 description:      Makes Kobuki wander off and explorer the world
 compatibility:    rocon:/kobuki|turtlebot2
 launch:           random_walker.launch.xml

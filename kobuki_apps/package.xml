@@ -22,6 +22,6 @@
   <export>
     <rosdoc config="rosdoc.yaml"/>
     <rocon_app>rapps/auto_docking/auto_docking.rapp</rocon_app>
-    <rocon_app>rapps/random_walker/random_walker.rapp</rocon_app>
+    <rocon_app>rapps/random_walker/new_random_walker.rapp</rocon_app>
   </export>
 </package>
