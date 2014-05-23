@@ -2,8 +2,8 @@
 Changelog for package kobuki_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.6 (2014-05-23)
+------------------
 * update body friction and revert torque limit
 * update kobuki_gazebo.urdf.xacro to make gazebo simulation more stable.
 * Add missing run dependency on yocs_cmd_vel_mux
