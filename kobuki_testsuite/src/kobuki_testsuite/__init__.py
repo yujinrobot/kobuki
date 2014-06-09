@@ -12,6 +12,8 @@ from .motion_travel_forward import TravelForward
 from .motion_rotate import Rotate
 from .motion_square import Square 
 from .drift_estimation import ScanToAngle, DriftEstimation
+from .angular_accelerate import AngularAccelerateTest
+from .linear_accelerate import LinearAccelerateTest
 
 # depracating
 from .rotate import RotateTest 
