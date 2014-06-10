@@ -22,14 +22,14 @@ from std_msgs.msg import String
 '''
 
 class RotateTest(threading.Thread):
-    def __init__(self,cmd_vel_topic,log_topic):
+    def __init__(self, cmd_vel_topic, log_topic, yaw_rate = 1.2):
         threading.Thread.__init__(self)
         self.pub_cmd = rospy.Publisher(cmd_vel_topic,Twist)
         self.pub_log = rospy.Publisher(log_topic,String)
 
         freq = 5
         self.rate = rospy.Rate(freq)
-        self.yaw_rate = 1.2
+        self.yaw_rate = yaw_rate
 
         twist = Twist()
         twist.linear.x = 0
