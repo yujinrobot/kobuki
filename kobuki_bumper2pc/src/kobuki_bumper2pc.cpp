@@ -23,7 +23,7 @@ void Bumper2PcNodelet::coreSensorCB(const kobuki_msgs::SensorState::ConstPtr& ms
   if (pointcloud_pub_.getNumSubscribers() == 0)
     return;
 
-  // We publish just one "no events" pc and stop spamming when bumper/cliff conditions disappear
+  // We publish just one "no events" pc (with all three points far away) and stop spamming when bumper/cliff conditions disappear
   if (! msg->bumper && ! msg->cliff && ! prev_bumper && ! prev_cliff)
     return;
 
@@ -31,6 +31,7 @@ void Bumper2PcNodelet::coreSensorCB(const kobuki_msgs::SensorState::ConstPtr& ms
   prev_cliff  = msg->cliff;
 
   // We replicate the sensors order of bumper/cliff event messages: LEFT = 0, CENTER = 1 and RIGHT = 2
+  // For any of {left/center/right} with no bumper/cliff event, we publish a faraway point that won't get used 
   if ((msg->bumper & kobuki_msgs::SensorState::BUMPER_LEFT) ||
       (msg->cliff  & kobuki_msgs::SensorState::CLIFF_LEFT))
   {
@@ -84,9 +85,9 @@ void Bumper2PcNodelet::onInit()
   nh.param("side_point_angle", angle, 0.34906585); 
 
   // Lateral points x/y coordinates; we need to store float values to memcopy later
-  p_side_x_ = + pc_radius_*sin(angle); // 20 degrees from vertical
-  p_side_y_ = + pc_radius_*cos(angle); // 20 degrees from vertical
-  n_side_y_ = - pc_radius_*cos(angle); // 20 degrees from vertical
+  p_side_x_ = + pc_radius_*sin(angle); // angle degrees from vertical
+  p_side_y_ = + pc_radius_*cos(angle); // angle degrees from vertical
+  n_side_y_ = - pc_radius_*cos(angle); // angle degrees from vertical
 
   // Prepare constant parts of the pointcloud message to be  published
   pointcloud_.header.frame_id = "/base_link";
