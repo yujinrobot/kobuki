@@ -17,6 +17,8 @@
   
   <run_depend>kobuki_node</run_depend>
   <run_depend>nodelet</run_depend>
+  <run_depend>rocon_app_manager</run_depend>
+  <run_depend>rocon_apps</run_depend>
   <run_depend>std_capabilities</run_depend>
 
   <export>

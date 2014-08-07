@@ -75,10 +75,6 @@
   <run_depend>ecl_streams</run_depend>
   <run_depend>ecl_threads</run_depend>
 
-  <!-- ROCON -->
-  <run_depend>rocon_app_manager</run_depend>
-  <run_depend>rocon_apps</run_depend>
-
   <!-- For Tests -->
   <run_depend>rospy</run_depend>
   
