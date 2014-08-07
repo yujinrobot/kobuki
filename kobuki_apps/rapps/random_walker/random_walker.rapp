@@ -3,7 +3,7 @@ description:      Makes Kobuki wander off and explorer the world
 compatibility:    rocon:/kobuki|turtlebot2
 launch:           kobuki_apps/random_walker.launch.xml
 public_interface: kobuki_apps/random_walker.interface
-icon:         kobuki_apps/random_walker.png
+icon:             kobuki_apps/kobuki_app_icon.png
 required_capabilities:
   - name: std_capabilities/DifferentialMobileBase
     interface:
@@ -11,6 +11,24 @@ required_capabilities:
         requires:
           '/cmd_vel': 'kobuki_random_walker_controller/commands/velocity'
         provides: []
+  - name: kobuki_capabilities/KobukiBumper
+    interface:
+      topics:
+        requires: []
+        provides:
+          '/kobuki_bumper_event': 'kobuki_random_walker_controller/events/bumper'
+  - name: kobuki_capabilities/KobukiCliffDetection
+    interface:
+      topics:
+        requires: []
+        provides:
+          '/kobuki_cliff_event': 'kobuki_random_walker_controller/events/cliff'
+  - name: kobuki_capabilities/KobukiWheelDropDetection
+    interface:
+      topics:
+        requires: []
+        provides:
+          '/kobuki_wheel_drop_event': 'kobuki_random_walker_controller/events/wheel_drop'
   - name: kobuki_capabilities/KobukiLED1
     interface:
       topics:
@@ -23,3 +41,4 @@ required_capabilities:
         requires:
           '/kobuki_led2': 'kobuki_random_walker_controller/commands/led2'
         provides: []
+        

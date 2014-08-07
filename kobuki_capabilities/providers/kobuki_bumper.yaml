@@ -1,0 +1,13 @@
+%YAML 1.1
+---
+name: kobuki_bumper
+spec_version: 1
+spec_type: provider
+description: "Implements the Bumper Event capability for Kobuki's bumper."
+implements: kobuki_capabilities/KobukiBumper
+depends_on:
+  'kobuki_capabilities/KobukiBringup':
+    provider: 'kobuki_capabilities/kobuki_bringup'
+remappings:
+  topics:
+    '/kobuki_bumper_event': '/mobile_base/events/bumper'
