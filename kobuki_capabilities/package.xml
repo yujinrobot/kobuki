@@ -17,17 +17,25 @@
   
   <run_depend>kobuki_node</run_depend>
   <run_depend>nodelet</run_depend>
+  <run_depend>rocon_app_manager</run_depend>
+  <run_depend>rocon_apps</run_depend>
   <run_depend>std_capabilities</run_depend>
 
   <export>
     <capability_interface>interfaces/KobukiBringup.yaml</capability_interface>
-    <capability_interface>interfaces/LED.yaml</capability_interface>
+    <capability_interface>interfaces/KobukiLED.yaml</capability_interface>
     <semantic_capability_interface>interfaces/KobukiLED1.yaml</semantic_capability_interface>
     <semantic_capability_interface>interfaces/KobukiLED2.yaml</semantic_capability_interface>
+    <capability_interface>interfaces/KobukiBumper.yaml</capability_interface>
+    <capability_interface>interfaces/KobukiCliffDetection.yaml</capability_interface>
+    <capability_interface>interfaces/KobukiWheelDropDetection.yaml</capability_interface>
     <capability_provider>providers/kobuki_bringup.yaml</capability_provider>
     <capability_provider>providers/kobuki_led.yaml</capability_provider>
     <capability_provider>providers/kobuki_led1.yaml</capability_provider>
     <capability_provider>providers/kobuki_led2.yaml</capability_provider>
+    <capability_provider>providers/kobuki_bumper.yaml</capability_provider>
+    <capability_provider>providers/kobuki_cliff_detection.yaml</capability_provider>
+    <capability_provider>providers/kobuki_wheel_drop_detection.yaml</capability_provider>
     <capability_provider>providers/kobuki_differential_mobile_base.yaml</capability_provider>
   </export>
 </package>

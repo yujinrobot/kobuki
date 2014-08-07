@@ -1,0 +1,12 @@
+%YAML 1.1
+---
+name: KobukiWheelDropDetection
+spec_version: 1
+spec_type: interface
+description: "Detects when Kobuki's wheels drop"
+interface:
+  topics:
+    provides:
+      '/kobuki_wheel_drop_event':
+        type: 'kobuki_msgs/WheelDropEvent'
+        description: "Event is sent when one or both wheels drop out or move back in"
