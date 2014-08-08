@@ -2,8 +2,8 @@
 Changelog for package kobuki_auto_docking
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.6.0 (2014-08-08)
+------------------
 * leaning comments
 * refactoring
 * publish debug message even if auto dock is not running

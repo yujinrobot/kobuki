@@ -2,8 +2,8 @@
 Changelog for package kobuki_node
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.6.0 (2014-08-08)
+------------------
 * remove kobuki_capabilities dependency from package.xml remove author emails
 * moves app manager launcher to kobuki_capabilities (solves `#331 <https://github.com/yujinrobot/kobuki/issues/331>`_)
 * kobuki_node: adds shutdown flag to nodelet (fixes `#324 <https://github.com/yujinrobot/kobuki/issues/324>`_)

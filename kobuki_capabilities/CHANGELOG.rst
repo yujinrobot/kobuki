@@ -2,8 +2,8 @@
 Changelog for package kobuki_capabilities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.6.0 (2014-08-08)
+------------------
 * moves app manager launcher to kobuki_capabilities (solves `#331 <https://github.com/yujinrobot/kobuki/issues/331>`_)
 * kobuki_capabilities: adds nodelet manager support for bringup provider
 * updates and extends kobuki's capabilities
