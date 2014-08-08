@@ -1,61 +1,58 @@
 <launch>
-  <arg name="debug" default="false" />
-  <arg name="capability_server_name" default="capability_server"/>
-  <arg name="capability_server_nodelet_manager_name" default="capability_server_nodelet_manager" />
-  
-  <node pkg="capabilities" name="$(arg capability_server_name)" type="capability_server" required="true">
-    <param name="debug" value="true" if="$(arg debug)" />
-    <param name="nodelet_manager_name" value="$(arg capability_server_nodelet_manager_name)" />
-    <!-- -->  default providers -->
-    <param name="defaults/kobuki_capabilities/KobukiBringup"
-           value="kobuki_capabilities/kobuki_bringup" />
-    <param name="defaults/kobuki_capabilities/KobukiLED"
-           value="kobuki_capabilities/kobuki_led" />
-    <param name="defaults/kobuki_capabilities/KobukiLED1"
-           value="kobuki_capabilities/kobuki_led1" />
-    <param name="defaults/kobuki_capabilities/KobukiLED2"
-           value="kobuki_capabilities/kobuki_led2" />
-    <param name="defaults/kobuki_capabilities/KobukiBumper"
-           value="kobuki_capabilities/kobuki_bumper" />
-    <param name="defaults/kobuki_capabilities/KobukiCliffDetection"
-           value="kobuki_capabilities/kobuki_cliff_detection" />
-    <param name="defaults/kobuki_capabilities/KobukiWheelDropDetection"
-           value="kobuki_capabilities/kobuki_wheel_drop_detection" />
-    <param name="defaults/std_capabilities/DifferentialMobileBase"
-           value="kobuki_capabilities/kobuki_differential_mobile_base" />
-    <rosparam param="package_whitelist">
-      - std_capabilities
-      - kobuki_capabilities
-    </rosparam>
-    <rosparam param="blacklist">
-      - 'std_capabilities/Diagnostics'
-      - 'std_capabilities/LaserSensor'
-      - 'std_capabilities/MultiEchoLaserSensor'
-      - 'std_capabilities/Navigation2D'
-      - 'std_capabilities/RGBDSensor'
-      - 'std_capabilities/RobotStatePublisher'
-    </rosparam>
-  </node>
-
   <!-- app manager -->
+  <!-- By default, robot is standalone -->
+  <!-- Concert mode will get supported when it needs -->
   <arg name="robot_name" default="$(optenv ROBOT_NAME kobuki)"/>
   <arg name="robot_type" default="$(optenv ROBOT_TYPE kobuki)"/>
-  <!-- By default, we only tune into the pairing master's hub, so set the whitelist here for "Internal Hub" -->
-  <!-- To run concert mode, set an empty string or use your concert's hub name specifically -->
-  <!-- For concert mode, you should also disable the auto_invite in paired public.launch -->
-  <arg name="hub_whitelist" default="$(optenv ROBOT_HUB_WHITELIST Internal Hub)"/>
-  <arg name="rapp_package_whitelist" value="[rocon_apps, kobuki_apps]"/>
   <arg name="robot_icon" default="kobuki_node/kobuki_icon.png"/>
-  <arg name="gateway_watch_loop_period" default="10"/> <!-- Polling period for multimaster advertising/flipping -->
+  <arg name="robot_description"       value="Beloved Kobuki"/>
 
-  <include file="$(find rocon_app_manager)/launch/paired_private.launch"> <!-- paired client for app manager -->
-    <arg name="robot_name" value="$(arg robot_name)"/>
-    <arg name="robot_type" value="$(arg robot_type)"/>
-    <arg name="robot_icon" value="$(arg robot_icon)"/>
-    <arg name="rapp_package_whitelist" value="$(arg rapp_package_whitelist)"/>
-    <arg name="gateway_watch_loop_period" value="$(arg gateway_watch_loop_period)"/>
-    <arg name="disable_uuids" value="true"/>
-    <arg name="hub_whitelist" value="$(arg hub_whitelist)"/>
-    <arg name="capability_server_name" value="$(arg capability_server_name)"/>
+  <arg name="rapp_package_whitelist" value="[rocon_apps, kobuki_apps]"/>
+  <arg name="rapp_package_blacklist"  value="[]"/>
+  <arg name="auto_start_rapp"         value=""/>
+  <arg name="screen"                  value="true"/>
+  <arg name="auto_rapp_installation"  value="false"/>
+
+  <!-- capabilities -->
+  <arg name="capabilities"                              value="true"/>
+  <arg name="capabilities_server_name"                  default="capability_server"/>
+  <arg name="capabilities_nodelet_manager_name"         default="capability_server_nodelet_manager" />
+  <arg name="capabilities_parameters"                   default="$(find kobuki_capabilities)/param/defaults_kobuki_capabilities.yaml"/>
+  <arg name="capabilities_package_whitelist"            default="[kobuki_capabilities, std_capabilities]" /> <!-- get capabilities from these packages only -->
+
+  <arg name="capabilities_blacklist"                    default="['std_capabilities/Diagnostics', 'std_capabilities/LaserSensor', 'std_capabilities/MultiEchoLaserSensor', 'std_capabilities/Navigation2D', 'std_capabilities/RGBDSensor', 'std_capabilities/RobotStatePublisher']"/>
+
+  <!-- Interactions -->
+  <arg name="interactions" default="false"/>
+  <arg name="interactions_lists" default="[]"/> 
+
+  <!-- Zeroconf -->
+  <arg name="zeroconf"                                  default="true"/>
+  <arg name="zeroconf_name"                             default="$(arg robot_name)"/>
+  <arg name="zeroconf_port"                             default="11311"/>
+
+  <include file="$(find rocon_app_manager)/launch/standalone.launch"> <!-- standalone for app manager -->
+    <arg name="robot_name"                                value="$(arg robot_name)"/>
+    <arg name="robot_type"                                value="$(arg robot_type)"/>
+    <arg name="robot_icon"                                value="$(arg robot_icon)"/>
+    <arg name="robot_description"                         value="$(arg robot_description)"/>
+    <arg name="rapp_package_whitelist"                    value="$(arg rapp_package_whitelist)"/>
+    <arg name="rapp_package_blacklist"                    value="$(arg rapp_package_blacklist)"/>
+    <arg name="auto_start_rapp"                           value="$(arg auto_start_rapp)"/>
+    <arg name="screen"                                    value="$(arg screen)"/>
+    <arg name="auto_rapp_installation"                    value="$(arg auto_rapp_installation)"/>
+
+    <arg name="capabilities"                              value="$(arg capabilities)"/>
+    <arg name="capabilities_server_name"                  value="$(arg capabilities_server_name)"/>
+    <arg name="capabilities_nodelet_manager_name"         value="$(arg capabilities_nodelet_manager_name)"/>
+    <arg name="capabilities_parameters"                   value="$(arg capabilities_parameters)"/>
+    <arg name="capabilities_package_whitelist"            value="$(arg capabilities_package_whitelist)"/>
+    <arg name="capabilities_blacklist"                    value="$(arg capabilities_blacklist)"/>
+
+    <arg name="interactions"                              value="$(arg interactions)"/>
+
+    <arg name="zeroconf"                                  value="$(arg zeroconf)"/>
+    <arg name="zeroconf_name"                             value="$(arg zeroconf_name)"/>
+    <arg name="zeroconf_port"                             value="$(arg zeroconf_port)"/>
   </include>
 </launch>
