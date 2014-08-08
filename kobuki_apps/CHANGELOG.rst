@@ -4,6 +4,16 @@ Changelog for package kobuki_apps
 
 Forthcoming
 -----------
+* sync package version. remove author e-mail
+* updates icons for apps and app manager launcher
+* adds minor changes due to capability server and app manager updates
+* updates for new rapp lists
+* kobuki_apps: fixes spelling mistake in run dependency
+* adds cleanup and updates for the recent changes in capabilities dev
+* kobuki_apps: adds provider specific remappings for random walker app
+* adds kobuki_apps
+* Contributors: Jihoon Lee, Marcus Liebhardt
+
 * updates icons for apps and app manager launcher
 * adds minor changes due to capability server and app manager updates
 * updates for new rapp lists

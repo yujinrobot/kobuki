@@ -2,6 +2,13 @@
 Changelog for package kobuki_bumper2pc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* added comments to explain about the faraway points
+* added side_point_angle param to change the angle of the bumper pointcloud's side points
+* Add missing run dependency on yocs_cmd_vel_mux
+* Contributors: Jorge Santos, Kaijen Hsiao
+
 0.5.5 (2013-10-11)
 ------------------
 

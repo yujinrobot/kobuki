@@ -2,6 +2,14 @@
 Changelog for package kobuki_auto_docking
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* leaning comments
+* refactoring
+* publish debug message even if auto dock is not running
+* Add missing run dependency on yocs_cmd_vel_mux
+* Contributors: Jihoon Lee, Jorge Santos, jihoonl
+
 0.5.5 (2013-10-11)
 ------------------
 * Rename cmd_vel_mux as yocs_cmd_vel_mux.

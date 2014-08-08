@@ -12,6 +12,16 @@ Forthcoming
   semantic interface remappings
 * adds an initial set of kobuki-specific interfaces and providers plus idle node
 * adds kobuki_capabilities
+* Contributors: Jihoon Lee, Marcus Liebhardt
+
+* moves app manager launcher to kobuki_capabilities (solves `#331 <https://github.com/yujinrobot/kobuki/issues/331>`_)
+* kobuki_capabilities: adds nodelet manager support for bringup provider
+* updates and extends kobuki's capabilities
+* adds cleanup and updates for the recent changes in capabilities dev
+* kobuki_capabilities: adds provider specific remappings and fixes
+  semantic interface remappings
+* adds an initial set of kobuki-specific interfaces and providers plus idle node
+* adds kobuki_capabilities
 * Contributors: Marcus Liebhardt
 
 0.5.6 (2014-05-23)
