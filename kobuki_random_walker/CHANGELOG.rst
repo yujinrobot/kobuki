@@ -2,6 +2,11 @@
 Changelog for package kobuki_random_walker
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.0 (2014-08-08)
+------------------
+* Add missing run dependency on yocs_cmd_vel_mux
+* Contributors: Jorge Santos
+
 0.5.5 (2013-10-11)
 ------------------
 * Rename cmd_vel_mux as yocs_cmd_vel_mux.

@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <package>
   <name>kobuki_capabilities</name>
-  <version>0.1.0</version>
+  <version>0.6.0</version>
   <description>Kobuki's capabilities</description>
   
   <maintainer email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</maintainer>
-  <author email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</author>
+  <author>Marcus Liebhardt</author>
   
   <license>BSD</license>
   

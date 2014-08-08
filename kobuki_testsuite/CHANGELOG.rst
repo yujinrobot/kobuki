@@ -2,6 +2,13 @@
 Changelog for package kobuki_testsuite
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.0 (2014-08-08)
+------------------
+* Angular/linear acceleration script added.
+* customisable rotate rate.
+* Add missing run dependency on yocs_cmd_vel_mux
+* Contributors: Daniel Stonier, Jorge Santos, jihoonl
+
 0.5.5 (2013-10-11)
 ------------------
 * New script: test_slow_drive.sh
