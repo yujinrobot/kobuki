@@ -2,6 +2,9 @@
 Changelog for package kobuki_node
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.6.0 (2014-08-08)
 ------------------
 * remove kobuki_capabilities dependency from package.xml remove author emails

@@ -2,6 +2,9 @@
 Changelog for package kobuki_bumper2pc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.6.0 (2014-08-08)
 ------------------
 * added comments to explain about the faraway points

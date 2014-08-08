@@ -2,6 +2,11 @@
 Changelog for package kobuki_capabilities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* sync with current app manager launcher. default kobuki capabilities param file added
+* Contributors: Jihoon Lee
+
 0.6.0 (2014-08-08)
 ------------------
 * moves app manager launcher to kobuki_capabilities (solves `#331 <https://github.com/yujinrobot/kobuki/issues/331>`_)

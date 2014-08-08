@@ -2,6 +2,9 @@
 Changelog for package kobuki_apps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.6.0 (2014-08-08)
 ------------------
 * sync package version. remove author e-mail
