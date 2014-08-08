@@ -53,7 +53,7 @@ class SafeWandering(object):
         self.bumper_subscriber = rospy.Subscriber(bumper_topic, BumperEvent, self.bumper_event_callback)
         self.cliff_subscriber = rospy.Subscriber(cliff_topic, CliffEvent, self.cliff_event_callback)
         self.odom_subscriber = rospy.Subscriber(odom_topic, Odometry, self.odometry_callback)
-        self.cmd_vel_publisher = rospy.Publisher(cmd_vel_topic, Twist)
+        self.cmd_vel_publisher = rospy.Publisher(cmd_vel_topic, Twist, queue_size=10)
         self.rate = rospy.Rate(50)
 
         self.ok = True

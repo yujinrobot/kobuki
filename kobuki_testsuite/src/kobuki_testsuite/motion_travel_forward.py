@@ -37,7 +37,7 @@ class TravelForward(object):
     '''
     def __init__(self, cmd_vel_topic, odom_topic, cliff_sensor_topic):
         self.odom_subscriber = rospy.Subscriber(odom_topic, Odometry, self.odometry_callback)
-        self.cmd_vel_publisher = rospy.Publisher(cmd_vel_topic, Twist)
+        self.cmd_vel_publisher = rospy.Publisher(cmd_vel_topic, Twist, queue_size=10)
         self.cliff_sensor_subscriber = rospy.Subscriber(cliff_sensor_topic, CliffEvent , self.cliff_sensor_callback)
         self.speed = 0.7
         self.distance = 1.0
