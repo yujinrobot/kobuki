@@ -4,9 +4,9 @@
   <description>
       ROS nodelet for Kobuki: ROS wrapper for the Kobuki driver.
   </description>
-  <author email="stonier@yujinrobot.com">Daniel Stonier</author>
-  <author email="yhju@yujinrobot.com">Younghun Ju</author>
-  <author email="jorge@yujinrobot.com">Jorge Santos Simon</author>
+  <author>Daniel Stonier</author>
+  <author>Younghun Ju</author>
+  <author>Jorge Santos Simon</author>
   <maintainer email="stonier@yujinrobot.com">Daniel Stonier</maintainer>
   <license>BSD</license>
   <url type="bugtracker">https://github.com/yujinrobot/kobuki/issues</url>
@@ -61,7 +61,6 @@
   <run_depend>pluginlib</run_depend>
 
   <!-- Kobuki -->
-  <run_depend>kobuki_capabilities</run_depend>
   <run_depend>kobuki_apps</run_depend>
   <run_depend>kobuki_msgs</run_depend>
   <run_depend>kobuki_driver</run_depend>
