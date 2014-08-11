@@ -2,6 +2,9 @@
 Changelog for package kobuki_random_walker
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.6.1 (2014-08-08)
 ------------------
 

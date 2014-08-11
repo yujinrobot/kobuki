@@ -2,6 +2,12 @@
 Changelog for package kobuki_node
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add queue_size on publiehrs `#338 <https://github.com/yujinrobot/kobuki/issues/338>`_
+* fixing the file link resolves `#339 <https://github.com/yujinrobot/kobuki/issues/339>`_
+* Contributors: Jihoon Lee
+
 0.6.1 (2014-08-08)
 ------------------
 

@@ -2,6 +2,9 @@
 Changelog for package kobuki_capabilities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.6.1 (2014-08-08)
 ------------------
 * sync with current app manager launcher. default kobuki capabilities param file added
