@@ -2,8 +2,8 @@
 Changelog for package kobuki_testsuite
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.6.2 (2014-08-11)
+------------------
 * move out the message to kobuki_msgs
 * add queue_size for publishers in testsuite
 * Contributors: Jihoon Lee
