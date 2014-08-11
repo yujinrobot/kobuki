@@ -13,7 +13,7 @@ import PyKDL
 import rospy
 from sensor_msgs.msg import LaserScan, Imu
 from geometry_msgs.msg import Twist
-from kobuki_testsuite.msg import ScanAngle
+from kobuki_msgs.msg import ScanAngle
 
 ##############################################################################
 # Utilities
