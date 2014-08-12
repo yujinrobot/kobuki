@@ -25,6 +25,8 @@
   <run_depend>kobuki_random_walker</run_depend>
   <run_depend>kobuki_safety_controller</run_depend>
   <run_depend>kobuki_testsuite</run_depend>
+  <run_depend>kobuki_rapps</run_depend>
+  <run_depend>kobuki_capabilities</run_depend>
 
   <export>
     <metapackage/>

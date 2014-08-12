@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>kobuki_apps</name>
+  <name>kobuki_rapps</name>
   <version>0.6.2</version>
   <description>Robot apps for Kobuki</description>
   
@@ -9,7 +9,7 @@
   
   <license>BSD</license>
   
-  <url type="website">http://ros.org/wiki/kobuki_apps</url>
+  <url type="website">http://ros.org/wiki/kobuki_rapps</url>
   <url type="repository">https://github.com/yujinrobot/kobuki</url>
   <url type="bugtracker">https://github.com/yujinrobot/kobuki/issues</url>
 

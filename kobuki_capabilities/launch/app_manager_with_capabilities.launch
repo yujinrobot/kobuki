@@ -7,7 +7,7 @@
   <arg name="robot_icon" default="kobuki_node/kobuki_icon.png"/>
   <arg name="robot_description"       value="Beloved Kobuki"/>
 
-  <arg name="rapp_package_whitelist" value="[rocon_apps, kobuki_apps]"/>
+  <arg name="rapp_package_whitelist" value="[rocon_apps, kobuki_rapps]"/>
   <arg name="rapp_package_blacklist"  value="[]"/>
   <arg name="auto_start_rapp"         value=""/>
   <arg name="screen"                  value="true"/>
