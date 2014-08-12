@@ -4,10 +4,10 @@
   <description>
     Software for Kobuki, Yujin Robot's mobile research base.
   </description>
-  <author email="stonier@yujinrobot.com">Daniel Stonier</author>
-  <author email="yhju@yujinrobot.com">Younghun Ju</author>
-  <author email="jorge@yujinrobot.com">Jorge Santos Simon</author>
-  <author email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</author>
+  <author>Daniel Stonier</author>
+  <author>Younghun Ju</author>
+  <author>Jorge Santos Simon</author>
+  <author>Marcus Liebhardt</author>
   <maintainer email="stonier@yujinrobot.com">Daniel Stonier</maintainer>
   <license>BSD</license>
   <url type="bugtracker">https://github.com/yujinrobot/kobuki/issues</url>
