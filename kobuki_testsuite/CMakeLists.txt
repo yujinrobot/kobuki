@@ -3,13 +3,6 @@ project(kobuki_testsuite)
 find_package(catkin REQUIRED COMPONENTS kobuki_driver kobuki_node std_msgs sensor_msgs geometry_msgs message_generation)
 
 catkin_python_setup()
-
-add_message_files(DIRECTORY msg
-                  FILES ScanAngle.msg
-)
-
-generate_messages(DEPENDENCIES std_msgs)
-
 catkin_package()
 
 install(PROGRAMS scripts/inf_rotation.py

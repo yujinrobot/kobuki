@@ -15,7 +15,7 @@ class Converter(object):
 	def __init__(self):
 		rospy.init_node("getOdom2D", anonymous=True)
 		self.sub = rospy.Subscriber("odom", Odometry, self.OdomCallback)
-		self.pub = rospy.Publisher("pose2d", Pose2D)
+		self.pub = rospy.Publisher("pose2d", Pose2D, queue_size=10)
 		
 	def OdomCallback(self,data):
 		px = data.pose.pose.position.x

@@ -1,9 +1,9 @@
 display:          Random Walker
 description:      Makes Kobuki wander off and explorer the world
 compatibility:    rocon:/kobuki|turtlebot2
-launch:           kobuki_apps/random_walker.launch.xml
-public_interface: kobuki_apps/random_walker.interface
-icon:             kobuki_apps/kobuki_app_icon.png
+launch:           random_walker.launch.xml
+public_interface: random_walker.interface
+icon:             ../kobuki_app_icon.png
 required_capabilities:
   - name: std_capabilities/DifferentialMobileBase
     interface:

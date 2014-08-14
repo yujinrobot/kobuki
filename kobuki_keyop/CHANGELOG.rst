@@ -2,6 +2,17 @@
 Changelog for package kobuki_keyop
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.2 (2014-08-11)
+------------------
+
+0.6.1 (2014-08-08)
+------------------
+
+0.6.0 (2014-08-08)
+------------------
+* Add missing run dependency on yocs_cmd_vel_mux
+* Contributors: Jorge Santos
+
 0.5.5 (2013-10-11)
 ------------------
 * Rename cmd_vel_mux as yocs_cmd_vel_mux.

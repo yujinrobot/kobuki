@@ -22,7 +22,7 @@ from std_msgs.msg import String
 
 class Rotate():
     def __init__(self,cmd_vel_topic):
-        self.cmd_vel_publisher = rospy.Publisher(cmd_vel_topic,Twist)
+        self.cmd_vel_publisher = rospy.Publisher(cmd_vel_topic,Twist, queue_size=10)
         self._cmd_vel_frequency = 5
         self._rate = rospy.Rate(self._cmd_vel_frequency)
         self._yaw_rate = 1.2

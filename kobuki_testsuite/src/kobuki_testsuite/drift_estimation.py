@@ -13,7 +13,7 @@ import PyKDL
 import rospy
 from sensor_msgs.msg import LaserScan, Imu
 from geometry_msgs.msg import Twist
-from kobuki_testsuite.msg import ScanAngle
+from kobuki_msgs.msg import ScanAngle
 
 ##############################################################################
 # Utilities
@@ -40,7 +40,7 @@ class ScanToAngle(object):
         self.min_angle = -0.3
         self.max_angle = 0.3
         self.lock = threading.Lock() # make sure we don't publish if the publisher is not there
-        self._laser_scan_angle_publisher = rospy.Publisher(scan_angle_topic, ScanAngle)
+        self._laser_scan_angle_publisher = rospy.Publisher(scan_angle_topic, ScanAngle, queue_size=10)
         self.scan_subscriber = rospy.Subscriber(scan_topic, LaserScan, self.scan_callback)
 
     def init(self, min_angle=-0.3, max_angle=0.3):
@@ -93,11 +93,11 @@ class DriftEstimation(object):
     def __init__(self, laser_scan_angle_topic, gyro_scan_angle_topic, error_scan_angle_topic, cmd_vel_topic, gyro_topic):
         self.lock = threading.Lock()
         
-        self._gyro_scan_angle_publisher = rospy.Publisher(gyro_scan_angle_topic, ScanAngle)
+        self._gyro_scan_angle_publisher = rospy.Publisher(gyro_scan_angle_topic, ScanAngle, queue_size=10)
         self._laser_scan_angle_subscriber = rospy.Subscriber(laser_scan_angle_topic, ScanAngle, self.scan_callback)
-        self._error_scan_angle_publisher = rospy.Publisher(error_scan_angle_topic, ScanAngle)
+        self._error_scan_angle_publisher = rospy.Publisher(error_scan_angle_topic, ScanAngle, queue_size=10)
         self.gyro_subscriber  = rospy.Subscriber(gyro_topic, Imu, self.gyro_callback)
-        self.cmd_vel_publisher = rospy.Publisher(cmd_vel_topic, Twist)
+        self.cmd_vel_publisher = rospy.Publisher(cmd_vel_topic, Twist, queue_size=10)
 
         self.rate = rospy.Rate(30)
 

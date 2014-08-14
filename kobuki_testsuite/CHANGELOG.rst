@@ -2,6 +2,22 @@
 Changelog for package kobuki_testsuite
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.2 (2014-08-11)
+------------------
+* move out the message to kobuki_msgs
+* add queue_size for publishers in testsuite
+* Contributors: Jihoon Lee
+
+0.6.1 (2014-08-08)
+------------------
+
+0.6.0 (2014-08-08)
+------------------
+* Angular/linear acceleration script added.
+* customisable rotate rate.
+* Add missing run dependency on yocs_cmd_vel_mux
+* Contributors: Daniel Stonier, Jorge Santos, jihoonl
+
 0.5.5 (2013-10-11)
 ------------------
 * New script: test_slow_drive.sh

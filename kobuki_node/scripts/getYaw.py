@@ -16,8 +16,8 @@ class Converter(object):
 	def __init__(self):
 		rospy.init_node("getYaw", anonymous=True)
 		self.sub_imu  = rospy.Subscriber("imu", Imu, self.ImuCallback)
-		self.pub_angle = rospy.Publisher("angle", Float64)
-		self.pub_angle_rate = rospy.Publisher("angle_rate", Float64)
+		self.pub_angle = rospy.Publisher("angle", Float64, queue_size=10)
+		self.pub_angle_rate = rospy.Publisher("angle_rate", Float64, queue_size=10)
 
 	def ImuCallback(self,data):
 		quat = data.orientation
