@@ -86,7 +86,8 @@ public:
     bumper_right_pressed_(false),
     cliff_left_detected_(false),
     cliff_center_detected_(false),
-    cliff_right_detected_(false){};
+    cliff_right_detected_(false), 
+    last_event_time_(ros::Time(0)){};
   ~SafetyController(){};
 
   /**
@@ -95,6 +96,10 @@ public:
    */
   bool init()
   {
+    //how long to keep sending messages after a bump, cliff, or wheel drop stops
+    double time_to_extend_bump_cliff_events;
+    nh_.param("time_to_extend_bump_cliff_events", time_to_extend_bump_cliff_events, 0.0);
+    time_to_extend_bump_cliff_events_ = ros::Duration(time_to_extend_bump_cliff_events);
     enable_controller_subscriber_ = nh_.subscribe("enable", 10, &SafetyController::enableCB, this);
     disable_controller_subscriber_ = nh_.subscribe("disable", 10, &SafetyController::disableCB, this);
     bumper_event_subscriber_ = nh_.subscribe("events/bumper", 10, &SafetyController::bumperEventCB, this);
@@ -120,6 +125,8 @@ private:
   bool wheel_left_dropped_, wheel_right_dropped_;
   bool bumper_left_pressed_, bumper_center_pressed_, bumper_right_pressed_;
   bool cliff_left_detected_, cliff_center_detected_, cliff_right_detected_;
+  ros::Duration time_to_extend_bump_cliff_events_;
+  ros::Time last_event_time_;
 
   geometry_msgs::TwistPtr msg_; // velocity command
 
@@ -193,6 +200,7 @@ void SafetyController::cliffEventCB(const kobuki_msgs::CliffEventConstPtr msg)
 {
   if (msg->state == kobuki_msgs::CliffEvent::CLIFF)
   {
+    last_event_time_ = ros::Time::now();
     ROS_DEBUG_STREAM("Cliff detected. Moving backwards. [" << name_ << "]");
     switch (msg->sensor)
     {
@@ -217,6 +225,7 @@ void SafetyController::bumperEventCB(const kobuki_msgs::BumperEventConstPtr msg)
 {
   if (msg->state == kobuki_msgs::BumperEvent::PRESSED)
   {
+    last_event_time_ = ros::Time::now();
     ROS_DEBUG_STREAM("Bumper pressed. Moving backwards. [" << name_ << "]");
     switch (msg->bumper)
     {
@@ -334,6 +343,11 @@ void SafetyController::spin()
       msg_->angular.x = 0.0;
       msg_->angular.y = 0.0;
       msg_->angular.z = 0.4;
+      velocity_command_publisher_.publish(msg_);
+    }
+    //if we want to extend the safety state and we're within the time, just keep sending msg_
+    else if (time_to_extend_bump_cliff_events_ > ros::Duration(1e-10) && 
+	     ros::Time::now() - last_event_time_ < time_to_extend_bump_cliff_events_) {
       velocity_command_publisher_.publish(msg_);
     }
   }
