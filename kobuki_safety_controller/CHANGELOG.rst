@@ -2,8 +2,8 @@
 Changelog for package kobuki_safety_controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.7 (2014-08-18)
+------------------
 * added time_to_extend_bump_cliff_events param to kobuki_safety_controller
 * Contributors: Kaijen Hsiao
 
