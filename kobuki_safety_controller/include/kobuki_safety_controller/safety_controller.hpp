@@ -87,7 +87,8 @@ public:
     cliff_left_detected_(false),
     cliff_center_detected_(false),
     cliff_right_detected_(false), 
-    last_event_time_(ros::Time(0)){};
+    last_event_time_(ros::Time(0)),
+    msg_(new geometry_msgs::Twist()){};
   ~SafetyController(){};
 
   /**
