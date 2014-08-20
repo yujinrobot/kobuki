@@ -2,8 +2,8 @@
 Changelog for package kobuki_safety_controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.8 (2014-08-20)
+------------------
 * added initialization for msg_ to kobuki_safety_controller
 * Contributors: Kaijen Hsiao
 
