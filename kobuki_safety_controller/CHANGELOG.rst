@@ -2,8 +2,8 @@
 Changelog for package kobuki_safety_controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.6.3 (2014-08-25)
+------------------
 * added initialization for msg_ to kobuki_safety_controller
 * added time_to_extend_bump_cliff_events param to kobuki_safety_controller
 * Contributors: Kaijen Hsiao

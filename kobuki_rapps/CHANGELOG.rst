@@ -2,8 +2,8 @@
 Changelog for package kobuki_apps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.6.3 (2014-08-25)
+------------------
 * rename_kobuki_apps to kobuki_Rapps
 * Contributors: Jihoon Lee
 
