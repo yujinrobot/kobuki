@@ -2,6 +2,9 @@
 Changelog for package kobuki_bumper2pc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.6.2 (2014-08-11)
 ------------------
 
