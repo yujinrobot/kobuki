@@ -2,6 +2,9 @@
 Changelog for package kobuki_node
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.3 (2014-08-25)
+------------------
+
 0.6.2 (2014-08-11)
 ------------------
 * add queue_size on publiehrs `#338 <https://github.com/yujinrobot/kobuki/issues/338>`_

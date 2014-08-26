@@ -2,6 +2,12 @@
 Changelog for package kobuki
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.3 (2014-08-25)
+------------------
+* remove authors e-mail
+* rename kobuki_apps as kobuki_rapps to resolve `#336 <https://github.com/yujinrobot/kobuki/issues/336>`_
+* Contributors: Jihoon Lee
+
 0.6.2 (2014-08-11)
 ------------------
 
