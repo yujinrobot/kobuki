@@ -61,7 +61,7 @@
   <run_depend>pluginlib</run_depend>
 
   <!-- Kobuki -->
-  <run_depend>kobuki_apps</run_depend>
+  <run_depend>kobuki_rapps</run_depend>
   <run_depend>kobuki_msgs</run_depend>
   <run_depend>kobuki_driver</run_depend>
   <run_depend>kobuki_ftdi</run_depend>
