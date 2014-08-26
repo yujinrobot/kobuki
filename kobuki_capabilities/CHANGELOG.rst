@@ -2,6 +2,9 @@
 Changelog for package kobuki_capabilities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.6.3 (2014-08-25)
 ------------------
 * rename kobuki_apps as kobuki_rapps to resolve `#336 <https://github.com/yujinrobot/kobuki/issues/336>`_

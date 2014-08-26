@@ -2,6 +2,12 @@
 Changelog for package kobuki_node
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge branch 'indigo' of https://github.com/yujinrobot/kobuki into indigo
+* rename run_depend of kobuki_node from kobuki_apps to kobuki_rapps
+* Contributors: Jihoon Lee
+
 0.6.3 (2014-08-25)
 ------------------
 
