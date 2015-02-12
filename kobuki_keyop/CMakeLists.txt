@@ -12,6 +12,10 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_subdirectory(src)
 
+install(DIRECTORY include
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  FILES_MATCHING PATTERN "*.h*")
+
 install(DIRECTORY launch
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
