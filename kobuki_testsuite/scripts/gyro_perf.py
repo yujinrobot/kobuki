@@ -19,7 +19,7 @@ from math import degrees, radians
 from numpy import mod
 
 #from turtlebot_calibration.msg import ScanAngle
-from kobuki_testsuite.msg import ScanAngle
+from kobuki_msgs.msg import ScanAngle
 
 def wrap_to_pi(x):
     a = mod(mod(x,2*pi)+2*pi, 2*pi)
@@ -34,6 +34,7 @@ class Tester(object):
     self.done = False
     self.reset_angle = True
     self.triggered = False
+    self.scan_angle = None
 
     self.debug = rospy.get_param('~debug', False)
 
@@ -96,6 +97,8 @@ class Tester(object):
         return
 
     if self.state == "ALIGNING":
+      if self.scan_angle is None:
+        return
       scan_angle = self.scan_angle
       if abs(scan_angle) > radians(1.0):
         cmd_vel = Twist()
