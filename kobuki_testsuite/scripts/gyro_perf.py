@@ -18,7 +18,6 @@ from tf.transformations import euler_from_quaternion
 from math import degrees, radians
 from numpy import mod
 
-#from turtlebot_calibration.msg import ScanAngle
 from kobuki_msgs.msg import ScanAngle
 
 def wrap_to_pi(x):
@@ -34,7 +33,7 @@ class Tester(object):
     self.done = False
     self.reset_angle = True
     self.triggered = False
-    self.scan_angle = None
+    self.scan_angle = None # Place holder until the first scan angle is received
 
     self.debug = rospy.get_param('~debug', False)
 
