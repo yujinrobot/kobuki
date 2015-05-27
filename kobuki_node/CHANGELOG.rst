@@ -2,6 +2,11 @@
 Changelog for package kobuki_node
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* install image directory closes `#357 <https://github.com/yujinrobot/kobuki/issues/357>`_
+* Contributors: Jihoon Lee
+
 0.6.5 (2014-11-21)
 ------------------
 * update diagnostics.yaml to show kobuki battery properly in kobuki dashboard. Fix `#350 <https://github.com/yujinrobot/kobuki/issues/350>`_

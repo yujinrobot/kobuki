@@ -2,6 +2,12 @@
 Changelog for package kobuki_keyop
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Installed both C/C++ headers.
+* Installed missing include directory.
+* Contributors: James Goppert
+
 0.6.5 (2014-11-21)
 ------------------
 
