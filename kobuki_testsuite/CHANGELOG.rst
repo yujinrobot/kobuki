@@ -2,8 +2,8 @@
 Changelog for package kobuki_testsuite
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.6.6 (2015-05-27)
+------------------
 * add comment for new variable `#353 <https://github.com/yujinrobot/kobuki/issues/353>`_
 * checks scan_angle variable. correct msg import `#353 <https://github.com/yujinrobot/kobuki/issues/353>`_
 * Contributors: Jihoon Lee

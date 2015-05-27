@@ -2,8 +2,8 @@
 Changelog for package kobuki_node
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.6.6 (2015-05-27)
+------------------
 * install image directory closes `#357 <https://github.com/yujinrobot/kobuki/issues/357>`_
 * Contributors: Jihoon Lee
 
