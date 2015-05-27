@@ -30,6 +30,9 @@ install(DIRECTORY launch
 install(DIRECTORY param
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
+install(DIRECTORY image
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
 install(PROGRAMS scripts/getOdom2D.py
                  scripts/getYaw.py
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
