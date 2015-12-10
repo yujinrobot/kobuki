@@ -90,7 +90,7 @@ void Bumper2PcNodelet::onInit()
   n_side_y_ = - pc_radius_*cos(angle); // angle degrees from vertical
 
   // Prepare constant parts of the pointcloud message to be  published
-  pointcloud_.header.frame_id = "/base_link";
+  pointcloud_.header.frame_id = "base_link";
   pointcloud_.width  = 3;
   pointcloud_.height = 1;
   pointcloud_.fields.resize(3);

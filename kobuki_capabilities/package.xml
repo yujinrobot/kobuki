@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>kobuki_capabilities</name>
-  <version>0.6.6</version>
+  <version>14.3.1</version>
   <description>Kobuki's capabilities</description>
   
   <maintainer email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</maintainer>
