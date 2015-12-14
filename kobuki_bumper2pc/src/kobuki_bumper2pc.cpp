@@ -79,10 +79,12 @@ void Bumper2PcNodelet::onInit()
   // it's too low, costmap will ignore this pointcloud (the robot footprint runs over the hit obstacle),
   // but if it's too big, hit obstacles will be mapped too far from the robot and the navigation around
   // them will probably fail.
+  std::string base_link_frame;
   double r, h, angle;
   nh.param("pointcloud_radius", r, 0.25); pc_radius_ = r;
   nh.param("pointcloud_height", h, 0.04); pc_height_ = h;
   nh.param("side_point_angle", angle, 0.34906585); 
+  nh.param<std::string>("base_link_frame", base_link_frame, "/base_link");
 
   // Lateral points x/y coordinates; we need to store float values to memcopy later
   p_side_x_ = + pc_radius_*sin(angle); // angle degrees from vertical
@@ -90,7 +92,7 @@ void Bumper2PcNodelet::onInit()
   n_side_y_ = - pc_radius_*cos(angle); // angle degrees from vertical
 
   // Prepare constant parts of the pointcloud message to be  published
-  pointcloud_.header.frame_id = "/base_link";
+  pointcloud_.header.frame_id = base_link_frame;
   pointcloud_.width  = 3;
   pointcloud_.height = 1;
   pointcloud_.fields.resize(3);
