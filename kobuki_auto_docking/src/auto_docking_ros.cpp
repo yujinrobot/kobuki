@@ -80,8 +80,8 @@ void AutoDockingROS::goalCb()
     as_.setAborted( result_, result_.text );
     ROS_INFO_STREAM("[" << name_ << "] New goal received but rejected.");
   } else {
-    goal_ = *(as_.acceptNewGoal());
     dock_.enable();
+    goal_ = *(as_.acceptNewGoal());
     ROS_INFO_STREAM("[" << name_ << "] New goal received and accepted.");
   }
 }
