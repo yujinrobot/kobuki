@@ -61,7 +61,7 @@ public:
     std::string nodelet_name = this->getName();
     kobuki_.reset(new KobukiRos(nodelet_name));
     // if there are latency issues with callbacks, we might want to move to process callbacks in multiple threads (use MTPrivateNodeHandle)
-    if (kobuki_->init(this->getPrivateNodeHandle()))
+    if (kobuki_->init(this->getPrivateNodeHandle(), this->getNodeHandle()))
     {
       update_thread_.start(&KobukiNodelet::update, *this);
       NODELET_INFO_STREAM("Kobuki : initialised.");
