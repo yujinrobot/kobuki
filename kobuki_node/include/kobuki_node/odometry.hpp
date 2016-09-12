@@ -21,7 +21,7 @@
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_broadcaster.h>
-#include <ecl/geometry/pose2d.hpp>
+#include <ecl/geometry/legacy_pose2d.hpp>
 
 /*****************************************************************************
 ** Namespaces
@@ -41,7 +41,7 @@ public:
   Odometry();
   void init(ros::NodeHandle& nh, const std::string& name);
   bool commandTimeout() const;
-  void update(const ecl::Pose2D<double> &pose_update, ecl::linear_algebra::Vector3d &pose_update_rates,
+  void update(const ecl::LegacyPose2D<double> &pose_update, ecl::linear_algebra::Vector3d &pose_update_rates,
               double imu_heading, double imu_angular_velocity);
   void resetOdometry() { pose.setIdentity(); }
   const ros::Duration& timeout() const { return cmd_vel_timeout; }
@@ -49,7 +49,7 @@ public:
 
 private:
   geometry_msgs::TransformStamped odom_trans;
-  ecl::Pose2D<double> pose;
+  ecl::LegacyPose2D<double> pose;
   std::string odom_frame;
   std::string base_frame;
   ros::Duration cmd_vel_timeout;

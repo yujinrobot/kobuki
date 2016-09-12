@@ -33,14 +33,14 @@
 
 #include <sstream>
 #include <vector>
-#include <ecl/geometry/pose2d.hpp>
+#include <ecl/geometry/legacy_pose2d.hpp>
 #include <ecl/linear_algebra.hpp>
 #include <kdl/frames.hpp>
 #include <kdl_conversions/kdl_msg.h>
 
 #include <kobuki_dock_drive/dock_drive.hpp>
 
-namespace kobuki 
+namespace kobuki
 {
 
 typedef message_filters::sync_policies::ApproximateTime<
