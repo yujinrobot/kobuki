@@ -101,7 +101,7 @@ KobukiRos::~KobukiRos()
   ROS_INFO_STREAM("Kobuki : waiting for kobuki thread to finish [" << name << "].");
 }
 
-bool KobukiRos::init(ros::NodeHandle& nh)
+bool KobukiRos::init(ros::NodeHandle& nh, ros::NodeHandle& nh_pub)
 {
   /*********************
    ** Communications
@@ -157,7 +157,7 @@ bool KobukiRos::init(ros::NodeHandle& nh)
   nh.param("wheel_right_joint_name", wheel_right_joint_name, std::string("wheel_right_joint"));
 
   // minimalistic check: are joint names present on robot description file?
-  if (!nh.getParam("/robot_description", robot_description))
+  if (!nh_pub.getParam("robot_description", robot_description))
   {
     ROS_WARN("Kobuki : no robot description given on the parameter server");
   }

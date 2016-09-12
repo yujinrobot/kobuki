@@ -86,7 +86,7 @@ class KobukiRos
 public:
   KobukiRos(std::string& node_name);
   ~KobukiRos();
-  bool init(ros::NodeHandle& nh);
+  bool init(ros::NodeHandle& nh, ros::NodeHandle& nh_pub);
   bool update();
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
