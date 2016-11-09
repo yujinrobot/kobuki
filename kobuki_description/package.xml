@@ -1,6 +1,6 @@
 <package>
   <name>kobuki_description</name>
-  <version>0.7.1</version>
+  <version>0.7.2</version>
   <description>
       Description of the Kobuki model.
       Provides the model description of Kobuki for simulation and visualisation. The files in this 
