@@ -145,7 +145,12 @@ void AutoDockingROS::syncCb(const nav_msgs::OdometryConstPtr& odom,
       ROS_INFO_STREAM( "[" << name_ << "]: Arrived on docking station successfully.");
       ROS_DEBUG_STREAM( "[" << name_ << "]: Result sent.");
       dock_.disable();
-    } else if ( !dock_.isEnabled() ) { //Action Server is activated, but DockDrive is not enabled, or disabled unexpectedly
+    } else if ( dock_.getState() == RobotDockingState::LOST ) {
+      result_.text = "Aborted: Can't find the dock.";
+      as_.setAborted(result_, "Aborted: Can't find the dock.");
+      ROS_INFO_STREAM( "[" << name_ << "] Goal aborted.");
+      dock_.disable();
+    }else if ( !dock_.isEnabled() ) { //Action Server is activated, but DockDrive is not enabled, or disabled unexpectedly
       ROS_ERROR_STREAM("[" << name_ << "] Unintended Case: ActionService is active, but DockDrive is not enabled..");
       result_.text = "Aborted: dock_drive is disabled unexpectedly.";
       as_.setAborted( result_, "Aborted: dock_drive is disabled unexpectedly." );
