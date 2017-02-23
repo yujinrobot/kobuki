@@ -1,6 +1,6 @@
 <package>
   <name>kobuki_node</name>
-  <version>0.7.2</version>
+  <version>0.7.3</version>
   <description>
       ROS nodelet for Kobuki: ROS wrapper for the Kobuki driver.
   </description>

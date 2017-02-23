@@ -1,6 +1,6 @@
 <package>
   <name>kobuki_keyop</name>
-  <version>0.7.2</version>
+  <version>0.7.3</version>
   <description>
     Keyboard teleoperation for Kobuki: relays commands from a keyboard to Kobuki.
   </description>

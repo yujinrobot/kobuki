@@ -1,6 +1,6 @@
 <package>
   <name>kobuki_controller_tutorial</name>
-  <version>0.7.2</version>
+  <version>0.7.3</version>
   <description>
     Code for the Kobuki controller tutorial.
   </description>
