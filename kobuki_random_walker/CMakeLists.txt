@@ -24,9 +24,7 @@ include_directories(include
                     ${catkin_INCLUDE_DIRS})
 
 add_library(kobuki_random_walker_nodelet src/nodelet.cpp)
-add_dependencies(kobuki_random_walker_nodelet geometry_msgs_gencpp
-                                              kobuki_msgs_gencpp
-                                              std_msgs_gencpp)
+add_dependencies(kobuki_random_walker_nodelet ${catkin_EXPORTED_TARGETS})
 target_link_libraries(kobuki_random_walker_nodelet ${catkin_LIBRARIES})
 
 install(TARGETS kobuki_random_walker_nodelet

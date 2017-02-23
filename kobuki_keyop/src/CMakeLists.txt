@@ -9,7 +9,7 @@ file(GLOB SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 ##############################################################################
 
 add_executable(keyop ${SOURCES})
-add_dependencies(keyop kobuki_msgs_gencpp)
+add_dependencies(keyop ${catkin_EXPORTED_TARGETS})
 target_link_libraries(keyop ${catkin_LIBRARIES})
 
 install(TARGETS keyop

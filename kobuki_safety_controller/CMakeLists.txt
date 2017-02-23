@@ -12,7 +12,7 @@ include_directories(include
                     ${catkin_INCLUDE_DIRS})
 
 add_library(kobuki_safety_controller_nodelet src/nodelet.cpp)
-add_dependencies(kobuki_safety_controller_nodelet kobuki_msgs_gencpp)
+add_dependencies(kobuki_safety_controller_nodelet ${catkin_EXPORTED_TARGETS})
 target_link_libraries(kobuki_safety_controller_nodelet ${catkin_LIBRARIES})
 
 install(TARGETS kobuki_safety_controller_nodelet
