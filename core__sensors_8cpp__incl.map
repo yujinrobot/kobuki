@@ -1,0 +1,6 @@
+<map id="core_sensors.cpp" name="core_sensors.cpp">
+<area shape="rect" id="node2" href="$core__sensors_8hpp.html" title="Core sensor packet payloads. " alt="" coords="143,80,283,136"/>
+<area shape="rect" id="node9" href="$payload__headers_8hpp.html" title="Byte id&#39;s for the individual payload headers. " alt="" coords="307,80,461,136"/>
+<area shape="rect" id="node3" href="$payload__base_8hpp.html" title="Base class for payloads. " alt="" coords="5,184,176,225"/>
+<area shape="rect" id="node6" href="$macros_8hpp.html" title="Macros for kobuki_driver. " alt="" coords="273,191,375,218"/>
+</map>

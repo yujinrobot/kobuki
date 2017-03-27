@@ -1,0 +1,12 @@
+<map id="command.hpp" name="command.hpp">
+<area shape="rect" id="node3" href="$payload__base_8hpp.html" title="Base class for payloads. " alt="" coords="49,319,207,360"/>
+<area shape="rect" id="node5" href="$led__array_8hpp.html" title="Definitions for manipulating the led&#39;s. " alt="" coords="99,155,253,181"/>
+<area shape="rect" id="node6" href="$modules_8hpp.html" title="Convenience header for modules. " alt="" coords="481,80,577,107"/>
+<area shape="rect" id="node9" href="$macros_8hpp.html" title="Macros for kobuki_driver. " alt="" coords="455,326,558,353"/>
+<area shape="rect" id="node7" href="$battery_8hpp.html" title="Human friendly batter indicator class. " alt="" coords="277,155,417,181"/>
+<area shape="rect" id="node12" href="$digital__output_8hpp.html" title="Digital output flags. " alt="" coords="441,155,618,181"/>
+<area shape="rect" id="node13" href="$diff__drive_8hpp.html" title="Simple module for the diff drive odometry. " alt="" coords="877,237,1030,263"/>
+<area shape="rect" id="node19" href="$sound_8hpp.html" title="Flags and id&#39;s for commanding sound sequences. " alt="" coords="694,155,829,181"/>
+<area shape="rect" id="node20" href="$acceleration__limiter_8hpp.html" title="Simple module for the velocity smoothing. " alt="" coords="1318,229,1463,271"/>
+<area shape="rect" id="node8" href="$core__sensors_8hpp.html" title="Core sensor packet payloads. " alt="" coords="283,237,469,263"/>
+</map>

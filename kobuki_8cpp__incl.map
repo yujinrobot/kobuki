@@ -1,0 +1,30 @@
+<map id="kobuki.cpp" name="kobuki.cpp">
+<area shape="rect" id="node10" href="$kobuki_8hpp.html" title="Device driver core interface. " alt="" coords="1476,80,1605,121"/>
+<area shape="rect" id="node40" href="$payload__headers_8hpp.html" title="Byte id&#39;s for the individual payload headers. " alt="" coords="2905,512,3075,553"/>
+<area shape="rect" id="node19" href="$version__info_8hpp.html" title="Version info for the kobuki driver. " alt="" coords="146,259,263,285"/>
+<area shape="rect" id="node22" href="$macros_8hpp.html" title="Macros for kobuki_driver. " alt="" coords="1171,519,1262,546"/>
+<area shape="rect" id="node24" href="$parameters_8hpp.html" title="Parameter configuration for the kobuki. " alt="" coords="387,259,499,285"/>
+<area shape="rect" id="node29" href="$event__manager_8hpp.html" title="The event manager &#45; sigslot interface. " alt="" coords="1829,341,1965,367"/>
+<area shape="rect" id="node31" href="$command_8hpp.html" title="Command structure. " alt="" coords="1245,177,1349,203"/>
+<area shape="rect" id="node33" href="$modules_8hpp.html" title="Convenience header for modules. " alt="" coords="841,259,937,285"/>
+<area shape="rect" id="node38" href="$packets_8hpp.html" title="Packets convenience header. " alt="" coords="2713,341,2806,367"/>
+<area shape="rect" id="node50" href="$packet__finder_8hpp.html" title="Simple packet finder. " alt="" coords="1576,333,1729,375"/>
+<area shape="rect" id="node25" href="$battery_8hpp.html" title="Human friendly batter indicator class. " alt="" coords="373,341,513,367"/>
+<area shape="rect" id="node26" href="$core__sensors_8hpp.html" title="Core sensor packet payloads. " alt="" coords="1879,430,2066,457"/>
+<area shape="rect" id="node27" href="$payload__base_8hpp.html" title="Base class for payloads. " alt="" coords="2515,512,2686,553"/>
+<area shape="rect" id="node32" href="$led__array_8hpp.html" title="Definitions for manipulating the led&#39;s. " alt="" coords="1067,341,1220,367"/>
+<area shape="rect" id="node34" href="$digital__output_8hpp.html" title="Digital output flags. " alt="" coords="537,341,715,367"/>
+<area shape="rect" id="node35" href="$diff__drive_8hpp.html" title="Simple module for the diff drive odometry. " alt="" coords="429,430,583,457"/>
+<area shape="rect" id="node36" href="$sound_8hpp.html" title="Flags and id&#39;s for commanding sound sequences. " alt="" coords="739,341,873,367"/>
+<area shape="rect" id="node37" href="$acceleration__limiter_8hpp.html" title="Simple module for the velocity smoothing. " alt="" coords="897,333,1043,375"/>
+<area shape="rect" id="node39" href="$cliff_8hpp.html" title="Cliff sensor packet payloads. " alt="" coords="2141,430,2260,457"/>
+<area shape="rect" id="node41" href="$current_8hpp.html" title="Current level packet payloads. " alt="" coords="2284,430,2421,457"/>
+<area shape="rect" id="node42" href="$gp__input_8hpp.html" title="gpio data command packets. " alt="" coords="2446,430,2593,457"/>
+<area shape="rect" id="node43" href="$inertia_8hpp.html" title="Inertia packet payloads. " alt="" coords="2924,430,3056,457"/>
+<area shape="rect" id="node44" href="$dock__ir_8hpp.html" title="Docking infrared sensor packet payloads. " alt="" coords="3081,430,3219,457"/>
+<area shape="rect" id="node45" href="$firmware_8hpp.html" title="Firmware version request packet payloads. " alt="" coords="3243,430,3390,457"/>
+<area shape="rect" id="node46" href="$hardware_8hpp.html" title="Hardware version request packet payloads. " alt="" coords="3415,430,3565,457"/>
+<area shape="rect" id="node47" href="$unique__device__id_8hpp.html" title="Module for handling of unique device id request packet payloads. " alt="" coords="3590,423,3745,464"/>
+<area shape="rect" id="node48" href="$three__axis__gyro_8hpp.html" title="Module for handling of three_axis_gyro packet payloads. " alt="" coords="2617,423,2749,464"/>
+<area shape="rect" id="node49" href="$controller__info_8hpp.html" title="Controller info packet payloads. " alt="" coords="2774,423,2899,464"/>
+</map>

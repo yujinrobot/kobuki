@@ -1,0 +1,4 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classkobuki_1_1PacketFinderBase.html" title="Provides simple packet finder which may be consist of stx, etx, payload, ... " alt="" coords="5,5,180,32"/>
+<area shape="rect" id="node2" href="$classkobuki_1_1PacketFinder.html" title="kobuki::PacketFinder" alt="" coords="228,5,373,32"/>
+</map>

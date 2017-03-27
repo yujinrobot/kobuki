@@ -1,0 +1,15 @@
+<map id="packet_handler::payloadBase" name="packet_handler::payloadBase">
+<area shape="rect" id="node2" href="$classkobuki_1_1Cliff.html" title="kobuki::Cliff" alt="" coords="283,5,375,32"/>
+<area shape="rect" id="node3" href="$classkobuki_1_1Command.html" title="kobuki::Command" alt="" coords="265,56,393,83"/>
+<area shape="rect" id="node4" href="$classkobuki_1_1ControllerInfo.html" title="kobuki::ControllerInfo" alt="" coords="255,107,402,133"/>
+<area shape="rect" id="node5" href="$classkobuki_1_1CoreSensors.html" title="kobuki::CoreSensors" alt="" coords="257,157,401,184"/>
+<area shape="rect" id="node6" href="$classkobuki_1_1Current.html" title="kobuki::Current" alt="" coords="273,208,384,235"/>
+<area shape="rect" id="node7" href="$classkobuki_1_1DockIR.html" title="kobuki::DockIR" alt="" coords="272,259,385,285"/>
+<area shape="rect" id="node8" href="$classkobuki_1_1Eeprom.html" title="kobuki::Eeprom" alt="" coords="272,309,385,336"/>
+<area shape="rect" id="node9" href="$classkobuki_1_1Firmware.html" title="kobuki::Firmware" alt="" coords="267,360,390,387"/>
+<area shape="rect" id="node10" href="$classkobuki_1_1GpInput.html" title="kobuki::GpInput" alt="" coords="271,411,386,437"/>
+<area shape="rect" id="node11" href="$classkobuki_1_1Hardware.html" title="kobuki::Hardware" alt="" coords="267,461,391,488"/>
+<area shape="rect" id="node12" href="$classkobuki_1_1Inertia.html" title="kobuki::Inertia" alt="" coords="277,512,381,539"/>
+<area shape="rect" id="node13" href="$classkobuki_1_1ThreeAxisGyro.html" title="kobuki::ThreeAxisGyro" alt="" coords="251,563,406,589"/>
+<area shape="rect" id="node14" href="$classkobuki_1_1UniqueDeviceID.html" title="kobuki::UniqueDeviceID" alt="" coords="247,613,411,640"/>
+</map>
