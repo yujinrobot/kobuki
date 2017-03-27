@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$event__manager_8hpp.html" title="The event manager &#45; sigslot interface." alt="" coords="95,83,380,112"/>
-<area shape="rect" id="node11" href="$core__sensors_8hpp.html" title="Core sensor packet payloads." alt="" coords="331,160,504,189"/>
-<area shape="rect" id="node26" href="$battery_8hpp.html" title="Human friendly batter indicator class." alt="" coords="455,83,745,112"/>
-<area shape="rect" id="node18" href="$macros_8hpp.html" title="Macros for kobuki_driver." alt="" coords="629,237,731,267"/>
-<area shape="rect" id="node13" href="$payload__base_8hpp.html" title="Base class for payloads." alt="" coords="275,237,504,267"/>
-</map>
