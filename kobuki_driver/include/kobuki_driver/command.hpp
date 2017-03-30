@@ -21,6 +21,7 @@
 #include "packet_handler/payload_base.hpp"
 #include "modules/led_array.hpp"
 #include "modules.hpp"
+#include "macros.hpp"
 
 /*****************************************************************************
 ** Namespace
@@ -30,7 +31,7 @@
 namespace kobuki
 {
 
-class Command : public packet_handler::payloadBase
+class kobuki_PUBLIC Command : public packet_handler::payloadBase
 {
 public:
   typedef ecl::PushAndPop<unsigned char> Buffer;

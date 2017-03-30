@@ -18,6 +18,7 @@
 *****************************************************************************/
 
 #include "../packet_handler/payload_base.hpp"
+#include "../macros.hpp"
 #include <stdint.h>
 
 /*****************************************************************************
@@ -31,7 +32,7 @@ namespace kobuki
 ** Interface
 *****************************************************************************/
 
-class CoreSensors : public packet_handler::payloadBase
+class kobuki_PUBLIC CoreSensors : public packet_handler::payloadBase
 {
 public:
   struct Data {

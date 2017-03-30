@@ -10,6 +10,8 @@
  ** Includes
  *****************************************************************************/
 
+#include <io.h>
+#include <stdlib.h>
 #include <stdexcept>
 #include <ecl/math.hpp>
 #include <ecl/geometry/angle.hpp>
@@ -18,6 +20,7 @@
 #include <ecl/sigslots.hpp>
 #include <ecl/geometry/angle.hpp>
 #include <ecl/time/timestamp.hpp>
+#include <ecl/devices/ofile.hpp>
 #include "../../include/kobuki_driver/kobuki.hpp"
 #include "../../include/kobuki_driver/packet_handler/payload_headers.hpp"
 
@@ -91,16 +94,42 @@ void Kobuki::init(Parameters &parameters) throw (ecl::StandardException)
   sig_error.connect(sigslots_namespace + std::string("/ros_error"));
 
   //checking device
-  if (access(parameters.device_port.c_str(), F_OK) == -1)
-  {
-    ecl::Sleep waiting(5); //for 5sec.
+#ifdef ECL_IS_WIN32
+  /*
+   * The _access() or access()(deprecated) in Windows is not work as it of linux
+   * for checking existence of communication port. However _access() says
+   * "Access is denied" or "Invalid parameter" when a communication port is opened
+   * by someone.
+   *
+   * This had better be replaced by new scheme for Windows; To call serial.open(...)
+   * directly, and detect disconnection using WaitCommEvent in another thread
+   * owned by Serial object.
+   */
+  _access( parameters.device_port.c_str(), 0 );
+  int errnum = 0;
+  _get_errno(&errnum);
+  if( errnum != EACCES && errnum != EINVAL ) {
+	ecl::Sleep waiting(5); //for 5sec.
     event_manager.update(is_connected, is_alive);
-    while (access(parameters.device_port.c_str(), F_OK) == -1)
-    {
+    while (true) {
+	  _access( parameters.device_port.c_str(), 0 );
+	  _get_errno(&errnum);
+	  if( errnum == EACCES || errnum == EINVAL)
+		break;
       sig_info.emit("Device does not exist. Waiting...");
       waiting();
     }
   }
+#else
+  if( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
+	ecl::Sleep waiting(5); //for 5sec.
+    event_manager.update(is_connected, is_alive);
+    while (access(parameters.device_port.c_str(), F_OK) == -1) {
+      sig_info.emit("Device does not exist. Waiting...");
+      waiting();
+    }
+  }
+#endif
 
   serial.open(parameters.device_port, ecl::BaudRate_115200, ecl::DataBits_8, ecl::StopBits_1, ecl::NoParity);
 
@@ -158,7 +187,24 @@ void Kobuki::spin()
     /*********************
      ** Checking Connection
      **********************/
-    if( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
+#ifdef ECL_IS_WIN32
+    /*
+     * The _access() or access()(deprecated) in Windows is not work as it of linux
+     * for checking existence of communication port. However _access() says
+     * "Access is denied" or "Invalid parameter" when a communication port is opened
+     * by someone.
+     *
+     * This had better be replaced by new scheme for Windows; To call serial.open(...)
+     * directly, and detect disconnection using WaitCommEvent in another thread
+     * owned by Serial object.
+     */
+	_access( parameters.device_port.c_str(), 0 );
+	int errnum = 0;
+	_get_errno(&errnum);
+	if( errnum != EACCES && errnum != EINVAL) {
+#else
+	if( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
+#endif
       sig_error.emit("Device does not exist.");
       is_connected = false;
       is_alive = false;
@@ -171,7 +217,15 @@ void Kobuki::spin()
       }
       //try_open();
       ecl::Sleep waiting(5); //for 5sec.
+#ifdef ECL_IS_WIN32
+      while( true ) {
+        _access( parameters.device_port.c_str(), 0 );
+        _get_errno(&errnum);
+        if( errnum == EACCES || errnum == EINVAL)
+        	break;
+#else
       while( access( parameters.device_port.c_str(), F_OK ) == -1 ) {
+#endif
         sig_info.emit("Device does not exist. Still waiting...");
         waiting();
       }
@@ -187,7 +241,7 @@ void Kobuki::spin()
     /*********************
      ** Read Incoming
      **********************/
-    int n = serial.read(buf, packet_finder.numberOfDataToRead());
+    int n = serial.read((char*)buf, packet_finder.numberOfDataToRead());
     if (n == 0)
     {
       if (is_alive && ((ecl::TimeStamp() - last_signal_time) > timeout))
@@ -489,7 +543,7 @@ void Kobuki::sendCommand(Command command)
 
   command_buffer.push_back(checksum);
   //check_device();
-  serial.write(&command_buffer[0], command_buffer.size());
+  serial.write((const char*)&command_buffer[0], command_buffer.size());
 
   sig_raw_data_command.emit(command_buffer);
   command_mutex.unlock();
