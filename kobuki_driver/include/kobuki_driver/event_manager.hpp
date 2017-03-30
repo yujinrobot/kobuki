@@ -22,6 +22,7 @@
 #include <ecl/sigslots.hpp>
 
 #include "packets/core_sensors.hpp"
+#include "macros.hpp"
 
 /*****************************************************************************
 ** Namespaces
@@ -108,7 +109,7 @@ struct RobotEvent {
 ** Interfaces
 *****************************************************************************/
 
-class EventManager {
+class kobuki_PUBLIC EventManager {
 public:
   EventManager() {
     last_state.buttons    = 0;

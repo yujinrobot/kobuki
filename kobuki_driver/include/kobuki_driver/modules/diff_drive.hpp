@@ -22,6 +22,7 @@
 #include <stdint.h>
 #include <ecl/mobile_robot.hpp>
 #include <ecl/threads/mutex.hpp>
+#include "../macros.hpp"
 
 /*****************************************************************************
 ** Namespaces
@@ -33,7 +34,7 @@ namespace kobuki {
 ** Interfaces
 *****************************************************************************/
 
-class DiffDrive {
+class kobuki_PUBLIC DiffDrive {
 public:
   DiffDrive();
   const ecl::DifferentialDrive::Kinematics& kinematics() { return diff_drive_kinematics; }
