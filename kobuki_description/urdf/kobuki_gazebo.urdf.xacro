@@ -10,7 +10,7 @@
 	    <minDepth>0.001</minDepth>
 	    <maxVel>1.0</maxVel>
 	  </gazebo>
-	
+
 	  <gazebo reference="wheel_right_link">
 	    <mu1>1.0</mu1>
 	    <mu2>1.0</mu2>
@@ -19,7 +19,7 @@
 	    <minDepth>0.001</minDepth>
 	    <maxVel>1.0</maxVel>
 	  </gazebo>
-	  
+
 	  <gazebo reference="caster_front_link">
 	    <mu1>0.0</mu1>
 	    <mu2>0.0</mu2>
@@ -28,7 +28,7 @@
 	    <minDepth>0.001</minDepth>
 	    <maxVel>1.0</maxVel>
 	  </gazebo>
-	  
+
 	  <gazebo reference="caster_back_link">
 	    <mu1>0.0</mu1>
 	    <mu2>0.0</mu2>
@@ -37,7 +37,7 @@
 	    <minDepth>0.001</minDepth>
 	    <maxVel>1.0</maxVel>
 	  </gazebo>
-	  
+
 	  <gazebo reference="base_link">
 	    <mu1>0.3</mu1>
 	    <mu2>0.3</mu2>
@@ -46,11 +46,11 @@
 	      <update_rate>50.0</update_rate>
 	      <visualize>true</visualize>
 	      <contact>
-	        <collision>base_footprint_collision_base_link</collision>
+	        <collision>base_footprint_fixed_joint_lump__base_collision</collision>
 	      </contact>
 	    </sensor>
 	  </gazebo>
-	
+
 	  <gazebo reference="cliff_sensor_left_link">
 	    <sensor type="ray" name="cliff_sensor_left">
 	      <always_on>true</always_on>
@@ -81,7 +81,7 @@
 	      </ray>
 	    </sensor>
 	  </gazebo>
-	
+
 	  <gazebo reference="cliff_sensor_right_link">
 	    <sensor type="ray" name="cliff_sensor_right">
 	      <always_on>true</always_on>
@@ -112,7 +112,7 @@
 	      </ray>
 	    </sensor>
 	  </gazebo>
-	
+
 	  <gazebo reference="cliff_sensor_front_link">
 	    <sensor type="ray" name="cliff_sensor_front">
 	      <always_on>true</always_on>
@@ -143,7 +143,7 @@
 	      </ray>
 	    </sensor>
 	  </gazebo>
-	
+
 	  <gazebo reference="gyro_link">
 	   <sensor type="imu" name="imu">
         <always_on>true</always_on>
@@ -168,7 +168,7 @@
 	      </imu>
       </sensor>
 	  </gazebo>
-	
+
 	  <gazebo>
 	    <plugin name="kobuki_controller" filename="libgazebo_ros_kobuki.so">
 	      <publish_tf>1</publish_tf>
