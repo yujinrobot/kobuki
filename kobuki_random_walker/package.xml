@@ -1,6 +1,6 @@
 <package>
   <name>kobuki_random_walker</name>
-  <version>0.7.3</version>
+  <version>0.7.4</version>
   <description>
     Random walker app for Kobuki
   </description>
