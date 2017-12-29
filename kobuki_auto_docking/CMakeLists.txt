@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(kobuki_auto_docking)
 find_package(catkin REQUIRED COMPONENTS roscpp rospy nodelet pluginlib message_filters actionlib kdl_conversions
-                                        ecl_threads ecl_geometry ecl_linear_algebra kobuki_msgs kobuki_dock_drive)
+                                        ecl_threads ecl_geometry ecl_linear_algebra kobuki_msgs kobuki_dock_drive nav_msgs)
 
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES kobuki_auto_docking_ros kobuki_auto_docking_nodelet
    CATKIN_DEPENDS roscpp rospy nodelet pluginlib message_filters actionlib kdl_conversions
-                  ecl_threads ecl_geometry ecl_linear_algebra kobuki_msgs kobuki_dock_drive
+                  ecl_threads ecl_geometry ecl_linear_algebra kobuki_msgs kobuki_dock_drive nav_msgs
 )
 
 include_directories(include
