@@ -1,6 +1,6 @@
 <package>
   <name>kobuki_auto_docking</name>
-  <version>0.7.4</version>
+  <version>0.7.5</version>
   <description>
 	    Automatic docking for Kobuki:
 	    Users owning a docking station for Kobuki can use this tool to let Kobuki find its nest autonomously.

@@ -2,6 +2,10 @@
 Changelog
 =========
 
+0.7.5 (2017-12-29)
+------------------
+* bugfix missing nav_msgs dependency
+
 0.7.1 (2016-08-13)
 ------------------
 * bugfix for racing condition in goal assigning/enabling the docker
