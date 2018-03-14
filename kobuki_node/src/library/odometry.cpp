@@ -149,9 +149,9 @@ void Odometry::publishOdometry(const geometry_msgs::Quaternion &odom_quat,
   odom->pose.covariance[7]  = 0.1;
   odom->pose.covariance[35] = use_imu_heading ? 0.05 : 0.2;
 
-  odom->pose.covariance[14] = DBL_MAX; // set a non-zero covariance on unused
-  odom->pose.covariance[21] = DBL_MAX; // dimensions (z, pitch and roll); this
-  odom->pose.covariance[28] = DBL_MAX; // is a requirement of robot_pose_ekf
+  odom->pose.covariance[14] = 1e10; // set a non-zero covariance on unused
+  odom->pose.covariance[21] = 1e10; // dimensions (z, pitch and roll); this
+  odom->pose.covariance[28] = 1e10; // is a requirement of robot_pose_ekf
 
   odom_publisher.publish(odom);
 }
