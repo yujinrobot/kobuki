@@ -1,6 +1,6 @@
 <package>
   <name>kobuki_bumper2pc</name>
-  <version>0.7.5</version>
+  <version>0.7.6</version>
   <description>
     Bumper/cliff to pointcloud nodelet:
     Publish bumpers and cliff sensors events as points in a pointcloud, so navistack can use them

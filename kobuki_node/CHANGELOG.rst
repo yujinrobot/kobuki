@@ -2,6 +2,10 @@
 Changelog for package kobuki_node
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.6 (2018-03-14)
+------------------
+* Use more finite values for initial odometry covariance (i.e. not DBL_MAX) so as not to cause problems upstream
+
 0.6.6 (2015-05-27)
 ------------------
 * install image directory closes `#357 <https://github.com/yujinrobot/kobuki/issues/357>`_

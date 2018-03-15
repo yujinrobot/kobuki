@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>kobuki_rapps</name>
-  <version>0.7.5</version>
+  <version>0.7.6</version>
   <description>Robot apps for Kobuki</description>
   
   <maintainer email="marcus.liebhardt@yujinrobot.com">Marcus Liebhardt</maintainer>

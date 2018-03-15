@@ -1,6 +1,6 @@
 <package>
   <name>kobuki_testsuite</name>
-  <version>0.7.5</version>
+  <version>0.7.6</version>
   <description>
     Kobuki test suite: this package provides tools to thoroughly test Kobuki's hardware.
   </description>
