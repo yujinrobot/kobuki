@@ -1,20 +1,33 @@
-cmake_minimum_required(VERSION 2.8.3)
-project(kobuki_description)
-find_package(catkin REQUIRED COMPONENTS urdf xacro)
+##############################################################################
+# Cmake
+##############################################################################
 
-catkin_package(
-   CATKIN_DEPENDS urdf xacro
-)
+cmake_minimum_required(VERSION 3.5)
+project(kobuki_description)
+
+##############################################################################
+# Ament
+##############################################################################
+
+find_package(ament_cmake)
+
+##############################################################################
+# Installs
+##############################################################################
 
 install(DIRECTORY launch
-        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
+        DESTINATION share
+       )
+
+install(DIRECTORY launch
+        DESTINATION share
+       )
+
 install(DIRECTORY meshes
-        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
+        DESTINATION share
+       )
+
 install(DIRECTORY rviz
-        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
-install(DIRECTORY urdf
-        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
+        DESTINATION share
+       )
+
