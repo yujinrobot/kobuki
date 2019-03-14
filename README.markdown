@@ -3,7 +3,7 @@ Kobuki
 
 This repository holds the ROS wrapper of [Kobuki's C++ driver](https://github.com/yujinrobot/kobuki_core) plus various ROS tools and applications.
 
-![Kobuki Logo](http://files.yujinrobot.com/kobuki/media/kobuki_logo.png)
+![Kobuki Logo](http://kobuki.yujinrobot.com/wp-content/uploads/2015/07/iclebo-kobuki-logo-e1437635225432.png)
 
 ### Documentation ###
 
