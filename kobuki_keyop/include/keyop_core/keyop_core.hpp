@@ -46,11 +46,14 @@
  *****************************************************************************/
 
 #include <ros/ros.h>
-#include <termios.h> // for keyboard input
 #include <ecl/threads.hpp>
 #include <geometry_msgs/Twist.h>  // for velocity commands
 #include <geometry_msgs/TwistStamped.h>  // for velocity commands
 #include <kobuki_msgs/KeyboardInput.h> // keycodes from remote teleops.
+
+#if !defined(_WIN32)
+#include <termios.h>
+#endif
 
 /*****************************************************************************
  ** Namespaces
@@ -116,8 +119,11 @@ private:
   void restoreTerminal();
   bool quit_requested;
   int key_file_descriptor;
-  struct termios original_terminal_state;
   ecl::Thread thread;
+
+#if !defined(_WIN32)
+  struct termios original_terminal_state;
+#endif
 };
 
 } // namespace keyop_core

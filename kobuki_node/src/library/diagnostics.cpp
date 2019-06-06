@@ -85,7 +85,7 @@ void WatchdogTask::run(diagnostic_updater::DiagnosticStatusWrapper &stat) {
   if ( alive ) {
     stat.summary(diagnostic_msgs::DiagnosticStatus::OK, "Alive");
   } else {
-    stat.summary(diagnostic_msgs::DiagnosticStatus::ERROR, "No Signal");
+    stat.summary(diagnostic_msgs::DiagnosticStatus::ERRORS, "No Signal");
   }
 }
 
