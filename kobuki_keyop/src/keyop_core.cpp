@@ -43,6 +43,13 @@
 #include <ecl/exceptions.hpp>
 #include <std_srvs/Empty.h>
 #include <kobuki_msgs/MotorPower.h>
+
+#if defined(_WIN32)
+#include <windows.h>
+#else
+#include <termios.h> // for keyboard input
+#endif
+
 #include "../include/keyop_core/keyop_core.hpp"
 
 /*****************************************************************************
@@ -72,12 +79,16 @@ KeyOpCore::KeyOpCore() : last_zero_vel_sent(true), // avoid zero-vel messages fr
                          quit_requested(false),
                          key_file_descriptor(0)
 {
+#if !defined(_WIN32)
   tcgetattr(key_file_descriptor, &original_terminal_state); // get terminal properties
+#endif
 }
 
 KeyOpCore::~KeyOpCore()
 {
+#if !defined(_WIN32)
   tcsetattr(key_file_descriptor, TCSANOW, &original_terminal_state);
+#endif
 }
 
 /**
@@ -237,6 +248,42 @@ void KeyOpCore::spin()
  */
 void KeyOpCore::keyboardInputLoop()
 {
+  puts("Reading from keyboard");
+  puts("---------------------------");
+  puts("Forward/back arrows : linear velocity incr/decr.");
+  puts("Right/left arrows : angular velocity incr/decr.");
+  puts("Spacebar : reset linear/angular velocities.");
+  puts("d : disable motors.");
+  puts("e : enable motors.");
+  puts("q : quit.");
+
+#if defined(_WIN32)
+  while (!quit_requested)
+  {
+    HANDLE hInput = ::GetStdHandle(STD_INPUT_HANDLE);
+    DWORD NumInputs = 0;
+    DWORD InputsRead = 0;
+
+    if (!::GetNumberOfConsoleInputEvents(hInput, &NumInputs))
+    {
+      perror("GetNumberOfConsoleInputEvents() failed!");
+      exit(-1);
+    }
+
+    INPUT_RECORD irInput;
+    if (!::ReadConsoleInput(hInput, &irInput, 1, &InputsRead))
+    {
+      perror("ReadConsoleInput() failed!");
+      exit(-1);
+    }
+
+    const KEY_EVENT_RECORD &keyEvent = irInput.Event.KeyEvent;
+    if (keyEvent.wVirtualKeyCode && keyEvent.bKeyDown)
+    {
+      processKeyboardInput(static_cast<char>(keyEvent.wVirtualKeyCode));
+    }
+  }
+#else
   struct termios raw;
   memcpy(&raw, &original_terminal_state, sizeof(struct termios));
 
@@ -246,14 +293,6 @@ void KeyOpCore::keyboardInputLoop()
   raw.c_cc[VEOF] = 2;
   tcsetattr(key_file_descriptor, TCSANOW, &raw);
 
-  puts("Reading from keyboard");
-  puts("---------------------------");
-  puts("Forward/back arrows : linear velocity incr/decr.");
-  puts("Right/left arrows : angular velocity incr/decr.");
-  puts("Spacebar : reset linear/angular velocities.");
-  puts("d : disable motors.");
-  puts("e : enable motors.");
-  puts("q : quit.");
   char c;
   while (!quit_requested)
   {
@@ -264,6 +303,7 @@ void KeyOpCore::keyboardInputLoop()
     }
     processKeyboardInput(c);
   }
+#endif
 }
 
 /**
@@ -288,6 +328,55 @@ void KeyOpCore::processKeyboardInput(char c)
    * the last one for its actual purpose (e.g. left arrow corresponds to
    * esc-[-D) we can keep the parsing simple.
    */
+#if defined(_WIN32)
+  switch (c)
+  {
+    case 37u: // VK_LEFT
+    {
+      incrementAngularVelocity();
+      break;
+    }
+    case 39u: // VK_RIGHT
+    {
+      decrementAngularVelocity();
+      break;
+    }
+    case 38u: // VK_UP
+    {
+      incrementLinearVelocity();
+      break;
+    }
+    case 40u: // VK_DOWN
+    {
+      decrementLinearVelocity();
+      break;
+    }
+    case 32u: // SPACE
+    {
+      resetVelocity();
+      break;
+    }
+    case 81u: // Q
+    {
+      quit_requested = true;
+      break;
+    }
+    case 68u: // D
+    {
+      disable();
+      break;
+    }
+    case 69u: // E
+    {
+      enable();
+      break;
+    }
+    default:
+    {
+      break;
+    }
+  }
+#else
   switch (c)
   {
     case kobuki_msgs::KeyboardInput::KeyCode_Left:
@@ -335,6 +424,7 @@ void KeyOpCore::processKeyboardInput(char c)
       break;
     }
   }
+#endif
 }
 
 /*****************************************************************************
