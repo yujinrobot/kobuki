@@ -170,7 +170,7 @@ void KobukiRos::subscribeSoundCommand(const kobuki_msgs::SoundConstPtr msg)
   {
     kobuki.playSoundSequence(Button);
   }
-  else if ( msg->value == kobuki_msgs::Sound::ERRORS )
+  else if ( msg->value == kobuki_msgs::Sound::ERROR )
   {
     kobuki.playSoundSequence(Error);
   }
