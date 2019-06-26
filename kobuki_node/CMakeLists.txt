@@ -14,9 +14,6 @@ catkin_package(
                   ecl_exceptions ecl_sigslots ecl_streams ecl_threads
 )
 
-# debug
-# add_compile_options(/showIncludes)
-
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_subdirectory(src)
