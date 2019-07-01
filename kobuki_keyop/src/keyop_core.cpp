@@ -38,6 +38,8 @@
  ** Includes
  *****************************************************************************/
 
+#include <unordered_map>
+
 #include <ros/ros.h>
 #include <ecl/time.hpp>
 #include <ecl/exceptions.hpp>
@@ -258,6 +260,24 @@ void KeyOpCore::keyboardInputLoop()
   puts("q : quit.");
 
 #if defined(_WIN32)
+  const auto tranlateVirtualKeyCodeWorker = [](const KEY_EVENT_RECORD& keyEvent) -> char
+  {
+    static const std::unordered_map<unsigned short, unsigned short> virtualKeyMap =
+    {
+      { 0x25, 0x44 }, // VK_LEFT    -> kobuki_msgs::KeyboardInput::KeyCode_Left
+      { 0x27, 0x43 }, // VK_RIGHT   -> kobuki_msgs::KeyboardInput::KeyCode_Right
+      { 0x26, 0x41 }, // VK_UP      -> kobuki_msgs::KeyboardInput::KeyCode_Up
+      { 0x28, 0x42 }, // VK_DOWN    -> kobuki_msgs::KeyboardInput::KeyCode_Down
+      { 0x20, 0x20 }, // VK_SPACE   -> kobuki_msgs::KeyboardInput::KeyCode_Down
+      { 0x51, 0x71 }, // Q key      -> ASCII q (lowercase)
+      { 0x44, 0x64 }, // D key      -> ASCII d (lowercase)
+      { 0x45, 0x65 }, // E key      -> ASCII e (lowercase)
+    };
+
+    const auto key = virtualKeyMap.find(keyEvent.wVirtualKeyCode);
+    return static_cast<char>(key != virtualKeyMap.end() ? key->second : 0);
+  };
+
   while (!quit_requested)
   {
     HANDLE hInput = ::GetStdHandle(STD_INPUT_HANDLE);
@@ -280,7 +300,7 @@ void KeyOpCore::keyboardInputLoop()
     const KEY_EVENT_RECORD &keyEvent = irInput.Event.KeyEvent;
     if (keyEvent.wVirtualKeyCode && keyEvent.bKeyDown)
     {
-      processKeyboardInput(static_cast<char>(keyEvent.wVirtualKeyCode));
+      processKeyboardInput(tranlateVirtualKeyCodeWorker(keyEvent));
     }
   }
 #else
@@ -328,55 +348,6 @@ void KeyOpCore::processKeyboardInput(char c)
    * the last one for its actual purpose (e.g. left arrow corresponds to
    * esc-[-D) we can keep the parsing simple.
    */
-#if defined(_WIN32)
-  switch (c)
-  {
-    case 37u: // VK_LEFT
-    {
-      incrementAngularVelocity();
-      break;
-    }
-    case 39u: // VK_RIGHT
-    {
-      decrementAngularVelocity();
-      break;
-    }
-    case 38u: // VK_UP
-    {
-      incrementLinearVelocity();
-      break;
-    }
-    case 40u: // VK_DOWN
-    {
-      decrementLinearVelocity();
-      break;
-    }
-    case 32u: // SPACE
-    {
-      resetVelocity();
-      break;
-    }
-    case 81u: // Q
-    {
-      quit_requested = true;
-      break;
-    }
-    case 68u: // D
-    {
-      disable();
-      break;
-    }
-    case 69u: // E
-    {
-      enable();
-      break;
-    }
-    default:
-    {
-      break;
-    }
-  }
-#else
   switch (c)
   {
     case kobuki_msgs::KeyboardInput::KeyCode_Left:
@@ -424,7 +395,6 @@ void KeyOpCore::processKeyboardInput(char c)
       break;
     }
   }
-#endif
 }
 
 /*****************************************************************************
