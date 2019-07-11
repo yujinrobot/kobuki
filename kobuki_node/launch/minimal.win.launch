@@ -6,8 +6,7 @@
 
   <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
 
-  <!-- use no-bond on Windows to work around the "Bond broken" issue -->
-  <node pkg="nodelet" type="nodelet" name="mobile_base" args="load kobuki_node/KobukiNodelet mobile_base_nodelet_manager --no-bond">
+  <node pkg="nodelet" type="nodelet" name="mobile_base" args="load kobuki_node/KobukiNodelet mobile_base_nodelet_manager">
     <rosparam file="$(find kobuki_node)/param/base.win.yaml" command="load"/>
     <param name="publish_tf" value="$(arg kobuki_publish_tf)"/>
     <remap from="mobile_base/odom" to="odom"/>
