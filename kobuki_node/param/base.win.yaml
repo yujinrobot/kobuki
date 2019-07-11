@@ -2,7 +2,7 @@
 # Firmware Source
 ##############################################################################
 
-# the port  that Kobuki is connected to
+# the port that Kobuki is connected to
 device_port: COM4
 
 # published joint states
