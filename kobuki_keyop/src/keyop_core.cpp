@@ -38,11 +38,20 @@
  ** Includes
  *****************************************************************************/
 
+#include <unordered_map>
+
 #include <ros/ros.h>
 #include <ecl/time.hpp>
 #include <ecl/exceptions.hpp>
 #include <std_srvs/Empty.h>
 #include <kobuki_msgs/MotorPower.h>
+
+#if defined(_WIN32)
+#include <windows.h>
+#else
+#include <termios.h> // for keyboard input
+#endif
+
 #include "../include/keyop_core/keyop_core.hpp"
 
 /*****************************************************************************
@@ -72,12 +81,16 @@ KeyOpCore::KeyOpCore() : last_zero_vel_sent(true), // avoid zero-vel messages fr
                          quit_requested(false),
                          key_file_descriptor(0)
 {
+#if !defined(_WIN32)
   tcgetattr(key_file_descriptor, &original_terminal_state); // get terminal properties
+#endif
 }
 
 KeyOpCore::~KeyOpCore()
 {
+#if !defined(_WIN32)
   tcsetattr(key_file_descriptor, TCSANOW, &original_terminal_state);
+#endif
 }
 
 /**
@@ -237,6 +250,60 @@ void KeyOpCore::spin()
  */
 void KeyOpCore::keyboardInputLoop()
 {
+  puts("Reading from keyboard");
+  puts("---------------------------");
+  puts("Forward/back arrows : linear velocity incr/decr.");
+  puts("Right/left arrows : angular velocity incr/decr.");
+  puts("Spacebar : reset linear/angular velocities.");
+  puts("d : disable motors.");
+  puts("e : enable motors.");
+  puts("q : quit.");
+
+#if defined(_WIN32)
+  const auto tranlateVirtualKeyCodeWorker = [](const KEY_EVENT_RECORD& keyEvent) -> char
+  {
+    static const std::unordered_map<unsigned short, unsigned short> virtualKeyMap =
+    {
+      { 0x25, 0x44 }, // VK_LEFT    -> kobuki_msgs::KeyboardInput::KeyCode_Left
+      { 0x27, 0x43 }, // VK_RIGHT   -> kobuki_msgs::KeyboardInput::KeyCode_Right
+      { 0x26, 0x41 }, // VK_UP      -> kobuki_msgs::KeyboardInput::KeyCode_Up
+      { 0x28, 0x42 }, // VK_DOWN    -> kobuki_msgs::KeyboardInput::KeyCode_Down
+      { 0x20, 0x20 }, // VK_SPACE   -> kobuki_msgs::KeyboardInput::KeyCode_Down
+      { 0x51, 0x71 }, // Q key      -> ASCII q (lowercase)
+      { 0x44, 0x64 }, // D key      -> ASCII d (lowercase)
+      { 0x45, 0x65 }, // E key      -> ASCII e (lowercase)
+    };
+
+    const auto key = virtualKeyMap.find(keyEvent.wVirtualKeyCode);
+    return static_cast<char>(key != virtualKeyMap.end() ? key->second : 0);
+  };
+
+  while (!quit_requested)
+  {
+    HANDLE hInput = ::GetStdHandle(STD_INPUT_HANDLE);
+    DWORD NumInputs = 0;
+    DWORD InputsRead = 0;
+
+    if (!::GetNumberOfConsoleInputEvents(hInput, &NumInputs))
+    {
+      perror("GetNumberOfConsoleInputEvents() failed!");
+      exit(-1);
+    }
+
+    INPUT_RECORD irInput;
+    if (!::ReadConsoleInput(hInput, &irInput, 1, &InputsRead))
+    {
+      perror("ReadConsoleInput() failed!");
+      exit(-1);
+    }
+
+    const KEY_EVENT_RECORD &keyEvent = irInput.Event.KeyEvent;
+    if (keyEvent.wVirtualKeyCode && keyEvent.bKeyDown)
+    {
+      processKeyboardInput(tranlateVirtualKeyCodeWorker(keyEvent));
+    }
+  }
+#else
   struct termios raw;
   memcpy(&raw, &original_terminal_state, sizeof(struct termios));
 
@@ -246,14 +313,6 @@ void KeyOpCore::keyboardInputLoop()
   raw.c_cc[VEOF] = 2;
   tcsetattr(key_file_descriptor, TCSANOW, &raw);
 
-  puts("Reading from keyboard");
-  puts("---------------------------");
-  puts("Forward/back arrows : linear velocity incr/decr.");
-  puts("Right/left arrows : angular velocity incr/decr.");
-  puts("Spacebar : reset linear/angular velocities.");
-  puts("d : disable motors.");
-  puts("e : enable motors.");
-  puts("q : quit.");
   char c;
   while (!quit_requested)
   {
@@ -264,6 +323,7 @@ void KeyOpCore::keyboardInputLoop()
     }
     processKeyboardInput(c);
   }
+#endif
 }
 
 /**

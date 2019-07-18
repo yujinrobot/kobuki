@@ -71,6 +71,7 @@ public:
       NODELET_ERROR_STREAM("Kobuki : could not initialise! Please restart.");
     }
   }
+
 private:
   void update()
   {
@@ -81,7 +82,7 @@ private:
     }
   }
 
-  boost::shared_ptr<KobukiRos> kobuki_;
+  std::shared_ptr<KobukiRos> kobuki_;
   ecl::Thread update_thread_;
   bool shutdown_requested_;
 };
