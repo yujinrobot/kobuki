@@ -85,6 +85,19 @@ public:
   void spin();
 
 private:
+  ros::Subscriber keyinput_subscriber;
+  ros::Publisher velocity_publisher_;
+  ros::Publisher motor_power_publisher_;
+  bool last_zero_vel_sent;
+  bool accept_incoming;
+  bool power_status;
+  bool wait_for_connection_;
+  geometry_msgs::TwistPtr cmd;
+  geometry_msgs::TwistStampedPtr cmd_stamped;
+  double linear_vel_step, linear_vel_max;
+  double angular_vel_step, angular_vel_max;
+  std::string name;
+
   /*********************
    ** Commands
    **********************/
@@ -104,18 +117,6 @@ private:
   void remoteKeyInputReceived(const kobuki_msgs::KeyboardInput& key);
   void restoreTerminal();
 
-  ros::Subscriber keyinput_subscriber;
-  ros::Publisher velocity_publisher_;
-  ros::Publisher motor_power_publisher_;
-  bool last_zero_vel_sent;
-  bool accept_incoming;
-  bool power_status;
-  bool wait_for_connection_;
-  geometry_msgs::TwistPtr cmd;
-  geometry_msgs::TwistStampedPtr cmd_stamped;
-  double linear_vel_step, linear_vel_max;
-  double angular_vel_step, angular_vel_max;
-  std::string name;
   bool quit_requested;
   int key_file_descriptor;
   ecl::Thread thread;

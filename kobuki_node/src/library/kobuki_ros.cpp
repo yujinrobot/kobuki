@@ -194,7 +194,8 @@ bool KobukiRos::init(ros::NodeHandle& nh, ros::NodeHandle& nh_pub)
     }
     else
     {
-      ROS_INFO_STREAM("Kobuki : configured for connection on device_port " << parameters.device_port << " [" << name << "].");
+      ROS_INFO_STREAM("Kobuki : configured for connection on device_port "
+                      << parameters.device_port << " [" << name << "].");
       ROS_INFO_STREAM("Kobuki : driver running in normal (non-simulation) mode" << " [" << name << "].");
     }
   }
