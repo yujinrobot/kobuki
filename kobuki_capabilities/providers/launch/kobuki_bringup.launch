@@ -1,8 +1,0 @@
-<launch>
-  <arg name="capability_server_nodelet_manager_name" default="/mobile_base_nodelet_manager"/>
-
-  <node pkg="nodelet" type="nodelet" name="mobile_base"
-        args="load kobuki_node/KobukiNodelet $(arg capability_server_nodelet_manager_name)">
-    <rosparam file="$(find kobuki_node)/param/base.yaml" command="load"/>
-  </node>
-</launch>
