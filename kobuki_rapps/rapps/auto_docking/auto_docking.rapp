@@ -1,6 +1,0 @@
-display:          Auto Docking
-description:      Makes robot spin until it detects docking base beacon signals; then it follows them to the docking base.
-compatibility:    rocon:/kobuki|turtlebot2
-launch:           auto_docking.launch.xml
-public_interface: auto_docking.interface
-icon:             ../kobuki_app_icon.png
