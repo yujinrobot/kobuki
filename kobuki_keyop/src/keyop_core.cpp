@@ -290,27 +290,27 @@ void KeyOpCore::processKeyboardInput(char c)
    */
   switch (c)
   {
-    case kobuki_msgs::KeyboardInput::KeyCode_Left:
+    case kobuki_msgs::KeyboardInput::KEYCODE_LEFT:
     {
       incrementAngularVelocity();
       break;
     }
-    case kobuki_msgs::KeyboardInput::KeyCode_Right:
+    case kobuki_msgs::KeyboardInput::KEYCODE_RIGHT:
     {
       decrementAngularVelocity();
       break;
     }
-    case kobuki_msgs::KeyboardInput::KeyCode_Up:
+    case kobuki_msgs::KeyboardInput::KEYCODE_UP:
     {
       incrementLinearVelocity();
       break;
     }
-    case kobuki_msgs::KeyboardInput::KeyCode_Down:
+    case kobuki_msgs::KeyboardInput::KEYCODE_DOWN:
     {
       decrementLinearVelocity();
       break;
     }
-    case kobuki_msgs::KeyboardInput::KeyCode_Space:
+    case kobuki_msgs::KeyboardInput::KEYCODE_SPACE:
     {
       resetVelocity();
       break;
