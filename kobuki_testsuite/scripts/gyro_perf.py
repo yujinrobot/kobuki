@@ -254,13 +254,13 @@ class Tester(object):
 
   def buttonCallback(self,data):
     if rospy.is_shutdown(): return
-    if data.button == ButtonEvent.Button0 and data.state == ButtonEvent.RELEASED:
+    if data.button == ButtonEvent.BUTTON0 and data.state == ButtonEvent.RELEASED:
       #if self.debug: print 'button0 pressed'
       self.triggered=True
       return
-    #if data.button == ButtonEvent.Button1 and data.state == ButtonEvent.RELEASED:
+    #if data.button == ButtonEvent.BUTTON1 and data.state == ButtonEvent.RELEASED:
     #  if self.debug: print 'button1 pressed'; return
-    #if data.button == ButtonEvent.Button2 and data.state == ButtonEvent.RELEASED:
+    #if data.button == ButtonEvent.BUTTON2 and data.state == ButtonEvent.RELEASED:
     #  if self.debug: print 'button2 pressed'; return
 
 if __name__ == '__main__':

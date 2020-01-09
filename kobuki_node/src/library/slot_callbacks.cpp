@@ -275,9 +275,9 @@ void KobukiRos::publishButtonEvent(const ButtonEvent &event)
       default: break;
     }
     switch(event.button) {
-      case(ButtonEvent::Button0) : { msg->button = kobuki_msgs::ButtonEvent::Button0; break; }
-      case(ButtonEvent::Button1) : { msg->button = kobuki_msgs::ButtonEvent::Button1; break; }
-      case(ButtonEvent::Button2) : { msg->button = kobuki_msgs::ButtonEvent::Button2; break; }
+      case(ButtonEvent::Button0) : { msg->button = kobuki_msgs::ButtonEvent::BUTTON0; break; }
+      case(ButtonEvent::Button1) : { msg->button = kobuki_msgs::ButtonEvent::BUTTON1; break; }
+      case(ButtonEvent::Button2) : { msg->button = kobuki_msgs::ButtonEvent::BUTTON2; break; }
       default: break;
     }
     button_event_publisher.publish(msg);
