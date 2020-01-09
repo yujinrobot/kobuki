@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import roslib
-roslib.load_manifest('yocs_velocity_smoother')
+roslib.load_manifest('kobuki_velocity_smoother')
 import rospy
 
 import os

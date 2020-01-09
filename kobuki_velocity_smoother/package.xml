@@ -7,9 +7,8 @@
   <author>Jorge Santos Simon</author>
   <maintainer email="jihoonl@yujinrobot.com">Jihoon Lee</maintainer>
   <license>BSD</license>
-  <url type="website">http://ros.org/wiki/yocs_velocity_smoother</url>
-  <url type="repository">https://github.com/yujinrobot/yujin_ocs</url>
-  <url type="bugtracker">https://github.com/yujinrobot/yujin_ocs/issues</url>
+  <url type="repository">https://github.com/yujinrobot/kobuki</url>
+  <url type="bugtracker">https://github.com/yujinrobot/kobuki/issues</url>
 
   <buildtool_depend>ament_cmake_ros</buildtool_depend>
 

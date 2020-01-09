@@ -1,13 +1,17 @@
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package yocs_velocity_smoother
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package kobuki_velocity_smoother
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Forthcoming
+-----------
+* Refactored for ROS 2 and renamed to kobuki_velocity_smoother
 
 0.6.3 (2014-12-05)
 ------------------
 
 0.6.2 (2014-11-30)
 ------------------
-* yocs_velocity_smoother: adds node name param to launcher
+* kobuki_velocity_smoother: adds node name param to launcher
 * adds a little launcher restructing for muxer and smoother
 * Contributors: Marcus Liebhardt
 

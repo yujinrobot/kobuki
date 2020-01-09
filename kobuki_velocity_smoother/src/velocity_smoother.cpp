@@ -1,10 +1,10 @@
 /**
- * @file /src/velocity_smoother_nodelet.cpp
+ * @file /src/velocity_smoother.cpp
  *
  * @brief Velocity smoother implementation.
  *
  * License: BSD
- *   https://raw.github.com/yujinrobot/yujin_ocs/hydro/yocs_velocity_smoother/LICENSE
+ *   https://raw.github.com/yujinrobot/kobuki/devel/kobuki_velocity_smoother/LICENSE
  **/
 /*****************************************************************************
  ** Includes
