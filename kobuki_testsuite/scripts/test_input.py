@@ -73,7 +73,7 @@ def DigitalInputEventCallback(data):
   global digitalS
   digitalS = data.values
 
-button0 = { ButtonEvent.Button0:0, ButtonEvent.Button1:1, ButtonEvent.Button2:2, } 
+button0 = { ButtonEvent.BUTTON0:0, ButtonEvent.BUTTON1:1, ButtonEvent.BUTTON2:2, } 
 button1 = { ButtonEvent.RELEASED:'Released', ButtonEvent.PRESSED:'Pressed ', }
 buttonS = [ 'Released',  'Released',  'Released', ] 
 

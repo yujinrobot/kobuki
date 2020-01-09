@@ -47,9 +47,9 @@ def ButtonEventCallback(data):
         state = "released"
     else:
         state = "pressed"  
-    if ( data.button == ButtonEvent.Button0 ) :
+    if ( data.button == ButtonEvent.BUTTON0 ) :
         button = "B0"
-    elif ( data.button == ButtonEvent.Button1 ) :
+    elif ( data.button == ButtonEvent.BUTTON1 ) :
         button = "B1"
     else:
         button = "B2"
