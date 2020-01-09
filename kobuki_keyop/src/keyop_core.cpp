@@ -271,7 +271,7 @@ void KeyOpCore::keyboardInputLoop()
  */
 void KeyOpCore::remoteKeyInputReceived(const kobuki_msgs::KeyboardInput& key)
 {
-  processKeyboardInput(key.pressedKey);
+  processKeyboardInput(key.pressed_key);
 }
 
 /**
