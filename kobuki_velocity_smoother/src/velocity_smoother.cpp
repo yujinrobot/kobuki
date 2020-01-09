@@ -10,77 +10,113 @@
  ** Includes
  *****************************************************************************/
 
-#include <ros/ros.h>
-#include <nodelet/nodelet.h>
-#include <pluginlib/class_list_macros.h>
+#include <algorithm>
+#include <cmath>
+#include <functional>
+#include <stdexcept>
+#include <string>
 
-#include <dynamic_reconfigure/server.h>
-#include <yocs_velocity_smoother/paramsConfig.h>
+#include <rclcpp/rclcpp.hpp>
+#include <rclcpp_components/register_node_macro.hpp>
 
 #include <ecl/threads/thread.hpp>
 
-#include "yocs_velocity_smoother/velocity_smoother_nodelet.hpp"
+#include "kobuki_velocity_smoother/velocity_smoother.hpp"
 
 /*****************************************************************************
  ** Preprocessing
  *****************************************************************************/
 
 #define PERIOD_RECORD_SIZE    5
-#define ZERO_VEL_COMMAND      geometry_msgs::Twist();
-#define IS_ZERO_VEOCITY(a)   ((a.linear.x == 0.0) && (a.angular.z == 0.0))
+#define IS_ZERO_VELOCITY(a)   ((a.linear.x == 0.0) && (a.angular.z == 0.0))
 
 /*****************************************************************************
 ** Namespaces
 *****************************************************************************/
 
-namespace yocs_velocity_smoother {
+namespace kobuki_velocity_smoother {
 
 /*********************
 ** Implementation
 **********************/
 
-VelocitySmoother::VelocitySmoother(const std::string &name)
-: name(name)
-, quiet(false)
+VelocitySmoother::VelocitySmoother(const rclcpp::NodeOptions & options) : rclcpp::Node("velocity_smoother_node", options)
 , shutdown_req(false)
 , input_active(false)
 , pr_next(0)
-, dynamic_reconfigure_server(NULL)
 {
-};
+  frequency = this->declare_parameter("frequency", 20.0);
+  quiet = this->declare_parameter("quiet", false);
+  decel_factor = this->declare_parameter("decel_factor", 1.0);
+  int feedback = this->declare_parameter("robot_feedback", static_cast<int>(NONE));
 
-void VelocitySmoother::reconfigCB(yocs_velocity_smoother::paramsConfig &config, uint32_t level)
-{
-  ROS_INFO("Reconfigure request : %f %f %f %f %f",
-           config.speed_lim_v, config.speed_lim_w, config.accel_lim_v, config.accel_lim_w, config.decel_factor);
+  if ((static_cast<int>(feedback) < NONE) || (static_cast<int>(feedback) > COMMANDS))
+  {
+    throw std::runtime_error("Invalid robot feedback type. Valid options are 0 (NONE, default), 1 (ODOMETRY) and 2 (COMMANDS)");
+  }
 
-  locker.lock();
-  speed_lim_v  = config.speed_lim_v;
-  speed_lim_w  = config.speed_lim_w;
-  accel_lim_v  = config.accel_lim_v;
-  accel_lim_w  = config.accel_lim_w;
-  decel_factor = config.decel_factor;
-  decel_lim_v  = decel_factor*accel_lim_v;
-  decel_lim_w  = decel_factor*accel_lim_w;
-  locker.unlock();
+  robot_feedback = static_cast<RobotFeedbackType>(feedback);
+
+  // Mandatory parameters
+  rclcpp::ParameterValue speed_v = this->declare_parameter("speed_lim_v");
+  if (speed_v.get_type() != rclcpp::ParameterType::PARAMETER_DOUBLE) {
+    throw std::runtime_error("speed_lim_v must be specified as a double");
+  }
+  speed_lim_v = speed_v.get<double>();
+
+  rclcpp::ParameterValue speed_w = this->declare_parameter("speed_lim_w");
+  if (speed_w.get_type() != rclcpp::ParameterType::PARAMETER_DOUBLE) {
+    throw std::runtime_error("speed_lim_w must be specified as a double");
+  }
+  speed_lim_w = speed_w.get<double>();
+
+  rclcpp::ParameterValue accel_v = this->declare_parameter("accel_lim_v");
+  if (accel_v.get_type() != rclcpp::ParameterType::PARAMETER_DOUBLE) {
+    throw std::runtime_error("accel_lim_v must be specified as a double");
+  }
+  accel_lim_v = accel_v.get<double>();
+
+  rclcpp::ParameterValue accel_w = this->declare_parameter("accel_lim_w");
+  if (accel_w.get_type() != rclcpp::ParameterType::PARAMETER_DOUBLE) {
+    throw std::runtime_error("accel_lim_w must be specified as a double");
+  }
+  accel_lim_w = accel_w.get<double>();
+
+  // Deceleration can be more aggressive, if necessary
+  decel_lim_v = decel_factor*accel_lim_v;
+  decel_lim_w = decel_factor*accel_lim_w;
+
+  // Publishers and subscribers
+  odometry_sub    = this->create_subscription<nav_msgs::msg::Odometry>("odometry", rclcpp::QoS(1), std::bind(&VelocitySmoother::odometryCB, this, std::placeholders::_1));
+  current_vel_sub = this->create_subscription<geometry_msgs::msg::Twist>("robot_cmd_vel", rclcpp::QoS(1), std::bind(&VelocitySmoother::robotVelCB, this, std::placeholders::_1));
+  raw_in_vel_sub  = this->create_subscription<geometry_msgs::msg::Twist>("raw_cmd_vel", rclcpp::QoS(1), std::bind(&VelocitySmoother::velocityCB, this, std::placeholders::_1));
+  smooth_vel_pub  = this->create_publisher<geometry_msgs::msg::Twist>("smooth_cmd_vel", 1);
+
+  spin_thread.start(&VelocitySmoother::spin, *this);
 }
 
-void VelocitySmoother::velocityCB(const geometry_msgs::Twist::ConstPtr& msg)
+VelocitySmoother::~VelocitySmoother()
+{
+  shutdown_req = true;
+  spin_thread.join();
+}
+
+void VelocitySmoother::velocityCB(const geometry_msgs::msg::Twist::SharedPtr msg)
 {
   // Estimate commands frequency; we do continuously as it can be very different depending on the
   // publisher type, and we don't want to impose extra constraints to keep this package flexible
   if (period_record.size() < PERIOD_RECORD_SIZE)
   {
-    period_record.push_back((ros::Time::now() - last_cb_time).toSec());
+    period_record.push_back((this->get_clock()->now() - last_cb_time).seconds());
   }
   else
   {
-    period_record[pr_next] = (ros::Time::now() - last_cb_time).toSec();
+    period_record[pr_next] = (this->get_clock()->now() - last_cb_time).seconds();
   }
 
   pr_next++;
   pr_next %= period_record.size();
-  last_cb_time = ros::Time::now();
+  last_cb_time = this->get_clock()->now();
 
   if (period_record.size() <= PERIOD_RECORD_SIZE/2)
   {
@@ -104,18 +140,24 @@ void VelocitySmoother::velocityCB(const geometry_msgs::Twist::ConstPtr& msg)
   locker.unlock();
 }
 
-void VelocitySmoother::odometryCB(const nav_msgs::Odometry::ConstPtr& msg)
+void VelocitySmoother::odometryCB(const nav_msgs::msg::Odometry::SharedPtr msg)
 {
   if (robot_feedback == ODOMETRY)
+  {
+    // FIXME: needs to have a lock!
     current_vel = msg->twist.twist;
+  }
 
   // ignore otherwise
 }
 
-void VelocitySmoother::robotVelCB(const geometry_msgs::Twist::ConstPtr& msg)
+void VelocitySmoother::robotVelCB(const geometry_msgs::msg::Twist::SharedPtr msg)
 {
   if (robot_feedback == COMMANDS)
+  {
+    // FIXME: needs to have a lock!
     current_vel = *msg;
+  }
 
   // ignore otherwise
 }
@@ -123,9 +165,9 @@ void VelocitySmoother::robotVelCB(const geometry_msgs::Twist::ConstPtr& msg)
 void VelocitySmoother::spin()
 {
   double period = 1.0/frequency;
-  ros::Rate spin_rate(frequency);
+  rclcpp::Rate spin_rate(frequency);
 
-  while (! shutdown_req && ros::ok())
+  while (! shutdown_req)
   {
     locker.lock();
     double accel_lim_v_(accel_lim_v);
@@ -134,9 +176,9 @@ void VelocitySmoother::spin()
     double decel_lim_v_(decel_lim_v);
     double decel_lim_w_(decel_lim_w);
     locker.unlock();
-    
+
     if ((input_active == true) && (cb_avg_time > 0.0) &&
-        ((ros::Time::now() - last_cb_time).toSec() > std::min(3.0*cb_avg_time, 0.5)))
+        ((this->get_clock()->now() - last_cb_time).seconds() > std::min(3.0*cb_avg_time, 0.5)))
     {
       // Velocity input no active anymore; normally last command is a zero-velocity one, but reassure
       // this, just in case something went wrong with our input, or he just forgot good manners...
@@ -144,11 +186,13 @@ void VelocitySmoother::spin()
       // The cb_avg_time > 0 check is required to deal with low-rate simulated time, that can make that
       // several messages arrive with the same time and so lead to a zero median
       input_active = false;
-      if (IS_ZERO_VEOCITY(target_vel) == false)
+      if (IS_ZERO_VELOCITY(target_vel) == false)
       {
-        ROS_WARN_STREAM("Velocity Smoother : input got inactive leaving us a non-zero target velocity ("
-              << target_vel.linear.x << ", " << target_vel.angular.z << "), zeroing...[" << name << "]");
-        target_vel = ZERO_VEL_COMMAND;
+        RCLCPP_WARN(get_logger(), "Velocity Smoother : input went inactive leaving us a non-zero target velocity (%d, %d), zeroing...[%s]",
+                    target_vel.linear.x,
+                    target_vel.angular.z,
+                    name.c_str());
+        target_vel = geometry_msgs::msg::Twist();
       }
     }
 
@@ -162,11 +206,12 @@ void VelocitySmoother::spin()
     double w_deviation_lower_bound = last_cmd_vel.angular.z - decel_lim_w_ * period * period_buffer;
     double angular_max_deviation = last_cmd_vel.angular.z + accel_lim_w_ * period * period_buffer;
 
+    // FIXME: current_vel needs to be locked!
     bool v_different_from_feedback = current_vel.linear.x < v_deviation_lower_bound || current_vel.linear.x > v_deviation_upper_bound;
     bool w_different_from_feedback = current_vel.angular.z < w_deviation_lower_bound || current_vel.angular.z > angular_max_deviation;
 
     if ((robot_feedback != NONE) && (input_active == true) && (cb_avg_time > 0.0) &&
-        (((ros::Time::now() - last_cb_time).toSec() > 5.0*cb_avg_time)     || // 5 missing msgs
+        (((this->get_clock()->now() - last_cb_time).seconds() > 5.0*cb_avg_time)     || // 5 missing msgs
             v_different_from_feedback || w_different_from_feedback))
     {
       // If the publisher has been inactive for a while, or if our current commanding differs a lot
@@ -175,24 +220,24 @@ void VelocitySmoother::spin()
       if ( !quiet ) {
         // this condition can be unavoidable due to preemption of current velocity control on
         // velocity multiplexer so be quiet if we're instructed to do so
-        ROS_WARN_STREAM("Velocity Smoother : using robot velocity feedback " <<
-                        std::string(robot_feedback == ODOMETRY ? "odometry" : "end commands") <<
-                        " instead of last command: " <<
-                        (ros::Time::now() - last_cb_time).toSec() << ", " <<
-                        current_vel.linear.x  - last_cmd_vel.linear.x << ", " <<
-                        current_vel.angular.z - last_cmd_vel.angular.z << ", [" << name << "]"
-                        );
+        RCLCPP_WARN(get_logger(), "Velocity Smoother : using robot velocity feedback %s instead of last command: %f, %f, %f, [%s]",
+                    std::string(robot_feedback == ODOMETRY ? "odometry" : "end commands").c_str(),
+                    (this->get_clock()->now() - last_cb_time).seconds(),
+                    current_vel.linear.x  - last_cmd_vel.linear.x,
+                    current_vel.angular.z - last_cmd_vel.angular.z,
+                    name.c_str());
       }
       last_cmd_vel = current_vel;
     }
 
-    geometry_msgs::TwistPtr cmd_vel;
+    auto cmd_vel = std::make_unique<geometry_msgs::msg::Twist>();
 
     if ((target_vel.linear.x  != last_cmd_vel.linear.x) ||
         (target_vel.angular.z != last_cmd_vel.angular.z))
     {
       // Try to reach target velocity ensuring that we don't exceed the acceleration limits
-      cmd_vel.reset(new geometry_msgs::Twist(target_vel));
+      cmd_vel->linear = target_vel.linear;
+      cmd_vel->angular = target_vel.angular;
 
       double v_inc, w_inc, max_v_inc, max_w_inc;
 
@@ -221,14 +266,14 @@ void VelocitySmoother::spin()
       // Calculate and normalise vectors A (desired velocity increment) and B (maximum velocity increment),
       // where v acts as coordinate x and w as coordinate y; the sign of the angle from A to B determines
       // which velocity (v or w) must be overconstrained to keep the direction provided as command
-      double MA = sqrt(    v_inc *     v_inc +     w_inc *     w_inc);
-      double MB = sqrt(max_v_inc * max_v_inc + max_w_inc * max_w_inc);
+      double MA = std::sqrt(    v_inc *     v_inc +     w_inc *     w_inc);
+      double MB = std::sqrt(max_v_inc * max_v_inc + max_w_inc * max_w_inc);
 
       double Av = std::abs(v_inc) / MA;
       double Aw = std::abs(w_inc) / MA;
       double Bv = max_v_inc / MB;
       double Bw = max_w_inc / MB;
-      double theta = atan2(Bw, Bv) - atan2(Aw, Av);
+      double theta = std::atan2(Bw, Bv) - atan2(Aw, Av);
 
       if (theta < 0)
       {
@@ -252,122 +297,18 @@ void VelocitySmoother::spin()
         // we must limit angular velocity
         cmd_vel->angular.z = last_cmd_vel.angular.z + sign(w_inc)*max_w_inc;
       }
-      smooth_vel_pub.publish(cmd_vel);
+      smooth_vel_pub->publish(std::move(cmd_vel));
       last_cmd_vel = *cmd_vel;
     }
     else if (input_active == true)
     {
       // We already reached target velocity; just keep resending last command while input is active
-      cmd_vel.reset(new geometry_msgs::Twist(last_cmd_vel));
-      smooth_vel_pub.publish(cmd_vel);
+      smooth_vel_pub->publish(std::move(cmd_vel));
     }
 
     spin_rate.sleep();
   }
 }
-
-/**
- * Initialise from a nodelet's private nodehandle.
- * @param nh : private nodehandle
- * @return bool : success or failure
- */
-bool VelocitySmoother::init(ros::NodeHandle& nh)
-{
-  // Dynamic Reconfigure
-  dynamic_reconfigure_callback = boost::bind(&VelocitySmoother::reconfigCB, this, _1, _2);
-
-  dynamic_reconfigure_server = new dynamic_reconfigure::Server<yocs_velocity_smoother::paramsConfig>(nh);
-  dynamic_reconfigure_server->setCallback(dynamic_reconfigure_callback);
-
-  // Optional parameters
-  int feedback;
-  nh.param("frequency",      frequency,     20.0);
-  nh.param("quiet",          quiet,         quiet);
-  nh.param("decel_factor",   decel_factor,   1.0);
-  nh.param("robot_feedback", feedback, (int)NONE);
-
-  if ((int(feedback) < NONE) || (int(feedback) > COMMANDS))
-  {
-    ROS_WARN("Invalid robot feedback type (%d). Valid options are 0 (NONE, default), 1 (ODOMETRY) and 2 (COMMANDS)",
-             feedback);
-    feedback = NONE;
-  }
-
-  robot_feedback = static_cast<RobotFeedbackType>(feedback);
-
-  // Mandatory parameters
-  if ((nh.getParam("speed_lim_v", speed_lim_v) == false) ||
-      (nh.getParam("speed_lim_w", speed_lim_w) == false))
-  {
-    ROS_ERROR("Missing velocity limit parameter(s)");
-    return false;
-  }
-
-  if ((nh.getParam("accel_lim_v", accel_lim_v) == false) ||
-      (nh.getParam("accel_lim_w", accel_lim_w) == false))
-  {
-    ROS_ERROR("Missing acceleration limit parameter(s)");
-    return false;
-  }
-
-  // Deceleration can be more aggressive, if necessary
-  decel_lim_v = decel_factor*accel_lim_v;
-  decel_lim_w = decel_factor*accel_lim_w;
-
-  // Publishers and subscribers
-  odometry_sub    = nh.subscribe("odometry",      1, &VelocitySmoother::odometryCB, this);
-  current_vel_sub = nh.subscribe("robot_cmd_vel", 1, &VelocitySmoother::robotVelCB, this);
-  raw_in_vel_sub  = nh.subscribe("raw_cmd_vel",   1, &VelocitySmoother::velocityCB, this);
-  smooth_vel_pub  = nh.advertise <geometry_msgs::Twist> ("smooth_cmd_vel", 1);
-
-  return true;
 }
 
-
-/*********************
-** Nodelet
-**********************/
-
-class VelocitySmootherNodelet : public nodelet::Nodelet
-{
-public:
-  VelocitySmootherNodelet()  { }
-  ~VelocitySmootherNodelet()
-  {
-    NODELET_DEBUG("Velocity Smoother : waiting for worker thread to finish...");
-    vel_smoother_->shutdown();
-    worker_thread_.join();
-  }
-
-  std::string unresolvedName(const std::string &name) const {
-    size_t pos = name.find_last_of('/');
-    return name.substr(pos + 1);
-  }
-
-
-  virtual void onInit()
-  {
-    ros::NodeHandle ph = getPrivateNodeHandle();
-    std::string resolved_name = ph.getUnresolvedNamespace(); // this always returns like /robosem/goo_arm - why not unresolved?
-    std::string name = unresolvedName(resolved_name); // unresolve it ourselves
-    NODELET_DEBUG_STREAM("Velocity Smoother : initialising nodelet...[" << name << "]");
-    vel_smoother_.reset(new VelocitySmoother(name));
-    if (vel_smoother_->init(ph))
-    {
-      NODELET_DEBUG_STREAM("Velocity Smoother : nodelet initialised [" << name << "]");
-      worker_thread_.start(&VelocitySmoother::spin, *vel_smoother_);
-    }
-    else
-    {
-      NODELET_ERROR_STREAM("Velocity Smoother : nodelet initialisation failed [" << name << "]");
-    }
-  }
-
-private:
-  boost::shared_ptr<VelocitySmoother> vel_smoother_;
-  ecl::Thread                        worker_thread_;
-};
-
-} // namespace yocs_velocity_smoother
-
-PLUGINLIB_EXPORT_CLASS(yocs_velocity_smoother::VelocitySmootherNodelet, nodelet::Nodelet);
+RCLCPP_COMPONENTS_REGISTER_NODE(kobuki_velocity_smoother::VelocitySmoother)
