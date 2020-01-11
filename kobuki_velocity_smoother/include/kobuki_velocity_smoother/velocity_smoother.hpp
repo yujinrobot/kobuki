@@ -18,6 +18,7 @@
  *****************************************************************************/
 
 #include <algorithm>
+#include <atomic>
 #include <mutex>
 #include <string>
 #include <vector>
@@ -49,9 +50,6 @@ public:
   VelocitySmoother(const VelocitySmoother & c) = delete;
   VelocitySmoother & operator=(const VelocitySmoother & c) = delete;
 
-  void spin();
-  std::mutex locker;
-
 private:
   enum RobotFeedbackType
   {
@@ -68,14 +66,18 @@ private:
 
   double frequency;
 
-  geometry_msgs::msg::Twist last_cmd_vel;
+  std::mutex current_vel_mutex;
   geometry_msgs::msg::Twist  current_vel;
+  std::mutex target_vel_mutex;
   geometry_msgs::msg::Twist   target_vel;
+  double last_cmd_vel_linear_x;
+  double last_cmd_vel_angular_z;
 
   bool                 shutdown_req; /**< Shutdown requested by nodelet; kill worker thread */
-  bool                 input_active;
-  double                cb_avg_time;
-  rclcpp::Time            last_cb_time;
+  std::atomic<bool>                 input_active;
+  std::atomic<double>                cb_avg_time;
+  std::mutex              last_velocity_mutex;
+  rclcpp::Time            last_velocity_cb_time;
   std::vector<double> period_record; /**< Historic of latest periods between velocity commands */
   unsigned int             pr_next; /**< Next position to fill in the periods record buffer */
 
@@ -86,6 +88,7 @@ private:
 
   ecl::Thread spin_thread;
 
+  void spin();
   void velocityCB(const geometry_msgs::msg::Twist::SharedPtr msg);
   void robotVelCB(const geometry_msgs::msg::Twist::SharedPtr msg);
   void odometryCB(const nav_msgs::msg::Odometry::SharedPtr msg);

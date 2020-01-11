@@ -13,6 +13,8 @@
 #include <algorithm>
 #include <cmath>
 #include <functional>
+#include <memory>
+#include <mutex>
 #include <stdexcept>
 #include <string>
 
@@ -28,7 +30,6 @@
  *****************************************************************************/
 
 #define PERIOD_RECORD_SIZE    5
-#define IS_ZERO_VELOCITY(a)   ((a.linear.x == 0.0) && (a.angular.z == 0.0))
 
 /*****************************************************************************
 ** Namespaces
@@ -103,20 +104,23 @@ VelocitySmoother::~VelocitySmoother()
 
 void VelocitySmoother::velocityCB(const geometry_msgs::msg::Twist::SharedPtr msg)
 {
-  // Estimate commands frequency; we do continuously as it can be very different depending on the
-  // publisher type, and we don't want to impose extra constraints to keep this package flexible
-  if (period_record.size() < PERIOD_RECORD_SIZE)
   {
-    period_record.push_back((this->get_clock()->now() - last_cb_time).seconds());
-  }
-  else
-  {
-    period_record[pr_next] = (this->get_clock()->now() - last_cb_time).seconds();
-  }
+    std::lock_guard<std::mutex> lk(last_velocity_mutex);
+    // Estimate commands frequency; we do continuously as it can be very different depending on the
+    // publisher type, and we don't want to impose extra constraints to keep this package flexible
+    if (period_record.size() < PERIOD_RECORD_SIZE)
+    {
+      period_record.push_back((this->get_clock()->now() - last_velocity_cb_time).seconds());
+    }
+    else
+    {
+      period_record[pr_next] = (this->get_clock()->now() - last_velocity_cb_time).seconds();
+    }
 
-  pr_next++;
-  pr_next %= period_record.size();
-  last_cb_time = this->get_clock()->now();
+    pr_next++;
+    pr_next %= period_record.size();
+    last_velocity_cb_time = this->get_clock()->now();
+  }
 
   if (period_record.size() <= PERIOD_RECORD_SIZE/2)
   {
@@ -132,19 +136,20 @@ void VelocitySmoother::velocityCB(const geometry_msgs::msg::Twist::SharedPtr msg
   input_active = true;
 
   // Bound speed with the maximum values
-  locker.lock();
-  target_vel.linear.x  =
-      msg->linear.x  > 0.0 ? std::min(msg->linear.x,  speed_lim_v) : std::max(msg->linear.x,  -speed_lim_v);
-  target_vel.angular.z =
-      msg->angular.z > 0.0 ? std::min(msg->angular.z, speed_lim_w) : std::max(msg->angular.z, -speed_lim_w);
-  locker.unlock();
+  {
+    std::lock_guard<std::mutex> lk(target_vel_mutex);
+    target_vel.linear.x  =
+        msg->linear.x  > 0.0 ? std::min(msg->linear.x,  speed_lim_v) : std::max(msg->linear.x,  -speed_lim_v);
+    target_vel.angular.z =
+        msg->angular.z > 0.0 ? std::min(msg->angular.z, speed_lim_w) : std::max(msg->angular.z, -speed_lim_w);
+  }
 }
 
 void VelocitySmoother::odometryCB(const nav_msgs::msg::Odometry::SharedPtr msg)
 {
   if (robot_feedback == ODOMETRY)
   {
-    // FIXME: needs to have a lock!
+    std::lock_guard<std::mutex> lk(current_vel_mutex);
     current_vel = msg->twist.twist;
   }
 
@@ -155,7 +160,7 @@ void VelocitySmoother::robotVelCB(const geometry_msgs::msg::Twist::SharedPtr msg
 {
   if (robot_feedback == COMMANDS)
   {
-    // FIXME: needs to have a lock!
+    std::lock_guard<std::mutex> lk(current_vel_mutex);
     current_vel = *msg;
   }
 
@@ -169,13 +174,29 @@ void VelocitySmoother::spin()
 
   while (! shutdown_req)
   {
-    locker.lock();
-    double accel_lim_v_(accel_lim_v);
-    double accel_lim_w_(accel_lim_w);
-    double decel_factor(decel_factor);
-    double decel_lim_v_(decel_lim_v);
-    double decel_lim_w_(decel_lim_w);
-    locker.unlock();
+    rclcpp::Time last_cb_time;
+    {
+      std::lock_guard<std::mutex> lk(last_velocity_mutex);
+      last_cb_time = last_velocity_cb_time;
+    }
+
+    double target_vel_linear_x;
+    double target_vel_angular_z;
+
+    {
+      std::lock_guard<std::mutex> lk(target_vel_mutex);
+      target_vel_linear_x = target_vel.linear.x;
+      target_vel_angular_z = target_vel.angular.z;
+    }
+
+    double current_vel_linear_x;
+    double current_vel_angular_z;
+
+    {
+      std::lock_guard<std::mutex> lk(current_vel_mutex);
+      current_vel_linear_x = current_vel.linear.x;
+      current_vel_angular_z = current_vel.angular.z;
+    }
 
     if ((input_active == true) && (cb_avg_time > 0.0) &&
         ((this->get_clock()->now() - last_cb_time).seconds() > std::min(3.0*cb_avg_time, 0.5)))
@@ -186,29 +207,28 @@ void VelocitySmoother::spin()
       // The cb_avg_time > 0 check is required to deal with low-rate simulated time, that can make that
       // several messages arrive with the same time and so lead to a zero median
       input_active = false;
-      if (IS_ZERO_VELOCITY(target_vel) == false)
+      if (target_vel_linear_x != 0.0 || target_vel_angular_z != 0.0)
       {
         RCLCPP_WARN(get_logger(), "Velocity Smoother : input went inactive leaving us a non-zero target velocity (%d, %d), zeroing...[%s]",
-                    target_vel.linear.x,
-                    target_vel.angular.z,
+                    target_vel_linear_x,
+                    target_vel_angular_z,
                     name.c_str());
         target_vel = geometry_msgs::msg::Twist();
       }
     }
 
-    //check if the feedback is off from what we expect
-    //don't care about min / max velocities here, just for rough checking
+    // check if the feedback is off from what we expect
+    // don't care about min / max velocities here, just for rough checking
     double period_buffer = 2.0;
 
-    double v_deviation_lower_bound = last_cmd_vel.linear.x - decel_lim_v_ * period * period_buffer;
-    double v_deviation_upper_bound = last_cmd_vel.linear.x + accel_lim_v_ * period * period_buffer;
+    double v_deviation_lower_bound = last_cmd_vel_linear_x - decel_lim_v * period * period_buffer;
+    double v_deviation_upper_bound = last_cmd_vel_linear_x + accel_lim_v * period * period_buffer;
 
-    double w_deviation_lower_bound = last_cmd_vel.angular.z - decel_lim_w_ * period * period_buffer;
-    double angular_max_deviation = last_cmd_vel.angular.z + accel_lim_w_ * period * period_buffer;
+    double w_deviation_lower_bound = last_cmd_vel_angular_z - decel_lim_w * period * period_buffer;
+    double angular_max_deviation = last_cmd_vel_angular_z + accel_lim_w * period * period_buffer;
 
-    // FIXME: current_vel needs to be locked!
-    bool v_different_from_feedback = current_vel.linear.x < v_deviation_lower_bound || current_vel.linear.x > v_deviation_upper_bound;
-    bool w_different_from_feedback = current_vel.angular.z < w_deviation_lower_bound || current_vel.angular.z > angular_max_deviation;
+    bool v_different_from_feedback = current_vel_linear_x < v_deviation_lower_bound || current_vel_linear_x > v_deviation_upper_bound;
+    bool w_different_from_feedback = current_vel_angular_z < w_deviation_lower_bound || current_vel_angular_z > angular_max_deviation;
 
     if ((robot_feedback != NONE) && (input_active == true) && (cb_avg_time > 0.0) &&
         (((this->get_clock()->now() - last_cb_time).seconds() > 5.0*cb_avg_time)     || // 5 missing msgs
@@ -223,17 +243,18 @@ void VelocitySmoother::spin()
         RCLCPP_WARN(get_logger(), "Velocity Smoother : using robot velocity feedback %s instead of last command: %f, %f, %f, [%s]",
                     std::string(robot_feedback == ODOMETRY ? "odometry" : "end commands").c_str(),
                     (this->get_clock()->now() - last_cb_time).seconds(),
-                    current_vel.linear.x  - last_cmd_vel.linear.x,
-                    current_vel.angular.z - last_cmd_vel.angular.z,
+                    current_vel_linear_x  - last_cmd_vel_linear_x,
+                    current_vel_angular_z - last_cmd_vel_angular_z,
                     name.c_str());
       }
-      last_cmd_vel = current_vel;
+      last_cmd_vel_linear_x = current_vel_linear_x;
+      last_cmd_vel_angular_z = current_vel_angular_z;
     }
 
     auto cmd_vel = std::make_unique<geometry_msgs::msg::Twist>();
 
-    if ((target_vel.linear.x  != last_cmd_vel.linear.x) ||
-        (target_vel.angular.z != last_cmd_vel.angular.z))
+    if ((target_vel_linear_x  != last_cmd_vel_linear_x) ||
+        (target_vel_angular_z != last_cmd_vel_angular_z))
     {
       // Try to reach target velocity ensuring that we don't exceed the acceleration limits
       cmd_vel->linear = target_vel.linear;
@@ -241,26 +262,26 @@ void VelocitySmoother::spin()
 
       double v_inc, w_inc, max_v_inc, max_w_inc;
 
-      v_inc = target_vel.linear.x - last_cmd_vel.linear.x;
-      if ((robot_feedback == ODOMETRY) && (current_vel.linear.x*target_vel.linear.x < 0.0))
+      v_inc = target_vel_linear_x - last_cmd_vel_linear_x;
+      if ((robot_feedback == ODOMETRY) && (current_vel_linear_x*target_vel_linear_x < 0.0))
       {
         // countermarch (on robots with significant inertia; requires odometry feedback to be detected)
-        max_v_inc = decel_lim_v_*period;
+        max_v_inc = decel_lim_v*period;
       }
       else
       {
-        max_v_inc = ((v_inc*target_vel.linear.x > 0.0)?accel_lim_v:decel_lim_v_)*period;
+        max_v_inc = ((v_inc*target_vel_linear_x > 0.0)?accel_lim_v:decel_lim_v)*period;
       }
 
-      w_inc = target_vel.angular.z - last_cmd_vel.angular.z;
-      if ((robot_feedback == ODOMETRY) && (current_vel.angular.z*target_vel.angular.z < 0.0))
+      w_inc = target_vel_angular_z - last_cmd_vel_angular_z;
+      if ((robot_feedback == ODOMETRY) && (current_vel_angular_z*target_vel_angular_z < 0.0))
       {
         // countermarch (on robots with significant inertia; requires odometry feedback to be detected)
-        max_w_inc = decel_lim_w_*period;
+        max_w_inc = decel_lim_w*period;
       }
       else
       {
-        max_w_inc = ((w_inc*target_vel.angular.z > 0.0)?accel_lim_w_:decel_lim_w_)*period;
+        max_w_inc = ((w_inc*target_vel_angular_z > 0.0)?accel_lim_w:decel_lim_w)*period;
       }
 
       // Calculate and normalise vectors A (desired velocity increment) and B (maximum velocity increment),
@@ -289,16 +310,17 @@ void VelocitySmoother::spin()
       if (std::abs(v_inc) > max_v_inc)
       {
         // we must limit linear velocity
-        cmd_vel->linear.x  = last_cmd_vel.linear.x  + sign(v_inc)*max_v_inc;
+        cmd_vel->linear.x  = last_cmd_vel_linear_x  + sign(v_inc)*max_v_inc;
       }
 
       if (std::abs(w_inc) > max_w_inc)
       {
         // we must limit angular velocity
-        cmd_vel->angular.z = last_cmd_vel.angular.z + sign(w_inc)*max_w_inc;
+        cmd_vel->angular.z = last_cmd_vel_angular_z + sign(w_inc)*max_w_inc;
       }
+      last_cmd_vel_linear_x = cmd_vel->linear.x;
+      last_cmd_vel_angular_z = cmd_vel->angular.z;
       smooth_vel_pub->publish(std::move(cmd_vel));
-      last_cmd_vel = *cmd_vel;
     }
     else if (input_active == true)
     {
