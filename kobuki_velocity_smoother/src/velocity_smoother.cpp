@@ -17,7 +17,9 @@
 #include <mutex>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
+#include <rcl_interfaces/msg/set_parameters_result.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_components/register_node_macro.hpp>
 
@@ -48,7 +50,7 @@ VelocitySmoother::VelocitySmoother(const rclcpp::NodeOptions & options) : rclcpp
 {
   frequency = this->declare_parameter("frequency", 20.0);
   quiet = this->declare_parameter("quiet", false);
-  decel_factor = this->declare_parameter("decel_factor", 1.0);
+  double decel_factor = this->declare_parameter("decel_factor", 1.0);
   int feedback = this->declare_parameter("robot_feedback", static_cast<int>(NONE));
 
   if ((static_cast<int>(feedback) < NONE) || (static_cast<int>(feedback) > COMMANDS))
@@ -135,13 +137,21 @@ void VelocitySmoother::velocityCB(const geometry_msgs::msg::Twist::SharedPtr msg
 
   input_active = true;
 
+  double curr_speed_lim_v;
+  double curr_speed_lim_w;
+  {
+    std::lock_guard<std::mutex> lk(parameter_mutex);
+    curr_speed_lim_v = speed_lim_v;
+    curr_speed_lim_w = speed_lim_w;
+  }
+
   // Bound speed with the maximum values
   {
     std::lock_guard<std::mutex> lk(target_vel_mutex);
     target_vel.linear.x  =
-        msg->linear.x  > 0.0 ? std::min(msg->linear.x,  speed_lim_v) : std::max(msg->linear.x,  -speed_lim_v);
+      msg->linear.x  > 0.0 ? std::min(msg->linear.x,  curr_speed_lim_v) : std::max(msg->linear.x,  -curr_speed_lim_v);
     target_vel.angular.z =
-        msg->angular.z > 0.0 ? std::min(msg->angular.z, speed_lim_w) : std::max(msg->angular.z, -speed_lim_w);
+      msg->angular.z > 0.0 ? std::min(msg->angular.z, curr_speed_lim_w) : std::max(msg->angular.z, -curr_speed_lim_w);
   }
 }
 
@@ -182,7 +192,6 @@ void VelocitySmoother::spin()
 
     double target_vel_linear_x;
     double target_vel_angular_z;
-
     {
       std::lock_guard<std::mutex> lk(target_vel_mutex);
       target_vel_linear_x = target_vel.linear.x;
@@ -191,11 +200,22 @@ void VelocitySmoother::spin()
 
     double current_vel_linear_x;
     double current_vel_angular_z;
-
     {
       std::lock_guard<std::mutex> lk(current_vel_mutex);
       current_vel_linear_x = current_vel.linear.x;
       current_vel_angular_z = current_vel.angular.z;
+    }
+
+    double curr_decel_lim_v;
+    double curr_decel_lim_w;
+    double curr_accel_lim_v;
+    double curr_accel_lim_w;
+    {
+      std::lock_guard<std::mutex> lk(parameter_mutex);
+      curr_decel_lim_v = decel_lim_v;
+      curr_decel_lim_w = decel_lim_w;
+      curr_accel_lim_v = accel_lim_v;
+      curr_accel_lim_w = accel_lim_w;
     }
 
     if ((input_active == true) && (cb_avg_time > 0.0) &&
@@ -221,11 +241,11 @@ void VelocitySmoother::spin()
     // don't care about min / max velocities here, just for rough checking
     double period_buffer = 2.0;
 
-    double v_deviation_lower_bound = last_cmd_vel_linear_x - decel_lim_v * period * period_buffer;
-    double v_deviation_upper_bound = last_cmd_vel_linear_x + accel_lim_v * period * period_buffer;
+    double v_deviation_lower_bound = last_cmd_vel_linear_x - curr_decel_lim_v * period * period_buffer;
+    double v_deviation_upper_bound = last_cmd_vel_linear_x + curr_accel_lim_v * period * period_buffer;
 
-    double w_deviation_lower_bound = last_cmd_vel_angular_z - decel_lim_w * period * period_buffer;
-    double angular_max_deviation = last_cmd_vel_angular_z + accel_lim_w * period * period_buffer;
+    double w_deviation_lower_bound = last_cmd_vel_angular_z - curr_decel_lim_w * period * period_buffer;
+    double angular_max_deviation = last_cmd_vel_angular_z + curr_accel_lim_w * period * period_buffer;
 
     bool v_different_from_feedback = current_vel_linear_x < v_deviation_lower_bound || current_vel_linear_x > v_deviation_upper_bound;
     bool w_different_from_feedback = current_vel_angular_z < w_deviation_lower_bound || current_vel_angular_z > angular_max_deviation;
@@ -266,22 +286,22 @@ void VelocitySmoother::spin()
       if ((robot_feedback == ODOMETRY) && (current_vel_linear_x*target_vel_linear_x < 0.0))
       {
         // countermarch (on robots with significant inertia; requires odometry feedback to be detected)
-        max_v_inc = decel_lim_v*period;
+        max_v_inc = curr_decel_lim_v*period;
       }
       else
       {
-        max_v_inc = ((v_inc*target_vel_linear_x > 0.0)?accel_lim_v:decel_lim_v)*period;
+        max_v_inc = ((v_inc*target_vel_linear_x > 0.0) ? curr_accel_lim_v : curr_decel_lim_v)*period;
       }
 
       w_inc = target_vel_angular_z - last_cmd_vel_angular_z;
       if ((robot_feedback == ODOMETRY) && (current_vel_angular_z*target_vel_angular_z < 0.0))
       {
         // countermarch (on robots with significant inertia; requires odometry feedback to be detected)
-        max_w_inc = decel_lim_w*period;
+        max_w_inc = curr_decel_lim_w*period;
       }
       else
       {
-        max_w_inc = ((w_inc*target_vel_angular_z > 0.0)?accel_lim_w:decel_lim_w)*period;
+        max_w_inc = ((w_inc*target_vel_angular_z > 0.0) ? curr_accel_lim_w : curr_decel_lim_w)*period;
       }
 
       // Calculate and normalise vectors A (desired velocity increment) and B (maximum velocity increment),
@@ -331,6 +351,102 @@ void VelocitySmoother::spin()
     spin_rate.sleep();
   }
 }
+
+rcl_interfaces::msg::SetParametersResult VelocitySmoother::parameterUpdate(
+  const std::vector<rclcpp::Parameter> & parameters)
+{
+  rcl_interfaces::msg::SetParametersResult result;
+  result.successful = true;
+
+  std::lock_guard<std::mutex> lk(parameter_mutex);
+
+  for (const rclcpp::Parameter & parameter : parameters)
+  {
+    if (parameter.get_name() == "frequency")
+    {
+      result.successful = false;
+      result.reason = "frequency cannot be changed on-the-fly";
+      break;
+    }
+    else if (parameter.get_name() == "quiet")
+    {
+      if (parameter.get_type() != rclcpp::ParameterType::PARAMETER_BOOL) {
+        result.successful = false;
+        result.reason = "quiet must be a boolean";
+        break;
+      }
+
+      quiet = parameter.get_value<bool>();
+    }
+    else if (parameter.get_name() == "decel_factor")
+    {
+      if (parameter.get_type() != rclcpp::ParameterType::PARAMETER_DOUBLE) {
+        result.successful = false;
+        result.reason = "decel_factor must be a double";
+        break;
+      }
+
+      double decel_factor = parameter.get_value<double>();
+      decel_lim_v = decel_factor*accel_lim_v;
+      decel_lim_w = decel_factor*accel_lim_w;
+    }
+    else if (parameter.get_name() == "robot_feedback")
+    {
+      result.successful = false;
+      result.reason = "robot_feedback cannot be changed on-the-fly";
+      break;
+    }
+    else if (parameter.get_name() == "speed_lim_v")
+    {
+      if (parameter.get_type() != rclcpp::ParameterType::PARAMETER_DOUBLE) {
+        result.successful = false;
+        result.reason = "speed_lim_v must be a double";
+        break;
+      }
+
+      speed_lim_v = parameter.get_value<double>();
+    }
+    else if (parameter.get_name() == "speed_lim_w")
+    {
+      if (parameter.get_type() != rclcpp::ParameterType::PARAMETER_DOUBLE) {
+        result.successful = false;
+        result.reason = "speed_lim_w must be a double";
+        break;
+      }
+
+      speed_lim_w = parameter.get_value<double>();
+    }
+    else if (parameter.get_name() == "accel_lim_v")
+    {
+      if (parameter.get_type() != rclcpp::ParameterType::PARAMETER_DOUBLE) {
+        result.successful = false;
+        result.reason = "accel_lim_v must be a double";
+        break;
+      }
+
+      accel_lim_v = parameter.get_value<double>();
+    }
+    else if (parameter.get_name() == "accel_lim_w")
+    {
+      if (parameter.get_type() != rclcpp::ParameterType::PARAMETER_DOUBLE) {
+        result.successful = false;
+        result.reason = "accel_lim_w must be a double";
+        break;
+      }
+
+      accel_lim_w = parameter.get_value<double>();
+    }
+    else
+    {
+      result.successful = false;
+      result.reason = "unknown parameter";
+      break;
+    }
+  }
+
+  return result;
+}
+
 }
 
 RCLCPP_COMPONENTS_REGISTER_NODE(kobuki_velocity_smoother::VelocitySmoother)

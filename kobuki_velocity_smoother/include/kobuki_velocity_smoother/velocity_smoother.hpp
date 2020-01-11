@@ -26,6 +26,7 @@
 #include <ecl/threads/thread.hpp>
 
 #include <geometry_msgs/msg/twist.hpp>
+#include <rcl_interfaces/msg/set_parameters_result.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 
@@ -59,10 +60,10 @@ private:
   } robot_feedback;  /**< What source to use as robot velocity feedback */
 
   std::string name{"velocity_smoother"};
-  bool quiet;        /**< Quieten some warnings that are unavoidable because of velocity multiplexing. **/
+  std::atomic<bool> quiet;        /**< Quieten some warnings that are unavoidable because of velocity multiplexing. **/
+  std::mutex parameter_mutex;
   double speed_lim_v, accel_lim_v, decel_lim_v;
   double speed_lim_w, accel_lim_w, decel_lim_w;
-  double decel_factor;
 
   double frequency;
 
@@ -92,6 +93,9 @@ private:
   void velocityCB(const geometry_msgs::msg::Twist::SharedPtr msg);
   void robotVelCB(const geometry_msgs::msg::Twist::SharedPtr msg);
   void odometryCB(const nav_msgs::msg::Odometry::SharedPtr msg);
+
+  rcl_interfaces::msg::SetParametersResult parameterUpdate(
+    const std::vector<rclcpp::Parameter> & parameters);
 
   double sign(double x)  { return x < 0.0 ? -1.0 : +1.0; };
 
