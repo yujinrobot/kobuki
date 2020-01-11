@@ -27,9 +27,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <rclcpp/rclcpp.hpp>
-
+#include <cstdio>
 #include <memory>
+
+#include <rclcpp/rclcpp.hpp>
 
 #include "kobuki_velocity_smoother/velocity_smoother.hpp"
 

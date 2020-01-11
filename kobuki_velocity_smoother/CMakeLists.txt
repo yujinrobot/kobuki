@@ -28,6 +28,9 @@ ament_target_dependencies(${PROJECT_NAME}
   "rclcpp"
   "rclcpp_components"
 )
+target_link_libraries(${PROJECT_NAME}
+  ecl_threads::ecl_threads
+)
 
 add_executable(kobuki_velocity_smoother_node src/velocity_smoother_node.cpp)
 ament_target_dependencies(kobuki_velocity_smoother_node
@@ -35,7 +38,6 @@ ament_target_dependencies(kobuki_velocity_smoother_node
 )
 target_link_libraries(kobuki_velocity_smoother_node
   ${PROJECT_NAME}
-  ecl_threads::ecl_threads
 )
 
 rclcpp_components_register_nodes(${PROJECT_NAME}
@@ -52,11 +54,8 @@ install(DIRECTORY include/${PROJECT_NAME}/
 install(TARGETS kobuki_velocity_smoother_node
   DESTINATION lib/${PROJECT_NAME}
 )
-# install(DIRECTORY launch
-#         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
-# install(DIRECTORY param
-#         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
+install(DIRECTORY config launch
+  DESTINATION share/${PROJECT_NAME}
+)
 
 ament_package()
