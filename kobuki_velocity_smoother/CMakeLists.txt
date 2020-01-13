@@ -12,10 +12,6 @@ find_package(rclcpp_components REQUIRED)
 
 ecl_enable_cxx14_compiler()
 ecl_enable_cxx_warnings()
-# Disable unused-local-typedefs until https://github.com/stonier/ecl_core/issues/93 is resolved
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wno-unused-local-typedefs)
-endif()
 
 include_directories(include)
 
