@@ -39,12 +39,8 @@
  *****************************************************************************/
 
 #include <algorithm>
-#include <atomic>
-#include <mutex>
 #include <string>
 #include <vector>
-
-#include <ecl/threads/thread.hpp>
 
 #include <geometry_msgs/msg/twist.hpp>
 #include <rcl_interfaces/msg/set_parameters_result.hpp>
@@ -81,24 +77,18 @@ private:
   } robot_feedback;  /**< What source to use as robot velocity feedback */
 
   std::string name{"velocity_smoother"};
-  std::atomic<bool> quiet;        /**< Quieten some warnings that are unavoidable because of velocity multiplexing. **/
-  std::mutex parameter_mutex;
+  bool quiet;        /**< Quieten some warnings that are unavoidable because of velocity multiplexing. **/
   double speed_lim_v, accel_lim_v, decel_lim_v;
   double speed_lim_w, accel_lim_w, decel_lim_w;
 
-  double frequency;
-
-  std::mutex current_vel_mutex;
   geometry_msgs::msg::Twist  current_vel;
-  std::mutex target_vel_mutex;
   geometry_msgs::msg::Twist   target_vel;
   double last_cmd_vel_linear_x;
   double last_cmd_vel_angular_z;
 
-  bool                 shutdown_req; /**< Shutdown requested by nodelet; kill worker thread */
-  std::atomic<bool>                 input_active;
-  std::atomic<double>                cb_avg_time;
-  std::mutex              last_velocity_mutex;
+  double period;
+  bool                 input_active;
+  double                cb_avg_time;
   rclcpp::Time            last_velocity_cb_time;
   std::vector<double> period_record; /**< Historic of latest periods between velocity commands */
   unsigned int             pr_next; /**< Next position to fill in the periods record buffer */
@@ -107,10 +97,9 @@ private:
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr current_vel_sub; /**< Current velocity from commands sent to the robot, not necessarily by this node */
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr raw_in_vel_sub;  /**< Incoming raw velocity commands */
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr  smooth_vel_pub;  /**< Outgoing smoothed velocity commands */
+  rclcpp::TimerBase::SharedPtr timer;
 
-  ecl::Thread spin_thread;
-
-  void spin();
+  void timerCB();
   void velocityCB(const geometry_msgs::msg::Twist::SharedPtr msg);
   void robotVelCB(const geometry_msgs::msg::Twist::SharedPtr msg);
   void odometryCB(const nav_msgs::msg::Odometry::SharedPtr msg);

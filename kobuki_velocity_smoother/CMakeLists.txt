@@ -3,7 +3,6 @@ project(kobuki_velocity_smoother)
 
 find_package(ament_cmake_ros REQUIRED)
 find_package(ecl_build REQUIRED)
-find_package(ecl_threads REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(rcl_interfaces REQUIRED)
@@ -17,15 +16,11 @@ include_directories(include)
 
 add_library(${PROJECT_NAME} SHARED src/velocity_smoother.cpp)
 ament_target_dependencies(${PROJECT_NAME}
-  "ecl_threads"
   "geometry_msgs"
   "nav_msgs"
   "rcl_interfaces"
   "rclcpp"
   "rclcpp_components"
-)
-target_link_libraries(${PROJECT_NAME}
-  ecl_threads::ecl_threads
 )
 
 add_executable(kobuki_velocity_smoother_node src/velocity_smoother_node.cpp)
