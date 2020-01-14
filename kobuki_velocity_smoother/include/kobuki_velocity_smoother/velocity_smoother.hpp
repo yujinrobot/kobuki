@@ -76,28 +76,28 @@ private:
     COMMANDS
   } robot_feedback;  /**< What source to use as robot velocity feedback */
 
-  std::string name{"velocity_smoother"};
-  bool quiet;        /**< Quieten some warnings that are unavoidable because of velocity multiplexing. **/
-  double speed_lim_v, accel_lim_v, decel_lim_v;
-  double speed_lim_w, accel_lim_w, decel_lim_w;
+  bool quiet_;        /**< Quieten some warnings that are unavoidable because of velocity multiplexing. **/
+  double speed_lim_v_, accel_lim_v_, decel_lim_v_;
+  double speed_lim_w_, accel_lim_w_, decel_lim_w_;
 
-  geometry_msgs::msg::Twist  current_vel;
-  geometry_msgs::msg::Twist   target_vel;
-  double last_cmd_vel_linear_x;
-  double last_cmd_vel_angular_z;
+  geometry_msgs::msg::Twist  current_vel_;
+  geometry_msgs::msg::Twist   target_vel_;
+  double last_cmd_vel_linear_x_;
+  double last_cmd_vel_angular_z_;
 
-  double period;
-  bool                 input_active;
-  double                cb_avg_time;
-  rclcpp::Time            last_velocity_cb_time;
-  std::vector<double> period_record; /**< Historic of latest periods between velocity commands */
-  unsigned int             pr_next; /**< Next position to fill in the periods record buffer */
+  double period_;
+  double decel_factor_;
+  bool                 input_active_;
+  double                cb_avg_time_;
+  rclcpp::Time            last_velocity_cb_time_;
+  std::vector<double> period_record_; /**< Historic of latest periods between velocity commands */
+  unsigned int             pr_next_; /**< Next position to fill in the periods record buffer */
 
-  rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odometry_sub;    /**< Current velocity from odometry */
-  rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr current_vel_sub; /**< Current velocity from commands sent to the robot, not necessarily by this node */
-  rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr raw_in_vel_sub;  /**< Incoming raw velocity commands */
-  rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr  smooth_vel_pub;  /**< Outgoing smoothed velocity commands */
-  rclcpp::TimerBase::SharedPtr timer;
+  rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odometry_sub_;    /**< Current velocity from odometry */
+  rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr current_vel_sub_; /**< Current velocity from commands sent to the robot, not necessarily by this node */
+  rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr raw_in_vel_sub_;  /**< Incoming raw velocity commands */
+  rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr  smooth_vel_pub_;  /**< Outgoing smoothed velocity commands */
+  rclcpp::TimerBase::SharedPtr timer_;
 
   void timerCB();
   void velocityCB(const geometry_msgs::msg::Twist::SharedPtr msg);
