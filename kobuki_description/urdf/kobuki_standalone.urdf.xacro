@@ -7,5 +7,5 @@
 
   <!-- Defines the kobuki component tag. -->
   <xacro:include filename="$(find kobuki_description)/urdf/kobuki.urdf.xacro" />
-  <kobuki/>
+  <xacro:kobuki/>
 </robot>

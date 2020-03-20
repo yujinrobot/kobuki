@@ -221,7 +221,7 @@
     </link>
 
     <!-- Kobuki Gazebo simulation details -->
-    <kobuki_sim/>
+    <xacro:kobuki_sim/>
 
   </xacro:macro>
 </robot>
