@@ -84,7 +84,7 @@ void Bumper2PcNodelet::onInit()
   nh.param("pointcloud_radius", r, 0.25); pc_radius_ = r;
   nh.param("pointcloud_height", h, 0.04); pc_height_ = h;
   nh.param("side_point_angle", angle, 0.34906585); 
-  nh.param<std::string>("base_link_frame", base_link_frame, "/base_link");
+  nh.param<std::string>("base_link_frame", base_link_frame, "base_link");
 
   // Lateral points x/y coordinates; we need to store float values to memcopy later
   p_side_x_ = + pc_radius_*sin(angle); // angle degrees from vertical
