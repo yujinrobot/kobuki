@@ -14,15 +14,15 @@
 
 # Kobuki / Yujin stacks
 
-- git: {local-name: yocs_msgs, version: devel, uri: 'https://github.com/yujinrobot/yocs_msgs.git'}
-- git: {local-name: yujin_ocs, version: devel, uri: 'https://github.com/yujinrobot/yujin_ocs.git'}
-- git: {local-name: kobuki_msgs, version: devel, uri: 'https://github.com/yujinrobot/kobuki_msgs.git'}
-- git: {local-name: kobuki_core, version: devel, uri: 'https://github.com/yujinrobot/kobuki_core.git'}
-- git: {local-name: kobuki, version: devel, uri: 'https://github.com/yujinrobot/kobuki.git'}
+- git: {local-name: yocs_msgs, version: release/0.7-melodic, uri: 'https://github.com/yujinrobot/yocs_msgs.git'}
+- git: {local-name: yujin_ocs, version: release/0.8-melodic, uri: 'https://github.com/yujinrobot/yujin_ocs.git'}
+- git: {local-name: kobuki_msgs, version: melodic, uri: 'https://github.com/yujinrobot/kobuki_msgs.git'}
+- git: {local-name: kobuki_core, version: melodic, uri: 'https://github.com/yujinrobot/kobuki_core.git'}
+- git: {local-name: kobuki, version: melodic, uri: 'https://github.com/yujinrobot/kobuki.git'}
 
 # Development stacks
-- git: {local-name: capabilities, version: master, uri: 'https://github.com/osrf/capabilities.git'}
-- git: {local-name: std_capabilities, version: master, uri: 'https://github.com/osrf/std_capabilities.git'}
-- git: {local-name: rocon_msgs, version: devel, uri: 'https://github.com/robotics-in-concert/rocon_msgs.git'}
-- git: {local-name: rocon_tools, version: devel, uri: 'https://github.com/robotics-in-concert/rocon_tools.git'}
-- git: {local-name: rocon_app_platform, version: devel, uri: 'https://github.com/robotics-in-concert/rocon_app_platform.git'}
+- git: {local-name: capabilities, version: 0.2.0, uri: 'https://github.com/osrf/capabilities.git'}
+- git: {local-name: std_capabilities, version: 0.1.0, uri: 'https://github.com/osrf/std_capabilities.git'}
+- git: {local-name: rocon_msgs, version: release/0.9-melodic, uri: 'https://github.com/robotics-in-concert/rocon_msgs.git'}
+- git: {local-name: rocon_tools, version: release/0.3-melodic, uri: 'https://github.com/robotics-in-concert/rocon_tools.git'}
+- git: {local-name: rocon_app_platform, version: release/0.9-indigo-kinetic-gopher, uri: 'https://github.com/robotics-in-concert/rocon_app_platform.git'}
