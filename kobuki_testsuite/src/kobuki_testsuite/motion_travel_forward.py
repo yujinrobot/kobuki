@@ -13,7 +13,7 @@ from geometry_msgs.msg import Twist, Pose
 from nav_msgs.msg import Odometry
 from kobuki_msgs.msg import CliffEvent
 # Local imports
-import utils
+from . import utils
 
 ##############################################################################
 # Classes
@@ -81,7 +81,7 @@ class TravelForward(object):
                 current_distance_sq = (self._current_pose.position.x - self._starting_pose.position.x)*(self._current_pose.position.x - self._starting_pose.position.x) + \
                                    (self._current_pose.position.y - self._starting_pose.position.y)*(self._current_pose.position.y - self._starting_pose.position.y)
                 #current_distance_sq += 0.01 # uncomment this and comment above for debugging
-                print("Distance %s"%math.sqrt(current_distance_sq))
+                print(("Distance %s"%math.sqrt(current_distance_sq)))
                 if self.speed > 0:
                     if self._current_speed < self.speed:
                         self._current_speed += 0.01

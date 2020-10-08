@@ -21,7 +21,7 @@ from kobuki_msgs.msg import BumperEvent, CliffEvent
 ##############################################################################
 # Local imports
 ##############################################################################
-import utils
+from . import utils
 
 '''
   Implements a safe wandering random motion using bump and cliff sensors. 

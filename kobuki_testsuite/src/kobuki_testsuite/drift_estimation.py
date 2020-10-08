@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#       
+#
 # License: BSD
 #   https://raw.github.com/yujinrobot/kobuki/hydro-devel/kobuki_testsuite/LICENSE
 #
@@ -30,7 +30,7 @@ def wrap_angle(angle):
         return math.fmod(angle-math.pi,2.0*math.pi)+math.pi
     else:
         return math.fmod(angle+math.pi,2.0*math.pi)-math.pi;
-                
+
 ##############################################################################
 # Classes
 ##############################################################################
@@ -48,7 +48,7 @@ class ScanToAngle(object):
         self.max_angle = max_angle
 
     def shutdown(self):
-        print "Killing off scan angle publisher"
+        print("Killing off scan angle publisher")
         if not rospy.is_shutdown():
             with self.lock:
                 self.scan_subscriber.unregister()
@@ -78,10 +78,10 @@ class ScanToAngle(object):
         if num > 0:
             denominator = num*sum_xx-sum_x*sum_x
             if denominator != 0:
-                angle=math.atan2((-sum_x*sum_y+num*sum_xy)/(denominator), 1)
-                #print("Scan Angle: %s"%str(angle))
+                angle = math.atan2((-sum_x*sum_y+num*sum_xy)/(denominator), 1)
+                # print("Scan Angle: %s"%str(angle))
                 relay = ScanAngle()
-                relay.header = msg.header 
+                relay.header = msg.header
                 relay.scan_angle = angle
                 with self.lock:
                     if self._laser_scan_angle_publisher:
@@ -89,10 +89,11 @@ class ScanToAngle(object):
         else:
             rospy.logerr("Please point me at a wall.")
 
+
 class DriftEstimation(object):
     def __init__(self, laser_scan_angle_topic, gyro_scan_angle_topic, error_scan_angle_topic, cmd_vel_topic, gyro_topic):
         self.lock = threading.Lock()
-        
+
         self._gyro_scan_angle_publisher = rospy.Publisher(gyro_scan_angle_topic, ScanAngle, queue_size=10)
         self._laser_scan_angle_subscriber = rospy.Subscriber(laser_scan_angle_topic, ScanAngle, self.scan_callback)
         self._error_scan_angle_publisher = rospy.Publisher(error_scan_angle_topic, ScanAngle, queue_size=10)
@@ -105,14 +106,14 @@ class DriftEstimation(object):
         self._gyro_time = rospy.Time.now()
         self._scan_angle = 0
         self._scan_time = rospy.Time.now()
-        
+
         ##############################
         # Parameters
         ##############################
         self._inital_wall_angle = 0.1
         self._max_angle = 0.4
         self._abs_yaw_rate = 0.3
-        self._epsilon = 0.5 # radians value above which increasing difference in scan and gyro angle will be ignored
+        self._epsilon = 0.5  # radians value above which increasing difference in scan and gyro angle will be ignored
 
         self._centred_gyro_angle = None
         self._initial_gyro_offset = None
@@ -122,13 +123,13 @@ class DriftEstimation(object):
 
     def init(self, yaw_rate):
         self._abs_yaw_rate = yaw_rate
-    
+
     def shutdown(self):
         self.stop()
         while self._running:
             self.rate.sleep()
         if not rospy.is_shutdown():
-            print "Shutting down drift estimation"
+            print("Shutting down drift estimation")
             self._gyro_scan_angle_publisher.unregister()
             self._gyro_scan_angle_publisher = None
             self._laser_scan_angle_subscriber.unregister()
@@ -139,10 +140,10 @@ class DriftEstimation(object):
             self.gyro_subscriber = None
             self.cmd_vel_publisher.unregister()
             self.cmd_vel_publisher = None
-        
+
     def stop(self):
         self._stop = True
-    
+
     def execute(self):
         '''
           Drop this into threading.Thread or QThread for execution
@@ -160,8 +161,8 @@ class DriftEstimation(object):
         with self.lock:
             if not self._initial_gyro_offset:
                 self._initial_gyro_offset = self._gyro_angle - self._scan_angle
-                print("Kobuki Testsuite: initial centre [%s]"%self._centred_gyro_angle)
-                print("Kobuki Testsuite: initial offset [%s]"%self._initial_gyro_offset)
+                print(("Kobuki Testsuite: initial centre [%s]" % self._centred_gyro_angle))
+                print(("Kobuki Testsuite: initial offset [%s]" % self._initial_gyro_offset))
         last_gyro_time = rospy.get_rostime()
         last_scan_time = rospy.get_rostime()
         yaw_rate_cmd = self._abs_yaw_rate
@@ -176,7 +177,7 @@ class DriftEstimation(object):
             if gyro_time > last_gyro_time:
                 last_gyro_time = gyro_time
                 if wrap_angle(gyro_angle - self._centred_gyro_angle) > self._max_angle:
-                    if yaw_rate_cmd > 0: 
+                    if yaw_rate_cmd > 0:
                         turn_count = turn_count + 1
                     yaw_rate_cmd = -self._abs_yaw_rate
                 elif wrap_angle(gyro_angle - self._centred_gyro_angle) < -self._max_angle:
@@ -211,7 +212,6 @@ class DriftEstimation(object):
             angle = self._scan_angle
         no_data_count = 0
         count = 0
-        epsilon = 0.05
         cmd = Twist()
         while True: #self._inital_wall_angle:
             if angle == 0: # magic number, means we have no data yet
@@ -237,12 +237,12 @@ class DriftEstimation(object):
             rospy.sleep(0.05)
             with self.lock:
                 angle = self._scan_angle
-        print "end of align"
+        print("end of align")
 
     ##########################################################################
     # Ros Callbacks
     ##########################################################################
-    
+
     def gyro_callback(self, msg):
         with self.lock:
             angle = quat_to_angle(msg.orientation)
@@ -250,12 +250,12 @@ class DriftEstimation(object):
             self._gyro_time = msg.header.stamp
             if self._initial_gyro_offset:
                 gyro_scan_angle = ScanAngle()
-                gyro_scan_angle.header = msg.header 
-                gyro_scan_angle.scan_angle = angle - self._initial_gyro_offset 
+                gyro_scan_angle.header = msg.header
+                gyro_scan_angle.scan_angle = angle - self._initial_gyro_offset
                 self._gyro_scan_angle_publisher.publish(gyro_scan_angle)
                 if self._running:
                     error_scan_angle = ScanAngle()
-                    error_scan_angle.header = msg.header 
+                    error_scan_angle.header = msg.header
                     error_scan_angle.scan_angle = math.fabs(angle - self._initial_gyro_offset - self._scan_angle)
                     #if error_scan_angle.scan_angle < self._epsilon: # don't spam with errors greater than what we're looking for
                     self._error_scan_angle_publisher.publish(error_scan_angle)
