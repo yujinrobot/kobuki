@@ -161,8 +161,8 @@ class DriftEstimation(object):
         with self.lock:
             if not self._initial_gyro_offset:
                 self._initial_gyro_offset = self._gyro_angle - self._scan_angle
-                print(("Kobuki Testsuite: initial centre [%s]" % self._centred_gyro_angle))
-                print(("Kobuki Testsuite: initial offset [%s]" % self._initial_gyro_offset))
+                print("Kobuki Testsuite: initial centre [%s]" % self._centred_gyro_angle)
+                print("Kobuki Testsuite: initial offset [%s]" % self._initial_gyro_offset)
         last_gyro_time = rospy.get_rostime()
         last_scan_time = rospy.get_rostime()
         yaw_rate_cmd = self._abs_yaw_rate
