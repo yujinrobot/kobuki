@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#       
+#
 # License: BSD
 #   https://raw.github.com/yujinrobot/kobuki/hydro-devel/kobuki_testsuite/LICENSE
 #
@@ -13,17 +13,17 @@ from geometry_msgs.msg import Twist, Pose
 from nav_msgs.msg import Odometry
 from kobuki_msgs.msg import CliffEvent
 # Local imports
-import utils
+from . import utils
 
 ##############################################################################
 # Classes
 ##############################################################################
-    
+
 '''
-  Travels forward a set distance. 
+  Travels forward a set distance.
 
       API:
-        init(speed,distance) : (re)initialise parameters 
+        init(speed,distance) : (re)initialise parameters
         stop()  - stop.
         execute() - pass this to a thread to run
         shutdown() - cleanup
@@ -31,7 +31,7 @@ import utils
 class TravelForward(object):
     '''
       Initialise everything
-      
+
       @param topic names
       @type strings
     '''
@@ -45,18 +45,18 @@ class TravelForward(object):
         self._starting_pose = Pose()
         self._stop = False
         self._running = False
-    
+
     def init(self, speed, distance):
         self.speed = speed
         self.distance = distance
-        
+
     def shutdown(self):
         self.stop()
         while self._running:
             rospy.sleep(0.05)
         self.cmd_vel_publisher.unregister()
         self.odom_subscriber.unregister()
-    
+
     def stop(self):
         self._stop = True
 
@@ -81,7 +81,7 @@ class TravelForward(object):
                 current_distance_sq = (self._current_pose.position.x - self._starting_pose.position.x)*(self._current_pose.position.x - self._starting_pose.position.x) + \
                                    (self._current_pose.position.y - self._starting_pose.position.y)*(self._current_pose.position.y - self._starting_pose.position.y)
                 #current_distance_sq += 0.01 # uncomment this and comment above for debugging
-                print("Distance %s"%math.sqrt(current_distance_sq))
+                print("Distance %s" % math.sqrt(current_distance_sq))
                 if self.speed > 0:
                     if self._current_speed < self.speed:
                         self._current_speed += 0.01
@@ -97,7 +97,7 @@ class TravelForward(object):
             cmd.linear.x = 0.0
             self.cmd_vel_publisher.publish(cmd)
         self._running = False
-        
+
     ##########################################################################
     # Ros Callbacks
     ##########################################################################
@@ -110,6 +110,6 @@ class TravelForward(object):
                 cmd.linear.x = 0.0
                 self.cmd_vel_publisher.publish(cmd)
             self.stop()
-    
+
     def odometry_callback(self, data):
         self._current_pose = data.pose.pose
