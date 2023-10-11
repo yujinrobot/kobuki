@@ -9,6 +9,14 @@
       <kd>100.0</kd>
       <minDepth>0.001</minDepth>
       <maxVel>1.0</maxVel>
+      <sensor type="contact" name="wheel_drop_left">
+        <always_on>1</always_on>
+        <update_rate>50.0</update_rate>
+        <visualize>true</visualize>
+        <contact>
+          <collision>wheel_left_link_collision</collision>
+        </contact>
+      </sensor>
     </gazebo>
 
     <gazebo reference="wheel_right_link">
@@ -18,6 +26,14 @@
       <kd>100.0</kd>
       <minDepth>0.001</minDepth>
       <maxVel>1.0</maxVel>
+      <sensor type="contact" name="wheel_drop_right">
+        <always_on>1</always_on>
+        <update_rate>50.0</update_rate>
+        <visualize>true</visualize>
+        <contact>
+          <collision>wheel_right_link_collision</collision>
+        </contact>
+      </sensor>
     </gazebo>
 
     <gazebo reference="caster_front_link">
@@ -184,6 +200,8 @@
         <cliff_detection_threshold>0.04</cliff_detection_threshold>
         <bumper_name>bumpers</bumper_name>
         <imu_name>imu</imu_name>
+        <wheel_drop_left_sensor_name>wheel_drop_left</wheel_drop_left_sensor_name>
+        <wheel_drop_right_sensor_name>wheel_drop_right</wheel_drop_right_sensor_name>
       </plugin>
     </gazebo>
   </xacro:macro>
