@@ -253,7 +253,7 @@ bool KobukiRos::update()
     return false;
   }
 
-  if ( (kobuki.isEnabled() == true) && odometry.commandTimeout())
+  if ( kobuki.isEnabled() && odometry.commandTimeout())
   {
     if ( !cmd_vel_timed_out_ )
     {
